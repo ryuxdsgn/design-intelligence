@@ -1,0 +1,11 @@
+{
+  // Konfigurasi Worker untuk MCP server ryux (starter lokal)
+  "name": "ryux-mcp",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-09-01",
+  "compatibility_flags": ["nodejs_compat"],
+  "durable_objects": {
+    "bindings": [{ "name": "MCP_OBJECT", "class_name": "RyuxMCP" }]
+  },
+  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["RyuxMCP"] }]
+}
