@@ -7,11 +7,11 @@ belum ada login, dan kuotanya disimpan di memori. Tujuannya melihat bentuk MCP-n
 
 | File | Fungsi |
 | --- | --- |
-| `src/index.ts` | Wiring server MCP + Durable Object; mendaftarkan tiga tool dari `@ryux/core` dan mengelola kuota per-sesi |
+| `src/index.ts` | Wiring server MCP + Durable Object; mendaftarkan empat tool dari `@ryux/core` dan mengelola kuota per-sesi |
 | `wrangler.jsonc` | Konfigurasi Worker dan Durable Object |
 
-Data dan logika tool (`search_screens`, `get_local_pattern`, `delivery_gate`) ada di paket
-`@ryux/core` (`packages/core/src`), supaya bisa dipakai ulang oleh app lain nanti.
+Data dan logika tool (`search_screens`, `get_flow`, `get_local_pattern`, `delivery_gate`) ada di
+paket `@ryux/core` (`packages/core/src`), supaya bisa dipakai ulang oleh app lain nanti.
 
 ## Menjalankan
 
@@ -41,6 +41,7 @@ claude
 Contoh prompt:
 
 - "Pakai ryux-local, cari referensi pemilih metode bayar dengan QRIS"
+- "Tampilkan flow flw_demo_checkout dari ryux-local"
 - "Jelaskan pola virtual-account dari ryux-local"
 - "Jalankan delivery_gate untuk keputusan desain checkout ini"
 
@@ -56,5 +57,5 @@ npm run deploy
 1. Ganti `src/data.ts` dengan query Supabase (`published` saja)
 2. Tambahkan OAuth dengan `@cloudflare/workers-oauth-provider` dan pemetaan ke `user_id`
 3. Pindahkan kuota ke `usage_events` dan `credit_ledger`
-4. Tambah tool `get_flow`, `compare_apps`, `extract_design_direction`, `audit_ui`, `audit_copy`
+4. Tambah tool `compare_apps`, `extract_design_direction`, `audit_ui`, `audit_copy`
 5. Pencarian gabungan full-text + pgvector

@@ -4,6 +4,7 @@ import {
   PLAN,
   charge,
   deliveryGateTool,
+  getFlowTool,
   getLocalPatternTool,
   searchScreensTool,
 } from "@ryux/core";
@@ -42,6 +43,33 @@ export class RyuxMCP extends McpAgent {
 
         return this.reply({
           results: searchScreensTool.run(args),
+          usage: { credits_used: 1, credits_remaining: charged.remaining, plan: PLAN },
+        });
+      },
+    );
+
+    this.server.tool(
+      getFlowTool.name,
+      getFlowTool.description,
+      getFlowTool.input,
+      async ({ flow_id }) => {
+        const charged = charge(this.used, 1);
+        if (!charged.ok) return this.quotaError(charged.remaining);
+        this.used = charged.used;
+
+        const flow = getFlowTool.run(flow_id);
+        if (!flow.ok) {
+          return {
+            isError: true,
+            ...this.reply({ error: "flow_not_found", available: flow.available }),
+          };
+        }
+
+        return this.reply({
+          flow_id: flow.flow_id,
+          type: flow.type,
+          app: flow.app,
+          steps: flow.steps,
           usage: { credits_used: 1, credits_remaining: charged.remaining, plan: PLAN },
         });
       },
