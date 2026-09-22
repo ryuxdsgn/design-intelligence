@@ -1,0 +1,11 @@
+{
+  "name": "ryux",
+  "version": "0.0.0",
+  "private": true,
+  "packageManager": "pnpm@12.5.1",
+  "scripts": {
+    "dev:mcp": "pnpm --filter @ryux/mcp dev",
+    "deploy:mcp": "pnpm --filter @ryux/mcp deploy",
+    "typecheck": "pnpm -r typecheck"
+  }
+}
