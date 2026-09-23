@@ -11,6 +11,8 @@ import {
   extractDesignDirectionTool,
   getFlowTool,
   getLocalPatternTool,
+  heuristicEvalTool,
+  HEURISTIC_EVAL_CREDITS,
   searchScreensTool,
 } from "@ryux/core";
 
@@ -192,6 +194,22 @@ export class RyuxMCP extends McpAgent {
         return this.reply({
           ...auditCopyTool.run(args),
           usage: { credits_used: 0, plan: PLAN },
+        });
+      },
+    );
+
+    this.server.tool(
+      heuristicEvalTool.name,
+      heuristicEvalTool.description,
+      heuristicEvalTool.input,
+      async (args) => {
+        const charged = charge(this.used, HEURISTIC_EVAL_CREDITS);
+        if (!charged.ok) return this.quotaError(charged.remaining);
+        this.used = charged.used;
+
+        return this.reply({
+          ...heuristicEvalTool.run(args),
+          usage: { credits_used: HEURISTIC_EVAL_CREDITS, credits_remaining: charged.remaining, plan: PLAN },
         });
       },
     );
