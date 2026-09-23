@@ -312,3 +312,130 @@ export const deliveryGateTool = {
   input: deliveryGateInput,
   run: deliveryGate,
 };
+
+// ── audit_ui ──────────────────────────────────────────────────────────────────
+
+export const auditUiInput = {
+  summary: z.string().describe("Ringkasan UI yang diaudit"),
+  tap_target_px: z.number().positive().optional().describe("Ukuran target sentuh terkecil (px)"),
+  body_text_px: z.number().positive().optional().describe("Ukuran teks body terkecil (px)"),
+  contrast_ratio: z.number().positive().optional().describe("Rasio kontras teks : latar, misal 4.5"),
+  primary_actions: z.number().int().min(0).optional().describe("Jumlah aksi primer (CTA) di layar"),
+  states: z.array(z.string()).optional().describe("State yang didesain, misal loading, empty, error, success"),
+  touch_feedback: z.boolean().optional().describe("Ada umpan balik sentuh (pressed/ripple)?"),
+};
+
+export type AuditUiArgs = z.infer<z.ZodObject<typeof auditUiInput>>;
+
+export type AuditCheck = {
+  rule: string;
+  title: string;
+  status: "PASS" | "FAIL" | "SKIP";
+  severity: "error" | "warning";
+  note: string;
+};
+
+export type AuditUiResult = {
+  summary: string;
+  result: "PASS" | "FAIL";
+  score: { passed: number; failed: number; skipped: number; total: number };
+  checks: AuditCheck[];
+};
+
+type UiRule = {
+  rule: string;
+  title: string;
+  severity: "error" | "warning";
+  evaluate: (spec: AuditUiArgs) => { applicable: boolean; pass: boolean; note: string };
+};
+
+// Subset aturan antislop (R-01..). Aturan yang datanya tak diisi → SKIP.
+export const UI_RULES: UiRule[] = [
+  {
+    rule: "R-01",
+    title: "Target sentuh minimal 44px",
+    severity: "error",
+    evaluate: (s) =>
+      s.tap_target_px === undefined
+        ? { applicable: false, pass: false, note: "tap_target_px tidak diisi" }
+        : { applicable: true, pass: s.tap_target_px >= 44, note: `tap_target_px=${s.tap_target_px} (min 44)` },
+  },
+  {
+    rule: "R-02",
+    title: "Teks body minimal 12px",
+    severity: "error",
+    evaluate: (s) =>
+      s.body_text_px === undefined
+        ? { applicable: false, pass: false, note: "body_text_px tidak diisi" }
+        : { applicable: true, pass: s.body_text_px >= 12, note: `body_text_px=${s.body_text_px} (min 12)` },
+  },
+  {
+    rule: "R-03",
+    title: "Kontras teks minimal 4.5:1 (WCAG AA)",
+    severity: "error",
+    evaluate: (s) =>
+      s.contrast_ratio === undefined
+        ? { applicable: false, pass: false, note: "contrast_ratio tidak diisi" }
+        : { applicable: true, pass: s.contrast_ratio >= 4.5, note: `contrast_ratio=${s.contrast_ratio} (min 4.5)` },
+  },
+  {
+    rule: "R-04",
+    title: "Tepat satu aksi primer",
+    severity: "warning",
+    evaluate: (s) =>
+      s.primary_actions === undefined
+        ? { applicable: false, pass: false, note: "primary_actions tidak diisi" }
+        : { applicable: true, pass: s.primary_actions === 1, note: `primary_actions=${s.primary_actions} (idealnya 1)` },
+  },
+  {
+    rule: "R-05",
+    title: "State penting hadir (loading, empty, error)",
+    severity: "warning",
+    evaluate: (s) => {
+      const states = s.states;
+      if (states === undefined) return { applicable: false, pass: false, note: "states tidak diisi" };
+      const missing = ["loading", "empty", "error"].filter((r) => !states.includes(r));
+      return {
+        applicable: true,
+        pass: missing.length === 0,
+        note: missing.length ? `kurang: ${missing.join(", ")}` : "lengkap",
+      };
+    },
+  },
+  {
+    rule: "R-06",
+    title: "Ada umpan balik sentuh",
+    severity: "warning",
+    evaluate: (s) =>
+      s.touch_feedback === undefined
+        ? { applicable: false, pass: false, note: "touch_feedback tidak diisi" }
+        : { applicable: true, pass: s.touch_feedback, note: s.touch_feedback ? "ada" : "tidak ada umpan balik sentuh" },
+  },
+];
+
+export function auditUi(spec: AuditUiArgs): AuditUiResult {
+  const checks: AuditCheck[] = UI_RULES.map((r) => {
+    const res = r.evaluate(spec);
+    const status: AuditCheck["status"] = !res.applicable ? "SKIP" : res.pass ? "PASS" : "FAIL";
+    return { rule: r.rule, title: r.title, status, severity: r.severity, note: res.note };
+  });
+  const passed = checks.filter((c) => c.status === "PASS").length;
+  const failed = checks.filter((c) => c.status === "FAIL").length;
+  const skipped = checks.filter((c) => c.status === "SKIP").length;
+  const result: AuditUiResult["result"] = checks.some(
+    (c) => c.severity === "error" && c.status === "FAIL",
+  )
+    ? "FAIL"
+    : "PASS";
+  return { summary: spec.summary, result, score: { passed, failed, skipped, total: checks.length }, checks };
+}
+
+export const auditUiTool = {
+  name: "audit_ui",
+  description:
+    "Audit UI antislop: cek layar terhadap aturan dasar (target sentuh, ukuran teks, kontras, jumlah aksi primer, " +
+    "kelengkapan state, umpan balik sentuh) dan kembalikan PASS/FAIL per aturan. Aturan yang datanya tak diisi " +
+    "berstatus SKIP. Hasil keseluruhan FAIL bila ada aturan severity error yang gagal. Gratis.",
+  input: auditUiInput,
+  run: auditUi,
+};
