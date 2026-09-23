@@ -7,11 +7,11 @@ belum ada login, dan kuotanya disimpan di memori. Tujuannya melihat bentuk MCP-n
 
 | File | Fungsi |
 | --- | --- |
-| `src/index.ts` | Wiring server MCP + Durable Object; mendaftarkan delapan tool dari `@ryux/core` dan mengelola kuota per-sesi |
+| `src/index.ts` | Wiring server MCP + Durable Object; mendaftarkan sembilan tool dari `@ryux/core` dan mengelola kuota per-sesi |
 | `wrangler.jsonc` | Konfigurasi Worker dan Durable Object |
 
 Data dan logika tool (`search_screens`, `get_flow`, `compare_apps`, `extract_design_direction`,
-`get_local_pattern`, `delivery_gate`, `audit_ui`, `audit_copy`) ada di paket `@ryux/core`
+`get_local_pattern`, `delivery_gate`, `audit_ui`, `audit_copy`, `heuristic_eval`) ada di paket `@ryux/core`
 (`packages/core/src`), supaya bisa dipakai ulang oleh app lain nanti.
 
 ## Menjalankan
@@ -49,6 +49,7 @@ Contoh prompt:
 - "Jalankan delivery_gate untuk keputusan desain checkout ini"
 - "Audit UI checkout ini pakai audit_ui (target sentuh 40px, satu tombol bayar)"
 - "Audit copy tombol 'BAYAR SEKARANG' dan judul checkout pakai audit_copy"
+- "Jalankan heuristic_eval untuk checkout ini, sertakan screen pembanding sebagai bukti tiap temuan mayor"
 
 ## Deploy
 
@@ -59,7 +60,7 @@ npm run deploy
 
 ## Langkah berikutnya (sesuai PRD)
 
-Delapan tool inti sudah ada di `@ryux/core`. Berikutnya menuju versi produksi:
+Sembilan tool inti sudah ada di `@ryux/core`. Berikutnya menuju versi produksi:
 
 1. Ganti `packages/core/src/data.ts` dengan query Supabase (`published` saja)
 2. Tambahkan OAuth dengan `@cloudflare/workers-oauth-provider` dan pemetaan ke `user_id`
