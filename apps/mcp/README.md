@@ -7,12 +7,12 @@ belum ada login, dan kuotanya disimpan di memori. Tujuannya melihat bentuk MCP-n
 
 | File | Fungsi |
 | --- | --- |
-| `src/index.ts` | Wiring server MCP + Durable Object; mendaftarkan enam tool dari `@ryux/core` dan mengelola kuota per-sesi |
+| `src/index.ts` | Wiring server MCP + Durable Object; mendaftarkan tujuh tool dari `@ryux/core` dan mengelola kuota per-sesi |
 | `wrangler.jsonc` | Konfigurasi Worker dan Durable Object |
 
 Data dan logika tool (`search_screens`, `get_flow`, `compare_apps`, `extract_design_direction`,
-`get_local_pattern`, `delivery_gate`) ada di paket `@ryux/core` (`packages/core/src`), supaya bisa
-dipakai ulang oleh app lain nanti.
+`get_local_pattern`, `delivery_gate`, `audit_ui`) ada di paket `@ryux/core` (`packages/core/src`),
+supaya bisa dipakai ulang oleh app lain nanti.
 
 ## Menjalankan
 
@@ -47,6 +47,7 @@ Contoh prompt:
 - "Rangkum arah desain checkout QRIS dari ryux-local"
 - "Jelaskan pola virtual-account dari ryux-local"
 - "Jalankan delivery_gate untuk keputusan desain checkout ini"
+- "Audit UI checkout ini pakai audit_ui (target sentuh 40px, satu tombol bayar)"
 
 ## Deploy
 
@@ -60,5 +61,5 @@ npm run deploy
 1. Ganti `src/data.ts` dengan query Supabase (`published` saja)
 2. Tambahkan OAuth dengan `@cloudflare/workers-oauth-provider` dan pemetaan ke `user_id`
 3. Pindahkan kuota ke `usage_events` dan `credit_ledger`
-4. Tambah tool `audit_ui`, `audit_copy`
+4. Tambah tool `audit_copy`
 5. Pencarian gabungan full-text + pgvector
