@@ -126,6 +126,80 @@ export const getLocalPatternTool = {
   run: getLocalPattern,
 };
 
+// ── compare_apps ──────────────────────────────────────────────────────────────
+
+export const compareAppsInput = {
+  apps: z.array(z.string()).min(2).describe("Nama aplikasi yang dibandingkan, minimal dua"),
+};
+
+export type CompareAppsArgs = z.infer<z.ZodObject<typeof compareAppsInput>>;
+
+export type AppSummary = {
+  name: string;
+  category: string;
+  screen_count: number;
+  flows: { id: string; type: string }[];
+  patterns: string[];
+  screen_ids: string[];
+};
+
+export type CompareAppsResult = {
+  apps: AppSummary[];
+  shared_patterns: string[];
+  not_found: string[];
+};
+
+/** Daftar nama aplikasi unik yang tersedia di data. */
+export function appNames(): string[] {
+  return [...new Set(SCREENS.map((s) => s.app.name))];
+}
+
+export function compareApps({ apps }: CompareAppsArgs): CompareAppsResult {
+  const summaries: AppSummary[] = [];
+  const notFound: string[] = [];
+
+  for (const name of apps) {
+    const screens = SCREENS.filter((s) => s.app.name === name);
+    if (screens.length === 0) {
+      notFound.push(name);
+      continue;
+    }
+    const flowMap = new Map<string, { id: string; type: string }>();
+    for (const s of screens) {
+      if (!flowMap.has(s.flow.id)) {
+        flowMap.set(s.flow.id, { id: s.flow.id, type: s.flow.type });
+      }
+    }
+    summaries.push({
+      name,
+      category: screens[0].app.category,
+      screen_count: screens.length,
+      flows: [...flowMap.values()],
+      patterns: [...new Set(screens.flatMap((s) => s.tags))].sort(),
+      screen_ids: screens.map((s) => s.screen_id),
+    });
+  }
+
+  // Pola yang dipakai oleh SEMUA aplikasi yang ketemu (irisan tags).
+  const shared_patterns =
+    summaries.length === 0
+      ? []
+      : summaries
+          .map((a) => new Set(a.patterns))
+          .reduce<string[]>((acc, set) => acc.filter((p) => set.has(p)), [...summaries[0].patterns]);
+
+  return { apps: summaries, shared_patterns, not_found: notFound };
+}
+
+export const compareAppsTool = {
+  name: "compare_apps",
+  description:
+    "Bandingkan dua aplikasi atau lebih: kategori, jumlah screen, flow yang ada, dan pola (tags) yang dipakai, " +
+    "termasuk pola yang sama-sama dipakai (shared_patterns). Rujuk screen_id sebagai bukti.",
+  input: compareAppsInput,
+  run: compareApps,
+};
+
 // ── delivery_gate ─────────────────────────────────────────────────────────────
 
 export const deliveryGateInput = {
