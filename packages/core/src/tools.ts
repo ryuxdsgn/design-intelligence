@@ -200,6 +200,66 @@ export const compareAppsTool = {
   run: compareApps,
 };
 
+// ── extract_design_direction ──────────────────────────────────────────────────
+
+export const extractDesignDirectionInput = {
+  brief: z.string().describe("Tujuan desain, misal 'checkout dengan QRIS untuk warung'"),
+  category: z.string().optional().describe("Batasi ke slug kategori, misal fnb"),
+  pattern: z.string().optional().describe("Batasi ke slug pola, misal qris"),
+  limit: z.number().int().min(1).max(12).default(6).describe("Jumlah screen acuan"),
+};
+
+export type ExtractDesignDirectionArgs = z.infer<z.ZodObject<typeof extractDesignDirectionInput>>;
+
+export type DesignDirection = {
+  brief: string;
+  based_on: string[];
+  recommended_patterns: { pattern: string; count: number }[];
+  principles: { screen_id: string; principle: string }[];
+  pitfalls: { screen_id: string; pitfall: string }[];
+  categories: string[];
+  flows: string[];
+};
+
+export function extractDesignDirection({
+  brief,
+  category,
+  pattern,
+  limit,
+}: ExtractDesignDirectionArgs): DesignDirection {
+  const screens = searchScreens({ query: brief, category, pattern, limit });
+
+  // Rekomendasi pola: tags diurut berdasarkan frekuensi kemunculan di screen acuan.
+  const counts = new Map<string, number>();
+  for (const s of screens) {
+    for (const tag of s.tags) {
+      counts.set(tag, (counts.get(tag) ?? 0) + 1);
+    }
+  }
+  const recommended_patterns = [...counts.entries()]
+    .map(([name, count]) => ({ pattern: name, count }))
+    .sort((a, b) => b.count - a.count || a.pattern.localeCompare(b.pattern));
+
+  return {
+    brief,
+    based_on: screens.map((s) => s.screen_id),
+    recommended_patterns,
+    principles: screens.map((s) => ({ screen_id: s.screen_id, principle: s.designer_notes.why_it_works })),
+    pitfalls: screens.map((s) => ({ screen_id: s.screen_id, pitfall: s.designer_notes.weaknesses })),
+    categories: [...new Set(screens.map((s) => s.app.category))],
+    flows: [...new Set(screens.map((s) => s.flow.type))],
+  };
+}
+
+export const extractDesignDirectionTool = {
+  name: "extract_design_direction",
+  description:
+    "Rangkum arah desain dari screen acuan yang cocok dengan brief: pola yang direkomendasikan (berdasar frekuensi), " +
+    "prinsip (dari why_it_works), dan jebakan yang dihindari (dari weaknesses). Setiap poin membawa screen_id sebagai bukti.",
+  input: extractDesignDirectionInput,
+  run: extractDesignDirection,
+};
+
 // ── delivery_gate ─────────────────────────────────────────────────────────────
 
 export const deliveryGateInput = {
