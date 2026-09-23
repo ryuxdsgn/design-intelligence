@@ -1,0 +1,27 @@
+{
+  "name": "ryux-rules",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Pasang aturan desain ryux (RX-C/RX-H/RX-L) ke agent AI: Claude Code, Cursor, atau AGENTS.md.",
+  "type": "module",
+  "bin": {
+    "ryux-rules": "./dist/index.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "license": "UNLICENSED",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc && node dist/index.js",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@clack/prompts": "^0.7.0",
+    "picocolors": "^1.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "typescript": "^5.6.0"
+  }
+}
