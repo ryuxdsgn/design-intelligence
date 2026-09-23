@@ -6,6 +6,7 @@ import {
   charge,
   compareAppsTool,
   deliveryGateTool,
+  extractDesignDirectionTool,
   getFlowTool,
   getLocalPatternTool,
   searchScreensTool,
@@ -125,6 +126,33 @@ export class RyuxMCP extends McpAgent {
 
         return this.reply({
           ...comparison,
+          usage: { credits_used: 1, credits_remaining: charged.remaining, plan: PLAN },
+        });
+      },
+    );
+
+    this.server.tool(
+      extractDesignDirectionTool.name,
+      extractDesignDirectionTool.description,
+      extractDesignDirectionTool.input,
+      async (args) => {
+        const charged = charge(this.used, 1);
+        if (!charged.ok) return this.quotaError(charged.remaining);
+        this.used = charged.used;
+
+        const direction = extractDesignDirectionTool.run(args);
+        if (direction.based_on.length === 0) {
+          return {
+            isError: true,
+            ...this.reply({
+              error: "no_reference_found",
+              hint: "Perluas brief atau lepas filter category/pattern.",
+            }),
+          };
+        }
+
+        return this.reply({
+          ...direction,
           usage: { credits_used: 1, credits_remaining: charged.remaining, plan: PLAN },
         });
       },
