@@ -2,7 +2,9 @@ import { McpAgent } from "agents/mcp";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import {
   PLAN,
+  appNames,
   charge,
+  compareAppsTool,
   deliveryGateTool,
   getFlowTool,
   getLocalPatternTool,
@@ -95,6 +97,34 @@ export class RyuxMCP extends McpAgent {
         return this.reply({
           slug: found.slug,
           ...found.pattern,
+          usage: { credits_used: 1, credits_remaining: charged.remaining, plan: PLAN },
+        });
+      },
+    );
+
+    this.server.tool(
+      compareAppsTool.name,
+      compareAppsTool.description,
+      compareAppsTool.input,
+      async (args) => {
+        const charged = charge(this.used, 1);
+        if (!charged.ok) return this.quotaError(charged.remaining);
+        this.used = charged.used;
+
+        const comparison = compareAppsTool.run(args);
+        if (comparison.apps.length === 0) {
+          return {
+            isError: true,
+            ...this.reply({
+              error: "apps_not_found",
+              requested: comparison.not_found,
+              available: appNames(),
+            }),
+          };
+        }
+
+        return this.reply({
+          ...comparison,
           usage: { credits_used: 1, credits_remaining: charged.remaining, plan: PLAN },
         });
       },
