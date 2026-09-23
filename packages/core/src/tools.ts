@@ -301,7 +301,7 @@ export function deliveryGate({ summary, decisions }: DeliveryGateArgs): Delivery
     summary,
     result: passed ? "PASS" : "FAIL",
     checks,
-    reminder: "Jalankan juga Delivery Gate antislop untuk aturan R-01 sampai R-38.",
+    reminder: "Terapkan juga Aturan Desain ryux lengkap (RX-01..RX-34), lihat docs/design-rules.md.",
   };
 }
 
@@ -349,7 +349,7 @@ type UiRule = {
   evaluate: (spec: AuditUiArgs) => { applicable: boolean; pass: boolean; note: string };
 };
 
-// Subset aturan antislop (R-01..). Aturan yang datanya tak diisi → SKIP.
+// Subset Aturan Desain ryux (lihat docs/design-rules.md). Aturan yang datanya tak diisi → SKIP.
 export const UI_RULES: UiRule[] = [
   {
     rule: "R-01",
@@ -433,7 +433,7 @@ export function auditUi(spec: AuditUiArgs): AuditUiResult {
 export const auditUiTool = {
   name: "audit_ui",
   description:
-    "Audit UI antislop: cek layar terhadap aturan dasar (target sentuh, ukuran teks, kontras, jumlah aksi primer, " +
+    "Audit UI ryux: cek layar terhadap aturan dasar (target sentuh, ukuran teks, kontras, jumlah aksi primer, " +
     "kelengkapan state, umpan balik sentuh) dan kembalikan PASS/FAIL per aturan. Aturan yang datanya tak diisi " +
     "berstatus SKIP. Hasil keseluruhan FAIL bila ada aturan severity error yang gagal. Gratis.",
   input: auditUiInput,
@@ -482,7 +482,7 @@ type CopyRule = {
   check: (text: string) => string | null; // pesan bila melanggar, null bila lolos
 };
 
-// Subset aturan antislop untuk copy (C-01..). check() balik pesan bila melanggar.
+// Subset Aturan Desain ryux untuk copy (lihat docs/design-rules.md). check() balik pesan bila melanggar.
 export const COPY_RULES: CopyRule[] = [
   {
     rule: "C-01",
@@ -541,7 +541,7 @@ export function auditCopy({ summary, items }: AuditCopyArgs): AuditCopyResult {
 export const auditCopyTool = {
   name: "audit_copy",
   description:
-    "Audit copy antislop: cek daftar teks layar (tombol, judul, pesan error, dll.) terhadap aturan dasar " +
+    "Audit copy ryux: cek daftar teks layar (tombol, judul, pesan error, dll.) terhadap aturan dasar " +
     "(teks jeplakan/placeholder, tombol kapital semua, label kepanjangan, pesan error tanpa langkah lanjut, " +
     "judul berakhir titik, spasi berantakan). Balik daftar findings; FAIL bila ada finding severity error. Gratis.",
   input: auditCopyInput,
