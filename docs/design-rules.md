@@ -1,120 +1,276 @@
-# Aturan Desain ryux
+# ryux-rules — Aturan Desain ryux
 
-> **© 2026 ryux (Redho Yurizal).** Aturan orisinal ryux — ditulis mandiri berdasarkan standar
-> publik (WCAG 2.x, Apple Human Interface Guidelines, Material Design) dan data referensi ryux.
-> **Bukan turunan teks berlisensi pihak ketiga.** Bebas dipakai dan dimodifikasi untuk ryux.
+> **© 2026 ryux (Redho Yurizal). Lisensi: source-available.** Ruleset orisinal ryux.design.
+> Ditulis dari nol berdasarkan standar & metode publik: **10 heuristik usability Nielsen
+> (Nielsen, 1994)**, **WCAG 2.2**, **Apple Human Interface Guidelines**, dan **Material Design**.
+> Penyebutan standar bersifat faktual; seluruh penjelasan, contoh, dan penomoran ditulis sendiri.
+> **Bukan turunan teks berlisensi pihak ketiga** dan tidak berafiliasi dengan NN/g atau pihak mana pun.
 >
 > **Terakhir diperbarui:** 2026-09-23 · **Versi:** RX-1.0
 
-Ini adalah gerbang mutu ryux: aturan yang harus dipenuhi sebelum sebuah UI atau copy dianggap
-selesai. Tiga hal yang membuatnya khas ryux:
+Gate mutu ryux untuk UI dan copy. Tiga hal yang membuatnya khas ryux: **berbasis bukti**
+(rujuk screen nyata), **Indonesia lebih dulu**, dan **penilaian manusia** untuk catatan desainer.
 
-1. **Berbasis bukti** — keputusan desain merujuk screen referensi nyata, bukan selera.
-2. **Indonesia lebih dulu** — Rupiah, QRIS, virtual account, OTP WhatsApp, Bahasa Indonesia wajar.
-3. **Penilaian manusia** — catatan "kenapa berhasil / apa kelemahannya" ditulis orang, bukan AI.
+## Tiga lapisan
+
+| Lapisan | Isi | Peran |
+| --- | --- | --- |
+| **RX-C** | Filter anti slop: pola UI generik, copy hambar, konten tak jujur | Menyaring keluaran "berbau AI" |
+| **RX-H** | 10 heuristik usability + aksesibilitas | Dasar penilaian usability |
+| **RX-L** | Pola dan copy khas Indonesia | Relevansi lokal |
 
 ## Cara pakai
 
-- Setiap aturan berkode `RX-NN` dan bertingkat **[Wajib]** atau **[Anjuran]**.
-- **Hard Gate** = kumpulan aturan [Wajib] di grup G1–G4. Melanggar salah satunya → **FAIL**, tanpa perkecualian.
-- **[Anjuran]** boleh dilanggar **jika ada alasan tertulis**; tanpa alasan dianggap pelanggaran.
-- Tanya dulu ke pengguna kapan aturan ini diterapkan: selama pengerjaan, atau saat review akhir.
+- Setiap aturan berformat: **id · judul**, lalu `kategori`, `tingkat`, `dilarang`, `dianjurkan`, `cara cek`, `bukti`.
+- **Tingkat [Wajib]** = Hard Gate, tidak boleh dilanggar. **[Anjuran]** = boleh dilanggar hanya dengan alasan tertulis.
+- Temuan dari `heuristic_eval` memakai **skala severity 0–4** (konvensi umum): `0` bukan masalah · `1` kosmetik · `2` minor · `3` mayor · `4` katastrofik.
+- Setiap temuan mayor (severity ≥ 3) **wajib** membawa minimal satu `screen_id` pembanding sebagai bukti.
 
 ---
 
-## G1 — Fondasi ryux
+## Lapisan RX-C — Filter anti slop
 
-Pembeda utama. Tanpa ini, keluaran ryux tidak ada bedanya dengan generator UI biasa.
+- **RX-C-01 · Bukti wajib**
+  - kategori: fondasi · tingkat: **[Wajib]**
+  - dilarang: keputusan desain tanpa rujukan screen nyata
+  - dianjurkan: setiap keputusan merujuk ≥1 `screen_id` yang dikenal
+  - cara cek: `delivery_gate` (RX-01) · bukti: `scr_...`
 
-- **RX-01 · Bukti wajib. [Wajib]** Setiap keputusan desain merujuk minimal satu `screen_id` referensi yang nyata dan dikenal. Ditegakkan oleh tool `delivery_gate`. *Kenapa: klaim desain harus bisa diverifikasi, bukan opini mengambang.*
-- **RX-02 · Catatan desainer buatan manusia. [Wajib]** Penilaian "kenapa sebuah flow berhasil" dan "apa kelemahannya" tidak boleh digenerate AI. AI boleh merangkum, tidak boleh mengarang penilaian. *Kenapa: ini nilai jual ryux; kalau dikarang AI, kepercayaannya runtuh.*
-- **RX-03 · Konteks Indonesia dulu. [Wajib]** Rujukan dan pola diambil dari aplikasi Indonesia nyata. Pola dari luar hanya dipakai bila terbukti relevan untuk pengguna Indonesia. *Kenapa: kebiasaan pengguna lokal berbeda (pembayaran, verifikasi, alamat).*
+- **RX-C-02 · Tanpa pola UI generik**
+  - kategori: visual · tingkat: **[Wajib]**
+  - dilarang: tata letak template hambar (hero + 3 kartu + footer) tanpa alasan konteks
+  - dianjurkan: komposisi mengikuti konten dan tugas pengguna, bukan cetakan
+  - cara cek: review manual + pembanding screen · bukti: `scr_...`
 
-## G2 — Kejujuran konten
+- **RX-C-03 · Konten jujur: angka**
+  - kategori: konten · tingkat: **[Wajib]**
+  - dilarang: statistik atau jumlah tanpa sumber nyata
+  - dianjurkan: kalau data tak ada, jangan tampilkan angka apa pun
+  - cara cek: review manual · bukti: sumber data
 
-- **RX-04 · Tanpa angka tanpa sumber. [Wajib]** Statistik, metrik, dan jumlah hanya ditampilkan bila datanya nyata. Kalau tidak ada, jangan tampilkan angka apa pun. *Kosong lebih baik daripada menyesatkan.*
-- **RX-05 · Tanpa identitas palsu. [Wajib]** Dilarang testimonial, nama, foto, jabatan, atau ulasan karangan. Pakai bukti sosial yang bisa diverifikasi, atau tiadakan bagiannya.
-- **RX-06 · Placeholder jujur. [Wajib]** Konten sementara tidak boleh menyamar sebagai final. Tandai jelas: `[DATA NYATA]`, `[LOGO]`, atau avatar berbasis inisial.
-- **RX-07 · Aset butuh konfirmasi. [Anjuran]** Logo, foto orang, dan ikon merek tidak dibuat seolah final tanpa persetujuan pengguna. Bila tidak bisa bertanya, pakai placeholder yang jelas.
+- **RX-C-04 · Konten jujur: identitas**
+  - kategori: konten · tingkat: **[Wajib]**
+  - dilarang: testimonial, nama, foto, atau jabatan karangan
+  - dianjurkan: bukti sosial yang bisa diverifikasi, atau tiadakan bagiannya
+  - cara cek: review manual · bukti: sumber
 
-## G3 — Keterbacaan & aksesibilitas
+- **RX-C-05 · Placeholder jujur**
+  - kategori: konten · tingkat: **[Wajib]**
+  - dilarang: konten sementara menyamar jadi final
+  - dianjurkan: tandai jelas `[DATA NYATA]`, `[LOGO]`, atau avatar inisial
+  - cara cek: `audit_copy` (C-01) · bukti: —
 
-- **RX-08 · Kontras cukup. [Wajib]** Teks biasa ≥ **4.5:1**, teks besar (≥18px atau bold ≥14px) ≥ **3:1** terhadap latar (WCAG AA). Uji di seluruh area yang dilewati teks, bukan satu titik. Hindari teks abu muda di latar abu, atau teks putih di gradien terang. *(cek: `audit_ui` / `contrast-check`)*
-- **RX-09 · Ukuran teks layak. [Wajib]** Teks body minimal **12px**; konten utama idealnya 14–16px. Tidak ada teks penting yang lebih kecil dari 12px.
-- **RX-10 · State lengkap. [Wajib]** Setiap layar yang memuat data mendesain **loading, kosong, error, dan sukses** — bukan hanya jalur mulus. *Kenapa: jaringan Indonesia sering lambat/putus; error tanpa desain = pengalaman rusak.*
-- **RX-11 · Fokus terlihat. [Anjuran]** Indikator fokus (keyboard/aksesibilitas) tidak dihapus. Elemen interaktif bisa dijangkau dan urutannya masuk akal.
+- **RX-C-06 · Copy tidak hambar**
+  - kategori: copy · tingkat: **[Anjuran]**
+  - dilarang: klise kosong ("mulus", "revolusioner", "berdayakan") dan CTA generik ("Pelajari selengkapnya")
+  - dianjurkan: copy spesifik pada tindakan dan manfaat nyata
+  - cara cek: `audit_copy` + review · bukti: `scr_...`
 
-## G4 — Sentuhan & interaksi
+- **RX-C-07 · Palet warna terbatas**
+  - kategori: visual · tingkat: **[Anjuran]**
+  - dilarang: warna ditebar tanpa sistem
+  - dianjurkan: 2–3 warna inti + 1 aksen; aksen hanya untuk aksi/penekanan
+  - cara cek: review manual · bukti: `scr_...`
 
-- **RX-12 · Target sentuh ≥ 44px. [Wajib]** Tiap elemen yang bisa disentuh minimal **44×44px** dengan jarak antar target yang cukup agar tidak salah tekan.
-- **RX-13 · Satu aksi primer. [Wajib]** Tepat satu aksi utama (CTA) per layar. Aksi lain dibuat sekunder/tersier secara visual. *Kenapa: dua tombol "sama kuat" membingungkan pilihan.*
-- **RX-14 · Umpan balik sentuh. [Wajib]** Setiap elemen interaktif memberi respons saat ditekan (pressed/ripple/perubahan state). Tidak ada tombol yang "diam".
-- **RX-15 · Tanpa kontrol mati. [Wajib]** Tombol, tautan, dan toggle harus benar-benar melakukan sesuatu: link menuju tujuan yang ada, submit memunculkan validasi/sukses, toggle mengubah state.
-- **RX-16 · Navigasi jujur. [Wajib]** Menu/navbar hanya menautkan halaman atau bagian yang benar-benar ada. Fitur yang belum jadi ditiadakan atau ditandai "segera hadir".
+- **RX-C-08 · Skala spasi & tipografi konsisten**
+  - kategori: visual · tingkat: **[Anjuran]**
+  - dilarang: jarak dan ukuran teks acak
+  - dianjurkan: skala tetap (mis. kelipatan 4/8) dan hierarki tipografi jelas
+  - cara cek: review manual · bukti: `scr_...`
 
-## G5 — Copy Bahasa Indonesia
+- **RX-C-09 · Catatan desainer buatan manusia**
+  - kategori: fondasi · tingkat: **[Wajib]**
+  - dilarang: AI mengarang penilaian "kenapa berhasil / kelemahan"
+  - dianjurkan: AI merangkum; penilaian ditulis manusia
+  - cara cek: review manual · bukti: —
 
-- **RX-17 · Bahasa Indonesia wajar. [Wajib]** Copy ditulis seperti orang Indonesia bicara, bukan terjemahan kaku dari Inggris. Hindari istilah teknis yang tidak perlu.
-- **RX-18 · Tanpa teks jeplakan. [Wajib]** Dilarang `lorem ipsum`, `dummy`, `TODO`, `xxx`, atau teks tempelan lain muncul di layar.
-- **RX-19 · Label tombol ringkas. [Anjuran]** Label tombol pendek (≤ ~25 karakter) dan memakai Sentence case, bukan HURUF KAPITAL SEMUA. Awali dengan kata kerja bila memungkinkan ("Bayar sekarang").
-- **RX-20 · Error memberi jalan keluar. [Wajib]** Pesan error menjelaskan apa yang terjadi **dan** langkah lanjut ("Periksa koneksi lalu coba lagi"), bukan sekadar "Terjadi kesalahan".
-- **RX-21 · Rapi tanpa hiasan berlebih. [Anjuran]** Judul tanpa titik di akhir; spasi bersih (tanpa spasi ganda atau di ujung); tidak berteriak dengan tanda seru beruntun.
-- **RX-22 · Format Rupiah lokal. [Wajib]** Nominal uang memakai prefiks **Rp** dan titik sebagai pemisah ribuan (`Rp1.250.000`), tanpa desimal kecuali memang perlu. Konsisten di seluruh app.
+---
 
-## G6 — Pola lokal Indonesia
+## Lapisan RX-H — Heuristik usability & aksesibilitas
 
-- **RX-23 · QRIS transparan. [Wajib]** Sebelum konfirmasi, nominal dan nama merchant terlihat jelas. Jangan sembunyikan jumlah yang akan dibayar.
-- **RX-24 · Virtual account lengkap. [Wajib]** Sediakan tombol **salin nomor VA**, tampilkan **batas waktu bayar**, dan panduan singkat per bank.
-- **RX-25 · OTP fleksibel. [Anjuran]** Tawarkan kanal (SMS/WhatsApp). Hitung mundur kirim ulang wajar dan tidak menyiksa (idealnya ≤ 30 detik).
-- **RX-26 · Biaya di depan. [Wajib]** Biaya admin, ongkir, dan pajak terlihat **sebelum** pengguna berkomitmen membayar, bukan muncul mendadak di langkah akhir.
-- **RX-27 · Alamat khas Indonesia. [Anjuran]** Formulir alamat mendukung patokan dan detail (blok, RT/RW, warna rumah), bukan hanya pin peta.
+Berdasarkan 10 heuristik usability Nielsen (Nielsen, 1994); penjelasan ditulis untuk konteks
+aplikasi mobile Indonesia. Dipakai `heuristic_eval` dengan severity 0–4.
 
-## G7 — Konsistensi & sistem
+- **RX-H-01 · Visibilitas status sistem**
+  - kategori: heuristik/umpan balik · tingkat: **[Wajib]**
+  - dilarang: proses berjalan tanpa indikator (mis. verifikasi bayar diam)
+  - dianjurkan: status jelas + estimasi waktu untuk proses > 1 detik
+  - cara cek: `heuristic_eval` H-01 · bukti: `scr_...`
 
-- **RX-28 · Palet warna terbatas. [Anjuran]** Maksimal 2–3 warna inti + 1 aksen. Warna aksen hanya untuk aksi dan penekanan, tidak ditebar merata.
-- **RX-29 · Skala spasi konsisten. [Anjuran]** Jarak memakai skala tetap (mis. kelipatan 4 atau 8). Tidak ada nilai spasi acak.
-- **RX-30 · Skala tipografi berjenjang. [Anjuran]** Ukuran teks memakai skala terbatas dengan hierarki jelas (judul → subjudul → body → caption).
-- **RX-31 · Komponen konsisten. [Wajib]** Komponen sejenis (tombol, kartu, sheet) tampil dan berperilaku sama di seluruh flow.
+- **RX-H-02 · Kecocokan dengan dunia nyata**
+  - kategori: heuristik/bahasa · tingkat: **[Anjuran]**
+  - dilarang: istilah teknis/sistem yang asing bagi pengguna
+  - dianjurkan: bahasa dan urutan sesuai kebiasaan pengguna Indonesia
+  - cara cek: `heuristic_eval` H-02 · bukti: `scr_...`
 
-## G8 — Mobile-first & layout
+- **RX-H-03 · Kendali & kebebasan pengguna**
+  - kategori: heuristik/navigasi · tingkat: **[Wajib]**
+  - dilarang: jebakan tanpa jalan keluar (tidak bisa batal/kembali)
+  - dianjurkan: sediakan batal, undo, dan pintu keluar yang jelas
+  - cara cek: `heuristic_eval` H-03 · bukti: `scr_...`
 
-- **RX-32 · Tanpa overflow. [Wajib]** Tidak ada scroll horizontal tak sengaja; teks tidak keluar kontainer; kartu tidak berbenturan atau terpotong.
-- **RX-33 · Hormati area aman. [Wajib]** Layout menghormati safe area (notch, home indicator) dan menempatkan aksi utama dalam jangkauan jempol.
-- **RX-34 · Reflow mulus. [Anjuran]** Tata letak mengalir rapi dari layar kecil ke besar. Mobile adalah desain utama, bukan renungan belakangan.
+- **RX-H-04 · Konsistensi & standar**
+  - kategori: heuristik/visual · tingkat: **[Wajib]**
+  - dilarang: komponen sejenis tampil/berperilaku beda antar layar
+  - dianjurkan: ikuti konvensi platform (HIG/Material) dan pola internal
+  - cara cek: `heuristic_eval` H-04 · bukti: `scr_...`
+
+- **RX-H-05 · Pencegahan kesalahan**
+  - kategori: heuristik/interaksi · tingkat: **[Wajib]**
+  - dilarang: aksi merusak tanpa konfirmasi; input rawan salah tanpa penjagaan
+  - dianjurkan: konfirmasi untuk aksi tak-terbalikkan; validasi sebelum kirim
+  - cara cek: `heuristic_eval` H-05 · bukti: `scr_...`
+
+- **RX-H-06 · Kenali, bukan mengingat**
+  - kategori: heuristik/kognitif · tingkat: **[Anjuran]**
+  - dilarang: memaksa pengguna mengingat info dari layar sebelumnya
+  - dianjurkan: tampilkan pilihan dan konteks; kurangi beban ingatan
+  - cara cek: `heuristic_eval` H-06 · bukti: `scr_...`
+
+- **RX-H-07 · Fleksibel & efisien**
+  - kategori: heuristik/efisiensi · tingkat: **[Anjuran]**
+  - dilarang: hanya satu jalur kaku untuk semua pengguna
+  - dianjurkan: jalan pintas bagi pengguna mahir (mis. simpan metode bayar)
+  - cara cek: `heuristic_eval` H-07 · bukti: `scr_...`
+
+- **RX-H-08 · Estetika & minimalis**
+  - kategori: heuristik/visual · tingkat: **[Anjuran]**
+  - dilarang: elemen/dekorasi yang bersaing dengan info penting
+  - dianjurkan: tiap elemen punya alasan; utamakan info yang relevan
+  - cara cek: `heuristic_eval` H-08 · bukti: `scr_...`
+
+- **RX-H-09 · Pemulihan dari kesalahan**
+  - kategori: heuristik/error · tingkat: **[Wajib]**
+  - dilarang: pesan error samar tanpa langkah lanjut ("Terjadi kesalahan")
+  - dianjurkan: bahasa jelas, sebut sebab, beri jalan keluar konkret
+  - cara cek: `heuristic_eval` H-09 + `audit_copy` (C-04) · bukti: `scr_...`
+
+- **RX-H-10 · Bantuan & dokumentasi**
+  - kategori: heuristik/bantuan · tingkat: **[Anjuran]**
+  - dilarang: fitur rumit tanpa panduan saat dibutuhkan
+  - dianjurkan: bantuan kontekstual singkat di titik pemakaian
+  - cara cek: `heuristic_eval` H-10 · bukti: `scr_...`
+
+- **RX-H-11 · Kontras aksesibel (WCAG AA)**
+  - kategori: aksesibilitas · tingkat: **[Wajib]**
+  - dilarang: teks < 4.5:1 (biasa) atau < 3:1 (besar ≥18px/bold ≥14px) terhadap latar
+  - dianjurkan: uji di seluruh area teks; hindari teks tipis di latar/gradien terang
+  - cara cek: `audit_ui` (R-03) / rasio kontras · bukti: `scr_...`
+
+- **RX-H-12 · Ukuran teks & target sentuh**
+  - kategori: aksesibilitas · tingkat: **[Wajib]**
+  - dilarang: teks body < 12px; target sentuh < 44×44px
+  - dianjurkan: body 14–16px; jarak antar target cukup
+  - cara cek: `audit_ui` (R-01, R-02) · bukti: `scr_...`
+
+- **RX-H-13 · Fokus & keyboard**
+  - kategori: aksesibilitas · tingkat: **[Anjuran]**
+  - dilarang: indikator fokus dihapus; urutan fokus kacau
+  - dianjurkan: fokus terlihat, elemen bisa dijangkau, urutan logis
+  - cara cek: review manual · bukti: `scr_...`
+
+- **RX-H-14 · State lengkap & mobile sehat**
+  - kategori: aksesibilitas/mobile · tingkat: **[Wajib]**
+  - dilarang: hanya jalur mulus (tanpa loading/kosong/error); overflow horizontal; abaikan safe area
+  - dianjurkan: desain loading/kosong/error/sukses; hormati notch & jangkauan jempol
+  - cara cek: `audit_ui` (R-05) + review · bukti: `scr_...`
+
+---
+
+## Lapisan RX-L — Pola & copy Indonesia
+
+- **RX-L-01 · QRIS transparan**
+  - kategori: pembayaran · tingkat: **[Wajib]**
+  - dilarang: menyembunyikan nominal atau nama merchant sebelum konfirmasi
+  - dianjurkan: tampilkan nominal + merchant jelas, tombol konfirmasi tegas
+  - cara cek: review + screen QRIS nyata · bukti: `scr_...`
+
+- **RX-L-02 · Virtual account lengkap**
+  - kategori: pembayaran · tingkat: **[Wajib]**
+  - dilarang: nomor VA tanpa tombol salin atau tanpa batas waktu
+  - dianjurkan: tombol salin, batas waktu bayar, panduan per bank
+  - cara cek: review + screen VA · bukti: `scr_...`
+
+- **RX-L-03 · OTP fleksibel**
+  - kategori: autentikasi · tingkat: **[Anjuran]**
+  - dilarang: hanya satu kanal + hitung mundur menyiksa
+  - dianjurkan: pilihan SMS/WhatsApp; kirim ulang wajar (idealnya ≤ 30 dtk)
+  - cara cek: review + screen OTP · bukti: `scr_...`
+
+- **RX-L-04 · Biaya di depan**
+  - kategori: pembayaran · tingkat: **[Wajib]**
+  - dilarang: biaya admin/ongkir/pajak muncul mendadak di langkah akhir
+  - dianjurkan: semua biaya terlihat sebelum pengguna berkomitmen
+  - cara cek: review · bukti: `scr_...`
+
+- **RX-L-05 · Alamat khas Indonesia**
+  - kategori: form · tingkat: **[Anjuran]**
+  - dilarang: hanya pin peta tanpa detail
+  - dianjurkan: dukung patokan, blok/RT-RW, warna rumah, catatan kurir
+  - cara cek: review + screen alamat · bukti: `scr_...`
+
+- **RX-L-06 · Format Rupiah**
+  - kategori: copy · tingkat: **[Wajib]**
+  - dilarang: format uang tidak konsisten atau tanpa prefiks
+  - dianjurkan: `Rp` + titik ribuan (`Rp1.250.000`), tanpa desimal kecuali perlu
+  - cara cek: `audit_copy` + review · bukti: `scr_...`
+
+- **RX-L-07 · Bahasa Indonesia wajar**
+  - kategori: copy · tingkat: **[Wajib]**
+  - dilarang: terjemahan kaku dari Inggris; istilah teknis tak perlu
+  - dianjurkan: bahasa seperti orang Indonesia bicara
+  - cara cek: `audit_copy` + review · bukti: `scr_...`
+
+- **RX-L-08 · Konteks Indonesia dulu**
+  - kategori: fondasi · tingkat: **[Wajib]**
+  - dilarang: menyalin pola luar tanpa cek relevansi lokal
+  - dianjurkan: rujukan dari aplikasi Indonesia nyata
+  - cara cek: `search_screens` + review · bukti: `scr_...`
+
+- **RX-L-09 · Paylater & cicilan transparan**
+  - kategori: pembayaran · tingkat: **[Anjuran]**
+  - dilarang: menampilkan cicilan tanpa limit, tenor, atau simulasi
+  - dianjurkan: tampilkan limit, pilihan tenor, dan total biaya jelas
+  - cara cek: review + screen paylater · bukti: `scr_...`
+
+- **RX-L-10 · e-KYC / foto KTP**
+  - kategori: verifikasi · tingkat: **[Anjuran]**
+  - dilarang: minta foto KTP/selfie tanpa panduan atau alasan
+  - dianjurkan: panduan bingkai, penjelasan kenapa data diminta
+  - cara cek: review + screen e-KYC · bukti: `scr_...`
 
 ---
 
 ## Delivery Gate ryux
 
-Sebelum menganggap pekerjaan UI/copy selesai, lewati gerbang ini:
+Sebelum pekerjaan UI/copy dianggap selesai:
 
-1. **Bukti (RX-01)** dan **kejujuran (G2)** — Hard Gate, mutlak.
-2. **Aksesibilitas (G3)** dan **interaksi inti (G4)** — Hard Gate, mutlak.
-3. **Copy (G5)**, **pola lokal (G6)**, **konsistensi (G7)**, **layout (G8)** — periksa; [Anjuran] yang dilanggar wajib punya alasan tertulis.
+1. **RX-C fondasi** (RX-C-01 bukti, RX-C-03/04/05 kejujuran, RX-C-09) — Hard Gate.
+2. **RX-H [Wajib]** (H-01, H-03, H-04, H-05, H-09, H-11, H-12, H-14) — Hard Gate.
+3. **RX-L [Wajib]** (L-01, L-02, L-04, L-06, L-07, L-08) — Hard Gate.
+4. Sisanya **[Anjuran]**: dilanggar hanya dengan alasan tertulis.
 
-Hasil **FAIL** bila ada aturan [Wajib] yang gagal. Aturan [Anjuran] tanpa alasan dihitung gagal juga.
+Hasil **FAIL** bila ada aturan [Wajib] gagal, atau ada temuan `heuristic_eval` severity ≥ 3 tanpa perbaikan.
 
 ## Pemetaan ke kode
 
-Tool audit di `packages/core` saat ini memakai penomoran warisan (`R-0x`, `C-0x`). Berikut padanannya
-ke aturan ryux; rencana ke depan: migrasikan kode ke namespace `RX-` agar satu sumber.
+Tool di `packages/core` (penomoran warisan `R-0x`/`C-0x`) dan tool baru `heuristic_eval`:
 
-| Kode ryux | Cek di kode | Isi |
-| --- | --- | --- |
-| RX-01 | `delivery_gate` (RX-01) | Bukti `screen_id` |
-| RX-08 | `audit_ui` R-03 | Kontras ≥ 4.5:1 |
-| RX-09 | `audit_ui` R-02 | Teks body ≥ 12px |
-| RX-10 | `audit_ui` R-05 | State lengkap |
-| RX-12 | `audit_ui` R-01 | Target sentuh ≥ 44px |
-| RX-13 | `audit_ui` R-04 | Satu aksi primer |
-| RX-14 | `audit_ui` R-06 | Umpan balik sentuh |
-| RX-18 | `audit_copy` C-01 | Tanpa teks jeplakan |
-| RX-19 | `audit_copy` C-02, C-03 | Tombol tidak kapital, tidak kepanjangan |
-| RX-20 | `audit_copy` C-04 | Error beri langkah lanjut |
-| RX-21 | `audit_copy` C-05, C-06 | Judul tanpa titik, spasi rapi |
+| Aturan ryux | Cek di kode |
+| --- | --- |
+| RX-C-01 | `delivery_gate` (RX-01) |
+| RX-C-05 | `audit_copy` C-01 |
+| RX-C-06 | `audit_copy` C-02, C-03 |
+| RX-H-09 | `audit_copy` C-04 + `heuristic_eval` H-09 |
+| RX-H-11 | `audit_ui` R-03 |
+| RX-H-12 | `audit_ui` R-01, R-02 |
+| RX-H-14 | `audit_ui` R-05 |
+| RX-H-01..10 | `heuristic_eval` H-01..H-10 (belum dibangun) |
+| RX-L-06 | `audit_copy` (format Rupiah) |
 
 ## Lisensi & kepemilikan
 
-Dokumen ini dan penomoran `RX-NN` adalah karya orisinal ryux, ditulis mandiri dari standar publik
-dan data ryux sendiri. Hak cipta © 2026 ryux. Tidak memuat teks dari, dan tidak menggantikan
-kewajiban lisensi atas, perangkat lunak pihak ketiga mana pun.
+Ruleset ini (teks, struktur RX-C/RX-H/RX-L, penomoran) adalah karya orisinal ryux, **lisensi
+source-available**, hak cipta © 2026 ryux. Menyebut standar publik (Nielsen 1994, WCAG 2.2, HIG,
+Material) secara faktual; tidak memuat teks, gambar, checklist berbayar, atau materi kursus pihak
+mana pun, dan tidak berafiliasi dengan mereka.
