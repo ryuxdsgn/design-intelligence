@@ -439,3 +439,111 @@ export const auditUiTool = {
   input: auditUiInput,
   run: auditUi,
 };
+
+// ── audit_copy ────────────────────────────────────────────────────────────────
+
+export const auditCopyInput = {
+  summary: z.string().describe("Ringkasan layar yang teksnya diaudit"),
+  items: z
+    .array(
+      z.object({
+        role: z
+          .enum(["button", "title", "body", "label", "error", "placeholder"])
+          .describe("Peran teks di layar"),
+        text: z.string().describe("Isi teks"),
+      }),
+    )
+    .min(1)
+    .describe("Daftar teks pada layar"),
+};
+
+export type AuditCopyArgs = z.infer<z.ZodObject<typeof auditCopyInput>>;
+
+export type CopyFinding = {
+  rule: string;
+  severity: "error" | "warning";
+  role: string;
+  text: string;
+  message: string;
+};
+
+export type AuditCopyResult = {
+  summary: string;
+  result: "PASS" | "FAIL";
+  item_count: number;
+  score: { errors: number; warnings: number };
+  findings: CopyFinding[];
+};
+
+type CopyRule = {
+  rule: string;
+  severity: "error" | "warning";
+  appliesTo?: string[]; // undefined = berlaku untuk semua role
+  check: (text: string) => string | null; // pesan bila melanggar, null bila lolos
+};
+
+// Subset aturan antislop untuk copy (C-01..). check() balik pesan bila melanggar.
+export const COPY_RULES: CopyRule[] = [
+  {
+    rule: "C-01",
+    severity: "error",
+    check: (t) =>
+      /lorem ipsum|placeholder|dummy|todo|xxx/i.test(t) ? "mengandung teks jeplakan/placeholder" : null,
+  },
+  {
+    rule: "C-02",
+    severity: "warning",
+    appliesTo: ["button"],
+    check: (t) => (/[A-Za-z]/.test(t) && t === t.toUpperCase() ? "hindari huruf kapital semua pada tombol" : null),
+  },
+  {
+    rule: "C-03",
+    severity: "warning",
+    appliesTo: ["button"],
+    check: (t) => (t.length > 25 ? `label tombol terlalu panjang (${t.length} > 25)` : null),
+  },
+  {
+    rule: "C-04",
+    severity: "warning",
+    appliesTo: ["error"],
+    check: (t) => (/coba|periksa|ulangi|hubungi|cek/i.test(t) ? null : "pesan error sebaiknya beri langkah lanjut"),
+  },
+  {
+    rule: "C-05",
+    severity: "warning",
+    appliesTo: ["title"],
+    check: (t) => (t.trimEnd().endsWith(".") ? "judul tidak perlu diakhiri titik" : null),
+  },
+  {
+    rule: "C-06",
+    severity: "warning",
+    check: (t) => (/\s{2,}/.test(t) || t !== t.trim() ? "rapikan spasi (ganda atau di ujung)" : null),
+  },
+];
+
+export function auditCopy({ summary, items }: AuditCopyArgs): AuditCopyResult {
+  const findings: CopyFinding[] = [];
+  for (const item of items) {
+    for (const r of COPY_RULES) {
+      if (r.appliesTo && !r.appliesTo.includes(item.role)) continue;
+      const message = r.check(item.text);
+      if (message) {
+        findings.push({ rule: r.rule, severity: r.severity, role: item.role, text: item.text, message });
+      }
+    }
+  }
+  const errors = findings.filter((f) => f.severity === "error").length;
+  const warnings = findings.filter((f) => f.severity === "warning").length;
+  const result: AuditCopyResult["result"] = errors > 0 ? "FAIL" : "PASS";
+  return { summary, result, item_count: items.length, score: { errors, warnings }, findings };
+}
+
+export const auditCopyTool = {
+  name: "audit_copy",
+  description:
+    "Audit copy antislop: cek daftar teks layar (tombol, judul, pesan error, dll.) terhadap aturan dasar " +
+    "(teks jeplakan/placeholder, tombol kapital semua, label kepanjangan, pesan error tanpa langkah lanjut, " +
+    "judul berakhir titik, spasi berantakan). Balik daftar findings; FAIL bila ada finding severity error. Gratis.",
+  input: auditCopyInput,
+  run: auditCopy,
+};

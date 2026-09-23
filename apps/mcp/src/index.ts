@@ -3,6 +3,7 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import {
   PLAN,
   appNames,
+  auditCopyTool,
   auditUiTool,
   charge,
   compareAppsTool,
@@ -178,6 +179,18 @@ export class RyuxMCP extends McpAgent {
       async (args) => {
         return this.reply({
           ...auditUiTool.run(args),
+          usage: { credits_used: 0, plan: PLAN },
+        });
+      },
+    );
+
+    this.server.tool(
+      auditCopyTool.name,
+      auditCopyTool.description,
+      auditCopyTool.input,
+      async (args) => {
+        return this.reply({
+          ...auditCopyTool.run(args),
           usage: { credits_used: 0, plan: PLAN },
         });
       },
