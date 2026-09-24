@@ -1,17 +1,17 @@
 ---
 name: ryux-local
-description: ryux-rules — Pola Indonesia. QRIS, VA, OTP, biaya, alamat, paylater, e-KYC. Muat saat mengerjakan pola indonesia.
+description: ryux-rules: Indonesian patterns. QRIS, VA, OTP, fees, address, paylater, e-KYC. Load when working on indonesian patterns.
 ---
 
-# ryux-local — Pola Indonesia
+# ryux-local: Indonesian patterns
 
-> Aturan desain ryux.design — versi 0.2.0, lisensi MIT.
-> Terapkan pada pekerjaan pola indonesia sebelum menganggapnya selesai.
+> ryux.design design rules, version 0.2.0, MIT licensed.
+> Apply to indonesian patterns work before considering it done.
 
-- **RX-L-01** QRIS: nominal dan nama merchant jelas sebelum konfirmasi.
-- **RX-L-02** Virtual account: tombol salin nomor, batas waktu bayar, panduan per bank.
-- **RX-L-03** OTP: tawarkan kanal (SMS atau WhatsApp); hitung mundur kirim ulang wajar.
-- **RX-L-04** Biaya (admin, ongkir, pajak) terlihat sebelum pengguna berkomitmen.
-- **RX-L-05** Alamat: dukung patokan dan detail rumah, bukan hanya pin peta.
-- **RX-L-09** Paylater atau cicilan: tampilkan limit, tenor, dan total biaya jelas.
-- **RX-L-10** e-KYC: panduan bingkai dan alasan pengambilan data sebelum kamera dibuka.
+- **RX-L-01** QRIS: the amount and merchant name are clear before confirmation.
+- **RX-L-02** Virtual account: copy-number button, payment deadline, per-bank guidance.
+- **RX-L-03** OTP: offer a channel (SMS or WhatsApp); a reasonable resend countdown.
+- **RX-L-04** Fees (admin, shipping, tax) are visible before the user commits.
+- **RX-L-05** Address: support a landmark and house details, not just a map pin.
+- **RX-L-09** Paylater or installments: show the limit, tenor, and total cost clearly.
+- **RX-L-10** e-KYC: framing guidance and the reason for collecting data before the camera opens.

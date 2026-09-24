@@ -1,17 +1,17 @@
 ---
 name: ryux-ui
-description: ryux-rules — UI & visual. pola generik, palet, spasi, konsistensi, state. Muat saat mengerjakan ui & visual.
+description: ryux-rules: UI and visual. generic patterns, palette, spacing, consistency, states. Load when working on ui and visual.
 ---
 
-# ryux-ui — UI & visual
+# ryux-ui: UI and visual
 
-> Aturan desain ryux.design — versi 0.2.0, lisensi MIT.
-> Terapkan pada pekerjaan ui & visual sebelum menganggapnya selesai.
+> ryux.design design rules, version 0.2.0, MIT licensed.
+> Apply to ui and visual work before considering it done.
 
-- **RX-C-02** Hindari tata letak template generik tanpa alasan konteks.
-- **RX-C-07** Palet warna terbatas: 2 sampai 3 warna inti + 1 aksen.
-- **RX-C-08** Skala spasi dan tipografi konsisten (mis. kelipatan 4 atau 8).
-- **RX-H-04** Konsistensi & standar: ikuti konvensi platform dan pola internal.
-- **RX-H-08** Estetika & minimalis: setiap elemen punya alasan, utamakan info relevan.
-- **RX-H-14** State lengkap (loading/kosong/error/sukses); tanpa overflow; hormati safe area.
-- **RX-N-12** Wayfinding: judul jelas 'di mana saya', tombol kembali/batal selalu ada.
+- **RX-C-02** Avoid generic template layouts without a contextual reason.
+- **RX-C-07** Limited color palette: 2 to 3 core colors plus 1 accent.
+- **RX-C-08** Consistent spacing and type scale (e.g. multiples of 4 or 8).
+- **RX-H-04** Consistency and standards: follow platform conventions and internal patterns.
+- **RX-H-08** Aesthetic and minimalist: every element has a reason, lead with the relevant info.
+- **RX-H-14** Complete states (loading/empty/error/success); no overflow; respect safe areas.
+- **RX-N-12** Wayfinding: a clear 'where am I' title, a back/cancel button always available.

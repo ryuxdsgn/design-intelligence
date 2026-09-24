@@ -1,55 +1,56 @@
-# ryux-mcp (starter lokal)
+# ryux-mcp (local starter)
 
-MCP server ryux versi paling awal, berjalan di Cloudflare Workers. Datanya masih contoh,
-belum ada login, dan kuotanya disimpan di memori. Tujuannya melihat bentuk MCP-nya dulu.
+The earliest version of the ryux MCP server, running on Cloudflare Workers. The data is still
+sample data, there's no login yet, and quotas are kept in memory. The goal is just to see the
+shape of the MCP first.
 
-## Isi
+## Contents
 
-| File | Fungsi |
+| File | Purpose |
 | --- | --- |
-| `src/index.ts` | Wiring server MCP + Durable Object; mendaftarkan sembilan tool dari `@ryux/core` dan mengelola kuota per-sesi |
-| `wrangler.jsonc` | Konfigurasi Worker dan Durable Object |
+| `src/index.ts` | Wiring for the MCP server + Durable Object; registers the nine tools from `@ryux/core` and manages per-session quota |
+| `wrangler.jsonc` | Worker and Durable Object configuration |
 
-Data dan logika tool (`search_screens`, `get_flow`, `compare_apps`, `extract_design_direction`,
-`get_local_pattern`, `delivery_gate`, `audit_ui`, `audit_copy`, `heuristic_eval`) ada di paket `@ryux/core`
-(`packages/core/src`), supaya bisa dipakai ulang oleh app lain nanti.
+The tool data and logic (`search_screens`, `get_flow`, `compare_apps`, `extract_design_direction`,
+`get_local_pattern`, `delivery_gate`, `audit_ui`, `audit_copy`, `heuristic_eval`) live in the `@ryux/core` package
+(`packages/core/src`), so other apps can reuse them later.
 
-## Menjalankan
+## Running
 
 ```bash
 npm install
-npm run dev          # server di http://localhost:8787/mcp
+npm run dev          # server at http://localhost:8787/mcp
 ```
 
-## Mencoba
+## Trying it out
 
-**Lewat MCP Inspector** (tampilan visual untuk memanggil tool):
+**Via MCP Inspector** (a visual interface for calling tools):
 
 ```bash
 npm run inspect
 ```
 
-Pilih transport *Streamable HTTP*, isi URL `http://localhost:8787/mcp`, klik Connect,
-lalu buka tab Tools.
+Pick the *Streamable HTTP* transport, enter the URL `http://localhost:8787/mcp`, click Connect,
+then open the Tools tab.
 
-**Lewat Claude Code:**
+**Via Claude Code:**
 
 ```bash
 claude mcp add --transport http ryux-local http://localhost:8787/mcp
 claude
 ```
 
-Contoh prompt:
+Example prompts:
 
-- "Pakai ryux-local, cari referensi pemilih metode bayar dengan QRIS"
-- "Tampilkan flow flw_demo_checkout dari ryux-local"
-- "Bandingkan Warung Contoh dan Toko Contoh lewat ryux-local"
-- "Rangkum arah desain checkout QRIS dari ryux-local"
-- "Jelaskan pola virtual-account dari ryux-local"
-- "Jalankan delivery_gate untuk keputusan desain checkout ini"
-- "Audit UI checkout ini pakai audit_ui (target sentuh 40px, satu tombol bayar)"
-- "Audit copy tombol 'BAYAR SEKARANG' dan judul checkout pakai audit_copy"
-- "Jalankan heuristic_eval untuk checkout ini, sertakan screen pembanding sebagai bukti tiap temuan mayor"
+- "Use ryux-local, find a reference for a payment method picker with QRIS"
+- "Show the flow flw_demo_checkout from ryux-local"
+- "Compare Warung Contoh and Toko Contoh via ryux-local"
+- "Summarize the QRIS checkout design direction from ryux-local"
+- "Explain the virtual-account pattern from ryux-local"
+- "Run delivery_gate for this checkout design decision"
+- "Audit this checkout UI with audit_ui (40px touch target, a single pay button)"
+- "Audit the copy of the 'BAYAR SEKARANG' button and the checkout title with audit_copy"
+- "Run heuristic_eval for this checkout, and include a comparison screen as evidence for each major finding"
 
 ## Deploy
 
@@ -58,12 +59,12 @@ npx wrangler login
 npm run deploy
 ```
 
-## Langkah berikutnya (sesuai PRD)
+## Next steps (per the PRD)
 
-Sembilan tool inti sudah ada di `@ryux/core`. Berikutnya menuju versi produksi:
+The nine core tools are already in `@ryux/core`. Next, on the way to a production version:
 
-1. Ganti `packages/core/src/data.ts` dengan query Supabase (`published` saja)
-2. Tambahkan OAuth dengan `@cloudflare/workers-oauth-provider` dan pemetaan ke `user_id`
-3. Pindahkan kuota (kini di memori Durable Object) ke `usage_events` dan `credit_ledger`
-4. Pencarian gabungan full-text + pgvector
-5. Lengkapi aturan audit (`UI_RULES`/`COPY_RULES`) menuju R-01..R-38
+1. Replace `packages/core/src/data.ts` with Supabase queries (`published` only)
+2. Add OAuth with `@cloudflare/workers-oauth-provider` and mapping to `user_id`
+3. Move the quota (currently in Durable Object memory) into `usage_events` and `credit_ledger`
+4. Combined full-text + pgvector search
+5. Complete the audit rules (`UI_RULES`/`COPY_RULES`) up to R-01..R-38

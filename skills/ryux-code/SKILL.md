@@ -1,16 +1,16 @@
 ---
 name: ryux-code
-description: ryux-rules — Kode bersih. komentar jujur, penamaan bermakna, tanpa kode mati, gaya konsisten. Muat saat mengerjakan kode bersih.
+description: ryux-rules: Clean code. honest comments, meaningful names, no dead code, consistent style. Load when working on clean code.
 ---
 
-# ryux-code — Kode bersih
+# ryux-code: Clean code
 
-> Aturan desain ryux.design — versi 0.2.0, lisensi MIT.
-> Terapkan pada pekerjaan kode bersih sebelum menganggapnya selesai.
+> ryux.design design rules, version 0.2.0, MIT licensed.
+> Apply to clean code work before considering it done.
 
-- **RX-K-01** Komentar menjelaskan alasan (kenapa), bukan mengulang apa yang sudah jelas dari kode.
-- **RX-K-02** Nama variabel dan fungsi spesifik serta bermakna; hindari data, temp, helper, manager tanpa konteks.
-- **RX-K-03** Hapus kode mati, impor tak terpakai, dan blok ter-comment; jangan tinggalkan TODO kosong.
-- **RX-K-04** Ikuti gaya berkas di sekitarnya (format, penamaan, pola); jangan memaksakan gaya baru.
-- **RX-K-05** Hindari abstraksi dan konfigurasi berlebih untuk kebutuhan yang belum ada.
-- **RX-K-06** Tangani error dengan pesan yang bisa ditindak; jangan menelan error diam-diam.
+- **RX-K-01** Comments explain the reason (why), not restate what the code already makes obvious.
+- **RX-K-02** Variable and function names are specific and meaningful; avoid data, temp, helper, manager without context.
+- **RX-K-03** Remove dead code, unused imports, and commented-out blocks; don't leave empty TODOs.
+- **RX-K-04** Follow the style of the surrounding file (format, naming, patterns); don't impose a new one.
+- **RX-K-05** Avoid over-engineering: no abstractions or config for needs that don't exist yet.
+- **RX-K-06** Handle errors with actionable messages; don't swallow errors silently.
