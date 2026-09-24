@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="LICENSE"><img src="https://img.shields.io/badge/license-source--available-2ea44f" alt="Source-Available"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-2ea44f" alt="MIT License"></a>
   <img src="https://img.shields.io/badge/status-early__access%20v0.1-1f6feb" alt="Status: early access v0.1">
   <img src="https://img.shields.io/badge/MCP%20tools-9-8957e5" alt="9 MCP tools">
   <img src="https://img.shields.io/badge/rules-RX--C%20%2F%20RX--H%20%2F%20RX--N%20%2F%20RX--L-e36209" alt="ryux-rules">
@@ -19,7 +19,7 @@
 - **Evidence-based.** Every result carries a `screen_id`, app name, version, and capture date. A design decision has to point at a real screen, and `delivery_gate` enforces that.
 - **Indonesia-first.** QRIS, virtual accounts, WhatsApp OTP, paylater, e-KYC, Rupiah formatting. These are the patterns global libraries skip.
 - **Human judgment.** Designer notes (why a flow works, where it falls short) are written by people, not generated. That's the part that matters most.
-- **Its own ruleset.** `ryux-rules` (RX-C / RX-H / RX-N / RX-L) is original work, source-available, with no third-party dependencies.
+- **Its own ruleset.** `ryux-rules` (RX-C / RX-H / RX-N / RX-L) is original work, MIT-licensed, with no third-party dependencies.
 
 ## What's inside
 
@@ -158,6 +158,6 @@ secrets live in the repo.
 
 ## License
 
-**Source-available**, © 2026 ryux.design (see [`LICENSE`](./LICENSE)). Use it and change it for your
-own work. You can't resell it or re-release it as a competing product. It isn't a derivative of any
-third-party project, and it isn't affiliated with one.
+**MIT**, © 2026 ryux.design (see [`LICENSE`](./LICENSE)). Use it, change it, ship it. The code and the
+ryux-rules ruleset are covered by this license. The reference data (screens, flows, designer notes)
+and the hosted service are separate and not part of this repo.

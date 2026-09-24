@@ -1,4 +1,4 @@
-// Konten ryux-rules yang dibundel bersama CLI. Karya orisinal ryux.design (source-available):
+// Konten ryux-rules yang dibundel bersama CLI. Karya orisinal ryux.design (lisensi MIT):
 // ditulis dari nol berdasarkan standar & riset publik (10 heuristik Nielsen 1994, riset UX
 // Nielsen Norman Group, WCAG 2.2, Apple HIG, Material). Sumber lengkap: docs/design-rules.md.
 

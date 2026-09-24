@@ -87,7 +87,7 @@ export default function Home() {
             Evidence-based UI references for AI agents.
           </h1>
           <p className="mt-6 max-w-2xl text-lg leading-relaxed text-sub">
-            ryux serves curated screens and flows from real Indonesian apps over MCP, with a source-available
+            ryux serves curated screens and flows from real Indonesian apps over MCP, with an open-source
             anti-slop ruleset. Your agent designs from real examples, and it has to cite them.
           </p>
           <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-4">
@@ -165,7 +165,7 @@ export default function Home() {
               </div>
             </div>
             <p className="mt-4 text-sm text-sub">
-              It's source-available, so you can read the ruleset and run it yourself.{" "}
+              It's MIT licensed, so you can read the ruleset and run it yourself.{" "}
               <a href={REPO} className="font-semibold text-accent hover:underline">
                 Browse the repo
               </a>
@@ -190,7 +190,7 @@ export default function Home() {
 
       <footer className="border-t border-hair">
         <div className="mx-auto flex max-w-6xl flex-col gap-2 px-6 py-8 text-sm text-sub sm:flex-row sm:items-center sm:justify-between">
-          <p>© 2026 ryux.design · source-available</p>
+          <p>© 2026 ryux.design · MIT</p>
           <nav className="flex gap-5">
             <a href={REPO} className="hover:text-ink">
               GitHub
