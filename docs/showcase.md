@@ -8,10 +8,10 @@ ryux-rules + MCP ryux.
 ## Persiapan (sekali)
 
 1. Jalankan MCP lokal: `pnpm dev:mcp` (data referensi di `http://localhost:8787/mcp`).
-2. Pasang aturan di agent yang dipakai: `npx ryux-rules` (pilih Claude Code/Cursor + RX-C/RX-H/RX-L).
+2. Pasang aturan di agent yang dipakai: `npx ryux-rules` (pilih Claude Code/Cursor + concern: ui, copy, a11y, ux, local).
 3. Sambungkan agent ke MCP: `claude mcp add --transport http ryux-local http://localhost:8787/mcp`.
-4. Siapkan folder aset: `assets/compare/{ui,copy,review}/`.
-5. Tangkap gambar pada lebar **mobile 390px**, ekspor **WebP** (atau PNG), beri nama `before` / `after`.
+4. Siapkan folder aset: `assets/compare/{ui,copy,a11y,ux,local,hero}/`.
+5. Tangkap layar mobile pada lebar **390px**; untuk hero landing pakai lebar **desktop 1120px**. Ekspor **WebP** (atau PNG) 2x, beri nama `before` / `after`.
 
 > Tips adil: "before" dibuat di sesi/agent **tanpa** ryux-rules dan **tanpa** MCP; "after" di sesi
 > **dengan** keduanya. Brief-nya sama persis. Jangan mengedit tangan hasilnya — biar perbandingan jujur.

@@ -1,6 +1,6 @@
 ---
 name: ryux-critique
-description: Playbook review usability ryux — kumpulkan konteks, telusur layar per layar terhadap ryux-rules (RX-C/RX-H/RX-L), beri severity 0-4 dengan bukti screen nyata, lalu strukturkan lewat heuristic_eval dan tutup dengan prioritas. Pakai saat mengkritik atau mereview UI, layar, atau flow.
+description: Playbook review usability ryux — kumpulkan konteks, telusur layar per layar terhadap ryux-rules (RX-C/RX-H/RX-N/RX-L), beri severity 0-4 dengan bukti screen nyata, lalu strukturkan lewat heuristic_eval dan tutup dengan prioritas. Pakai saat mengkritik atau mereview UI, layar, atau flow.
 ---
 
 # ryux-critique
@@ -35,9 +35,10 @@ Tanpa konteks ini, review jatuh jadi selera, bukan usability.
 
 ### 2. Telusur layar per layar
 
-Untuk tiap layar, periksa terhadap tiga lapisan ryux-rules:
+Untuk tiap layar, periksa terhadap empat lapisan ryux-rules:
 - **RX-C** — ada pola UI generik? copy hambar? konten tak jujur?
 - **RX-H** — uji 10 heuristik: status terlihat? bisa batal (kendali)? cegah error? pesan error beri jalan keluar? kontras & target sentuh cukup?
+- **RX-N** — pola UX terapan (NNGroup): umpan balik sesuai waktu respons, form (label di atas, validasi inline jaga isian, field minimal), biaya transparan, cegah kesalahan, wayfinding.
 - **RX-L** — pola lokal benar? QRIS/VA transparan, biaya di depan, format Rupiah, Bahasa Indonesia wajar.
 
 ### 3. Beri severity + alasan
@@ -82,5 +83,5 @@ bukti:   scr_demo_001
 
 ## Referensi
 
-- Aturan: `docs/design-rules.md` (RX-C / RX-H / RX-L)
+- Aturan: `docs/design-rules.md` (RX-C / RX-H / RX-N / RX-L)
 - Tool: `heuristic_eval`, `search_screens`, `delivery_gate`, `audit_ui`, `audit_copy`
