@@ -1,18 +1,18 @@
 ---
 name: ryux-ux
-description: ryux-rules — Pola UX terapan (NNGroup). form, error, checkout, kepercayaan, waktu-respons. Muat saat mengerjakan pola ux terapan (nngroup).
+description: ryux-rules: Applied UX patterns (NNGroup). forms, errors, checkout, trust, response time. Load when working on applied ux patterns (nngroup).
 ---
 
-# ryux-ux — Pola UX terapan (NNGroup)
+# ryux-ux: Applied UX patterns (NNGroup)
 
-> Aturan desain ryux.design — versi 0.2.0, lisensi MIT.
-> Terapkan pada pekerjaan pola ux terapan (nngroup) sebelum menganggapnya selesai.
+> ryux.design design rules, version 0.2.0, MIT licensed.
+> Apply to applied ux patterns (nngroup) work before considering it done.
 
-- **RX-N-01** Umpan balik sesuai batas waktu respons: > 1 dtk tampilkan loading, > 10 dtk progres + estimasi.
-- **RX-N-02** Form satu kolom, label di atas field (bukan hanya di dalam field).
-- **RX-N-03** Validasi inline dan pertahankan input pengguna saat error.
-- **RX-N-05** Pesan error sebut masalah + solusi, dekat lokasi, jangan salahkan pengguna.
-- **RX-N-06** Biaya total (ongkir, admin, pajak) transparan sebelum pengguna berkomitmen.
-- **RX-N-07** Ringkasan pesanan yang bisa diperiksa + indikator progres untuk alur bertahap.
-- **RX-N-09** Kepercayaan jujur: tanpa urgensi atau scarcity palsu; sinyal keamanan nyata.
-- **RX-N-11** Cegah kesalahan: konfirmasi aksi tak-terbalikkan (hapus, bayar) + undo bila bisa.
+- **RX-N-01** Feedback matches response-time limits: over 1s show loading, over 10s show progress plus an estimate.
+- **RX-N-02** Single-column forms, labels above the field (not only inside it).
+- **RX-N-03** Validate inline and keep the user's input on error.
+- **RX-N-05** Error messages state the problem plus the fix, near the source; don't blame the user.
+- **RX-N-06** Total cost (shipping, admin, tax) is transparent before the user commits.
+- **RX-N-07** A reviewable order summary plus a progress indicator for multi-step flows.
+- **RX-N-09** Honest trust: no fake urgency or scarcity; real security signals.
+- **RX-N-11** Prevent mistakes: confirm irreversible actions (delete, pay) plus undo when possible.

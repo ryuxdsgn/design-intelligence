@@ -1,78 +1,78 @@
-# Panduan ryux (dari nol)
+# ryux Guide (from scratch)
 
-Panduan singkat: apa itu ryux, cara memasang aturannya ke agent-mu, dan cara menyambung ke
-data referensi lewat MCP. Kalau kamu cuma mau gambaran cepat, baca [README](./README.md).
+A short guide: what ryux is, how to install its rules into your agent, and how to connect to
+the reference data over MCP. If you just want a quick overview, read the [README](./README.md).
 
-## Apa itu ryux
+## What ryux is
 
-ryux adalah dua hal yang bekerja bersama:
+ryux is two things that work together:
 
-1. **ryux-rules** — aturan desain (RX-C / RX-H / RX-N / RX-L) yang menyaring keluaran agar tidak
-   "berbau AI": berbukti, aksesibel, dan sesuai konteks Indonesia. Dokumen: [`docs/design-rules.md`](./docs/design-rules.md).
-2. **MCP server** — memberi agent akses ke **screen referensi aplikasi Indonesia** (data nyata,
-   catatan desainer) plus tool audit. Sembilan tool; lihat [`apps/mcp/README.md`](./apps/mcp/README.md).
+1. **ryux-rules**: design rules (RX-C / RX-H / RX-N / RX-L) that filter output so it doesn't
+   "smell like AI": evidence-backed, accessible, and fitted to the Indonesian context. Doc: [`docs/design-rules.md`](./docs/design-rules.md).
+2. **MCP server**: gives your agent access to **reference screens from Indonesian apps** (real
+   data, designer notes) plus audit tools. Nine tools; see [`apps/mcp/README.md`](./apps/mcp/README.md).
 
-Aturan tanpa data cuma gaya; data tanpa aturan cuma tumpukan gambar. ryux menggabungkan keduanya.
+Rules without data are just style; data without rules is just a pile of images. ryux combines the two.
 
-## 1. Pasang ryux-rules ke agent
+## 1. Install ryux-rules into your agent
 
-Satu perintah, lalu jawab beberapa pertanyaan (agent yang dipakai, concern yang dipasang, sambungan MCP):
+One command, then answer a few questions (which agent you use, which concerns to install, MCP connection):
 
 ```bash
 npx ryux-rules
 ```
 
-CLI menulis ke tempat yang tepat sesuai agent:
+The CLI writes to the right place for each agent:
 
 | Agent | File |
 | --- | --- |
-| Claude Code | `.claude/skills/ryux-rules/SKILL.md` + blok bertanda di `CLAUDE.md` |
+| Claude Code | `.claude/skills/ryux-rules/SKILL.md` + a marked block in `CLAUDE.md` |
 | Cursor | `.cursor/rules/ryux-rules.mdc` |
-| Codex / lainnya | blok bertanda di `AGENTS.md` |
+| Codex / others | a marked block in `AGENTS.md` |
 
-File pengguna tidak pernah ditimpa mentah — perubahan hanya di dalam blok
+Your files are never overwritten wholesale. Changes stay inside the block
 `<!-- ryux-rules:start -->` … `<!-- ryux-rules:end -->`.
 
-### Non-interaktif
+### Non-interactive
 
 ```bash
 npx ryux-rules install --agent claude,cursor --concerns ui,copy,a11y,ux,local
 ```
 
-## 2. Sambungkan ke MCP (data referensi)
+## 2. Connect to MCP (reference data)
 
-Aturan ryux paling kuat saat agent bisa mengambil bukti nyata. Sambungkan MCP ryux:
+The ryux rules are at their strongest when your agent can pull real evidence. Connect the ryux MCP:
 
 ```bash
 claude mcp add --transport http ryux https://mcp.ryux.design/mcp
 ```
 
-Untuk pengembangan lokal, jalankan server sendiri:
+For local development, run the server yourself:
 
 ```bash
 pnpm install
 pnpm dev:mcp        # http://localhost:8787/mcp
 ```
 
-Sambungkan lewat MCP client (Claude Code, MCP Inspector) — bukan browser biasa (endpoint
-memakai transport Streamable HTTP).
+Connect through an MCP client (Claude Code, MCP Inspector), not a regular browser (the endpoint
+uses the Streamable HTTP transport).
 
-## 3. Coba
+## 3. Try it
 
-Minta agent-mu:
+Ask your agent:
 
-- "Cari referensi pemilih metode bayar dengan QRIS lewat ryux."
-- "Audit halaman checkout ini dengan ryux-rules."
-- "Review layar ini dengan `heuristic_eval`, sertakan screen pembanding sebagai bukti."
+- "Find a reference for a payment method picker with QRIS via ryux."
+- "Audit this checkout page with ryux-rules."
+- "Review this screen with `heuristic_eval`, and include a comparison screen as evidence."
 
 ## Update & Remove
 
 ```bash
-npx ryux-rules update     # perbarui aturan yang sudah terpasang
-npx ryux-rules remove     # hapus (mengembalikan file ke keadaan semula)
+npx ryux-rules update     # update the rules you've installed
+npx ryux-rules remove     # remove them (restores your files to their original state)
 ```
 
-## Selanjutnya
+## What's next
 
-- Aturan lengkap: [`docs/design-rules.md`](./docs/design-rules.md)
-- Kosakata (kategori, flow, pola): [`docs/taxonomy.md`](./docs/taxonomy.md)
+- Full rules: [`docs/design-rules.md`](./docs/design-rules.md)
+- Vocabulary (categories, flows, patterns): [`docs/taxonomy.md`](./docs/taxonomy.md)

@@ -1,56 +1,56 @@
-# Playbook Before/After ryux (showcase)
+# Before/After Playbook for ryux (showcase)
 
-Panduan membuat 3 perbandingan **sebelum vs sesudah** untuk README — bukti nyata bahwa ryux-rules
-mengubah keluaran "berbau AI" jadi berbukti dan wajar. Prinsip: **jujur, bukan mockup palsu**
-(RX-C-05). "Before" = keluaran agent tanpa ryux; "After" = keluaran agent yang sama **dengan**
-ryux-rules + MCP ryux.
+A guide to creating 3 **before vs after** comparisons for the README: real proof that ryux-rules
+turns "AI-smelling" output into something grounded and natural. Principle: **honest, not a fake mockup**
+(RX-C-05). "Before" = agent output without ryux; "After" = the same agent's output **with**
+ryux-rules + the ryux MCP.
 
-## Persiapan (sekali)
+## Setup (one time)
 
-1. Jalankan MCP lokal: `pnpm dev:mcp` (data referensi di `http://localhost:8787/mcp`).
-2. Pasang aturan di agent yang dipakai: `npx ryux-rules` (pilih Claude Code/Cursor + concern: ui, copy, a11y, ux, local).
-3. Sambungkan agent ke MCP: `claude mcp add --transport http ryux-local http://localhost:8787/mcp`.
-4. Siapkan folder aset: `assets/compare/{ui,copy,a11y,ux,local,hero}/`.
-5. Tangkap layar mobile pada lebar **390px**; untuk hero landing pakai lebar **desktop 1120px**. Ekspor **WebP** (atau PNG) 2x, beri nama `before` / `after`.
+1. Run the local MCP: `pnpm dev:mcp` (reference data at `http://localhost:8787/mcp`).
+2. Install the rules in the agent you use: `npx ryux-rules` (choose Claude Code/Cursor + concern: ui, copy, a11y, ux, local).
+3. Connect the agent to the MCP: `claude mcp add --transport http ryux-local http://localhost:8787/mcp`.
+4. Prepare the assets folder: `assets/compare/{ui,copy,a11y,ux,local,hero}/`.
+5. Capture mobile screens at a width of **390px**; for the landing hero use a **desktop width of 1120px**. Export as **WebP** (or PNG) at 2x, and name them `before` / `after`.
 
-> Tips adil: "before" dibuat di sesi/agent **tanpa** ryux-rules dan **tanpa** MCP; "after" di sesi
-> **dengan** keduanya. Brief-nya sama persis. Jangan mengedit tangan hasilnya — biar perbandingan jujur.
-
----
-
-## Use case 1 — UI: layar pemilih metode bayar (checkout QRIS)
-
-**Menunjukkan:** RX-C-02/03/05 (tanpa pola generik & data palsu), RX-L-01 (QRIS transparan),
-RX-H-11/12 (kontras & target sentuh), RX-C-01 (bukti `screen_id`).
-
-**Langkah:**
-
-1. **Before** — di agent tanpa ryux, minta:
-   > "Buat satu file HTML mobile (lebar 390px) untuk layar pemilih metode pembayaran app F&B Indonesia."
-   Simpan `before.html`, buka di browser (mode device 390px), screenshot → `assets/compare/ui/before.webp`.
-2. **After** — di agent dengan ryux-rules + MCP, minta hal yang sama plus:
-   > "Pakai referensi QRIS dari ryux (`search_screens` query 'qris'), terapkan RX-L dan RX-H, jangan pakai logo/angka palsu, rujuk `screen_id` di komentar."
-   Simpan `after.html`, screenshot → `assets/compare/ui/after.webp`.
-3. **Bukti angka (opsional tapi kuat):** jalankan `audit_ui` untuk kedua layar (isi `tap_target_px`,
-   `contrast_ratio`, `states`, dst). Catat hasil: *before* FAIL, *after* PASS. Bisa dijadikan caption.
-
-**Yang biasanya terlihat:** before punya logo sparkle + metode generik + kontras tipis; after
-menaruh QRIS paling atas dengan nominal jelas, target sentuh ≥44px, tanpa data karangan.
+> Fairness tip: "before" is produced in a session/agent **without** ryux-rules and **without** the MCP; "after" in a session
+> **with** both. The brief is exactly the same. Do not hand-edit the results, so the comparison stays honest.
 
 ---
 
-## Use case 2 — Copy: teks & format (Rupiah, error, CTA)
+## Use case 1 · UI: payment method picker screen (QRIS checkout)
 
-**Menunjukkan:** RX-L-06 (Rupiah), RX-L-07 (Bahasa Indonesia wajar), RX-H-09 (error beri jalan keluar),
-RX-C-06 (CTA spesifik, bukan klise).
+**Shows:** RX-C-02/03/05 (no generic patterns or fake data), RX-L-01 (transparent QRIS),
+RX-H-11/12 (contrast & touch targets), RX-C-01 (`screen_id` evidence).
 
-**Langkah:**
+**Steps:**
 
-1. **Before** — di agent tanpa ryux, minta menulis 4 teks apa adanya:
-   > "Tulis untuk app belanja: (a) label tombol bayar, (b) tampilan harga Rp1250000, (c) pesan saat pembayaran gagal, (d) CTA banner promo."
-2. **After** — di agent dengan ryux-rules, minta perbaiki keempatnya sesuai RX-L/RX-H, lalu jalankan
-   `audit_copy` untuk membuktikan (before ada findings, after bersih).
-3. Tempel kedua set ke satu kartu sederhana (atau screenshot langsung output yang dirapikan),
+1. **Before**: in the agent without ryux, ask:
+   > "Build one mobile HTML file (390px wide) for the payment method picker screen of an Indonesian F&B app."
+   Save `before.html`, open it in the browser (390px device mode), screenshot → `assets/compare/ui/before.webp`.
+2. **After**: in the agent with ryux-rules + MCP, ask for the same thing plus:
+   > "Use the QRIS reference from ryux (`search_screens` query 'qris'), apply RX-L and RX-H, do not use fake logos/numbers, cite the `screen_id` in a comment."
+   Save `after.html`, screenshot → `assets/compare/ui/after.webp`.
+3. **Numeric proof (optional but powerful):** run `audit_ui` on both screens (fill in `tap_target_px`,
+   `contrast_ratio`, `states`, and so on). Record the result: *before* FAIL, *after* PASS. This can serve as a caption.
+
+**What you usually see:** before has a sparkle logo + generic methods + thin contrast; after
+puts QRIS at the very top with a clear amount, touch targets ≥44px, and no invented data.
+
+---
+
+## Use case 2 · Copy: text & formatting (Rupiah, errors, CTA)
+
+**Shows:** RX-L-06 (Rupiah), RX-L-07 (natural Bahasa Indonesia), RX-H-09 (errors offer a way out),
+RX-C-06 (specific CTA, not a cliché).
+
+**Steps:**
+
+1. **Before**: in the agent without ryux, ask it to write 4 pieces of text as-is:
+   > "Write for a shopping app: (a) the pay button label, (b) the price display for Rp1250000, (c) the message when payment fails, (d) the CTA for a promo banner."
+2. **After**: in the agent with ryux-rules, ask it to fix all four per RX-L/RX-H, then run
+   `audit_copy` to prove it (before has findings, after is clean).
+3. Paste both sets onto a single simple card (or screenshot the cleaned-up output directly),
    screenshot → `assets/compare/copy/before.webp` & `after.webp`.
 
 **Target:** `Rp 1250000` → `Rp1.250.000`; "Terjadi kesalahan." → "Pembayaran gagal. Cek koneksi lalu
@@ -58,39 +58,39 @@ coba lagi."; "BAYAR SEKARANG" → "Bayar sekarang"; "Pelajari selengkapnya" → 
 
 ---
 
-## Use case 3 — Review: kritik dangkal vs `heuristic_eval` berbukti
+## Use case 3 · Review: shallow critique vs grounded `heuristic_eval`
 
-**Menunjukkan:** skill `ryux-critique` + tool `heuristic_eval` + wajib bukti `screen_id`.
+**Shows:** the `ryux-critique` skill + the `heuristic_eval` tool + mandatory `screen_id` evidence.
 
-**Langkah:**
+**Steps:**
 
-1. Ambil satu layar untuk direview (boleh `before.html` dari use case 1, atau screenshot app nyata).
-2. **Before** — di agent tanpa ryux, minta: "Review layar ini." Biasanya keluar kritik dangkal
-   ("tambahkan white space", "buat lebih modern"). Screenshot → `assets/compare/review/before.webp`.
-3. **After** — di agent dengan skill `ryux-critique`, minta review terstruktur. Agent akan
-   memanggil `heuristic_eval` → temuan berformat: heuristik, severity 0–4, lokasi, rekomendasi, dan
-   `screen_id` pembanding. Rapikan output (JSON atau tabel), screenshot → `assets/compare/review/after.webp`.
+1. Take one screen to review (it can be `before.html` from use case 1, or a screenshot of a real app).
+2. **Before**: in the agent without ryux, ask: "Review this screen." You usually get a shallow critique
+   ("add white space", "make it more modern"). Screenshot → `assets/compare/review/before.webp`.
+3. **After**: in the agent with the `ryux-critique` skill, ask for a structured review. The agent will
+   call `heuristic_eval`, which returns formatted findings: heuristic, severity 0-4, location, recommendation, and
+   a comparison `screen_id`. Clean up the output (JSON or a table), screenshot → `assets/compare/review/after.webp`.
 
-**Kontras utama:** before = opini tanpa bukti; after = temuan berprioritas dengan contoh app nyata.
+**Key contrast:** before = opinion with no evidence; after = prioritized findings with real app examples.
 
 ---
 
-## Menaruh ke README
+## Putting it in the README
 
-Ganti/lengkapi tabel teks di bagian **"Lihat bedanya"** dengan gambar (pola seperti repo lain):
+Replace/complete the text table in the **"See the difference"** section with images (a pattern like other repos use):
 
 ```md
-| Sebelum | Sesudah |
+| Before | After |
 |:--|:--|
 | <a href="assets/compare/ui/before.webp"><img src="assets/compare/ui/before.webp" width="100%"></a> | <a href="assets/compare/ui/after.webp"><img src="assets/compare/ui/after.webp" width="100%"></a> |
 ```
 
-Selalu isi `alt` yang deskriptif (aksesibilitas — RX-H-13). Setiap gambar klik-untuk-perbesar.
+Always fill in a descriptive `alt` (accessibility, RX-H-13). Every image is click-to-enlarge.
 
 ## Checklist
 
 - [ ] `assets/compare/ui/before.webp` + `after.webp`
 - [ ] `assets/compare/copy/before.webp` + `after.webp`
 - [ ] `assets/compare/review/before.webp` + `after.webp`
-- [ ] Caption tiap pasangan menyebut aturan (RX-…) dan, bila ada, hasil `audit_ui`/`audit_copy`
-- [ ] README diperbarui memakai gambar, dengan `alt` deskriptif
+- [ ] Each pair's caption names the rules (RX-…) and, if available, the `audit_ui`/`audit_copy` result
+- [ ] README updated to use images, with descriptive `alt`
