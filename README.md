@@ -27,26 +27,48 @@
 - **ryux-rules** — 45 aturan RX dalam empat lapisan: filter anti slop (RX-C), heuristik usability & aksesibilitas (RX-H), pola UX terapan riset NNGroup (RX-N), pola & copy Indonesia (RX-L). Plus Delivery Gate PASS/FAIL sebelum rilis.
 - **CLI `ryux-rules`** — pasang aturan ke Claude Code, Cursor, atau AGENTS.md dengan satu perintah, **per-concern** (ui, copy, a11y, ux, local) seperti memilih skill.
 
-## Lihat bedanya
+## Lihat bedanya — per concern
 
-ryux-rules bekerja seperti filter: mengubah keputusan dan copy yang "berbau AI" menjadi yang
-berbukti dan wajar. Contoh nyata:
+`ryux-rules` dipasang per **concern** (`ryux-ui`, `ryux-copy`, `ryux-a11y`, `ryux-ux`, `ryux-local`).
+Tiap concern punya before/after nyata di bawah — dibuat di pen.dev, brief sama, `after` memakai
+aturan concern itu + data ryux.
 
-**UI — layar pembayaran** (dibuat di pen.dev; brief sama, `after` memakai ryux-rules + data ryux)
+**`ryux-ui` — UI & visual** · palet, spasi, konsistensi, state
 
-| Sebelum — tanpa ryux | Sesudah — ryux-rules |
+| Sebelum — tanpa ryux | Sesudah — `ryux-ui` |
 |:--|:--|
 | <a href="assets/compare/ui/ui-before.png"><img src="assets/compare/ui/ui-before.png" alt="Layar bayar generik: logo sparkle, badge 256-BIT, angka pengguna karangan, metode global (Card/PayPal/Apple/Google), harga dolar, teks kontras rendah" width="100%"></a> | <a href="assets/compare/ui/ui-after.png"><img src="assets/compare/ui/ui-after.png" alt="Layar checkout ryux premium: ringkasan pesanan, rincian biaya transparan (subtotal, ongkir, total Rp1.250.000), QRIS dengan ekspektasi verifikasi kurang dari 5 detik, tombol Bayar Rp1.250.000, catatan kepercayaan, bukti scr_a3f091" width="100%"></a> |
-| Pola global, angka karangan, dolar, kontras tipis. | Ringkasan pesanan + biaya transparan (RX-N-06/07), QRIS + ekspektasi waktu (RX-N-01), Rupiah, bukti `screen_id`. |
+| Pola global, angka karangan, dolar, kontras tipis. | Palet 2–3 warna + aksen (RX-C-07), spasi konsisten (RX-C-08), Rupiah, bukti `screen_id`. |
 
-**Copy — pesan gagal bayar**
+**`ryux-copy` — Copywriting Indonesia** · Bahasa wajar, Rupiah, pesan error
 
-| Sebelum — tanpa ryux | Sesudah — ryux-rules |
+| Sebelum — tanpa ryux | Sesudah — `ryux-copy` |
 |:--|:--|
 | <a href="assets/compare/copy/copy-before.png"><img src="assets/compare/copy/copy-before.png" alt="Layar gagal bayar generik: Payment Failed, pesan samar Something went wrong, kode error TXN_0x8004, Amount IDR 1250000, tombol merah TRY AGAIN" width="100%"></a> | <a href="assets/compare/copy/copy-after.png"><img src="assets/compare/copy/copy-after.png" alt="Layar gagal bayar ryux: Pembayaran gagal, sebab jelas saldo BCA Virtual Account belum cukup untuk Rp1.250.000, kartu langkah pemulihan, tombol Pilih metode lain, bukti scr_a3f091" width="100%"></a> |
-| "Payment Failed", pesan samar, kode error teknis, dolar, tombol kapital. | "Pembayaran gagal", sebab jelas + langkah pemulihan, Rupiah, bukti `screen_id`. |
+| "Payment Failed", pesan samar, kode error teknis, dolar, tombol kapital. | "Pembayaran gagal", sebab + solusi (RX-N-05), Bahasa wajar (RX-L-07), Rupiah (RX-L-06). |
 
-**Review — usability**
+**`ryux-a11y` — Aksesibilitas** · kontras, ukuran teks, target sentuh, fokus
+
+| Sebelum — tanpa ryux | Sesudah — `ryux-a11y` |
+|:--|:--|
+| <a href="assets/compare/a11y/a11y-before.png"><img src="assets/compare/a11y/a11y-before.png" alt="Layar pengaturan tak aksesibel: teks abu kontras rendah 11px, label hanya placeholder, target sentuh kecil, toggle mungil, tombol Simpan pucat kontras rendah" width="100%"></a> | <a href="assets/compare/a11y/a11y-after.png"><img src="assets/compare/a11y/a11y-after.png" alt="Layar pengaturan ryux: teks 16px kontras AA, field fokus dengan ring aksen, target sentuh besar, toggle jelas, tombol Simpan perubahan kontras tinggi, bukti scr_a3f091" width="100%"></a> |
+| Teks 11px kontras ~2:1, label placeholder, target kecil, tombol pucat. | Teks ≥16px kontras AA (RX-H-11), target ≥48px (RX-H-12), fokus terlihat (RX-H-13). |
+
+**`ryux-ux` — Pola UX terapan (NNGroup)** · form, validasi, field minimal, keypad
+
+| Sebelum — tanpa ryux | Sesudah — `ryux-ux` |
+|:--|:--|
+| <a href="assets/compare/ux/ux-before.png"><img src="assets/compare/ux/ux-before.png" alt="Form daftar buruk: dua kolom sempit, label hanya placeholder, semua field wajib termasuk referral, banner error samar, tombol DAFTAR generik" width="100%"></a> | <a href="assets/compare/ux/ux-after.png"><img src="assets/compare/ux/ux-after.png" alt="Form daftar ryux: satu kolom, label di atas field, nomor HP dengan keypad angka dan status valid, kata sandi dengan error inline yang mempertahankan isian, kode referral opsional, tombol Lanjut, bukti scr_a3f091" width="100%"></a> |
+| Dua kolom, label placeholder, semua wajib, error samar. | Satu kolom + label di atas (RX-N-02), validasi inline jaga isian (RX-N-03), field minimal (RX-N-04), keypad angka (RX-N-10). |
+
+**`ryux-local` — Pola Indonesia** · QRIS, Virtual Account, biaya, Rupiah
+
+| Sebelum — tanpa ryux | Sesudah — `ryux-local` |
+|:--|:--|
+| <a href="assets/compare/local/local-before.png"><img src="assets/compare/local/local-before.png" alt="Pembayaran kartu global: judul Payment, tagihan dolar 79.00, form kartu nomor MM/YY CVV, metode global VISA Mastercard PayPal G Pay, tombol PAY 79.00" width="100%"></a> | <a href="assets/compare/local/local-after.png"><img src="assets/compare/local/local-after.png" alt="Virtual Account BCA ryux: hitung mundur batas bayar, nomor VA dengan tombol Salin, rincian biaya admin transparan, total Rp1.250.000, langkah bayar m-BCA bernomor, bukti scr_a3f091" width="100%"></a> |
+| Kartu global, dolar, metode luar negeri, tak ada pola lokal. | Virtual Account + Salin + batas bayar (RX-L-02), biaya admin transparan (RX-L-04), Rupiah. |
+
+**Bonus — review usability lewat MCP** (`heuristic_eval`; tool audit, bukan concern instalasi)
 
 | Sebelum — kritik dangkal | Sesudah — `heuristic_eval` |
 |:--|:--|
