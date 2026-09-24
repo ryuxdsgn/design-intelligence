@@ -2,21 +2,23 @@
 
 > **© 2026 ryux (Redho Yurizal). Lisensi: source-available.** Ruleset orisinal ryux.design.
 > Ditulis dari nol berdasarkan standar & metode publik: **10 heuristik usability Nielsen
-> (Nielsen, 1994)**, **WCAG 2.2**, **Apple Human Interface Guidelines**, dan **Material Design**.
+> (Nielsen, 1994)** dan **riset UX Nielsen Norman Group** (nngroup.com), **WCAG 2.2**,
+> **Apple Human Interface Guidelines**, dan **Material Design**.
 > Penyebutan standar bersifat faktual; seluruh penjelasan, contoh, dan penomoran ditulis sendiri.
 > **Bukan turunan teks berlisensi pihak ketiga** dan tidak berafiliasi dengan NN/g atau pihak mana pun.
 >
-> **Terakhir diperbarui:** 2026-09-23 · **Versi:** RX-1.0
+> **Terakhir diperbarui:** 2026-09-24 · **Versi:** RX-1.1
 
 Gate mutu ryux untuk UI dan copy. Tiga hal yang membuatnya khas ryux: **berbasis bukti**
 (rujuk screen nyata), **Indonesia lebih dulu**, dan **penilaian manusia** untuk catatan desainer.
 
-## Tiga lapisan
+## Empat lapisan
 
 | Lapisan | Isi | Peran |
 | --- | --- | --- |
 | **RX-C** | Filter anti slop: pola UI generik, copy hambar, konten tak jujur | Menyaring keluaran "berbau AI" |
 | **RX-H** | 10 heuristik usability + aksesibilitas | Dasar penilaian usability |
+| **RX-N** | Pedoman UX terapan (riset NNGroup): form, error, checkout, kepercayaan, mobile, waktu-respons | Kedalaman usability yang bisa ditindak |
 | **RX-L** | Pola dan copy khas Indonesia | Relevansi lokal |
 
 ## Cara pakai
@@ -177,6 +179,85 @@ aplikasi mobile Indonesia. Dipakai `heuristic_eval` dengan severity 0–4.
 
 ---
 
+## Lapisan RX-N — Pedoman UX terapan (riset NNGroup)
+
+Distilasi riset publik Nielsen Norman Group ke aturan konkret, ditulis ulang untuk konteks mobile
+Indonesia. Rujukan: **Nielsen Norman Group** (nngroup.com); teks, contoh, dan penomoran milik ryux.
+
+- **RX-N-01 · Umpan balik sesuai batas waktu respons**
+  - kategori: waktu-respons · tingkat: **[Wajib]**
+  - dilarang: aksi tanpa umpan balik; proses > 1 detik tanpa indikator; > 10 detik tanpa progres + estimasi
+  - dianjurkan: < 0,1 dtk terasa instan; < 1 dtk jaga alur; > 1 dtk tampilkan loading; > 10 dtk progres + estimasi
+  - cara cek: `heuristic_eval` (H-01) · bukti: `scr_...` · dasar: batas waktu respons Nielsen (0,1 / 1 / 10 detik)
+
+- **RX-N-02 · Form satu kolom, label di atas field**
+  - kategori: form · tingkat: **[Anjuran]**
+  - dilarang: form multi-kolom yang memecah alur; label hanya di dalam field (hilang saat mengetik)
+  - dianjurkan: satu kolom, label terlihat di atas field, urutan logis
+  - cara cek: review + pembanding screen · bukti: `scr_...`
+
+- **RX-N-03 · Validasi inline & pertahankan input**
+  - kategori: form · tingkat: **[Wajib]**
+  - dilarang: menghapus data yang sudah diisi saat error; validasi hanya setelah submit penuh
+  - dianjurkan: validasi dekat field saat relevan; pertahankan semua input saat gagal
+  - cara cek: review · bukti: `scr_...`
+
+- **RX-N-04 · Minimalkan field & beban input**
+  - kategori: form · tingkat: **[Anjuran]**
+  - dilarang: meminta data tak perlu; menandai semua field wajib tanpa alasan
+  - dianjurkan: minimal field; tandai wajib/opsional jelas; default yang masuk akal
+  - cara cek: review · bukti: `scr_...`
+
+- **RX-N-05 · Pesan error: masalah + solusi, dekat lokasi**
+  - kategori: error · tingkat: **[Wajib]**
+  - dilarang: pesan samar/teknis; menyalahkan pengguna; error jauh dari sumbernya
+  - dianjurkan: bahasa jelas, sebut apa yang salah + langkah perbaikan, tempatkan dekat field/aksi
+  - cara cek: `audit_copy` (C-04) + `heuristic_eval` (H-09) · bukti: `scr_...`
+
+- **RX-N-06 · Biaya total transparan sejak awal**
+  - kategori: checkout · tingkat: **[Wajib]**
+  - dilarang: biaya (ongkir, admin, pajak) muncul mendadak di langkah akhir
+  - dianjurkan: tampilkan total dan rincian sebelum pengguna berkomitmen
+  - cara cek: review · bukti: `scr_...` · dasar: riset checkout NNGroup (biaya tak terduga = penyebab utama abandonment)
+
+- **RX-N-07 · Ringkasan pesanan + indikator progres**
+  - kategori: checkout · tingkat: **[Anjuran]**
+  - dilarang: checkout tanpa ringkasan yang bisa diperiksa; alur bertahap tanpa "di langkah mana"
+  - dianjurkan: ringkasan pesanan terlihat; indikator progres untuk alur bertahap
+  - cara cek: review · bukti: `scr_...`
+
+- **RX-N-08 · Minim friksi masuk (tamu / cepat)**
+  - kategori: checkout · tingkat: **[Anjuran]**
+  - dilarang: memaksa buat akun sebelum bisa bertransaksi
+  - dianjurkan: dukung jalur tamu atau login cepat; simpan progres
+  - cara cek: review · bukti: `scr_...`
+
+- **RX-N-09 · Kepercayaan jujur, tanpa urgensi palsu**
+  - kategori: kepercayaan · tingkat: **[Wajib]**
+  - dilarang: hitung mundur/scarcity palsu; testimonial atau angka karangan; badge keamanan menyesatkan
+  - dianjurkan: sinyal kepercayaan yang nyata & bisa diverifikasi; kontak/bantuan jelas
+  - cara cek: review · bukti: `scr_...` · dasar: riset kredibilitas web NNGroup
+
+- **RX-N-10 · Input mobile yang tepat**
+  - kategori: mobile · tingkat: **[Anjuran]**
+  - dilarang: keyboard teks untuk input angka; memaksa banyak ketik; target kecil berdempetan
+  - dianjurkan: keyboard sesuai tipe (numerik untuk nominal/OTP), autofill, pilihan cepat
+  - cara cek: review · bukti: `scr_...`
+
+- **RX-N-11 · Cegah kesalahan: konfirmasi & undo**
+  - kategori: interaksi · tingkat: **[Wajib]**
+  - dilarang: aksi tak-terbalikkan (hapus, bayar) tanpa konfirmasi atau undo
+  - dianjurkan: konfirmasi ringkas untuk aksi berisiko; sediakan undo bila memungkinkan
+  - cara cek: `heuristic_eval` (H-05) · bukti: `scr_...`
+
+- **RX-N-12 · Wayfinding: "di mana saya", selalu ada jalan keluar**
+  - kategori: navigasi · tingkat: **[Anjuran]**
+  - dilarang: layar tanpa judul/konteks; jalur buntu tanpa kembali atau batal
+  - dianjurkan: judul jelas, jejak lokasi, tombol kembali/batal selalu tersedia
+  - cara cek: `heuristic_eval` (H-03) · bukti: `scr_...`
+
+---
+
 ## Lapisan RX-L — Pola & copy Indonesia
 
 - **RX-L-01 · QRIS transparan**
@@ -247,8 +328,9 @@ Sebelum pekerjaan UI/copy dianggap selesai:
 
 1. **RX-C fondasi** (RX-C-01 bukti, RX-C-03/04/05 kejujuran, RX-C-09) — Hard Gate.
 2. **RX-H [Wajib]** (H-01, H-03, H-04, H-05, H-09, H-11, H-12, H-14) — Hard Gate.
-3. **RX-L [Wajib]** (L-01, L-02, L-04, L-06, L-07, L-08) — Hard Gate.
-4. Sisanya **[Anjuran]**: dilanggar hanya dengan alasan tertulis.
+3. **RX-N [Wajib]** (N-01, N-03, N-05, N-06, N-09, N-11) — Hard Gate.
+4. **RX-L [Wajib]** (L-01, L-02, L-04, L-06, L-07, L-08) — Hard Gate.
+5. Sisanya **[Anjuran]**: dilanggar hanya dengan alasan tertulis.
 
 Hasil **FAIL** bila ada aturan [Wajib] gagal, atau ada temuan `heuristic_eval` severity ≥ 3 tanpa perbaikan.
 
