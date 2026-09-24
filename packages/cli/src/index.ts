@@ -20,7 +20,7 @@ type AgentId = "claude" | "cursor" | "codex";
 const AGENTS: { id: AgentId; label: string; hint: string }[] = [
   { id: "claude", label: "Claude Code", hint: ".claude/skills/ryux-*" },
   { id: "cursor", label: "Cursor", hint: ".cursor/rules/ryux-*.mdc" },
-  { id: "codex", label: "Codex / lainnya", hint: "AGENTS.md" },
+  { id: "codex", label: "Codex / others", hint: "AGENTS.md" },
 ];
 
 const isAgent = (v: string): v is AgentId => AGENTS.some((a) => a.id === v);
@@ -50,7 +50,7 @@ async function installAgent(id: AgentId, concerns: string[], cwd: string): Promi
       done.push(rel(P.concernSkill(c)));
     }
     await upsertBlock(P.claudeEntry, renderClaudeBlock(concerns));
-    done.push(`${rel(P.claudeEntry)} (blok)`);
+    done.push(`${rel(P.claudeEntry)} (block)`);
   } else if (id === "cursor") {
     await writeFileEnsured(P.cursorCore, renderCoreMdc(concerns));
     done.push(rel(P.cursorCore));
@@ -60,7 +60,7 @@ async function installAgent(id: AgentId, concerns: string[], cwd: string): Promi
     }
   } else {
     await upsertBlock(P.codexEntry, renderAgentsBlock(concerns));
-    done.push(`${rel(P.codexEntry)} (blok)`);
+    done.push(`${rel(P.codexEntry)} (block)`);
   }
   return done;
 }
@@ -71,17 +71,17 @@ async function removeAgent(id: AgentId, cwd: string): Promise<string[]> {
   if (id === "claude") {
     if (await removePath(P.coreDir)) done.push(rel(P.coreDir));
     for (const c of ALL_CONCERN_IDS) if (await removePath(P.concernDir(c))) done.push(rel(P.concernDir(c)));
-    if (await removeBlock(P.claudeEntry)) done.push(`${rel(P.claudeEntry)} (blok)`);
+    if (await removeBlock(P.claudeEntry)) done.push(`${rel(P.claudeEntry)} (block)`);
   } else if (id === "cursor") {
     if (await removePath(P.cursorCore)) done.push(rel(P.cursorCore));
     for (const c of ALL_CONCERN_IDS) if (await removePath(P.cursorConcern(c))) done.push(rel(P.cursorConcern(c)));
   } else {
-    if (await removeBlock(P.codexEntry)) done.push(`${rel(P.codexEntry)} (blok)`);
+    if (await removeBlock(P.codexEntry)) done.push(`${rel(P.codexEntry)} (block)`);
   }
   return done;
 }
 
-/** Peta agent -> concern terpasang (null jika belum terpasang). */
+/** Map of agent -> installed concerns (null if not installed). */
 async function detectInstalled(cwd: string): Promise<Record<AgentId, string[] | null>> {
   const P = paths(cwd);
   const codex = await readIfExists(P.codexEntry);
@@ -110,7 +110,7 @@ function parseFlags(argv: string[]): Record<string, string | boolean> {
 }
 
 function cancel(): void {
-  p.cancel("Dibatalkan.");
+  p.cancel("Cancelled.");
 }
 
 async function install(flags: Record<string, string | boolean>): Promise<void> {
@@ -128,35 +128,35 @@ async function install(flags: Record<string, string | boolean>): Promise<void> {
     concerns = flagConcerns.filter(isConcern);
     mcpChoice = flags.mcp ? "show" : "later";
     if (!agents.length || !concerns.length) {
-      console.error(`Agent atau concern tidak valid. Agent: claude,cursor,codex. Concern: ${ALL_CONCERN_IDS.join(",")}.`);
+      console.error(`Invalid agent or concern. Agents: claude,cursor,codex. Concerns: ${ALL_CONCERN_IDS.join(",")}.`);
       process.exitCode = 1;
       return;
     }
   } else {
     if (!process.stdin.isTTY) {
-      console.error("Mode interaktif butuh terminal. Pakai flag, mis: ryux-rules install --agent claude --concerns ui,copy,local");
+      console.error("Interactive mode needs a terminal. Use flags, e.g.: ryux-rules install --agent claude --concerns ui,copy,local");
       process.exitCode = 1;
       return;
     }
     p.intro(pc.bgCyan(pc.black(" ryux-rules ")));
     const a = await p.multiselect({
-      message: "Agent apa yang kamu pakai?",
+      message: "Which agent do you use?",
       options: AGENTS.map((x) => ({ value: x.id, label: x.label, hint: x.hint })),
       required: true,
     });
     if (p.isCancel(a)) return cancel();
     const c = await p.multiselect({
-      message: "Pasang concern apa? (inti selalu ikut)",
+      message: "Which concerns do you want? (core is always included)",
       options: CONCERNS.map((x) => ({ value: x.id, label: x.label, hint: x.hint })),
       initialValues: [...ALL_CONCERN_IDS],
       required: true,
     });
     if (p.isCancel(c)) return cancel();
     const m = await p.select({
-      message: "Sambungkan ke MCP ryux?",
+      message: "Connect to the ryux MCP?",
       options: [
-        { value: "later", label: "Nanti saja" },
-        { value: "show", label: "Tampilkan perintahnya" },
+        { value: "later", label: "Later" },
+        { value: "show", label: "Show the command" },
       ],
       initialValue: "later",
     });
@@ -171,13 +171,13 @@ async function install(flags: Record<string, string | boolean>): Promise<void> {
 
   const summary = written.map((w) => pc.green("✓ ") + w).join("\n");
   if (nonInteractive) console.log(summary);
-  else p.note(summary, "Terpasang");
+  else p.note(summary, "Installed");
 
   if (mcpChoice === "show") {
     if (nonInteractive) console.log(`\nMCP: ${MCP_ADD_CMD}`);
-    else p.note(MCP_ADD_CMD, "Sambungkan MCP ryux");
+    else p.note(MCP_ADD_CMD, "Connect the ryux MCP");
   }
-  if (!nonInteractive) p.outro(`Coba minta agent-mu: ${pc.cyan('"Audit halaman ini dengan ryux-rules"')}`);
+  if (!nonInteractive) p.outro(`Try asking your agent: ${pc.cyan('"Audit this page with ryux-rules"')}`);
 }
 
 async function update(): Promise<void> {
@@ -185,7 +185,7 @@ async function update(): Promise<void> {
   const det = await detectInstalled(cwd);
   const targets = (Object.keys(det) as AgentId[]).filter((k) => det[k] !== null);
   if (!targets.length) {
-    console.log("Belum ada ryux-rules terpasang. Jalankan: ryux-rules install");
+    console.log("No ryux-rules installed yet. Run: ryux-rules install");
     return;
   }
   const updated: string[] = [];
@@ -193,9 +193,9 @@ async function update(): Promise<void> {
     const found = det[ag] ?? [];
     const concerns = found.length ? found : [...ALL_CONCERN_IDS];
     await installAgent(ag, concerns, cwd);
-    updated.push(`${ag} (${concerns.join(", ") || "inti"})`);
+    updated.push(`${ag} (${concerns.join(", ") || "core"})`);
   }
-  console.log(`${pc.green("✓ ")}Diperbarui ke v${RULES_VERSION}: ${updated.join("; ")}`);
+  console.log(`${pc.green("✓ ")}Updated to v${RULES_VERSION}: ${updated.join("; ")}`);
 }
 
 async function remove(flags: Record<string, string | boolean>): Promise<void> {
@@ -203,42 +203,42 @@ async function remove(flags: Record<string, string | boolean>): Promise<void> {
   const det = await detectInstalled(cwd);
   const targets = (Object.keys(det) as AgentId[]).filter((k) => det[k] !== null);
   if (!targets.length) {
-    console.log("Tidak ada ryux-rules terpasang.");
+    console.log("No ryux-rules installed.");
     return;
   }
   if (!flags.yes) {
-    const ok = await p.confirm({ message: `Hapus ryux-rules dari: ${targets.join(", ")}?` });
+    const ok = await p.confirm({ message: `Remove ryux-rules from: ${targets.join(", ")}?` });
     if (p.isCancel(ok) || !ok) {
-      console.log("Dibatalkan.");
+      console.log("Cancelled.");
       return;
     }
   }
   const removed: string[] = [];
   for (const ag of targets) removed.push(...(await removeAgent(ag, cwd)));
-  console.log(removed.length ? removed.map((r) => pc.red("− ") + r).join("\n") : "Tidak ada file yang dihapus.");
+  console.log(removed.length ? removed.map((r) => pc.red("− ") + r).join("\n") : "No files removed.");
 }
 
 function help(): void {
-  console.log(`ryux-rules v${RULES_VERSION} — pasang aturan desain ryux (per-concern) ke agent AI
+  console.log(`ryux-rules v${RULES_VERSION}: install the ryux design rules (per concern) into your AI agent
 
-Penggunaan:
-  npx ryux-rules [perintah] [opsi]
+Usage:
+  npx ryux-rules [command] [options]
 
-Perintah:
-  install     Pasang aturan (interaktif: pilih agent + concern). Default.
-  update      Perbarui aturan terpasang ke versi terbaru.
-  remove      Hapus aturan terpasang.
-  help        Tampilkan bantuan ini.
+Commands:
+  install     Install the rules (interactive: pick agent + concerns). Default.
+  update      Update installed rules to the latest version.
+  remove      Remove installed rules.
+  help        Show this help.
 
-Concern: ${CONCERNS.map((c) => c.id).join(", ")} (inti selalu ikut).
+Concerns: ${CONCERNS.map((c) => c.id).join(", ")} (core is always included).
 
-Opsi non-interaktif (install):
-  --agent <daftar>     claude,cursor,codex
-  --concerns <daftar>  ${ALL_CONCERN_IDS.join(",")}
-  --mcp                tampilkan perintah sambung MCP
-  --yes                lewati konfirmasi (remove)
+Non-interactive options (install):
+  --agent <list>       claude,cursor,codex
+  --concerns <list>    ${ALL_CONCERN_IDS.join(",")}
+  --mcp                show the MCP connect command
+  --yes                skip confirmation (remove)
 
-Contoh:
+Examples:
   npx ryux-rules
   npx ryux-rules install --agent claude --concerns ui,copy,local
   npx ryux-rules update
@@ -266,7 +266,7 @@ async function main(): Promise<void> {
     case "install":
       return install(flags);
     default:
-      console.error(`Perintah tidak dikenal: ${cmd}\n`);
+      console.error(`Unknown command: ${cmd}\n`);
       help();
       process.exitCode = 1;
   }
