@@ -81,11 +81,11 @@ _Tanpa ryux_ — hero generik "berbau AI": buzzword, statistik karangan, logo pa
 
 <a href="assets/compare/hero/hero-before.png"><img src="assets/compare/hero/hero-before.png" alt="Hero landing generik: logo Nexlify dengan sparkle, judul Empower Your Business with AI-Powered Solutions, subjudul buzzword all-in-one platform, dua tombol Get Started Free dan Book a Demo, rating bintang lima palsu Trusted by 10,000+ teams worldwide, grid logo AS SEEN IN kosong" width="100%"></a>
 
-_Dengan `ryux-rules`_ — spesifik, jujur, Bahasa Indonesia, satu CTA jelas, tanpa angka karangan.
+_Dengan `ryux-rules`_ — spesifik, jujur, Bahasa Indonesia, warna brand bermakna (hijau = untung), satu CTA jelas, pola lokal (login WhatsApp, setor ke BCA).
 
-<a href="assets/compare/hero/hero-after.png"><img src="assets/compare/hero/hero-after.png" alt="Hero landing ryux: aplikasi kasir Catat, judul Catat penjualan warung langsung tahu untungnya, subjudul aplikasi kasir dan pembukuan untuk UMKM, tombol Coba gratis dan Lihat cara kerja, tawaran jujur gratis 50 transaksi pertama tanpa kartu kredit, pratinjau produk penjualan hari ini Rp2.450.000 berlabel Contoh" width="100%"></a>
+<a href="assets/compare/hero/hero-after.png"><img src="assets/compare/hero/hero-after.png" alt="Hero landing ryux: aplikasi kasir Catat dengan warna brand hijau, kicker KASIR & PEMBUKUAN UMKM, judul Tutup kasir untung ketahuan, subjudul catat tiap transaksi dari HP tanpa Excel, tombol Coba gratis dan Lihat 1 menit cara kerjanya, baris masuk pakai nomor WhatsApp gratis 50 transaksi pertama, pratinjau tutup kasir Warung Bu Sri dengan untung hari ini Rp680.000 dan setor ke BCA berlabel Contoh" width="100%"></a>
 
-Slop: buzzword tanpa makna (RX-C-06), "10.000+" tanpa sumber (RX-C-03), logo palsu (RX-C-04). ryux: manfaat spesifik, tawaran nyata alih-alih statistik karangan, pratinjau ditandai `Contoh` (RX-C-05).
+Slop: buzzword tanpa makna (RX-C-06), "10.000+" tanpa sumber (RX-C-03), logo palsu (RX-C-04), warna indigo default template. ryux: manfaat spesifik + idiom lokal, warna brand bermakna, tawaran nyata alih-alih statistik karangan, pola lokal (WhatsApp/BCA), pratinjau ditandai `Contoh` (RX-C-05).
 
 **Keputusan desain**
 
