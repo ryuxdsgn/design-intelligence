@@ -21,7 +21,7 @@ export type LocalPattern = {
   example_screen_ids: string[];
 };
 
-export const SCREENS: Screen[] = [
+export const SAMPLE_SCREENS: Screen[] = [
   {
     screen_id: "scr_demo_001",
     app: { name: "Warung Contoh", category: "fnb" },
@@ -55,7 +55,7 @@ export const SCREENS: Screen[] = [
   },
 ];
 
-export const LOCAL_PATTERNS: Record<string, LocalPattern> = {
+export const SAMPLE_LOCAL_PATTERNS: Record<string, LocalPattern> = {
   qris: {
     name: "QRIS",
     description: "Pembayaran dengan scan atau menampilkan kode QR standar nasional.",
@@ -70,3 +70,20 @@ export const LOCAL_PATTERNS: Record<string, LocalPattern> = {
     example_screen_ids: ["scr_demo_001"],
   },
 };
+
+// Sumber data aktif. Default = data contoh; apps/mcp memuat data Supabase lewat setData().
+let currentScreens: Screen[] = SAMPLE_SCREENS;
+let currentLocalPatterns: Record<string, LocalPattern> = SAMPLE_LOCAL_PATTERNS;
+
+export function setData(screens: Screen[], patterns: Record<string, LocalPattern>): void {
+  currentScreens = screens;
+  currentLocalPatterns = patterns;
+}
+
+export function getScreens(): Screen[] {
+  return currentScreens;
+}
+
+export function getLocalPatterns(): Record<string, LocalPattern> {
+  return currentLocalPatterns;
+}
