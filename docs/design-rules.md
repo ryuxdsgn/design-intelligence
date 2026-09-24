@@ -1,6 +1,6 @@
 # ryux-rules — Aturan Desain ryux
 
-> **© 2026 ryux (Redho Yurizal). Lisensi: source-available.** Ruleset orisinal ryux.design.
+> **© 2026 ryux (Redho Yurizal). Lisensi: MIT.** Ruleset orisinal ryux.design.
 > Ditulis dari nol berdasarkan standar & metode publik: **10 heuristik usability Nielsen
 > (Nielsen, 1994)** dan **riset UX Nielsen Norman Group** (nngroup.com), **WCAG 2.2**,
 > **Apple Human Interface Guidelines**, dan **Material Design**.
@@ -373,6 +373,6 @@ Tool di `packages/core` (penomoran warisan `R-0x`/`C-0x`) dan tool baru `heurist
 ## Lisensi & kepemilikan
 
 Ruleset ini (teks, struktur RX-C/RX-H/RX-N/RX-L, penomoran) adalah karya orisinal ryux, **lisensi
-source-available**, hak cipta © 2026 ryux. Menyebut standar publik (Nielsen 1994, WCAG 2.2, HIG,
+MIT**, hak cipta © 2026 ryux. Menyebut standar publik (Nielsen 1994, WCAG 2.2, HIG,
 Material) secara faktual; tidak memuat teks, gambar, checklist berbayar, atau materi kursus pihak
 mana pun, dan tidak berafiliasi dengan mereka.

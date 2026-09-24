@@ -8,11 +8,11 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://ryux.design"),
   title: "ryux: evidence-based UI references for AI agents",
   description:
-    "UI and flow references from real Indonesian apps, served to AI agents over MCP, with a source-available anti-slop ruleset. Your agent designs from proof and has to cite it.",
+    "UI and flow references from real Indonesian apps, served to AI agents over MCP, with an open-source anti-slop ruleset. Your agent designs from proof and has to cite it.",
   openGraph: {
     title: "ryux: evidence-based UI references for AI agents",
     description:
-      "Curated screens and flows over MCP, plus a source-available anti-slop ruleset. Design from proof, not generic patterns.",
+      "Curated screens and flows over MCP, plus an open-source anti-slop ruleset. Design from proof, not generic patterns.",
     url: "https://ryux.design",
     siteName: "ryux",
     type: "website",
