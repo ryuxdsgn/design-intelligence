@@ -7,154 +7,154 @@
 
 # ryux
 
-> **Referensi UI dari aplikasi Indonesia yang terbukti berhasil** — disajikan lewat website dan
-> MCP server untuk agent AI, dengan gate anti slop bawaan (**ryux-rules**). Berbasis bukti:
-> setiap keputusan desain merujuk screen nyata, bukan pola generik.
+> UI and flow references from real Indonesian apps, served to AI agents over an MCP server, with
+> an anti-slop gate built in (**ryux-rules**). Evidence-based: every design decision cites a real
+> screen, not a generic pattern.
 
-> **Baru di sini?** Mulai dari [GUIDE.md](./GUIDE.md) — panduan dari nol: pasang aturan ke agent-mu
-> lalu sambungkan ke data referensi.
+> **New here?** Start with [GUIDE.md](./GUIDE.md) — a from-scratch walkthrough: install the rules
+> into your agent, then connect it to the reference data.
 
-## Apa yang membedakan
+## What makes it different
 
-- **Berbasis bukti.** Setiap hasil membawa `screen_id`, nama app, versi, dan tanggal capture. Keputusan desain wajib merujuk screen nyata — ditegakkan `delivery_gate`.
-- **Lokal Indonesia dulu.** QRIS, virtual account, OTP WhatsApp, paylater, e-KYC, format Rupiah — pola yang tidak ada di library global.
-- **Penilaian manusia.** Catatan desainer (kenapa berhasil, apa kelemahannya) ditulis orang, bukan digenerate AI. Ini pembeda utama ryux.
-- **Aturan milik sendiri.** `ryux-rules` (RX-C / RX-H / RX-N / RX-L) — karya orisinal, lisensi source-available, tanpa dependency pihak ketiga.
+- **Evidence-based.** Every result carries a `screen_id`, app name, version, and capture date. A design decision has to cite a real screen — enforced by `delivery_gate`.
+- **Indonesia-first.** QRIS, virtual accounts, WhatsApp OTP, paylater, e-KYC, Rupiah formatting — patterns global libraries don't cover.
+- **Human judgment.** Designer notes (why a flow works, where it falls short) are written by people, not generated. This is ryux's core differentiator.
+- **Its own ruleset.** `ryux-rules` (RX-C / RX-H / RX-N / RX-L) — original work, source-available, with no third-party dependencies.
 
-## Apa isinya
+## What's inside
 
-- **9 tool MCP** dalam tiga kelompok: riset (`search_screens`, `get_flow`, `get_local_pattern`, `compare_apps`, `extract_design_direction`), audit (`audit_ui`, `audit_copy`, `heuristic_eval`, `delivery_gate`), dan jembatan desain.
-- **ryux-rules** — 45 aturan RX dalam empat lapisan: filter anti slop (RX-C), heuristik usability & aksesibilitas (RX-H), pola UX terapan riset NNGroup (RX-N), pola & copy Indonesia (RX-L). Plus Delivery Gate PASS/FAIL sebelum rilis.
-- **CLI `ryux-rules`** — pasang aturan ke Claude Code, Cursor, atau AGENTS.md dengan satu perintah, **per-concern** (ui, copy, a11y, ux, local) seperti memilih skill.
+- **Nine MCP tools** in three groups: research (`search_screens`, `get_flow`, `get_local_pattern`, `compare_apps`, `extract_design_direction`), audit (`audit_ui`, `audit_copy`, `heuristic_eval`, `delivery_gate`), and a design bridge.
+- **ryux-rules** — 45 rules across four layers: anti-slop filter (RX-C), usability & accessibility heuristics (RX-H), applied UX patterns from NNGroup research (RX-N), and Indonesian patterns & copy (RX-L). Plus a PASS/FAIL Delivery Gate before you ship.
+- **`ryux-rules` CLI** — installs the rules into Claude Code, Cursor, or AGENTS.md in one command, **per concern** (ui, copy, a11y, ux, local), the way you'd pick skills.
 
-## Lihat bedanya — per concern
+## See the difference — per concern
 
-`ryux-rules` dipasang per **concern** (`ryux-ui`, `ryux-copy`, `ryux-a11y`, `ryux-ux`, `ryux-local`).
-Tiap concern punya before/after nyata di bawah — dibuat di pen.dev, brief sama, `after` memakai
-aturan concern itu + data ryux.
+`ryux-rules` installs per **concern** (`ryux-ui`, `ryux-copy`, `ryux-a11y`, `ryux-ux`, `ryux-local`).
+Each concern has a real before/after below — built in pen.dev from the same brief; the "after"
+applies that concern's rules plus ryux data. The reference screens are in Indonesian, on purpose.
 
-**`ryux-ui` — UI & visual** · palet, spasi, konsistensi, state
+**`ryux-ui` — UI & visual** · palette, spacing, consistency, states
 
-| Sebelum — tanpa ryux | Sesudah — `ryux-ui` |
+| Before — no ryux | After — `ryux-ui` |
 |:--|:--|
-| <a href="assets/compare/ui/ui-before.png"><img src="assets/compare/ui/ui-before.png" alt="Layar bayar generik: logo sparkle, badge 256-BIT, angka pengguna karangan, metode global (Card/PayPal/Apple/Google), harga dolar, teks kontras rendah" width="100%"></a> | <a href="assets/compare/ui/ui-after.png"><img src="assets/compare/ui/ui-after.png" alt="Layar checkout ryux premium: ringkasan pesanan, rincian biaya transparan (subtotal, ongkir, total Rp1.250.000), QRIS dengan ekspektasi verifikasi kurang dari 5 detik, tombol Bayar Rp1.250.000, catatan kepercayaan, bukti scr_a3f091" width="100%"></a> |
-| Pola global, angka karangan, dolar, kontras tipis. | Palet 2–3 warna + aksen (RX-C-07), spasi konsisten (RX-C-08), Rupiah, bukti `screen_id`. |
+| <a href="assets/compare/ui/ui-before.png"><img src="assets/compare/ui/ui-before.png" alt="Generic payment screen: sparkle logo, 256-BIT badge, made-up user numbers, global methods (Card/PayPal/Apple/Google), dollar pricing, low-contrast text" width="100%"></a> | <a href="assets/compare/ui/ui-after.png"><img src="assets/compare/ui/ui-after.png" alt="ryux checkout screen: order summary, transparent fee breakdown (subtotal, shipping, total Rp1.250.000), QRIS with an under-5-second verification note, Bayar Rp1.250.000 button, trust note, scr_a3f091 evidence" width="100%"></a> |
+| Global template, made-up numbers, dollars, thin contrast. | 2–3 core colors + one accent (RX-C-07), consistent spacing (RX-C-08), Rupiah, `screen_id` evidence. |
 
-**`ryux-copy` — Copywriting Indonesia** · Bahasa wajar, Rupiah, pesan error
+**`ryux-copy` — Indonesian copywriting** · natural language, Rupiah, error messages
 
-| Sebelum — tanpa ryux | Sesudah — `ryux-copy` |
+| Before — no ryux | After — `ryux-copy` |
 |:--|:--|
-| <a href="assets/compare/copy/copy-before.png"><img src="assets/compare/copy/copy-before.png" alt="Layar gagal bayar generik: Payment Failed, pesan samar Something went wrong, kode error TXN_0x8004, Amount IDR 1250000, tombol merah TRY AGAIN" width="100%"></a> | <a href="assets/compare/copy/copy-after.png"><img src="assets/compare/copy/copy-after.png" alt="Layar gagal bayar ryux: Pembayaran gagal, sebab jelas saldo BCA Virtual Account belum cukup untuk Rp1.250.000, kartu langkah pemulihan, tombol Pilih metode lain, bukti scr_a3f091" width="100%"></a> |
-| "Payment Failed", pesan samar, kode error teknis, dolar, tombol kapital. | "Pembayaran gagal", sebab + solusi (RX-N-05), Bahasa wajar (RX-L-07), Rupiah (RX-L-06). |
+| <a href="assets/compare/copy/copy-before.png"><img src="assets/compare/copy/copy-before.png" alt="Generic failed-payment screen: Payment Failed, vague Something went wrong, technical error code TXN_0x8004, Amount IDR 1250000, red TRY AGAIN button" width="100%"></a> | <a href="assets/compare/copy/copy-after.png"><img src="assets/compare/copy/copy-after.png" alt="ryux failed-payment screen: Pembayaran gagal, clear cause that the BCA Virtual Account balance is short of Rp1.250.000, recovery-steps card, Pilih metode lain button, scr_a3f091 evidence" width="100%"></a> |
+| "Payment Failed", vague message, technical error code, dollars, shouting button. | "Pembayaran gagal" with cause + fix (RX-N-05), natural Indonesian (RX-L-07), Rupiah (RX-L-06). |
 
-**`ryux-a11y` — Aksesibilitas** · kontras, ukuran teks, target sentuh, fokus
+**`ryux-a11y` — Accessibility** · contrast, text size, touch targets, focus
 
-| Sebelum — tanpa ryux | Sesudah — `ryux-a11y` |
+| Before — no ryux | After — `ryux-a11y` |
 |:--|:--|
-| <a href="assets/compare/a11y/a11y-before.png"><img src="assets/compare/a11y/a11y-before.png" alt="Layar pengaturan tak aksesibel: teks abu kontras rendah 11px, label hanya placeholder, target sentuh kecil, toggle mungil, tombol Simpan pucat kontras rendah" width="100%"></a> | <a href="assets/compare/a11y/a11y-after.png"><img src="assets/compare/a11y/a11y-after.png" alt="Layar pengaturan ryux: teks 16px kontras AA, field fokus dengan ring aksen, target sentuh besar, toggle jelas, tombol Simpan perubahan kontras tinggi, bukti scr_a3f091" width="100%"></a> |
-| Teks 11px kontras ~2:1, label placeholder, target kecil, tombol pucat. | Teks ≥16px kontras AA (RX-H-11), target ≥48px (RX-H-12), fokus terlihat (RX-H-13). |
+| <a href="assets/compare/a11y/a11y-before.png"><img src="assets/compare/a11y/a11y-before.png" alt="Inaccessible settings screen: low-contrast 11px grey text, placeholder-only labels, small touch targets, tiny toggle, washed-out Simpan button" width="100%"></a> | <a href="assets/compare/a11y/a11y-after.png"><img src="assets/compare/a11y/a11y-after.png" alt="ryux settings screen: 16px AA-contrast text, a focused field with an accent ring, large touch targets, clear toggle, high-contrast Simpan perubahan button, scr_a3f091 evidence" width="100%"></a> |
+| 11px text at ~2:1 contrast, placeholder-only labels, small targets, washed-out button. | ≥16px text at AA contrast (RX-H-11), ≥48px targets (RX-H-12), visible focus (RX-H-13). |
 
-**`ryux-ux` — Pola UX terapan (NNGroup)** · form, validasi, field minimal, keypad
+**`ryux-ux` — Applied UX patterns (NNGroup)** · forms, validation, minimal fields, keypad
 
-| Sebelum — tanpa ryux | Sesudah — `ryux-ux` |
+| Before — no ryux | After — `ryux-ux` |
 |:--|:--|
-| <a href="assets/compare/ux/ux-before.png"><img src="assets/compare/ux/ux-before.png" alt="Form daftar buruk: dua kolom sempit, label hanya placeholder, semua field wajib termasuk referral, banner error samar, tombol DAFTAR generik" width="100%"></a> | <a href="assets/compare/ux/ux-after.png"><img src="assets/compare/ux/ux-after.png" alt="Form daftar ryux: satu kolom, label di atas field, nomor HP dengan keypad angka dan status valid, kata sandi dengan error inline yang mempertahankan isian, kode referral opsional, tombol Lanjut, bukti scr_a3f091" width="100%"></a> |
-| Dua kolom, label placeholder, semua wajib, error samar. | Satu kolom + label di atas (RX-N-02), validasi inline jaga isian (RX-N-03), field minimal (RX-N-04), keypad angka (RX-N-10). |
+| <a href="assets/compare/ux/ux-before.png"><img src="assets/compare/ux/ux-before.png" alt="Poor sign-up form: cramped two columns, placeholder-only labels, every field required including referral, vague error banner, generic DAFTAR button" width="100%"></a> | <a href="assets/compare/ux/ux-after.png"><img src="assets/compare/ux/ux-after.png" alt="ryux sign-up form: single column, labels above fields, phone number with a numeric keypad and a valid status, password with an inline error that keeps the input, optional referral code, Lanjut button, scr_a3f091 evidence" width="100%"></a> |
+| Two columns, placeholder labels, everything required, vague error. | Single column with labels above (RX-N-02), inline validation that keeps input (RX-N-03), minimal fields (RX-N-04), numeric keypad (RX-N-10). |
 
-**`ryux-local` — Pola Indonesia** · QRIS, Virtual Account, biaya, Rupiah
+**`ryux-local` — Indonesian patterns** · QRIS, virtual account, fees, Rupiah
 
-| Sebelum — tanpa ryux | Sesudah — `ryux-local` |
+| Before — no ryux | After — `ryux-local` |
 |:--|:--|
-| <a href="assets/compare/local/local-before.png"><img src="assets/compare/local/local-before.png" alt="Pembayaran kartu global: judul Payment, tagihan dolar 79.00, form kartu nomor MM/YY CVV, metode global VISA Mastercard PayPal G Pay, tombol PAY 79.00" width="100%"></a> | <a href="assets/compare/local/local-after.png"><img src="assets/compare/local/local-after.png" alt="Virtual Account BCA ryux: hitung mundur batas bayar, nomor VA dengan tombol Salin, rincian biaya admin transparan, total Rp1.250.000, langkah bayar m-BCA bernomor, bukti scr_a3f091" width="100%"></a> |
-| Kartu global, dolar, metode luar negeri, tak ada pola lokal. | Virtual Account + Salin + batas bayar (RX-L-02), biaya admin transparan (RX-L-04), Rupiah. |
+| <a href="assets/compare/local/local-before.png"><img src="assets/compare/local/local-before.png" alt="Global card payment: Payment title, $79.00 dollar amount, card form (number, MM/YY, CVV), global methods VISA Mastercard PayPal G Pay, PAY $79.00 button" width="100%"></a> | <a href="assets/compare/local/local-after.png"><img src="assets/compare/local/local-after.png" alt="ryux BCA Virtual Account screen: payment countdown, VA number with a Salin (copy) button, transparent admin-fee breakdown, Rp1.250.000 total, numbered m-BCA payment steps, scr_a3f091 evidence" width="100%"></a> |
+| Global card form, dollars, foreign methods, no local pattern. | Virtual Account + copy button + payment deadline (RX-L-02), transparent admin fee (RX-L-04), Rupiah. |
 
-**Bonus — review usability lewat MCP** (`heuristic_eval`; tool audit, bukan concern instalasi)
+**Bonus — usability review over MCP** (`heuristic_eval`; an audit tool, not an install concern)
 
-| Sebelum — kritik dangkal | Sesudah — `heuristic_eval` |
+| Before — shallow critique | After — `heuristic_eval` |
 |:--|:--|
-| <a href="assets/compare/review/review-before.png"><img src="assets/compare/review/review-before.png" alt="Review AI dangkal: bullet samar seperti tambahkan white space, buat lebih modern, perbaiki UX, tanpa bukti" width="100%"></a> | <a href="assets/compare/review/review-after.png"><img src="assets/compare/review/review-after.png" alt="Review ryux heuristic_eval: temuan H-01 Visibility mayor dan H-05 Error prevention minor dengan rekomendasi dan bukti screen_id" width="100%"></a> |
-| Opini tanpa bukti. | Temuan berformat: heuristik, severity 0–4, rekomendasi, bukti `screen_id`. |
+| <a href="assets/compare/review/review-before.png"><img src="assets/compare/review/review-before.png" alt="Shallow AI review: vague bullets like add white space, make it more modern, improve UX, with no evidence" width="100%"></a> | <a href="assets/compare/review/review-after.png"><img src="assets/compare/review/review-after.png" alt="ryux heuristic_eval review: an H-01 Visibility major finding and an H-05 Error prevention minor finding, each with a recommendation and screen_id evidence" width="100%"></a> |
+| Opinions without evidence. | Structured findings: heuristic, severity 0–4, recommendation, `screen_id` evidence. |
 
-**Landing page — hero section** · headline, CTA, bukti sosial
+**Landing page — hero section** · headline, CTA, social proof
 
-_Tanpa ryux_ — hero generik "berbau AI": buzzword, statistik karangan, logo palsu.
+_No ryux_ — a generic "AI-flavored" hero: buzzwords, invented stats, fake logos.
 
-<a href="assets/compare/hero/hero-before.png"><img src="assets/compare/hero/hero-before.png" alt="Hero landing generik: logo Nexlify dengan sparkle, judul Empower Your Business with AI-Powered Solutions, subjudul buzzword all-in-one platform, dua tombol Get Started Free dan Book a Demo, rating bintang lima palsu Trusted by 10,000+ teams worldwide, grid logo AS SEEN IN kosong" width="100%"></a>
+<a href="assets/compare/hero/hero-before.png"><img src="assets/compare/hero/hero-before.png" alt="Generic AI landing hero: Nexlify sparkle logo, headline Empower Your Business with AI-Powered Solutions, buzzword subhead about an all-in-one platform, Get Started Free and Book a Demo buttons, fake five-star Trusted by 10,000+ teams worldwide, empty AS SEEN IN logo grid" width="100%"></a>
 
-_Dengan `ryux-rules`_ — spesifik, jujur, Bahasa Indonesia, warna brand bermakna (hijau = untung), satu CTA jelas, pola lokal (login WhatsApp, setor ke BCA).
+_With `ryux-rules`_ — specific, honest, Indonesian, a meaningful brand color (green = profit), one clear CTA, local patterns (WhatsApp login, transfer to BCA).
 
-<a href="assets/compare/hero/hero-after.png"><img src="assets/compare/hero/hero-after.png" alt="Hero landing ryux: aplikasi kasir Catat dengan warna brand hijau, kicker KASIR & PEMBUKUAN UMKM, judul Tutup kasir untung ketahuan, subjudul catat tiap transaksi dari HP tanpa Excel, tombol Coba gratis dan Lihat 1 menit cara kerjanya, baris masuk pakai nomor WhatsApp gratis 50 transaksi pertama, pratinjau tutup kasir Warung Bu Sri dengan untung hari ini Rp680.000 dan setor ke BCA berlabel Contoh" width="100%"></a>
+<a href="assets/compare/hero/hero-after.png"><img src="assets/compare/hero/hero-after.png" alt="ryux landing hero on a warm off-white background: Catat kasir app with a green brand color, a KASIR & PEMBUKUAN UMKM kicker, headline Tutup kasir untung ketahuan, subhead about recording every transaction from your phone without Excel, Coba gratis and Lihat 1 menit cara kerjanya buttons, a WhatsApp-login line offering 50 free transactions, and an end-of-day preview for Warung Bu Sri showing Untung hari ini Rp680.000 with transfer to BCA, marked Contoh" width="100%"></a>
 
-Slop: buzzword tanpa makna (RX-C-06), "10.000+" tanpa sumber (RX-C-03), logo palsu (RX-C-04), warna indigo default template. ryux: manfaat spesifik + idiom lokal, warna brand bermakna, tawaran nyata alih-alih statistik karangan, pola lokal (WhatsApp/BCA), pratinjau ditandai `Contoh` (RX-C-05).
+Slop: meaningless buzzwords (RX-C-06), "10,000+" with no source (RX-C-03), fake logos (RX-C-04), default-template indigo. ryux: a specific benefit in local idiom, a meaningful brand color, a real offer instead of invented stats, local patterns (WhatsApp/BCA), and a preview marked `Contoh` (RX-C-05).
 
-**Keputusan desain**
+**Design decisions**
 
-| Sebelum | Sesudah |
+| Before | After |
 | --- | --- |
-| "Taruh QRIS paling atas karena bagus." | "Taruh QRIS paling atas — pola yang dipakai app F&B Indonesia untuk nominal kecil (`scr_demo_001`)." |
+| "Put QRIS at the top because it looks good." | "Put QRIS at the top — the pattern Indonesian F&B apps use for small amounts (`scr_demo_001`)." |
 
-Aturan `RX-C-01` menolak keputusan tanpa bukti `screen_id`; `delivery_gate` menegakkannya.
+`RX-C-01` rejects any decision without `screen_id` evidence; `delivery_gate` enforces it.
 
-Aturan UI yang dicek `audit_ui` / `heuristic_eval`: target sentuh ≥ 44px (RX-H-12), kontras ≥ 4.5:1
-(RX-H-11), dan state lengkap loading/kosong/error (RX-H-14). Gambar di atas dibuat jujur — bukan
-mockup palsu (RX-C-05).
+The UI checks run by `audit_ui` / `heuristic_eval`: touch targets ≥ 44px (RX-H-12), contrast ≥ 4.5:1
+(RX-H-11), and complete states — loading/empty/error (RX-H-14). The screens above are built
+honestly, not faked mockups (RX-C-05).
 
-## Isi repo (monorepo pnpm)
+## Repo layout (pnpm monorepo)
 
 ```
-apps/mcp/         MCP server (Cloudflare Workers) — 9 tool
-packages/core/    @ryux/core — data + logika tool, bebas platform
-packages/cli/     ryux-rules — CLI pasang aturan ke agent AI
+apps/mcp/         MCP server (Cloudflare Workers) — 9 tools
+packages/core/    @ryux/core — data + tool logic, platform-agnostic
+packages/cli/     ryux-rules — CLI that installs the rules into AI agents
 docs/             taxonomy.md, design-rules.md
 ```
 
-Roadmap (belum dibuat): `apps/web` (website Next.js) dan `packages/pipeline` (capture video → data).
+Roadmap (not built yet): `apps/web` (Next.js site) and `packages/pipeline` (video capture → data).
 
-## Mulai cepat
+## Quick start
 
-Prasyarat: Node 20+, pnpm.
+Requires Node 20+ and pnpm.
 
 ```bash
 pnpm install
-pnpm dev:mcp        # MCP server di http://localhost:8787/mcp
+pnpm dev:mcp        # MCP server at http://localhost:8787/mcp
 pnpm typecheck
 ```
 
-Endpoint MCP memakai transport **Streamable HTTP** — sambungkan lewat MCP client (Claude Code,
-MCP Inspector), bukan browser biasa.
+The MCP endpoint uses **Streamable HTTP** transport — connect through an MCP client (Claude Code,
+MCP Inspector), not a regular browser.
 
-### Pasang ryux-rules ke agent-mu
+### Install ryux-rules into your agent
 
 ```bash
-npx ryux-rules            # wizard: pilih agent + concern (ui, copy, a11y, ux, local)
+npx ryux-rules            # wizard: pick your agent + concerns (ui, copy, a11y, ux, local)
 ```
 
-Pasang hanya yang kamu butuhkan — seperti antislop yang membiarkanmu memilih UI/copywriting/dll.
-Tiap concern jadi skill sendiri (mis. `ryux-ui`, `ryux-copy`); inti (bukti + kejujuran) selalu ikut.
-Detail: [`packages/cli`](./packages/cli). Sumber aturan: [`docs/design-rules.md`](./docs/design-rules.md).
+Install only what you need — each concern becomes its own skill (e.g. `ryux-ui`, `ryux-copy`); the
+core (evidence + honesty) always comes along. Details: [`packages/cli`](./packages/cli). Rule
+source: [`docs/design-rules.md`](./docs/design-rules.md).
 
-## Dokumentasi
+## Docs
 
-| Dokumen | Isi |
+| Document | Contents |
 | --- | --- |
-| [`docs/taxonomy.md`](./docs/taxonomy.md) | Kosakata terkontrol: kategori, flow, pola, komponen |
-| [`docs/design-rules.md`](./docs/design-rules.md) | Aturan desain ryux (RX-C / RX-H / RX-N / RX-L) |
-| [`apps/mcp/README.md`](./apps/mcp/README.md) | Menjalankan & mencoba MCP server |
+| [`docs/taxonomy.md`](./docs/taxonomy.md) | Controlled vocabulary: categories, flows, patterns, components |
+| [`docs/design-rules.md`](./docs/design-rules.md) | The ryux design ruleset (RX-C / RX-H / RX-N / RX-L) |
+| [`apps/mcp/README.md`](./apps/mcp/README.md) | Running and trying the MCP server |
 
 ## Status
 
-**v0.1 (early access, gratis).** Data masih contoh, belum ada login, kuota di memori. Menuju
-produksi: Supabase (data `published`, RLS aktif), OAuth, kuota berbasis ledger, pencarian
-full-text + pgvector.
+**v0.1 (early access, free).** Data is still sample data, there's no login yet, and quota lives in
+memory. Toward production: Supabase (`published` data, RLS on), OAuth, ledger-based quota, and
+full-text + pgvector search.
 
-## Keamanan
+## Security
 
-Lihat [`SECURITY.md`](./SECURITY.md) untuk cara melaporkan kerentanan. Prinsip yang sudah dipegang:
-teks OCR diperlakukan sebagai data (bukan instruksi), RLS aktif sejak migrasi pertama, dan tidak
-ada secret di repo.
+See [`SECURITY.md`](./SECURITY.md) for how to report a vulnerability. Principles already in place:
+OCR text is treated as data (never as instructions), RLS is on from the first migration, and no
+secrets live in the repo.
 
-## Lisensi
+## License
 
-**Source-available**, © 2026 ryux.design (lihat [`LICENSE`](./LICENSE)). Bebas dipakai dan
-dimodifikasi untuk keperluanmu, tetapi **tidak boleh dijual ulang atau dirilis ulang sebagai
-produk lain**. Bukan turunan, dan tidak berafiliasi dengan proyek pihak ketiga mana pun.
+**Source-available**, © 2026 ryux.design (see [`LICENSE`](./LICENSE)). Free to use and modify for
+your own work, but you may **not resell it or re-release it as a competing product**. Not a
+derivative of, and not affiliated with, any third-party project.
