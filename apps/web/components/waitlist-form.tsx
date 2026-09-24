@@ -30,7 +30,7 @@ export function WaitlistForm() {
       setEmail("");
     } catch {
       setStatus("error");
-      setMessage("Network hiccup — check your connection and retry.");
+      setMessage("Network hiccup. Check your connection and try again.");
     }
   }
 
@@ -75,7 +75,7 @@ export function WaitlistForm() {
         </p>
       )}
       <p className="mt-3 text-[13px] text-sub">
-        We email you once — when reviewed production screens and paid plans are ready. No spam.
+        We email you once, when reviewed production screens and paid plans are ready. No spam.
       </p>
     </form>
   );
