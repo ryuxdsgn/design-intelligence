@@ -1,0 +1,22 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+
+  --color-paper: #faf9f6;
+  --color-ink: #0f172a;
+  --color-sub: #64748b;
+  --color-hair: #e2e8f0;
+  --color-card: #f8fafc;
+  --color-accent: #4f46e5;
+  --color-accent-soft: #eef2ff;
+  --color-ok: #059669;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  -webkit-font-smoothing: antialiased;
+}
