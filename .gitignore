@@ -5,3 +5,6 @@ node_modules
 .env.*
 .DS_Store
 dist
+
+# Spesifikasi produk internal — tidak untuk repo publik
+docs/prd.md
