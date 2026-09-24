@@ -11,8 +11,8 @@
 > MCP server untuk agent AI, dengan gate anti slop bawaan (**ryux-rules**). Berbasis bukti:
 > setiap keputusan desain merujuk screen nyata, bukan pola generik.
 
-> **Baru di sini?** Mulai dari [`docs/prd.md`](./docs/prd.md) (apa yang dibangun dan kenapa) dan
-> [`docs/design-rules.md`](./docs/design-rules.md) (aturannya).
+> **Baru di sini?** Mulai dari [GUIDE.md](./GUIDE.md) — panduan dari nol: pasang aturan ke agent-mu
+> lalu sambungkan ke data referensi.
 
 ## Apa yang membedakan
 
@@ -26,6 +26,39 @@
 - **9 tool MCP** dalam tiga kelompok: riset (`search_screens`, `get_flow`, `get_local_pattern`, `compare_apps`, `extract_design_direction`), audit (`audit_ui`, `audit_copy`, `heuristic_eval`, `delivery_gate`), dan jembatan desain.
 - **ryux-rules** — 33 aturan RX dalam tiga lapisan: filter anti slop (RX-C), heuristik usability & aksesibilitas (RX-H), pola & copy Indonesia (RX-L). Plus Delivery Gate PASS/FAIL sebelum rilis.
 - **CLI `ryux-rules`** — pasang aturan ke Claude Code, Cursor, atau AGENTS.md dengan satu perintah.
+
+## Lihat bedanya
+
+ryux-rules bekerja seperti filter: mengubah keputusan dan copy yang "berbau AI" menjadi yang
+berbukti dan wajar. Contoh nyata (berbasis teks, bukan mockup):
+
+**Copy**
+
+| Sebelum | Sesudah | Aturan |
+| --- | --- | --- |
+| `Rp 1250000` | `Rp1.250.000` | RX-L-06 |
+| "Terjadi kesalahan." | "Pembayaran gagal. Cek koneksi lalu coba lagi." | RX-H-09 |
+| "BAYAR SEKARANG" | "Bayar sekarang" | RX-C-06 |
+| "Pelajari selengkapnya" | "Lihat contoh checkout QRIS" | RX-C-06 |
+
+**Keputusan desain**
+
+| Sebelum | Sesudah |
+| --- | --- |
+| "Taruh QRIS paling atas karena bagus." | "Taruh QRIS paling atas — pola yang dipakai app F&B Indonesia untuk nominal kecil (`scr_demo_001`)." |
+
+Aturan `RX-C-01` menolak keputusan tanpa bukti `screen_id`; `delivery_gate` menegakkannya.
+
+**UI** (dicek `audit_ui` / `heuristic_eval`)
+
+| Sebelum | Sesudah | Aturan |
+| --- | --- | --- |
+| Tombol 32px | Tombol ≥ 44px | RX-H-12 |
+| Kontras teks 3:1 | Kontras ≥ 4.5:1 | RX-H-11 |
+| Hanya layar sukses | + loading / kosong / error | RX-H-14 |
+
+> Perbandingan **gambar** (screenshot before/after) menyusul saat data screen asli sudah ada.
+> ryux tidak memakai mockup palsu — itu melanggar aturannya sendiri (RX-C-05).
 
 ## Isi repo (monorepo pnpm)
 
