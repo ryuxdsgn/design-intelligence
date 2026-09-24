@@ -2,7 +2,8 @@
 // ditulis dari nol berdasarkan standar & riset publik (10 heuristik Nielsen 1994, riset UX
 // Nielsen Norman Group, WCAG 2.2, Apple HIG, Material). Sumber lengkap: docs/design-rules.md.
 
-// Semua aturan RX (empat lapisan: RX-C filter, RX-H heuristik, RX-N pedoman NNGroup, RX-L lokal).
+// Semua aturan RX. Empat lapisan desain: RX-C filter, RX-H heuristik, RX-N pedoman NNGroup, RX-L
+// lokal. Plus RX-K: add-on kode bersih (concern ryux-code), di luar gate desain inti.
 export const RULES: Record<string, string> = {
   "RX-C-01": "Setiap keputusan desain merujuk minimal satu screen_id nyata sebagai bukti.",
   "RX-C-02": "Hindari tata letak template generik tanpa alasan konteks.",
@@ -49,6 +50,12 @@ export const RULES: Record<string, string> = {
   "RX-L-08": "Rujukan dan pola diambil dari aplikasi Indonesia nyata.",
   "RX-L-09": "Paylater atau cicilan: tampilkan limit, tenor, dan total biaya jelas.",
   "RX-L-10": "e-KYC: panduan bingkai dan alasan pengambilan data sebelum kamera dibuka.",
+  "RX-K-01": "Komentar menjelaskan alasan (kenapa), bukan mengulang apa yang sudah jelas dari kode.",
+  "RX-K-02": "Nama variabel dan fungsi spesifik serta bermakna; hindari data, temp, helper, manager tanpa konteks.",
+  "RX-K-03": "Hapus kode mati, impor tak terpakai, dan blok ter-comment; jangan tinggalkan TODO kosong.",
+  "RX-K-04": "Ikuti gaya berkas di sekitarnya (format, penamaan, pola); jangan memaksakan gaya baru.",
+  "RX-K-05": "Hindari abstraksi dan konfigurasi berlebih untuk kebutuhan yang belum ada.",
+  "RX-K-06": "Tangani error dengan pesan yang bisa ditindak; jangan menelan error diam-diam.",
 };
 
 // Aturan inti — selalu terpasang (bukti + kejujuran konten).
@@ -92,6 +99,12 @@ export const CONCERNS: Concern[] = [
     label: "Pola Indonesia",
     hint: "QRIS, VA, OTP, biaya, alamat, paylater, e-KYC",
     rules: ["RX-L-01", "RX-L-02", "RX-L-03", "RX-L-04", "RX-L-05", "RX-L-09", "RX-L-10"],
+  },
+  {
+    id: "code",
+    label: "Kode bersih",
+    hint: "komentar jujur, penamaan bermakna, tanpa kode mati, gaya konsisten",
+    rules: ["RX-K-01", "RX-K-02", "RX-K-03", "RX-K-04", "RX-K-05", "RX-K-06"],
   },
 ];
 

@@ -22,8 +22,10 @@ Wizard menanyakan: agent yang dipakai, **concern** yang mau dipasang, dan (opsio
 | `a11y` | Aksesibilitas | RX-H-11/12/13/14 |
 | `ux` | Pola UX terapan (NNGroup) | RX-N-01/02/03/05/06/07/09/11 |
 | `local` | Pola Indonesia | RX-L-01..05/09/10 |
+| `code` | Kode bersih (add-on) | RX-K-01..06 |
 
 Inti (bukti + kejujuran: RX-C-01/03/04/05/09) selalu terpasang sebagai skill `ryux-rules`.
+Versi browsable tiap skill ada di [`skills/`](../../skills) (di-generate lewat `pnpm sync:skills`).
 
 ## Target per agent
 
@@ -42,7 +44,7 @@ Inti (bukti + kejujuran: RX-C-01/03/04/05/09) selalu terpasang sebagai skill `ry
 ## Mode non-interaktif
 
 ```bash
-npx ryux-rules install --agent claude,cursor,codex --concerns ui,copy,a11y,ux,local --mcp
+npx ryux-rules install --agent claude,cursor,codex --concerns ui,copy,a11y,ux,local,code --mcp
 npx ryux-rules remove --yes
 ```
 

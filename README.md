@@ -25,7 +25,7 @@
 
 - **Nine MCP tools** in three groups: research (`search_screens`, `get_flow`, `get_local_pattern`, `compare_apps`, `extract_design_direction`), audit (`audit_ui`, `audit_copy`, `heuristic_eval`, `delivery_gate`), and a design bridge.
 - **ryux-rules** is 45 rules across four layers: an anti-slop filter (RX-C), usability and accessibility heuristics (RX-H), applied UX patterns from NNGroup research (RX-N), and Indonesian patterns and copy (RX-L). There's a PASS/FAIL Delivery Gate before you ship.
-- **The `ryux-rules` CLI** installs the rules into Claude Code, Cursor, or AGENTS.md in one command. You pick only the concerns you need (ui, copy, a11y, ux, local), the way you'd pick skills.
+- **The `ryux-rules` CLI** installs the rules into Claude Code, Cursor, or AGENTS.md in one command. You pick only the concerns you need (ui, copy, a11y, ux, local, code), the way you'd pick skills. You can browse every skill in [`skills/`](./skills).
 
 ## See the difference
 
@@ -106,6 +106,7 @@ apps/mcp/         MCP server (Cloudflare Workers), 9 tools
 apps/web/         ryux.design site (Next.js), landing + waitlist
 packages/core/    @ryux/core, shared data and tool logic
 packages/cli/     ryux-rules, the CLI that installs the rules into agents
+skills/           browsable copies of each ryux-rules skill
 docs/             taxonomy.md, design-rules.md
 ```
 
@@ -128,7 +129,7 @@ Inspector) rather than a regular browser.
 ### Install ryux-rules into your agent
 
 ```bash
-npx ryux-rules            # wizard: pick your agent and concerns (ui, copy, a11y, ux, local)
+npx ryux-rules            # wizard: pick your agent and concerns (ui, copy, a11y, ux, local, code)
 ```
 
 Install only what you need. Each concern becomes its own skill (`ryux-ui`, `ryux-copy`, and so on),

@@ -349,10 +349,25 @@ selalu ikut. Peta concern → aturan ini adalah sumber kebenaran yang dibagikan 
 | `ryux-a11y` | Aksesibilitas | RX-H-11, RX-H-12, RX-H-13, RX-H-14 |
 | `ryux-ux` | Pola UX terapan (NNGroup) | RX-N-01, RX-N-02, RX-N-03, RX-N-05, RX-N-06, RX-N-07, RX-N-09, RX-N-11 |
 | `ryux-local` | Pola Indonesia | RX-L-01, RX-L-02, RX-L-03, RX-L-04, RX-L-05, RX-L-09, RX-L-10 |
+| `ryux-code` | Kode bersih (add-on) | RX-K-01, RX-K-02, RX-K-03, RX-K-04, RX-K-05, RX-K-06 |
+| `ryux-critique` | Playbook review usability | (lihat skill `ryux-critique`) |
 
+Skill browsable ada di direktori `skills/` (di-generate dari `content.ts` lewat `pnpm sync:skills`).
 Seluruh lapisan RX-N kini dibundel di CLI (sebelumnya hanya di dokumen ini). Aturan yang belum
 masuk concern mana pun (mis. RX-H-01/02/03/05/06/07/10, RX-N-04/08/10, RX-L-08) tetap berlaku
 lewat MCP `heuristic_eval` dan Delivery Gate.
+
+### RX-K — Kode bersih (add-on, di luar gate desain inti)
+
+Concern `ryux-code` memasang aturan kebersihan kode. Ini bukan bagian dari empat lapisan desain
+(RX-C/H/N/L) dan tidak ikut dinilai `heuristic_eval`; sifatnya pelengkap untuk pekerjaan menulis kode.
+
+- **RX-K-01** Komentar menjelaskan alasan (kenapa), bukan mengulang apa yang sudah jelas dari kode.
+- **RX-K-02** Nama variabel dan fungsi spesifik serta bermakna; hindari `data`, `temp`, `helper`, `manager` tanpa konteks.
+- **RX-K-03** Hapus kode mati, impor tak terpakai, dan blok ter-comment; jangan tinggalkan TODO kosong.
+- **RX-K-04** Ikuti gaya berkas di sekitarnya (format, penamaan, pola); jangan memaksakan gaya baru.
+- **RX-K-05** Hindari abstraksi dan konfigurasi berlebih untuk kebutuhan yang belum ada.
+- **RX-K-06** Tangani error dengan pesan yang bisa ditindak; jangan menelan error diam-diam.
 
 ## Pemetaan ke kode
 
