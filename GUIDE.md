@@ -7,16 +7,16 @@ data referensi lewat MCP. Kalau kamu cuma mau gambaran cepat, baca [README](./RE
 
 ryux adalah dua hal yang bekerja bersama:
 
-1. **ryux-rules** — aturan desain (RX-C / RX-H / RX-L) yang menyaring keluaran agar tidak
+1. **ryux-rules** — aturan desain (RX-C / RX-H / RX-N / RX-L) yang menyaring keluaran agar tidak
    "berbau AI": berbukti, aksesibel, dan sesuai konteks Indonesia. Dokumen: [`docs/design-rules.md`](./docs/design-rules.md).
 2. **MCP server** — memberi agent akses ke **screen referensi aplikasi Indonesia** (data nyata,
-   catatan desainer) plus tool audit. Sembilan tool; lihat [`docs/prd.md`](./docs/prd.md).
+   catatan desainer) plus tool audit. Sembilan tool; lihat [`apps/mcp/README.md`](./apps/mcp/README.md).
 
 Aturan tanpa data cuma gaya; data tanpa aturan cuma tumpukan gambar. ryux menggabungkan keduanya.
 
 ## 1. Pasang ryux-rules ke agent
 
-Satu perintah, lalu jawab beberapa pertanyaan (agent yang dipakai, lapisan aturan, sambungan MCP):
+Satu perintah, lalu jawab beberapa pertanyaan (agent yang dipakai, concern yang dipasang, sambungan MCP):
 
 ```bash
 npx ryux-rules
@@ -36,7 +36,7 @@ File pengguna tidak pernah ditimpa mentah — perubahan hanya di dalam blok
 ### Non-interaktif
 
 ```bash
-npx ryux-rules install --agent claude,cursor --layers RX-C,RX-H,RX-L
+npx ryux-rules install --agent claude,cursor --concerns ui,copy,a11y,ux,local
 ```
 
 ## 2. Sambungkan ke MCP (data referensi)
@@ -76,4 +76,3 @@ npx ryux-rules remove     # hapus (mengembalikan file ke keadaan semula)
 
 - Aturan lengkap: [`docs/design-rules.md`](./docs/design-rules.md)
 - Kosakata (kategori, flow, pola): [`docs/taxonomy.md`](./docs/taxonomy.md)
-- Arsitektur & rencana: [`docs/prd.md`](./docs/prd.md)

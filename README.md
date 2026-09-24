@@ -93,10 +93,10 @@ mockup palsu (RX-C-05).
 apps/mcp/         MCP server (Cloudflare Workers) — 9 tool
 packages/core/    @ryux/core — data + logika tool, bebas platform
 packages/cli/     ryux-rules — CLI pasang aturan ke agent AI
-docs/             prd.md, taxonomy.md, design-rules.md
+docs/             taxonomy.md, design-rules.md
 ```
 
-Roadmap PRD (belum dibuat): `apps/web` (website Next.js) dan `packages/pipeline` (capture video → data).
+Roadmap (belum dibuat): `apps/web` (website Next.js) dan `packages/pipeline` (capture video → data).
 
 ## Mulai cepat
 
@@ -125,7 +125,6 @@ Detail: [`packages/cli`](./packages/cli). Sumber aturan: [`docs/design-rules.md`
 
 | Dokumen | Isi |
 | --- | --- |
-| [`docs/prd.md`](./docs/prd.md) | PRD sistem & MCP: arsitektur, model data, auth, rilis |
 | [`docs/taxonomy.md`](./docs/taxonomy.md) | Kosakata terkontrol: kategori, flow, pola, komponen |
 | [`docs/design-rules.md`](./docs/design-rules.md) | Aturan desain ryux (RX-C / RX-H / RX-N / RX-L) |
 | [`apps/mcp/README.md`](./apps/mcp/README.md) | Menjalankan & mencoba MCP server |
