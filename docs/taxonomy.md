@@ -1,88 +1,88 @@
-# Taksonomi ryux (draf v0.1)
+# ryux taxonomy (draft v0.1)
 
-Taksonomi terdiri dari empat lapisan tag: kategori app, tipe flow, pola, dan komponen. Slug memakai huruf kecil dan tanda hubung, dalam bahasa Inggris agar mudah dipakai agent; label tampil dalam Bahasa Indonesia.
+The taxonomy has four layers of tags: app category, flow type, pattern, and component. Slugs use lowercase and hyphens, in English so agents can work with them easily; labels are shown in Indonesian.
 
-## Kategori app
+## App category
 
 | Slug | Label | Pilot |
 | --- | --- | --- |
-| `fnb` | F&B dan pesan antar makanan | Ya |
-| `ecommerce` | E-commerce dan marketplace | Ya |
-| `pos-umkm` | Kasir dan manajemen usaha | Ya |
-| `ride-hailing` | Transportasi dan super app | Nanti |
-| `ewallet` | Dompet digital | Setelah rilis |
-| `digital-bank` | Bank digital | Setelah rilis |
-| `investment` | Investasi | Setelah rilis |
-| `travel` | Tiket dan perjalanan | Nanti |
-| `health` | Kesehatan dan telemedis | Nanti |
-| `edtech` | Pendidikan | Nanti |
-| `gov` | Layanan pemerintah | Nanti |
+| `fnb` | F&B and food delivery | Yes |
+| `ecommerce` | E-commerce and marketplace | Yes |
+| `pos-umkm` | Point of sale and business management | Yes |
+| `ride-hailing` | Transport and super app | Later |
+| `ewallet` | Digital wallet | After launch |
+| `digital-bank` | Digital bank | After launch |
+| `investment` | Investment | After launch |
+| `travel` | Tickets and travel | Later |
+| `health` | Health and telemedicine | Later |
+| `edtech` | Education | Later |
+| `gov` | Government services | Later |
 
-## Tipe flow
+## Flow type
 
 | Slug | Label |
 | --- | --- |
-| `onboarding` | Onboarding dan pengenalan app |
-| `signup-login` | Daftar dan masuk (termasuk OTP) |
-| `ekyc` | Verifikasi identitas |
-| `home-discovery` | Beranda dan penemuan |
-| `search-filter` | Pencarian dan filter |
-| `product-detail` | Detail produk atau menu |
-| `cart-checkout` | Keranjang dan checkout |
-| `payment` | Pembayaran |
-| `topup` | Isi saldo |
-| `order-tracking` | Lacak pesanan |
-| `promo-voucher` | Promo, voucher, dan cashback |
-| `subscription` | Langganan dan paywall |
-| `profile-settings` | Profil dan pengaturan |
-| `empty-error` | Empty state dan error |
-| `review-rating` | Ulasan dan rating |
+| `onboarding` | Onboarding and app introduction |
+| `signup-login` | Sign up and log in (including OTP) |
+| `ekyc` | Identity verification |
+| `home-discovery` | Home and discovery |
+| `search-filter` | Search and filter |
+| `product-detail` | Product or menu detail |
+| `cart-checkout` | Cart and checkout |
+| `payment` | Payment |
+| `topup` | Balance top-up |
+| `order-tracking` | Order tracking |
+| `promo-voucher` | Promos, vouchers, and cashback |
+| `subscription` | Subscription and paywall |
+| `profile-settings` | Profile and settings |
+| `empty-error` | Empty state and error |
+| `review-rating` | Reviews and ratings |
 
-## Pola lokal
+## Local patterns
 
-| Slug | Label | Ciri |
+| Slug | Label | Characteristics |
 | --- | --- | --- |
-| `qris` | QRIS | Scan atau tampilkan kode, konfirmasi nominal |
-| `virtual-account` | Virtual account | Pilih bank, salin nomor VA, batas waktu bayar |
-| `ewallet-link` | Tautan e-wallet | Hubungkan akun, redirect ke app dompet |
-| `paylater` | Paylater | Limit, tenor, simulasi cicilan |
-| `installment` | Cicilan kartu | Pilihan tenor dan bunga |
-| `cod` | Bayar di tempat | Konfirmasi dan catatan untuk kurir |
-| `otp-sms-wa` | OTP via SMS atau WhatsApp | Pilihan kanal, hitung mundur kirim ulang |
-| `ktp-capture` | Foto KTP dan selfie | Panduan bingkai, penjelasan alasan |
-| `cashback-coins` | Cashback dan koin | Saldo poin, potongan di checkout |
-| `flash-sale` | Flash sale | Hitung mundur, stok terbatas |
-| `rupiah-input` | Input nominal Rupiah | Prefiks Rp, titik ribuan, nominal cepat |
-| `address-pinpoint` | Alamat dan pin lokasi | Patokan, detail rumah, pin peta |
+| `qris` | QRIS | Scan or display the code, confirm the amount |
+| `virtual-account` | Virtual account | Choose a bank, copy the VA number, payment deadline |
+| `ewallet-link` | E-wallet link | Connect the account, redirect to the wallet app |
+| `paylater` | Paylater | Limit, tenor, installment simulation |
+| `installment` | Card installment | Tenor and interest options |
+| `cod` | Cash on delivery | Confirmation and notes for the courier |
+| `otp-sms-wa` | OTP via SMS or WhatsApp | Channel choice, resend countdown |
+| `ktp-capture` | KTP photo and selfie | Framing guidance, explanation of the reason |
+| `cashback-coins` | Cashback and coins | Points balance, discount at checkout |
+| `flash-sale` | Flash sale | Countdown, limited stock |
+| `rupiah-input` | Rupiah amount input | Rp prefix, thousands separator, quick amounts |
+| `address-pinpoint` | Address and location pin | Landmark, house details, map pin |
 
-## Komponen
+## Components
 
 | Slug | Label |
 | --- | --- |
 | `bottom-sheet` | Bottom sheet |
-| `modal` | Modal atau dialog |
+| `modal` | Modal or dialog |
 | `pin-pad` | PIN pad |
-| `otp-input` | Kolom OTP |
-| `payment-method-picker` | Pemilih metode bayar |
-| `promo-banner` | Banner promo |
-| `stepper` | Indikator langkah |
-| `tab-bar` | Navigasi bawah |
+| `otp-input` | OTP field |
+| `payment-method-picker` | Payment method picker |
+| `promo-banner` | Promo banner |
+| `stepper` | Step indicator |
+| `tab-bar` | Bottom navigation |
 | `chip-filter` | Chip filter |
-| `card-list` | Daftar kartu |
-| `countdown` | Hitung mundur |
-| `toast-snackbar` | Toast atau snackbar |
+| `card-list` | Card list |
+| `countdown` | Countdown |
+| `toast-snackbar` | Toast or snackbar |
 | `skeleton` | Skeleton loading |
-| `map-view` | Tampilan peta |
+| `map-view` | Map view |
 
-## Aturan pemakaian
+## Usage rules
 
-- Setiap screen wajib punya tepat satu kategori dan satu tipe flow (diwarisi dari flow), serta nol atau lebih pola dan komponen
-- Slug baru hanya boleh ditambahkan oleh admin, dan dicatat di tabel perubahan di bawah
-- Tag dari AI yang tidak cocok dengan slug yang ada ditolak, bukan dibuat otomatis
-- Tinjau ulang taksonomi setelah pilot 10 app
+- Every screen must have exactly one category and one flow type (inherited from the flow), plus zero or more patterns and components
+- New slugs may only be added by an admin, and are recorded in the change log below
+- AI tags that do not match an existing slug are rejected, not created automatically
+- Review the taxonomy again after the pilot of 10 apps
 
-## Riwayat perubahan
+## Change history
 
-| Versi | Perubahan |
+| Version | Change |
 | --- | --- |
-| v0.1 | Draf awal untuk pilot |
+| v0.1 | Initial draft for the pilot |
