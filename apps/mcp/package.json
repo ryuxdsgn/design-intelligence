@@ -12,6 +12,7 @@
   "dependencies": {
     "@modelcontextprotocol/sdk": "1.30.0",
     "@ryux/core": "workspace:*",
+    "@supabase/supabase-js": "^2.45.0",
     "agents": "^0.23.0",
     "zod": "^4.6.5"
   },

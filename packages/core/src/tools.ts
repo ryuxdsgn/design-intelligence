@@ -1,5 +1,6 @@
 import { z } from "zod";
-import { LOCAL_PATTERNS, SCREENS, type LocalPattern, type Screen } from "./data";
+import { getLocalPatterns, getScreens, type LocalPattern, type Screen } from "./data";
+
 
 // Kuota sementara di memori, hanya untuk demo.
 // Versi asli: cek entitlement + tulis usage_events dan credit_ledger di Supabase.
@@ -42,7 +43,7 @@ export function toScreenResult(s: Screen): ScreenResult {
 
 export function searchScreens({ query, category, pattern, limit }: SearchScreensArgs): ScreenResult[] {
   const q = query.toLowerCase();
-  return SCREENS.filter((s) => (category ? s.app.category === category : true))
+  return getScreens().filter((s) => (category ? s.app.category === category : true))
     .filter((s) => (pattern ? s.tags.includes(pattern) : true))
     .filter((s) =>
       [s.flow.type, ...s.tags, s.designer_notes.why_it_works]
@@ -77,11 +78,11 @@ export type GetFlowResult =
 
 /** Daftar id flow unik yang tersedia di data. */
 export function flowIds(): string[] {
-  return [...new Set(SCREENS.map((s) => s.flow.id))];
+  return [...new Set(getScreens().map((s) => s.flow.id))];
 }
 
 export function getFlow(flowId: string): GetFlowResult {
-  const steps = SCREENS.filter((s) => s.flow.id === flowId)
+  const steps = getScreens().filter((s) => s.flow.id === flowId)
     .sort((a, b) => a.flow.position - b.flow.position)
     .map(toScreenResult);
   if (steps.length === 0) {
@@ -111,9 +112,9 @@ export type GetLocalPatternResult =
   | { ok: false; available: string[] };
 
 export function getLocalPattern(slug: string): GetLocalPatternResult {
-  const found = LOCAL_PATTERNS[slug];
+  const found = getLocalPatterns()[slug];
   if (!found) {
-    return { ok: false, available: Object.keys(LOCAL_PATTERNS) };
+    return { ok: false, available: Object.keys(getLocalPatterns()) };
   }
   return { ok: true, slug, pattern: found };
 }
@@ -151,7 +152,7 @@ export type CompareAppsResult = {
 
 /** Daftar nama aplikasi unik yang tersedia di data. */
 export function appNames(): string[] {
-  return [...new Set(SCREENS.map((s) => s.app.name))];
+  return [...new Set(getScreens().map((s) => s.app.name))];
 }
 
 export function compareApps({ apps }: CompareAppsArgs): CompareAppsResult {
@@ -159,7 +160,7 @@ export function compareApps({ apps }: CompareAppsArgs): CompareAppsResult {
   const notFound: string[] = [];
 
   for (const name of apps) {
-    const screens = SCREENS.filter((s) => s.app.name === name);
+    const screens = getScreens().filter((s) => s.app.name === name);
     if (screens.length === 0) {
       notFound.push(name);
       continue;
@@ -286,7 +287,7 @@ export type DeliveryGateResult = {
 };
 
 export function deliveryGate({ summary, decisions }: DeliveryGateArgs): DeliveryGateResult {
-  const known = new Set(SCREENS.map((s) => s.screen_id));
+  const known = new Set(getScreens().map((s) => s.screen_id));
   const checks: DeliveryGateCheck[] = decisions.map((d) => {
     const valid = d.screen_ids.filter((id) => known.has(id));
     return {
@@ -622,7 +623,7 @@ export type HeuristicEvalResult = {
 };
 
 export function heuristicEval({ task_context, findings }: HeuristicEvalArgs): HeuristicEvalResult {
-  const known = new Set(SCREENS.map((s) => s.screen_id));
+  const known = new Set(getScreens().map((s) => s.screen_id));
   const notes: string[] = [];
 
   // Batasi jumlah temuan: cegah kritik dangkal yang berlebihan (simpan severity tertinggi).
