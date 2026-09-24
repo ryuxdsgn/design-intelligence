@@ -7,7 +7,7 @@
 > Penyebutan standar bersifat faktual; seluruh penjelasan, contoh, dan penomoran ditulis sendiri.
 > **Bukan turunan teks berlisensi pihak ketiga** dan tidak berafiliasi dengan NN/g atau pihak mana pun.
 >
-> **Terakhir diperbarui:** 2026-09-24 · **Versi:** RX-1.1
+> **Terakhir diperbarui:** 2026-09-24 · **Versi:** RX-1.2
 
 Gate mutu ryux untuk UI dan copy. Tiga hal yang membuatnya khas ryux: **berbasis bukti**
 (rujuk screen nyata), **Indonesia lebih dulu**, dan **penilaian manusia** untuk catatan desainer.
@@ -334,6 +334,26 @@ Sebelum pekerjaan UI/copy dianggap selesai:
 
 Hasil **FAIL** bila ada aturan [Wajib] gagal, atau ada temuan `heuristic_eval` severity ≥ 3 tanpa perbaikan.
 
+## Pemasangan lewat CLI — per-concern
+
+CLI `ryux-rules` (`packages/cli`) memasang aturan ke agent (Claude Code, Cursor, AGENTS.md)
+dikelompokkan per **concern**, bukan per lapisan. Pengguna memilih concern yang relevan; **inti**
+selalu ikut. Peta concern → aturan ini adalah sumber kebenaran yang dibagikan dengan
+`packages/cli/src/content.ts` — jaga keduanya tetap selaras.
+
+| Concern (skill) | Isi | Aturan RX |
+| --- | --- | --- |
+| `ryux-rules` (inti, selalu) | Bukti + kejujuran konten | RX-C-01, RX-C-03, RX-C-04, RX-C-05, RX-C-09 |
+| `ryux-ui` | UI & visual | RX-C-02, RX-C-07, RX-C-08, RX-H-04, RX-H-08, RX-H-14, RX-N-12 |
+| `ryux-copy` | Copywriting Indonesia | RX-C-06, RX-L-06, RX-L-07, RX-H-09, RX-N-05 |
+| `ryux-a11y` | Aksesibilitas | RX-H-11, RX-H-12, RX-H-13, RX-H-14 |
+| `ryux-ux` | Pola UX terapan (NNGroup) | RX-N-01, RX-N-02, RX-N-03, RX-N-05, RX-N-06, RX-N-07, RX-N-09, RX-N-11 |
+| `ryux-local` | Pola Indonesia | RX-L-01, RX-L-02, RX-L-03, RX-L-04, RX-L-05, RX-L-09, RX-L-10 |
+
+Seluruh lapisan RX-N kini dibundel di CLI (sebelumnya hanya di dokumen ini). Aturan yang belum
+masuk concern mana pun (mis. RX-H-01/02/03/05/06/07/10, RX-N-04/08/10, RX-L-08) tetap berlaku
+lewat MCP `heuristic_eval` dan Delivery Gate.
+
 ## Pemetaan ke kode
 
 Tool di `packages/core` (penomoran warisan `R-0x`/`C-0x`) dan tool baru `heuristic_eval`:
@@ -352,7 +372,7 @@ Tool di `packages/core` (penomoran warisan `R-0x`/`C-0x`) dan tool baru `heurist
 
 ## Lisensi & kepemilikan
 
-Ruleset ini (teks, struktur RX-C/RX-H/RX-L, penomoran) adalah karya orisinal ryux, **lisensi
+Ruleset ini (teks, struktur RX-C/RX-H/RX-N/RX-L, penomoran) adalah karya orisinal ryux, **lisensi
 source-available**, hak cipta © 2026 ryux. Menyebut standar publik (Nielsen 1994, WCAG 2.2, HIG,
 Material) secara faktual; tidak memuat teks, gambar, checklist berbayar, atau materi kursus pihak
 mana pun, dan tidak berafiliasi dengan mereka.
