@@ -1,7 +1,7 @@
 # ryux-rules (CLI)
 
 Pasang **aturan desain ryux** (RX-C / RX-H / RX-N / RX-L) ke agent AI-mu dengan satu perintah.
-Karya orisinal ryux.design, lisensi source-available. Sumber aturan: [`docs/design-rules.md`](../../docs/design-rules.md).
+Karya orisinal ryux.design, lisensi MIT. Sumber aturan: [`docs/design-rules.md`](../../docs/design-rules.md).
 
 ## Pakai
 

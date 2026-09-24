@@ -17,7 +17,7 @@ function byId(id: string): Concern | undefined {
 }
 
 const header = (scope: string): string =>
-  `> Aturan desain ryux.design — versi ${RULES_VERSION}, lisensi source-available.
+  `> Aturan desain ryux.design — versi ${RULES_VERSION}, lisensi MIT.
 > Terapkan pada pekerjaan ${scope} sebelum menganggapnya selesai.`;
 
 const gate = `## Delivery Gate
