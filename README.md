@@ -75,6 +75,18 @@ aturan concern itu + data ryux.
 | <a href="assets/compare/review/review-before.png"><img src="assets/compare/review/review-before.png" alt="Review AI dangkal: bullet samar seperti tambahkan white space, buat lebih modern, perbaiki UX, tanpa bukti" width="100%"></a> | <a href="assets/compare/review/review-after.png"><img src="assets/compare/review/review-after.png" alt="Review ryux heuristic_eval: temuan H-01 Visibility mayor dan H-05 Error prevention minor dengan rekomendasi dan bukti screen_id" width="100%"></a> |
 | Opini tanpa bukti. | Temuan berformat: heuristik, severity 0–4, rekomendasi, bukti `screen_id`. |
 
+**Landing page — hero section** · headline, CTA, bukti sosial
+
+_Tanpa ryux_ — hero generik "berbau AI": buzzword, statistik karangan, logo palsu.
+
+<a href="assets/compare/hero/hero-before.png"><img src="assets/compare/hero/hero-before.png" alt="Hero landing generik: logo Nexlify dengan sparkle, judul Empower Your Business with AI-Powered Solutions, subjudul buzzword all-in-one platform, dua tombol Get Started Free dan Book a Demo, rating bintang lima palsu Trusted by 10,000+ teams worldwide, grid logo AS SEEN IN kosong" width="100%"></a>
+
+_Dengan `ryux-rules`_ — spesifik, jujur, Bahasa Indonesia, satu CTA jelas, tanpa angka karangan.
+
+<a href="assets/compare/hero/hero-after.png"><img src="assets/compare/hero/hero-after.png" alt="Hero landing ryux: aplikasi kasir Catat, judul Catat penjualan warung langsung tahu untungnya, subjudul aplikasi kasir dan pembukuan untuk UMKM, tombol Coba gratis dan Lihat cara kerja, tawaran jujur gratis 50 transaksi pertama tanpa kartu kredit, pratinjau produk penjualan hari ini Rp2.450.000 berlabel Contoh" width="100%"></a>
+
+Slop: buzzword tanpa makna (RX-C-06), "10.000+" tanpa sumber (RX-C-03), logo palsu (RX-C-04). ryux: manfaat spesifik, tawaran nyata alih-alih statistik karangan, pratinjau ditandai `Contoh` (RX-C-05).
+
 **Keputusan desain**
 
 | Sebelum | Sesudah |
