@@ -39,14 +39,19 @@ berbukti dan wajar. Contoh nyata:
 | <a href="assets/compare/ui/ui-before.png"><img src="assets/compare/ui/ui-before.png" alt="Layar bayar generik: logo sparkle, badge 256-BIT, angka pengguna karangan, metode global (Card/PayPal/Apple/Google), harga dolar, teks kontras rendah" width="100%"></a> | <a href="assets/compare/ui/ui-after.png"><img src="assets/compare/ui/ui-after.png" alt="Layar bayar ryux: Rp1.250.000 jelas ke merchant, QRIS diutamakan dengan tag paling sering dipakai, virtual account per bank dengan salin nomor, tombol Bayar sekarang, bukti scr_demo_001" width="100%"></a> |
 | Pola global, angka karangan, dolar, kontras tipis. | QRIS diutamakan (nominal & merchant jelas), Rupiah lokal, bukti `screen_id`, kontras cukup. |
 
-**Copy**
+**Copy — pesan gagal bayar**
 
-| Sebelum | Sesudah | Aturan |
-| --- | --- | --- |
-| `Rp 1250000` | `Rp1.250.000` | RX-L-06 |
-| "Terjadi kesalahan." | "Pembayaran gagal. Cek koneksi lalu coba lagi." | RX-H-09 |
-| "BAYAR SEKARANG" | "Bayar sekarang" | RX-C-06 |
-| "Pelajari selengkapnya" | "Lihat contoh checkout QRIS" | RX-C-06 |
+| Sebelum — tanpa ryux | Sesudah — ryux-rules |
+|:--|:--|
+| <a href="assets/compare/copy/copy-before.png"><img src="assets/compare/copy/copy-before.png" alt="Layar gagal bayar generik: Payment Failed, pesan samar Something went wrong, kode error TXN_0x8004, Amount IDR 1250000, tombol merah TRY AGAIN" width="100%"></a> | <a href="assets/compare/copy/copy-after.png"><img src="assets/compare/copy/copy-after.png" alt="Layar gagal bayar ryux: Pembayaran gagal, sebab jelas saldo BCA Virtual Account belum cukup untuk Rp1.250.000, kartu langkah pemulihan, tombol Pilih metode lain, bukti scr_a3f091" width="100%"></a> |
+| "Payment Failed", pesan samar, kode error teknis, dolar, tombol kapital. | "Pembayaran gagal", sebab jelas + langkah pemulihan, Rupiah, bukti `screen_id`. |
+
+**Review — usability**
+
+| Sebelum — kritik dangkal | Sesudah — `heuristic_eval` |
+|:--|:--|
+| <a href="assets/compare/review/review-before.png"><img src="assets/compare/review/review-before.png" alt="Review AI dangkal: bullet samar seperti tambahkan white space, buat lebih modern, perbaiki UX, tanpa bukti" width="100%"></a> | <a href="assets/compare/review/review-after.png"><img src="assets/compare/review/review-after.png" alt="Review ryux heuristic_eval: temuan H-01 Visibility mayor dan H-05 Error prevention minor dengan rekomendasi dan bukti screen_id" width="100%"></a> |
+| Opini tanpa bukti. | Temuan berformat: heuristik, severity 0–4, rekomendasi, bukti `screen_id`. |
 
 **Keputusan desain**
 
