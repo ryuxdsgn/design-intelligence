@@ -18,7 +18,7 @@ export async function writeFileEnsured(path: string, content: string): Promise<v
   await writeFile(path, content, "utf8");
 }
 
-/** Tulis atau perbarui HANYA blok bertanda ryux-rules. File lain milik pengguna tidak disentuh. */
+/** Write or update ONLY the marked ryux-rules block. The rest of the user's file is untouched. */
 export async function upsertBlock(path: string, body: string): Promise<void> {
   const block = `${MARK_START}\n${body}\n${MARK_END}`;
   const existing = existsSync(path) ? await readFile(path, "utf8") : "";
@@ -32,14 +32,14 @@ export async function upsertBlock(path: string, body: string): Promise<void> {
   await writeFileEnsured(path, next);
 }
 
-/** Hapus blok bertanda ryux-rules; kembalikan true jika ada yang dihapus. */
+/** Remove the marked ryux-rules block; return true if anything was removed. */
 export async function removeBlock(path: string): Promise<boolean> {
   if (!existsSync(path)) return false;
   const existing = await readFile(path, "utf8");
   if (!blockRe.test(existing)) return false;
   const stripped = existing.replace(blockRe, "").replace(/\n{3,}/g, "\n\n").trimEnd();
   if (!stripped) {
-    // File hanya berisi blok ryux-rules (kita yang buat) -> hapus, jangan tinggalkan file kosong.
+    // The file only holds the ryux-rules block (we created it) -> delete it, don't leave an empty file.
     await rm(path, { force: true });
   } else {
     await writeFile(path, `${stripped}\n`, "utf8");

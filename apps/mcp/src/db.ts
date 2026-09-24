@@ -7,8 +7,8 @@ export interface SupabaseEnv {
 }
 
 /**
- * Muat data konten dari Supabase (view datar yang menghormati RLS: hanya 'published').
- * Kembalikan null bila env belum diisi -> pemanggil tetap memakai data contoh @ryux/core.
+ * Load content data from Supabase (flat views that respect RLS: 'published' only).
+ * Returns null when env is not set -> the caller keeps using the @ryux/core sample data.
  */
 export async function loadFromSupabase(
   env: SupabaseEnv,
