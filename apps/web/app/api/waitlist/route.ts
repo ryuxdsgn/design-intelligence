@@ -8,7 +8,7 @@ export async function POST(req: Request) {
   try {
     ({ email } = await req.json());
   } catch {
-    return NextResponse.json({ error: "That request didn't look right — try again." }, { status: 400 });
+    return NextResponse.json({ error: "That request didn't look right. Try again." }, { status: 400 });
   }
 
   if (typeof email !== "string" || !EMAIL_RE.test(email.trim())) {
@@ -18,7 +18,7 @@ export async function POST(req: Request) {
 
   const supabase = waitlistClient();
   if (!supabase) {
-    // Env not configured — don't pretend it worked.
+    // Env not configured; don't pretend it worked.
     return NextResponse.json(
       { error: "The waitlist isn't wired up in this environment yet. Try again later." },
       { status: 503 },
@@ -29,7 +29,7 @@ export async function POST(req: Request) {
 
   // Duplicate email (unique violation) is treated as success, without leaking whether it existed.
   if (error && error.code !== "23505") {
-    return NextResponse.json({ error: "Couldn't save that — give it another moment and retry." }, { status: 502 });
+    return NextResponse.json({ error: "Couldn't save that. Give it a moment and try again." }, { status: 502 });
   }
 
   return NextResponse.json({ ok: true }, { status: 200 });
