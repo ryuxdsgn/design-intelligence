@@ -6,6 +6,8 @@
   "scripts": {
     "dev:mcp": "pnpm --filter @ryux/mcp dev",
     "deploy:mcp": "pnpm --filter @ryux/mcp deploy",
+    "dev:web": "pnpm --filter @ryux/web dev",
+    "build:web": "pnpm --filter @ryux/web build",
     "typecheck": "pnpm -r typecheck"
   }
 }
