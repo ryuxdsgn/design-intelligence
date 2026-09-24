@@ -87,6 +87,18 @@ _With `ryux-rules`._ Specific, honest, Indonesian. A brand color that means some
 
 The slop tells: buzzwords that say nothing (RX-C-06), a "10,000+" with no source (RX-C-03), fake logos (RX-C-04), and the default-template indigo. The ryux version leads with a specific benefit in local idiom, picks a brand color that means something, makes a real offer instead of inventing a number, uses local patterns (WhatsApp, BCA), and marks the preview `Contoh` (RX-C-05).
 
+**ryux's own landing page (we use ryux on ryux)** · the honest test
+
+_Without ryux._ The same product pitched like generic AI slop: a buzzword headline, a "10,000+" with no source, and a fake "AS SEEN IN" logo wall.
+
+<a href="assets/compare/landing/landing-before.png"><img src="assets/compare/landing/landing-before.png" alt="Generic AI landing for ryux: sparkle logo, headline Supercharge your AI agents with beautiful production-ready UI, all-in-one platform subhead, Get Started Free and Book a Demo buttons, fake five-star Trusted by 10,000+ developers worldwide, and an empty AS SEEN IN logo grid" width="100%"></a>
+
+_With `ryux-rules`._ Designed in pen.dev under its own rules: an editorial layout, one accent, a specific evidence-first headline, and a real `search_screens` result (screen_id, app, version, capture date, designer note) where the slop version put fake logos.
+
+<a href="assets/compare/landing/landing-after.png"><img src="assets/compare/landing/landing-after.png" alt="ryux landing designed with ryux-rules: warm paper background, an MCP + design rules for AI agents kicker, headline Every design decision backed by a real screen, an honest subhead, Join the waitlist and See the difference buttons, an honest early-access trust line, and a search_screens evidence card for Warung Kopi Contoh with screen_id scr_a3f091, version, capture date, and a designer note" width="100%"></a>
+
+Real evidence (`scr_a3f091`, app, version, date) in place of a fake logo wall (RX-C-04): the "after" shows the product's whole point instead of borrowing credibility. Specific over buzzword (RX-C-06), one accent over default-everything (RX-C-07), an honest early-access line over an invented "10,000+" (RX-C-03).
+
 **Design decisions**
 
 | Before | After |
