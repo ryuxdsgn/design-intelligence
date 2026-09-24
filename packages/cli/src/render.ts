@@ -53,9 +53,10 @@ ${lines(c.rules)}`;
 
 // ── Claude Code skills ────────────────────────────────────────────────────────
 export function renderCoreSkill(concernIds: string[]): string {
+  const all = CONCERNS.map((c) => `ryux-${c.id}`).join(", ");
   return `---
 name: ryux-rules
-description: Inti aturan desain ryux (bukti + kejujuran konten). Selalu berlaku untuk pekerjaan UI atau copy; muat skill concern (ryux-ui, ryux-copy, ryux-a11y, ryux-ux, ryux-local) sesuai tugas.
+description: Inti aturan desain ryux (bukti + kejujuran konten). Selalu berlaku untuk pekerjaan UI atau copy; muat skill concern (${all}) sesuai tugas.
 ---
 
 ${coreBody(concernIds)}

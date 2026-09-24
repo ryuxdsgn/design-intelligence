@@ -9,6 +9,7 @@
     "deploy:mcp": "pnpm --filter @ryux/mcp deploy",
     "dev:web": "pnpm --filter @ryux/web dev",
     "build:web": "pnpm --filter @ryux/web build",
+    "sync:skills": "pnpm --filter ryux-rules build && node packages/cli/scripts/sync-skills.mjs",
     "typecheck": "pnpm -r typecheck"
   }
 }
