@@ -30,7 +30,14 @@
 ## Lihat bedanya
 
 ryux-rules bekerja seperti filter: mengubah keputusan dan copy yang "berbau AI" menjadi yang
-berbukti dan wajar. Contoh nyata (berbasis teks, bukan mockup):
+berbukti dan wajar. Contoh nyata:
+
+**UI — layar pembayaran** (dibuat di pen.dev; brief sama, `after` memakai ryux-rules + data ryux)
+
+| Sebelum — tanpa ryux | Sesudah — ryux-rules |
+|:--|:--|
+| <a href="assets/compare/ui/ui-before.png"><img src="assets/compare/ui/ui-before.png" alt="Layar bayar generik: logo sparkle, badge 256-BIT, angka pengguna karangan, metode global (Card/PayPal/Apple/Google), harga dolar, teks kontras rendah" width="100%"></a> | <a href="assets/compare/ui/ui-after.png"><img src="assets/compare/ui/ui-after.png" alt="Layar bayar ryux: Rp1.250.000 jelas ke merchant, QRIS diutamakan dengan tag paling sering dipakai, virtual account per bank dengan salin nomor, tombol Bayar sekarang, bukti scr_demo_001" width="100%"></a> |
+| Pola global, angka karangan, dolar, kontras tipis. | QRIS diutamakan (nominal & merchant jelas), Rupiah lokal, bukti `screen_id`, kontras cukup. |
 
 **Copy**
 
@@ -49,16 +56,9 @@ berbukti dan wajar. Contoh nyata (berbasis teks, bukan mockup):
 
 Aturan `RX-C-01` menolak keputusan tanpa bukti `screen_id`; `delivery_gate` menegakkannya.
 
-**UI** (dicek `audit_ui` / `heuristic_eval`)
-
-| Sebelum | Sesudah | Aturan |
-| --- | --- | --- |
-| Tombol 32px | Tombol ≥ 44px | RX-H-12 |
-| Kontras teks 3:1 | Kontras ≥ 4.5:1 | RX-H-11 |
-| Hanya layar sukses | + loading / kosong / error | RX-H-14 |
-
-> Perbandingan **gambar** (screenshot before/after) menyusul saat data screen asli sudah ada.
-> ryux tidak memakai mockup palsu — itu melanggar aturannya sendiri (RX-C-05).
+Aturan UI yang dicek `audit_ui` / `heuristic_eval`: target sentuh ≥ 44px (RX-H-12), kontras ≥ 4.5:1
+(RX-H-11), dan state lengkap loading/kosong/error (RX-H-14). Gambar di atas dibuat jujur — bukan
+mockup palsu (RX-C-05).
 
 ## Isi repo (monorepo pnpm)
 
