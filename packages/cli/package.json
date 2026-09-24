@@ -1,8 +1,8 @@
 {
   "name": "ryux-rules",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
-  "description": "Pasang aturan desain ryux (RX-C/RX-H/RX-L) ke agent AI: Claude Code, Cursor, atau AGENTS.md.",
+  "description": "Pasang aturan desain ryux (RX-C/RX-H/RX-N/RX-L) per-concern ke agent AI: Claude Code, Cursor, atau AGENTS.md.",
   "type": "module",
   "bin": {
     "ryux-rules": "./dist/index.js"
