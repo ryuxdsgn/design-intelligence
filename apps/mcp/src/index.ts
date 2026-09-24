@@ -18,8 +18,8 @@ import {
 } from "@ryux/core";
 import { loadFromSupabase, type SupabaseEnv } from "./db";
 
-// Server MCP ryux: hanya wiring transport + state kuota per-sesi.
-// Data dan logika tiap tool ada di @ryux/core.
+// ryux MCP server: just transport wiring + per-session quota state.
+// Each tool's data and logic live in @ryux/core.
 export class RyuxMCP extends McpAgent<SupabaseEnv> {
   server = new McpServer({ name: "ryux", version: "0.1.0" });
   private used = 0;
@@ -34,8 +34,8 @@ export class RyuxMCP extends McpAgent<SupabaseEnv> {
       ...this.reply({
         error: "quota_exceeded",
         credits_remaining: remaining,
-        reset_on: "tanggal 1 bulan depan",
-        plans_url: "https://ryux.design/harga",
+        reset_on: "the 1st of next month",
+        plans_url: "https://ryux.design/pricing",
       }),
     };
   }
@@ -45,7 +45,7 @@ export class RyuxMCP extends McpAgent<SupabaseEnv> {
       const data = await loadFromSupabase(this.env);
       if (data && data.screens.length > 0) setData(data.screens, data.patterns);
     } catch {
-      // Supabase tidak tersedia -> tetap pakai data contoh @ryux/core.
+      // Supabase unavailable -> keep using the @ryux/core sample data.
     }
 
     this.server.tool(
