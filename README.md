@@ -36,8 +36,8 @@ berbukti dan wajar. Contoh nyata:
 
 | Sebelum — tanpa ryux | Sesudah — ryux-rules |
 |:--|:--|
-| <a href="assets/compare/ui/ui-before.png"><img src="assets/compare/ui/ui-before.png" alt="Layar bayar generik: logo sparkle, badge 256-BIT, angka pengguna karangan, metode global (Card/PayPal/Apple/Google), harga dolar, teks kontras rendah" width="100%"></a> | <a href="assets/compare/ui/ui-after.png"><img src="assets/compare/ui/ui-after.png" alt="Layar bayar ryux: Rp1.250.000 jelas ke merchant, QRIS diutamakan dengan tag paling sering dipakai, virtual account per bank dengan salin nomor, tombol Bayar sekarang, bukti scr_demo_001" width="100%"></a> |
-| Pola global, angka karangan, dolar, kontras tipis. | QRIS diutamakan (nominal & merchant jelas), Rupiah lokal, bukti `screen_id`, kontras cukup. |
+| <a href="assets/compare/ui/ui-before.png"><img src="assets/compare/ui/ui-before.png" alt="Layar bayar generik: logo sparkle, badge 256-BIT, angka pengguna karangan, metode global (Card/PayPal/Apple/Google), harga dolar, teks kontras rendah" width="100%"></a> | <a href="assets/compare/ui/ui-after.png"><img src="assets/compare/ui/ui-after.png" alt="Layar checkout ryux premium: ringkasan pesanan, rincian biaya transparan (subtotal, ongkir, total Rp1.250.000), QRIS dengan ekspektasi verifikasi kurang dari 5 detik, tombol Bayar Rp1.250.000, catatan kepercayaan, bukti scr_a3f091" width="100%"></a> |
+| Pola global, angka karangan, dolar, kontras tipis. | Ringkasan pesanan + biaya transparan (RX-N-06/07), QRIS + ekspektasi waktu (RX-N-01), Rupiah, bukti `screen_id`. |
 
 **Copy — pesan gagal bayar**
 
