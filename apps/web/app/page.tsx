@@ -30,8 +30,8 @@ function Compare({
         <img src={after} alt={afterAlt} loading="lazy" className="w-full self-start rounded-xl border border-hair" />
       </div>
       <div className="mt-3 grid grid-cols-2 gap-4 text-[13px] text-sub">
-        <span>Before — no ryux</span>
-        <span>After — ryux</span>
+        <span>Before (no ryux)</span>
+        <span>After (ryux)</span>
       </div>
     </figure>
   );
@@ -43,12 +43,12 @@ const INSIDE = [
     body: "Research (search_screens, get_flow, compare_apps…), audit (audit_ui, audit_copy, heuristic_eval, delivery_gate), and a design bridge. Every result carries a screen_id, app, version, and capture date.",
   },
   {
-    title: "ryux-rules — four layers",
-    body: "45 rules: anti-slop filter (RX-C), usability & accessibility heuristics (RX-H), applied UX patterns from NNGroup research (RX-N), and Indonesian patterns & copy (RX-L). Plus a PASS/FAIL Delivery Gate.",
+    title: "ryux-rules, four layers",
+    body: "45 rules: anti-slop filter (RX-C), usability and accessibility heuristics (RX-H), applied UX patterns from NNGroup research (RX-N), and Indonesian patterns and copy (RX-L). Plus a PASS/FAIL Delivery Gate.",
   },
   {
     title: "Install per concern",
-    body: "npx ryux-rules drops the rules into Claude Code, Cursor, or AGENTS.md — pick only the concerns you need (ui, copy, a11y, ux, local), the way you'd pick skills.",
+    body: "npx ryux-rules drops the rules into Claude Code, Cursor, or AGENTS.md. You pick only the concerns you need (ui, copy, a11y, ux, local), the way you'd pick skills.",
   },
 ];
 
@@ -88,7 +88,7 @@ export default function Home() {
           </h1>
           <p className="mt-6 max-w-2xl text-lg leading-relaxed text-sub">
             ryux serves curated screens and flows from real Indonesian apps over MCP, with a source-available
-            anti-slop ruleset. Your agent designs from real examples — and has to cite them.
+            anti-slop ruleset. Your agent designs from real examples, and it has to cite them.
           </p>
           <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-4">
             <a href="#waitlist" className="rounded-xl bg-accent px-6 py-3.5 text-[15px] font-bold text-white hover:opacity-90">
@@ -99,8 +99,8 @@ export default function Home() {
             </a>
           </div>
           <p className="mt-6 max-w-xl text-sm text-sub">
-            Free during early access. Sample data today — production screens roll in reviewed by hand, never
-            auto-published.
+            Free during early access. The data is sample data today. Production screens roll in reviewed by
+            hand, never auto-published.
           </p>
         </section>
 
@@ -108,8 +108,8 @@ export default function Home() {
           <div className="mx-auto max-w-6xl px-6 py-16">
             <h2 className="text-2xl font-bold sm:text-3xl">See the difference</h2>
             <p className="mt-3 max-w-2xl text-sub">
-              Same brief, built in pen.dev. The “after” applies ryux-rules plus ryux data — specific, honest, and
-              Indonesian. Reference screens are in Indonesian, on purpose.
+              Same brief, built in pen.dev. The “after” applies ryux-rules plus ryux data: specific, honest,
+              and Indonesian. Reference screens are in Indonesian, on purpose.
             </p>
             <div className="mt-10 grid gap-12 md:grid-cols-2">
               <Compare
@@ -165,9 +165,9 @@ export default function Home() {
               </div>
             </div>
             <p className="mt-4 text-sm text-sub">
-              Source-available. Read the ruleset and run it yourself —{" "}
+              It's source-available, so you can read the ruleset and run it yourself.{" "}
               <a href={REPO} className="font-semibold text-accent hover:underline">
-                see the repo
+                Browse the repo
               </a>
               .
             </p>
