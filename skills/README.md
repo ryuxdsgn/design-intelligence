@@ -33,5 +33,5 @@ hand-authored in `.claude/skills/`. Regenerate with:
 pnpm sync:skills
 ```
 
-To install them into your agent, run `npx skills add ryuxdsgn/design-intelligence` or `npx ryux`
+To install them into your agent, run `npx skills add ryuxdsgn/design-intelligence` or `npx @ryuxdsgn/ryux`
 (see the [README](../README.md#install)).

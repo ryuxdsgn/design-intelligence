@@ -35,7 +35,7 @@
 
 | Product | For | What it is today |
 | --- | --- | --- |
-| **Ryux Build** | AI coding agents (Claude Code, Cursor, Codex) | `ryux-core` plus 13 design skills, installed with `npx ryux`, `npx skills add`, or the Claude Code plugin, and the MCP research tools |
+| **Ryux Build** | AI coding agents (Claude Code, Cursor, Codex) | `ryux-core` plus 13 design skills, installed with `npx @ryuxdsgn/ryux`, `npx skills add`, or the Claude Code plugin, and the MCP research tools |
 | **Ryux Critique** | Designers, and agents asked to review | The `ryux-critique` skill (Design Read plus evidence-backed findings) and the MCP audit tools |
 | **Ryux Knowledge** | Both | Screens, flows, local patterns, and human-written designer notes from Indonesian apps, served over MCP |
 
@@ -47,18 +47,18 @@ designer reviews with.
 - **Evidence-based.** Every result carries a `screen_id`, app name, version, and capture date. A design decision has to point at a real screen, and `delivery_gate` enforces that.
 - **Indonesia-first.** QRIS, virtual accounts, WhatsApp OTP, paylater, e-KYC, Rupiah formatting. These are the patterns global libraries skip.
 - **Human judgment.** Designer notes (why a flow works, where it falls short) are written by people, not generated. That's the part that matters most.
-- **Its own ruleset.** Ryux (RX-2.0, installed with `npx ryux` or `npx skills add`) is original work, MIT-licensed, with no third-party dependencies.
+- **Its own ruleset.** Ryux (RX-2.0, installed with `npx @ryuxdsgn/ryux` or `npx skills add`) is original work, MIT-licensed, with no third-party dependencies.
 
 ## What's inside
 
 - **Nine MCP tools** in three groups: research (`search_screens`, `get_flow`, `get_local_pattern`, `compare_apps`, `extract_design_direction`), audit (`audit_ui`, `audit_copy`, `heuristic_eval`, `delivery_gate`), and a design bridge.
 - **Ryux** is a senior product designer's reasoning for coding agents: a small `ryux-core` (workflow, which skills to load, a 10-area Delivery Gate, honest claims) plus 13 skills from product thinking to visual QA, and `ryux-critique` for reviews. Each skill is a short framework plus rules marked [Required], [Preferred], or [Contextual], with Hard Gates, Purpose Gates instead of style bans, and Quality Locks.
-- **One install for every agent.** `npx skills add`, the `npx ryux` CLI, or the Claude Code plugin put the skills into Claude Code, Codex, Cursor, Gemini CLI, OpenCode, Cline, Copilot, and more. Agents load only the skills a task needs. Browse every skill in [`skills/`](./skills).
+- **One install for every agent.** `npx skills add`, the `npx @ryuxdsgn/ryux` CLI, or the Claude Code plugin put the skills into Claude Code, Codex, Cursor, Gemini CLI, OpenCode, Cline, Copilot, and more. Agents load only the skills a task needs. Browse every skill in [`skills/`](./skills).
 
 ## See the difference
 
 Each brief below ran headless (`claude -p`) in an empty folder, once without Ryux and once with the
-Ryux RX-2.0 skills installed by the CLI (`npx ryux`). The agent chose which skills to load. The
+Ryux RX-2.0 skills installed by the CLI (`npx @ryuxdsgn/ryux`). The agent chose which skills to load. The
 screenshots are the agents' real output, not edited by hand. The colored boxes are annotations added
 afterwards to point at what changed.
 
@@ -135,12 +135,12 @@ npx skills add ryuxdsgn/design-intelligence
 in sync, and handles update and remove)
 
 ```bash
-npx ryux                                         # interactive
-npx ryux install --agent claude,cursor,codex     # non-interactive
-npx ryux install --agent all --groups critique   # Ryux Critique only, every agent
-npx ryux install --agent claude --global         # into your home directory
-npx ryux update
-npx ryux remove
+npx @ryuxdsgn/ryux                                         # interactive
+npx @ryuxdsgn/ryux install --agent claude,cursor,codex     # non-interactive
+npx @ryuxdsgn/ryux install --agent all --groups critique   # Ryux Critique only, every agent
+npx @ryuxdsgn/ryux install --agent claude --global         # into your home directory
+npx @ryuxdsgn/ryux update
+npx @ryuxdsgn/ryux remove
 ```
 
 **3. Claude Code plugin**
@@ -171,7 +171,7 @@ along. The reference data (Ryux Knowledge) is a separate hosted MCP service:
 apps/mcp/         MCP server (Cloudflare Workers), 9 tools
 apps/web/         ryux.design site (Next.js), landing + waitlist
 packages/core/    @ryux/core, shared data and tool logic
-packages/cli/     ryux, the CLI that installs the skills into agents (npx ryux)
+packages/cli/     ryux, the CLI that installs the skills into agents (npx @ryuxdsgn/ryux)
 skills/           the 15 Ryux skills (Build + Critique), one folder each
 .claude-plugin/   Claude Code plugin and marketplace manifests
 docs/             taxonomy.md, design-rules.md

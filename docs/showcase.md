@@ -8,7 +8,7 @@ Ryux + the ryux MCP.
 ## Setup (one time)
 
 1. Run the local MCP: `pnpm dev:mcp` (reference data at `http://localhost:8787/mcp`).
-2. Install the rules in the agent you use: `npx ryux` (choose Claude Code/Cursor + groups: foundation, ux, ui, engineering, quality).
+2. Install the rules in the agent you use: `npx @ryuxdsgn/ryux` (choose Claude Code/Cursor + groups: foundation, ux, ui, engineering, quality).
 3. Connect the agent to the MCP: `claude mcp add --transport http ryux-local http://localhost:8787/mcp`.
 4. Prepare the assets folder: `assets/compare/{ui,code,chat,copy,a11y,ux,local,review,landing}/`.
 5. Capture mobile screens at a width of **390px**; for the README UI image use a **1920×1080** frame. Export as PNG, and name the pairs `before` / `after`.
