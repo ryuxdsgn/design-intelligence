@@ -1,6 +1,6 @@
 ---
 name: ryux-ui
-description: Ryux UI design: hierarchy, type, spacing, layout, density, color, containers, imagery, motion. Load when doing visual design or visual refinement.
+description: "Ryux UI design: hierarchy, type, spacing, layout, density, color, containers, imagery, motion. Load when doing visual design or visual refinement."
 ---
 
 # ryux-ui: UI design

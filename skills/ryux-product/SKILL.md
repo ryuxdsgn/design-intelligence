@@ -1,6 +1,6 @@
 ---
 name: ryux-product
-description: Ryux Product thinking: user, task, goal, primary action, constraints, assumptions. Load when starting a new screen or flow, or when the scope is unclear.
+description: "Ryux Product thinking: user, task, goal, primary action, constraints, assumptions. Load when starting a new screen or flow, or when the scope is unclear."
 ---
 
 # ryux-product: Product thinking

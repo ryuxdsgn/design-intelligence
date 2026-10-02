@@ -1,143 +1,133 @@
 #!/usr/bin/env node
-import { existsSync } from "node:fs";
+import { existsSync, readdirSync } from "node:fs";
+import { homedir } from "node:os";
 import { join } from "node:path";
 import * as p from "@clack/prompts";
 import pc from "picocolors";
 import {
+  AGENT_TARGETS,
+  AGENTS_MD_INLINE,
   ALL_GROUP_IDS,
-  ALL_SKILL_IDS,
+  ALL_INSTALLABLE_IDS,
+  CLI_CMD,
   GROUPS,
   LEGACY_CONCERNS,
+  LEGACY_CURSOR_RULES_DIR,
   LEGACY_SKILL_DIRS,
   MARK_START,
   MCP_ADD_CMD,
   RULES_VERSION,
   SKILLS,
   skillsInGroups,
+  type AgentTarget,
+  type PointerFile,
 } from "./content.js";
-import {
-  detectSkills,
-  renderAgentsBlock,
-  renderClaudeBlock,
-  renderCoreMdc,
-  renderCoreSkill,
-  renderSkill,
-  renderSkillMdc,
-} from "./render.js";
+import { detectSkills, renderAgentsBlock, renderCoreSkill, renderPointerBlock, renderSkill } from "./render.js";
 import { readIfExists, rel, removeBlock, removePath, upsertBlock, writeFileEnsured } from "./fsutil.js";
 
-type AgentId = "claude" | "cursor" | "codex";
+type Flags = Record<string, string | boolean>;
 
-const AGENTS: { id: AgentId; label: string; hint: string }[] = [
-  { id: "claude", label: "Claude Code", hint: ".claude/skills/ryux-*" },
-  { id: "cursor", label: "Cursor", hint: ".cursor/rules/ryux-*.mdc" },
-  { id: "codex", label: "Codex / others", hint: "AGENTS.md" },
-];
+interface Scope {
+  global: boolean;
+  root: string;
+}
 
-const isAgent = (v: string): v is AgentId => AGENTS.some((a) => a.id === v);
+const AGENT_IDS = [...AGENT_TARGETS.map((a) => a.id), AGENTS_MD_INLINE.id];
 const isGroup = (v: string): boolean => (ALL_GROUP_IDS as string[]).includes(v);
 const isLegacyConcern = (v: string): boolean => v in LEGACY_CONCERNS;
+const targetDir = (a: AgentTarget, scope: Scope): string => join(scope.root, scope.global ? a.globalDir : a.dir);
 
-// Turn legacy --concerns values into skill ids (deduplicated, workflow order).
+// Legacy --concerns values (RX-1.x) mapped to current skill ids, in workflow order.
 const skillsFromConcerns = (concerns: string[]): string[] => {
   const wanted = new Set<string>(concerns.flatMap((c) => LEGACY_CONCERNS[c] ?? []));
-  return ALL_SKILL_IDS.filter((id) => wanted.has(id));
+  return ALL_INSTALLABLE_IDS.filter((id) => wanted.has(id));
 };
 
-function paths(cwd: string) {
-  return {
-    core: join(cwd, ".claude/skills/ryux-core/SKILL.md"),
-    coreDir: join(cwd, ".claude/skills/ryux-core"),
-    skillFile: (id: string) => join(cwd, `.claude/skills/ryux-${id}/SKILL.md`),
-    skillDir: (id: string) => join(cwd, `.claude/skills/ryux-${id}`),
-    claudeEntry: join(cwd, "CLAUDE.md"),
-    cursorCore: join(cwd, ".cursor/rules/ryux-core.mdc"),
-    legacyCore: join(cwd, ".claude/skills/ryux-rules/SKILL.md"),
-    legacyCursorCore: join(cwd, ".cursor/rules/ryux-rules.mdc"),
-    cursorSkill: (id: string) => join(cwd, `.cursor/rules/ryux-${id}.mdc`),
-    codexEntry: join(cwd, "AGENTS.md"),
-  };
+/** Unique skill folders for the chosen agents (agents that share a folder are written once). */
+function dirsFor(agentIds: string[], scope: Scope): string[] {
+  const dirs = AGENT_TARGETS.filter((a) => agentIds.includes(a.id)).map((a) => targetDir(a, scope));
+  return [...new Set(dirs)];
 }
 
-// Skill folders and Cursor files from earlier releases. Removed on install and remove so an upgrade
-// never leaves stale rules next to the current skills.
-async function removeLegacy(id: AgentId, cwd: string): Promise<string[]> {
-  const P = paths(cwd);
+function pointersFor(agentIds: string[]): PointerFile[] {
+  const files = AGENT_TARGETS.filter((a) => agentIds.includes(a.id)).map((a) => a.pointer);
+  return [...new Set(files)];
+}
+
+async function removeLegacy(dir: string, root: string): Promise<string[]> {
   const done: string[] = [];
   for (const c of LEGACY_SKILL_DIRS) {
-    const target = id === "claude" ? P.skillDir(c) : id === "cursor" ? P.cursorSkill(c) : null;
-    if (target && (await removePath(target))) done.push(`${rel(target)} (legacy)`);
+    const target = join(dir, `ryux-${c}`);
+    if (await removePath(target)) done.push(`${rel(target)} (legacy)`);
+  }
+  const cursorRules = join(root, LEGACY_CURSOR_RULES_DIR);
+  if (existsSync(cursorRules)) {
+    for (const f of readdirSync(cursorRules)) {
+      if (f.startsWith("ryux-") && f.endsWith(".mdc") && (await removePath(join(cursorRules, f)))) {
+        done.push(`${rel(join(cursorRules, f))} (legacy)`);
+      }
+    }
   }
   return done;
 }
 
-async function installAgent(id: AgentId, skills: string[], cwd: string): Promise<string[]> {
-  const P = paths(cwd);
-  const done: string[] = [...(await removeLegacy(id, cwd))];
-  if (id === "claude") {
-    for (const sk of ALL_SKILL_IDS) if (!skills.includes(sk)) await removePath(P.skillDir(sk));
-    await writeFileEnsured(P.core, renderCoreSkill(skills));
-    done.push(rel(P.core));
-    for (const sk of skills) {
-      await writeFileEnsured(P.skillFile(sk), renderSkill(sk));
-      done.push(rel(P.skillFile(sk)));
-    }
-    await upsertBlock(P.claudeEntry, renderClaudeBlock(skills));
-    done.push(`${rel(P.claudeEntry)} (block)`);
-  } else if (id === "cursor") {
-    for (const sk of ALL_SKILL_IDS) if (!skills.includes(sk)) await removePath(P.cursorSkill(sk));
-    await writeFileEnsured(P.cursorCore, renderCoreMdc(skills));
-    done.push(rel(P.cursorCore));
-    for (const sk of skills) {
-      await writeFileEnsured(P.cursorSkill(sk), renderSkillMdc(sk));
-      done.push(rel(P.cursorSkill(sk)));
-    }
-  } else {
-    await upsertBlock(P.codexEntry, renderAgentsBlock(skills));
-    done.push(`${rel(P.codexEntry)} (block)`);
+async function writeSkills(dir: string, skills: string[], root: string): Promise<string[]> {
+  const done = await removeLegacy(dir, root);
+  for (const id of ALL_INSTALLABLE_IDS) if (!skills.includes(id)) await removePath(join(dir, `ryux-${id}`));
+  const core = join(dir, "ryux-core/SKILL.md");
+  await writeFileEnsured(core, renderCoreSkill(skills));
+  done.push(rel(core));
+  for (const id of skills) {
+    const file = join(dir, `ryux-${id}/SKILL.md`);
+    await writeFileEnsured(file, renderSkill(id));
+    done.push(rel(file));
   }
   return done;
 }
 
-async function removeAgent(id: AgentId, cwd: string): Promise<string[]> {
-  const P = paths(cwd);
+async function install(agentIds: string[], skills: string[], scope: Scope): Promise<string[]> {
   const done: string[] = [];
-  if (id === "claude") {
-    if (await removePath(P.coreDir)) done.push(rel(P.coreDir));
-    for (const sk of ALL_SKILL_IDS) if (await removePath(P.skillDir(sk))) done.push(rel(P.skillDir(sk)));
-    done.push(...(await removeLegacy(id, cwd)));
-    if (await removeBlock(P.claudeEntry)) done.push(`${rel(P.claudeEntry)} (block)`);
-  } else if (id === "cursor") {
-    if (await removePath(P.cursorCore)) done.push(rel(P.cursorCore));
-    for (const sk of ALL_SKILL_IDS) if (await removePath(P.cursorSkill(sk))) done.push(rel(P.cursorSkill(sk)));
-    done.push(...(await removeLegacy(id, cwd)));
-  } else {
-    if (await removeBlock(P.codexEntry)) done.push(`${rel(P.codexEntry)} (block)`);
+  for (const dir of dirsFor(agentIds, scope)) done.push(...(await writeSkills(dir, skills, scope.root)));
+  if (scope.global) return done;
+
+  const inline = agentIds.includes(AGENTS_MD_INLINE.id);
+  for (const file of pointersFor(agentIds)) {
+    if (file === "AGENTS.md" && inline) continue;
+    await upsertBlock(join(scope.root, file), renderPointerBlock(skills));
+    done.push(`${file} (block)`);
+  }
+  if (inline) {
+    await upsertBlock(join(scope.root, "AGENTS.md"), renderAgentsBlock(skills));
+    done.push("AGENTS.md (rules inline)");
   }
   return done;
 }
 
-/** Map of agent -> installed skills (null if not installed). Legacy installs report [] (= all skills on update). */
-async function detectInstalled(cwd: string): Promise<Record<AgentId, string[] | null>> {
-  const P = paths(cwd);
-  const codex = await readIfExists(P.codexEntry);
-  return {
-    claude: existsSync(P.core)
-      ? ALL_SKILL_IDS.filter((sk) => existsSync(P.skillFile(sk)))
-      : existsSync(P.legacyCore)
-        ? skillsFromConcerns(Object.keys(LEGACY_CONCERNS).filter((c) => existsSync(P.skillFile(c))))
-        : null,
-    cursor: existsSync(P.cursorCore)
-      ? ALL_SKILL_IDS.filter((sk) => existsSync(P.cursorSkill(sk)))
-      : existsSync(P.legacyCursorCore)
-        ? skillsFromConcerns(Object.keys(LEGACY_CONCERNS).filter((c) => existsSync(P.cursorSkill(c))))
-        : null,
-    codex: codex && codex.includes(MARK_START) ? detectSkills(codex) : null,
-  };
+/** Skill folders that already hold a Ryux install, with the skills found in each. */
+function detectInstalled(scope: Scope): Map<string, string[]> {
+  const found = new Map<string, string[]>();
+  for (const a of AGENT_TARGETS) {
+    const dir = targetDir(a, scope);
+    if (found.has(dir)) continue;
+    if (existsSync(join(dir, "ryux-core/SKILL.md"))) {
+      found.set(dir, ALL_INSTALLABLE_IDS.filter((id) => existsSync(join(dir, `ryux-${id}/SKILL.md`))));
+    } else if (existsSync(join(dir, "ryux-rules/SKILL.md"))) {
+      found.set(dir, skillsFromConcerns(Object.keys(LEGACY_CONCERNS).filter((c) => existsSync(join(dir, `ryux-${c}`)))));
+    }
+  }
+  return found;
 }
 
-function parseFlags(argv: string[]): Record<string, string | boolean> {
-  const flags: Record<string, string | boolean> = {};
+/** Agent ids whose folders hold a Ryux install (or, for preselection, whose folders exist). */
+function agentsAt(scope: Scope, requireInstall: boolean): string[] {
+  return AGENT_TARGETS.filter((a) => {
+    const dir = targetDir(a, scope);
+    return requireInstall ? existsSync(join(dir, "ryux-core")) || existsSync(join(dir, "ryux-rules")) : existsSync(join(dir, ".."));
+  }).map((a) => a.id);
+}
+
+function parseFlags(argv: string[]): Flags {
+  const flags: Flags = {};
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
     if (!a.startsWith("--")) continue;
@@ -153,155 +143,195 @@ function parseFlags(argv: string[]): Record<string, string | boolean> {
   return flags;
 }
 
+const list = (v: string | boolean | undefined): string[] | null =>
+  typeof v === "string" ? v.split(",").map((s) => s.trim()).filter(Boolean) : null;
+
+const scopeOf = (flags: Flags): Scope => ({ global: Boolean(flags.global), root: flags.global ? homedir() : process.cwd() });
+
 function cancel(): void {
   p.cancel("Cancelled.");
 }
 
-async function install(flags: Record<string, string | boolean>): Promise<void> {
-  const cwd = process.cwd();
-  const list = (v: string | boolean | undefined): string[] | null =>
-    typeof v === "string" ? v.split(",").map((s) => s.trim()).filter(Boolean) : null;
+async function runInstall(flags: Flags): Promise<void> {
+  const scope = scopeOf(flags);
   const flagAgents = list(flags.agent);
   const flagGroups = list(flags.groups);
   const flagConcerns = list(flags.concerns);
+  const nonInteractive = Boolean(flagAgents);
 
-  let agents: AgentId[];
+  let agents: string[];
   let skills: string[];
-  let mcpChoice: string;
-  const nonInteractive = Boolean(flagAgents && (flagGroups || flagConcerns));
+  let showMcp: boolean;
 
-  if (flagAgents && (flagGroups || flagConcerns)) {
-    agents = flagAgents.filter(isAgent);
-    if (flagGroups) {
-      skills = skillsInGroups(flagGroups.filter(isGroup));
+  if (flagAgents) {
+    agents = flagAgents.includes("all") ? AGENT_TARGETS.map((a) => a.id) : flagAgents.filter((a) => AGENT_IDS.includes(a));
+    if (flagConcerns && !flagGroups) {
+      skills = skillsFromConcerns(flagConcerns.filter(isLegacyConcern));
+      console.log(pc.yellow(`--concerns is deprecated; use --groups ${ALL_GROUP_IDS.join(",")}.`));
     } else {
-      skills = skillsFromConcerns(flagConcerns!.filter(isLegacyConcern));
-      console.log(pc.yellow("--concerns is deprecated; use --groups " + ALL_GROUP_IDS.join(",") + "."));
+      skills = skillsInGroups((flagGroups ?? [...ALL_GROUP_IDS]).filter(isGroup));
     }
-    mcpChoice = flags.mcp ? "show" : "later";
+    showMcp = Boolean(flags.mcp);
     if (!agents.length || !skills.length) {
-      console.error(`Invalid agent or group. Agents: claude,cursor,codex. Groups: ${ALL_GROUP_IDS.join(",")}.`);
+      console.error(`Invalid agent or group.\nAgents: ${AGENT_IDS.join(",")},all\nGroups: ${ALL_GROUP_IDS.join(",")}`);
       process.exitCode = 1;
       return;
     }
   } else {
     if (!process.stdin.isTTY) {
-      console.error("Interactive mode needs a terminal. Use flags, e.g.: ryux-rules install --agent claude --groups ux,ui,quality");
+      console.error(`Interactive mode needs a terminal. Use flags, e.g.: ${CLI_CMD} install --agent claude,cursor --groups ux,ui,quality,critique`);
       process.exitCode = 1;
       return;
     }
-    p.intro(pc.bgCyan(pc.black(" ryux-rules ")));
+    p.intro(pc.bgCyan(pc.black(" ryux ")));
+    const detected = agentsAt(scope, false);
     const a = await p.multiselect({
-      message: "Which agent do you use?",
-      options: AGENTS.map((x) => ({ value: x.id, label: x.label, hint: x.hint })),
+      message: "Which agents do you use?",
+      options: [
+        ...AGENT_TARGETS.map((x) => ({ value: x.id, label: x.label, hint: scope.global ? `~/${x.globalDir}` : x.dir })),
+        { value: AGENTS_MD_INLINE.id, label: AGENTS_MD_INLINE.label, hint: "AGENTS.md" },
+      ],
+      initialValues: detected.length ? detected : ["claude"],
       required: true,
     });
     if (p.isCancel(a)) return cancel();
     const g = await p.multiselect({
-      message: "Which pipeline groups do you want? (core is always included)",
+      message: "Which groups? (ryux-core is always included)",
       options: GROUPS.map((x) => ({
         value: x.id,
         label: x.label,
-        hint: SKILLS.filter((s) => s.group === x.id).map((s) => s.id).join(", "),
+        hint: x.id === "critique" ? "ryux-critique" : SKILLS.filter((s) => s.group === x.id).map((s) => s.id).join(", "),
       })),
       initialValues: [...ALL_GROUP_IDS],
       required: true,
     });
     if (p.isCancel(g)) return cancel();
-    const m = await p.select({
-      message: "Connect to the ryux MCP?",
-      options: [
-        { value: "later", label: "Later" },
-        { value: "show", label: "Show the command" },
-      ],
-      initialValue: "later",
-    });
+    const m = await p.confirm({ message: "Show the ryux MCP connect command?", initialValue: false });
     if (p.isCancel(m)) return cancel();
-    agents = a as AgentId[];
+    agents = a as string[];
     skills = skillsInGroups(g as string[]);
-    mcpChoice = m as string;
+    showMcp = Boolean(m);
   }
 
-  const written: string[] = [];
-  for (const ag of agents) written.push(...(await installAgent(ag, skills, cwd)));
+  if (scope.global && agents.includes(AGENTS_MD_INLINE.id)) {
+    console.log(pc.yellow("agents-md is project-only; skipped for --global."));
+    agents = agents.filter((x) => x !== AGENTS_MD_INLINE.id);
+  }
 
+  const written = await install(agents, skills, scope);
   const summary = written.map((w) => pc.green("✓ ") + w).join("\n");
   if (nonInteractive) console.log(summary);
   else p.note(summary, "Installed");
 
-  if (mcpChoice === "show") {
+  if (showMcp) {
     if (nonInteractive) console.log(`\nMCP: ${MCP_ADD_CMD}`);
     else p.note(MCP_ADD_CMD, "Connect the ryux MCP");
   }
-  if (!nonInteractive) p.outro(`Try asking your agent: ${pc.cyan('"Audit this page with ryux-rules"')}`);
+  if (!nonInteractive) p.outro(`Try: ${pc.cyan('"Critique this page with ryux-critique: https://..."')}`);
 }
 
-async function update(): Promise<void> {
-  const cwd = process.cwd();
-  const det = await detectInstalled(cwd);
-  const targets = (Object.keys(det) as AgentId[]).filter((k) => det[k] !== null);
-  if (!targets.length) {
-    console.log("No ryux-rules installed yet. Run: ryux-rules install");
+async function runUpdate(flags: Flags): Promise<void> {
+  const scope = scopeOf(flags);
+  const installed = detectInstalled(scope);
+  const agentsFile = scope.global ? null : await readIfExists(join(scope.root, "AGENTS.md"));
+  const inline = Boolean(agentsFile?.includes(MARK_START) && agentsFile.includes("# ryux-core"));
+  if (!installed.size && !inline) {
+    console.log(`No Ryux install found. Run: ${CLI_CMD} install`);
     return;
   }
-  const updated: string[] = [];
-  for (const ag of targets) {
-    const found = det[ag] ?? [];
-    const skills = found.length ? found : [...ALL_SKILL_IDS];
-    await installAgent(ag, skills, cwd);
-    updated.push(`${ag} (${skills.length} skills)`);
+  const done: string[] = [];
+  for (const [dir, found] of installed) {
+    done.push(...(await writeSkills(dir, found.length ? found : [...ALL_INSTALLABLE_IDS], scope.root)));
   }
-  console.log(`${pc.green("✓ ")}Updated to v${RULES_VERSION}: ${updated.join("; ")}`);
+  if (!scope.global) {
+    const all = [...new Set([...installed.values()].flat())];
+    const skills = all.length ? all : [...ALL_INSTALLABLE_IDS];
+    for (const file of ["CLAUDE.md", "GEMINI.md", "AGENTS.md"] as PointerFile[]) {
+      const path = join(scope.root, file);
+      const content = await readIfExists(path);
+      if (!content?.includes(MARK_START)) continue;
+      if (file === "AGENTS.md" && inline) {
+        const found = detectSkills(content);
+        await upsertBlock(path, renderAgentsBlock(found.length ? found : skills));
+      } else {
+        await upsertBlock(path, renderPointerBlock(skills));
+      }
+      done.push(`${file} (block)`);
+    }
+  }
+  console.log(`${pc.green("✓ ")}Updated to v${RULES_VERSION}:\n${done.map((d) => `  ${d}`).join("\n")}`);
 }
 
-async function remove(flags: Record<string, string | boolean>): Promise<void> {
-  const cwd = process.cwd();
-  const det = await detectInstalled(cwd);
-  const targets = (Object.keys(det) as AgentId[]).filter((k) => det[k] !== null);
-  if (!targets.length) {
-    console.log("No ryux-rules installed.");
+async function runRemove(flags: Flags): Promise<void> {
+  const scope = scopeOf(flags);
+  const dirs = [...new Set(AGENT_TARGETS.map((a) => targetDir(a, scope)))];
+  const hasSkills = dirs.some((d) => existsSync(join(d, "ryux-core")) || existsSync(join(d, "ryux-rules")));
+  const pointerFiles = scope.global ? [] : (["CLAUDE.md", "GEMINI.md", "AGENTS.md"] as PointerFile[]);
+  const hasBlocks = (
+    await Promise.all(pointerFiles.map(async (f) => (await readIfExists(join(scope.root, f)))?.includes(MARK_START)))
+  ).some(Boolean);
+  const hasLegacyCursor = existsSync(join(scope.root, LEGACY_CURSOR_RULES_DIR));
+  if (!hasSkills && !hasBlocks && !hasLegacyCursor) {
+    console.log("No Ryux install found.");
     return;
   }
   if (!flags.yes) {
-    const ok = await p.confirm({ message: `Remove ryux-rules from: ${targets.join(", ")}?` });
+    const ok = await p.confirm({ message: `Remove Ryux from ${scope.global ? "your home directory" : "this project"}?` });
     if (p.isCancel(ok) || !ok) {
       console.log("Cancelled.");
       return;
     }
   }
   const removed: string[] = [];
-  for (const ag of targets) removed.push(...(await removeAgent(ag, cwd)));
+  for (const dir of dirs) {
+    for (const id of ["core", ...ALL_INSTALLABLE_IDS]) {
+      const target = join(dir, `ryux-${id}`);
+      if (await removePath(target)) removed.push(rel(target));
+    }
+    removed.push(...(await removeLegacy(dir, scope.root)));
+  }
+  for (const f of pointerFiles) if (await removeBlock(join(scope.root, f))) removed.push(`${f} (block)`);
   console.log(removed.length ? removed.map((r) => pc.red("− ") + r).join("\n") : "No files removed.");
 }
 
 function help(): void {
-  const groups = GROUPS.map((g) => `  ${g.id.padEnd(12)} ${SKILLS.filter((s) => s.group === g.id).map((s) => s.id).join(", ")}`).join("\n");
-  console.log(`ryux-rules v${RULES_VERSION}: install Ryux, the design skills for AI coding agents
+  const groups = GROUPS.map(
+    (g) => `  ${g.id.padEnd(12)} ${g.id === "critique" ? "critique" : SKILLS.filter((s) => s.group === g.id).map((s) => s.id).join(", ")}`,
+  ).join("\n");
+  const agents = AGENT_TARGETS.map((a) => `  ${a.id.padEnd(12)} ${a.label.padEnd(15)} ${a.dir}  (global ~/${a.globalDir})`).join("\n");
+  console.log(`ryux v${RULES_VERSION}: install Ryux design skills (Build + Critique) into your AI coding agents
 
 Usage:
-  npx ryux-rules [command] [options]
+  ${CLI_CMD} [command] [options]
 
 Commands:
-  install     Install the rules (interactive: pick agent + groups). Default.
-  update      Update installed rules to the latest version.
-  remove      Remove installed rules.
+  install     Install the skills (interactive, or with flags). Default.
+  update      Update installed skills to this version.
+  remove      Remove installed skills and the marked blocks.
   help        Show this help.
 
-Groups (core is always included):
+Agents:
+${agents}
+  ${AGENTS_MD_INLINE.id.padEnd(12)} any other agent: rules inline in AGENTS.md (project only)
+
+Groups (ryux-core is always included):
 ${groups}
 
-Non-interactive options (install):
-  --agent <list>       claude,cursor,codex
-  --groups <list>      ${ALL_GROUP_IDS.join(",")}
-  --concerns <list>    deprecated (ui,copy,a11y,ux,local,code), mapped to skills
-  --mcp                show the MCP connect command
-  --yes                skip confirmation (remove)
+Options:
+  --agent <list|all>   agents to install for (non-interactive)
+  --groups <list>      groups to install (default: all)
+  --global             install into your home directory instead of this project
+  --mcp                print the ryux MCP connect command
+  --yes                skip the confirmation (remove)
+  --concerns <list>    deprecated RX-1.x alias, mapped to groups
 
 Examples:
-  npx ryux-rules
-  npx ryux-rules install --agent claude --groups ux,ui,quality
-  npx ryux-rules update
-  npx ryux-rules remove --yes`);
+  ${CLI_CMD}
+  ${CLI_CMD} install --agent claude,cursor,codex
+  ${CLI_CMD} install --agent all --groups critique
+  ${CLI_CMD} install --agent claude --global
+  ${CLI_CMD} update
+  ${CLI_CMD} remove --yes`);
 }
 
 async function main(): Promise<void> {
@@ -319,11 +349,11 @@ async function main(): Promise<void> {
 
   switch (cmd) {
     case "update":
-      return update();
+      return runUpdate(flags);
     case "remove":
-      return remove(flags);
+      return runRemove(flags);
     case "install":
-      return install(flags);
+      return runInstall(flags);
     default:
       console.error(`Unknown command: ${cmd}\n`);
       help();

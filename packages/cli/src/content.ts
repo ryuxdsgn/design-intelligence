@@ -6,7 +6,7 @@
 
 export type Level = "required" | "preferred" | "contextual";
 export type Gate = "hard" | "lock";
-export type GroupId = "foundation" | "ux" | "ui" | "engineering" | "quality";
+export type GroupId = "foundation" | "ux" | "ui" | "engineering" | "quality" | "critique";
 export type GateArea =
   | "PRODUCT"
   | "UX"
@@ -86,6 +86,7 @@ export const GROUPS: Group[] = [
   { id: "ui", label: "UI" },
   { id: "engineering", label: "Engineering" },
   { id: "quality", label: "Quality" },
+  { id: "critique", label: "Critique" },
 ];
 
 // Workflow order: an agent reaches these roughly top to bottom.
@@ -1280,8 +1281,45 @@ export const ACTIVATION: { task: string; skills: SkillId[] }[] = [
 export const ALL_SKILL_IDS: SkillId[] = SKILLS.map((s) => s.id);
 export const ALL_GROUP_IDS: GroupId[] = GROUPS.map((g) => g.id);
 
-export const skillsInGroups = (groups: string[]): SkillId[] =>
-  SKILLS.filter((s) => groups.includes(s.group)).map((s) => s.id);
+// Ryux Critique is a playbook skill (no generated rules); it installs with the "critique" group.
+export const CRITIQUE_ID = "critique";
+
+/** Every installable skill id besides ryux-core, in workflow order, with critique last. */
+export const ALL_INSTALLABLE_IDS: string[] = [...SKILLS.map((s) => s.id), CRITIQUE_ID];
+
+export const skillsInGroups = (groups: string[]): string[] => [
+  ...SKILLS.filter((s) => groups.includes(s.group)).map((s) => s.id),
+  ...(groups.includes("critique") ? [CRITIQUE_ID] : []),
+];
+
+// Where each agent reads skills (SKILL.md folders). Verified against each agent's docs and the
+// conventions used by other skill installers. "pointer" is the instruction file that gets a short
+// marked block telling the agent Ryux is installed (project installs only).
+export type PointerFile = "CLAUDE.md" | "GEMINI.md" | "AGENTS.md";
+
+export interface AgentTarget {
+  id: string;
+  label: string;
+  dir: string;
+  globalDir: string;
+  pointer: PointerFile;
+}
+
+export const AGENT_TARGETS: AgentTarget[] = [
+  { id: "claude", label: "Claude Code", dir: ".claude/skills", globalDir: ".claude/skills", pointer: "CLAUDE.md" },
+  { id: "codex", label: "Codex", dir: ".codex/skills", globalDir: ".agents/skills", pointer: "AGENTS.md" },
+  { id: "cursor", label: "Cursor", dir: ".cursor/skills", globalDir: ".cursor/skills", pointer: "AGENTS.md" },
+  { id: "gemini", label: "Gemini CLI", dir: ".gemini/skills", globalDir: ".gemini/skills", pointer: "GEMINI.md" },
+  { id: "opencode", label: "OpenCode", dir: ".opencode/skills", globalDir: ".config/opencode/skills", pointer: "AGENTS.md" },
+  { id: "cline", label: "Cline", dir: ".cline/skills", globalDir: ".cline/skills", pointer: "AGENTS.md" },
+  { id: "copilot", label: "GitHub Copilot", dir: ".agents/skills", globalDir: ".agents/skills", pointer: "AGENTS.md" },
+  { id: "amp", label: "Amp", dir: ".agents/skills", globalDir: ".config/agents/skills", pointer: "AGENTS.md" },
+  { id: "kimi", label: "Kimi Code", dir: ".agents/skills", globalDir: ".agents/skills", pointer: "AGENTS.md" },
+  { id: "antigravity", label: "Antigravity", dir: ".agents/skills", globalDir: ".gemini/config/skills", pointer: "AGENTS.md" },
+];
+
+/** Inline target for any other agent: the full rules written into AGENTS.md (project only). */
+export const AGENTS_MD_INLINE = { id: "agents-md", label: "Any other agent (rules inline in AGENTS.md)" };
 
 // Old per-concern installs (ruleset RX-1.x) mapped to the new skills, for --concerns.
 export const LEGACY_CONCERNS: Record<string, SkillId[]> = {
@@ -1297,6 +1335,9 @@ export const LEGACY_CONCERNS: Record<string, SkillId[]> = {
 // they are current skill names again and get overwritten or removed with the current set.
 export const LEGACY_SKILL_DIRS = ["rules", "copy", "a11y", "local", "code"];
 
+/** Cursor used .mdc rule files before it read skill folders (ryux-rules 0.x). */
+export const LEGACY_CURSOR_RULES_DIR = ".cursor/rules";
+
 export const LEVEL_LABEL: Record<Level, string> = {
   required: "Required",
   preferred: "Preferred",
@@ -1308,5 +1349,6 @@ export const RULESET_VERSION = "RX-2.0";
 export const MCP_NAME = "ryux";
 export const MCP_URL = "https://mcp.ryux.design/mcp";
 export const MCP_ADD_CMD = `claude mcp add --transport http ${MCP_NAME} ${MCP_URL}`;
+export const CLI_CMD = "npx ryux";
 export const MARK_START = "<!-- ryux-rules:start -->";
 export const MARK_END = "<!-- ryux-rules:end -->";

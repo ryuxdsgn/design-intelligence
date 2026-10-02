@@ -33,5 +33,5 @@ hand-authored in `.claude/skills/`. Regenerate with:
 pnpm sync:skills
 ```
 
-To install them into your agent (Claude Code, Cursor, or AGENTS.md), run `npx ryux-rules` and pick
-the groups you want.
+To install them into your agent, run `npx skills add ryuxdsgn/design-intelligence` or `npx ryux`
+(see the [README](../README.md#install)).

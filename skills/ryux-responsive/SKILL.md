@@ -1,6 +1,6 @@
 ---
 name: ryux-responsive
-description: Ryux Responsive design: prioritize, simplify, reorganize; tables, overlays, overflow, safe areas. Load when building a layout that ships to more than one width.
+description: "Ryux Responsive design: prioritize, simplify, reorganize; tables, overlays, overflow, safe areas. Load when building a layout that ships to more than one width."
 ---
 
 # ryux-responsive: Responsive design
