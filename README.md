@@ -5,14 +5,42 @@
   <img src="https://img.shields.io/badge/skills-14%20modular-e36209" alt="Ryux: 14 modular design skills">
 </p>
 
-# ryux
+# ryux: design intelligence
 
-> UI and flow references from real Indonesian apps, served to AI agents over MCP, with an anti-slop
-> gate built in (**ryux-rules**). It's evidence-based: every design decision has to cite a real
-> screen instead of a generic pattern.
+> Design intelligence from real Indonesian apps, for the AI agents that build and the designers who
+> review. It's evidence-based: every design decision has to cite a real screen instead of a generic
+> pattern.
 
 > **New here?** Start with [GUIDE.md](./GUIDE.md). It walks you through it from scratch: install the
 > rules into your agent, then connect it to the reference data.
+
+## Three products, one knowledge base
+
+```
+                         RYUX
+                           │
+              ┌────────────┴────────────┐
+              │                         │
+         RYUX BUILD                RYUX CRITIQUE
+              │                         │
+        AI Coding                    Designer
+              │                         │
+              ↓                         ↓
+      Design Intelligence        Design Intelligence
+              │                         │
+              └────────────┬────────────┘
+                           ↓
+                    RYUX KNOWLEDGE
+```
+
+| Product | For | What it is today |
+| --- | --- | --- |
+| **Ryux Build** | AI coding agents (Claude Code, Cursor, Codex) | `ryux-core` plus 13 design skills, installed by the `ryux-rules` CLI, and the MCP research tools |
+| **Ryux Critique** | Designers, and agents asked to review | The `ryux-critique` skill (Design Read plus evidence-backed findings) and the MCP audit tools |
+| **Ryux Knowledge** | Both | Screens, flows, local patterns, and human-written designer notes from Indonesian apps, served over MCP |
+
+Build and Critique use the same rules, so what an agent builds is judged by the same standard a
+designer reviews with.
 
 ## What makes it different
 
@@ -29,41 +57,43 @@
 
 ## See the difference
 
-Each brief below ran headless (`claude -p`) in an empty folder, once without ryux and once with the
-ryux skills installed. The screenshots are the agents' real output, not edited by hand. The colored
-boxes are annotations added afterwards to point at what changed. The runs used ruleset RX-1.4; rule IDs
-are shown in the current RX-2.0 numbering.
+Each brief below ran headless (`claude -p`) in an empty folder, once without Ryux and once with the
+Ryux RX-2.0 skills installed by the CLI (`npx ryux-rules`). The agent chose which skills to load. The
+screenshots are the agents' real output, not edited by hand. The colored boxes are annotations added
+afterwards to point at what changed.
 
 ### UI
 
 *"A 1920×1080 landing page for Catat, a cashier and bookkeeping app for Indonesian UMKM."* Both runs
 designed in pen.dev through its MCP. The "with" run also had the ryux MCP for reference screens.
 
-<a href="assets/compare/ui/compare.png"><img src="assets/compare/ui/compare.png" alt="Two Catat landing pages designed in pen.dev, stacked. Without ryux: a polished hero with invented stats (48.000+ warung, 210 kota, 4,8 stars on Google Play), an unconfirmed 30-day trial, an unsourced +12% growth tag, amounts written as Rp 2.840.000 with a space, and a stock photo of a stranger presented as the user. With ryux: a ledger card labeled Contoh data whose totals add up to Rp150.000, a QRIS payment screen that shows the shop and Rp45.000 before paying, admin fees left as [REAL DATA], and no invented counts, ratings, or photos" width="100%"></a>
+<a href="assets/compare/ui/compare.png"><img src="assets/compare/ui/compare.png" alt="Two Catat landing pages designed in pen.dev, stacked. Without Ryux: a polished hero with invented stats (48.000+ warung, 210 kota, 4,8 stars on Google Play), an unconfirmed 30-day trial, an unsourced +12% growth tag, amounts written as Rp 2.840.000 with a space, and a stock photo of a stranger presented as the user. With Ryux: one primary action, a sales ledger labeled Contoh data whose cash and QRIS totals add up to Rp164.000, and a plain three-step strip with no invented counts, ratings, or photos" width="100%"></a>
 
-Both look finished, and that is the trap. Without ryux, the polish hides invented numbers, a borrowed
-face, and the wrong Rupiah format (RX-AS-01, RX-AS-02, RX-CD-02). With ryux, every number is either
-consistent sample data marked as such or an honest placeholder (RX-AS-03), and the payment screen
-follows Indonesian QRIS practice (RX-IX-09, RX-IX-05).
+Both look finished, and that is the trap. Without Ryux, the polish hides invented numbers, a borrowed
+face, and the wrong Rupiah format (RX-AS-01, RX-AS-02, RX-CD-02). With Ryux, there is one primary
+action (RX-PR-03), the sample data is labeled and adds up (RX-AS-03, RX-QA-04), and the agent closed
+with a Delivery Gate that marked its own gap honestly: only the 1920 frame was drawn, so RESPONSIVE
+was reported as FAIL.
 
 ### Code
 
 *"A TypeScript module that calculates an order total with shipping, an admin fee, and PPN 11%, and
 formats it as Rupiah."*
 
-<a href="assets/compare/code/compare.png"><img src="assets/compare/code/compare.png" alt="Two versions of order-total.ts side by side. Without ryux: doc comments that restate each field, English error messages with no fix for the shop owner, and a formatter that outputs Rp 1.500.000 with a space. With ryux: a comment that says why amounts are integers, Indonesian error messages that say how to fix the input, a formatter that outputs Rp1.250.000, and summary labels like Ongkos kirim and Total bayar" width="100%"></a>
+<a href="assets/compare/code/compare.png"><img src="assets/compare/code/compare.png" alt="Two versions of order-total.ts side by side. Without Ryux: 100 lines with doc comments that restate each field and a formatter that outputs Rp 1.500.000 with a space. With Ryux: 71 lines, a comment that says why amounts are integers, the unknown PPN base marked as an ASSUMPTION to confirm instead of invented, and a formatter that outputs Rp1.250.000" width="100%"></a>
 
-Comments only say why (RX-FE-06). Errors name the fix in Indonesian (RX-FE-05, RX-CD-04). Money comes
-out as `Rp1.250.000`, not `Rp 1.250.000` (RX-CD-02).
+Comments only say why (RX-FE-06). The tax rule nobody specified is marked as an assumption instead of
+invented (RX-PR-02, RX-FE-02). Money comes out as `Rp1.250.000`, not `Rp 1.250.000` (RX-FE-12).
 
 ### Copy
 
 *"Tulis pengumuman promo gratis ongkir untuk grup WhatsApp pelanggan toko online saya."*
 
-<a href="assets/compare/chat/compare.png"><img src="assets/compare/chat/compare.png" alt="Two WhatsApp promo announcements side by side. Without ryux: emoji on almost every line, emoji number bullets, ALL CAPS, and three urgency lines including selama persediaan masih ada and sebelum kehabisan. With ryux: one emoji in the greeting, plain lists, an automatic promo with no voucher code, a step to check that shipping shows Rp0 before paying, and a line on what to do if the discount doesn't apply" width="100%"></a>
+<a href="assets/compare/chat/compare.png"><img src="assets/compare/chat/compare.png" alt="Two WhatsApp promo announcements side by side. Without Ryux: emoji on almost every line, emoji number bullets, ALL CAPS, and three urgency lines including selama persediaan masih ada and sebelum kehabisan. With Ryux: one emoji in the greeting, a plain list of terms where every unknown value stays a placeholder, no invented code or quota, and a clear line on how to ask or order" width="100%"></a>
 
-No emoji bullets or invented scarcity (RX-CD-06, RX-AS-04). The "with" version adds what a customer
-needs: how to check the discount and who to contact if it fails (RX-EC-02).
+No emoji bullets or invented scarcity (RX-CD-06, RX-AS-04). Minimums, codes, and quotas the shop never
+gave stay placeholders instead of invented terms (RX-PR-02), and the message ends with a clear next
+step.
 
 More before/after pairs (accessibility, forms, local payment, review) are in
 [`docs/showcase.md`](docs/showcase.md#earlier-gallery).

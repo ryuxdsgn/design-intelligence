@@ -1,6 +1,6 @@
 import { WaitlistForm } from "@/components/waitlist-form";
 
-const REPO = "https://github.com/ryuxdsgn/ryux";
+const REPO = "https://github.com/ryuxdsgn/design-intelligence";
 
 function SearchIcon() {
   return (

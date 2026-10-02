@@ -33,9 +33,9 @@ pnpm dev:mcp   # then: claude -p "<brief>" --mcp-config mcp.json --strict-mcp-co
 
 | Image | Without | With |
 | --- | --- | --- |
-| `ui/compare.png` | pen.dev MCP only | pen.dev MCP + ryux MCP + the RX-1.4 `ui,copy,a11y,ux,local` concern skills (the runs predate RX-2.0); the brief asks for `DESIGN.md` from `search_screens` + `extract_design_direction` first |
-| `code/compare.png` | no skills | RX-1.4 `ryux-code` + `ryux-copy` |
-| `chat/compare.png` | no skills | RX-1.4 `ryux-copy` + `ryux-local` |
+| `ui/compare.png` | pen.dev MCP only | pen.dev MCP + ryux MCP + all Ryux RX-2.0 skills (`--groups foundation,ux,ui,engineering,quality`); the brief asks for `DESIGN.md` from `search_screens` + `extract_design_direction` first |
+| `code/compare.png` | no skills | all Ryux RX-2.0 skills; the agent picks which to load |
+| `chat/compare.png` | no skills | all Ryux RX-2.0 skills; the agent picks which to load |
 
 pen.dev's `execute` always targets the open document, so UI runs add a top-level frame named
 `Catat landing A`/`B` and export it with `Export([frameId], "png", dir, {scale: 1})`. Code and copy
