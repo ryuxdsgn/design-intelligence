@@ -2,7 +2,7 @@
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-2ea44f" alt="MIT License"></a>
   <img src="https://img.shields.io/badge/status-early__access%20v0.1-1f6feb" alt="Status: early access v0.1">
   <img src="https://img.shields.io/badge/MCP%20tools-9-8957e5" alt="9 MCP tools">
-  <img src="https://img.shields.io/badge/rules-RX--C%20%2F%20RX--H%20%2F%20RX--N%20%2F%20RX--L-e36209" alt="ryux-rules">
+  <img src="https://img.shields.io/badge/skills-14%20modular-e36209" alt="Ryux: 14 modular design skills">
 </p>
 
 # ryux
@@ -19,19 +19,20 @@
 - **Evidence-based.** Every result carries a `screen_id`, app name, version, and capture date. A design decision has to point at a real screen, and `delivery_gate` enforces that.
 - **Indonesia-first.** QRIS, virtual accounts, WhatsApp OTP, paylater, e-KYC, Rupiah formatting. These are the patterns global libraries skip.
 - **Human judgment.** Designer notes (why a flow works, where it falls short) are written by people, not generated. That's the part that matters most.
-- **Its own ruleset.** `ryux-rules` (RX-C / RX-H / RX-N / RX-L) is original work, MIT-licensed, with no third-party dependencies.
+- **Its own ruleset.** Ryux (RX-2.0, installed by the `ryux-rules` CLI) is original work, MIT-licensed, with no third-party dependencies.
 
 ## What's inside
 
 - **Nine MCP tools** in three groups: research (`search_screens`, `get_flow`, `get_local_pattern`, `compare_apps`, `extract_design_direction`), audit (`audit_ui`, `audit_copy`, `heuristic_eval`, `delivery_gate`), and a design bridge.
-- **ryux-rules** is 46 rules across four layers: an anti-slop filter (RX-C), usability and accessibility heuristics (RX-H), applied UX patterns from NNGroup research (RX-N), and Indonesian patterns and copy (RX-L). There's a PASS/FAIL Delivery Gate before you ship.
-- **The `ryux-rules` CLI** installs the rules into Claude Code, Cursor, or AGENTS.md in one command. You pick only the concerns you need (ui, copy, a11y, ux, local, code), the way you'd pick skills. You can browse every skill in [`skills/`](./skills).
+- **Ryux** is a senior product designer's reasoning for coding agents: a small `ryux-core` (workflow, which skills to load, a 10-area Delivery Gate, honest claims) plus 13 skills from product thinking to visual QA, and `ryux-critique` for reviews. Each skill is a short framework plus rules marked [Required], [Preferred], or [Contextual], with Hard Gates, Purpose Gates instead of style bans, and Quality Locks.
+- **The `ryux-rules` CLI** installs the rules into Claude Code, Cursor, or AGENTS.md in one command. You pick the groups you need (foundation, ux, ui, engineering, quality), and the agent loads only the skills a task needs. You can browse every skill in [`skills/`](./skills).
 
 ## See the difference
 
 Each brief below ran headless (`claude -p`) in an empty folder, once without ryux and once with the
 ryux skills installed. The screenshots are the agents' real output, not edited by hand. The colored
-boxes are annotations added afterwards to point at what changed.
+boxes are annotations added afterwards to point at what changed. The runs used ruleset RX-1.4; rule IDs
+are shown in the current RX-2.0 numbering.
 
 ### UI
 
@@ -41,9 +42,9 @@ designed in pen.dev through its MCP. The "with" run also had the ryux MCP for re
 <a href="assets/compare/ui/compare.png"><img src="assets/compare/ui/compare.png" alt="Two Catat landing pages designed in pen.dev, stacked. Without ryux: a polished hero with invented stats (48.000+ warung, 210 kota, 4,8 stars on Google Play), an unconfirmed 30-day trial, an unsourced +12% growth tag, amounts written as Rp 2.840.000 with a space, and a stock photo of a stranger presented as the user. With ryux: a ledger card labeled Contoh data whose totals add up to Rp150.000, a QRIS payment screen that shows the shop and Rp45.000 before paying, admin fees left as [REAL DATA], and no invented counts, ratings, or photos" width="100%"></a>
 
 Both look finished, and that is the trap. Without ryux, the polish hides invented numbers, a borrowed
-face, and the wrong Rupiah format (RX-C-03, RX-C-04, RX-L-06). With ryux, every number is either
-consistent sample data marked as such or an honest placeholder (RX-C-05), and the payment screen
-follows Indonesian QRIS practice (RX-L-01, RX-L-04).
+face, and the wrong Rupiah format (RX-AS-01, RX-AS-02, RX-CD-02). With ryux, every number is either
+consistent sample data marked as such or an honest placeholder (RX-AS-03), and the payment screen
+follows Indonesian QRIS practice (RX-IX-09, RX-IX-05).
 
 ### Code
 
@@ -52,8 +53,8 @@ formats it as Rupiah."*
 
 <a href="assets/compare/code/compare.png"><img src="assets/compare/code/compare.png" alt="Two versions of order-total.ts side by side. Without ryux: doc comments that restate each field, English error messages with no fix for the shop owner, and a formatter that outputs Rp 1.500.000 with a space. With ryux: a comment that says why amounts are integers, Indonesian error messages that say how to fix the input, a formatter that outputs Rp1.250.000, and summary labels like Ongkos kirim and Total bayar" width="100%"></a>
 
-Comments only say why (RX-K-01). Errors name the fix in Indonesian (RX-K-06, RX-N-05). Money comes
-out as `Rp1.250.000`, not `Rp 1.250.000` (RX-L-06).
+Comments only say why (RX-FE-06). Errors name the fix in Indonesian (RX-FE-05, RX-CD-04). Money comes
+out as `Rp1.250.000`, not `Rp 1.250.000` (RX-CD-02).
 
 ### Copy
 
@@ -61,11 +62,11 @@ out as `Rp1.250.000`, not `Rp 1.250.000` (RX-L-06).
 
 <a href="assets/compare/chat/compare.png"><img src="assets/compare/chat/compare.png" alt="Two WhatsApp promo announcements side by side. Without ryux: emoji on almost every line, emoji number bullets, ALL CAPS, and three urgency lines including selama persediaan masih ada and sebelum kehabisan. With ryux: one emoji in the greeting, plain lists, an automatic promo with no voucher code, a step to check that shipping shows Rp0 before paying, and a line on what to do if the discount doesn't apply" width="100%"></a>
 
-No emoji bullets or invented scarcity (RX-C-10, RX-N-09). The "with" version adds what a customer
-needs: how to check the discount and who to contact if it fails (RX-H-09).
+No emoji bullets or invented scarcity (RX-CD-06, RX-AS-04). The "with" version adds what a customer
+needs: how to check the discount and who to contact if it fails (RX-EC-02).
 
-More before/after pairs per concern (a11y, ux, local, review) are in
-[`docs/showcase.md`](docs/showcase.md#per-concern-gallery).
+More before/after pairs (accessibility, forms, local payment, review) are in
+[`docs/showcase.md`](docs/showcase.md#earlier-gallery).
 
 ## Repo layout (pnpm monorepo)
 
@@ -97,11 +98,11 @@ Inspector) rather than a regular browser.
 ### Install ryux-rules into your agent
 
 ```bash
-npx ryux-rules            # wizard: pick your agent and concerns (ui, copy, a11y, ux, local, code)
+npx ryux-rules            # wizard: pick your agent and groups (foundation, ux, ui, engineering, quality)
 ```
 
-Install only what you need. Each concern becomes its own skill (`ryux-ui`, `ryux-copy`, and so on),
-and the core (evidence and honesty) always comes along. There's more detail in
+Install only what you need. Each skill is its own folder (`ryux-forms`, `ryux-visual-qa`, and so
+on), and `ryux-core` (workflow, skill activation, and the Delivery Gate) always comes along. There's more detail in
 [`packages/cli`](./packages/cli), and the rules themselves live in
 [`docs/design-rules.md`](./docs/design-rules.md).
 
@@ -110,7 +111,7 @@ and the core (evidence and honesty) always comes along. There's more detail in
 | Document | What's in it |
 | --- | --- |
 | [`docs/taxonomy.md`](./docs/taxonomy.md) | Controlled vocabulary: categories, flows, patterns, components |
-| [`docs/design-rules.md`](./docs/design-rules.md) | The ryux design ruleset (RX-C / RX-H / RX-N / RX-L) |
+| [`docs/design-rules.md`](./docs/design-rules.md) | The Ryux skills and rules: levels, Hard Gates, Purpose Gates, Quality Locks, Delivery Gate |
 | [`apps/mcp/README.md`](./apps/mcp/README.md) | Running and trying the MCP server |
 
 ## Status

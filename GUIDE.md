@@ -7,7 +7,7 @@ the reference data over MCP. If you just want a quick overview, read the [README
 
 ryux is two things that work together:
 
-1. **ryux-rules**: design rules (RX-C / RX-H / RX-N / RX-L) that filter output so it doesn't
+1. **Ryux** (installed by the `ryux-rules` CLI): design skills (RX-2.0) that guide decisions and filter output so it doesn't
    "smell like AI": evidence-backed, accessible, and fitted to the Indonesian context. Doc: [`docs/design-rules.md`](./docs/design-rules.md).
 2. **MCP server**: gives your agent access to **reference screens from Indonesian apps** (real
    data, designer notes) plus audit tools. Nine tools; see [`apps/mcp/README.md`](./apps/mcp/README.md).
@@ -16,7 +16,7 @@ Rules without data are just style; data without rules is just a pile of images. 
 
 ## 1. Install ryux-rules into your agent
 
-One command, then answer a few questions (which agent you use, which concerns to install, MCP connection):
+One command, then answer a few questions (which agent you use, which pipeline groups to install, MCP connection):
 
 ```bash
 npx ryux-rules
@@ -26,8 +26,8 @@ The CLI writes to the right place for each agent:
 
 | Agent | File |
 | --- | --- |
-| Claude Code | `.claude/skills/ryux-rules/SKILL.md` + a marked block in `CLAUDE.md` |
-| Cursor | `.cursor/rules/ryux-rules.mdc` |
+| Claude Code | `.claude/skills/ryux-core/SKILL.md` + one `ryux-<skill>` folder per skill + a marked block in `CLAUDE.md` |
+| Cursor | `.cursor/rules/ryux-core.mdc` + one `ryux-<skill>.mdc` per skill |
 | Codex / others | a marked block in `AGENTS.md` |
 
 Your files are never overwritten wholesale. Changes stay inside the block
@@ -36,7 +36,7 @@ Your files are never overwritten wholesale. Changes stay inside the block
 ### Non-interactive
 
 ```bash
-npx ryux-rules install --agent claude,cursor --concerns ui,copy,a11y,ux,local
+npx ryux-rules install --agent claude,cursor --groups foundation,ux,ui,engineering,quality
 ```
 
 ## 2. Connect to MCP (reference data)
@@ -62,7 +62,7 @@ uses the Streamable HTTP transport).
 Ask your agent:
 
 - "Find a reference for a payment method picker with QRIS via ryux."
-- "Audit this checkout page with ryux-rules."
+- "Review this checkout page with ryux-critique."
 - "Review this screen with `heuristic_eval`, and include a comparison screen as evidence."
 
 ## Update & Remove
