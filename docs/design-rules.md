@@ -1014,7 +1014,7 @@ Group Quality · gate area ANTI-SLOP. Covers hard gates, purpose gates, quality 
 ## Installation via CLI
 
 ```bash
-npx ryux install --agent claude          # or --agent all; see the README for every agent
+npx @ryuxdsgn/ryux install --agent claude          # or --agent all; see the README for every agent
 ```
 
 `ryux-core` is always installed. `--concerns` from RX-1.x still works as a deprecated alias, and
