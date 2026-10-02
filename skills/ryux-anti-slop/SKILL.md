@@ -65,6 +65,9 @@ result, ask **"Why does this exist?"** If there is no meaningful reason, remove 
 | Responsive behavior | RX-RD-06 |
 | Visual hierarchy | RX-UI-01 |
 
+> Hard Gates always apply, whichever skills are loaded: no invented numbers, people, urgency, business
+> rules, or terms; no placeholder shipped as final; no missing critical states. See `ryux-core`.
+
 ## Rules
 
 ### RX-AS-01 [Required] [Hard Gate] Only real numbers

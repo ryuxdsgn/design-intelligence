@@ -30,6 +30,23 @@ Skip steps that do not apply to the task, but never skip from "generate" straigh
 - **[Hard Gate]**: a Required rule with no exceptions. Fix it before declaring the work complete.
 - **[Quality Lock]**: consistency that must hold across the product.
 
+## Hard Gates (always apply)
+
+These hold even when `ryux-anti-slop` is not loaded. No written exception; fix before delivery.
+
+- **Fake data or fake metrics.** Do not invent "48.000+ users", "4,8★", or "+12%". (RX-AS-01)
+- **Fake testimonials or people.** Do not make up testimonials, reviewers, or customer photos. (RX-AS-02)
+- **Invented business rules or product requirements.** Do not invent business rules, metrics, user data, permissions, pricing, requirements, or API behavior. (RX-PR-02, RX-FE-02)
+- **Placeholder copy shipped as final.** Do not ship placeholder copy or data disguised as final. (RX-AS-03)
+- **Fake urgency or scarcity.** Do not write "sebelum kehabisan", "kuota terbatas", or fake countdowns with nothing behind them. (RX-AS-04)
+- **Missing critical states.** Do not ship only the filled, happy-path screen. (RX-EC-01)
+- **Broken responsive behavior.** Do not design for one width only. (RX-RD-01)
+- **Accessibility failures.** Do not put light grey text on white or white text on a pale accent. (RX-A11Y-01, RX-A11Y-02, RX-A11Y-03, RX-A11Y-04, RX-A11Y-05)
+- **Unclear primary action.** Do not put two equal-weight calls to action side by side, or leave the main action unclear. (RX-PR-03)
+- **Unexplained interaction behavior.** Do not ship an action whose in-progress, result, or failure behavior is undefined. (RX-IX-01)
+- **Duplicate components.** Do not create a near-duplicate component or pattern for one screen. (RX-DS-01)
+- **Unnecessary complexity.** Do not add settings, sections, or abstractions "for later". (RX-AS-06)
+
 ## Load only what the task needs
 
 | Task | Load (plus ryux-core) |
@@ -39,23 +56,10 @@ Skip steps that do not apply to the task, but never skip from "generate" straigh
 | Mobile UI | `ryux-ux`, `ryux-ui`, `ryux-responsive`, `ryux-accessibility`, `ryux-anti-slop` |
 | Checkout or payment | `ryux-product`, `ryux-interaction`, `ryux-forms`, `ryux-content`, `ryux-edge-cases` |
 | Data-heavy view (list, table, dashboard) | `ryux-ux`, `ryux-edge-cases`, `ryux-responsive`, `ryux-design-system`, `ryux-frontend` |
-| Copy only | `ryux-content`, `ryux-anti-slop` |
+| Frontend logic or utilities (formatting, state, data shown to users) | `ryux-frontend`, `ryux-content`, `ryux-edge-cases` |
+| Copy only (UI text, chat, announcements) | `ryux-content`, `ryux-anti-slop` |
 | Visual refinement | `ryux-ui`, `ryux-design-system`, `ryux-visual-qa`, `ryux-anti-slop` |
 | Review or critique | `ryux-critique` (Design Read + heuristic_eval), plus `ryux-visual-qa` |
-
-- `ryux-product`: user, task, goal, primary action, constraints, assumptions. Load when starting a new screen or flow, or when the scope is unclear.
-- `ryux-ux`: information architecture, navigation, flows, grouping, disclosure, search and filters. Load when designing multi-screen flows, navigation, or data-heavy views.
-- `ryux-interaction`: before, during, result, recovery; feedback, control, confirmation, states, keyboard, local payments. Load when adding or changing anything the user can act on.
-- `ryux-forms`: labels, layout, validation, input preservation, autofill, submission, unsaved work, OTP, address, e-KYC. Load when building or reviewing any form.
-- `ryux-edge-cases`: data, form, network, permission, and system states beyond the happy path. Load when building data views, flows, or anything that talks to a network.
-- `ryux-content`: specific copy, action labels, error messages, natural Indonesian, Rupiah, terminology. Load when writing or reviewing any user-facing text.
-- `ryux-ui`: hierarchy, type, spacing, layout, density, color, containers, imagery, motion. Load when doing visual design or visual refinement.
-- `ryux-design-system`: search before create, tokens, component states, consistency locks. Load when adding or changing components, styles, or tokens.
-- `ryux-accessibility`: semantics, keyboard, focus, contrast, targets, names, errors, reduced motion. Load when building or reviewing any UI.
-- `ryux-responsive`: prioritize, simplify, reorganize; tables, overlays, overflow, safe areas. Load when building a layout that ships to more than one width.
-- `ryux-frontend`: the repo's own stack, semantic elements, components, state, no invented logic. Load when writing UI code.
-- `ryux-visual-qa`: render, inspect, critique, fix, render again; ranked by impact. Load when something visual has been implemented and is about to be called done.
-- `ryux-anti-slop`: hard gates, purpose gates, quality locks, honest claims. Load when work is about to be delivered, or during visual refinement.
 
 ## Delivery Gate
 

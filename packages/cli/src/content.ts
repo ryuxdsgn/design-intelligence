@@ -100,7 +100,7 @@ export const SKILLS: Skill[] = [
   { id: "design-system", abbr: "DS", label: "Design system", group: "ui", gateArea: "DESIGN SYSTEM", summary: "search before create, tokens, component states, consistency locks", loadWhen: "adding or changing components, styles, or tokens" },
   { id: "accessibility", abbr: "A11Y", label: "Accessibility", group: "ui", gateArea: "ACCESSIBILITY", summary: "semantics, keyboard, focus, contrast, targets, names, errors, reduced motion", loadWhen: "building or reviewing any UI" },
   { id: "responsive", abbr: "RD", label: "Responsive design", group: "ui", gateArea: "RESPONSIVE", summary: "prioritize, simplify, reorganize; tables, overlays, overflow, safe areas", loadWhen: "building a layout that ships to more than one width" },
-  { id: "frontend", abbr: "FE", label: "Frontend implementation", group: "engineering", gateArea: "CODE QUALITY", summary: "the repo's own stack, semantic elements, components, state, no invented logic", loadWhen: "writing UI code" },
+  { id: "frontend", abbr: "FE", label: "Frontend implementation", group: "engineering", gateArea: "CODE QUALITY", summary: "the repo's own stack, semantic elements, components, state, no invented logic", loadWhen: "writing or changing frontend code, including formatting, state, and data logic that users see" },
   { id: "visual-qa", abbr: "QA", label: "Visual QA", group: "quality", gateArea: "VISUAL QA", summary: "render, inspect, critique, fix, render again; ranked by impact", loadWhen: "something visual has been implemented and is about to be called done" },
   { id: "anti-slop", abbr: "AS", label: "Anti-slop", group: "quality", gateArea: "ANTI-SLOP", summary: "hard gates, purpose gates, quality locks, honest claims", loadWhen: "work is about to be delivered, or during visual refinement" },
 ];
@@ -1272,7 +1272,8 @@ export const ACTIVATION: { task: string; skills: SkillId[] }[] = [
   { task: "Mobile UI", skills: ["ux", "ui", "responsive", "accessibility", "anti-slop"] },
   { task: "Checkout or payment", skills: ["product", "interaction", "forms", "content", "edge-cases"] },
   { task: "Data-heavy view (list, table, dashboard)", skills: ["ux", "edge-cases", "responsive", "design-system", "frontend"] },
-  { task: "Copy only", skills: ["content", "anti-slop"] },
+  { task: "Frontend logic or utilities (formatting, state, data shown to users)", skills: ["frontend", "content", "edge-cases"] },
+  { task: "Copy only (UI text, chat, announcements)", skills: ["content", "anti-slop"] },
   { task: "Visual refinement", skills: ["ui", "design-system", "visual-qa", "anti-slop"] },
 ];
 

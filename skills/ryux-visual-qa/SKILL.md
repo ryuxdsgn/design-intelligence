@@ -26,6 +26,9 @@ responsive behavior, interaction states, accessibility, and edge cases.
 
 For a structured review, use ryux-critique (Design Read plus heuristic_eval).
 
+> Hard Gates always apply, whichever skills are loaded: no invented numbers, people, urgency, business
+> rules, or terms; no placeholder shipped as final; no missing critical states. See `ryux-core`.
+
 ## Rules
 
 ### RX-QA-01 [Required] Render it and look

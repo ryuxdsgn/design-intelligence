@@ -22,6 +22,9 @@ components, interaction patterns and states, responsive behavior, and visual hie
 If the project has no system yet, define the smallest token set the screen needs and use it
 consistently. Do not introduce a component library the project does not use.
 
+> Hard Gates always apply, whichever skills are loaded: no invented numbers, people, urgency, business
+> rules, or terms; no placeholder shipped as final; no missing critical states. See `ryux-core`.
+
 ## Rules
 
 ### RX-DS-01 [Required] [Hard Gate] Search before you create

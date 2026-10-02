@@ -143,6 +143,9 @@ Avoid generic AI language: "unlock", "elevate", "transform", "seamlessly", "powe
 - **Terminology**: one name per thing, everywhere.
 - **Indonesian** as users speak it; English only for terms they already use.
 - **Money**: Rp1.250.000.
+- **Offers and terms**: write only the terms you were given. Unknown minimums, quotas, deadlines,
+  and codes stay placeholders (\`[minimal belanja]\`, \`[tanggal selesai]\`); do not add "kuota
+  terbatas" or "sebelum kehabisan" unless a real limit was stated (RX-AS-04, RX-PR-02).
 
 Does not cover: layout of the text (see ryux-ui).`,
 

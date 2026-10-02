@@ -1,6 +1,6 @@
 ---
 name: ryux-frontend
-description: Ryux Frontend implementation: the repo's own stack, semantic elements, components, state, no invented logic. Load when writing UI code.
+description: Ryux Frontend implementation: the repo's own stack, semantic elements, components, state, no invented logic. Load when writing or changing frontend code, including formatting, state, and data logic that users see.
 ---
 
 # ryux-frontend: Frontend implementation
@@ -21,6 +21,9 @@ Connect design decisions to the code that ships them.
 7. **Performance**: sized and lazy-loaded media; no heavy libraries for small effects.
 
 Does not cover: visual decisions (see ryux-ui) or component reuse decisions (see ryux-design-system).
+
+> Hard Gates always apply, whichever skills are loaded: no invented numbers, people, urgency, business
+> rules, or terms; no placeholder shipped as final; no missing critical states. See `ryux-core`.
 
 ## Rules
 
