@@ -10,11 +10,39 @@ ryux-rules + the ryux MCP.
 1. Run the local MCP: `pnpm dev:mcp` (reference data at `http://localhost:8787/mcp`).
 2. Install the rules in the agent you use: `npx ryux-rules` (choose Claude Code/Cursor + concern: ui, copy, a11y, ux, local).
 3. Connect the agent to the MCP: `claude mcp add --transport http ryux-local http://localhost:8787/mcp`.
-4. Prepare the assets folder: `assets/compare/{ui,copy,a11y,ux,local,hero}/`.
-5. Capture mobile screens at a width of **390px**; for the landing hero use a **desktop width of 1120px**. Export as **WebP** (or PNG) at 2x, and name them `before` / `after`.
+4. Prepare the assets folder: `assets/compare/{ui,code,chat,copy,a11y,ux,local,review,landing}/`.
+5. Capture mobile screens at a width of **390px**; for the README UI matrix use a **1920×1080** desktop viewport. Export as PNG, and name them `before` / `after` (or `without` / `rules` / `reference` / `both` for the matrix).
 
 > Fairness tip: "before" is produced in a session/agent **without** ryux-rules and **without** the MCP; "after" in a session
 > **with** both. The brief is exactly the same. Do not hand-edit the results, so the comparison stays honest.
+
+---
+
+## README headline: UI matrix, Code, Copy (headless runs)
+
+The top of the README "See the difference" section is built from headless runs, so nothing is
+hand-made. Each variant runs in its own empty folder, outside this repo, so the repo's own
+`CLAUDE.md` does not leak in:
+
+```bash
+# rules on: install the concern skills into the run folder
+node packages/cli/dist/index.js install --agent claude --concerns ui,copy,a11y,ux,local
+# reference data on: start the local MCP and pass it to the run
+pnpm dev:mcp   # then: claude -p "<brief>" --mcp-config mcp.json --strict-mcp-config
+# rules and data off: claude -p "<brief>" --strict-mcp-config
+```
+
+| Image | Setup |
+| --- | --- |
+| `ui/without.png` | no skills, no MCP |
+| `ui/rules.png` | `ryux-rules` skills, no MCP |
+| `ui/reference.png` | MCP only; the brief asks the agent to write `DESIGN.md` from `search_screens` + `extract_design_direction` first |
+| `ui/both.png` | skills + MCP, same brief as `reference` |
+| `code/{before,after}.png` | no skills / `ryux-code` + `ryux-copy`; the `.ts` output rendered in an editor-style page |
+| `chat/{before,after}.png` | no skills / `ryux-copy` + `ryux-local`; the text output rendered in a chat-style page |
+
+If a run shows a defect (for example, overflow), rerun it and pick another run. Never hand-edit the
+output. Captions only claim what the image shows.
 
 ---
 
