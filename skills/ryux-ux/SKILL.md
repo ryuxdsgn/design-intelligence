@@ -5,7 +5,7 @@ description: ryux-rules: Interaction and applied UX (NNGroup). status, control, 
 
 # ryux-ux: Interaction and applied UX (NNGroup)
 
-> ryux.design design rules, version 0.3.0, MIT licensed.
+> ryux.design design rules, version 0.4.0, MIT licensed.
 > Apply to Interaction and applied UX (NNGroup) work before considering it done. [Required] rules are a hard gate; the rest
 > may be broken only with a written reason.
 
