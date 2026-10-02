@@ -35,7 +35,7 @@
 
 | Product | For | What it is today |
 | --- | --- | --- |
-| **Ryux Build** | AI coding agents (Claude Code, Cursor, Codex) | `ryux-core` plus 13 design skills, installed by the `ryux-rules` CLI, and the MCP research tools |
+| **Ryux Build** | AI coding agents (Claude Code, Cursor, Codex) | `ryux-core` plus 13 design skills, installed with `npx ryux`, `npx skills add`, or the Claude Code plugin, and the MCP research tools |
 | **Ryux Critique** | Designers, and agents asked to review | The `ryux-critique` skill (Design Read plus evidence-backed findings) and the MCP audit tools |
 | **Ryux Knowledge** | Both | Screens, flows, local patterns, and human-written designer notes from Indonesian apps, served over MCP |
 
@@ -47,18 +47,18 @@ designer reviews with.
 - **Evidence-based.** Every result carries a `screen_id`, app name, version, and capture date. A design decision has to point at a real screen, and `delivery_gate` enforces that.
 - **Indonesia-first.** QRIS, virtual accounts, WhatsApp OTP, paylater, e-KYC, Rupiah formatting. These are the patterns global libraries skip.
 - **Human judgment.** Designer notes (why a flow works, where it falls short) are written by people, not generated. That's the part that matters most.
-- **Its own ruleset.** Ryux (RX-2.0, installed by the `ryux-rules` CLI) is original work, MIT-licensed, with no third-party dependencies.
+- **Its own ruleset.** Ryux (RX-2.0, installed with `npx ryux` or `npx skills add`) is original work, MIT-licensed, with no third-party dependencies.
 
 ## What's inside
 
 - **Nine MCP tools** in three groups: research (`search_screens`, `get_flow`, `get_local_pattern`, `compare_apps`, `extract_design_direction`), audit (`audit_ui`, `audit_copy`, `heuristic_eval`, `delivery_gate`), and a design bridge.
 - **Ryux** is a senior product designer's reasoning for coding agents: a small `ryux-core` (workflow, which skills to load, a 10-area Delivery Gate, honest claims) plus 13 skills from product thinking to visual QA, and `ryux-critique` for reviews. Each skill is a short framework plus rules marked [Required], [Preferred], or [Contextual], with Hard Gates, Purpose Gates instead of style bans, and Quality Locks.
-- **The `ryux-rules` CLI** installs the rules into Claude Code, Cursor, or AGENTS.md in one command. You pick the groups you need (foundation, ux, ui, engineering, quality), and the agent loads only the skills a task needs. You can browse every skill in [`skills/`](./skills).
+- **One install for every agent.** `npx skills add`, the `npx ryux` CLI, or the Claude Code plugin put the skills into Claude Code, Codex, Cursor, Gemini CLI, OpenCode, Cline, Copilot, and more. Agents load only the skills a task needs. Browse every skill in [`skills/`](./skills).
 
 ## See the difference
 
 Each brief below ran headless (`claude -p`) in an empty folder, once without Ryux and once with the
-Ryux RX-2.0 skills installed by the CLI (`npx ryux-rules`). The agent chose which skills to load. The
+Ryux RX-2.0 skills installed by the CLI (`npx ryux`). The agent chose which skills to load. The
 screenshots are the agents' real output, not edited by hand. The colored boxes are annotations added
 afterwards to point at what changed.
 
@@ -98,14 +98,82 @@ step.
 More before/after pairs (accessibility, forms, local payment, review) are in
 [`docs/showcase.md`](docs/showcase.md#earlier-gallery).
 
+## Ryux Critique
+
+> **Get a senior design critique before your users do.**
+
+Point it at a **Figma link**, a **pen.dev** design, a **website URL**, or a **screenshot**. It
+captures the real design first (read-only), runs a Design Read across nine dimensions (clarity,
+hierarchy, coherence, density, confidence, efficiency, specificity, recoverability, accessibility),
+then lists at most 12 findings with severity, the rule behind each one, a fix, and what to keep. It
+also says what it could not test, such as hover states on a static frame.
+
+```text
+Critique this Figma frame: https://www.figma.com/design/<file>/<name>?node-id=1-2
+Review https://example.com at desktop and mobile width
+Review the selected frame in pen.dev
+```
+
+| Source | How it is captured |
+| --- | --- |
+| Figma | Figma MCP (`get_screenshot`, `get_metadata`, `get_design_context`) |
+| pen.dev | pen.dev MCP (`TakeScreenshot`, plus a check for clipped content) |
+| Website | `npx playwright screenshot` at 1440 and 390 wide, or a browser tool |
+| Screenshot | Read directly |
+
+## Install
+
+Three ways in, all installing the same skills. Every route includes Ryux Critique.
+
+**1. Any agent, via [skills.sh](https://skills.sh)**
+
+```bash
+npx skills add ryuxdsgn/design-intelligence
+```
+
+**2. The Ryux CLI** (picks folders per agent, keeps `CLAUDE.md` / `GEMINI.md` / `AGENTS.md` pointers
+in sync, and handles update and remove)
+
+```bash
+npx ryux                                         # interactive
+npx ryux install --agent claude,cursor,codex     # non-interactive
+npx ryux install --agent all --groups critique   # Ryux Critique only, every agent
+npx ryux install --agent claude --global         # into your home directory
+npx ryux update
+npx ryux remove
+```
+
+**3. Claude Code plugin**
+
+```text
+/plugin marketplace add ryuxdsgn/design-intelligence
+/plugin install ryux@design-intelligence
+```
+
+| Agent | Project folder | `--agent` |
+| --- | --- | --- |
+| Claude Code | `.claude/skills/` | `claude` |
+| Codex | `.codex/skills/` | `codex` |
+| Cursor | `.cursor/skills/` | `cursor` |
+| Gemini CLI | `.gemini/skills/` | `gemini` |
+| OpenCode | `.opencode/skills/` | `opencode` |
+| Cline | `.cline/skills/` | `cline` |
+| GitHub Copilot, Amp, Kimi Code, Antigravity | `.agents/skills/` | `copilot`, `amp`, `kimi`, `antigravity` |
+| Anything else | rules inline in `AGENTS.md` | `agents-md` |
+
+Groups: `foundation`, `ux`, `ui`, `engineering`, `quality`, and `critique`. `ryux-core` always comes
+along. The reference data (Ryux Knowledge) is a separate hosted MCP service:
+`claude mcp add --transport http ryux https://mcp.ryux.design/mcp` (early access).
+
 ## Repo layout (pnpm monorepo)
 
 ```
 apps/mcp/         MCP server (Cloudflare Workers), 9 tools
 apps/web/         ryux.design site (Next.js), landing + waitlist
 packages/core/    @ryux/core, shared data and tool logic
-packages/cli/     ryux-rules, the CLI that installs the rules into agents
-skills/           browsable copies of each ryux-rules skill
+packages/cli/     ryux, the CLI that installs the skills into agents (npx ryux)
+skills/           the 15 Ryux skills (Build + Critique), one folder each
+.claude-plugin/   Claude Code plugin and marketplace manifests
 docs/             taxonomy.md, design-rules.md
 ```
 
@@ -125,16 +193,7 @@ pnpm typecheck
 The MCP endpoint speaks **Streamable HTTP**, so connect through an MCP client (Claude Code, MCP
 Inspector) rather than a regular browser.
 
-### Install ryux-rules into your agent
-
-```bash
-npx ryux-rules            # wizard: pick your agent and groups (foundation, ux, ui, engineering, quality)
-```
-
-Install only what you need. Each skill is its own folder (`ryux-forms`, `ryux-visual-qa`, and so
-on), and `ryux-core` (workflow, skill activation, and the Delivery Gate) always comes along. There's more detail in
-[`packages/cli`](./packages/cli), and the rules themselves live in
-[`docs/design-rules.md`](./docs/design-rules.md).
+To install Ryux into your own agent, see [Install](#install).
 
 ## Docs
 
@@ -159,5 +218,5 @@ secrets live in the repo.
 ## License
 
 **MIT**, © 2026 ryux.design (see [`LICENSE`](./LICENSE)). Use it, change it, ship it. The code and the
-ryux-rules ruleset are covered by this license. The reference data (screens, flows, designer notes)
+Ryux skills and rules are covered by this license. The reference data (screens, flows, designer notes)
 and the hosted service are separate and not part of this repo.

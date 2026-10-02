@@ -1,6 +1,6 @@
 ---
 name: ryux-visual-qa
-description: Ryux Visual QA: render, inspect, critique, fix, render again; ranked by impact. Load when something visual has been implemented and is about to be called done.
+description: "Ryux Visual QA: render, inspect, critique, fix, render again; ranked by impact. Load when something visual has been implemented and is about to be called done."
 ---
 
 # ryux-visual-qa: Visual QA

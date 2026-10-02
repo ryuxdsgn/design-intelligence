@@ -1,19 +1,19 @@
 # Before/After Playbook for ryux (showcase)
 
-A guide to creating 3 **before vs after** comparisons for the README: real proof that ryux-rules
+A guide to creating 3 **before vs after** comparisons for the README: real proof that Ryux
 turns "AI-smelling" output into something grounded and natural. Principle: **honest, not a fake mockup**
 (RX-AS-03). "Before" = agent output without ryux; "After" = the same agent's output **with**
-ryux-rules + the ryux MCP.
+Ryux + the ryux MCP.
 
 ## Setup (one time)
 
 1. Run the local MCP: `pnpm dev:mcp` (reference data at `http://localhost:8787/mcp`).
-2. Install the rules in the agent you use: `npx ryux-rules` (choose Claude Code/Cursor + groups: foundation, ux, ui, engineering, quality).
+2. Install the rules in the agent you use: `npx ryux` (choose Claude Code/Cursor + groups: foundation, ux, ui, engineering, quality).
 3. Connect the agent to the MCP: `claude mcp add --transport http ryux-local http://localhost:8787/mcp`.
 4. Prepare the assets folder: `assets/compare/{ui,code,chat,copy,a11y,ux,local,review,landing}/`.
 5. Capture mobile screens at a width of **390px**; for the README UI image use a **1920×1080** frame. Export as PNG, and name the pairs `before` / `after`.
 
-> Fairness tip: "before" is produced in a session/agent **without** ryux-rules and **without** the MCP; "after" in a session
+> Fairness tip: "before" is produced in a session/agent **without** Ryux and **without** the MCP; "after" in a session
 > **with** both. The brief is exactly the same. Do not hand-edit the results, so the comparison stays honest.
 
 ---
@@ -58,7 +58,7 @@ RX-A11Y-01, RX-A11Y-02 (contrast & touch targets), RX-PR-04 (`screen_id` evidenc
 1. **Before**: in the agent without ryux, ask:
    > "Build one mobile HTML file (390px wide) for the payment method picker screen of an Indonesian F&B app."
    Save `before.html`, open it in the browser (390px device mode), screenshot → `assets/compare/ui/before.webp`.
-2. **After**: in the agent with ryux-rules + MCP, ask for the same thing plus:
+2. **After**: in the agent with Ryux + MCP, ask for the same thing plus:
    > "Use the QRIS reference from ryux (`search_screens` query 'qris'), apply the interaction-design and accessibility stages, do not use fake logos/numbers, cite the `screen_id` in a comment."
    Save `after.html`, screenshot → `assets/compare/ui/after.webp`.
 3. **Numeric proof (optional but powerful):** run `audit_ui` on both screens (fill in `tap_target_px`,
@@ -78,7 +78,7 @@ RX-CD-03 (specific CTA, not a cliché).
 
 1. **Before**: in the agent without ryux, ask it to write 4 pieces of text as-is:
    > "Write for a shopping app: (a) the pay button label, (b) the price display for Rp1250000, (c) the message when payment fails, (d) the CTA for a promo banner."
-2. **After**: in the agent with ryux-rules, ask it to fix all four per the `ryux-content` skill, then run
+2. **After**: in the agent with Ryux, ask it to fix all four per the `ryux-content` skill, then run
    `audit_copy` to prove it (before has findings, after is clean).
 3. Paste both sets onto a single simple card (or screenshot the cleaned-up output directly),
    screenshot → `assets/compare/copy/before.webp` & `after.webp`.
@@ -170,9 +170,9 @@ _Without ryux._ The same product pitched like generic AI slop: a buzzword headli
 
 <a href="../assets/compare/landing/landing-before.png"><img src="../assets/compare/landing/landing-before.png" alt="Generic AI landing for ryux: sparkle logo, headline Supercharge your AI agents with beautiful production-ready UI, all-in-one platform subhead, Get Started Free and Book a Demo buttons, fake five-star Trusted by 10,000+ developers worldwide, and an empty AS SEEN IN logo grid" width="100%"></a>
 
-_With `ryux-rules`._ Designed in pen.dev under its own rules: an editorial layout, one accent, a specific evidence-first headline, and a real `search_screens` result (screen_id, app, version, capture date, designer note) where the slop version put fake logos.
+_With `Ryux`._ Designed in pen.dev under its own rules: an editorial layout, one accent, a specific evidence-first headline, and a real `search_screens` result (screen_id, app, version, capture date, designer note) where the slop version put fake logos.
 
-<a href="../assets/compare/landing/landing-after.png"><img src="../assets/compare/landing/landing-after.png" alt="ryux landing designed with ryux-rules: warm paper background, an MCP + design rules for AI agents kicker, headline Every design decision backed by a real screen, an honest subhead, Join the waitlist and See the difference buttons, an honest early-access trust line, and a search_screens evidence card for Warung Kopi Contoh with screen_id scr_a3f091, version, capture date, and a designer note" width="100%"></a>
+<a href="../assets/compare/landing/landing-after.png"><img src="../assets/compare/landing/landing-after.png" alt="ryux landing designed with Ryux: warm paper background, an MCP + design rules for AI agents kicker, headline Every design decision backed by a real screen, an honest subhead, Join the waitlist and See the difference buttons, an honest early-access trust line, and a search_screens evidence card for Warung Kopi Contoh with screen_id scr_a3f091, version, capture date, and a designer note" width="100%"></a>
 
 Real evidence (`scr_a3f091`, app, version, date) in place of a fake logo wall (RX-AS-02): the "after" shows the product's whole point instead of borrowing credibility. Specific over buzzword (RX-CD-03), one accent over default-everything (RX-UI-04), an honest early-access line over an invented "10,000+" (RX-AS-01).
 

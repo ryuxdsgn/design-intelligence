@@ -1,6 +1,6 @@
 ---
 name: ryux-accessibility
-description: Ryux Accessibility: semantics, keyboard, focus, contrast, targets, names, errors, reduced motion. Load when building or reviewing any UI.
+description: "Ryux Accessibility: semantics, keyboard, focus, contrast, targets, names, errors, reduced motion. Load when building or reviewing any UI."
 ---
 
 # ryux-accessibility: Accessibility

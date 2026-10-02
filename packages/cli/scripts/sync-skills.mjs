@@ -8,6 +8,7 @@ import { execFileSync } from "node:child_process";
 import {
   renderCoreSkill,
   renderSkill,
+  renderCritiqueSkill,
   renderRulesDoc,
   renderMigrationTable,
   groupsTable,
@@ -17,12 +18,12 @@ import {
   qualityLocksTable,
   deliveryGateTemplate,
 } from "../dist/render.js";
-import { ALL_SKILL_IDS, ALL_GROUP_IDS } from "../dist/content.js";
+import { ALL_SKILL_IDS, ALL_INSTALLABLE_IDS } from "../dist/content.js";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const root = join(here, "..", "..", "..");
 const skillsDir = join(root, "skills");
-const keep = new Set(["ryux-core", "ryux-critique", ...ALL_SKILL_IDS.map((id) => `ryux-${id}`)]);
+const keep = new Set(["ryux-core", ...ALL_INSTALLABLE_IDS.map((id) => `ryux-${id}`)]);
 
 async function writeSkill(name, content) {
   await mkdir(join(skillsDir, name), { recursive: true });
@@ -38,9 +39,7 @@ for (const entry of await readdir(skillsDir, { withFileTypes: true })) {
 await writeSkill("ryux-core", renderCoreSkill(ALL_SKILL_IDS));
 for (const id of ALL_SKILL_IDS) await writeSkill(`ryux-${id}`, renderSkill(id));
 
-// ryux-critique is hand-authored; mirror it from .claude/skills into the browsable skills/.
-const critique = await readFile(join(root, ".claude/skills/ryux-critique/SKILL.md"), "utf8");
-await writeSkill("ryux-critique", critique);
+await writeSkill("ryux-critique", renderCritiqueSkill());
 
 function fill(doc, name, body) {
   const start = `<!-- ${name}:start -->`;
@@ -67,12 +66,8 @@ for (const [name, body] of [
 }
 await writeFile(docPath, doc, "utf8");
 
-// Dogfood: install Ryux into this repo with the real CLI. The generated .claude/skills/ryux-*
-// folders are gitignored; ryux-critique there is the hand-authored source and is not touched.
-execFileSync(
-  "node",
-  [join(here, "..", "dist", "index.js"), "install", "--agent", "claude", "--groups", ALL_GROUP_IDS.join(",")],
-  { cwd: root, stdio: "ignore" },
-);
+// Dogfood: install Ryux into this repo with the real CLI (all groups). The generated
+// .claude/skills/ryux-* folders are gitignored.
+execFileSync("node", [join(here, "..", "dist", "index.js"), "install", "--agent", "claude"], { cwd: root, stdio: "ignore" });
 
-console.log(`done: ${ALL_SKILL_IDS.length + 2} skills synced, docs regenerated, dogfood install updated`);
+console.log(`done: ${ALL_INSTALLABLE_IDS.length + 1} skills synced, docs regenerated, dogfood install updated`);

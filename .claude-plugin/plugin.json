@@ -1,0 +1,13 @@
+{
+  "name": "ryux",
+  "displayName": "Ryux",
+  "version": "1.0.0",
+  "description": "Ryux Build (senior product designer skills for coding agents) and Ryux Critique (a senior design critique of a Figma link, pen.dev design, website URL, or screenshot). Loads as 15 skills.",
+  "author": {
+    "name": "ryux.design"
+  },
+  "repository": "https://github.com/ryuxdsgn/design-intelligence",
+  "license": "MIT",
+  "keywords": ["design", "ux", "design-critique", "agent-skills", "accessibility", "anti-slop", "indonesia"],
+  "skills": ["./skills/"]
+}
