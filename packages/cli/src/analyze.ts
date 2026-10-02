@@ -42,20 +42,16 @@ Observed or Inferred; say so.
 
 Cover what the captures show; skip what they do not, and say it was not visible.
 
-| Area | What to record |
+| Group | What to record |
 | --- | --- |
-| Layout and grid | columns, max width, gutters, breakpoints seen |
-| Typography | families, the size and weight scale, line heights |
-| Spacing | the scale in use, and where it breaks |
-| Color roles | surface, text, accent (primary action), status colors, with values when measured |
-| Components | each component, its variants, and the states seen (default, hover, focus, disabled, error, loading) |
-| Hierarchy | the order the eye follows; the primary action |
-| Navigation | the model (tabs, sidebar, top nav, steps), depth, and how users get back |
-| Interaction | feedback, confirmation, undo, and loading patterns seen |
-| Content and tone | voice, language (natural Indonesian or translated), how money and dates are written |
-| Local patterns | QRIS, virtual accounts, OTP, addresses, paylater, e-KYC, and how they are handled |
-| Responsive behavior | only when more than one width was captured: what moves, collapses, or hides |
-| Design language | 3 to 5 traits (for example "dense, ledger-like, monospaced numbers"), each tied to evidence |
+| **Structure** | page and sections, containers and max width, grid (columns, gutters), navigation model and depth, content hierarchy (the order the eye follows, the primary action) |
+| **Visual** | typography (families, size and weight scale, line heights), spacing scale and where it breaks, color roles (surface, text, accent, status, with values when measured), radius, border, shadow, density, alignment |
+| **Components** | each component seen (button, input, select, table, card, modal, tabs, navigation, others), its variants, and the states seen (default, hover, focus, disabled, error, loading) |
+| **Behavior** | interaction and feedback, loading, error, and empty states, confirmation and undo, responsive behavior (only when more than one width was captured) |
+| **Design language** | the visual language in 3 to 5 traits, each tied to evidence; component patterns; the spacing and typography systems; interaction patterns |
+
+Also note content and tone (natural Indonesian or translated, how money and dates are written) and
+local patterns (QRIS, virtual accounts, OTP, addresses, paylater, e-KYC).
 
 ### 4. Patterns and evidence
 
@@ -64,27 +60,56 @@ Indonesian screens by \`screen_id\`; without it, say the patterns come from this
 
 ### 5. Report
 
+Structured, not an essay. This report is the input for \`ryux-critique\` and for a \`DESIGN.md\`.
+
 \`\`\`
-Summary: one or two sentences on what this interface is and how it is built
+# Ryux Design Analysis
 
-What was analyzed and how
-  Source:      Figma frame "Checkout" (node 1:2) / https://... / pen.dev frame "..."
-  Captured:    desktop 1440 and mobile 390 screenshots, CSS, via Playwright
-  Not visible: hover and focus states, empty and error states
+## Context
+Source:        Figma frame "Checkout" (node 1:2) / https://... / pen.dev frame "..."
+Viewport:      1440 desktop, 390 mobile
+Captured with: Figma MCP / Playwright / pencil MCP
+Not visible:   hover and focus states, empty and error states
+Assumptions:   ...
 
-Inventory (with Measured / Observed / Inferred)
-  Typography   Measured   Inter; 14 / 16 / 20 / 32px; weights 400, 600
-  Spacing      Inferred   8px scale; one 20px gap breaks it
-  ...
+## Layout
+Container:  1200 max width, 24px side padding            (Measured)
+Grid:       12 columns, 24 gutter                         (Inferred)
+Spacing:    8px scale; one 20px gap breaks it             (Observed)
+Density:    compact, ledger-like                          (Observed)
+Alignment:  left-aligned text, numbers right-aligned      (Observed)
 
-Patterns
-  - Payment method picker with QRIS first (scr_...)
+## Typography
+Font:       Inter; JetBrains Mono for amounts              (Measured)
+Scale:      14 / 16 / 20 / 32 / 56                         (Measured)
+Hierarchy:  headline, amount, label, helper                (Observed)
 
-Design language
-  - Dense and ledger-like: monospaced amounts, thin row dividers
+## Visual
+Color roles: surface #F6F3EC, text #1C1B18, accent #0F6B4B (Measured)
+Radius / Border / Shadow: ...
 
-Open questions
-  - Are the amounts in the mockup real data or examples?
+## Components
+Primary:    button (filled, 48 tall), payment method row
+Secondary:  text link, tag
+States seen: default, selected
+
+## Interaction
+Navigation: top nav, 3 items
+Actions:    one primary action per screen
+States:     ...
+Feedback:   ...
+
+## Design Language
+- Dense and ledger-like: monospaced amounts, thin row dividers
+
+## Patterns Detected
+- Payment method picker with QRIS first (scr_...)
+
+## Evidence
+Each item above carries its label and source; Ryux Knowledge screen_ids where used.
+
+## Open questions
+- Are the amounts real data or examples?
 \`\`\`
 
 ### 6. Optional: a DESIGN.md draft
