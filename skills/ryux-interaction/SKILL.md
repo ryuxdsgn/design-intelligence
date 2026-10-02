@@ -30,6 +30,9 @@ submits; Escape closes.
 
 Does not cover: form-specific behavior (see ryux-forms).
 
+> Hard Gates always apply, whichever skills are loaded: no invented numbers, people, urgency, business
+> rules, or terms; no placeholder shipped as final; no missing critical states. See `ryux-core`.
+
 ## Rules
 
 ### RX-IX-01 [Required] [Hard Gate] Before, during, result, recovery

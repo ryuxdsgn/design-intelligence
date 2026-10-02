@@ -25,6 +25,9 @@ A form is a conversation. Design it field by field, then as a whole.
 Does not cover: general interaction states (see ryux-interaction) or error copy wording (see
 ryux-content).
 
+> Hard Gates always apply, whichever skills are loaded: no invented numbers, people, urgency, business
+> rules, or terms; no placeholder shipped as final; no missing critical states. See `ryux-core`.
+
 ## Rules
 
 ### RX-FM-01 [Required] Visible labels tied to fields

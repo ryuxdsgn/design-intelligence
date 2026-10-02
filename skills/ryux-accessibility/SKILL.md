@@ -22,6 +22,9 @@ Accessibility is product quality, not an enhancement. Check:
 
 Report what was checked and how. Do not claim full conformance without an audit.
 
+> Hard Gates always apply, whichever skills are loaded: no invented numbers, people, urgency, business
+> rules, or terms; no placeholder shipped as final; no missing critical states. See `ryux-core`.
+
 ## Rules
 
 ### RX-A11Y-01 [Required] [Hard Gate] Readable contrast

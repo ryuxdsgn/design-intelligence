@@ -22,6 +22,9 @@ Work in this order:
 
 Does not cover: component reuse and tokens (see ryux-design-system).
 
+> Hard Gates always apply, whichever skills are loaded: no invented numbers, people, urgency, business
+> rules, or terms; no placeholder shipped as final; no missing critical states. See `ryux-core`.
+
 ## Rules
 
 ### RX-UI-01 [Required] [Quality Lock] Hierarchy follows priority
