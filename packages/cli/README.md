@@ -1,6 +1,6 @@
 # ryux-rules (CLI)
 
-Install the **ryux design rules** (RX-C / RX-H / RX-N / RX-L) into your AI agent with a single command.
+Install **Ryux** (RX-2.0), the design skills for AI coding agents, with a single command.
 Original work by ryux.design, MIT licensed. Rule source: [`docs/design-rules.md`](../../docs/design-rules.md).
 
 ## Usage
@@ -11,40 +11,46 @@ npx ryux-rules update     # update what's installed
 npx ryux-rules remove     # remove
 ```
 
-The wizard asks: which agent you use, which **concern** you want to install, and (optionally) an MCP connection to ryux.
+The wizard asks which agent you use, which **groups** you want, and (optionally) for an MCP
+connection to ryux.
 
-## Concern (pick the ones that matter, the core is always included)
+## Groups and skills (`ryux-core` is always included)
 
-| Concern | Contents | RX rules |
-| --- | --- | --- |
-| `ui` | UI and visuals | RX-C-02/07/08, RX-H-04/08/14, RX-N-12 |
-| `copy` | Indonesian copywriting | RX-C-06/10, RX-H-02/09, RX-L-06/07, RX-N-05/09 |
-| `a11y` | Accessibility | RX-H-11/12/13/14 |
-| `ux` | Interaction heuristics + applied UX (NNGroup) | RX-H-01/03/05/06/07/10, RX-N-01..11 |
-| `local` | Indonesian patterns | RX-L-01..05/08/09/10 |
-| `code` | Clean code (add-on) | RX-K-01..06 |
+| Group | Skills |
+| --- | --- |
+| `foundation` | `ryux-product` (RX-PR) |
+| `ux` | `ryux-ux` (RX-UX), `ryux-interaction` (RX-IX), `ryux-forms` (RX-FM), `ryux-edge-cases` (RX-EC), `ryux-content` (RX-CD) |
+| `ui` | `ryux-ui` (RX-UI), `ryux-design-system` (RX-DS), `ryux-accessibility` (RX-A11Y), `ryux-responsive` (RX-RD) |
+| `engineering` | `ryux-frontend` (RX-FE) |
+| `quality` | `ryux-visual-qa` (RX-QA), `ryux-anti-slop` (RX-AS) |
 
-The core (evidence and honesty: RX-C-01/03/04/05/09) is always installed as the `ryux-rules` skill.
-A browsable version of each skill lives in [`skills/`](../../skills) (generated via `pnpm sync:skills`).
+`ryux-core` holds the workflow, the levels, which skills to load for a task, the 10-area Delivery
+Gate, and honest-claims wording. Every other skill is a short framework followed by rules marked
+**[Required]**, **[Preferred]**, or **[Contextual]**, some of them **[Hard Gate]** or
+**[Quality Lock]**. A browsable version of each skill lives in [`skills/`](../../skills)
+(generated via `pnpm sync:skills`).
 
 ## Target per agent
 
 | Agent | Files written |
 | --- | --- |
-| Claude Code | `.claude/skills/ryux-rules/SKILL.md` (core) + `.claude/skills/ryux-<concern>/SKILL.md` per concern + a marked block in `CLAUDE.md` |
-| Cursor | `.cursor/rules/ryux-rules.mdc` (core) + `.cursor/rules/ryux-<concern>.mdc` per concern |
-| Codex / others | a marked block in `AGENTS.md` (core plus the selected concerns, inline) |
+| Claude Code | `.claude/skills/ryux-core/SKILL.md` + `.claude/skills/ryux-<skill>/SKILL.md` per skill + a marked block in `CLAUDE.md` |
+| Cursor | `.cursor/rules/ryux-core.mdc` + `.cursor/rules/ryux-<skill>.mdc` per skill |
+| Codex / others | a marked block in `AGENTS.md` (core plus the selected skills, inline) |
 
 ## Safe for your repo
 
 - Your files are never overwritten wholesale. Changes to `CLAUDE.md` and `AGENTS.md` stay
   inside the `<!-- ryux-rules:start -->` ... `<!-- ryux-rules:end -->` block.
 - `update` only touches what is already installed; `remove` reverts it.
+- Upgrading from RX-1.x: `install` and `update` replace the old core (`ryux-rules`) and remove the
+  old `ryux-copy`, `ryux-a11y`, `ryux-local`, and `ryux-code` skills; `ryux-ui` and `ryux-ux` are
+  rewritten with their new content. `--concerns` still works as a deprecated alias.
 
 ## Non-interactive mode
 
 ```bash
-npx ryux-rules install --agent claude,cursor,codex --concerns ui,copy,a11y,ux,local,code --mcp
+npx ryux-rules install --agent claude,cursor,codex --groups foundation,ux,ui,engineering,quality --mcp
 npx ryux-rules remove --yes
 ```
 
