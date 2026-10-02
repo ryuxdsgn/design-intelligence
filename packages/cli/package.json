@@ -4,8 +4,8 @@
   "description": "Ryux: design intelligence for AI coding agents. Senior product designer skills (Ryux Build) and design critique (Ryux Critique) for Claude Code, Codex, Cursor, Gemini CLI, OpenCode, Cline, Copilot, and more.",
   "type": "module",
   "bin": {
-    "ryux": "./dist/index.js",
-    "ryux-rules": "./dist/index.js"
+    "ryux": "dist/index.js",
+    "ryux-rules": "dist/index.js"
   },
   "files": [
     "dist",
