@@ -1,8 +1,8 @@
 {
   "name": "ryux-rules",
-  "version": "0.2.0",
+  "version": "1.0.0",
   "private": true,
-  "description": "Pasang aturan desain ryux (RX-C/RX-H/RX-N/RX-L) per-concern ke agent AI: Claude Code, Cursor, atau AGENTS.md.",
+  "description": "Install Ryux, modular design skills for AI coding agents (Required, Preferred, Contextual rules with Hard Gates and a Delivery Gate), into Claude Code, Cursor, or AGENTS.md.",
   "type": "module",
   "bin": {
     "ryux-rules": "./dist/index.js"
