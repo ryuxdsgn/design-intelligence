@@ -1349,6 +1349,6 @@ export const RULESET_VERSION = "RX-2.0";
 export const MCP_NAME = "ryux";
 export const MCP_URL = "https://mcp.ryux.design/mcp";
 export const MCP_ADD_CMD = `claude mcp add --transport http ${MCP_NAME} ${MCP_URL}`;
-export const CLI_CMD = "npx ryux";
+export const CLI_CMD = "npx @ryuxdsgn/ryux";
 export const MARK_START = "<!-- ryux-rules:start -->";
 export const MARK_END = "<!-- ryux-rules:end -->";

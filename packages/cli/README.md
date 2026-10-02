@@ -1,4 +1,4 @@
-# ryux
+# @ryuxdsgn/ryux
 
 Install **Ryux**, design intelligence for AI coding agents, with one command:
 
@@ -13,13 +13,13 @@ Original work by ryux.design, MIT licensed. Rules and rationale:
 ## Usage
 
 ```bash
-npx ryux                                          # interactive: agents, groups, scope
-npx ryux install --agent claude,cursor,codex      # non-interactive
-npx ryux install --agent all                      # every supported agent
-npx ryux install --agent all --groups critique    # Ryux Critique only
-npx ryux install --agent claude --global          # into your home directory
-npx ryux update                                   # refresh what's installed
-npx ryux remove --yes                             # remove skills and marked blocks
+npx @ryuxdsgn/ryux                                          # interactive: agents, groups, scope
+npx @ryuxdsgn/ryux install --agent claude,cursor,codex      # non-interactive
+npx @ryuxdsgn/ryux install --agent all                      # every supported agent
+npx @ryuxdsgn/ryux install --agent all --groups critique    # Ryux Critique only
+npx @ryuxdsgn/ryux install --agent claude --global          # into your home directory
+npx @ryuxdsgn/ryux update                                   # refresh what's installed
+npx @ryuxdsgn/ryux remove --yes                             # remove skills and marked blocks
 ```
 
 `ryux-rules` still works as an alias of the same command.
@@ -80,7 +80,7 @@ npx skills add ryuxdsgn/design-intelligence      # skills.sh, any agent
 ## Develop
 
 ```bash
-pnpm --filter ryux build      # tsc -> dist/
+pnpm --filter @ryuxdsgn/ryux build      # tsc -> dist/
 node packages/cli/dist/index.js --help
 pnpm sync:skills              # regenerate skills/ and docs/design-rules.md
 ```

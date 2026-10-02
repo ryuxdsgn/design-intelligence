@@ -1,5 +1,5 @@
 {
-  "name": "ryux",
+  "name": "@ryuxdsgn/ryux",
   "version": "1.0.0",
   "description": "Ryux: design intelligence for AI coding agents. Senior product designer skills (Ryux Build) and design critique (Ryux Critique) for Claude Code, Codex, Cursor, Gemini CLI, OpenCode, Cline, Copilot, and more.",
   "type": "module",
@@ -52,5 +52,8 @@
   "devDependencies": {
     "@types/node": "^22.0.0",
     "typescript": "^5.6.0"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
