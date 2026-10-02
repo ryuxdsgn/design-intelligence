@@ -16,6 +16,7 @@ import {
   LEGACY_SKILL_DIRS,
   MARK_START,
   MCP_ADD_CMD,
+  PRESETS,
   RULES_VERSION,
   SKILLS,
   skillsInGroups,
@@ -35,6 +36,8 @@ interface Scope {
 const AGENT_IDS = [...AGENT_TARGETS.map((a) => a.id), AGENTS_MD_INLINE.id];
 const isGroup = (v: string): boolean => (ALL_GROUP_IDS as string[]).includes(v);
 const isLegacyConcern = (v: string): boolean => v in LEGACY_CONCERNS;
+const groupHint = (id: string): string =>
+  id === "analyze" || id === "critique" ? `ryux-${id}` : SKILLS.filter((s) => s.group === id).map((s) => s.id).join(", ");
 const targetDir = (a: AgentTarget, scope: Scope): string => join(scope.root, scope.global ? a.globalDir : a.dir);
 
 // Legacy --concerns values (RX-1.x) mapped to current skill ids, in workflow order.
@@ -156,6 +159,12 @@ async function runInstall(flags: Flags): Promise<void> {
   const scope = scopeOf(flags);
   const flagAgents = list(flags.agent);
   const flagGroups = list(flags.groups);
+  const preset = typeof flags.for === "string" ? PRESETS[flags.for] : undefined;
+  if (typeof flags.for === "string" && !preset) {
+    console.error(`Unknown --for "${flags.for}". Use: ${Object.keys(PRESETS).join(", ")}`);
+    process.exitCode = 1;
+    return;
+  }
   const flagConcerns = list(flags.concerns);
   const nonInteractive = Boolean(flagAgents);
 
@@ -169,7 +178,7 @@ async function runInstall(flags: Flags): Promise<void> {
       skills = skillsFromConcerns(flagConcerns.filter(isLegacyConcern));
       console.log(pc.yellow(`--concerns is deprecated; use --groups ${ALL_GROUP_IDS.join(",")}.`));
     } else {
-      skills = skillsInGroups((flagGroups ?? [...ALL_GROUP_IDS]).filter(isGroup));
+      skills = skillsInGroups((flagGroups ?? preset?.groups ?? [...ALL_GROUP_IDS]).filter(isGroup));
     }
     showMcp = Boolean(flags.mcp);
     if (!agents.length || !skills.length) {
@@ -179,7 +188,7 @@ async function runInstall(flags: Flags): Promise<void> {
     }
   } else {
     if (!process.stdin.isTTY) {
-      console.error(`Interactive mode needs a terminal. Use flags, e.g.: ${CLI_CMD} install --agent claude,cursor --groups ux,ui,quality,critique`);
+      console.error(`Interactive mode needs a terminal. Use flags, e.g.: ${CLI_CMD} install --agent claude,cursor --for designer`);
       process.exitCode = 1;
       return;
     }
@@ -195,14 +204,20 @@ async function runInstall(flags: Flags): Promise<void> {
       required: true,
     });
     if (p.isCancel(a)) return cancel();
+    const who = await p.select({
+      message: "Who is this for?",
+      options: Object.entries(PRESETS).map(([value, x]) => ({ value, label: x.label })),
+      initialValue: flags.for && preset ? String(flags.for) : "all",
+    });
+    if (p.isCancel(who)) return cancel();
     const g = await p.multiselect({
       message: "Which groups? (ryux-core is always included)",
       options: GROUPS.map((x) => ({
         value: x.id,
         label: x.label,
-        hint: x.id === "critique" ? "ryux-critique" : SKILLS.filter((s) => s.group === x.id).map((s) => s.id).join(", "),
+        hint: groupHint(x.id),
       })),
-      initialValues: [...ALL_GROUP_IDS],
+      initialValues: [...PRESETS[who as string].groups],
       required: true,
     });
     if (p.isCancel(g)) return cancel();
@@ -296,10 +311,10 @@ async function runRemove(flags: Flags): Promise<void> {
 
 function help(): void {
   const groups = GROUPS.map(
-    (g) => `  ${g.id.padEnd(12)} ${g.id === "critique" ? "critique" : SKILLS.filter((s) => s.group === g.id).map((s) => s.id).join(", ")}`,
+    (g) => `  ${g.id.padEnd(12)} ${groupHint(g.id)}`,
   ).join("\n");
   const agents = AGENT_TARGETS.map((a) => `  ${a.id.padEnd(12)} ${a.label.padEnd(15)} ${a.dir}  (global ~/${a.globalDir})`).join("\n");
-  console.log(`ryux v${RULES_VERSION}: install Ryux design skills (Build + Critique) into your AI coding agents
+  console.log(`ryux v${RULES_VERSION}: install Ryux, a design intelligence layer (Analyze, Build, Critique, QA), into your AI agents
 
 Usage:
   ${CLI_CMD} [command] [options]
@@ -319,7 +334,8 @@ ${groups}
 
 Options:
   --agent <list|all>   agents to install for (non-interactive)
-  --groups <list>      groups to install (default: all)
+  --for <who>          preset: designer (Analyze, Critique, QA), builder (Build, QA, Critique), all
+  --groups <list>      groups to install (overrides --for; default: all)
   --global             install into your home directory instead of this project
   --mcp                print the ryux MCP connect command
   --yes                skip the confirmation (remove)
@@ -328,6 +344,8 @@ Options:
 Examples:
   ${CLI_CMD}
   ${CLI_CMD} install --agent claude,cursor,codex
+  ${CLI_CMD} install --agent all --for designer
+  ${CLI_CMD} install --agent claude,codex --for builder
   ${CLI_CMD} install --agent all --groups critique
   ${CLI_CMD} install --agent claude --global
   ${CLI_CMD} update
