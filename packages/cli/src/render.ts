@@ -3,13 +3,16 @@ import {
   CONCERNS,
   CORE_RULES,
   MCP_ADD_CMD,
+  REQUIRED_RULES,
   RULES,
   RULES_VERSION,
   type Concern,
 } from "./content.js";
 
 function lines(ids: string[]): string {
-  return ids.map((id) => `- **${id}** ${RULES[id] ?? id}`).join("\n");
+  return ids
+    .map((id) => `- **${id}**${REQUIRED_RULES.has(id) ? " [Required]" : ""} ${RULES[id] ?? id}`)
+    .join("\n");
 }
 
 function byId(id: string): Concern | undefined {
@@ -18,7 +21,8 @@ function byId(id: string): Concern | undefined {
 
 const header = (scope: string): string =>
   `> ryux.design design rules, version ${RULES_VERSION}, MIT licensed.
-> Apply to ${scope} work before considering it done.`;
+> Apply to ${scope} work before considering it done. [Required] rules are a hard gate; the rest
+> may be broken only with a written reason.`;
 
 const gate = `## Delivery Gate
 
@@ -46,7 +50,7 @@ function concernBody(id: string): string {
   if (!c) return "";
   return `# ryux-${c.id}: ${c.label}
 
-${header(c.label.toLowerCase())}
+${header(c.label)}
 
 ${lines(c.rules)}`;
 }
@@ -68,7 +72,7 @@ export function renderConcernSkill(id: string): string {
   if (!c) return "";
   return `---
 name: ryux-${c.id}
-description: ryux-rules: ${c.label}. ${c.hint}. Load when working on ${c.label.toLowerCase()}.
+description: ryux-rules: ${c.label}. ${c.hint}. Load when working on ${c.label}.
 ---
 
 ${concernBody(id)}

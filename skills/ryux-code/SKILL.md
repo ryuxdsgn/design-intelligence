@@ -1,12 +1,13 @@
 ---
 name: ryux-code
-description: ryux-rules: Clean code. honest comments, meaningful names, no dead code, consistent style. Load when working on clean code.
+description: ryux-rules: Clean code. honest comments, meaningful names, no dead code, consistent style. Load when working on Clean code.
 ---
 
 # ryux-code: Clean code
 
-> ryux.design design rules, version 0.2.0, MIT licensed.
-> Apply to clean code work before considering it done.
+> ryux.design design rules, version 0.3.0, MIT licensed.
+> Apply to Clean code work before considering it done. [Required] rules are a hard gate; the rest
+> may be broken only with a written reason.
 
 - **RX-K-01** Comments explain the reason (why), not restate what the code already makes obvious.
 - **RX-K-02** Variable and function names are specific and meaningful; avoid data, temp, helper, manager without context.

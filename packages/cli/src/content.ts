@@ -58,6 +58,15 @@ export const RULES: Record<string, string> = {
   "RX-K-06": "Handle errors with actionable messages; don't swallow errors silently.",
 };
 
+// [Required] rules = Hard Gate in the Delivery Gate (docs/design-rules.md). Everything else is
+// [Recommended]: it may be broken only with a written reason.
+export const REQUIRED_RULES = new Set([
+  "RX-C-01", "RX-C-03", "RX-C-04", "RX-C-05", "RX-C-09",
+  "RX-H-01", "RX-H-03", "RX-H-04", "RX-H-05", "RX-H-09", "RX-H-11", "RX-H-12", "RX-H-14",
+  "RX-N-01", "RX-N-03", "RX-N-05", "RX-N-06", "RX-N-09", "RX-N-11",
+  "RX-L-01", "RX-L-02", "RX-L-04", "RX-L-06", "RX-L-07", "RX-L-08",
+]);
+
 // Core rules, always installed (evidence + honest content).
 export const CORE_RULES = ["RX-C-01", "RX-C-03", "RX-C-04", "RX-C-05", "RX-C-09"];
 
@@ -80,7 +89,7 @@ export const CONCERNS: Concern[] = [
     id: "copy",
     label: "Indonesian copywriting",
     hint: "natural language, Rupiah, error messages, CTAs",
-    rules: ["RX-C-06", "RX-L-06", "RX-L-07", "RX-H-09", "RX-N-05"],
+    rules: ["RX-C-06", "RX-H-02", "RX-L-06", "RX-L-07", "RX-H-09", "RX-N-05"],
   },
   {
     id: "a11y",
@@ -90,15 +99,19 @@ export const CONCERNS: Concern[] = [
   },
   {
     id: "ux",
-    label: "Applied UX patterns (NNGroup)",
-    hint: "forms, errors, checkout, trust, response time",
-    rules: ["RX-N-01", "RX-N-02", "RX-N-03", "RX-N-05", "RX-N-06", "RX-N-07", "RX-N-09", "RX-N-11"],
+    label: "Interaction and applied UX (NNGroup)",
+    hint: "status, control, forms, errors, checkout, trust, mobile input",
+    rules: [
+      "RX-H-01", "RX-H-03", "RX-H-05", "RX-H-06", "RX-H-07", "RX-H-10",
+      "RX-N-01", "RX-N-02", "RX-N-03", "RX-N-04", "RX-N-05", "RX-N-06",
+      "RX-N-07", "RX-N-08", "RX-N-09", "RX-N-10", "RX-N-11",
+    ],
   },
   {
     id: "local",
     label: "Indonesian patterns",
-    hint: "QRIS, VA, OTP, fees, address, paylater, e-KYC",
-    rules: ["RX-L-01", "RX-L-02", "RX-L-03", "RX-L-04", "RX-L-05", "RX-L-09", "RX-L-10"],
+    hint: "QRIS, VA, OTP, fees, address, paylater, e-KYC, local references",
+    rules: ["RX-L-08", "RX-L-01", "RX-L-02", "RX-L-03", "RX-L-04", "RX-L-05", "RX-L-09", "RX-L-10"],
   },
   {
     id: "code",
@@ -109,7 +122,7 @@ export const CONCERNS: Concern[] = [
 ];
 
 export const ALL_CONCERN_IDS = CONCERNS.map((c) => c.id);
-export const RULES_VERSION = "0.2.0";
+export const RULES_VERSION = "0.3.0";
 export const MCP_NAME = "ryux";
 export const MCP_URL = "https://mcp.ryux.design/mcp";
 export const MCP_ADD_CMD = `claude mcp add --transport http ${MCP_NAME} ${MCP_URL}`;
