@@ -41,6 +41,8 @@ function ruleBlock(r: Rule): string {
   const lines = [`### ${r.id} ${tag(r)} ${r.title}`, ""];
   if (r.when) lines.push(`- When: ${r.when}`);
   lines.push(`- Do: ${r.do}`, `- Do not: ${r.dont}`, `- Why: ${r.why} (${r.basis})`);
+  if (r.notWhen) lines.push(`- Not when: ${r.notWhen}`);
+  if (r.tradeoff) lines.push(`- Trade-off: ${r.tradeoff}`);
   if (r.check) lines.push(`- Check: ${r.check}`);
   return lines.join("\n");
 }
@@ -151,6 +153,10 @@ function skillBody(id: string): string {
 > Group ${groupLabel(s.group)} · Delivery Gate area ${s.gateArea} · ${RULESET_VERSION}. Levels are defined in \`ryux-core\`.
 
 ${GUIDES[s.id]}${extra}
+
+## Evidence from Ryux Knowledge
+
+${s.evidence} Without the ryux MCP, say the evidence comes from the design and standards alone.
 
 > Hard Gates always apply, whichever skills are loaded: no invented numbers, people, urgency, business
 > rules, or terms; no placeholder shipped as final; no missing critical states. See \`ryux-core\`.

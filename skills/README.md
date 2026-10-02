@@ -4,6 +4,10 @@ Browsable copies of the Ryux skills (RX-2.0), one folder per skill (each holds a
 is a design intelligence layer for AI and designers. An agent loads `ryux-core`, chooses the
 capability (Analyze, Build, Critique, QA), then loads only the skills the task needs.
 
+Roles: **core** (the operating system), **knowledge** (how to reason about one area; rules say when
+they apply, when they do not, and the trade-off), **capability** (Analyze, Critique), and **gate**
+(Visual QA, anti-slop). Every skill names the evidence to pull from Ryux Knowledge.
+
 | Group | Skill | Covers |
 | --- | --- | --- |
 | core | `ryux-core` | Choose the capability, levels, which skills to load, Hard Gates, Delivery Gate. Always installed. |
@@ -19,9 +23,9 @@ capability (Analyze, Build, Critique, QA), then loads only the skills the task n
 | ui | `ryux-accessibility` | Semantics, keyboard, focus, contrast, targets, names, errors, reduced motion (RX-A11Y) |
 | ui | `ryux-responsive` | Prioritize, simplify, reorganize; tables, overlays, safe areas (RX-RD) |
 | engineering | `ryux-frontend` | The repo's own stack, semantic controls, components, no invented logic (RX-FE) |
-| quality | `ryux-visual-qa` | Render, inspect, critique, fix, render again (RX-QA) |
+| quality | `ryux-visual-qa` | Did the build match the intended design? Deviation list, fix, render again (RX-QA) |
 | quality | `ryux-anti-slop` | Hard Gates, Purpose Gates, Quality Locks, honest claims (RX-AS) |
-| critique | `ryux-critique` | Design Read (nine dimensions), then findings with evidence, impact, recommendation, and confidence |
+| critique | `ryux-critique` | Orchestrates Analyze and the knowledge skills; Design Read, then findings with ID, severity, category, evidence, impact, recommendation, confidence, and source |
 
 Rules are **[Required]** (exceptions need a written reason), **[Preferred]** (the default),
 or **[Contextual]** (only when its situation applies). **[Hard Gate]** rules have no exceptions;

@@ -22,6 +22,10 @@ cannot happen in this product do not need a design; say so in the Delivery Gate.
 
 Does not cover: how errors are worded (see ryux-content).
 
+## Evidence from Ryux Knowledge
+
+How reference apps show empty, error, offline, and loading states for this flow: `search_screens` with the state in the query. Without the ryux MCP, say the evidence comes from the design and standards alone.
+
 > Hard Gates always apply, whichever skills are loaded: no invented numbers, people, urgency, business
 > rules, or terms; no placeholder shipped as final; no missing critical states. See `ryux-core`.
 

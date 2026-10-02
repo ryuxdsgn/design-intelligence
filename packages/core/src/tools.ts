@@ -528,6 +528,14 @@ export const COPY_RULES: CopyRule[] = [
         ? "Rupiah format is Rp1.250.000 (no space, dot thousands, no decimals) (RX-CD-02)"
         : null,
   },
+  {
+    rule: "C-08",
+    severity: "warning",
+    check: (t) =>
+      /\b\d{1,2}:\d{2}\s?(AM|PM|am|pm)\b|\b\d{1,2}\/\d{1,2}\/\d{2,4}\b/.test(t)
+        ? "Indonesian dates and times: 2 Okt 2026, 14.30 (24-hour, period), not 10/02/2026 or 2:30 PM (RX-CD-09)"
+        : null,
+  },
 ];
 
 export function auditCopy({ summary, items }: AuditCopyArgs): AuditCopyResult {

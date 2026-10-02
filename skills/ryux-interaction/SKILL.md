@@ -30,6 +30,10 @@ submits; Escape closes.
 
 Does not cover: form-specific behavior (see ryux-forms).
 
+## Evidence from Ryux Knowledge
+
+How local apps handle the same action and its states, and local payment patterns: `search_screens`, `get_local_pattern` (qris, virtual-account, paylater). Without the ryux MCP, say the evidence comes from the design and standards alone.
+
 > Hard Gates always apply, whichever skills are loaded: no invented numbers, people, urgency, business
 > rules, or terms; no placeholder shipped as final; no missing critical states. See `ryux-core`.
 
@@ -40,6 +44,8 @@ Does not cover: form-specific behavior (see ryux-forms).
 - Do: For each meaningful action, decide what the user sees before acting, while it runs, when it finishes, and how they recover if it fails.
 - Do not: Ship an action whose in-progress, result, or failure behavior is undefined.
 - Why: Undefined behavior becomes inconsistent behavior once it is implemented. (Nielsen heuristics 1 and 9; ryux interaction model)
+- Not when: trivial actions with no wait and no failure mode (toggling a local view)
+- Trade-off: more states to design, build, and test
 - Check: review
 
 ### RX-IX-02 [Required] Feedback that matches the wait
@@ -47,6 +53,8 @@ Does not cover: form-specific behavior (see ryux-forms).
 - Do: Give an immediate pressed state; past about 1 second show a loading indicator; past about 10 seconds show progress with an estimate or let the user leave and come back.
 - Do not: Let a payment or save run with no visible status.
 - Why: Silence during a wait reads as failure and invites double taps. (Nielsen response-time limits (0.1 / 1 / 10 s); Nielsen heuristic 1)
+- Not when: instant actions under about 0.1 s; a spinner that flashes is noise
+- Trade-off: progress indicators need real progress data; a fake bar misleads
 - Check: heuristic_eval H-01
 
 ### RX-IX-03 [Required] Cancel, back, and undo
@@ -54,6 +62,8 @@ Does not cover: form-specific behavior (see ryux-forms).
 - Do: Let users cancel, go back, or undo without losing their work; where a step is genuinely irreversible, say so before it.
 - Do not: Trap users in a flow with no exit.
 - Why: Freedom to back out makes people willing to explore. (Nielsen heuristic 3 (1994))
+- Not when: the step is genuinely irreversible once confirmed (a sent transfer); say so up front instead
+- Trade-off: undo needs soft-delete or delayed execution in the backend
 - Check: heuristic_eval H-03
 
 ### RX-IX-04 [Required] Protect high-impact actions by reasoning
@@ -61,6 +71,8 @@ Does not cover: form-specific behavior (see ryux-forms).
 - Do: Weigh each destructive or costly action: is it reversible, how big is the impact, how easy is recovery? Prefer undo for reversible actions; confirm with the specifics (amount, recipient, item) when it is irreversible and costly; skip confirmation when it only adds friction.
 - Do not: Confirm every action by reflex, or use a bare "Are you sure?" before a payment.
 - Why: Confirmation that appears everywhere gets dismissed by habit; specifics and undo catch real mistakes. (Nielsen heuristic 5; NNGroup confirmation-dialog guidance)
+- Not when: reversible, low-impact actions where undo is enough
+- Trade-off: one extra step versus irreversible loss
 - Check: heuristic_eval H-05
 
 ### RX-IX-05 [Required] Full cost before commitment
@@ -68,6 +80,8 @@ Does not cover: form-specific behavior (see ryux-forms).
 - Do: Show items, shipping, admin fees, and tax as a breakdown and total before the user commits.
 - Do not: Reveal fees for the first time on the final step.
 - Why: Unexpected extra costs are among the most reported reasons for abandoning checkout. (Baymard checkout usability research; NNGroup e-commerce research)
+- Not when: prices are not known until a later choice (shipping before an address); show an estimate and say when it is final
+- Trade-off: a full breakdown adds lines to a small screen
 - Check: review
 
 ### RX-IX-06 [Required] Keyboard-operable actions
@@ -75,6 +89,8 @@ Does not cover: form-specific behavior (see ryux-forms).
 - Do: Make actions reachable and operable from the keyboard (path-based input such as drawing excepted); Enter submits a form and Escape closes a dialog.
 - Do not: Build actions that only work with a pointer or a touch gesture.
 - Why: Keyboard, switch, and power users depend on it. (WCAG 2.2 SC 2.1.1)
+- Not when: path-based input such as drawing or a signature; offer an alternative
+- Trade-off: custom widgets need explicit key handling and testing
 - Check: review
 
 ### RX-IX-07 [Preferred] Disabled controls explain themselves
@@ -82,6 +98,8 @@ Does not cover: form-specific behavior (see ryux-forms).
 - Do: When a control is disabled, show why or what enables it, or keep it enabled and explain on use.
 - Do not: Grey out a button with no explanation.
 - Why: An unexplained disabled state is a dead end. (NNGroup disabled-button guidance)
+- Not when: the reason is already visible right next to the control
+- Trade-off: explanations add text; an enabled control that explains on use can surprise
 - Check: review
 
 ### RX-IX-08 [Contextual] Shortcuts for repeat use
@@ -90,6 +108,8 @@ Does not cover: form-specific behavior (see ryux-forms).
 - Do: Offer shortcuts such as recent items, quick amounts, and keyboard actions.
 - Do not: Make frequent users walk the novice path every time.
 - Why: Accelerators keep repeat work fast without hurting new users. (Nielsen heuristic 7 (1994))
+- Not when: first-time or rare tasks; shortcuts clutter the novice path
+- Trade-off: shortcuts must be discoverable without crowding the screen
 - Check: heuristic_eval H-07
 
 ### RX-IX-09 [Contextual] QRIS: amount and merchant first
@@ -98,6 +118,8 @@ Does not cover: form-specific behavior (see ryux-forms).
 - Do: Show the amount and the merchant name before the user scans or confirms, and the paid status afterwards.
 - Do not: Show a QR code without the amount or the merchant.
 - Why: Users check who they are paying and how much before they pay. (QRIS standard (Bank Indonesia); ryux reference screens)
+- Not when: a static QRIS printed for any amount, where the user types the amount; show the merchant name
+- Trade-off: an extra confirmation step before the code
 - Check: search_screens qris
 
 ### RX-IX-10 [Contextual] Virtual account: copy, deadline, steps
@@ -106,6 +128,8 @@ Does not cover: form-specific behavior (see ryux-forms).
 - Do: Give a copy button for the VA number, the payment deadline, and per-bank steps.
 - Do not: Show a VA number with no copy button or no deadline.
 - Why: Users switch to their banking app and need the number and steps at hand. (ryux reference screens)
+- Not when: the app pays the VA itself in one step (auto-debit)
+- Trade-off: per-bank steps make the screen longer
 - Check: search_screens virtual-account
 
 ### RX-IX-11 [Contextual] Paylater and installments in full
@@ -114,4 +138,6 @@ Does not cover: form-specific behavior (see ryux-forms).
 - Do: Show the limit, the tenor options, and the total cost including interest and fees before commitment.
 - Do not: Show only the monthly amount.
 - Why: Credit decisions need the full cost to be informed ones. (OJK consumer-protection disclosure expectations)
+- Not when: a single full payment with no credit involved
+- Trade-off: the full cost can discourage a purchase; that is the point of disclosure
 - Check: review

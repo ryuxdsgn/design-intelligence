@@ -15,13 +15,16 @@ export const CORE_CAPABILITIES = `| Capability | When | Load |
 | **Critique** | evaluate a design, page, or flow | \`ryux-critique\` |
 | **QA** | verify what was just built | \`ryux-visual-qa\` |
 
-The knowledge skills (product, ux, interaction, forms, edge-cases, content, ui, design-system,
-accessibility, responsive, frontend, anti-slop) serve all four. Every capability ends at the
-Anti-Slop Quality Gate: the Hard Gates below and the Delivery Gate.`;
+Skill roles: **core** is the operating system; **knowledge** skills (product, ux, interaction,
+forms, edge-cases, content, ui, design-system, accessibility, responsive, frontend) say how to
+reason; **capability** skills (analyze, critique) are workflows; **gate** skills (visual-qa,
+anti-slop) verify and filter. Ryux Knowledge is the evidence layer for all of them. Every
+capability ends at the Anti-Slop Quality Gate: the Hard Gates below and the Delivery Gate.`;
 
 export const CORE_PRINCIPLE = `Do not optimize for visual novelty. Optimize for clarity, usability, consistency, product fit,
-accessibility, and intentional design decisions. Ryux guides good decisions and prevents generic
-output; it is a filter and a reasoning aid, not a style.`;
+accessibility, and intentional decisions. Understand the context before deciding; separate observed
+facts from assumptions; prefer evidence over aesthetic preference; do not invent requirements;
+explain meaningful decisions with their trade-off; validate before claiming.`;
 
 export const CORE_WORKFLOW = `Request → understand context → understand the product problem → define UX structure → define
 interaction → define UI → apply the design system → implement → inspect (render) → critique →
@@ -77,6 +80,16 @@ Does not cover: layout or visual decisions (see ryux-ux and ryux-ui).`,
 - **Search, filter, sort**: only when the content is long enough to need them, matching how
   users hunt.
 - **Recovery paths**: every flow has a way back and a way out.
+
+Reason like a senior designer: a principle, where it applies, where it does not, and what it costs.
+
+\`\`\`
+Rule:       Recognition over recall (RX-UX-08)
+Context:    a complex enterprise form filled many times a day
+Decision:   show previously selected values and recent entries
+Trade-off:  higher visual density
+Reason:     less memory burden in a repeated workflow
+\`\`\`
 
 Does not cover: per-action behavior (see ryux-interaction), forms (see ryux-forms), or states
 (see ryux-edge-cases).`,
@@ -137,7 +150,9 @@ cannot happen in this product do not need a design; say so in the Delivery Gate.
 
 Does not cover: how errors are worded (see ryux-content).`,
 
-  content: `Copy is interface. Write it specific, concise, human, action-oriented, and in context.
+  content: `Content is interface: labels, CTAs, errors, empty states, confirmations, helper text, terminology,
+numbers, dates, currency, and localization are all designed, not filled in last. Write them
+specific, concise, human, action-oriented, and in context.
 
 Avoid generic AI language: "unlock", "elevate", "transform", "seamlessly", "powerful solution",
 "next-generation", "experience the future", and their Indonesian equivalents
@@ -148,6 +163,7 @@ Avoid generic AI language: "unlock", "elevate", "transform", "seamlessly", "powe
 - **Terminology**: one name per thing, everywhere.
 - **Indonesian** as users speak it; English only for terms they already use.
 - **Money**: Rp1.250.000.
+- **Dates, times, numbers**: 2 Okt 2026, 14.30 WIB, 1,5, 12.500, +62 812-3456-7890.
 - **Offers and terms**: write only the terms you were given. Unknown minimums, quotas, deadlines,
   and codes stay placeholders (\`[minimal belanja]\`, \`[tanggal selesai]\`); do not add "kuota
   terbatas" or "sebelum kehabisan" unless a real limit was stated (RX-AS-04, RX-PR-02).
@@ -166,6 +182,11 @@ Work in this order:
 6. **Containers**: use a container only when it groups or separates something.
 7. **Icons**: next to labels, from one set, at consistent sizes.
 8. **Motion**: only to explain change; short; never blocking.
+
+**Justify values.** Every value comes from the scale and has a reason you can say in one line:
+"12px between these two fields because they belong together; 24px before the next group because it
+is a new topic." Tighter inside a group, looser between groups; density follows the task. If you
+cannot say why 8 and not 12, the choice is not a decision yet.
 
 Does not cover: component reuse and tokens (see ryux-design-system).`,
 
@@ -212,6 +233,14 @@ Do not squeeze everything into a smaller viewport.
 | Modals and drawers | full-screen or bottom sheet; close and primary action reachable |
 | Text | keep the size; let it wrap; truncate only with access to the full value |
 
+For each section, answer before building: what **changes**, what **stays**, what **disappears**,
+what **reorders**, what becomes **scrollable**, what becomes **stacked**, and which **interaction**
+changes (hover becomes tap, a side panel becomes a sheet)?
+
+Example: a data table on desktop → on tablet, scroll horizontally inside the table or show the
+priority columns → on mobile, a different information architecture: a list of rows as summary cards
+that open a detail view.
+
 Check the stated viewport and the smallest supported width. No horizontal page scroll.`,
 
   frontend: `Connect design decisions to the code that ships them.
@@ -229,24 +258,31 @@ Check the stated viewport and the smallest supported width. No horizontal page s
 
 Does not cover: visual decisions (see ryux-ui) or component reuse decisions (see ryux-design-system).`,
 
-  "visual-qa": `Do not claim visual quality without inspecting the actual result when inspection is possible.
+  "visual-qa": `Visual QA asks one question: **did the implementation match the intended design?** Whether the
+design itself is good is Critique's question (ryux-critique).
 
-**Loop**: implement → render → inspect → critique → fix → render again.
+**With a reference** (a Figma or pen.dev frame, DESIGN.md, or an approved screenshot):
+1. Capture the reference and the implementation at the same viewport (see the capture table in
+   ryux-analyze).
+2. Compare property by property: spacing, typography, color, size, position, components, states,
+   responsive behavior.
+3. Report each deviation:
+
+\`\`\`
+Area        | Expected (reference) | Actual (build) | Deviation       | Severity | Fix
+Card radius | 16px                 | 8px            | half the radius | minor    | use radius-lg
+\`\`\`
+
+**Without a reference**, check the build against its own intent and the rules below.
+
+**Loop**: implement → render → compare → fix → render again.
 
 **Render with what is available**, in this order: the project's own preview or test setup;
-\`npx playwright screenshot --viewport-size=1440,900 <url>\` (and 360 wide for mobile); a browser
+\`npx playwright screenshot --viewport-size=1440,900 <url>\` (and 390 wide for mobile); a browser
 tool; a design-tool export such as pen.dev \`Export\`. If none is available, say so in the gate.
 
-**Inspect**: layout, hierarchy, spacing, typography, alignment, density, component consistency,
-responsive behavior, interaction states, accessibility, and edge cases.
-
-**Rank issues by impact**:
-1. Blocks the task (covered action, broken layout, unreadable text).
-2. Misleads (wrong numbers, unclear primary action).
-3. Adds friction (inconsistent spacing, weak hierarchy).
-4. Polish.
-
-For a structured review, use ryux-critique (Design Read plus heuristic_eval).`,
+**Rank issues by impact**: blocks the task, misleads (wrong numbers, unclear action), adds friction,
+polish.`,
 
   "anti-slop": `Anti-slop is not a list of banned styles. It has three parts.
 
