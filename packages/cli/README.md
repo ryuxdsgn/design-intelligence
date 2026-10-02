@@ -1,11 +1,14 @@
 # @ryuxdsgn/ryux
 
-Install **Ryux**, design intelligence for AI coding agents, with one command:
+Install **Ryux**, a design intelligence layer for AI and designers, with one command:
 
-- **Ryux Build**: `ryux-core` plus 13 senior product designer skills (product thinking, UX, forms,
-  edge cases, UI, design system, accessibility, responsive, frontend, visual QA, anti-slop).
-- **Ryux Critique**: `ryux-critique`, a senior design critique of a Figma link, a pen.dev design, a
+- **Analyze** (`ryux-analyze`): understand an existing interface, with every finding labeled
+  Measured, Observed, or Inferred.
+- **Build** (`ryux-core` plus 13 knowledge skills): senior product design reasoning while an agent
+  creates UI, copy, and frontend code.
+- **Critique** (`ryux-critique`): a senior design critique of a Figma link, a pen.dev design, a
   website URL, or a screenshot.
+- **QA** (`ryux-visual-qa`): render, inspect, fix, render again.
 
 Original work by ryux.design, MIT licensed. Rules and rationale:
 [`docs/design-rules.md`](https://github.com/ryuxdsgn/design-intelligence/blob/main/docs/design-rules.md).
@@ -15,7 +18,9 @@ Original work by ryux.design, MIT licensed. Rules and rationale:
 ```bash
 npx @ryuxdsgn/ryux                                          # interactive: agents, groups, scope
 npx @ryuxdsgn/ryux install --agent claude,cursor,codex      # non-interactive
-npx @ryuxdsgn/ryux install --agent all                      # every supported agent
+npx @ryuxdsgn/ryux install --agent all --for designer      # Analyze, Critique, QA
+npx @ryuxdsgn/ryux install --agent all --for builder       # Build, QA, Critique
+npx @ryuxdsgn/ryux install --agent all                      # every supported agent, every skill
 npx @ryuxdsgn/ryux install --agent all --groups critique    # Ryux Critique only
 npx @ryuxdsgn/ryux install --agent claude --global          # into your home directory
 npx @ryuxdsgn/ryux update                                   # refresh what's installed
@@ -52,10 +57,15 @@ pointer file; global installs only write skill folders.
 | `ui` | `ryux-ui`, `ryux-design-system`, `ryux-accessibility`, `ryux-responsive` |
 | `engineering` | `ryux-frontend` |
 | `quality` | `ryux-visual-qa`, `ryux-anti-slop` |
+| `analyze` | `ryux-analyze` |
 | `critique` | `ryux-critique` |
 
-`ryux-core` (workflow, which skills to load, Hard Gates, the Delivery Gate) is always installed.
-The default is every group.
+Presets pick groups for you: `--for designer` installs `analyze`, `critique`, `quality`, `ux`, and
+`ui`; `--for builder` installs `foundation`, `ux`, `ui`, `engineering`, `quality`, and `critique`;
+`--for all` installs everything. `--groups` overrides a preset.
+
+`ryux-core` (choose the capability, which skills to load, Hard Gates, the Delivery Gate) is always
+installed. The default is every group.
 
 ## Safe for your repo
 

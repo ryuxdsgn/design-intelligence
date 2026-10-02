@@ -8,7 +8,6 @@ import { execFileSync } from "node:child_process";
 import {
   renderCoreSkill,
   renderSkill,
-  renderCritiqueSkill,
   renderRulesDoc,
   renderMigrationTable,
   groupsTable,
@@ -18,7 +17,7 @@ import {
   qualityLocksTable,
   deliveryGateTemplate,
 } from "../dist/render.js";
-import { ALL_SKILL_IDS, ALL_INSTALLABLE_IDS } from "../dist/content.js";
+import { ALL_INSTALLABLE_IDS } from "../dist/content.js";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const root = join(here, "..", "..", "..");
@@ -36,10 +35,8 @@ for (const entry of await readdir(skillsDir, { withFileTypes: true })) {
   }
 }
 
-await writeSkill("ryux-core", renderCoreSkill(ALL_SKILL_IDS));
-for (const id of ALL_SKILL_IDS) await writeSkill(`ryux-${id}`, renderSkill(id));
-
-await writeSkill("ryux-critique", renderCritiqueSkill());
+await writeSkill("ryux-core", renderCoreSkill(ALL_INSTALLABLE_IDS));
+for (const id of ALL_INSTALLABLE_IDS) await writeSkill(`ryux-${id}`, renderSkill(id));
 
 function fill(doc, name, body) {
   const start = `<!-- ${name}:start -->`;

@@ -1,11 +1,13 @@
 # Ryux skills
 
-Browsable copies of the Ryux skills (RX-2.0), one folder per skill (each holds a `SKILL.md`). An
-agent loads `ryux-core` for any UI, UX, copy, or frontend task, then only the skills the task needs.
+Browsable copies of the Ryux skills (RX-2.0), one folder per skill (each holds a `SKILL.md`). Ryux
+is a design intelligence layer for AI and designers. An agent loads `ryux-core`, chooses the
+capability (Analyze, Build, Critique, QA), then loads only the skills the task needs.
 
 | Group | Skill | Covers |
 | --- | --- | --- |
-| core | `ryux-core` | Workflow, levels, which skills to load, Delivery Gate, honest claims. Always installed. |
+| core | `ryux-core` | Choose the capability, levels, which skills to load, Hard Gates, Delivery Gate. Always installed. |
+| analyze | `ryux-analyze` | Understand an existing interface; every item labeled Measured, Observed, or Inferred |
 | foundation | `ryux-product` | User, task, goal, primary action, constraints, assumptions (RX-PR) |
 | ux | `ryux-ux` | Information architecture, navigation, flows, grouping, disclosure, search and filters (RX-UX) |
 | ux | `ryux-interaction` | Before, during, result, recovery; feedback, confirm or undo, keyboard, local payments (RX-IX) |
@@ -19,7 +21,7 @@ agent loads `ryux-core` for any UI, UX, copy, or frontend task, then only the sk
 | engineering | `ryux-frontend` | The repo's own stack, semantic controls, components, no invented logic (RX-FE) |
 | quality | `ryux-visual-qa` | Render, inspect, critique, fix, render again (RX-QA) |
 | quality | `ryux-anti-slop` | Hard Gates, Purpose Gates, Quality Locks, honest claims (RX-AS) |
-| review | `ryux-critique` | Design Read (nine dimensions) plus `heuristic_eval` findings with evidence |
+| critique | `ryux-critique` | Design Read (nine dimensions), then findings with evidence, impact, recommendation, and confidence |
 
 Rules are **[Required]** (exceptions need a written reason), **[Preferred]** (the default),
 or **[Contextual]** (only when its situation applies). **[Hard Gate]** rules have no exceptions;

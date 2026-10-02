@@ -9,8 +9,10 @@
 >
 > **Last updated:** 2026-10-02 · **Version:** RX-2.0
 
-Ryux is a senior product designer's reasoning, packaged as skills for AI coding agents. Anti-slop
-prevents bad, generic output; Ryux also guides good design decisions. Three things make it
+Ryux is a design intelligence layer for AI and designers, packaged as skills. It has four
+capabilities: Analyze (`ryux-analyze`), Build (`ryux-core` and the knowledge skills below), Critique
+(`ryux-critique`), and QA (`ryux-visual-qa`). Anti-slop prevents bad, generic output; Ryux also
+guides good design decisions. Three things make it
 distinctly ryux: **evidence-based** (real Indonesian screens), **Indonesia first**, and **human
 judgment** for designer notes.
 
@@ -25,9 +27,10 @@ refine → Delivery Gate → done.
 
 ## Skills
 
-`ryux-core` is small and always loaded: the workflow, the levels, which skills to load, the
-Delivery Gate, and honest-claims wording. Every other skill is a short framework (questions,
-decision trees, templates) followed by its rules. Skills are installed in five groups:
+`ryux-core` is small and always loaded: choosing the capability, the levels, which skills to load,
+the Hard Gates, the Delivery Gate, and honest-claims wording. Every knowledge skill is a short
+framework (questions, decision trees, templates) followed by its rules. Skills install in groups,
+or through the presets `--for designer` and `--for builder`:
 
 <!-- groups:start -->
 | Group | Skills |
@@ -37,12 +40,15 @@ decision trees, templates) followed by its rules. Skills are installed in five g
 | `ui` | `ryux-ui` (RX-UI), `ryux-design-system` (RX-DS), `ryux-accessibility` (RX-A11Y), `ryux-responsive` (RX-RD) |
 | `engineering` | `ryux-frontend` (RX-FE) |
 | `quality` | `ryux-visual-qa` (RX-QA), `ryux-anti-slop` (RX-AS) |
-| `critique` |  |
+| `analyze` | `ryux-analyze` (capability skill) |
+| `critique` | `ryux-critique` (capability skill) |
 <!-- groups:end -->
 
-`ryux-critique` is the review playbook: a Design Read across nine dimensions (clarity, hierarchy,
-coherence, density, confidence, efficiency, specificity, recoverability, accessibility), then
-detailed findings through the `heuristic_eval` MCP tool.
+`ryux-analyze` inventories an existing interface, labeling each item Measured, Observed, or
+Inferred. `ryux-critique` is the review playbook: a Design Read across nine dimensions (clarity,
+hierarchy, coherence, density, confidence, efficiency, specificity, recoverability, accessibility),
+then findings with evidence, impact, recommendation, and confidence, structured through the
+`heuristic_eval` MCP tool.
 
 ### Load only what the task needs
 

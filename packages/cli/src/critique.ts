@@ -1,8 +1,10 @@
+import { CAPTURE_TABLE } from "./capture.js";
+
 // Ryux Critique: the review skill. Source of truth for skills/ryux-critique/SKILL.md, rendered by
 // render.ts and installed by the CLI (group "critique").
 
 export const CRITIQUE_DESCRIPTION =
-  "Ryux Critique - get a senior design critique before your users do. Reviews a Figma link, a pen.dev design, a website URL, or a screenshot: a Design Read across nine dimensions, then evidence-backed findings with severity and fix priorities. Use when asked to critique, review, or audit a UI, screen, or flow.";
+  "Ryux Critique - get a senior design critique before your users do. Reviews a Figma link, a pen.dev design, a website URL, or a screenshot: a Design Read across nine dimensions, then findings with evidence, impact, recommendation, and confidence, and fix priorities. Use when asked to critique, review, or audit a UI, screen, or flow.";
 
 export const CRITIQUE_BODY = `# ryux-critique: Ryux Critique
 
@@ -32,15 +34,7 @@ rules and, when connected, the ryux MCP tools \`search_screens\` and \`heuristic
 
 ### 1. Capture the design
 
-| Source | How to capture | If it is not available |
-| --- | --- | --- |
-| Figma link (\`figma.com/design/<fileKey>/...?node-id=1-2\`) | Figma MCP: \`get_screenshot\` with the file key and node id (turn \`1-2\` into \`1:2\`) for the image; \`get_metadata\` for the frame tree and \`get_design_context\` for text, components, and variables | Ask for a PNG export of the frames, or for the Figma MCP to be connected |
-| pen.dev design | pencil MCP: \`get_app_state\` to list frames; \`execute\` with \`TakeScreenshot([frameId])\` for the image and a \`Get\` visitor that prints text nodes and any \`ctx.problems\` (clipped content) | Ask for an exported PNG |
-| Website URL | \`npx playwright screenshot --full-page --viewport-size=1440,900 <url> desktop.png\` and \`--viewport-size=390,844\` for mobile; a browser tool for interaction states (hover, focus, an error) when one is available; the page HTML for headings, labels, alt text, and landmarks | Ask for screenshots at desktop and mobile width |
-| Screenshot or image | Read the image directly | none |
-| Code only | Render it first (see \`ryux-visual-qa\`) | Review the code and state that it was not rendered |
-
-Record what you captured: the frames or URLs, the viewports, and the tools.
+${CAPTURE_TABLE}
 
 ### 2. Gather context
 
@@ -77,8 +71,14 @@ need a reason when broken, and [Contextual] rules count only when their situatio
 - **Quality** (RX-QA, RX-AS): covered text, numbers that add up, invented numbers or people, fake
   urgency, honest placeholders.
 
-For each finding write the location, the problem, the rule, a severity from 0 to 4 with its reason
-(\`0\` not a problem · \`1\` cosmetic · \`2\` minor · \`3\` major · \`4\` catastrophic), and a concrete fix.
+For each finding write:
+- **Finding**: where it is and what the problem is, with the Ryux rule.
+- **Evidence**: what you saw (the capture, a measured value, a \`screen_id\`).
+- **Impact**: who is affected, in which task, and how badly; plus a severity from 0 to 4
+  (\`0\` not a problem · \`1\` cosmetic · \`2\` minor · \`3\` major · \`4\` catastrophic).
+- **Recommendation**: a concrete fix.
+- **Confidence**: High (seen directly), Medium (partly seen, such as one width only), or Low
+  (inferred, such as a state that was not captured).
 
 ### 5. Evidence and structure (ryux MCP)
 
@@ -120,7 +120,10 @@ Design Read
   (all nine)
 
 Findings (most severe first, at most 12)
-  1. [severity 3] Location · problem · rule RX-.. · evidence scr_... · fix
+  1. [severity 3 · confidence High] Location · problem · rule RX-..
+     Evidence:        what was seen, scr_...
+     Impact:          who and which task, how badly
+     Recommendation:  the fix
 
 What works (keep it)
   - ...
@@ -135,5 +138,6 @@ Fix priorities
 - Don't edit the source file while reviewing.
 - Don't give a critique with no location and no reason.
 - Don't raise severity to major without evidence, or claim "app X does this" without a \`screen_id\`.
+- Don't mark an inferred issue High confidence.
 - Don't paste generic advice ("modernize", "add white space") without a real problem.
 - Don't call the result "fully accessible" or "UX optimized"; say what was checked.`;
