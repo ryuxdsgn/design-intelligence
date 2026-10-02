@@ -2,6 +2,38 @@ import { WaitlistForm } from "@/components/waitlist-form";
 
 const REPO = "https://github.com/ryuxdsgn/ryux";
 
+function SearchIcon() {
+  return (
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" aria-hidden>
+      <circle cx="11" cy="11" r="7" />
+      <path d="m21 21-4.3-4.3" />
+    </svg>
+  );
+}
+
+function QrIcon() {
+  return (
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+      <rect x="3" y="3" width="7" height="7" rx="1" />
+      <rect x="14" y="3" width="7" height="7" rx="1" />
+      <rect x="3" y="14" width="7" height="7" rx="1" />
+      <rect x="14" y="14" width="3" height="3" rx="1" />
+      <rect x="18" y="18" width="3" height="3" rx="1" />
+      <rect x="14" y="18" width="3" height="3" rx="1" />
+      <rect x="18" y="14" width="3" height="3" rx="1" />
+    </svg>
+  );
+}
+
+function CheckIcon() {
+  return (
+    <svg className="text-ok" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+      <circle cx="12" cy="12" r="9" />
+      <path d="m8.5 12.5 2.5 2.5 4.5-5" />
+    </svg>
+  );
+}
+
 function Compare({
   title,
   note,
@@ -43,12 +75,12 @@ const INSIDE = [
     body: "Research (search_screens, get_flow, compare_apps…), audit (audit_ui, audit_copy, heuristic_eval, delivery_gate), and a design bridge. Every result carries a screen_id, app, version, and capture date.",
   },
   {
-    title: "ryux-rules, four layers",
-    body: "45 rules: anti-slop filter (RX-C), usability and accessibility heuristics (RX-H), applied UX patterns from NNGroup research (RX-N), and Indonesian patterns and copy (RX-L). Plus a PASS/FAIL Delivery Gate.",
+    title: "Ryux, a designer's reasoning",
+    body: "107 rules in 14 modular skills, from product thinking to visual QA. Hard Gates, purpose gates instead of style bans, and a 10-area Delivery Gate before you ship.",
   },
   {
-    title: "Install per concern",
-    body: "npx ryux-rules drops the rules into Claude Code, Cursor, or AGENTS.md. You pick only the concerns you need (ui, copy, a11y, ux, local), the way you'd pick skills.",
+    title: "Install by group",
+    body: "npx ryux-rules drops the skills into Claude Code, Cursor, or AGENTS.md. Pick the groups you need (foundation, ux, ui, engineering, quality), and agents load only what a task needs.",
   },
 ];
 
@@ -79,29 +111,68 @@ export default function Home() {
       </header>
 
       <main>
-        <section className="mx-auto max-w-6xl px-6 pt-12 pb-20 sm:pt-20">
-          <span className="inline-flex items-center gap-2 rounded-full bg-accent-soft px-3 py-1 text-xs font-semibold text-accent">
-            Early access · free
-          </span>
-          <h1 className="mt-6 max-w-3xl text-4xl font-extrabold leading-[1.08] tracking-tight sm:text-6xl">
-            Evidence-based UI references for AI agents.
-          </h1>
-          <p className="mt-6 max-w-2xl text-lg leading-relaxed text-sub">
-            ryux serves curated screens and flows from real Indonesian apps over MCP, with an open-source
-            anti-slop ruleset. Your agent designs from real examples, and it has to cite them.
-          </p>
-          <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-4">
-            <a href="#waitlist" className="rounded-xl bg-accent px-6 py-3.5 text-[15px] font-bold text-white hover:opacity-90">
-              Join the waitlist
-            </a>
-            <a href="#install" className="text-[15px] font-semibold text-ink">
-              Install ryux-rules →
-            </a>
+        <section className="mx-auto max-w-6xl px-6 pt-12 pb-20 sm:pt-16">
+          <div className="grid items-center gap-12 lg:grid-cols-[1fr_400px]">
+            <div>
+              <div className="flex items-center gap-3">
+                <span className="h-[3px] w-7 rounded-full bg-accent" />
+                <span className="text-xs font-bold uppercase tracking-[0.12em] text-accent">
+                  MCP + design rules for AI agents
+                </span>
+              </div>
+              <h1 className="mt-6 text-4xl font-extrabold leading-[1.05] tracking-tight sm:text-5xl">
+                Every design decision,
+                <br />
+                <span className="text-accent">backed by a real screen.</span>
+              </h1>
+              <p className="mt-6 max-w-xl text-lg leading-relaxed text-sub">
+                ryux serves your AI agent curated screens from real Indonesian apps over MCP, plus an
+                anti-slop ruleset. It has to cite what it copies.
+              </p>
+              <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-4">
+                <a href="#waitlist" className="rounded-xl bg-accent px-6 py-3.5 text-[15px] font-bold text-white hover:opacity-90">
+                  Join the waitlist
+                </a>
+                <a href="#proof" className="inline-flex items-center gap-1.5 text-[15px] font-semibold text-ink">
+                  See the difference <span aria-hidden>→</span>
+                </a>
+              </div>
+              <p className="mt-6 text-sm text-sub">
+                Free in early access · MIT-licensed rules · sample data today, real screens rolling in.
+              </p>
+            </div>
+
+            <div className="rounded-2xl border border-hair bg-white p-5">
+              <div className="flex items-center justify-between">
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-accent-soft px-3 py-1.5 text-[13px] font-bold text-accent">
+                  <SearchIcon /> search_screens
+                </span>
+                <span className="text-[13px] text-sub">1 result</span>
+              </div>
+              <div className="mt-4 rounded-xl border border-hair p-4">
+                <div className="flex items-center gap-3">
+                  <div className="flex h-[82px] w-[50px] items-center justify-center rounded-[10px] bg-card text-ink">
+                    <QrIcon />
+                  </div>
+                  <div className="flex-1">
+                    <p className="font-bold">Warung Kopi Contoh</p>
+                    <p className="text-[13px] text-sub">Checkout · QRIS</p>
+                  </div>
+                  <CheckIcon />
+                </div>
+                <div className="mt-3 flex flex-wrap gap-2">
+                  {["scr_a3f091", "v4.20.1", "24 Sep 2026"].map((t) => (
+                    <span key={t} className="rounded-md border border-hair bg-card px-2 py-1 text-xs text-sub">
+                      {t}
+                    </span>
+                  ))}
+                </div>
+                <p className="mt-3 text-[13px] leading-relaxed text-sub">
+                  Designer note: QRIS on top for small amounts; fees shown before you commit.
+                </p>
+              </div>
+            </div>
           </div>
-          <p className="mt-6 max-w-xl text-sm text-sub">
-            Free during early access. The data is sample data today. Production screens roll in reviewed by
-            hand, never auto-published.
-          </p>
         </section>
 
         <section id="proof" className="border-y border-hair bg-white">
