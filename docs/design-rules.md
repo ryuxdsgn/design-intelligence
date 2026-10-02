@@ -53,7 +53,8 @@ detailed findings through the `heuristic_eval` MCP tool.
 | Mobile UI | `ryux-ux`, `ryux-ui`, `ryux-responsive`, `ryux-accessibility`, `ryux-anti-slop` |
 | Checkout or payment | `ryux-product`, `ryux-interaction`, `ryux-forms`, `ryux-content`, `ryux-edge-cases` |
 | Data-heavy view (list, table, dashboard) | `ryux-ux`, `ryux-edge-cases`, `ryux-responsive`, `ryux-design-system`, `ryux-frontend` |
-| Copy only | `ryux-content`, `ryux-anti-slop` |
+| Frontend logic or utilities (formatting, state, data shown to users) | `ryux-frontend`, `ryux-content`, `ryux-edge-cases` |
+| Copy only (UI text, chat, announcements) | `ryux-content`, `ryux-anti-slop` |
 | Visual refinement | `ryux-ui`, `ryux-design-system`, `ryux-visual-qa`, `ryux-anti-slop` |
 | Review or critique | `ryux-critique` (Design Read + heuristic_eval), plus `ryux-visual-qa` |
 <!-- activation:end -->
@@ -811,7 +812,7 @@ Group UI · gate area RESPONSIVE. Covers prioritize, simplify, reorganize; table
 
 ### ryux-frontend: Frontend implementation (RX-FE)
 
-Group Engineering · gate area CODE QUALITY. Covers the repo's own stack, semantic elements, components, state, no invented logic. Load when writing UI code.
+Group Engineering · gate area CODE QUALITY. Covers the repo's own stack, semantic elements, components, state, no invented logic. Load when writing or changing frontend code, including formatting, state, and data logic that users see.
 
 #### RX-FE-01 [Required] Work in the repo's own stack
 

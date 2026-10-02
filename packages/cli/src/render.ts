@@ -61,10 +61,8 @@ export function deliveryGateTemplate(): string {
 }
 
 function coreBody(installed: string[]): string {
-  const skills = SKILLS.map((s) => {
-    const mark = installed.includes(s.id) ? "" : " (not installed)";
-    return `- \`ryux-${s.id}\`: ${s.summary}. Load when ${s.loadWhen}.${mark}`;
-  });
+  const missing = SKILLS.filter((s) => !installed.includes(s.id)).map((s) => `\`ryux-${s.id}\``);
+  const note = missing.length ? `\n\nNot installed here: ${missing.join(", ")}.` : "";
   return `# ryux-core
 
 > Ryux ${RULESET_VERSION} (rules v${RULES_VERSION}), MIT licensed. A senior product designer's
@@ -82,11 +80,15 @@ ${CORE_WORKFLOW}
 
 ${LEVELS}
 
+## Hard Gates (always apply)
+
+These hold even when \`ryux-anti-slop\` is not loaded. No written exception; fix before delivery.
+
+${hardGatesBrief()}
+
 ## Load only what the task needs
 
-${activationTable()}
-
-${skills.join("\n")}
+${activationTable()}${note}
 
 ## Delivery Gate
 
@@ -106,6 +108,14 @@ ${CORE_DECISION_RECORD}
 
 Reference screens and structured review come from the ryux MCP (\`search_screens\`,
 \`heuristic_eval\`, \`delivery_gate\`). Connect: \`${MCP_ADD_CMD}\``;
+}
+
+function hardGatesBrief(): string {
+  return HARD_GATES.map((h) => {
+    const r = RULES.find((x) => x.id === h.rules[0]);
+    const dont = r ? `Do not ${r.dont.charAt(0).toLowerCase()}${r.dont.slice(1)}` : "";
+    return `- **${h.item}.** ${dont} (${h.rules.join(", ")})`;
+  }).join("\n");
 }
 
 export function hardGatesTable(): string {
@@ -132,6 +142,9 @@ function skillBody(id: string): string {
 > Group ${groupLabel(s.group)} · Delivery Gate area ${s.gateArea} · ${RULESET_VERSION}. Levels are defined in \`ryux-core\`.
 
 ${GUIDES[s.id]}${extra}
+
+> Hard Gates always apply, whichever skills are loaded: no invented numbers, people, urgency, business
+> rules, or terms; no placeholder shipped as final; no missing critical states. See \`ryux-core\`.
 
 ## Rules
 

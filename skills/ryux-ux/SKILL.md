@@ -25,6 +25,9 @@ Choose structure from the user's goal, not from a template.
 Does not cover: per-action behavior (see ryux-interaction), forms (see ryux-forms), or states
 (see ryux-edge-cases).
 
+> Hard Gates always apply, whichever skills are loaded: no invented numbers, people, urgency, business
+> rules, or terms; no placeholder shipped as final; no missing critical states. See `ryux-core`.
+
 ## Rules
 
 ### RX-UX-01 [Required] Structure from the user's goal

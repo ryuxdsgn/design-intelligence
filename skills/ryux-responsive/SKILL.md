@@ -22,6 +22,9 @@ Do not squeeze everything into a smaller viewport.
 
 Check the stated viewport and the smallest supported width. No horizontal page scroll.
 
+> Hard Gates always apply, whichever skills are loaded: no invented numbers, people, urgency, business
+> rules, or terms; no placeholder shipped as final; no missing critical states. See `ryux-core`.
+
 ## Rules
 
 ### RX-RD-01 [Required] [Hard Gate] Stated viewport plus the smallest

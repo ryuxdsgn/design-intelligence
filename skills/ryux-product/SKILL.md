@@ -26,6 +26,9 @@ Find evidence with the ryux MCP (`search_screens`, `get_flow`, `get_local_patter
 
 Does not cover: layout or visual decisions (see ryux-ux and ryux-ui).
 
+> Hard Gates always apply, whichever skills are loaded: no invented numbers, people, urgency, business
+> rules, or terms; no placeholder shipped as final; no missing critical states. See `ryux-core`.
+
 ## Rules
 
 ### RX-PR-01 [Required] State the context first

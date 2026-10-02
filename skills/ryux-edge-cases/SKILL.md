@@ -22,6 +22,9 @@ cannot happen in this product do not need a design; say so in the Delivery Gate.
 
 Does not cover: how errors are worded (see ryux-content).
 
+> Hard Gates always apply, whichever skills are loaded: no invented numbers, people, urgency, business
+> rules, or terms; no placeholder shipped as final; no missing critical states. See `ryux-core`.
+
 ## Rules
 
 ### RX-EC-01 [Required] [Hard Gate] Critical states exist
