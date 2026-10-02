@@ -7,7 +7,7 @@
 > References to standards are factual; all explanations, examples, and numbering are written by us.
 > **Not a derivative of any third-party licensed text** and not affiliated with NN/g or anyone else.
 >
-> **Last updated:** 2026-09-24 · **Version:** RX-1.2
+> **Last updated:** 2026-10-02 · **Version:** RX-1.3
 
 ryux's quality gate for UI and copy. Three things make it distinctly ryux: **evidence-based**
 (referencing real screens), **Indonesia first**, and **human judgment** for designer notes.
@@ -345,17 +345,17 @@ is always included. This concern → rule map is the source of truth shared with
 | --- | --- | --- |
 | `ryux-rules` (core, always) | Evidence + content honesty | RX-C-01, RX-C-03, RX-C-04, RX-C-05, RX-C-09 |
 | `ryux-ui` | UI & visual | RX-C-02, RX-C-07, RX-C-08, RX-H-04, RX-H-08, RX-H-14, RX-N-12 |
-| `ryux-copy` | Indonesian copywriting | RX-C-06, RX-L-06, RX-L-07, RX-H-09, RX-N-05 |
+| `ryux-copy` | Indonesian copywriting | RX-C-06, RX-H-02, RX-L-06, RX-L-07, RX-H-09, RX-N-05 |
 | `ryux-a11y` | Accessibility | RX-H-11, RX-H-12, RX-H-13, RX-H-14 |
-| `ryux-ux` | Applied UX patterns (NNGroup) | RX-N-01, RX-N-02, RX-N-03, RX-N-05, RX-N-06, RX-N-07, RX-N-09, RX-N-11 |
-| `ryux-local` | Indonesian patterns | RX-L-01, RX-L-02, RX-L-03, RX-L-04, RX-L-05, RX-L-09, RX-L-10 |
+| `ryux-ux` | Interaction heuristics + applied UX patterns (NNGroup) | RX-H-01, RX-H-03, RX-H-05, RX-H-06, RX-H-07, RX-H-10, RX-N-01 to RX-N-11 (all except RX-N-12) |
+| `ryux-local` | Indonesian patterns | RX-L-01 to RX-L-10 except RX-L-06, RX-L-07 (those live in `ryux-copy`) |
 | `ryux-code` | Clean code (add-on) | RX-K-01, RX-K-02, RX-K-03, RX-K-04, RX-K-05, RX-K-06 |
 | `ryux-critique` | Usability review playbook | (see the `ryux-critique` skill) |
 
 Browsable skills live in the `skills/` directory (generated from `content.ts` via `pnpm sync:skills`).
-The entire RX-N layer is now bundled in the CLI (previously only in this document). Rules not yet
-part of any concern (e.g. RX-H-01/02/03/05/06/07/10, RX-N-04/08/10, RX-L-08) still apply
-via the MCP `heuristic_eval` and the Delivery Gate.
+Since CLI version 0.3.0 every RX-C, RX-H, RX-N, and RX-L rule belongs to at least one concern, so
+installing all concerns covers the whole Delivery Gate. Each installed rule shows its **[Required]**
+marker, matching the levels in this document.
 
 ### RX-K: Clean code (add-on, outside the core design gate)
 

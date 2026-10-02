@@ -18,10 +18,10 @@ The wizard asks: which agent you use, which **concern** you want to install, and
 | Concern | Contents | RX rules |
 | --- | --- | --- |
 | `ui` | UI and visuals | RX-C-02/07/08, RX-H-04/08/14, RX-N-12 |
-| `copy` | Indonesian copywriting | RX-C-06, RX-L-06/07, RX-H-09, RX-N-05 |
+| `copy` | Indonesian copywriting | RX-C-06, RX-H-02/09, RX-L-06/07, RX-N-05 |
 | `a11y` | Accessibility | RX-H-11/12/13/14 |
-| `ux` | Applied UX patterns (NNGroup) | RX-N-01/02/03/05/06/07/09/11 |
-| `local` | Indonesian patterns | RX-L-01..05/09/10 |
+| `ux` | Interaction heuristics + applied UX (NNGroup) | RX-H-01/03/05/06/07/10, RX-N-01..11 |
+| `local` | Indonesian patterns | RX-L-01..05/08/09/10 |
 | `code` | Clean code (add-on) | RX-K-01..06 |
 
 The core (evidence and honesty: RX-C-01/03/04/05/09) is always installed as the `ryux-rules` skill.
