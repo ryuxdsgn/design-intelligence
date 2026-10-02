@@ -22,6 +22,10 @@ Accessibility is product quality, not an enhancement. Check:
 
 Report what was checked and how. Do not claim full conformance without an audit.
 
+## Evidence from Ryux Knowledge
+
+Standards are the main evidence (WCAG 2.2 success criteria); reference screens show local patterns that meet them: `search_screens`. Without the ryux MCP, say the evidence comes from the design and standards alone.
+
 > Hard Gates always apply, whichever skills are loaded: no invented numbers, people, urgency, business
 > rules, or terms; no placeholder shipped as final; no missing critical states. See `ryux-core`.
 

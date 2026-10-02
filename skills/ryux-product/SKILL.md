@@ -26,6 +26,10 @@ Find evidence with the ryux MCP (`search_screens`, `get_flow`, `get_local_patter
 
 Does not cover: layout or visual decisions (see ryux-ux and ryux-ui).
 
+## Evidence from Ryux Knowledge
+
+How comparable Indonesian products frame the same task and offer: `search_screens` (category, flow) and `get_flow` for the full sequence. Without the ryux MCP, say the evidence comes from the design and standards alone.
+
 > Hard Gates always apply, whichever skills are loaded: no invented numbers, people, urgency, business
 > rules, or terms; no placeholder shipped as final; no missing critical states. See `ryux-core`.
 

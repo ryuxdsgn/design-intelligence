@@ -5,7 +5,7 @@ description: "Ryux core - a design intelligence layer for AI and designers. Choo
 
 # ryux-core
 
-> Ryux RX-2.0 (rules v1.1.0), MIT licensed. Indonesia first, evidence first.
+> Ryux RX-2.0 (rules v1.2.0), MIT licensed. Indonesia first, evidence first.
 
 Ryux is a design intelligence layer for AI and designers: it helps understand, build, evaluate,
 and fix interfaces through design reasoning. It is not a UI generator, an anti-slop framework, or
@@ -20,15 +20,18 @@ a design system.
 | **Critique** | evaluate a design, page, or flow | `ryux-critique` |
 | **QA** | verify what was just built | `ryux-visual-qa` |
 
-The knowledge skills (product, ux, interaction, forms, edge-cases, content, ui, design-system,
-accessibility, responsive, frontend, anti-slop) serve all four. Every capability ends at the
-Anti-Slop Quality Gate: the Hard Gates below and the Delivery Gate.
+Skill roles: **core** is the operating system; **knowledge** skills (product, ux, interaction,
+forms, edge-cases, content, ui, design-system, accessibility, responsive, frontend) say how to
+reason; **capability** skills (analyze, critique) are workflows; **gate** skills (visual-qa,
+anti-slop) verify and filter. Ryux Knowledge is the evidence layer for all of them. Every
+capability ends at the Anti-Slop Quality Gate: the Hard Gates below and the Delivery Gate.
 
 ## Principle
 
 Do not optimize for visual novelty. Optimize for clarity, usability, consistency, product fit,
-accessibility, and intentional design decisions. Ryux guides good decisions and prevents generic
-output; it is a filter and a reasoning aid, not a style.
+accessibility, and intentional decisions. Understand the context before deciding; separate observed
+facts from assumptions; prefer evidence over aesthetic preference; do not invent requirements;
+explain meaningful decisions with their trade-off; validate before claiming.
 
 ## Workflow
 

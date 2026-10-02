@@ -1,30 +1,41 @@
 ---
 name: ryux-visual-qa
-description: "Ryux Visual QA: render, inspect, critique, fix, render again; ranked by impact. Load when something visual has been implemented and is about to be called done."
+description: "Ryux Visual QA: did the build match the intended design: compare, list deviations, fix, render again. Load when something visual has been implemented and is about to be called done, or a build must match a design."
 ---
 
 # ryux-visual-qa: Visual QA
 
 > Group Quality · Delivery Gate area VISUAL QA · RX-2.0. Levels are defined in `ryux-core`.
 
-Do not claim visual quality without inspecting the actual result when inspection is possible.
+Visual QA asks one question: **did the implementation match the intended design?** Whether the
+design itself is good is Critique's question (ryux-critique).
 
-**Loop**: implement → render → inspect → critique → fix → render again.
+**With a reference** (a Figma or pen.dev frame, DESIGN.md, or an approved screenshot):
+1. Capture the reference and the implementation at the same viewport (see the capture table in
+   ryux-analyze).
+2. Compare property by property: spacing, typography, color, size, position, components, states,
+   responsive behavior.
+3. Report each deviation:
+
+```
+Area        | Expected (reference) | Actual (build) | Deviation       | Severity | Fix
+Card radius | 16px                 | 8px            | half the radius | minor    | use radius-lg
+```
+
+**Without a reference**, check the build against its own intent and the rules below.
+
+**Loop**: implement → render → compare → fix → render again.
 
 **Render with what is available**, in this order: the project's own preview or test setup;
-`npx playwright screenshot --viewport-size=1440,900 <url>` (and 360 wide for mobile); a browser
+`npx playwright screenshot --viewport-size=1440,900 <url>` (and 390 wide for mobile); a browser
 tool; a design-tool export such as pen.dev `Export`. If none is available, say so in the gate.
 
-**Inspect**: layout, hierarchy, spacing, typography, alignment, density, component consistency,
-responsive behavior, interaction states, accessibility, and edge cases.
+**Rank issues by impact**: blocks the task, misleads (wrong numbers, unclear action), adds friction,
+polish.
 
-**Rank issues by impact**:
-1. Blocks the task (covered action, broken layout, unreadable text).
-2. Misleads (wrong numbers, unclear primary action).
-3. Adds friction (inconsistent spacing, weak hierarchy).
-4. Polish.
+## Evidence from Ryux Knowledge
 
-For a structured review, use ryux-critique (Design Read plus heuristic_eval).
+The intended design (Figma, pen.dev, DESIGN.md) is the reference; Ryux screens are a secondary comparison: `search_screens`. Without the ryux MCP, say the evidence comes from the design and standards alone.
 
 > Hard Gates always apply, whichever skills are loaded: no invented numbers, people, urgency, business
 > rules, or terms; no placeholder shipped as final; no missing critical states. See `ryux-core`.
@@ -66,9 +77,17 @@ For a structured review, use ryux-critique (Design Read plus heuristic_eval).
 - Why: Most visual bugs live outside the default screenshot. (ryux visual QA loop)
 - Check: screenshot
 
-### RX-QA-06 [Preferred] Compare with a reference
+### RX-QA-06 [Preferred] Compare with the intended design or a reference
 
-- Do: Compare the result with at least one reference screen_id and note any intentional difference.
+- Do: Compare the result with the intended design or, without one, with at least one reference screen_id, and note any intentional difference.
 - Do not: Judge the result only against itself.
 - Why: A reference shows what you missed. (ryux evidence principle)
 - Check: search_screens
+
+### RX-QA-07 [Contextual] Match the reference design
+
+- When: an intended design exists (a Figma or pen.dev frame, DESIGN.md, or an approved screenshot)
+- Do: Capture the reference and the implementation at the same viewport, compare spacing, typography, color, size, position, components, states, and responsive behavior, and list each deviation with its fix.
+- Do not: Call the build done while it visibly differs from the design without saying so.
+- Why: Visual QA answers whether the build matches the intent; whether the design is good is Critique's question. (ryux visual QA loop)
+- Check: screenshot comparison

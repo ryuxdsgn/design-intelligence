@@ -46,7 +46,18 @@
 | **Analyze** | What is actually in this interface? | `ryux-analyze` |
 | **Build** | How do we make this without generic AI output? | `ryux-core` plus the knowledge skills |
 | **Critique** | Does this interface make sense, and what should change first? | `ryux-critique` |
-| **QA** | Does what we built match the intent, at every width and state? | `ryux-visual-qa` |
+| **QA** | Did the build match the intended design, at every width and state? | `ryux-visual-qa` |
+
+Four kinds of skill, so nothing is just a pile of rules:
+
+| Role | Skills | Job |
+| --- | --- | --- |
+| Core | `ryux-core` | the operating system: context, evidence, reasoning, decisions, trade-offs, validation |
+| Knowledge | product, ux, interaction, forms, edge-cases, content, ui, design-system, accessibility, responsive, frontend | how to reason about one area; each rule says when it applies, when it does not, and what it costs |
+| Capability | `ryux-analyze`, `ryux-critique` | workflows that use the knowledge skills |
+| Gate | `ryux-visual-qa`, `ryux-anti-slop` | verify the build and filter generic output |
+
+Every skill names the evidence to pull from Ryux Knowledge.
 
 One knowledge base, two kinds of user:
 
@@ -124,7 +135,9 @@ grid, type scale, spacing, color roles, components and their states, hierarchy, 
 interaction patterns, content and tone, local patterns, and design language. Every item is
 labeled **Measured** (read from Figma variables, CSS, or pen.dev properties), **Observed** (seen in
 a capture), or **Inferred**, so a guess is never passed off as a fact. It does not judge; that is
-Critique. It can also draft a `DESIGN.md` that Build follows.
+Critique. The report is structured, not an essay: Context, Layout, Typography, Visual,
+Components, Interaction, Design Language, Patterns Detected, Evidence, and Open questions. It feeds
+Critique and can draft a `DESIGN.md` that Build follows.
 
 ```text
 Analyze this Figma file before we add a new screen: https://www.figma.com/design/<file>/<name>
@@ -139,9 +152,14 @@ Point it at a **Figma link**, a **pen.dev** design, a **website URL**, or a **sc
 captures the real design first (read-only), runs a Design Read across nine dimensions (clarity,
 hierarchy, coherence, density, confidence, efficiency, specificity, recoverability, accessibility),
 then lists at most 12 findings with severity, the rule behind each one, a fix, and what to keep. It
-also says what it could not test, such as hover states on a static frame. Each finding carries
-**evidence**, **impact** (who and which task, how badly), a **recommendation**, and a
-**confidence** level, so an inferred problem is never presented as a seen one.
+also says what it could not test, such as hover states on a static frame. Critique runs Analyze
+first, then evaluates by category with the knowledge skills. Each finding has an **ID**,
+**severity**, **category**, **evidence**, **impact** (who and which task, how badly), a
+**recommendation**, a **confidence** level, and its **source** (the Ryux rule, plus a reference
+screen or standard), so an inferred problem is never presented as a seen one.
+
+**Visual QA** is the other side: give it the intended design and the build, and it lists every
+deviation (spacing, type, color, size, position, components, states) with a fix.
 
 ```text
 Critique this Figma frame: https://www.figma.com/design/<file>/<name>?node-id=1-2

@@ -22,6 +22,10 @@ components, interaction patterns and states, responsive behavior, and visual hie
 If the project has no system yet, define the smallest token set the screen needs and use it
 consistently. Do not introduce a component library the project does not use.
 
+## Evidence from Ryux Knowledge
+
+How reference apps keep components consistent for this pattern: `search_screens` by component, `extract_design_direction`. Without the ryux MCP, say the evidence comes from the design and standards alone.
+
 > Hard Gates always apply, whichever skills are loaded: no invented numbers, people, urgency, business
 > rules, or terms; no placeholder shipped as final; no missing critical states. See `ryux-core`.
 

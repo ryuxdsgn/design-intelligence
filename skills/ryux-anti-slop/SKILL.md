@@ -65,6 +65,10 @@ result, ask **"Why does this exist?"** If there is no meaningful reason, remove 
 | Responsive behavior | RX-RD-06 |
 | Visual hierarchy | RX-UI-01 |
 
+## Evidence from Ryux Knowledge
+
+Real screens show what real products do instead of invented numbers and urgency: `search_screens`; heuristic findings via `heuristic_eval`. Without the ryux MCP, say the evidence comes from the design and standards alone.
+
 > Hard Gates always apply, whichever skills are loaded: no invented numbers, people, urgency, business
 > rules, or terms; no placeholder shipped as final; no missing critical states. See `ryux-core`.
 
