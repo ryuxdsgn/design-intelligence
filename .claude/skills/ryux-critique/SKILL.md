@@ -53,10 +53,24 @@ For each major finding, find 1 to 3 comparison screens from Indonesian apps with
 
 ### 5. Structure it through heuristic_eval
 
-Send all findings to the `heuristic_eval` tool (`task_context` + `findings`). The tool will:
+Send all findings to the `heuristic_eval` tool (`task_context` + `findings`). The `heuristic` field
+only accepts the Nielsen codes `H-01` to `H-10`, so map every finding to its closest heuristic and
+name the specific ryux rule in `issue`:
+
+| Finding from | Map to |
+| --- | --- |
+| RX-H-11 contrast, RX-H-12 size/targets, RX-H-13 focus | `H-04` consistency and standards |
+| RX-H-14 states, RX-N-01 response time | `H-01` visibility of system status |
+| RX-N-02 to RX-N-04 forms, RX-N-10 mobile input | `H-05` error prevention or `H-07` efficiency |
+| RX-N-05 error messages | `H-09` error recovery |
+| RX-N-06, RX-L-04 hidden costs; RX-L-01/02/09 payment clarity | `H-01` or `H-02` |
+| RX-N-11 confirm/undo, RX-N-12 wayfinding | `H-05` or `H-03` |
+| RX-C-06, RX-L-06, RX-L-07 copy | `H-02` match with the real world |
+
+The tool will:
 - validate severity and reject major findings without valid evidence,
-- cap the number of findings,
-- return a summary (catastrophic/major/minor) + PASS/FAIL.
+- cap the number of findings at 12, dropping the lowest severity first,
+- return a summary (catastrophic/major/minor/cosmetic) + PASS/FAIL. Any severity >= 3 finding means FAIL.
 
 Fix any finding marked `supported: false` before moving on.
 
@@ -75,7 +89,7 @@ reference screen. If you need a release gate, run `delivery_gate` (evidence) and
 ## Example finding (short)
 
 ```
-H-01 · severity 3 · Payment confirmation screen
+H-01 (RX-N-01) · severity 3 · Payment confirmation screen
 problem: no indicator while verification is running
 fix:     show status + a time estimate
 evidence: scr_demo_001
