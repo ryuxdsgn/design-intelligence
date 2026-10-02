@@ -29,16 +29,51 @@
 
 ## See the difference
 
-`ryux-rules` installs per **concern** (`ryux-ui`, `ryux-copy`, `ryux-a11y`, `ryux-ux`, `ryux-local`).
-Each one has a real before/after below, built in pen.dev from the same brief. The "after" applies
-that concern's rules plus ryux data. The reference screens are in Indonesian, on purpose.
+The UI, Code, and Copy examples are real agent output. Each brief ran headless (`claude -p`) in a clean folder, and
+only the setup changed between runs. Nothing was edited by hand. `ryux-rules` filters what shouldn't
+be there. ryux reference data gives direction. They do different jobs, and the UI matrix shows both.
 
-**`ryux-ui`** · UI and visual · palette, spacing, consistency, states
+### UI
 
-| Before (no ryux) | After (`ryux-ui`) |
+One brief, run four ways: *"a 1920×1080 landing page for Catat, a cashier and bookkeeping app for
+Indonesian UMKM."*
+
+| **Tanpa apa-apa** | **`ryux-rules` saja** | **Referensi ryux saja** |
+|:--|:--|:--|
+| <a href="assets/compare/ui/without.png"><img src="assets/compare/ui/without.png" alt="Catat landing with no ryux: polished cream layout, but a stats bar claims 42.000+ UMKM in 34 provinces, Rp2,1 T monthly transactions, and 4,8 stars from 18 ribu reviews, none of them sourced" width="100%"></a> | <a href="assets/compare/ui/rules.png"><img src="assets/compare/ui/rules.png" alt="Catat landing with ryux-rules only: dark green layout, headline Jualan dicatat, untung kelihatan, a QRIS card labeled as an illustration, receipt totals that add up, and a footer note that the on-screen data is an example" width="100%"></a> | <a href="assets/compare/ui/reference.png"><img src="assets/compare/ui/reference.png" alt="Catat landing with ryux reference data only: the payment sheet shows fees before you choose, with QRIS MDR 0,3% and virtual account fees, but the stats row still claims 120.000+ UMKM and a 4,8 Play Store rating" width="100%"></a> |
+| Polished, and that is the trap. "42.000+ UMKM", "Rp2,1 T", and "4,8 dari 18 ribu ulasan" have no source (RX-C-03). | Honest. The invented numbers are gone, and the mockup is labeled as an example (RX-C-05). Direction is the agent's own guess. | Direction from real Indonesian screens: fees shown before you pick a method (RX-N-06, RX-L-04). The invented "120.000+" stays, because data directs and does not filter. |
+
+Only the fourth is honest and directed at the same time:
+
+| **`ryux-rules` + referensi ryux** |
+|:--|
+| <a href="assets/compare/ui/both.png"><img src="assets/compare/ui/both.png" alt="Catat landing with ryux-rules and ryux reference data: headline Setiap jualan tercatat, pembukuan beres sendiri, a Daftar lewat WhatsApp button, a QRIS payment sheet that shows Dibayar ke Warung Anda and the Rp41.000 total, a receipt whose lines add up to Rp41.000, a daily cash book card, and a Contoh tampilan label, with no invented user counts" width="100%"></a> |
+| No invented numbers, every total adds up, and the mockup is marked `Contoh tampilan` (RX-C-03, RX-C-05). Direction comes from real screens: sign up through WhatsApp, and a QRIS sheet that names the shop and the amount before you pay (RX-L-01). |
+
+### Code
+
+One brief, run twice: *"a TypeScript module that calculates an order total with shipping, an admin
+fee, and PPN 11%, and formats it as Rupiah."* The "after" run had `ryux-code` and `ryux-copy` installed.
+
+| Before | After |
 |:--|:--|
-| <a href="assets/compare/ui/ui-before.png"><img src="assets/compare/ui/ui-before.png" alt="Generic payment screen: sparkle logo, 256-BIT badge, made-up user numbers, global methods (Card/PayPal/Apple/Google), dollar pricing, low-contrast text" width="100%"></a> | <a href="assets/compare/ui/ui-after.png"><img src="assets/compare/ui/ui-after.png" alt="ryux checkout screen: order summary, transparent fee breakdown (subtotal, shipping, total Rp1.250.000), QRIS with an under-5-second verification note, Bayar Rp1.250.000 button, trust note, scr_a3f091 evidence" width="100%"></a> |
-| Global template, made-up numbers, dollars, thin contrast. | Two or three core colors plus one accent (RX-C-07), consistent spacing (RX-C-08), Rupiah, and `screen_id` evidence. |
+| <a href="assets/compare/code/before.png"><img src="assets/compare/code/before.png" alt="order-total.ts without ryux: 100 lines, doc comments that restate each field such as Unit price in whole Rupiah, English developer-facing errors, and a regex that swaps the non-breaking space after Rp for a normal one" width="100%"></a> | <a href="assets/compare/code/after.png"><img src="assets/compare/code/after.png" alt="order-total.ts with ryux-code and ryux-copy: 82 lines, comments only where they explain why, an empty-order guard, Indonesian error messages that say how to fix the input, and summary labels like Ongkos kirim and Total bayar" width="100%"></a> |
+| Doc comments that repeat the field name, English errors a shop owner can't act on. | Comments only say why (RX-K-01). Errors name the fix in Indonesian (RX-K-06, RX-N-05). Labels ready for the UI (RX-L-07). |
+
+### Copy
+
+One prompt, run twice: *"Tulis pengumuman promo gratis ongkir untuk grup WhatsApp pelanggan toko
+online saya."* The "after" run had `ryux-copy` and `ryux-local` installed.
+
+| Before | After |
+|:--|:--|
+| <a href="assets/compare/chat/before.png"><img src="assets/compare/chat/before.png" alt="WhatsApp promo written without ryux: emoji on almost every line, a five-item terms list, numbered emoji steps, and two rounds of urgency, Jangan sampai ketinggalan and checkout sekarang sebelum kehabisan" width="100%"></a> | <a href="assets/compare/chat/after.png"><img src="assets/compare/chat/after.png" alt="The same promo with ryux-copy: plain sentences, three terms with Rupiah placeholders like Rp[100.000], three numbered steps, and a single soft closing line" width="100%"></a> |
+| Emoji on every line, "selama persediaan masih ada" plus "sebelum kehabisan" with nothing behind it. | Shorter and plainer, placeholders in Rupiah format (RX-L-06). The agent flagged "Kuota promo terbatas" as a line to delete unless the quota is real (RX-N-09). |
+
+Every image opens full size if you click it.
+
+<details>
+<summary><strong>Per-concern gallery</strong> (a11y, ux, local, review, error copy, and ryux's own landing)</summary>
 
 **`ryux-copy`** · Indonesian copywriting · natural language, Rupiah, error messages
 
@@ -75,18 +110,6 @@ that concern's rules plus ryux data. The reference screens are in Indonesian, on
 | <a href="assets/compare/review/review-before.png"><img src="assets/compare/review/review-before.png" alt="Shallow AI review: vague bullets like add white space, make it more modern, improve UX, with no evidence" width="100%"></a> | <a href="assets/compare/review/review-after.png"><img src="assets/compare/review/review-after.png" alt="ryux heuristic_eval review: an H-01 Visibility major finding and an H-05 Error prevention minor finding, each with a recommendation and screen_id evidence" width="100%"></a> |
 | Opinions, no evidence. | Structured findings: the heuristic, a severity from 0 to 4, a recommendation, and `screen_id` evidence. |
 
-**Landing page: the hero section** · headline, call to action, social proof
-
-_No ryux._ A generic "AI-flavored" hero: buzzwords, invented stats, fake logos.
-
-<a href="assets/compare/hero/hero-before.png"><img src="assets/compare/hero/hero-before.png" alt="Generic AI landing hero: Nexlify sparkle logo, headline Empower Your Business with AI-Powered Solutions, buzzword subhead about an all-in-one platform, Get Started Free and Book a Demo buttons, fake five-star Trusted by 10,000+ teams worldwide, empty AS SEEN IN logo grid" width="100%"></a>
-
-_With `ryux-rules`._ Specific, honest, Indonesian. A brand color that means something (green for profit), one clear call to action, and local patterns (WhatsApp login, transfer to BCA).
-
-<a href="assets/compare/hero/hero-after.png"><img src="assets/compare/hero/hero-after.png" alt="ryux landing hero on a warm off-white background: Catat kasir app with a green brand color, a KASIR & PEMBUKUAN UMKM kicker, headline Tutup kasir untung ketahuan, subhead about recording every transaction from your phone without Excel, Coba gratis and Lihat 1 menit cara kerjanya buttons, a WhatsApp-login line offering 50 free transactions, and an end-of-day preview for Warung Bu Sri showing Untung hari ini Rp680.000 with transfer to BCA, marked Contoh" width="100%"></a>
-
-The slop tells: buzzwords that say nothing (RX-C-06), a "10,000+" with no source (RX-C-03), fake logos (RX-C-04), and the default-template indigo. The ryux version leads with a specific benefit in local idiom, picks a brand color that means something, makes a real offer instead of inventing a number, uses local patterns (WhatsApp, BCA), and marks the preview `Contoh` (RX-C-05).
-
 **ryux's own landing page (we use ryux on ryux)** · the honest test
 
 _Without ryux._ The same product pitched like generic AI slop: a buzzword headline, a "10,000+" with no source, and a fake "AS SEEN IN" logo wall.
@@ -110,6 +133,8 @@ Real evidence (`scr_a3f091`, app, version, date) in place of a fake logo wall (R
 The UI checks that `audit_ui` and `heuristic_eval` run: touch targets of 44px or more (RX-H-12),
 contrast of at least 4.5:1 (RX-H-11), and the full set of states, loading, empty, and error
 (RX-H-14). The screens above are built honestly. They're not faked mockups (RX-C-05).
+
+</details>
 
 ## Repo layout (pnpm monorepo)
 
