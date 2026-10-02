@@ -43,7 +43,9 @@ Your files are never overwritten wholesale. Changes stay inside the block
 ### Non-interactive
 
 ```bash
-npx @ryuxdsgn/ryux install --agent claude,cursor,codex     # or --agent all, or --global
+npx @ryuxdsgn/ryux install --agent claude,cursor,codex --for designer   # Analyze, Critique, QA
+npx @ryuxdsgn/ryux install --agent claude,cursor,codex --for builder    # Build, QA, Critique
+npx @ryuxdsgn/ryux install --agent all --global                         # every agent, home directory
 npx skills add ryuxdsgn/design-intelligence     # alternative: skills.sh, any agent
 ```
 

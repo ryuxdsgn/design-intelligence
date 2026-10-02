@@ -6,7 +6,7 @@
 
 export type Level = "required" | "preferred" | "contextual";
 export type Gate = "hard" | "lock";
-export type GroupId = "foundation" | "ux" | "ui" | "engineering" | "quality" | "critique";
+export type GroupId = "foundation" | "ux" | "ui" | "engineering" | "quality" | "analyze" | "critique";
 export type GateArea =
   | "PRODUCT"
   | "UX"
@@ -86,6 +86,7 @@ export const GROUPS: Group[] = [
   { id: "ui", label: "UI" },
   { id: "engineering", label: "Engineering" },
   { id: "quality", label: "Quality" },
+  { id: "analyze", label: "Analyze" },
   { id: "critique", label: "Critique" },
 ];
 
@@ -1281,16 +1282,24 @@ export const ACTIVATION: { task: string; skills: SkillId[] }[] = [
 export const ALL_SKILL_IDS: SkillId[] = SKILLS.map((s) => s.id);
 export const ALL_GROUP_IDS: GroupId[] = GROUPS.map((g) => g.id);
 
-// Ryux Critique is a playbook skill (no generated rules); it installs with the "critique" group.
-export const CRITIQUE_ID = "critique";
+// Ryux Analyze and Ryux Critique are capability skills (playbooks, no generated rules); they install
+// with the "analyze" and "critique" groups.
+export const CAPABILITY_SKILL_IDS = ["analyze", "critique"] as const;
 
-/** Every installable skill id besides ryux-core, in workflow order, with critique last. */
-export const ALL_INSTALLABLE_IDS: string[] = [...SKILLS.map((s) => s.id), CRITIQUE_ID];
+/** Every installable skill id besides ryux-core: knowledge skills in workflow order, then capabilities. */
+export const ALL_INSTALLABLE_IDS: string[] = [...SKILLS.map((s) => s.id), ...CAPABILITY_SKILL_IDS];
 
 export const skillsInGroups = (groups: string[]): string[] => [
   ...SKILLS.filter((s) => groups.includes(s.group)).map((s) => s.id),
-  ...(groups.includes("critique") ? [CRITIQUE_ID] : []),
+  ...CAPABILITY_SKILL_IDS.filter((id) => groups.includes(id)),
 ];
+
+// Install presets by who uses Ryux. Designers analyze, critique, and QA; AI coders build and QA.
+export const PRESETS: Record<string, { label: string; groups: GroupId[] }> = {
+  designer: { label: "Designer (Analyze, Critique, QA)", groups: ["analyze", "critique", "quality", "ux", "ui"] },
+  builder: { label: "AI coder (Build, QA, Critique)", groups: ["foundation", "ux", "ui", "engineering", "quality", "critique"] },
+  all: { label: "Both", groups: ["foundation", "ux", "ui", "engineering", "quality", "analyze", "critique"] },
+};
 
 // Where each agent reads skills (SKILL.md folders). Verified against each agent's docs and the
 // conventions used by other skill installers. "pointer" is the instruction file that gets a short
@@ -1344,7 +1353,7 @@ export const LEVEL_LABEL: Record<Level, string> = {
   contextual: "Contextual",
 };
 
-export const RULES_VERSION = "1.0.0";
+export const RULES_VERSION = "1.1.0";
 export const RULESET_VERSION = "RX-2.0";
 export const MCP_NAME = "ryux";
 export const MCP_URL = "https://mcp.ryux.design/mcp";

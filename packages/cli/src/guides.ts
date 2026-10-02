@@ -4,6 +4,21 @@
 
 import type { SkillId } from "./content.js";
 
+export const CORE_POSITIONING = `Ryux is a design intelligence layer for AI and designers: it helps understand, build, evaluate,
+and fix interfaces through design reasoning. It is not a UI generator, an anti-slop framework, or
+a design system.`;
+
+export const CORE_CAPABILITIES = `| Capability | When | Load |
+| --- | --- | --- |
+| **Analyze** | understand an interface that exists | \`ryux-analyze\` |
+| **Build** | create or change UI, copy, or frontend code | the workflow below and the task table |
+| **Critique** | evaluate a design, page, or flow | \`ryux-critique\` |
+| **QA** | verify what was just built | \`ryux-visual-qa\` |
+
+The knowledge skills (product, ux, interaction, forms, edge-cases, content, ui, design-system,
+accessibility, responsive, frontend, anti-slop) serve all four. Every capability ends at the
+Anti-Slop Quality Gate: the Hard Gates below and the Delivery Gate.`;
+
 export const CORE_PRINCIPLE = `Do not optimize for visual novelty. Optimize for clarity, usability, consistency, product fit,
 accessibility, and intentional design decisions. Ryux guides good decisions and prevents generic
 output; it is a filter and a reasoning aid, not a style.`;
@@ -15,22 +30,12 @@ refine → Delivery Gate → done.
 Skip steps that do not apply to the task, but never skip from "generate" straight to "done".`;
 
 export const CORE_HONESTY = `Report what was checked, how, and what was not available. Do not claim "pixel perfect",
-"fully accessible", "production ready", "senior-level", or "UX optimized" without evidence.
+"fully accessible", "production ready", "senior-level", or "UX optimized" without evidence. Say
+"Keyboard and focus checked by hand; no automated accessibility test was available" instead.`;
 
-- Instead of "Fully accessible": "Keyboard navigation and focus were checked by hand; no automated
-  accessibility test was available."
-- Instead of "Pixel perfect": "Rendered at 1440px and 360px with Playwright; no overlap or clipping
-  found."`;
-
-export const CORE_DECISION_RECORD = `Record only meaningful decisions, such as a deviation from a rule, the design system, or a
-reference screen. Skip trivial ones.
-
-\`\`\`
-Decision:     what was chosen
-Reason:       why, with a screen_id or "judgment call"
-Trade-off:    what it costs
-Alternative:  what was considered and why it lost
-\`\`\``;
+export const CORE_DECISION_RECORD = `For meaningful deviations only (from a rule, the design system, or a reference screen), write
+four lines: **Decision**, **Reason** (with a screen_id or "judgment call"), **Trade-off**, and
+**Alternative** considered. Skip trivial decisions.`;
 
 export const GATE_RULES = `- Each area is PASS, FAIL, or N/A (with a reason when the area does not apply).
 - An area FAILS when a [Required] rule in its skills fails without a written exception.

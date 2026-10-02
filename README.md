@@ -7,40 +7,57 @@
 
 # ryux: design intelligence
 
-> Design intelligence from real Indonesian apps, for the AI agents that build and the designers who
-> review. It's evidence-based: every design decision has to cite a real screen instead of a generic
-> pattern.
+> **Ryux is a design intelligence layer for AI and designers.** It helps understand, build,
+> evaluate, and fix interfaces through design reasoning, backed by real Indonesian apps.
+>
+> Not an AI UI generator. Not an anti-slop framework. Not a design system.
 
 > **New here?** Start with [GUIDE.md](./GUIDE.md). It walks you through it from scratch: install the
-> rules into your agent, then connect it to the reference data.
+> skills into your agent, then connect it to the reference data.
 
-## Three products, one knowledge base
+## How Ryux works
 
 ```
-                         RYUX
-                           │
-              ┌────────────┴────────────┐
-              │                         │
-         RYUX BUILD                RYUX CRITIQUE
-              │                         │
-        AI Coding                    Designer
-              │                         │
-              ↓                         ↓
-      Design Intelligence        Design Intelligence
-              │                         │
-              └────────────┬────────────┘
-                           ↓
-                    RYUX KNOWLEDGE
+                              RYUX
+                      Design Intelligence
+                               │
+          ┌──────────────┬─────┴────────┬──────────────┐
+          │              │              │              │
+       ANALYZE         BUILD        CRITIQUE           QA
+     understand        create       evaluate         verify
+     interfaces      interfaces    interfaces      the result
+          │              │              │              │
+          └──────────────┴──────┬───────┴──────────────┘
+                                │
+                        DESIGN REASONING
+                knowledge skills: product, UX, interaction,
+              forms, content, UI, design system, accessibility,
+                 responsive, frontend, edge cases, anti-slop
+                                │
+                    ANTI-SLOP QUALITY GATE
+                  Hard Gates + Delivery Gate
+                                │
+                         RYUX KNOWLEDGE
+          real Indonesian screens and designer notes (evidence)
 ```
 
-| Product | For | What it is today |
+| Capability | Question it answers | Skill |
 | --- | --- | --- |
-| **Ryux Build** | AI coding agents (Claude Code, Cursor, Codex) | `ryux-core` plus 13 design skills, installed with `npx @ryuxdsgn/ryux`, `npx skills add`, or the Claude Code plugin, and the MCP research tools |
-| **Ryux Critique** | Designers, and agents asked to review | The `ryux-critique` skill (Design Read plus evidence-backed findings) and the MCP audit tools |
-| **Ryux Knowledge** | Both | Screens, flows, local patterns, and human-written designer notes from Indonesian apps, served over MCP |
+| **Analyze** | What is actually in this interface? | `ryux-analyze` |
+| **Build** | How do we make this without generic AI output? | `ryux-core` plus the knowledge skills |
+| **Critique** | Does this interface make sense, and what should change first? | `ryux-critique` |
+| **QA** | Does what we built match the intent, at every width and state? | `ryux-visual-qa` |
 
-Build and Critique use the same rules, so what an agent builds is judged by the same standard a
-designer reviews with.
+One knowledge base, two kinds of user:
+
+| User | Uses | Install |
+| --- | --- | --- |
+| **Designer** | Analyze, Critique, QA, with no vibe coding needed | `npx @ryuxdsgn/ryux install --for designer` |
+| **AI coder** | Build and QA, with Critique to check the result | `npx @ryuxdsgn/ryux install --for builder` |
+
+The skills are the intelligence. MCP is the tool layer: it lets Ryux pull evidence from Ryux
+Knowledge (`search_screens`, `heuristic_eval`, `delivery_gate`) and read the environment (Figma,
+pen.dev, the browser). Every skill still works without it.
 
 ## What makes it different
 
@@ -52,7 +69,7 @@ designer reviews with.
 ## What's inside
 
 - **Nine MCP tools** in three groups: research (`search_screens`, `get_flow`, `get_local_pattern`, `compare_apps`, `extract_design_direction`), audit (`audit_ui`, `audit_copy`, `heuristic_eval`, `delivery_gate`), and a design bridge.
-- **Ryux** is a senior product designer's reasoning for coding agents: a small `ryux-core` (workflow, which skills to load, a 10-area Delivery Gate, honest claims) plus 13 skills from product thinking to visual QA, and `ryux-critique` for reviews. Each skill is a short framework plus rules marked [Required], [Preferred], or [Contextual], with Hard Gates, Purpose Gates instead of style bans, and Quality Locks.
+- **Ryux** is 16 skills: a small `ryux-core` (choose the capability, which skills to load, Hard Gates, a 10-area Delivery Gate, honest claims), 13 knowledge skills from product thinking to visual QA, and the capability skills `ryux-analyze` and `ryux-critique`. Each skill is a short framework plus rules marked [Required], [Preferred], or [Contextual], with Hard Gates, Purpose Gates instead of style bans, and Quality Locks.
 - **One install for every agent.** `npx skills add`, the `npx @ryuxdsgn/ryux` CLI, or the Claude Code plugin put the skills into Claude Code, Codex, Cursor, Gemini CLI, OpenCode, Cline, Copilot, and more. Agents load only the skills a task needs. Browse every skill in [`skills/`](./skills).
 
 ## See the difference
@@ -98,6 +115,22 @@ step.
 More before/after pairs (accessibility, forms, local payment, review) are in
 [`docs/showcase.md`](docs/showcase.md#earlier-gallery).
 
+## Ryux Analyze
+
+> **Understand an existing interface before you change it.**
+
+Point it at the same sources as Critique. It captures the design read-only and inventories layout,
+grid, type scale, spacing, color roles, components and their states, hierarchy, navigation,
+interaction patterns, content and tone, local patterns, and design language. Every item is
+labeled **Measured** (read from Figma variables, CSS, or pen.dev properties), **Observed** (seen in
+a capture), or **Inferred**, so a guess is never passed off as a fact. It does not judge; that is
+Critique. It can also draft a `DESIGN.md` that Build follows.
+
+```text
+Analyze this Figma file before we add a new screen: https://www.figma.com/design/<file>/<name>
+Analyze https://example.com and draft a DESIGN.md from it
+```
+
 ## Ryux Critique
 
 > **Get a senior design critique before your users do.**
@@ -106,7 +139,9 @@ Point it at a **Figma link**, a **pen.dev** design, a **website URL**, or a **sc
 captures the real design first (read-only), runs a Design Read across nine dimensions (clarity,
 hierarchy, coherence, density, confidence, efficiency, specificity, recoverability, accessibility),
 then lists at most 12 findings with severity, the rule behind each one, a fix, and what to keep. It
-also says what it could not test, such as hover states on a static frame.
+also says what it could not test, such as hover states on a static frame. Each finding carries
+**evidence**, **impact** (who and which task, how badly), a **recommendation**, and a
+**confidence** level, so an inferred problem is never presented as a seen one.
 
 ```text
 Critique this Figma frame: https://www.figma.com/design/<file>/<name>?node-id=1-2
@@ -123,7 +158,7 @@ Review the selected frame in pen.dev
 
 ## Install
 
-Three ways in, all installing the same skills. Every route includes Ryux Critique.
+Three ways in, all installing the same skills, including Ryux Analyze and Ryux Critique.
 
 **1. Any agent, via [skills.sh](https://skills.sh)**
 
@@ -136,6 +171,8 @@ in sync, and handles update and remove)
 
 ```bash
 npx @ryuxdsgn/ryux                                         # interactive
+npx @ryuxdsgn/ryux install --agent all --for designer      # Analyze, Critique, QA
+npx @ryuxdsgn/ryux install --agent all --for builder       # Build, QA, Critique
 npx @ryuxdsgn/ryux install --agent claude,cursor,codex     # non-interactive
 npx @ryuxdsgn/ryux install --agent all --groups critique   # Ryux Critique only, every agent
 npx @ryuxdsgn/ryux install --agent claude --global         # into your home directory
@@ -161,8 +198,8 @@ npx @ryuxdsgn/ryux remove
 | GitHub Copilot, Amp, Kimi Code, Antigravity | `.agents/skills/` | `copilot`, `amp`, `kimi`, `antigravity` |
 | Anything else | rules inline in `AGENTS.md` | `agents-md` |
 
-Groups: `foundation`, `ux`, `ui`, `engineering`, `quality`, and `critique`. `ryux-core` always comes
-along. The reference data (Ryux Knowledge) is a separate hosted MCP service:
+Presets: `--for designer`, `--for builder`, or `--for all`. Groups for fine control: `foundation`,
+`ux`, `ui`, `engineering`, `quality`, `analyze`, and `critique`. `ryux-core` always comes along. The reference data (Ryux Knowledge) is a separate hosted MCP service:
 `claude mcp add --transport http ryux https://mcp.ryux.design/mcp` (early access).
 
 ## Repo layout (pnpm monorepo)
@@ -172,7 +209,7 @@ apps/mcp/         MCP server (Cloudflare Workers), 9 tools
 apps/web/         ryux.design site (Next.js), landing + waitlist
 packages/core/    @ryux/core, shared data and tool logic
 packages/cli/     ryux, the CLI that installs the skills into agents (npx @ryuxdsgn/ryux)
-skills/           the 15 Ryux skills (Build + Critique), one folder each
+skills/           the 16 Ryux skills (Analyze, Build, Critique, QA), one folder each
 .claude-plugin/   Claude Code plugin and marketplace manifests
 docs/             taxonomy.md, design-rules.md
 ```

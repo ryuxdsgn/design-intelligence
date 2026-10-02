@@ -1,12 +1,28 @@
 ---
 name: ryux-core
-description: "Ryux core - the senior product designer workflow, levels, which Ryux skills to load for a task, the Delivery Gate report, and honest-claims wording. Load for any UI, UX, copy, or frontend task."
+description: "Ryux core - a design intelligence layer for AI and designers. Choose the capability (Analyze, Build, Critique, QA), then the levels, which Ryux skills to load, the Hard Gates, the Delivery Gate, and honest-claims wording. Load for any UI, UX, copy, or frontend task."
 ---
 
 # ryux-core
 
-> Ryux RX-2.0 (rules v1.0.0), MIT licensed. A senior product designer's
-> reasoning for coding agents. Indonesia first, evidence first.
+> Ryux RX-2.0 (rules v1.1.0), MIT licensed. Indonesia first, evidence first.
+
+Ryux is a design intelligence layer for AI and designers: it helps understand, build, evaluate,
+and fix interfaces through design reasoning. It is not a UI generator, an anti-slop framework, or
+a design system.
+
+## Start by choosing the capability
+
+| Capability | When | Load |
+| --- | --- | --- |
+| **Analyze** | understand an interface that exists | `ryux-analyze` |
+| **Build** | create or change UI, copy, or frontend code | the workflow below and the task table |
+| **Critique** | evaluate a design, page, or flow | `ryux-critique` |
+| **QA** | verify what was just built | `ryux-visual-qa` |
+
+The knowledge skills (product, ux, interaction, forms, edge-cases, content, ui, design-system,
+accessibility, responsive, frontend, anti-slop) serve all four. Every capability ends at the
+Anti-Slop Quality Gate: the Hard Gates below and the Delivery Gate.
 
 ## Principle
 
@@ -47,7 +63,7 @@ These hold even when `ryux-anti-slop` is not loaded. No written exception; fix b
 - **Duplicate components.** Do not create a near-duplicate component or pattern for one screen. (RX-DS-01)
 - **Unnecessary complexity.** Do not add settings, sections, or abstractions "for later". (RX-AS-06)
 
-## Load only what the task needs
+## Build: load only what the task needs
 
 | Task | Load (plus ryux-core) |
 | --- | --- |
@@ -88,24 +104,14 @@ FINAL          PASS | FAIL
 ## Honest claims
 
 Report what was checked, how, and what was not available. Do not claim "pixel perfect",
-"fully accessible", "production ready", "senior-level", or "UX optimized" without evidence.
-
-- Instead of "Fully accessible": "Keyboard navigation and focus were checked by hand; no automated
-  accessibility test was available."
-- Instead of "Pixel perfect": "Rendered at 1440px and 360px with Playwright; no overlap or clipping
-  found."
+"fully accessible", "production ready", "senior-level", or "UX optimized" without evidence. Say
+"Keyboard and focus checked by hand; no automated accessibility test was available" instead.
 
 ## Design Decision Record
 
-Record only meaningful decisions, such as a deviation from a rule, the design system, or a
-reference screen. Skip trivial ones.
-
-```
-Decision:     what was chosen
-Reason:       why, with a screen_id or "judgment call"
-Trade-off:    what it costs
-Alternative:  what was considered and why it lost
-```
+For meaningful deviations only (from a rule, the design system, or a reference screen), write
+four lines: **Decision**, **Reason** (with a screen_id or "judgment call"), **Trade-off**, and
+**Alternative** considered. Skip trivial decisions.
 
 Reference screens and structured review come from the ryux MCP (`search_screens`,
 `heuristic_eval`, `delivery_gate`). Connect: `claude mcp add --transport http ryux https://mcp.ryux.design/mcp`

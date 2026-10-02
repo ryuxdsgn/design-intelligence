@@ -16,14 +16,17 @@ import {
   type Skill,
 } from "./content.js";
 import {
+  CORE_CAPABILITIES,
   CORE_DECISION_RECORD,
   CORE_HONESTY,
+  CORE_POSITIONING,
   CORE_PRINCIPLE,
   CORE_WORKFLOW,
   GATE_RULES,
   GUIDES,
 } from "./guides.js";
 import { CRITIQUE_BODY, CRITIQUE_DESCRIPTION } from "./critique.js";
+import { ANALYZE_BODY, ANALYZE_DESCRIPTION } from "./analyze.js";
 
 const skillById = (id: string): Skill | undefined => SKILLS.find((s) => s.id === id);
 const rulesOf = (id: string): Rule[] => RULES.filter((r) => r.skill === id);
@@ -66,8 +69,13 @@ function coreBody(installed: string[]): string {
   const note = missing.length ? `\n\nNot installed here: ${missing.join(", ")}.` : "";
   return `# ryux-core
 
-> Ryux ${RULESET_VERSION} (rules v${RULES_VERSION}), MIT licensed. A senior product designer's
-> reasoning for coding agents. Indonesia first, evidence first.
+> Ryux ${RULESET_VERSION} (rules v${RULES_VERSION}), MIT licensed. Indonesia first, evidence first.
+
+${CORE_POSITIONING}
+
+## Start by choosing the capability
+
+${CORE_CAPABILITIES}
 
 ## Principle
 
@@ -87,7 +95,7 @@ These hold even when \`ryux-anti-slop\` is not loaded. No written exception; fix
 
 ${hardGatesBrief()}
 
-## Load only what the task needs
+## Build: load only what the task needs
 
 ${activationTable()}${note}
 
@@ -153,7 +161,7 @@ ${rulesOf(s.id).map(ruleBlock).join("\n\n")}`;
 }
 
 const CORE_DESCRIPTION =
-  "Ryux core - the senior product designer workflow, levels, which Ryux skills to load for a task, the Delivery Gate report, and honest-claims wording. Load for any UI, UX, copy, or frontend task.";
+  "Ryux core - a design intelligence layer for AI and designers. Choose the capability (Analyze, Build, Critique, QA), then the levels, which Ryux skills to load, the Hard Gates, the Delivery Gate, and honest-claims wording. Load for any UI, UX, copy, or frontend task.";
 
 const skillDescription = (s: Skill): string =>
   `Ryux ${s.label}: ${s.summary}. Load when ${s.loadWhen}.`;
@@ -169,6 +177,16 @@ ${coreBody(installed)}
 `;
 }
 
+export function renderAnalyzeSkill(): string {
+  return `---
+name: ryux-analyze
+description: ${JSON.stringify(ANALYZE_DESCRIPTION)}
+---
+
+${ANALYZE_BODY}
+`;
+}
+
 export function renderCritiqueSkill(): string {
   return `---
 name: ryux-critique
@@ -181,6 +199,7 @@ ${CRITIQUE_BODY}
 
 export function renderSkill(id: string): string {
   if (id === "critique") return renderCritiqueSkill();
+  if (id === "analyze") return renderAnalyzeSkill();
   const s = skillById(id);
   if (!s) return "";
   return `---
@@ -194,7 +213,8 @@ ${skillBody(id)}
 
 // ── AGENTS.md block (core + selected skills, inline) ──────────────────────────
 export function renderAgentsBlock(installed: string[]): string {
-  const secs = installed.map((id) => (id === "critique" ? CRITIQUE_BODY : skillBody(id))).filter(Boolean).join("\n\n");
+  const body = (id: string): string => (id === "critique" ? CRITIQUE_BODY : id === "analyze" ? ANALYZE_BODY : skillBody(id));
+  const secs = installed.map(body).filter(Boolean).join("\n\n");
   return `${coreBody(installed)}${secs ? `\n\n${secs}` : ""}`;
 }
 
@@ -204,8 +224,8 @@ export function renderPointerBlock(installed: string[]): string {
   return `## Ryux
 
 Ryux design skills are installed in this project's agent skills folder: ${list}. For UI, UX, copy, or
-frontend work, follow the ryux-core workflow, load only the skills the task needs, and end with the
-Delivery Gate. For a review, use ryux-critique. Reference data and structured review come from the
+frontend work, start in ryux-core by choosing the capability (Analyze, Build, Critique, QA), load only the
+skills the task needs, and end with the Delivery Gate. Reference data and structured review come from the
 ryux MCP: \`${MCP_ADD_CMD}\`.`;
 }
 
@@ -237,11 +257,15 @@ export function groupsTable(): string {
   return [
     "| Group | Skills |",
     "| --- | --- |",
-    ...GROUPS.map((g) => `| \`${g.id}\` | ${SKILLS.filter((s) => s.group === g.id).map((s) => `\`ryux-${s.id}\` (RX-${s.abbr})`).join(", ")} |`),
+    ...GROUPS.map((g) => {
+      const knowledge = SKILLS.filter((s) => s.group === g.id).map((s) => `\`ryux-${s.id}\` (RX-${s.abbr})`);
+      const cell = knowledge.length ? knowledge.join(", ") : `\`ryux-${g.id}\` (capability skill)`;
+      return `| \`${g.id}\` | ${cell} |`;
+    }),
   ].join("\n");
 }
 
 // Detect installed skill ids from a piece of content (an AGENTS.md block, etc.).
 export function detectSkills(content: string): string[] {
-  return [...ALL_SKILL_IDS, "critique"].filter((id) => content.includes(`# ryux-${id}:`));
+  return [...ALL_SKILL_IDS, "analyze", "critique"].filter((id) => content.includes(`# ryux-${id}:`));
 }
