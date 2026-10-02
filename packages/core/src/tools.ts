@@ -274,7 +274,7 @@ export type DeliveryGateArgs = z.infer<z.ZodObject<typeof deliveryGateInput>>;
 
 export type DeliveryGateCheck = {
   decision: string;
-  rule: "RX-01";
+  rule: "RX-PR-04";
   status: "PASS" | "FAIL";
   note: string;
 };
@@ -292,7 +292,7 @@ export function deliveryGate({ summary, decisions }: DeliveryGateArgs): Delivery
     const valid = d.screen_ids.filter((id) => known.has(id));
     return {
       decision: d.decision,
-      rule: "RX-01",
+      rule: "RX-PR-04",
       status: valid.length > 0 ? "PASS" : "FAIL",
       note: valid.length > 0 ? `Cited: ${valid.join(", ")}` : "No valid screen_id as evidence",
     };
@@ -302,14 +302,14 @@ export function deliveryGate({ summary, decisions }: DeliveryGateArgs): Delivery
     summary,
     result: passed ? "PASS" : "FAIL",
     checks,
-    reminder: "Also apply the full ryux Design Rules (RX-01..RX-34), see docs/design-rules.md.",
+    reminder: "Also run the full ryux Anti-slop Gate (all [Required] rules of the pipeline), see docs/design-rules.md.",
   };
 }
 
 export const deliveryGateTool = {
   name: "delivery_gate",
   description:
-    "PASS/FAIL report before release. Every design decision must cite at least one screen_id (RX-01). Free.",
+    "PASS/FAIL report before release. Every design decision must cite at least one screen_id (RX-PR-04). Free.",
   input: deliveryGateInput,
   run: deliveryGate,
 };
@@ -525,7 +525,7 @@ export const COPY_RULES: CopyRule[] = [
     severity: "error",
     check: (t) =>
       /\bRp[\s\u00a0]+\d|\bIDR\s?\d|\bRp\d{4,}|\bRp\d{1,3}(?:\.\d{3})*,\d{2}\b/.test(t)
-        ? "Rupiah format is Rp1.250.000 (no space, dot thousands, no decimals) (RX-L-06)"
+        ? "Rupiah format is Rp1.250.000 (no space, dot thousands, no decimals) (RX-CD-02)"
         : null,
   },
 ];
@@ -560,7 +560,7 @@ export const auditCopyTool = {
 // ── heuristic_eval ──────────────────────────────────────────────────────────
 
 // The 10 Nielsen usability heuristics (Nielsen, 1994). Factual names; the ryux explanation is in
-// docs/design-rules.md (the RX-H layer). Not text or material owned by any third party.
+// docs/design-rules.md (the pipeline rules cite them as basis). Not text or material owned by any third party.
 export const HEURISTICS: Record<string, string> = {
   "H-01": "Visibility of system status",
   "H-02": "Match between system and the real world",
@@ -684,7 +684,7 @@ export function heuristicEval({ task_context, findings }: HeuristicEvalArgs): He
 export const heuristicEvalTool = {
   name: "heuristic_eval",
   description:
-    "Usability review based on the 10 Nielsen heuristics (the RX-H layer) for a screen or flow. " +
+    "Usability review based on the 10 Nielsen heuristics (H-01..H-10; ryux maps them to its pipeline rules) for a screen or flow. " +
     "Not an automated pixel evaluation: the caller walks through the screen and sends findings, and the tool " +
     "enforces discipline (severity 0-4, a cap on the number of findings, and REQUIRING at least one evidence screen_id " +
     "for each major finding, severity >= 3). Treat it as a quick first pass, not a replacement for " +
