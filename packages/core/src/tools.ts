@@ -520,6 +520,14 @@ export const COPY_RULES: CopyRule[] = [
     severity: "warning",
     check: (t) => (/\s{2,}/.test(t) || t !== t.trim() ? "clean up spacing (double spaces or leading/trailing)" : null),
   },
+  {
+    rule: "C-07",
+    severity: "error",
+    check: (t) =>
+      /\bRp[\s\u00a0]+\d|\bIDR\s?\d|\bRp\d{4,}|\bRp\d{1,3}(?:\.\d{3})*,\d{2}\b/.test(t)
+        ? "Rupiah format is Rp1.250.000 (no space, dot thousands, no decimals) (RX-L-06)"
+        : null,
+  },
 ];
 
 export function auditCopy({ summary, items }: AuditCopyArgs): AuditCopyResult {

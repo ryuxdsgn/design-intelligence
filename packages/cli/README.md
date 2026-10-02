@@ -18,7 +18,7 @@ The wizard asks: which agent you use, which **concern** you want to install, and
 | Concern | Contents | RX rules |
 | --- | --- | --- |
 | `ui` | UI and visuals | RX-C-02/07/08, RX-H-04/08/14, RX-N-12 |
-| `copy` | Indonesian copywriting | RX-C-06, RX-H-02/09, RX-L-06/07, RX-N-05 |
+| `copy` | Indonesian copywriting | RX-C-06/10, RX-H-02/09, RX-L-06/07, RX-N-05/09 |
 | `a11y` | Accessibility | RX-H-11/12/13/14 |
 | `ux` | Interaction heuristics + applied UX (NNGroup) | RX-H-01/03/05/06/07/10, RX-N-01..11 |
 | `local` | Indonesian patterns | RX-L-01..05/08/09/10 |

@@ -7,7 +7,7 @@
 > References to standards are factual; all explanations, examples, and numbering are written by us.
 > **Not a derivative of any third-party licensed text** and not affiliated with NN/g or anyone else.
 >
-> **Last updated:** 2026-10-02 · **Version:** RX-1.3
+> **Last updated:** 2026-10-02 · **Version:** RX-1.4
 
 ryux's quality gate for UI and copy. Three things make it distinctly ryux: **evidence-based**
 (referencing real screens), **Indonesia first**, and **human judgment** for designer notes.
@@ -85,6 +85,13 @@ ryux's quality gate for UI and copy. Three things make it distinctly ryux: **evi
   - avoid: AI inventing the "why it works / weaknesses" assessment
   - prefer: AI summarizes; the assessment is written by a human
   - how to check: manual review · evidence: none
+
+
+- **RX-C-10 · No hype decoration**
+  - category: copy · level: **[Recommended]**
+  - avoid: an emoji on every line or as bullets, ALL CAPS shouting, stacked exclamation marks, urgency with nothing behind it ("sebelum kehabisan", "kuota terbatas", "selama persediaan masih ada")
+  - prefer: plain sentences and plain lists; at most one emoji where the channel expects it (e.g. a WhatsApp greeting); urgency only when a real deadline or quota exists, stated as a fact
+  - how to check: `audit_copy` + review · evidence: `scr_...`
 
 ---
 
@@ -171,10 +178,10 @@ context of Indonesian mobile apps. Used by `heuristic_eval` with severity 0-4.
   - prefer: visible focus, reachable elements, a logical order
   - how to check: manual review · evidence: `scr_...`
 
-- **RX-H-14 · Complete states & healthy mobile**
+- **RX-H-14 · Complete states & healthy layout**
   - category: accessibility/mobile · level: **[Required]**
-  - avoid: only the happy path (no loading/empty/error); horizontal overflow; ignoring safe areas
-  - prefer: design loading/empty/error/success; respect the notch & thumb reach
+  - avoid: only the happy path (no loading/empty/error); horizontal overflow; ignoring safe areas; text that is clipped or covered, such as a floating card or mockup sitting on top of prices or labels, or nav items that collide with the logo or a button
+  - prefer: design loading/empty/error/success; respect the notch & thumb reach; let decorative overlaps cover only empty space; size the layout for the stated viewport and render it to check when a browser is available
   - how to check: `audit_ui` (R-05) + review · evidence: `scr_...`
 
 ---
@@ -292,9 +299,9 @@ context of Indonesian mobile. Reference: **Nielsen Norman Group** (nngroup.com);
 
 - **RX-L-06 · Rupiah format**
   - category: copy · level: **[Required]**
-  - avoid: inconsistent money formatting or a missing prefix
-  - prefer: `Rp` + thousands separators (`Rp1.250.000`), no decimals unless needed
-  - how to check: `audit_copy` + review · evidence: `scr_...`
+  - avoid: a space after `Rp` (`Rp 1.250.000`), `IDR 1250000`, `Rp1250000` with no separators, or decimals on whole amounts
+  - prefer: `Rp` directly followed by the number with dot thousands separators (`Rp1.250.000`); in code, `Intl.NumberFormat("id-ID", { style: "currency" })` inserts a space after `Rp`, so format the number and prepend `Rp` yourself
+  - how to check: `audit_copy` (C-07) + review · evidence: `scr_...`
 
 - **RX-L-07 · Natural Indonesian**
   - category: copy · level: **[Required]**
@@ -345,7 +352,7 @@ is always included. This concern → rule map is the source of truth shared with
 | --- | --- | --- |
 | `ryux-rules` (core, always) | Evidence + content honesty | RX-C-01, RX-C-03, RX-C-04, RX-C-05, RX-C-09 |
 | `ryux-ui` | UI & visual | RX-C-02, RX-C-07, RX-C-08, RX-H-04, RX-H-08, RX-H-14, RX-N-12 |
-| `ryux-copy` | Indonesian copywriting | RX-C-06, RX-H-02, RX-L-06, RX-L-07, RX-H-09, RX-N-05 |
+| `ryux-copy` | Indonesian copywriting | RX-C-06, RX-C-10, RX-H-02, RX-L-06, RX-L-07, RX-H-09, RX-N-05, RX-N-09 |
 | `ryux-a11y` | Accessibility | RX-H-11, RX-H-12, RX-H-13, RX-H-14 |
 | `ryux-ux` | Interaction heuristics + applied UX patterns (NNGroup) | RX-H-01, RX-H-03, RX-H-05, RX-H-06, RX-H-07, RX-H-10, RX-N-01 to RX-N-11 (all except RX-N-12) |
 | `ryux-local` | Indonesian patterns | RX-L-01 to RX-L-10 except RX-L-06, RX-L-07 (those live in `ryux-copy`) |
@@ -362,7 +369,7 @@ marker, matching the levels in this document.
 The `ryux-code` concern installs code-cleanliness rules. These are not part of the four design layers
 (RX-C/H/N/L) and are not assessed by `heuristic_eval`; they are supplementary for code-writing work.
 
-- **RX-K-01** Comments explain the reason (why), not repeat what is already clear from the code.
+- **RX-K-01** Comments explain the reason (why), not repeat what is already clear from the code, including doc comments that only repeat a field, type, or function name.
 - **RX-K-02** Variable and function names are specific and meaningful; avoid `data`, `temp`, `helper`, `manager` without context.
 - **RX-K-03** Remove dead code, unused imports, and commented-out blocks; do not leave empty TODOs.
 - **RX-K-04** Follow the style of the surrounding files (formatting, naming, patterns); do not impose a new style.
