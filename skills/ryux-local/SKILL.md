@@ -5,7 +5,7 @@ description: ryux-rules: Indonesian patterns. QRIS, VA, OTP, fees, address, payl
 
 # ryux-local: Indonesian patterns
 
-> ryux.design design rules, version 0.3.0, MIT licensed.
+> ryux.design design rules, version 0.4.0, MIT licensed.
 > Apply to Indonesian patterns work before considering it done. [Required] rules are a hard gate; the rest
 > may be broken only with a written reason.
 

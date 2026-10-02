@@ -5,11 +5,11 @@ description: ryux-rules: Clean code. honest comments, meaningful names, no dead 
 
 # ryux-code: Clean code
 
-> ryux.design design rules, version 0.3.0, MIT licensed.
+> ryux.design design rules, version 0.4.0, MIT licensed.
 > Apply to Clean code work before considering it done. [Required] rules are a hard gate; the rest
 > may be broken only with a written reason.
 
-- **RX-K-01** Comments explain the reason (why), not restate what the code already makes obvious.
+- **RX-K-01** Comments explain the reason (why), not restate what the code already makes obvious, including doc comments that only repeat a field, type, or function name.
 - **RX-K-02** Variable and function names are specific and meaningful; avoid data, temp, helper, manager without context.
 - **RX-K-03** Remove dead code, unused imports, and commented-out blocks; don't leave empty TODOs.
 - **RX-K-04** Follow the style of the surrounding file (format, naming, patterns); don't impose a new one.
