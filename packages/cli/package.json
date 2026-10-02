@@ -1,16 +1,45 @@
 {
-  "name": "ryux-rules",
+  "name": "ryux",
   "version": "1.0.0",
-  "private": true,
-  "description": "Install Ryux, modular design skills for AI coding agents (Required, Preferred, Contextual rules with Hard Gates and a Delivery Gate), into Claude Code, Cursor, or AGENTS.md.",
+  "description": "Ryux: design intelligence for AI coding agents. Senior product designer skills (Ryux Build) and design critique (Ryux Critique) for Claude Code, Codex, Cursor, Gemini CLI, OpenCode, Cline, Copilot, and more.",
   "type": "module",
   "bin": {
+    "ryux": "./dist/index.js",
     "ryux-rules": "./dist/index.js"
   },
   "files": [
-    "dist"
+    "dist",
+    "LICENSE",
+    "README.md"
   ],
   "license": "MIT",
+  "author": "ryux.design",
+  "homepage": "https://github.com/ryuxdsgn/design-intelligence#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ryuxdsgn/design-intelligence.git",
+    "directory": "packages/cli"
+  },
+  "bugs": {
+    "url": "https://github.com/ryuxdsgn/design-intelligence/issues"
+  },
+  "keywords": [
+    "ai",
+    "agent-skills",
+    "claude-code",
+    "codex",
+    "cursor",
+    "gemini-cli",
+    "design",
+    "ux",
+    "design-critique",
+    "accessibility",
+    "anti-slop",
+    "indonesia"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
     "build": "tsc",
     "dev": "tsc && node dist/index.js",

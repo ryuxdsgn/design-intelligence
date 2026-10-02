@@ -1,6 +1,6 @@
 ---
 name: ryux-core
-description: Ryux core - the senior product designer workflow, levels, which Ryux skills to load for a task, the Delivery Gate report, and honest-claims wording. Load for any UI, UX, copy, or frontend task.
+description: "Ryux core - the senior product designer workflow, levels, which Ryux skills to load for a task, the Delivery Gate report, and honest-claims wording. Load for any UI, UX, copy, or frontend task."
 ---
 
 # ryux-core

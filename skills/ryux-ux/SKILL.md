@@ -1,6 +1,6 @@
 ---
 name: ryux-ux
-description: Ryux UX architecture: information architecture, navigation, flows, grouping, disclosure, search and filters. Load when designing multi-screen flows, navigation, or data-heavy views.
+description: "Ryux UX architecture: information architecture, navigation, flows, grouping, disclosure, search and filters. Load when designing multi-screen flows, navigation, or data-heavy views."
 ---
 
 # ryux-ux: UX architecture

@@ -15,10 +15,8 @@ During pre-release, only the `main` branch receives security fixes.
 
 **Do not** open a public issue for a security vulnerability.
 
-- Preferred: **GitHub Security Advisories**, the **Security > Report a vulnerability** tab on this repo
-  (reports stay private).
-- Alternative: email **the Security tab of this repository** with the subject `[ryux security]`.
-  (This will switch to `security@ryux.design` once the domain is live.)
+- Use **GitHub private vulnerability reporting**: the **Security > Report a vulnerability** tab on
+  this repo. Reports stay private between you and the maintainers.
 
 Please include, if you can: reproduction steps, impact, version/commit, and a proof of concept.
 
@@ -29,7 +27,7 @@ public disclosure (coordinated disclosure).
 
 **In scope**
 - MCP server (`apps/mcp`) and tool logic (`packages/core`)
-- The `ryux-rules` CLI (`packages/cli`)
+- The `ryux` CLI (`packages/cli`) and the skills in `skills/`
 - The `ryux.design` website and its API (once released)
 
 **Out of scope**
@@ -50,5 +48,6 @@ public disclosure (coordinated disclosure).
 
 ## App owner objections (takedown)
 
-To object to content (app screenshots), use the takedown form on the website or the
-email above. Reported content is hidden while it's under review.
+To object to content (app screenshots), use the takedown form on the website once it is live, or a
+private report through the Security tab until then. Reported content is hidden while it's under
+review.

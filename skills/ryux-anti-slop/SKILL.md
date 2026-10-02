@@ -1,6 +1,6 @@
 ---
 name: ryux-anti-slop
-description: Ryux Anti-slop: hard gates, purpose gates, quality locks, honest claims. Load when work is about to be delivered, or during visual refinement.
+description: "Ryux Anti-slop: hard gates, purpose gates, quality locks, honest claims. Load when work is about to be delivered, or during visual refinement."
 ---
 
 # ryux-anti-slop: Anti-slop

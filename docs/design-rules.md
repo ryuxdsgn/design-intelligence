@@ -37,6 +37,7 @@ decision trees, templates) followed by its rules. Skills are installed in five g
 | `ui` | `ryux-ui` (RX-UI), `ryux-design-system` (RX-DS), `ryux-accessibility` (RX-A11Y), `ryux-responsive` (RX-RD) |
 | `engineering` | `ryux-frontend` (RX-FE) |
 | `quality` | `ryux-visual-qa` (RX-QA), `ryux-anti-slop` (RX-AS) |
+| `critique` |  |
 <!-- groups:end -->
 
 `ryux-critique` is the review playbook: a Design Read across nine dimensions (clarity, hierarchy,
@@ -1013,7 +1014,7 @@ Group Quality · gate area ANTI-SLOP. Covers hard gates, purpose gates, quality 
 ## Installation via CLI
 
 ```bash
-npx ryux-rules install --agent claude --groups foundation,ux,ui,engineering,quality
+npx ryux install --agent claude          # or --agent all; see the README for every agent
 ```
 
 `ryux-core` is always installed. `--concerns` from RX-1.x still works as a deprecated alias, and

@@ -1,0 +1,15 @@
+{
+  "name": "design-intelligence",
+  "description": "Ryux: design intelligence from real Indonesian apps, for the AI agents that build and the designers who review.",
+  "owner": {
+    "name": "ryuxdsgn"
+  },
+  "plugins": [
+    {
+      "name": "ryux",
+      "source": "./",
+      "version": "1.0.0",
+      "description": "Ryux Build (senior product designer skills for coding agents) and Ryux Critique (a senior design critique of a Figma link, pen.dev design, website URL, or screenshot). Loads as 15 skills."
+    }
+  ]
+}

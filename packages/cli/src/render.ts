@@ -23,6 +23,7 @@ import {
   GATE_RULES,
   GUIDES,
 } from "./guides.js";
+import { CRITIQUE_BODY, CRITIQUE_DESCRIPTION } from "./critique.js";
 
 const skillById = (id: string): Skill | undefined => SKILLS.find((s) => s.id === id);
 const rulesOf = (id: string): Rule[] => RULES.filter((r) => r.skill === id);
@@ -151,6 +152,9 @@ ${GUIDES[s.id]}${extra}
 ${rulesOf(s.id).map(ruleBlock).join("\n\n")}`;
 }
 
+const CORE_DESCRIPTION =
+  "Ryux core - the senior product designer workflow, levels, which Ryux skills to load for a task, the Delivery Gate report, and honest-claims wording. Load for any UI, UX, copy, or frontend task.";
+
 const skillDescription = (s: Skill): string =>
   `Ryux ${s.label}: ${s.summary}. Load when ${s.loadWhen}.`;
 
@@ -158,44 +162,30 @@ const skillDescription = (s: Skill): string =>
 export function renderCoreSkill(installed: string[]): string {
   return `---
 name: ryux-core
-description: Ryux core - the senior product designer workflow, levels, which Ryux skills to load for a task, the Delivery Gate report, and honest-claims wording. Load for any UI, UX, copy, or frontend task.
+description: ${JSON.stringify(CORE_DESCRIPTION)}
 ---
 
 ${coreBody(installed)}
+`;
+}
+
+export function renderCritiqueSkill(): string {
+  return `---
+name: ryux-critique
+description: ${JSON.stringify(CRITIQUE_DESCRIPTION)}
+---
+
+${CRITIQUE_BODY}
 `;
 }
 
 export function renderSkill(id: string): string {
+  if (id === "critique") return renderCritiqueSkill();
   const s = skillById(id);
   if (!s) return "";
   return `---
 name: ryux-${s.id}
-description: ${skillDescription(s)}
----
-
-${skillBody(id)}
-`;
-}
-
-// ── Cursor .mdc ───────────────────────────────────────────────────────────────
-export function renderCoreMdc(installed: string[]): string {
-  return `---
-description: Ryux core (workflow, levels, skill activation, Delivery Gate, honest claims)
-globs:
-alwaysApply: false
----
-
-${coreBody(installed)}
-`;
-}
-
-export function renderSkillMdc(id: string): string {
-  const s = skillById(id);
-  if (!s) return "";
-  return `---
-description: "${skillDescription(s)}"
-globs:
-alwaysApply: false
+description: ${JSON.stringify(skillDescription(s))}
 ---
 
 ${skillBody(id)}
@@ -204,18 +194,19 @@ ${skillBody(id)}
 
 // ── AGENTS.md block (core + selected skills, inline) ──────────────────────────
 export function renderAgentsBlock(installed: string[]): string {
-  const secs = installed.map(skillBody).filter(Boolean).join("\n\n");
+  const secs = installed.map((id) => (id === "critique" ? CRITIQUE_BODY : skillBody(id))).filter(Boolean).join("\n\n");
   return `${coreBody(installed)}${secs ? `\n\n${secs}` : ""}`;
 }
 
-// ── Pointer block for CLAUDE.md ──────────────────────────────────────────────
-export function renderClaudeBlock(installed: string[]): string {
+// ── Pointer block for CLAUDE.md / GEMINI.md / AGENTS.md ─────────────────────
+export function renderPointerBlock(installed: string[]): string {
   const list = ["ryux-core", ...installed.map((i) => `ryux-${i}`)].map((s) => `\`${s}\``).join(", ");
   return `## Ryux
 
-Ryux design skills are installed: ${list} (in \`.claude/skills/\`). For UI, UX, copy, or frontend
-work, follow the ryux-core workflow, load only the skills the task needs, and end with the
-Delivery Gate. Reference data and structured review come from the ryux MCP: \`${MCP_ADD_CMD}\`.`;
+Ryux design skills are installed in this project's agent skills folder: ${list}. For UI, UX, copy, or
+frontend work, follow the ryux-core workflow, load only the skills the task needs, and end with the
+Delivery Gate. For a review, use ryux-critique. Reference data and structured review come from the
+ryux MCP: \`${MCP_ADD_CMD}\`.`;
 }
 
 // ── docs/design-rules.md generated sections ──────────────────────────────────
@@ -252,5 +243,5 @@ export function groupsTable(): string {
 
 // Detect installed skill ids from a piece of content (an AGENTS.md block, etc.).
 export function detectSkills(content: string): string[] {
-  return ALL_SKILL_IDS.filter((id) => content.includes(`# ryux-${id}:`));
+  return [...ALL_SKILL_IDS, "critique"].filter((id) => content.includes(`# ryux-${id}:`));
 }
