@@ -847,8 +847,8 @@ Group Quality · gate area ANTI-SLOP. Covers hard gates, purpose gates, quality 
 
 #### RX-AS-07 [Required] Claims match the evidence
 
-- Do: Describe what was checked and how ("keyboard and focus checked; no automated accessibility test was available").
-- Do not: Claim "pixel perfect", "fully accessible", "production ready", "senior-level", or "UX optimized" without evidence.
+- Do: Describe what was checked and how ("keyboard and focus checked; no automated accessibility test was available"). Call a reference an observed pattern, with where it was observed ("seen in 4 screens across 3 apps").
+- Do not: Claim "pixel perfect", "fully accessible", "production ready", "senior-level", or "UX optimized" without evidence, or call a pattern "best practice" because real apps use it.
 - Why: False confidence hides the work that is still needed. (ryux delivery principle)
 - Check: review
 

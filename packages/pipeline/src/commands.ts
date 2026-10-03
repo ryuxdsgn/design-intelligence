@@ -1,5 +1,6 @@
 import Anthropic from "@anthropic-ai/sdk";
-import { existsSync, readFileSync, writeFileSync } from "node:fs";
+import { execFileSync } from "node:child_process";
+import { existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { readFlow, storagePath, type FlowFolder } from "./flow.js";
@@ -7,6 +8,43 @@ import { check } from "./supabase.js";
 import { readTaxonomy, tagId, type TaxonomyTag } from "./taxonomy.js";
 
 const BUCKET = "screens";
+
+/**
+ * Screenshot web pages, in order, into one flow folder as NN.png at one width (Playwright via npx).
+ * Desktop and mobile go in separate flows so a flow's screen order stays one journey.
+ * Writes a flow.yaml skeleton (platform web) when the folder has none. No Supabase access.
+ */
+export function capture(dir: string, urls: string[], width: number): string[] {
+  if (!urls.length) throw new Error("capture needs at least one URL");
+  for (const u of urls) if (!/^https?:\/\//.test(u)) throw new Error(`not an http(s) URL: ${u}`);
+  mkdirSync(dir, { recursive: true });
+  const taken = readdirSync(dir).filter((f) => /^\d+\.(png|jpe?g|webp)$/.test(f)).length;
+  const height = width >= 1024 ? 900 : 844;
+  const files: string[] = [];
+  urls.forEach((url, i) => {
+    const file = `${String(taken + i + 1).padStart(2, "0")}.png`;
+    execFileSync("npx", ["-y", "playwright", "screenshot", "--full-page", `--viewport-size=${width},${height}`, url, join(dir, file)], { stdio: "inherit" });
+    files.push(file);
+  });
+  const meta = join(dir, "flow.yaml");
+  if (!existsSync(meta)) {
+    const today = new Date().toISOString().slice(0, 10);
+    writeFileSync(meta, [
+      "# Fill in app, category, version, flow_type, and title. Pages captured, in order:",
+      ...urls.map((u, i) => `#   ${files[i]}  ${u}`),
+      "app:",
+      "category:",
+      "platform: web",
+      "version:",
+      `captured_at: ${today}`,
+      `device: ${width >= 1024 ? "desktop" : "mobile"} ${width}`,
+      "flow_type:",
+      "title:",
+      "",
+    ].join("\n"));
+  }
+  return files;
+}
 const contentType = (file: string): string =>
   file.endsWith(".png") ? "image/png" : file.endsWith(".webp") ? "image/webp" : "image/jpeg";
 

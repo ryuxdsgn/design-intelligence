@@ -56,7 +56,9 @@ local patterns (QRIS, virtual accounts, OTP, addresses, paylater, e-KYC).
 ### 4. Patterns and evidence
 
 Name the recurring patterns and where they appear. With the ryux MCP connected, cite comparable
-Indonesian screens by \`screen_id\`; without it, say the patterns come from this design alone.
+screens by \`screen_id\`; without it, say the patterns come from this design alone. A pattern seen in
+real apps is an **observed pattern**, not a best practice: say where it was observed, when it is
+useful, and its risk. Popular apps can be wrong.
 
 ### 5. Report
 
