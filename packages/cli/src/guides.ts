@@ -58,7 +58,9 @@ export const DESIGN_BODY = `# RYUX Design
 5. **Design in the tool.** Use the Figma MCP or the pen.dev MCP. Design every state that matters
    (empty, loading, error) and every width you claim, and source assets on purpose (RX-UI-13).
 6. **Render and inspect.** Screenshot what you made, check it against the brief and the rules,
-   fix, and render again (capabilities/qa.md).
+   fix, and render again (capabilities/qa.md). Generated images and illustrations arrive
+   asynchronously: wait until each one has landed and render again before exporting or closing the
+   gate. Never finish with an asset still pending.
 7. **Close with the Delivery Gate**, saying what was not designed, such as other widths or states.
 
 Do not edit frames you were not asked to change. Do not hand off a design as "final" with
