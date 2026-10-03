@@ -1329,7 +1329,7 @@ export const LEVEL_LABEL: Record<Level, string> = {
   contextual: "Contextual",
 };
 
-export const RULES_VERSION = "2.0.0";
+export const RULES_VERSION = "2.0.1";
 export const RULESET_VERSION = "RX-2.0";
 export const MCP_NAME = "ryux";
 export const MCP_URL = "https://mcp.ryux.design/mcp";
