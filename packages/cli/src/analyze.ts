@@ -6,7 +6,7 @@ import { CAPTURE_TABLE } from "./capture.js";
 export const ANALYZE_DESCRIPTION =
   "RYUX Analyze - understand an existing interface before you change or rebuild it. Extracts layout, type, spacing, color roles, components, hierarchy, navigation, interaction, imagery, motion, and design language from a Figma link, pen.dev design, website URL, screenshot, or code, each labeled measured, observed, or inferred. Use when asked to analyze, reverse-engineer, document, or learn from an existing design.";
 
-export const ANALYZE_BODY = `# ryux-analyze: RYUX Analyze
+export const ANALYZE_BODY = `# RYUX Analyze
 
 > What is actually in this interface?
 

@@ -8,29 +8,78 @@ export const CORE_POSITIONING = `RYUX is a design intelligence layer for AI and 
 and fix interfaces through design reasoning. It is not a UI generator, an anti-slop framework, or
 a design system.`;
 
-export const CORE_CAPABILITIES = `| Capability | When | Load |
-| --- | --- | --- |
-| **Analyze** | understand an interface that exists | \`ryux-analyze\` |
-| **Build** | create or change UI, copy, or frontend code | decide with evidence (ryux-product); on expressive surfaces set a point of view (RX-UI-12); then the workflow and task table |
-| **Critique** | evaluate a design, page, or flow | \`ryux-critique\` |
-| **QA** | verify what was just built | \`ryux-visual-qa\` |
+export const CORE_CAPABILITIES = `Tell RYUX what you are doing; RYUX decides what it needs to know. Pick the entry point, read its
+file, then read only the knowledge modules the task needs (task table below). Paths are relative
+to this skill's folder.
 
-Skill roles: **core** is the operating system; **knowledge** skills (product, ux, interaction,
-forms, edge-cases, content, ui, design-system, accessibility, responsive, frontend) say how to
-reason; **capability** skills (analyze, critique) are workflows; **gate** skills (visual-qa,
-anti-slop) verify and filter. RYUX Knowledge is the evidence layer for all of them. Every
-capability ends at the Anti-Slop Quality Gate: the Hard Gates below and the Delivery Gate.`;
+| Entry point | When | Read |
+| --- | --- | --- |
+| **Analyze** | understand a screen, product, or flow that exists | \`capabilities/analyze.md\` |
+| **Design** | create or improve UI and UX without code: Figma, pen.dev, mockups, copy | \`capabilities/design.md\` |
+| **Build** | implement or change the interface in code | \`capabilities/build.md\` |
+| **Critique** | find what should change first, and why | \`capabilities/critique.md\` |
+| **QA** | verify a build against the intended design | \`capabilities/qa.md\` |
+
+Knowledge modules (\`knowledge/\`): product, ux, interaction, forms, edge-cases, content, ui,
+design-system, accessibility, responsive, frontend, and anti-slop. RYUX Knowledge, through the
+ryux MCP, is the evidence for all of them. Every entry point ends at the quality gates: the Hard
+Gates below and the Delivery Gate.`;
 
 export const CORE_PRINCIPLE = `Do not optimize for visual novelty. Optimize for clarity, usability, consistency, product fit,
 accessibility, and intentional decisions. Understand the context before deciding; separate observed
 facts from assumptions; prefer evidence over aesthetic preference; do not invent requirements;
 explain meaningful decisions with their trade-off; validate before claiming.`;
 
-export const CORE_WORKFLOW = `Request → understand context → understand the product problem → define UX structure → define
-interaction → define UI → apply the design system → implement → inspect (render) → critique →
-refine → Delivery Gate → done.
+export const CORE_WORKFLOW = `1. **Understand the request**: who, what task, which product and market (RX-PR-01).
+2. **Pick the entry point** and read its file.
+3. **Select knowledge**: read the modules the task table lists, and no others.
+4. **Gather evidence**: reference screens through the ryux MCP when connected; otherwise say so.
+5. **Reason**: decide with evidence (RX-PR-09, RX-PR-10); on expressive surfaces, set a point of
+   view first (RX-UI-12).
+6. **Produce**, then render and inspect what you made.
+7. **Run the gates**: Hard Gates and the Delivery Gate, with honest claims.
 
-Skip steps that do not apply to the task, but never skip from "generate" straight to "done".`;
+Skip steps that do not apply, but never go from "generate" straight to "done".`;
+
+export const DESIGN_BODY = `# RYUX Design
+
+> Create or improve UI and UX without writing code: in Figma, pen.dev, a mockup, or the copy.
+
+1. **Context.** Who, what task, which product and market (knowledge/product.md). Write the
+   assumptions down.
+2. **Decide with evidence.** For consequential choices, compare two or three patterns, using
+   reference screens when the ryux MCP is connected (RX-PR-09), and rate the evidence (RX-PR-10).
+3. **Direction.**
+   - On an expressive surface (hero, landing, onboarding, empty state, brand moment), write three
+     directions, choose one, and write a Visual Brief (RX-UI-12, RX-UI-10).
+   - On task UI, follow conventions and the design system.
+4. **Read the modules the task needs** from the task table, for example ux, interaction, forms,
+   and content for a form, or ui and responsive for a layout.
+5. **Design in the tool.** Use the Figma MCP or the pen.dev MCP. Design every state that matters
+   (empty, loading, error) and every width you claim, and source assets on purpose (RX-UI-13).
+6. **Render and inspect.** Screenshot what you made, check it against the brief and the rules,
+   fix, and render again (capabilities/qa.md).
+7. **Close with the Delivery Gate**, saying what was not designed, such as other widths or states.
+
+Do not edit frames you were not asked to change. Do not hand off a design as "final" with
+placeholder or invented content.`;
+
+export const BUILD_BODY = `# RYUX Build
+
+> Implement or change the interface in code, faithfully and in the repo's own stack.
+
+1. **Read the repo first**: the stack, components, tokens, and conventions (knowledge/frontend.md,
+   knowledge/design-system.md). Reuse before creating.
+2. **Find the design source**: a Figma or pen.dev design, a DESIGN.md, or an approved mockup. If
+   there is none, run Design first (capabilities/design.md) instead of inventing one in code.
+3. **Read the modules the task needs** from the task table: for example accessibility, responsive,
+   and edge-cases for any UI, and forms and content for a form.
+4. **Implement.** Use semantic elements, existing components, and real data paths. Invent no
+   business logic, prices, or limits (RX-FE-02, RX-PR-02); mark every assumption.
+5. **Render and verify.** Run it, check every width and state, and fix deviations from the design
+   (capabilities/qa.md).
+6. **Close with the Delivery Gate.** CODE QUALITY and VISUAL QA need real checks (typecheck,
+   render), or say what was not run.`;
 
 export const CORE_HONESTY = `Report what was checked, how, and what was not available. Do not claim "pixel perfect",
 "fully accessible", "production ready", "senior-level", or "UX optimized" without evidence. Say

@@ -34,8 +34,8 @@ The CLI writes to the right place for each agent:
 | Copilot, Amp, Kimi Code, Antigravity | `.agents/skills/` | `AGENTS.md` |
 | Anything else | rules inline in `AGENTS.md` | `AGENTS.md` |
 
-Each skill is a folder with a `SKILL.md`: `ryux-core` plus the skills you picked, including
-`ryux-critique` for reviews.
+RYUX installs as one folder, `ryux/`: a router (`SKILL.md`), five capabilities (Analyze, Design,
+Build, Critique, QA), and the knowledge modules the router reads when a task needs them.
 
 Your files are never overwritten wholesale. Changes stay inside the block
 `<!-- ryux-rules:start -->` … `<!-- ryux-rules:end -->`.
@@ -43,9 +43,8 @@ Your files are never overwritten wholesale. Changes stay inside the block
 ### Non-interactive
 
 ```bash
-npx @ryuxdsgn/ryux install --agent claude,cursor,codex --for designer   # Analyze, Critique, QA
-npx @ryuxdsgn/ryux install --agent claude,cursor,codex --for builder    # Build, QA, Critique
-npx @ryuxdsgn/ryux install --agent all --global                         # every agent, home directory
+npx @ryuxdsgn/ryux install --agent claude,cursor,codex   # these agents, this project
+npx @ryuxdsgn/ryux install --agent all --global         # every agent, home directory
 npx skills add ryuxdsgn/design-intelligence     # alternative: skills.sh, any agent
 ```
 
@@ -72,7 +71,8 @@ uses the Streamable HTTP transport).
 Ask your agent:
 
 - "Find a reference for a payment method picker with QRIS via RYUX."
-- "Review this checkout page with ryux-critique."
+- "Critique this checkout page." RYUX routes to Critique on its own.
+- "Analyze this screenshot, then design a better version in pen.dev."
 - "Review this screen with `heuristic_eval`, and include a comparison screen as evidence."
 
 ## Update & Remove

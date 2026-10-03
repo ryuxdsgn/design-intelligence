@@ -1,4 +1,4 @@
-# RYUX: design rules and skills
+# RYUX: design rules and modules
 
 > **© 2026 ryux (Redho Yurizal). License: MIT.** Original ryux.design ruleset.
 > Written from scratch based on public standards and methods: **Nielsen's 10 usability heuristics
@@ -9,43 +9,51 @@
 >
 > **Last updated:** 2026-10-02 · **Version:** RX-2.0
 
-RYUX is a design intelligence layer for AI and designers, packaged as skills. It has four
-capabilities: Analyze (`ryux-analyze`), Build (`ryux-core` and the knowledge skills below), Critique
-(`ryux-critique`), and QA (`ryux-visual-qa`). Anti-slop prevents bad, generic output; RYUX also
-guides good design decisions. Three things make it
-distinctly ryux: **evidence-based** (real Indonesian screens), **Indonesia first**, and **human
-judgment** for designer notes.
+RYUX is design intelligence for AI agents and designers, packaged as one skill, `ryux`. It has five
+entry points: Analyze, Design, Build, Critique, and QA. The router (`SKILL.md`) picks the
+knowledge modules each task needs. Anti-slop prevents bad, generic output; RYUX also guides good
+design decisions. Three things make it distinctly RYUX: **evidence-based** (real product screens),
+**local depth** (Indonesia first), and **human judgment** for designer notes.
 
 ## Principle and workflow
 
 Do not optimize for visual novelty. Optimize for clarity, usability, consistency, product fit,
 accessibility, and intentional design decisions.
 
-Request → understand context → understand the product problem → define UX structure → define
-interaction → define UI → apply the design system → implement → inspect (render) → critique →
-refine → Delivery Gate → done.
+Understand the request → pick the entry point → read only the knowledge the task needs → gather
+evidence → reason → produce and render → Hard Gates and the Delivery Gate.
 
-## Skills
+## The skill and its modules
 
-`ryux-core` is small and always loaded: choosing the capability, the levels, which skills to load,
-the Hard Gates, the Delivery Gate, and honest-claims wording. Every knowledge skill is a short
-framework (questions, decision trees, templates) followed by its rules. Skills install in groups,
-or through the presets `--for designer` and `--for builder`:
+One skill, `ryux`, holds everything. `SKILL.md` is the router: the entry points, how RYUX works, the
+levels, the Hard Gates, the task table, and the Delivery Gate. Each knowledge module is a short
+framework (questions, decision trees, templates) followed by its rules.
 
 <!-- groups:start -->
-| Group | Skills |
-| --- | --- |
-| `foundation` | `ryux-product` (RX-PR) |
-| `ux` | `ryux-ux` (RX-UX), `ryux-interaction` (RX-IX), `ryux-forms` (RX-FM), `ryux-edge-cases` (RX-EC), `ryux-content` (RX-CD) |
-| `ui` | `ryux-ui` (RX-UI), `ryux-design-system` (RX-DS), `ryux-accessibility` (RX-A11Y), `ryux-responsive` (RX-RD) |
-| `engineering` | `ryux-frontend` (RX-FE) |
-| `quality` | `ryux-visual-qa` (RX-QA), `ryux-anti-slop` (RX-AS) |
-| `analyze` | `ryux-analyze` (capability skill) |
-| `critique` | `ryux-critique` (capability skill) |
+| File | What it holds | Rules |
+| --- | --- | --- |
+| `SKILL.md` | the router: entry points, how RYUX works, levels, Hard Gates, task table, Delivery Gate | |
+| `capabilities/analyze.md` | Analyze: inventory of an existing interface | |
+| `capabilities/design.md` | Design: create or improve UI and UX without code | |
+| `capabilities/build.md` | Build: implement in the repo's own stack | |
+| `capabilities/critique.md` | Critique: Design Read and evidence-backed findings | |
+| `knowledge/product.md` | Product thinking: user, task, goal, primary action, constraints, assumptions, and decisions backed by evidence | RX-PR |
+| `knowledge/ux.md` | UX architecture: information architecture, navigation, flows, grouping, disclosure, search and filters | RX-UX |
+| `knowledge/interaction.md` | Interaction design: before, during, result, recovery; feedback, control, confirmation, states, keyboard, local payments | RX-IX |
+| `knowledge/forms.md` | Forms: labels, layout, validation, input preservation, autofill, submission, unsaved work, OTP, address, e-KYC | RX-FM |
+| `knowledge/edge-cases.md` | Edge cases: data, form, network, permission, and system states beyond the happy path | RX-EC |
+| `knowledge/content.md` | Content design: specific copy, action labels, error messages, terminology, and locale (money, dates, natural Indonesian when the copy is Indonesian) | RX-CD |
+| `knowledge/ui.md` | UI design: the visual expression of a product: hierarchy, type, layout, density, color, imagery, art direction, composition, motion, and visual language | RX-UI |
+| `knowledge/design-system.md` | Design system: search before create, tokens, component states, consistency locks | RX-DS |
+| `knowledge/accessibility.md` | Accessibility: semantics, keyboard, focus, contrast, targets, names, errors, reduced motion | RX-A11Y |
+| `knowledge/responsive.md` | Responsive design: prioritize, simplify, reorganize; tables, overlays, overflow, safe areas | RX-RD |
+| `knowledge/frontend.md` | Frontend implementation: the repo's own stack, semantic elements, components, state, no invented logic | RX-FE |
+| `capabilities/qa.md` | Visual QA: did the build match the intended design: compare, list deviations, fix, render again | RX-QA |
+| `knowledge/anti-slop.md` | Anti-slop: hard gates, purpose gates, quality locks, honest claims | RX-AS |
 <!-- groups:end -->
 
-`ryux-analyze` inventories an existing interface, labeling each item Measured, Observed, or
-Inferred. `ryux-critique` is the review playbook: a Design Read across nine dimensions (clarity,
+Analyze inventories an existing interface, labeling each item Measured, Observed, or Inferred.
+Critique is the review playbook: a Design Read across nine dimensions (clarity,
 hierarchy, coherence, density, confidence, efficiency, specificity, recoverability, accessibility),
 then findings with evidence, impact, recommendation, and confidence, structured through the
 `heuristic_eval` MCP tool.
@@ -53,17 +61,17 @@ then findings with evidence, impact, recommendation, and confidence, structured 
 ### Load only what the task needs
 
 <!-- activation:start -->
-| Task | Load (plus ryux-core) |
+| Task | Read |
 | --- | --- |
-| UI implementation | `ryux-product`, `ryux-ux`, `ryux-ui`, `ryux-design-system`, `ryux-frontend`, `ryux-visual-qa`, `ryux-anti-slop` |
-| Form implementation | `ryux-product`, `ryux-ux`, `ryux-forms`, `ryux-interaction`, `ryux-accessibility`, `ryux-edge-cases`, `ryux-content` |
-| Mobile UI | `ryux-ux`, `ryux-ui`, `ryux-responsive`, `ryux-accessibility`, `ryux-anti-slop` |
-| Checkout or payment | `ryux-product`, `ryux-interaction`, `ryux-forms`, `ryux-content`, `ryux-edge-cases` |
-| Data-heavy view (list, table, dashboard) | `ryux-ux`, `ryux-edge-cases`, `ryux-responsive`, `ryux-design-system`, `ryux-frontend` |
-| Frontend logic or utilities (formatting, state, data shown to users) | `ryux-frontend`, `ryux-content`, `ryux-edge-cases` |
-| Copy only (UI text, chat, announcements) | `ryux-content`, `ryux-anti-slop` |
-| Visual refinement | `ryux-ui`, `ryux-design-system`, `ryux-visual-qa`, `ryux-anti-slop` |
-| Review or critique | `ryux-critique` (Design Read + heuristic_eval), plus `ryux-visual-qa` |
+| UI implementation | `knowledge/product.md`, `knowledge/ux.md`, `knowledge/ui.md`, `knowledge/design-system.md`, `knowledge/frontend.md`, `capabilities/qa.md`, `knowledge/anti-slop.md` |
+| Form implementation | `knowledge/product.md`, `knowledge/ux.md`, `knowledge/forms.md`, `knowledge/interaction.md`, `knowledge/accessibility.md`, `knowledge/edge-cases.md`, `knowledge/content.md` |
+| Mobile UI | `knowledge/ux.md`, `knowledge/ui.md`, `knowledge/responsive.md`, `knowledge/accessibility.md`, `knowledge/anti-slop.md` |
+| Checkout or payment | `knowledge/product.md`, `knowledge/interaction.md`, `knowledge/forms.md`, `knowledge/content.md`, `knowledge/edge-cases.md` |
+| Data-heavy view (list, table, dashboard) | `knowledge/ux.md`, `knowledge/edge-cases.md`, `knowledge/responsive.md`, `knowledge/design-system.md`, `knowledge/frontend.md` |
+| Frontend logic or utilities (formatting, state, data shown to users) | `knowledge/frontend.md`, `knowledge/content.md`, `knowledge/edge-cases.md` |
+| Copy only (UI text, chat, announcements) | `knowledge/content.md`, `knowledge/anti-slop.md` |
+| Visual refinement | `knowledge/ui.md`, `knowledge/design-system.md`, `capabilities/qa.md`, `knowledge/anti-slop.md` |
+| Review or critique | `capabilities/critique.md` (Design Read + heuristic_eval), plus `capabilities/qa.md` |
 <!-- activation:end -->
 
 ## Levels and gates
@@ -171,17 +179,17 @@ Claims in the report describe what was checked and how. "Pixel perfect", "fully 
 Generated from `packages/cli/src/content.ts` by `pnpm sync:skills`. Edit the rules there, not here.
 
 <!-- rules:start -->
-82 rules across 13 skills: 47 Required, 14 Preferred, 21 Contextual; 16 Hard Gates and 7 Quality Locks.
+82 rules across 13 modules: 47 Required, 14 Preferred, 21 Contextual; 16 Hard Gates and 7 Quality Locks.
 
-### ryux-product: Product thinking (RX-PR)
+### Product thinking (RX-PR) · `knowledge/product.md`
 
-Group Foundation · gate area PRODUCT. Covers user, task, goal, primary action, constraints, assumptions, and decisions backed by evidence. Load when starting a new screen or flow, choosing between patterns, or when the scope is unclear.
+Gate area PRODUCT. Covers user, task, goal, primary action, constraints, assumptions, and decisions backed by evidence. Read when starting a new screen or flow, choosing between patterns, or when the scope is unclear.
 
 #### RX-PR-01 [Required] State the context first
 
 - Do: Before designing, write down the user, their task, the business goal, the information that matters, the primary action, the constraints, and what success looks like.
 - Do not: Start from a generic template with no stated user or task.
-- Why: Without a task, design and review drift into taste. (ryux-critique playbook; NNGroup task-based evaluation)
+- Why: Without a task, design and review drift into taste. (`capabilities/critique.md` playbook; NNGroup task-based evaluation)
 - Check: review
 
 #### RX-PR-02 [Required] [Hard Gate] Unknowns stay assumptions
@@ -230,9 +238,9 @@ Group Foundation · gate area PRODUCT. Covers user, task, goal, primary action, 
 
 ---
 
-### ryux-ux: UX architecture (RX-UX)
+### UX architecture (RX-UX) · `knowledge/ux.md`
 
-Group UX · gate area UX. Covers information architecture, navigation, flows, grouping, disclosure, search and filters. Load when designing multi-screen flows, navigation, or data-heavy views.
+Gate area UX. Covers information architecture, navigation, flows, grouping, disclosure, search and filters. Read when designing multi-screen flows, navigation, or data-heavy views.
 
 #### RX-UX-01 [Required] Structure from the user's goal
 
@@ -283,9 +291,9 @@ Group UX · gate area UX. Covers information architecture, navigation, flows, gr
 
 ---
 
-### ryux-interaction: Interaction design (RX-IX)
+### Interaction design (RX-IX) · `knowledge/interaction.md`
 
-Group UX · gate area UX. Covers before, during, result, recovery; feedback, control, confirmation, states, keyboard, local payments. Load when adding or changing anything the user can act on.
+Gate area UX. Covers before, during, result, recovery; feedback, control, confirmation, states, keyboard, local payments. Read when adding or changing anything the user can act on.
 
 #### RX-IX-01 [Required] [Hard Gate] Before, during, result, recovery
 
@@ -364,9 +372,9 @@ Group UX · gate area UX. Covers before, during, result, recovery; feedback, con
 
 ---
 
-### ryux-forms: Forms (RX-FM)
+### Forms (RX-FM) · `knowledge/forms.md`
 
-Group UX · gate area UX. Covers labels, layout, validation, input preservation, autofill, submission, unsaved work, OTP, address, e-KYC. Load when building or reviewing any form.
+Gate area UX. Covers labels, layout, validation, input preservation, autofill, submission, unsaved work, OTP, address, e-KYC. Read when building or reviewing any form.
 
 #### RX-FM-01 [Required] Visible labels tied to fields
 
@@ -436,9 +444,9 @@ Group UX · gate area UX. Covers labels, layout, validation, input preservation,
 
 ---
 
-### ryux-edge-cases: Edge cases (RX-EC)
+### Edge cases (RX-EC) · `knowledge/edge-cases.md`
 
-Group UX · gate area EDGE CASES. Covers data, form, network, permission, and system states beyond the happy path. Load when building data views, flows, or anything that talks to a network.
+Gate area EDGE CASES. Covers data, form, network, permission, and system states beyond the happy path. Read when building data views, flows, or anything that talks to a network.
 
 #### RX-EC-01 [Required] [Hard Gate] Critical states exist
 
@@ -479,9 +487,9 @@ Group UX · gate area EDGE CASES. Covers data, form, network, permission, and sy
 
 ---
 
-### ryux-content: Content design (RX-CD)
+### Content design (RX-CD) · `knowledge/content.md`
 
-Group UX · gate area UX. Covers specific copy, action labels, error messages, terminology, and locale (money, dates, natural Indonesian when the copy is Indonesian). Load when writing or reviewing any user-facing text.
+Gate area UX. Covers specific copy, action labels, error messages, terminology, and locale (money, dates, natural Indonesian when the copy is Indonesian). Read when writing or reviewing any user-facing text.
 
 #### RX-CD-01 [Contextual] Natural Bahasa Indonesia
 
@@ -530,9 +538,9 @@ Group UX · gate area UX. Covers specific copy, action labels, error messages, t
 
 ---
 
-### ryux-ui: UI design (RX-UI)
+### UI design (RX-UI) · `knowledge/ui.md`
 
-Group UI · gate area UI. Covers the visual expression of a product: hierarchy, type, layout, density, color, imagery, art direction, composition, motion, and visual language. Load when doing visual design or visual refinement, or directing images, 3D, or motion.
+Gate area UI. Covers the visual expression of a product: hierarchy, type, layout, density, color, imagery, art direction, composition, motion, and visual language. Read when doing visual design or visual refinement, or directing images, 3D, or motion.
 
 #### RX-UI-01 [Required] [Quality Lock] Hierarchy follows priority
 
@@ -631,9 +639,9 @@ Group UI · gate area UI. Covers the visual expression of a product: hierarchy, 
 
 ---
 
-### ryux-design-system: Design system (RX-DS)
+### Design system (RX-DS) · `knowledge/design-system.md`
 
-Group UI · gate area DESIGN SYSTEM. Covers search before create, tokens, component states, consistency locks. Load when adding or changing components, styles, or tokens.
+Gate area DESIGN SYSTEM. Covers search before create, tokens, component states, consistency locks. Read when adding or changing components, styles, or tokens.
 
 #### RX-DS-01 [Required] [Hard Gate] Search before you create
 
@@ -658,9 +666,9 @@ Group UI · gate area DESIGN SYSTEM. Covers search before create, tokens, compon
 
 ---
 
-### ryux-accessibility: Accessibility (RX-A11Y)
+### Accessibility (RX-A11Y) · `knowledge/accessibility.md`
 
-Group UI · gate area ACCESSIBILITY. Covers semantics, keyboard, focus, contrast, targets, names, errors, reduced motion. Load when building or reviewing any UI.
+Gate area ACCESSIBILITY. Covers semantics, keyboard, focus, contrast, targets, names, errors, reduced motion. Read when building or reviewing any UI.
 
 #### RX-A11Y-01 [Required] [Hard Gate] Readable contrast
 
@@ -713,9 +721,9 @@ Group UI · gate area ACCESSIBILITY. Covers semantics, keyboard, focus, contrast
 
 ---
 
-### ryux-responsive: Responsive design (RX-RD)
+### Responsive design (RX-RD) · `knowledge/responsive.md`
 
-Group UI · gate area RESPONSIVE. Covers prioritize, simplify, reorganize; tables, overlays, overflow, safe areas. Load when building a layout that ships to more than one width.
+Gate area RESPONSIVE. Covers prioritize, simplify, reorganize; tables, overlays, overflow, safe areas. Read when building a layout that ships to more than one width.
 
 #### RX-RD-01 [Required] [Hard Gate] Stated viewport plus the smallest
 
@@ -765,9 +773,9 @@ Group UI · gate area RESPONSIVE. Covers prioritize, simplify, reorganize; table
 
 ---
 
-### ryux-frontend: Frontend implementation (RX-FE)
+### Frontend implementation (RX-FE) · `knowledge/frontend.md`
 
-Group Engineering · gate area CODE QUALITY. Covers the repo's own stack, semantic elements, components, state, no invented logic. Load when writing or changing frontend code, including formatting, state, and data logic that users see.
+Gate area CODE QUALITY. Covers the repo's own stack, semantic elements, components, state, no invented logic. Read when writing or changing frontend code, including formatting, state, and data logic that users see.
 
 #### RX-FE-01 [Required] Work in the repo's own stack
 
@@ -814,9 +822,9 @@ Group Engineering · gate area CODE QUALITY. Covers the repo's own stack, semant
 
 ---
 
-### ryux-visual-qa: Visual QA (RX-QA)
+### Visual QA (RX-QA) · `capabilities/qa.md`
 
-Group Quality · gate area VISUAL QA. Covers did the build match the intended design: compare, list deviations, fix, render again. Load when something visual has been implemented and is about to be called done, or a build must match a design.
+Gate area VISUAL QA. Covers did the build match the intended design: compare, list deviations, fix, render again. Read when something visual has been implemented and is about to be called done, or a build must match a design.
 
 #### RX-QA-01 [Required] Render, inspect, fix, render again
 
@@ -848,9 +856,9 @@ Group Quality · gate area VISUAL QA. Covers did the build match the intended de
 
 ---
 
-### ryux-anti-slop: Anti-slop (RX-AS)
+### Anti-slop (RX-AS) · `knowledge/anti-slop.md`
 
-Group Quality · gate area ANTI-SLOP. Covers hard gates, purpose gates, quality locks, honest claims. Load when work is about to be delivered, or during visual refinement.
+Gate area ANTI-SLOP. Covers hard gates, purpose gates, quality locks, honest claims. Read when work is about to be delivered, or during visual refinement.
 
 #### RX-AS-01 [Required] [Hard Gate] Only real numbers
 
@@ -925,9 +933,9 @@ Group Quality · gate area ANTI-SLOP. Covers hard gates, purpose gates, quality 
 npx @ryuxdsgn/ryux install --agent claude          # or --agent all; see the README for every agent
 ```
 
-`ryux-core` is always installed. `--concerns` from RX-1.x still works as a deprecated alias, and
-installing removes folders from earlier releases. Browsable copies of every skill live in
-[`skills/`](../skills).
+RYUX 2 installs one folder, `ryux/`. Installing or updating removes the per-skill folders of RYUX 1.x
+(`ryux-core`, `ryux-forms`, ...), and the old `--for`, `--groups`, and `--concerns` flags are no
+longer needed. The browsable skill lives in [`skills/ryux/`](../skills/ryux).
 
 ## Mapping to code
 

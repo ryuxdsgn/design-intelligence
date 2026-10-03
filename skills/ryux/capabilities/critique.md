@@ -1,25 +1,20 @@
----
-name: ryux-critique
-description: "RYUX Critique - senior UX and UI design critique for Figma, pen.dev, websites, screenshots, and built interfaces. Analyzes first, runs a Design Read across nine dimensions, then reports prioritized findings with severity, evidence, impact, recommendation, confidence, and source, plus what to keep. Use when asked to critique, review, or audit a UI, screen, or flow."
----
-
-# ryux-critique: RYUX Critique
+# RYUX Critique
 
 > Get a senior design critique before your users do.
 
 Critique answers "does this interface make sense, and what should change first?" It is an
-orchestrator, not a pile of rules: it analyzes the design, reasons with the RYUX knowledge skills,
+orchestrator, not a pile of rules: it analyzes the design, reasons with the RYUX knowledge modules,
 pulls evidence from RYUX Knowledge, and reports findings someone can act on.
 
 ```
-ryux-critique
+Critique
      ↓
-ryux-analyze              what is actually there
+Analyze                   what is actually there
      ↓
-knowledge skills          ux, ui, interaction, forms, content, accessibility,
+knowledge modules         ux, ui, interaction, forms, content, accessibility,
                           responsive, design-system, edge-cases, anti-slop
      ↓
-RYUX Knowledge            real Indonesian screens (search_screens, heuristic_eval)
+RYUX Knowledge            real product screens (search_screens, heuristic_eval)
      ↓
 findings
 ```
@@ -44,9 +39,9 @@ request does not say, infer it from the design and list it as an assumption.
 
 ### 2. Analyze first
 
-Run `ryux-analyze` (capture plus inventory) or reuse an analysis that already exists. Its labeled
-inventory (Measured, Observed, Inferred) is what the findings point at. If `ryux-analyze` is not
-installed, capture the design with this table and note what you saw:
+Run Analyze (`capabilities/analyze.md`: capture plus inventory) or reuse an analysis that already exists. Its
+labeled inventory (Measured, Observed, Inferred) is what the findings point at. For a quick
+critique, capture the design with this table and note what you saw:
 
 | Source | How to capture | If it is not available |
 | --- | --- | --- |
@@ -54,7 +49,7 @@ installed, capture the design with this table and note what you saw:
 | pen.dev design | pencil MCP: `get_app_state` to list frames; `execute` with `TakeScreenshot([frameId])` for the image, and a `Get` visitor that prints text nodes, node properties (fonts, sizes, fills, gaps), and any `ctx.problems` (clipped content) | Ask for an exported PNG |
 | Website URL | `npx playwright screenshot --full-page --viewport-size=1440,900 <url> desktop.png` and `--viewport-size=390,844` for mobile; a browser tool for interaction states (hover, focus, an error) when one is available; the page HTML and CSS for headings, labels, alt text, landmarks, and declared values | Ask for screenshots at desktop and mobile width |
 | Screenshot or image | Read the image directly | none |
-| Code only | Render it first (see `ryux-visual-qa`) | Work from the code and state that it was not rendered |
+| Code only | Render it first (see `capabilities/qa.md`) | Work from the code and state that it was not rendered |
 
 Stay read-only: do not edit the Figma file, the pen.dev document, or the site. Record what you
 captured: the frames or URLs, the viewports, and the tools.
@@ -77,23 +72,23 @@ Rate each dimension **Strong**, **Adequate**, or **Weak**, with one sentence of 
 
 ### 4. Evaluate by category
 
-Load the knowledge skills that apply and walk the design with their rules. [Required] rules are the
+Read the knowledge modules that apply and walk the design with their rules. [Required] rules are the
 gate, [Preferred] rules need a reason when broken, and [Contextual] rules count only when their
 situation is present. Use their "Not when" lines so a rule is not applied mechanically.
 
 | Category | Skill | Look for |
 | --- | --- | --- |
-| Product | ryux-product | stated purpose, one primary action, invented facts |
-| UX | ryux-ux | structure, wayfinding, grouping, disclosure, steps |
-| Interaction | ryux-interaction | before, during, result, recovery; confirm or undo; cost upfront; local payments |
-| Forms | ryux-forms | labels, validation, input kept, submission states |
-| Content | ryux-content | specific labels, errors, terminology, Rupiah, dates and numbers |
-| UI | ryux-ui | hierarchy, scale, color roles, density; each visual's job, composition around the copy, motion level; the result against its Visual Brief when there is one |
-| Design system | ryux-design-system | consistency, tokens, component states |
-| Accessibility | ryux-accessibility | contrast, targets, focus, names, color alone |
-| Responsive | ryux-responsive | what changes, stays, disappears, or stacks across widths |
-| Edge cases | ryux-edge-cases | empty, error, loading, long text, permissions |
-| Anti-slop | ryux-anti-slop | invented numbers or people, fake urgency, unjustified decoration |
+| Product | `knowledge/product.md` | stated purpose, one primary action, invented facts |
+| UX | `knowledge/ux.md` | structure, wayfinding, grouping, disclosure, steps |
+| Interaction | `knowledge/interaction.md` | before, during, result, recovery; confirm or undo; cost upfront; local payments |
+| Forms | `knowledge/forms.md` | labels, validation, input kept, submission states |
+| Content | `knowledge/content.md` | specific labels, errors, terminology, Rupiah, dates and numbers |
+| UI | `knowledge/ui.md` | hierarchy, scale, color roles, density; each visual's job, composition around the copy, motion level; the result against its Visual Brief when there is one |
+| Design system | `knowledge/design-system.md` | consistency, tokens, component states |
+| Accessibility | `knowledge/accessibility.md` | contrast, targets, focus, names, color alone |
+| Responsive | `knowledge/responsive.md` | what changes, stays, disappears, or stacks across widths |
+| Edge cases | `knowledge/edge-cases.md` | empty, error, loading, long text, permissions |
+| Anti-slop | `knowledge/anti-slop.md` | invented numbers or people, fake urgency, unjustified decoration |
 
 ### 5. Evidence from RYUX Knowledge
 
@@ -139,7 +134,7 @@ Verdict: one sentence (what works, the biggest risk)
 
 What was reviewed and how
   Source:      Figma frame "Checkout" (node 1:2) / https://... / pen.dev frame "..."
-  Analysis:    ryux-analyze, desktop 1440 and mobile 390, via Playwright
+  Analysis:    `capabilities/analyze.md`, desktop 1440 and mobile 390, via Playwright
   Not tested:  hover and focus states, live data, screen reader
 
 Design Read
