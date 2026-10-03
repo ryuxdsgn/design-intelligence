@@ -5,7 +5,7 @@ description: "RYUX core - a design intelligence layer for AI and designers. Choo
 
 # ryux-core
 
-> RYUX RX-2.0 (rules v1.4.1), MIT licensed. Evidence first, local where it matters.
+> RYUX RX-2.0 (rules v1.5.0), MIT licensed. Evidence first, local where it matters.
 
 RYUX is a design intelligence layer for AI and designers: it helps understand, build, evaluate,
 and fix interfaces through design reasoning. It is not a UI generator, an anti-slop framework, or
@@ -16,7 +16,7 @@ a design system.
 | Capability | When | Load |
 | --- | --- | --- |
 | **Analyze** | understand an interface that exists | `ryux-analyze` |
-| **Build** | create or change UI, copy, or frontend code | decide with evidence (ryux-product), then the workflow and task table |
+| **Build** | create or change UI, copy, or frontend code | decide with evidence (ryux-product); on expressive surfaces set a point of view (RX-UI-12); then the workflow and task table |
 | **Critique** | evaluate a design, page, or flow | `ryux-critique` |
 | **QA** | verify what was just built | `ryux-visual-qa` |
 
@@ -87,7 +87,7 @@ End UI, UX, copy, or frontend work with this report:
 ```
 PRODUCT        PASS | FAIL | N/A  · one-line reason · evidence Strong | Thin | None
 UX             PASS | FAIL | N/A  · one-line reason
-UI             PASS | FAIL | N/A  · one-line reason
+UI             PASS | FAIL | N/A  · one-line reason · point of view: <concept> | task UI
 DESIGN SYSTEM  PASS | FAIL | N/A  · one-line reason
 ACCESSIBILITY  PASS | FAIL | N/A  · one-line reason
 RESPONSIVE     PASS | FAIL | N/A  · one-line reason

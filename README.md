@@ -1,6 +1,6 @@
 <p align="center">
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-2ea44f" alt="MIT License"></a>
-  <img src="https://img.shields.io/badge/status-early__access%20%C2%B7%20rules%201.4-1f6feb" alt="Status: early access, rules 1.4">
+  <img src="https://img.shields.io/badge/status-early__access%20%C2%B7%20rules%201.5-1f6feb" alt="Status: early access, rules 1.5">
   <img src="https://img.shields.io/badge/MCP%20tools-9-8957e5" alt="9 MCP tools">
   <img src="https://img.shields.io/badge/skills-14%20modular-e36209" alt="RYUX: 14 modular design skills">
 </p>
@@ -80,7 +80,7 @@ see the real design.
 ## See the difference
 
 Each brief below ran headless (`claude -p`) in an empty folder, once without RYUX and once with the
-RYUX skills installed by the CLI (`npx @ryuxdsgn/ryux`): 1.4 for UI, 1.3 for Code and Copy. The agent chose which skills to load.
+RYUX skills installed by the CLI (`npx @ryuxdsgn/ryux`): 1.5 for UI, 1.3 for Code and Copy. The agent chose which skills to load.
 Neither run had the RYUX MCP, so no reference screens were used. The screenshots are the agents' real
 output, not edited by hand. The colored boxes are annotations added afterwards.
 
@@ -91,17 +91,19 @@ intelligence layer for AI coding agents and designers. It installs as skills int
 Cursor, Codex, and other agents (npx @ryuxdsgn/ryux), and an MCP server gives agents reference
 screens from real apps as evidence."* Both runs designed in pen.dev through its MCP.
 
-<a href="assets/compare/ui/compare.png"><img src="assets/compare/ui/compare.png" alt="Two RYUX hero sections designed in pen.dev, stacked. Without RYUX: an invented 4.2k GitHub star count, and a mock agent session that calls a tool RYUX does not have (find_references), claims 'matched in 1,280 apps in 0.4s', and labels drawn screens with real app names (Duolingo, Calm, Headspace, Strava) as if they were evidence. With RYUX 1.4: the RYUX wordmark as given, an agent session labeled 'Illustrative session' that uses the real search_screens tool and shows a Delivery Gate failing a missing state, and one primary action, the real install command" width="100%"></a>
+<a href="assets/compare/ui/compare.png"><img src="assets/compare/ui/compare.png" alt="Two RYUX hero sections designed in pen.dev, stacked. Without RYUX: an invented 4.2k GitHub star count, and a mock agent session that calls a tool RYUX does not have, claims 'matched in 1,280 apps in 0.4s', and labels drawn screens with real app names as if they were evidence. With RYUX 1.5: a hero laid out like a cited paper, with the headline 'Your agent designs. Now it cites its sources.' carrying footnote marks, footnotes at the bottom that explain the skills and the MCP server, a sample design decision record labeled as an example, and one primary action, the install command" width="100%"></a>
 
-Both heroes look finished, and that is the trap. Without RYUX, the agent invents a GitHub star
-count and a tool RYUX does not have, adds a "matched in 1,280 apps" stat, and puts real app names
-on drawn screens so they read as evidence (RX-AS-01, RX-AS-07, RX-PR-02).
+Without RYUX, the hero is the category default: copy on the left, an agent session on the right.
+Inside it, the agent invents a GitHub star count and a tool RYUX does not have, adds a "matched in
+1,280 apps" stat, and puts real app names on drawn screens so they read as evidence (RX-AS-01,
+RX-AS-07, RX-PR-02).
 
-With RYUX, the demo session uses the real `search_screens` tool and is labeled as illustrative
-(RX-UI-07). Its sample Delivery Gate fails a missing state instead of claiming everything passes.
-The install command is the one primary action (RX-PR-03), and the wordmark is RYUX as given. Two
-earlier runs had written it as "ryux", copying an older frame in the file, so RX-CD-05 now says to
-follow the brief's spelling of brand names, and this run did.
+With RYUX, the agent first wrote three directions (Exhibits, Proofmarks, Footnoted) and chose
+Footnoted, because the product is about decisions that cite evidence (RX-UI-12). The headline
+carries footnote marks, the footnotes explain the skills and the MCP server using only real
+facts, and the sample decision record is labeled as an example. There is one primary action
+(RX-PR-03). The brief was the same plain one for both runs: the point of view came from the
+skills, not the prompt.
 
 ### Code
 
