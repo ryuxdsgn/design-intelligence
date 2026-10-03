@@ -111,6 +111,7 @@ export class RyuxMCP extends McpAgent<SupabaseEnv> {
         return this.reply({
           slug: found.slug,
           ...found.pattern,
+          evidence: found.evidence,
           usage: { credits_used: 1, credits_remaining: charged.remaining, plan: PLAN },
         });
       },

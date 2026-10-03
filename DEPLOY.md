@@ -115,6 +115,14 @@ pnpm knowledge review  <folder>  # write review.md
 pnpm knowledge publish <folder>  # refuses until review.md is complete
 ```
 
+`draft` also proposes **observations** (what the screen visibly does: layout, hierarchy, components,
+interaction, content), labeled observed or inferred and stored as `source: ai`. In `review.md`, tick
+the accurate ones, fix their wording, or add your own; unticked ones are removed on publish, and
+ticked ones become `source: human`. Observations describe; designer notes judge, and only people
+write those. Pattern rows (local and general) are created from `docs/taxonomy.md` by `tags`; fill
+in `useful_when` and `risk` in the dashboard. Where a pattern was observed is computed from
+published screens, never typed.
+
 Publish refuses until every screen has its personal-data check ticked, every tag is a known key, and
 the flow's designer notes (`why_it_works`, `weaknesses`) are written by a person. Unticked tags are
 removed, and kept tags become `source: human`. Images stay private: the MCP serves them as 15-minute

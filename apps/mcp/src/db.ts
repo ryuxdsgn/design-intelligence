@@ -22,10 +22,10 @@ export async function loadFromSupabase(
   const sb = createClient(url, key, { auth: { persistSession: false } });
   const [sc, lp] = await Promise.all([
     sb.from("screens_flat").select("*"),
-    sb.from("local_patterns_flat").select("*"),
+    sb.from("patterns_flat").select("*"),
   ]);
   if (sc.error) throw new Error(`screens_flat: ${sc.error.message}`);
-  if (lp.error) throw new Error(`local_patterns_flat: ${lp.error.message}`);
+  if (lp.error) throw new Error(`patterns_flat: ${lp.error.message}`);
 
   // Images live in the private "screens" bucket; hand agents short-lived signed URLs (15 minutes,
   // per the PRD) instead of permanent links. Paths that are already URLs are left as they are.
@@ -39,7 +39,7 @@ export async function loadFromSupabase(
 
   const screens: Screen[] = rows.map((r: any) => ({
     screen_id: r.screen_id,
-    app: { name: r.app_name, category: r.app_category },
+    app: { name: r.app_name, category: r.app_category, platform: r.platform ?? undefined },
     version: r.version ?? "",
     captured_at: r.captured_at ?? "",
     flow: { id: r.flow_id, type: r.flow_type, position: r.position },
@@ -48,15 +48,21 @@ export async function loadFromSupabase(
     designer_notes: { why_it_works: r.why_it_works ?? "", weaknesses: r.weaknesses ?? "" },
     reviewed: Boolean(r.reviewed),
     untrusted_text: { ocr: r.ocr ?? "" },
+    observations: r.observations ?? [],
   }));
 
   const patterns: Record<string, LocalPattern> = {};
   for (const r of (lp.data ?? []) as any[]) {
     patterns[r.slug] = {
       name: r.name,
+      scope: r.scope,
       description: r.description ?? "",
       user_behavior_notes: r.user_behavior_notes ?? "",
-      example_screen_ids: r.example_screen_ids ?? [],
+      useful_when: r.useful_when ?? undefined,
+      risk: r.risk ?? undefined,
+      context: r.context ?? [],
+      example_screen_ids: r.observed_in ?? [],
+      observed_apps: r.observed_apps ?? [],
     };
   }
 
