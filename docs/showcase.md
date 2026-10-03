@@ -33,7 +33,7 @@ pnpm dev:mcp   # then: claude -p "<brief>" --mcp-config mcp.json --strict-mcp-co
 
 | Image | Without | With |
 | --- | --- | --- |
-| `ui/compare.png` | pen.dev MCP only | pen.dev MCP + all RYUX 1.4 skills (`--for all`); no RYUX MCP |
+| `ui/compare.png` | pen.dev MCP only; hero section only | pen.dev MCP + all RYUX 1.4 skills (`--for all`); no RYUX MCP; hero section only |
 | `code/compare.png` | no skills | all RYUX 1.3 skills; the agent picks which to load |
 | `chat/compare.png` | no skills | all RYUX 1.3 skills; the agent picks which to load |
 
@@ -42,7 +42,7 @@ only for the Indonesian market. The Indonesian set (`compare-id.png`) is kept un
 [Indonesian market examples](#indonesian-market-examples).
 
 pen.dev's `execute` always targets the open document, so UI runs add one new top-level frame and
-export it as a PNG into the run folder. The README crops the top of each export. Code and copy
+export it as a PNG into the run folder. The UI brief asks for the hero section only, so no cropping is needed. Code and copy
 output is rendered verbatim in an editor-style and a chat-style page. Pairs are composed into one
 image, and the colored boxes are annotations layered on top, never edits to the output.
 
