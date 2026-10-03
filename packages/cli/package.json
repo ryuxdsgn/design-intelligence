@@ -1,7 +1,7 @@
 {
   "name": "@ryuxdsgn/ryux",
-  "version": "1.6.0",
-  "description": "RYUX: design intelligence for AI coding agents. Senior product designer skills (RYUX Build) and design critique (RYUX Critique) for Claude Code, Codex, Cursor, Gemini CLI, OpenCode, Cline, Copilot, and more.",
+  "version": "2.0.0",
+  "description": "RYUX: design intelligence for AI agents and designers. One skill, five entry points: Analyze, Design, Build, Critique, and QA, for Claude Code, Codex, Cursor, Gemini CLI, OpenCode, Cline, Copilot, and more.",
   "type": "module",
   "bin": {
     "ryux": "dist/index.js",

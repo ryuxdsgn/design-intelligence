@@ -6,8 +6,8 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { execFileSync } from "node:child_process";
 import {
-  renderCoreSkill,
-  renderSkill,
+  renderBundle,
+  SKILL_NAME,
   renderRulesDoc,
   renderMigrationTable,
   retiredTable,
@@ -18,26 +18,24 @@ import {
   qualityLocksTable,
   deliveryGateTemplate,
 } from "../dist/render.js";
-import { ALL_INSTALLABLE_IDS } from "../dist/content.js";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const root = join(here, "..", "..", "..");
 const skillsDir = join(root, "skills");
-const keep = new Set(["ryux-core", ...ALL_INSTALLABLE_IDS.map((id) => `ryux-${id}`)]);
 
-async function writeSkill(name, content) {
-  await mkdir(join(skillsDir, name), { recursive: true });
-  await writeFile(join(skillsDir, name, "SKILL.md"), content, "utf8");
-}
-
+// RYUX 2 ships one skill folder, skills/ryux/, with capabilities/ and knowledge/ inside.
+// Remove the RYUX 1.x per-skill folders, then write the bundle fresh.
 for (const entry of await readdir(skillsDir, { withFileTypes: true })) {
-  if (entry.isDirectory() && entry.name.startsWith("ryux-") && !keep.has(entry.name)) {
+  if (entry.isDirectory() && (entry.name.startsWith("ryux-") || entry.name === SKILL_NAME)) {
     await rm(join(skillsDir, entry.name), { recursive: true, force: true });
   }
 }
-
-await writeSkill("ryux-core", renderCoreSkill(ALL_INSTALLABLE_IDS));
-for (const id of ALL_INSTALLABLE_IDS) await writeSkill(`ryux-${id}`, renderSkill(id));
+const files = renderBundle();
+for (const [path, content] of Object.entries(files)) {
+  const target = join(skillsDir, SKILL_NAME, path);
+  await mkdir(dirname(target), { recursive: true });
+  await writeFile(target, content, "utf8");
+}
 
 function fill(doc, name, body) {
   const start = `<!-- ${name}:start -->`;
@@ -65,8 +63,8 @@ for (const [name, body] of [
 }
 await writeFile(docPath, doc, "utf8");
 
-// Dogfood: install RYUX into this repo with the real CLI (all groups). The generated
-// .claude/skills/ryux-* folders are gitignored.
+// Dogfood: install RYUX into this repo with the real CLI. The generated .claude/skills/ryux folder
+// is gitignored.
 execFileSync("node", [join(here, "..", "dist", "index.js"), "install", "--agent", "claude"], { cwd: root, stdio: "ignore" });
 
-console.log(`done: ${ALL_INSTALLABLE_IDS.length + 1} skills synced, docs regenerated, dogfood install updated`);
+console.log(`done: skills/${SKILL_NAME}/ (${Object.keys(files).length} files) synced, docs regenerated, dogfood install updated`);

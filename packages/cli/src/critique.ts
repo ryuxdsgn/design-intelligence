@@ -6,23 +6,23 @@ import { CAPTURE_TABLE } from "./capture.js";
 export const CRITIQUE_DESCRIPTION =
   "RYUX Critique - senior UX and UI design critique for Figma, pen.dev, websites, screenshots, and built interfaces. Analyzes first, runs a Design Read across nine dimensions, then reports prioritized findings with severity, evidence, impact, recommendation, confidence, and source, plus what to keep. Use when asked to critique, review, or audit a UI, screen, or flow.";
 
-export const CRITIQUE_BODY = `# ryux-critique: RYUX Critique
+export const CRITIQUE_BODY = `# RYUX Critique
 
 > Get a senior design critique before your users do.
 
 Critique answers "does this interface make sense, and what should change first?" It is an
-orchestrator, not a pile of rules: it analyzes the design, reasons with the RYUX knowledge skills,
+orchestrator, not a pile of rules: it analyzes the design, reasons with the RYUX knowledge modules,
 pulls evidence from RYUX Knowledge, and reports findings someone can act on.
 
 \`\`\`
-ryux-critique
+Critique
      ↓
-ryux-analyze              what is actually there
+Analyze                   what is actually there
      ↓
-knowledge skills          ux, ui, interaction, forms, content, accessibility,
+knowledge modules         ux, ui, interaction, forms, content, accessibility,
                           responsive, design-system, edge-cases, anti-slop
      ↓
-RYUX Knowledge            real Indonesian screens (search_screens, heuristic_eval)
+RYUX Knowledge            real product screens (search_screens, heuristic_eval)
      ↓
 findings
 \`\`\`
@@ -47,9 +47,9 @@ request does not say, infer it from the design and list it as an assumption.
 
 ### 2. Analyze first
 
-Run \`ryux-analyze\` (capture plus inventory) or reuse an analysis that already exists. Its labeled
-inventory (Measured, Observed, Inferred) is what the findings point at. If \`ryux-analyze\` is not
-installed, capture the design with this table and note what you saw:
+Run Analyze (\`ryux-analyze\`: capture plus inventory) or reuse an analysis that already exists. Its
+labeled inventory (Measured, Observed, Inferred) is what the findings point at. For a quick
+critique, capture the design with this table and note what you saw:
 
 ${CAPTURE_TABLE}
 
@@ -71,7 +71,7 @@ Rate each dimension **Strong**, **Adequate**, or **Weak**, with one sentence of 
 
 ### 4. Evaluate by category
 
-Load the knowledge skills that apply and walk the design with their rules. [Required] rules are the
+Read the knowledge modules that apply and walk the design with their rules. [Required] rules are the
 gate, [Preferred] rules need a reason when broken, and [Contextual] rules count only when their
 situation is present. Use their "Not when" lines so a rule is not applied mechanically.
 

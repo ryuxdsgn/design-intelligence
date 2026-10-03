@@ -1,6 +1,5 @@
 import {
   ACTIVATION,
-  ALL_SKILL_IDS,
   GATE_AREAS,
   GROUPS,
   HARD_GATES,
@@ -23,6 +22,8 @@ import {
   CORE_POSITIONING,
   CORE_PRINCIPLE,
   CORE_WORKFLOW,
+  BUILD_BODY,
+  DESIGN_BODY,
   GATE_RULES,
   GUIDES,
 } from "./guides.js";
@@ -55,8 +56,8 @@ const LEVELS = `- **[Required]**: applies within its stated scope; an exception 
 - **[Quality Lock]**: consistency that must hold across the product.`;
 
 export function activationTable(): string {
-  const rows = ACTIVATION.map((a) => `| ${a.task} | ${a.skills.map((s) => `\`ryux-${s}\``).join(", ")} |`);
-  return `| Task | Load (plus ryux-core) |\n| --- | --- |\n${rows.join("\n")}\n| Review or critique | \`ryux-critique\` (Design Read + heuristic_eval), plus \`ryux-visual-qa\` |`;
+  const rows = ACTIVATION.map((a) => `| ${a.task} | ${a.skills.map((s) => `\`${modulePath(s)}\``).join(", ")} |`);
+  return `| Task | Read |\n| --- | --- |\n${rows.join("\n")}\n| Review or critique | \`capabilities/critique.md\` (Design Read + heuristic_eval), plus \`capabilities/qa.md\` |`;
 }
 
 export function deliveryGateTemplate(): string {
@@ -73,26 +74,24 @@ export function deliveryGateTemplate(): string {
   return `\`\`\`\n${lines.join("\n")}\n\`\`\``;
 }
 
-function coreBody(installed: string[]): string {
-  const missing = SKILLS.filter((s) => !installed.includes(s.id)).map((s) => `\`ryux-${s.id}\``);
-  const note = missing.length ? `\n\nNot installed here: ${missing.join(", ")}.` : "";
-  return `# ryux-core
+function routerBody(): string {
+  return `# RYUX
 
-> RYUX ${RULESET_VERSION} (rules v${RULES_VERSION}), MIT licensed. Evidence first, local where it matters.
+> Design intelligence for AI agents and designers. ${RULESET_VERSION} (rules v${RULES_VERSION}), MIT licensed.
 
 ${CORE_POSITIONING}
 
-## Start by choosing the capability
+## Start with what you are doing
 
 ${CORE_CAPABILITIES}
+
+## How RYUX works
+
+${CORE_WORKFLOW}
 
 ## Principle
 
 ${CORE_PRINCIPLE}
-
-## Workflow
-
-${CORE_WORKFLOW}
 
 ## Levels
 
@@ -100,13 +99,13 @@ ${LEVELS}
 
 ## Hard Gates (always apply)
 
-These hold even when \`ryux-anti-slop\` is not loaded. No written exception; fix before delivery.
+No written exception; fix before delivery.
 
 ${hardGatesBrief()}
 
-## Build: load only what the task needs
+## Task table: which knowledge to read
 
-${activationTable()}${note}
+${activationTable()}
 
 ## Delivery Gate
 
@@ -173,79 +172,74 @@ ${s.evidence} Without the ryux MCP, say the evidence comes from the design and s
 ${rulesOf(s.id).map(ruleBlock).join("\n\n")}`;
 }
 
-const CORE_DESCRIPTION =
-  "RYUX core - design intelligence for AI agents and designers. Routes each UI, UX, copy, or frontend task through Analyze, Build, Critique, or QA, loads only the knowledge it needs, decides with evidence, and closes with quality gates (Hard Gates and the Delivery Gate). Load for any UI, UX, copy, or frontend task.";
+export const SKILL_NAME = "ryux";
 
-const skillDescription = (s: Skill): string =>
-  s.pitch ? `RYUX ${s.label}: ${s.pitch} Covers ${s.summary}. Load when ${s.loadWhen}.` : `RYUX ${s.label}: ${s.summary}. Load when ${s.loadWhen}.`;
+const RYUX_DESCRIPTION =
+  "RYUX - design intelligence for AI agents and designers. Tell it what you are doing and it routes to Analyze (understand an existing interface), Design (create or improve UI and UX in Figma, pen.dev, or mockups), Build (implement in code), Critique (find what to change first, with evidence), or QA (verify a build against the design), reads only the knowledge the task needs (product, UX, UI, interaction, forms, content, accessibility, responsive, design system, frontend, anti-slop), and closes with quality gates. Use for any UI, UX, copy, frontend, design review, or design analysis task.";
 
-// ── Claude Code skills ────────────────────────────────────────────────────────
-export function renderCoreSkill(installed: string[]): string {
-  return `---
-name: ryux-core
-description: ${JSON.stringify(CORE_DESCRIPTION)}
----
-
-${coreBody(installed)}
-`;
+/** Where a former skill id lives inside the single `ryux` skill folder. */
+export function modulePath(id: string): string | null {
+  if (id === "core") return "SKILL.md";
+  if (id === "analyze" || id === "critique" || id === "design" || id === "build") return `capabilities/${id}.md`;
+  if (id === "visual-qa") return "capabilities/qa.md";
+  if (SKILLS.some((s) => s.id === id)) return `knowledge/${id}.md`;
+  return null;
 }
 
-export function renderAnalyzeSkill(): string {
-  return `---
-name: ryux-analyze
-description: ${JSON.stringify(ANALYZE_DESCRIPTION)}
----
-
-${ANALYZE_BODY}
-`;
+/** Rewrite references to the former 16 skills (ryux-forms, `ryux-critique`) as module paths. */
+export function toModuleRefs(text: string): string {
+  return text.replace(/`ryux-([a-z]+(?:-[a-z]+)*)`|\bryux-([a-z]+(?:-[a-z]+)*)\b/g, (m, a?: string, b?: string) => {
+    const path = modulePath((a ?? b) as string);
+    return path ? `\`${path}\`` : m;
+  });
 }
 
-export function renderCritiqueSkill(): string {
-  return `---
-name: ryux-critique
-description: ${JSON.stringify(CRITIQUE_DESCRIPTION)}
----
-
-${CRITIQUE_BODY}
-`;
+function knowledgeModule(id: string): string {
+  const s = skillById(id)!;
+  const body = skillBody(id).split("\n").slice(1).join("\n").trimStart();
+  return `# ${s.label}\n\n${s.pitch ? `${s.pitch}\n\n` : ""}${body}`;
 }
 
-export function renderSkill(id: string): string {
-  if (id === "critique") return renderCritiqueSkill();
-  if (id === "analyze") return renderAnalyzeSkill();
-  const s = skillById(id);
-  if (!s) return "";
-  return `---
-name: ryux-${s.id}
-description: ${JSON.stringify(skillDescription(s))}
----
-
-${skillBody(id)}
-`;
+/** The single installable skill: relative path -> file content. */
+export function renderBundle(): Record<string, string> {
+  const files: Record<string, string> = {
+    "SKILL.md": `---\nname: ${SKILL_NAME}\ndescription: ${JSON.stringify(RYUX_DESCRIPTION)}\n---\n\n${routerBody()}\n`,
+    "capabilities/analyze.md": `${ANALYZE_BODY}\n`,
+    "capabilities/design.md": `${DESIGN_BODY}\n`,
+    "capabilities/build.md": `${BUILD_BODY}\n`,
+    "capabilities/critique.md": `${CRITIQUE_BODY}\n`,
+    "capabilities/qa.md": `${knowledgeModule("visual-qa")}\n`,
+  };
+  for (const s of SKILLS) if (s.id !== "visual-qa") files[`knowledge/${s.id}.md`] = `${knowledgeModule(s.id)}\n`;
+  for (const k of Object.keys(files)) files[k] = toModuleRefs(files[k]);
+  return files;
 }
 
-// ── AGENTS.md block (core + selected skills, inline) ──────────────────────────
-export function renderAgentsBlock(installed: string[]): string {
-  const body = (id: string): string => (id === "critique" ? CRITIQUE_BODY : id === "analyze" ? ANALYZE_BODY : skillBody(id));
-  const secs = installed.map(body).filter(Boolean).join("\n\n");
-  return `${coreBody(installed)}${secs ? `\n\n${secs}` : ""}`;
+// ── AGENTS.md block (the whole skill, inline) ─────────────────────────────────
+export function renderAgentsBlock(): string {
+  const files = renderBundle();
+  const router = files["SKILL.md"].replace(/^---[\s\S]*?---\n\n/, "");
+  const rest = Object.entries(files)
+    .filter(([k]) => k !== "SKILL.md")
+    .map(([k, v]) => `<!-- ${k} -->\n${v.trim()}`)
+    .join("\n\n");
+  return `${router.trim()}\n\n${rest}`;
 }
 
 // ── Pointer block for CLAUDE.md / GEMINI.md / AGENTS.md ─────────────────────
-export function renderPointerBlock(installed: string[]): string {
-  const list = ["ryux-core", ...installed.map((i) => `ryux-${i}`)].map((s) => `\`${s}\``).join(", ");
+export function renderPointerBlock(): string {
   return `## RYUX
 
-RYUX design skills are installed in this project's agent skills folder: ${list}. For UI, UX, copy, or
-frontend work, start in ryux-core by choosing the capability (Analyze, Build, Critique, QA), load only the
-skills the task needs, and end with the Delivery Gate. Reference data and structured review come from the
-ryux MCP: \`${MCP_ADD_CMD}\`.`;
+RYUX is installed as one skill, \`ryux\`, in this project's agent skills folder. For UI, UX, copy, or
+frontend work, say what you are doing (analyze, design, build, critique, or QA); RYUX picks the
+knowledge it needs and ends with the Delivery Gate. Reference data and structured review come from
+the ryux MCP: \`${MCP_ADD_CMD}\`.`;
 }
 
 // ── docs/design-rules.md generated sections ──────────────────────────────────
 export function renderRulesDoc(): string {
   const sections = SKILLS.map((s) => {
-    const intro = `### ryux-${s.id}: ${s.label} (RX-${s.abbr})\n\nGroup ${groupLabel(s.group)} · gate area ${s.gateArea}. Covers ${s.summary}. Load when ${s.loadWhen}.`;
+    const intro = `### ${s.label} (RX-${s.abbr}) · \`${modulePath(s.id)}\`\n\nGate area ${s.gateArea}. Covers ${s.summary}. Read when ${s.loadWhen}.`;
     return `${intro}\n\n${rulesOf(s.id).map((r) => ruleBlock(r).replace(/^### /, "#### ")).join("\n\n")}`;
   });
   const counts = (["required", "preferred", "contextual"] as const)
@@ -253,7 +247,7 @@ export function renderRulesDoc(): string {
     .join(", ");
   const hard = RULES.filter((r) => r.gate === "hard").length;
   const locks = RULES.filter((r) => r.gate === "lock").length;
-  return `${RULES.length} rules across ${SKILLS.length} skills: ${counts}; ${hard} Hard Gates and ${locks} Quality Locks.\n\n${sections.join("\n\n---\n\n")}`;
+  return toModuleRefs(`${RULES.length} rules across ${SKILLS.length} modules: ${counts}; ${hard} Hard Gates and ${locks} Quality Locks.\n\n${sections.join("\n\n---\n\n")}`);
 }
 
 export function renderMigrationTable(): string {
@@ -273,18 +267,13 @@ export function retiredTable(): string {
 }
 
 export function groupsTable(): string {
-  return [
-    "| Group | Skills |",
-    "| --- | --- |",
-    ...GROUPS.map((g) => {
-      const knowledge = SKILLS.filter((s) => s.group === g.id).map((s) => `\`ryux-${s.id}\` (RX-${s.abbr})`);
-      const cell = knowledge.length ? knowledge.join(", ") : `\`ryux-${g.id}\` (capability skill)`;
-      return `| \`${g.id}\` | ${cell} |`;
-    }),
-  ].join("\n");
-}
-
-// Detect installed skill ids from a piece of content (an AGENTS.md block, etc.).
-export function detectSkills(content: string): string[] {
-  return [...ALL_SKILL_IDS, "analyze", "critique"].filter((id) => content.includes(`# ryux-${id}:`));
+  const rows = [
+    "| `SKILL.md` | the router: entry points, how RYUX works, levels, Hard Gates, task table, Delivery Gate | |",
+    "| `capabilities/analyze.md` | Analyze: inventory of an existing interface | |",
+    "| `capabilities/design.md` | Design: create or improve UI and UX without code | |",
+    "| `capabilities/build.md` | Build: implement in the repo's own stack | |",
+    "| `capabilities/critique.md` | Critique: Design Read and evidence-backed findings | |",
+    ...SKILLS.map((x) => `| \`${modulePath(x.id)}\` | ${x.label}: ${x.summary} | RX-${x.abbr} |`),
+  ];
+  return ["| File | What it holds | Rules |", "| --- | --- | --- |", ...rows].join("\n");
 }

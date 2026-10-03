@@ -1,30 +1,47 @@
 ---
-name: ryux-core
-description: "RYUX core - design intelligence for AI agents and designers. Routes each UI, UX, copy, or frontend task through Analyze, Build, Critique, or QA, loads only the knowledge it needs, decides with evidence, and closes with quality gates (Hard Gates and the Delivery Gate). Load for any UI, UX, copy, or frontend task."
+name: ryux
+description: "RYUX - design intelligence for AI agents and designers. Tell it what you are doing and it routes to Analyze (understand an existing interface), Design (create or improve UI and UX in Figma, pen.dev, or mockups), Build (implement in code), Critique (find what to change first, with evidence), or QA (verify a build against the design), reads only the knowledge the task needs (product, UX, UI, interaction, forms, content, accessibility, responsive, design system, frontend, anti-slop), and closes with quality gates. Use for any UI, UX, copy, frontend, design review, or design analysis task."
 ---
 
-# ryux-core
+# RYUX
 
-> RYUX RX-2.0 (rules v1.6.0), MIT licensed. Evidence first, local where it matters.
+> Design intelligence for AI agents and designers. RX-2.0 (rules v2.0.0), MIT licensed.
 
 RYUX is a design intelligence layer for AI and designers: it helps understand, build, evaluate,
 and fix interfaces through design reasoning. It is not a UI generator, an anti-slop framework, or
 a design system.
 
-## Start by choosing the capability
+## Start with what you are doing
 
-| Capability | When | Load |
+Tell RYUX what you are doing; RYUX decides what it needs to know. Pick the entry point, read its
+file, then read only the knowledge modules the task needs (task table below). Paths are relative
+to this skill's folder.
+
+| Entry point | When | Read |
 | --- | --- | --- |
-| **Analyze** | understand an interface that exists | `ryux-analyze` |
-| **Build** | create or change UI, copy, or frontend code | decide with evidence (ryux-product); on expressive surfaces set a point of view (RX-UI-12); then the workflow and task table |
-| **Critique** | evaluate a design, page, or flow | `ryux-critique` |
-| **QA** | verify what was just built | `ryux-visual-qa` |
+| **Analyze** | understand a screen, product, or flow that exists | `capabilities/analyze.md` |
+| **Design** | create or improve UI and UX without code: Figma, pen.dev, mockups, copy | `capabilities/design.md` |
+| **Build** | implement or change the interface in code | `capabilities/build.md` |
+| **Critique** | find what should change first, and why | `capabilities/critique.md` |
+| **QA** | verify a build against the intended design | `capabilities/qa.md` |
 
-Skill roles: **core** is the operating system; **knowledge** skills (product, ux, interaction,
-forms, edge-cases, content, ui, design-system, accessibility, responsive, frontend) say how to
-reason; **capability** skills (analyze, critique) are workflows; **gate** skills (visual-qa,
-anti-slop) verify and filter. RYUX Knowledge is the evidence layer for all of them. Every
-capability ends at the Anti-Slop Quality Gate: the Hard Gates below and the Delivery Gate.
+Knowledge modules (`knowledge/`): product, ux, interaction, forms, edge-cases, content, ui,
+design-system, accessibility, responsive, frontend, and anti-slop. RYUX Knowledge, through the
+ryux MCP, is the evidence for all of them. Every entry point ends at the quality gates: the Hard
+Gates below and the Delivery Gate.
+
+## How RYUX works
+
+1. **Understand the request**: who, what task, which product and market (RX-PR-01).
+2. **Pick the entry point** and read its file.
+3. **Select knowledge**: read the modules the task table lists, and no others.
+4. **Gather evidence**: reference screens through the ryux MCP when connected; otherwise say so.
+5. **Reason**: decide with evidence (RX-PR-09, RX-PR-10); on expressive surfaces, set a point of
+   view first (RX-UI-12).
+6. **Produce**, then render and inspect what you made.
+7. **Run the gates**: Hard Gates and the Delivery Gate, with honest claims.
+
+Skip steps that do not apply, but never go from "generate" straight to "done".
 
 ## Principle
 
@@ -32,14 +49,6 @@ Do not optimize for visual novelty. Optimize for clarity, usability, consistency
 accessibility, and intentional decisions. Understand the context before deciding; separate observed
 facts from assumptions; prefer evidence over aesthetic preference; do not invent requirements;
 explain meaningful decisions with their trade-off; validate before claiming.
-
-## Workflow
-
-Request → understand context → understand the product problem → define UX structure → define
-interaction → define UI → apply the design system → implement → inspect (render) → critique →
-refine → Delivery Gate → done.
-
-Skip steps that do not apply to the task, but never skip from "generate" straight to "done".
 
 ## Levels
 
@@ -51,7 +60,7 @@ Skip steps that do not apply to the task, but never skip from "generate" straigh
 
 ## Hard Gates (always apply)
 
-These hold even when `ryux-anti-slop` is not loaded. No written exception; fix before delivery.
+No written exception; fix before delivery.
 
 - **Fake data or fake metrics.** Do not invent "48.000+ users", "4,8★", or "+12%". (RX-AS-01)
 - **Fake testimonials or people.** Do not make up testimonials, reviewers, or customer photos. (RX-AS-02)
@@ -66,19 +75,19 @@ These hold even when `ryux-anti-slop` is not loaded. No written exception; fix b
 - **Duplicate components.** Do not create a near-duplicate component or pattern for one screen. (RX-DS-01)
 - **Unnecessary complexity.** Do not add settings, sections, abstractions, or packages "for later", or features because similar products have them. (RX-AS-06)
 
-## Build: load only what the task needs
+## Task table: which knowledge to read
 
-| Task | Load (plus ryux-core) |
+| Task | Read |
 | --- | --- |
-| UI implementation | `ryux-product`, `ryux-ux`, `ryux-ui`, `ryux-design-system`, `ryux-frontend`, `ryux-visual-qa`, `ryux-anti-slop` |
-| Form implementation | `ryux-product`, `ryux-ux`, `ryux-forms`, `ryux-interaction`, `ryux-accessibility`, `ryux-edge-cases`, `ryux-content` |
-| Mobile UI | `ryux-ux`, `ryux-ui`, `ryux-responsive`, `ryux-accessibility`, `ryux-anti-slop` |
-| Checkout or payment | `ryux-product`, `ryux-interaction`, `ryux-forms`, `ryux-content`, `ryux-edge-cases` |
-| Data-heavy view (list, table, dashboard) | `ryux-ux`, `ryux-edge-cases`, `ryux-responsive`, `ryux-design-system`, `ryux-frontend` |
-| Frontend logic or utilities (formatting, state, data shown to users) | `ryux-frontend`, `ryux-content`, `ryux-edge-cases` |
-| Copy only (UI text, chat, announcements) | `ryux-content`, `ryux-anti-slop` |
-| Visual refinement | `ryux-ui`, `ryux-design-system`, `ryux-visual-qa`, `ryux-anti-slop` |
-| Review or critique | `ryux-critique` (Design Read + heuristic_eval), plus `ryux-visual-qa` |
+| UI implementation | `knowledge/product.md`, `knowledge/ux.md`, `knowledge/ui.md`, `knowledge/design-system.md`, `knowledge/frontend.md`, `capabilities/qa.md`, `knowledge/anti-slop.md` |
+| Form implementation | `knowledge/product.md`, `knowledge/ux.md`, `knowledge/forms.md`, `knowledge/interaction.md`, `knowledge/accessibility.md`, `knowledge/edge-cases.md`, `knowledge/content.md` |
+| Mobile UI | `knowledge/ux.md`, `knowledge/ui.md`, `knowledge/responsive.md`, `knowledge/accessibility.md`, `knowledge/anti-slop.md` |
+| Checkout or payment | `knowledge/product.md`, `knowledge/interaction.md`, `knowledge/forms.md`, `knowledge/content.md`, `knowledge/edge-cases.md` |
+| Data-heavy view (list, table, dashboard) | `knowledge/ux.md`, `knowledge/edge-cases.md`, `knowledge/responsive.md`, `knowledge/design-system.md`, `knowledge/frontend.md` |
+| Frontend logic or utilities (formatting, state, data shown to users) | `knowledge/frontend.md`, `knowledge/content.md`, `knowledge/edge-cases.md` |
+| Copy only (UI text, chat, announcements) | `knowledge/content.md`, `knowledge/anti-slop.md` |
+| Visual refinement | `knowledge/ui.md`, `knowledge/design-system.md`, `capabilities/qa.md`, `knowledge/anti-slop.md` |
+| Review or critique | `capabilities/critique.md` (Design Read + heuristic_eval), plus `capabilities/qa.md` |
 
 ## Delivery Gate
 

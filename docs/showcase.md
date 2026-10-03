@@ -26,14 +26,14 @@ repo, so the repo's own `CLAUDE.md` does not leak in:
 
 ```bash
 # rules on: install the stage skills into the run folder
-node packages/cli/dist/index.js install --agent claude --groups foundation,ux,ui,quality
+node packages/cli/dist/index.js install --agent claude
 # reference data on: start the local MCP and pass it to the run
 pnpm dev:mcp   # then: claude -p "<brief>" --mcp-config mcp.json --strict-mcp-config
 ```
 
 | Image | Without | With |
 | --- | --- | --- |
-| `ui/compare.png` | pen.dev MCP only; a hero section for RYUX itself | pen.dev MCP + all RYUX 1.5 skills (`--for all`); no RYUX MCP; same brief |
+| `ui/compare.png` | pen.dev MCP only; a hero section for RYUX itself | pen.dev MCP + the RYUX 1.5 skills; no RYUX MCP; same brief |
 | `code/compare.png` | no skills | all RYUX 1.3 skills; the agent picks which to load |
 | `chat/compare.png` | no skills | all RYUX 1.3 skills; the agent picks which to load |
 
@@ -98,14 +98,14 @@ coba lagi."; "BAYAR SEKARANG" → "Bayar sekarang"; "Pelajari selengkapnya" → 
 
 ## Use case 3 · Review: shallow critique vs grounded `heuristic_eval`
 
-**Shows:** the `ryux-critique` skill + the `heuristic_eval` tool + mandatory `screen_id` evidence.
+**Shows:** RYUX Critique + the `heuristic_eval` tool + mandatory `screen_id` evidence.
 
 **Steps:**
 
 1. Take one screen to review (it can be `before.html` from use case 1, or a screenshot of a real app).
 2. **Before**: in the agent without RYUX, ask: "Review this screen." You usually get a shallow critique
    ("add white space", "make it more modern"). Screenshot → `assets/compare/review/before.webp`.
-3. **After**: in the agent with the `ryux-critique` skill, ask for a structured review. The agent will
+3. **After**: in the agent with RYUX installed, ask for a structured review. The agent will
    call `heuristic_eval`, which returns formatted findings: heuristic, severity 0-4, location, recommendation, and
    a comparison `screen_id`. Clean up the output (JSON or a table), screenshot → `assets/compare/review/after.webp`.
 
