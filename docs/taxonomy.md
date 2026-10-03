@@ -64,6 +64,25 @@ The taxonomy has four layers of tags: app category, flow type, pattern, and comp
 | `rupiah-input` | Rupiah amount input | Rp prefix, thousands separator, quick amounts |
 | `address-pinpoint` | Address and location pin | Landmark, house details, map pin |
 
+## General patterns
+
+Patterns that are not specific to Indonesia, for flows such as dashboards, forms, and government or
+SaaS portals. They are tagged like local patterns (layer `pattern`). A pattern seen in real apps is
+an observed pattern, not a best practice.
+
+| Slug | Label | What to look for |
+| --- | --- | --- |
+| `progressive-disclosure` | Progressive disclosure | Secondary detail behind an expander, tab, or "more" link |
+| `multi-step-form` | Multi-step form | One topic per step, progress shown, input kept between steps |
+| `confirmation-step` | Confirmation before commit | Amount, recipient, and cost shown before the final action |
+| `transaction-receipt` | Transaction receipt | Status, amount, reference number, share or save |
+| `status-timeline` | Status timeline | Steps of an application or order with the current one marked |
+| `summary-cards` | Summary cards | A few key numbers above the detail |
+| `data-table` | Data table | Sortable columns, filters, and row actions |
+| `empty-state` | Empty state | What belongs here and the first action to take |
+| `inline-validation` | Inline validation | The error next to the field, with input kept |
+| `sidebar-navigation` | Sidebar navigation | Persistent sections for desktop web apps |
+
 ## Components
 
 | Slug | Label |
@@ -95,4 +114,4 @@ The taxonomy has four layers of tags: app category, flow type, pattern, and comp
 | Version | Change |
 | --- | --- |
 | v0.1 | Initial draft for the pilot |
-| v0.2 | Added `saas` and the Platform layer (`android`, `ios`, `web`); `gov` moved into the pilot, for web references |
+| v0.2 | Added `saas`, the Platform layer (`android`, `ios`, `web`), and General patterns; `gov` moved into the pilot, for web references |

@@ -54,10 +54,21 @@ insert into designer_notes (id, target_type, target_id, why_it_works, weaknesses
    'Pengguna bisa memilih OTP lewat WhatsApp, yang lebih andal daripada SMS.',
    'Hitung mundur kirim ulang terlalu lama (60 detik).', 'Onboarding e-commerce', 'Redho');
 
-insert into local_patterns (id, slug, name, description, user_behavior_notes) values
-  ('lp_qris', 'qris', 'QRIS',
+insert into patterns (id, slug, name, scope, description, user_behavior_notes, useful_when, risk, context) values
+  ('lp_qris', 'qris', 'QRIS', 'local',
    'Pembayaran dengan scan atau menampilkan kode QR standar nasional.',
-   'Dipakai luas untuk nominal kecil; pengguna berharap nominal dan nama merchant terlihat jelas sebelum konfirmasi.'),
-  ('lp_va', 'virtual-account', 'Virtual account',
+   'Dipakai luas untuk nominal kecil; pengguna berharap nominal dan nama merchant terlihat jelas sebelum konfirmasi.',
+   'Pembayaran tatap muka atau nominal kecil di merchant yang menerima QRIS.',
+   'Tanpa nominal dan nama merchant sebelum konfirmasi, pengguna bisa membayar ke pihak yang salah.',
+   '{fnb,ewallet,pos-umkm}'),
+  ('lp_va', 'virtual-account', 'Virtual account', 'local',
    'Transfer ke nomor rekening unik per transaksi.',
-   'Pengguna butuh tombol salin nomor, batas waktu bayar, dan panduan per bank.');
+   'Pengguna butuh tombol salin nomor, batas waktu bayar, dan panduan per bank.',
+   'Checkout online dengan pembayaran lewat transfer bank.',
+   'Batas waktu yang tersembunyi membuat pesanan batal tanpa disadari.',
+   '{ecommerce}');
+
+insert into observations (id, target_type, target_id, dimension, statement, label, source, status) values
+  ('obs_demo_001_a', 'screen', 'scr_demo_001', 'hierarchy', 'QRIS is listed first, above the virtual account group.', 'observed', 'human', 'published'),
+  ('obs_demo_001_b', 'screen', 'scr_demo_001', 'components', 'Payment methods sit in a bottom sheet, grouped by type.', 'observed', 'human', 'published'),
+  ('obs_demo_002_a', 'screen', 'scr_demo_002', 'interaction', 'The OTP channel can be switched to WhatsApp before sending.', 'observed', 'human', 'published');
