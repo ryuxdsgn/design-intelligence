@@ -1,18 +1,15 @@
----
-name: ryux-visual-qa
-description: "RYUX Visual QA: Verifies the build against the intended design: render it, list every deviation, fix, and render again. Covers did the build match the intended design: compare, list deviations, fix, render again. Load when something visual has been implemented and is about to be called done, or a build must match a design."
----
+# Visual QA
 
-# ryux-visual-qa: Visual QA
+Verifies the build against the intended design: render it, list every deviation, fix, and render again.
 
-> Group Quality · Delivery Gate area VISUAL QA · RX-2.0. Levels are defined in `ryux-core`.
+> Group Quality · Delivery Gate area VISUAL QA · RX-2.0. Levels are defined in `SKILL.md`.
 
 Visual QA asks one question: **did the implementation match the intended design?** Whether the
-design itself is good is Critique's question (ryux-critique).
+design itself is good is Critique's question (`capabilities/critique.md`).
 
 **With a reference** (a Figma or pen.dev frame, DESIGN.md, or an approved screenshot):
 1. Capture the reference and the implementation at the same viewport (see the capture table in
-   ryux-analyze).
+   `capabilities/analyze.md`).
 2. Compare property by property: spacing, typography, color, size, position, components, states,
    responsive behavior.
 3. Report each deviation:
@@ -38,7 +35,7 @@ polish.
 The intended design (Figma, pen.dev, DESIGN.md) is the reference; RYUX screens are a secondary comparison: `search_screens`. Without the ryux MCP, say the evidence comes from the design and standards alone.
 
 > Hard Gates always apply, whichever skills are loaded: no invented numbers, people, urgency, business
-> rules, or terms; no placeholder shipped as final; no missing critical states. See `ryux-core`.
+> rules, or terms; no placeholder shipped as final; no missing critical states. See `SKILL.md`.
 
 ## Rules
 

@@ -1,15 +1,10 @@
----
-name: ryux-analyze
-description: "RYUX Analyze - understand an existing interface before you change or rebuild it. Extracts layout, type, spacing, color roles, components, hierarchy, navigation, interaction, imagery, motion, and design language from a Figma link, pen.dev design, website URL, screenshot, or code, each labeled measured, observed, or inferred. Use when asked to analyze, reverse-engineer, document, or learn from an existing design."
----
-
-# ryux-analyze: RYUX Analyze
+# RYUX Analyze
 
 > What is actually in this interface?
 
 Analyze describes an existing design so that the next decision (build, extend, redesign, or
 critique) starts from facts. It is not screenshot-to-code, and it does not judge quality; that is
-`ryux-critique`. When the ryux MCP is connected, comparable Indonesian screens back the patterns
+`capabilities/critique.md`. When the ryux MCP is connected, comparable Indonesian screens back the patterns
 you name (`search_screens`, `get_local_pattern`).
 
 ## When to use it
@@ -28,7 +23,7 @@ you name (`search_screens`, `get_local_pattern`).
 | pen.dev design | pencil MCP: `get_app_state` to list frames; `execute` with `TakeScreenshot([frameId])` for the image, and a `Get` visitor that prints text nodes, node properties (fonts, sizes, fills, gaps), and any `ctx.problems` (clipped content) | Ask for an exported PNG |
 | Website URL | `npx playwright screenshot --full-page --viewport-size=1440,900 <url> desktop.png` and `--viewport-size=390,844` for mobile; a browser tool for interaction states (hover, focus, an error) when one is available; the page HTML and CSS for headings, labels, alt text, landmarks, and declared values | Ask for screenshots at desktop and mobile width |
 | Screenshot or image | Read the image directly | none |
-| Code only | Render it first (see `ryux-visual-qa`) | Work from the code and state that it was not rendered |
+| Code only | Render it first (see `capabilities/qa.md`) | Work from the code and state that it was not rendered |
 
 Stay read-only: do not edit the Figma file, the pen.dev document, or the site. Record what you
 captured: the frames or URLs, the viewports, and the tools.
@@ -69,7 +64,7 @@ useful, and its risk. Popular apps can be wrong.
 
 ### 5. Report
 
-Structured, not an essay. This report is the input for `ryux-critique` and for a `DESIGN.md`.
+Structured, not an essay. This report is the input for `capabilities/critique.md` and for a `DESIGN.md`.
 
 ```
 # RYUX Design Analysis
@@ -125,7 +120,7 @@ Each item above carries its label and source; RYUX Knowledge screen_ids where us
 
 When asked to make something "with the same visual language", extract the direction (traits, art
 direction, composition habits, motion personality) and write it as a Visual Brief for the new
-product (see ryux-ui). Never reproduce the reference's images, layout, or brand assets.
+product (see `knowledge/ui.md`). Never reproduce the reference's images, layout, or brand assets.
 
 ### 7. Optional: a DESIGN.md draft
 
@@ -137,5 +132,5 @@ source and confidence. Keep Inferred values marked so the builder can confirm th
 
 - Don't edit the source while analyzing.
 - Don't generate code from the screenshot as the analysis.
-- Don't judge good or bad; list open questions and hand off to `ryux-critique`.
+- Don't judge good or bad; list open questions and hand off to `capabilities/critique.md`.
 - Don't fill gaps with typical values and present them as found.
