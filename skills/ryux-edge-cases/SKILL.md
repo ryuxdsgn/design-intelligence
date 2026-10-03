@@ -1,6 +1,6 @@
 ---
 name: ryux-edge-cases
-description: "RYUX Edge cases: data, form, network, permission, and system states beyond the happy path. Load when building data views, flows, or anything that talks to a network."
+description: "RYUX Edge cases: Designs beyond the happy path: empty, loading, error, offline, permission, and long-content states. Covers data, form, network, permission, and system states beyond the happy path. Load when building data views, flows, or anything that talks to a network."
 ---
 
 # ryux-edge-cases: Edge cases

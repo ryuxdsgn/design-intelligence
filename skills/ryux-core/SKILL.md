@@ -1,11 +1,11 @@
 ---
 name: ryux-core
-description: "RYUX core - a design intelligence layer for AI and designers. Choose the capability (Analyze, Build, Critique, QA), then the levels, which RYUX skills to load, the Hard Gates, the Delivery Gate, and honest-claims wording. Load for any UI, UX, copy, or frontend task."
+description: "RYUX core - design intelligence for AI agents and designers. Routes each UI, UX, copy, or frontend task through Analyze, Build, Critique, or QA, loads only the knowledge it needs, decides with evidence, and closes with quality gates (Hard Gates and the Delivery Gate). Load for any UI, UX, copy, or frontend task."
 ---
 
 # ryux-core
 
-> RYUX RX-2.0 (rules v1.5.0), MIT licensed. Evidence first, local where it matters.
+> RYUX RX-2.0 (rules v1.6.0), MIT licensed. Evidence first, local where it matters.
 
 RYUX is a design intelligence layer for AI and designers: it helps understand, build, evaluate,
 and fix interfaces through design reasoning. It is not a UI generator, an anti-slop framework, or

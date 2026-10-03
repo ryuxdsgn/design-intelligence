@@ -1,6 +1,6 @@
 ---
 name: ryux-anti-slop
-description: "RYUX Anti-slop: hard gates, purpose gates, quality locks, honest claims. Load when work is about to be delivered, or during visual refinement."
+description: "RYUX Anti-slop: Stops generic AI output before it ships: no invented numbers or people, decoration with a purpose, and honest claims. Covers hard gates, purpose gates, quality locks, honest claims. Load when work is about to be delivered, or during visual refinement."
 ---
 
 # ryux-anti-slop: Anti-slop
@@ -18,6 +18,20 @@ from the rules.
 result, ask **"Why does this exist?"** If there is no meaningful reason, remove it.
 
 **Quality Locks**: consistency that must hold across the product (listed below).
+
+**Visual tells.** These are signals that a reason is missing, not banned styles. When you see one,
+ask the purpose question; keep it only if the answer is real.
+
+| Tell | Why it hurts | Fix |
+| --- | --- | --- |
+| A blue-to-purple gradient wash behind everything | carries no meaning and appears on every AI page | color from the brand and its roles (RX-UI-10), or a plain surface |
+| A fake app, terminal, or agent window as the hero | the category default, often with invented output | a signature from the product's own idea; product UI only when real or labeled (RX-UI-12, RX-UI-07) |
+| Generic illustration: people with laptops, abstract blobs | unrelated to the product, so it steals attention and says nothing | a contextual illustration made from the brief, or no visual (RX-UI-07) |
+| Floating devices and dashboard mockups | fake screens imply features and data | real screens with labeled sample data (RX-UI-07, RX-AS-01) |
+| Endless floating or looping motion | decorative motion with no reason, competing with the task | a single L4 moment with a message, or none (RX-UI-11) |
+| A bento grid or three equal feature cards | a template that flattens hierarchy | a layout from the content and its priority (RX-UI-05, RX-UI-01) |
+| Glass, glow, and blur on every layer | decoration without a job that also lowers contrast | one surface treatment with a purpose (RX-AS-05, RX-A11Y-01) |
+| Stock teamwork or handshake photos | borrowed people implying endorsement | real people with consent, or no people (RX-AS-02, RX-UI-13) |
 
 ## Hard Gates
 
