@@ -33,7 +33,7 @@ pnpm dev:mcp   # then: claude -p "<brief>" --mcp-config mcp.json --strict-mcp-co
 
 | Image | Without | With |
 | --- | --- | --- |
-| `ui/compare.png` | pen.dev MCP only; a hero section for RYUX itself | pen.dev MCP + all RYUX 1.4 skills (`--for all`); no RYUX MCP; same brief |
+| `ui/compare.png` | pen.dev MCP only; a hero section for RYUX itself | pen.dev MCP + all RYUX 1.5 skills (`--for all`); no RYUX MCP; same brief |
 | `code/compare.png` | no skills | all RYUX 1.3 skills; the agent picks which to load |
 | `chat/compare.png` | no skills | all RYUX 1.3 skills; the agent picks which to load |
 
@@ -49,7 +49,9 @@ image, and the colored boxes are annotations layered on top, never edits to the 
 If a run shows a defect (overflow, covered text), rerun it and pick another run. If every run shows
 the same weakness, fix the rule or skill that should have prevented it, then rerun. For the 1.3.1
 images, the first code run put Rupiah handling into a global module, so the Indonesian rules were
-scoped to products built for that market. Captions only
+scoped to products built for that market. For the 1.5 image, a run with 1.5.0 still chose the category default
+(copy left, agent session right) and called it a concept, so RX-UI-12 now requires three written
+directions and forbids the category default as the signature; the next run chose "Footnoted". Captions only
 claim what the image shows.
 
 ---

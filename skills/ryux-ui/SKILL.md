@@ -10,9 +10,9 @@ description: "RYUX UI design: the visual expression of a product: hierarchy, typ
 **Visuals are not decoration. They are communication.** RYUX UI owns the visual expression of
 a product: what each visual decision communicates, why it exists, and how it behaves. Functional UI
 helps the user read, decide, or act. Anything decorative needs a stated reason (see the purpose
-gates in ryux-anti-slop).
+gates in ryux-anti-slop). It works in four layers.
 
-Work in this order:
+**1. UI system.** Work in this order:
 1. **Hierarchy**: what is read first, second, third? The primary action and key information win.
 2. **Layout and alignment**: a shared grid; groups by meaning; consistent edges.
 3. **Spacing and type**: one scale; size and weight carry hierarchy, not color alone.
@@ -20,11 +20,33 @@ Work in this order:
 5. **Color**: roles first (surface, text, accent for the primary action, status); contrast checked.
 6. **Containers**: use a container only when it groups or separates something.
 7. **Icons**: next to labels, from one set, at consistent sizes.
-8. **Art direction and imagery**: each visual has a job (RX-UI-07); its composition leaves room for
-   the content (RX-UI-09); the visual language is chosen, not defaulted (RX-UI-10).
-9. **Motion**: each motion earns its level (RX-UI-11), below.
 
-**Motion.** The lifecycle of an action (before, trigger, feedback, waiting, result, recovery) is defined in
+**Justify values.** Every value comes from the scale and has a reason you can say in one line:
+"12px between these two fields because they belong together; 24px before the next group because it
+is a new topic." Tighter inside a group, looser between groups; density follows the task. If you
+cannot say why 8 and not 12, the choice is not a decision yet.
+
+**2. Art direction.** Each visual has a job (RX-UI-07), its composition leaves room for the
+content (RX-UI-09), and the visual language is chosen, not defaulted (RX-UI-10). Name the visual
+language in a few words (editorial, product-centric, human, technical, playful, premium,
+institutional) and its form (shape language, geometric or organic, flat or with depth).
+
+**Expressive surfaces** (hero, landing, onboarding, empty states, brand moments). Restraint keeps
+task UI usable; on expressive surfaces it is only the floor. Work concept, then signature, then
+system:
+1. **Concept**: write three directions first (name, concept, signature), then choose one. The idea
+   comes from the product itself, not from the category: a tool about evidence might use receipts,
+   citations, and marks of proof; a calm finance app might use the ledger. The category default
+   (a terminal panel for developer tools, a dashboard screenshot for SaaS) is never the signature.
+2. **Signature**: one element that carries the concept and that people would remember. Choose the
+   lever: type (scale contrast, a distinctive face), composition (a broken grid, an unexpected
+   crop, a large number), art direction, color temperature, motion personality, or copy voice.
+3. **System**: everything else stays quiet and consistent so the signature reads.
+Then run the swap test (RX-AS-09): with a competitor's name and logo, would anything need to change?
+If not, the surface has no point of view yet. Stay honest while being bold: a strong idea never
+needs invented numbers, people, or logos.
+
+**3. Motion.** The lifecycle of an action (before, trigger, feedback, waiting, result, recovery) is defined in
 ryux-interaction (RX-IX-01, RX-IX-02); motion only makes those states visible. Decide the trigger,
 duration, easing, distance, opacity or scale, and how several elements are choreographed.
 
@@ -48,31 +70,29 @@ Pick one **motion personality** per product and derive timing and easing from it
 
 With reduced motion requested, large movement becomes a fade or a cut (RX-A11Y-08).
 
-**Visual Brief.** Before generating images, 3D, illustration, or motion, write the brief. RYUX directs the
-generator; it is not the generator.
+**4. Visual generation.** RYUX directs the generator; it is not the generator. Work context, goal,
+audience, role, art direction, composition, then generate, critique the result against the brief,
+and refine. A prompt without a brief is not art direction. Write the brief first:
 
 ```
 # Visual Brief
-Objective:      what the visual must make the viewer understand or feel
+Role:           its job (explain, orient, demonstrate, emotion, identity, context, story)
+Objective:      what the viewer must understand or feel
 Audience:       who sees it, in which context
+Emotion:        the feeling, in two or three words
 Concept:        the idea, in one sentence
-Art direction:  photography / illustration / 3D, and its style
+Visual language: editorial / product-centric / technical / ..., and the art direction
+Form:           shape language, geometric or organic, depth
 Composition:    where the subject sits, and the space kept for copy
-Color:          derived from the product palette
-Material:       surfaces, texture
-Lighting:       direction and softness
+Color, material, lighting: from the product palette; surfaces; direction and softness
 Motion:         level (L1 to L5) and personality
+Output:         format, background, aspect ratios and sizes
 Avoid:          the category clichés (for fintech: coins, money rain, floating dashboards)
 Sources:        reference screen_ids or the analysis it came from
 ```
 
-Then: brief, generate, critique the result against the brief, refine. A generated image is
-illustrative art; never present it as a real customer or a real product screen (RX-UI-07).
-
-**Justify values.** Every value comes from the scale and has a reason you can say in one line:
-"12px between these two fields because they belong together; 24px before the next group because it
-is a new topic." Tighter inside a group, looser between groups; density follows the task. If you
-cannot say why 8 and not 12, the choice is not a decision yet.
+A generated image is illustrative art; never present it as a real customer or a real product
+screen (RX-UI-07).
 
 Does not cover: component reuse and tokens (see ryux-design-system).
 
@@ -143,8 +163,8 @@ A design direction from comparable screens: `extract_design_direction` (patterns
 
 ### RX-UI-10 [Preferred] Visual language is chosen, not defaulted
 
-- Do: Derive the art direction from the brand, the audience, the product context, and reference screens, and write it as a Visual Brief (objective, concept, composition, color, material, lighting, motion, avoid) before generating images, 3D, or motion.
-- Do not: Reach for the category cliché: coins, money rain, floating dashboards, or gradient blobs for fintech; generic 3D characters for any app.
+- Do: Derive the art direction from the brand, the audience, the product context, and reference screens, and write it as a Visual Brief (objective, concept, composition, color, material, lighting, motion, avoid) before designing an expressive surface or generating images, 3D, or motion.
+- Do not: Reach for the category cliché (coins, money rain, floating dashboards, or gradient blobs for fintech; generic 3D characters for any app), or write an image prompt without a brief (role, concept, composition).
 - Why: A default visual language makes the product interchangeable with its competitors. (art direction practice; RX-AS-05 purpose gate)
 - Not when: an existing brand system already defines the visual language; follow it
 - Trade-off: a brief takes time before any image exists
@@ -159,3 +179,13 @@ A design direction from comparable screens: `extract_design_direction` (patterns
 - Not when: L1 feedback on standard controls that follows the platform defaults
 - Trade-off: fewer flourishes on marketing pages
 - Check: review; reduced-motion test
+
+### RX-UI-12 [Contextual] A point of view on expressive surfaces
+
+- When: the surface is expressive: a hero, landing page, onboarding, empty state, or brand moment
+- Do: Before designing, write three directions, each with a name, a concept taken from the product's own idea (for a tool about evidence: receipts, citations, marks of proof), and a signature element (type, composition, imagery, or motion). Choose one and say why (RX-PR-09), then make the rest of the design serve that signature. Put the chosen concept in the Visual Brief.
+- Do not: Let the signature be the category's default (for developer tools a terminal or agent-session panel; for SaaS a dashboard screenshot; copy on the left and product on the right), or relabel that default as a concept. A product screen can support the signature, not be it.
+- Why: Users remember a product by its idea; a correct but generic surface is forgotten and could belong to any competitor. (brand and art direction practice; RX-UI-05 layout from content)
+- Not when: task UI such as forms, tables, settings, and checkout, where restraint and convention win
+- Trade-off: a strong idea takes a decision someone may disagree with; keep it honest and on brand
+- Check: the swap test (RX-AS-09); review

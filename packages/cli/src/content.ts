@@ -695,8 +695,8 @@ export const RULES: Rule[] = [
       num: 10,
       title: "Visual language is chosen, not defaulted",
       level: "preferred",
-      do: "Derive the art direction from the brand, the audience, the product context, and reference screens, and write it as a Visual Brief (objective, concept, composition, color, material, lighting, motion, avoid) before generating images, 3D, or motion.",
-      dont: "Reach for the category cliché: coins, money rain, floating dashboards, or gradient blobs for fintech; generic 3D characters for any app.",
+      do: "Derive the art direction from the brand, the audience, the product context, and reference screens, and write it as a Visual Brief (objective, concept, composition, color, material, lighting, motion, avoid) before designing an expressive surface or generating images, 3D, or motion.",
+      dont: "Reach for the category cliché (coins, money rain, floating dashboards, or gradient blobs for fintech; generic 3D characters for any app), or write an image prompt without a brief (role, concept, composition).",
       why: "A default visual language makes the product interchangeable with its competitors.",
       basis: "art direction practice; RX-AS-05 purpose gate",
       notWhen: "an existing brand system already defines the visual language; follow it",
@@ -715,6 +715,19 @@ export const RULES: Rule[] = [
       notWhen: "L1 feedback on standard controls that follows the platform defaults",
       tradeoff: "fewer flourishes on marketing pages",
       check: "review; reduced-motion test",
+    },
+    {
+      num: 12,
+      title: "A point of view on expressive surfaces",
+      level: "contextual",
+      when: "the surface is expressive: a hero, landing page, onboarding, empty state, or brand moment",
+      do: "Before designing, write three directions, each with a name, a concept taken from the product's own idea (for a tool about evidence: receipts, citations, marks of proof), and a signature element (type, composition, imagery, or motion). Choose one and say why (RX-PR-09), then make the rest of the design serve that signature. Put the chosen concept in the Visual Brief.",
+      dont: "Let the signature be the category's default (for developer tools a terminal or agent-session panel; for SaaS a dashboard screenshot; copy on the left and product on the right), or relabel that default as a concept. A product screen can support the signature, not be it.",
+      why: "Users remember a product by its idea; a correct but generic surface is forgotten and could belong to any competitor.",
+      basis: "brand and art direction practice; RX-UI-05 layout from content",
+      notWhen: "task UI such as forms, tables, settings, and checkout, where restraint and convention win",
+      tradeoff: "a strong idea takes a decision someone may disagree with; keep it honest and on brand",
+      check: "the swap test (RX-AS-09); review",
     },
   ]),
 
@@ -1108,6 +1121,19 @@ export const RULES: Rule[] = [
       check: "review",
       formerly: ["RX-C-09"],
     },
+    {
+      num: 9,
+      title: "Clean is not the same as designed",
+      level: "contextual",
+      when: "the surface is expressive: a hero, landing page, onboarding, empty state, or brand moment",
+      do: "Run the swap test honestly: replace the name and logo with a competitor's in the same category. If the layout, the visual, and the headline would still work for them, the surface has no point of view yet; give it one (RX-UI-12). Report the answer in the Delivery Gate.",
+      dont: "Treat a tidy, generic layout as done because it passes every other gate; generic restraint is slop too.",
+      why: "Removing slop is the floor, not the ceiling; interchangeable design makes the product forgettable.",
+      basis: "ryux delivery principle; Critique Design Read: specificity",
+      notWhen: "task UI, where familiarity is the point",
+      tradeoff: "takes a design decision, not only removals",
+      check: "swap test; review",
+    },
   ]),
 ];
 
@@ -1288,7 +1314,7 @@ export const LEVEL_LABEL: Record<Level, string> = {
   contextual: "Contextual",
 };
 
-export const RULES_VERSION = "1.4.1";
+export const RULES_VERSION = "1.5.0";
 export const RULESET_VERSION = "RX-2.0";
 export const MCP_NAME = "ryux";
 export const MCP_URL = "https://mcp.ryux.design/mcp";
