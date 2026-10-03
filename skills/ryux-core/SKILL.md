@@ -5,7 +5,7 @@ description: "RYUX core - a design intelligence layer for AI and designers. Choo
 
 # ryux-core
 
-> RYUX RX-2.0 (rules v1.3.1), MIT licensed. Evidence first, local where it matters.
+> RYUX RX-2.0 (rules v1.4.0), MIT licensed. Evidence first, local where it matters.
 
 RYUX is a design intelligence layer for AI and designers: it helps understand, build, evaluate,
 and fix interfaces through design reasoning. It is not a UI generator, an anti-slop framework, or

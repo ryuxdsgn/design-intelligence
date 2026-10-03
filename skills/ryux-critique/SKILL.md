@@ -88,7 +88,7 @@ situation is present. Use their "Not when" lines so a rule is not applied mechan
 | Interaction | ryux-interaction | before, during, result, recovery; confirm or undo; cost upfront; local payments |
 | Forms | ryux-forms | labels, validation, input kept, submission states |
 | Content | ryux-content | specific labels, errors, terminology, Rupiah, dates and numbers |
-| UI | ryux-ui | hierarchy, purpose of decoration, scale, color roles, density |
+| UI | ryux-ui | hierarchy, scale, color roles, density; each visual's job, composition around the copy, motion level; the result against its Visual Brief when there is one |
 | Design system | ryux-design-system | consistency, tokens, component states |
 | Accessibility | ryux-accessibility | contrast, targets, focus, names, color alone |
 | Responsive | ryux-responsive | what changes, stays, disappears, or stacks across widths |

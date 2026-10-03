@@ -1,14 +1,16 @@
 ---
 name: ryux-ui
-description: "RYUX UI design: hierarchy, type, spacing, layout, density, color, containers, imagery, motion. Load when doing visual design or visual refinement."
+description: "RYUX UI design: the visual expression of a product: hierarchy, type, layout, density, color, imagery, art direction, composition, motion, and visual language. Load when doing visual design or visual refinement, or directing images, 3D, or motion."
 ---
 
 # ryux-ui: UI design
 
 > Group UI · Delivery Gate area UI · RX-2.0. Levels are defined in `ryux-core`.
 
-Separate functional UI from decorative UI. Functional UI helps the user read, decide, or act.
-Decorative UI needs a stated reason (see the purpose gates in ryux-anti-slop).
+**Visuals are not decoration. They are communication.** RYUX UI owns the visual expression of
+a product: what each visual decision communicates, why it exists, and how it behaves. Functional UI
+helps the user read, decide, or act. Anything decorative needs a stated reason (see the purpose
+gates in ryux-anti-slop).
 
 Work in this order:
 1. **Hierarchy**: what is read first, second, third? The primary action and key information win.
@@ -18,7 +20,54 @@ Work in this order:
 5. **Color**: roles first (surface, text, accent for the primary action, status); contrast checked.
 6. **Containers**: use a container only when it groups or separates something.
 7. **Icons**: next to labels, from one set, at consistent sizes.
-8. **Motion**: only to explain change; short; never blocking.
+8. **Art direction and imagery**: each visual has a job (RX-UI-07); its composition leaves room for
+   the content (RX-UI-09); the visual language is chosen, not defaulted (RX-UI-10).
+9. **Motion**: each motion earns its level (RX-UI-11), below.
+
+**Motion.** The lifecycle of an action (before, trigger, feedback, waiting, result, recovery) is defined in
+ryux-interaction (RX-IX-01, RX-IX-02); motion only makes those states visible. Decide the trigger,
+duration, easing, distance, opacity or scale, and how several elements are choreographed.
+
+| Level | Examples | Needs |
+| --- | --- | --- |
+| L1 State feedback | button press, checkbox, toggle | nothing beyond being fast (about 100 to 200 ms) |
+| L2 Component transition | dropdown, modal, drawer, tooltip | shows where something came from or went |
+| L3 Page transition | navigation, route change | keeps the user oriented between places |
+| L4 Storytelling | onboarding, product introduction, marketing | a message that is clearer moving than still |
+| L5 Decorative | background particles, floating elements | a brand reason, and never delaying content or input |
+
+Pick one **motion personality** per product and derive timing and easing from it:
+
+| Trait | Calm (banking) | Energetic (game) |
+| --- | --- | --- |
+| Character | calm, precise | energetic, playful |
+| Speed | moderate | fast |
+| Easing | smooth ease-out | spring |
+| Movement | short, controlled | larger, expressive |
+| Expression | subtle | high |
+
+With reduced motion requested, large movement becomes a fade or a cut (RX-A11Y-08).
+
+**Visual Brief.** Before generating images, 3D, illustration, or motion, write the brief. RYUX directs the
+generator; it is not the generator.
+
+```
+# Visual Brief
+Objective:      what the visual must make the viewer understand or feel
+Audience:       who sees it, in which context
+Concept:        the idea, in one sentence
+Art direction:  photography / illustration / 3D, and its style
+Composition:    where the subject sits, and the space kept for copy
+Color:          derived from the product palette
+Material:       surfaces, texture
+Lighting:       direction and softness
+Motion:         level (L1 to L5) and personality
+Avoid:          the category clichés (for fintech: coins, money rain, floating dashboards)
+Sources:        reference screen_ids or the analysis it came from
+```
+
+Then: brief, generate, critique the result against the brief, refine. A generated image is
+illustrative art; never present it as a real customer or a real product screen (RX-UI-07).
 
 **Justify values.** Every value comes from the scale and has a reason you can say in one line:
 "12px between these two fields because they belong together; 24px before the next group because it
@@ -72,12 +121,41 @@ A design direction from comparable screens: `extract_design_direction` (patterns
 - Trade-off: custom layouts cost design and build time
 - Check: review
 
-### RX-UI-07 [Contextual] Imagery that is what it claims
+### RX-UI-07 [Contextual] Imagery has a job and is what it claims
 
-- When: the design uses photos or illustrations
-- Do: Use real product screens or clearly illustrative art.
-- Do not: Present a stock photo of a stranger as a customer or user.
-- Why: Borrowed faces imply endorsements that do not exist. (ryux run 2026-10-02: pen.dev landing without ryux)
+- When: the design uses photos, illustration, or 3D
+- Do: Name each visual's job in one line: explain, orient, demonstrate, set the emotion, carry the identity, give context, or tell the story. Use real product screens or clearly illustrative art.
+- Do not: Add a visual because the hero looks empty, or present a stock photo of a stranger, or a generated image, as a real customer or product screen.
+- Why: A visual without a job competes with the content; borrowed faces and fake screens imply things that do not exist. (ryux run 2026-10-02: pen.dev landing without ryux; RX-AS-05 purpose gate)
 - Not when: pure illustration that clearly is not a photo of a customer
 - Trade-off: real product screenshots age quickly and need updating
 - Check: review
+
+### RX-UI-09 [Contextual] Composition leaves room for the content
+
+- When: a visual sits next to or behind text or actions
+- Do: Place the visual's focal point away from the headline and the primary action, keep text contrast over the image, and check the crop at every target width.
+- Do not: Put the subject's focal point behind the headline, or let a crop cut the subject or the text at narrow widths.
+- Why: The eye goes to the strongest focal point first; when it fights the headline, neither is read. (visual hierarchy (RX-UI-01); WCAG 1.4.3 contrast (RX-A11Y-01))
+- Not when: a full-bleed visual with no text over it
+- Trade-off: less freedom to place the subject
+- Check: render at each width; review
+
+### RX-UI-10 [Preferred] Visual language is chosen, not defaulted
+
+- Do: Derive the art direction from the brand, the audience, the product context, and reference screens, and write it as a Visual Brief (objective, concept, composition, color, material, lighting, motion, avoid) before generating images, 3D, or motion.
+- Do not: Reach for the category cliché: coins, money rain, floating dashboards, or gradient blobs for fintech; generic 3D characters for any app.
+- Why: A default visual language makes the product interchangeable with its competitors. (art direction practice; RX-AS-05 purpose gate)
+- Not when: an existing brand system already defines the visual language; follow it
+- Trade-off: a brief takes time before any image exists
+- Check: the Visual Brief; review
+
+### RX-UI-11 [Contextual] Motion earns its level
+
+- When: the design adds motion or transitions
+- Do: Classify each motion: L1 state feedback, L2 component transition, L3 page transition, L4 storytelling, L5 decorative. The higher the level, the stronger the reason it needs. Take timing and easing from one motion personality for the product, and honor reduced motion (RX-A11Y-08).
+- Do not: Animate everything, use one generic duration and easing (transition: all 0.3s) everywhere, or let decorative motion delay content or input.
+- Why: Motion directs attention; unearned motion steals it from the task and can make some people unwell. (NNGroup animation and usability guidance; WCAG 2.3.3 animation from interactions)
+- Not when: L1 feedback on standard controls that follows the platform defaults
+- Trade-off: fewer flourishes on marketing pages
+- Check: review; reduced-motion test
