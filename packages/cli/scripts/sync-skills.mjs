@@ -10,6 +10,7 @@ import {
   renderSkill,
   renderRulesDoc,
   renderMigrationTable,
+  retiredTable,
   groupsTable,
   activationTable,
   hardGatesTable,
@@ -58,6 +59,7 @@ for (const [name, body] of [
   ["gate", deliveryGateTemplate()],
   ["rules", renderRulesDoc()],
   ["migration", renderMigrationTable()],
+  ["retired", retiredTable()],
 ]) {
   doc = fill(doc, name, body);
 }

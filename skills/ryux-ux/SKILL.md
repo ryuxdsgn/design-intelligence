@@ -53,41 +53,14 @@ How Indonesian apps sequence and structure this flow: `get_flow` for a reference
 - Trade-off: a less familiar layout can cost users a moment of learning
 - Check: review
 
-### RX-UX-02 [Preferred] Where am I, how do I leave
+### RX-UX-02 [Preferred] Where am I, what's left, how do I leave
 
-- Do: Give each screen a clear title and keep a back or cancel path visible.
-- Do not: Leave screens without a title or a way out.
-- Why: Orientation and an exit lower anxiety and abandonment. (NNGroup wayfinding; Nielsen heuristic 3)
+- Do: Give each screen a clear title and keep a back or cancel path visible; in multi-step flows show the current step ("Langkah 2 dari 3") and a summary the user can review before committing.
+- Do not: Leave screens without a title or a way out, or run a multi-step flow with no sense of progress or review.
+- Why: Orientation, progress, and an exit lower anxiety and abandonment. (NNGroup wayfinding and progress-indicator research; Nielsen heuristic 3)
 - Not when: a focused full-screen step such as payment in progress, where leaving would lose state; say how to cancel instead
 - Trade-off: a persistent title and back path take vertical space on small screens
 - Check: heuristic_eval H-03
-
-### RX-UX-03 [Preferred] Group by meaning
-
-- Do: Group content by what it means to the user (task, time, status) and label the groups.
-- Do not: Group by how the data is stored or by visual symmetry alone.
-- Why: Meaningful groups let people skip what is not relevant to them. (Gestalt proximity and common region; NNGroup)
-- Not when: the list is short enough to scan at once; extra group labels add noise
-- Trade-off: group labels and gaps make the page longer
-- Check: review
-
-### RX-UX-04 [Preferred] Progressive disclosure
-
-- Do: Show what the current decision needs and put advanced or rare options behind a clearly labeled control.
-- Do not: Show every option at once, or hide options people need often.
-- Why: Disclosure keeps the main path simple without removing power. (NNGroup progressive disclosure)
-- Not when: most users need the advanced options every time; hiding them adds a click to the common path
-- Trade-off: hidden options are discovered later or not at all
-- Check: review
-
-### RX-UX-05 [Preferred] Steps and a reviewable summary
-
-- Do: In multi-step flows, show the current step ("Langkah 2 dari 3") and a summary the user can review before committing.
-- Do not: Run a multi-step flow with no sense of progress or no review.
-- Why: Users commit more confidently when they see what is left and can check their choices. (NNGroup checkout and progress-indicator research)
-- Not when: a single short step; a progress indicator for one screen is clutter
-- Trade-off: a review step adds one more screen before commitment
-- Check: review
 
 ### RX-UX-06 [Contextual] Search, filter, and sort that match the hunt
 
@@ -117,12 +90,3 @@ How Indonesian apps sequence and structure this flow: `get_flow` for a reference
 - Not when: a one-time task, where showing history or saved values adds clutter
 - Trade-off: higher visual density; more on screen to scan
 - Check: heuristic_eval H-06
-
-### RX-UX-09 [Preferred] The user's words and order
-
-- Do: Use the terms and ordering users already know (ongkir, transfer, kelurahan before kecamatan).
-- Do not: Put system terms such as SKU or transaction codes in the primary UI.
-- Why: Familiar language and order remove a translation step for the user. (Nielsen heuristic 2 (1994))
-- Not when: specialist tools where users are trained on the system terms
-- Trade-off: matching user words can diverge from the data model and the API names
-- Check: heuristic_eval H-02

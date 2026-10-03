@@ -1,0 +1,21 @@
+{
+  "name": "@ryux/pipeline",
+  "version": "0.1.0",
+  "private": true,
+  "license": "MIT",
+  "description": "Internal Ryux Knowledge pipeline: ingest screenshots, draft tags, human review, publish.",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "typecheck": "tsc --noEmit",
+    "knowledge": "tsc && node dist/cli.js"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.131.0",
+    "@supabase/supabase-js": "^2.45.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "typescript": "^5.6.0"
+  }
+}
