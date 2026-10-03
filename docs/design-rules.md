@@ -145,7 +145,7 @@ UI, UX, copy, and frontend work ends with this report:
 ```
 PRODUCT        PASS | FAIL | N/A  · one-line reason · evidence Strong | Thin | None
 UX             PASS | FAIL | N/A  · one-line reason
-UI             PASS | FAIL | N/A  · one-line reason
+UI             PASS | FAIL | N/A  · one-line reason · point of view: <concept> | task UI
 DESIGN SYSTEM  PASS | FAIL | N/A  · one-line reason
 ACCESSIBILITY  PASS | FAIL | N/A  · one-line reason
 RESPONSIVE     PASS | FAIL | N/A  · one-line reason
@@ -171,7 +171,7 @@ Claims in the report describe what was checked and how. "Pixel perfect", "fully 
 Generated from `packages/cli/src/content.ts` by `pnpm sync:skills`. Edit the rules there, not here.
 
 <!-- rules:start -->
-79 rules across 13 skills: 47 Required, 14 Preferred, 18 Contextual; 16 Hard Gates and 7 Quality Locks.
+81 rules across 13 skills: 47 Required, 14 Preferred, 20 Contextual; 16 Hard Gates and 7 Quality Locks.
 
 ### ryux-product: Product thinking (RX-PR)
 
@@ -592,8 +592,8 @@ Group UI · gate area UI. Covers the visual expression of a product: hierarchy, 
 
 #### RX-UI-10 [Preferred] Visual language is chosen, not defaulted
 
-- Do: Derive the art direction from the brand, the audience, the product context, and reference screens, and write it as a Visual Brief (objective, concept, composition, color, material, lighting, motion, avoid) before generating images, 3D, or motion.
-- Do not: Reach for the category cliché: coins, money rain, floating dashboards, or gradient blobs for fintech; generic 3D characters for any app.
+- Do: Derive the art direction from the brand, the audience, the product context, and reference screens, and write it as a Visual Brief (objective, concept, composition, color, material, lighting, motion, avoid) before designing an expressive surface or generating images, 3D, or motion.
+- Do not: Reach for the category cliché (coins, money rain, floating dashboards, or gradient blobs for fintech; generic 3D characters for any app), or write an image prompt without a brief (role, concept, composition).
 - Why: A default visual language makes the product interchangeable with its competitors. (art direction practice; RX-AS-05 purpose gate)
 - Not when: an existing brand system already defines the visual language; follow it
 - Trade-off: a brief takes time before any image exists
@@ -608,6 +608,16 @@ Group UI · gate area UI. Covers the visual expression of a product: hierarchy, 
 - Not when: L1 feedback on standard controls that follows the platform defaults
 - Trade-off: fewer flourishes on marketing pages
 - Check: review; reduced-motion test
+
+#### RX-UI-12 [Contextual] A point of view on expressive surfaces
+
+- When: the surface is expressive: a hero, landing page, onboarding, empty state, or brand moment
+- Do: Before designing, write three directions, each with a name, a concept taken from the product's own idea (for a tool about evidence: receipts, citations, marks of proof), and a signature element (type, composition, imagery, or motion). Choose one and say why (RX-PR-09), then make the rest of the design serve that signature. Put the chosen concept in the Visual Brief.
+- Do not: Let the signature be the category's default (for developer tools a terminal or agent-session panel; for SaaS a dashboard screenshot; copy on the left and product on the right), or relabel that default as a concept. A product screen can support the signature, not be it.
+- Why: Users remember a product by its idea; a correct but generic surface is forgotten and could belong to any competitor. (brand and art direction practice; RX-UI-05 layout from content)
+- Not when: task UI such as forms, tables, settings, and checkout, where restraint and convention win
+- Trade-off: a strong idea takes a decision someone may disagree with; keep it honest and on brand
+- Check: the swap test (RX-AS-09); review
 
 ---
 
@@ -887,6 +897,16 @@ Group Quality · gate area ANTI-SLOP. Covers hard gates, purpose gates, quality 
 - Do not: Let an agent author designer notes.
 - Why: The human judgment is the point of the notes. (ryux data principle)
 - Check: review
+
+#### RX-AS-09 [Contextual] Clean is not the same as designed
+
+- When: the surface is expressive: a hero, landing page, onboarding, empty state, or brand moment
+- Do: Run the swap test honestly: replace the name and logo with a competitor's in the same category. If the layout, the visual, and the headline would still work for them, the surface has no point of view yet; give it one (RX-UI-12). Report the answer in the Delivery Gate.
+- Do not: Treat a tidy, generic layout as done because it passes every other gate; generic restraint is slop too.
+- Why: Removing slop is the floor, not the ceiling; interchangeable design makes the product forgettable. (ryux delivery principle; Critique Design Read: specificity)
+- Not when: task UI, where familiarity is the point
+- Trade-off: takes a design decision, not only removals
+- Check: swap test; review
 <!-- rules:end -->
 
 ## Installation via CLI

@@ -7,7 +7,9 @@ description: "RYUX Anti-slop: hard gates, purpose gates, quality locks, honest c
 
 > Group Quality · Delivery Gate area ANTI-SLOP · RX-2.0. Levels are defined in `ryux-core`.
 
-Anti-slop is not a list of banned styles. It has three parts.
+Anti-slop is the floor, not the ceiling: a tidy, generic surface still fails on expressive
+surfaces (RX-AS-09), and the point of view comes from RX-UI-12. Anti-slop is not a list of banned
+styles. It has three parts.
 
 **Hard Gates**: reject or fix before delivery; no written exception. The list is generated below
 from the rules.
@@ -129,3 +131,13 @@ Real screens show what real products do instead of invented numbers and urgency:
 - Do not: Let an agent author designer notes.
 - Why: The human judgment is the point of the notes. (ryux data principle)
 - Check: review
+
+### RX-AS-09 [Contextual] Clean is not the same as designed
+
+- When: the surface is expressive: a hero, landing page, onboarding, empty state, or brand moment
+- Do: Run the swap test honestly: replace the name and logo with a competitor's in the same category. If the layout, the visual, and the headline would still work for them, the surface has no point of view yet; give it one (RX-UI-12). Report the answer in the Delivery Gate.
+- Do not: Treat a tidy, generic layout as done because it passes every other gate; generic restraint is slop too.
+- Why: Removing slop is the floor, not the ceiling; interchangeable design makes the product forgettable. (ryux delivery principle; Critique Design Read: specificity)
+- Not when: task UI, where familiarity is the point
+- Trade-off: takes a design decision, not only removals
+- Check: swap test; review

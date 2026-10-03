@@ -64,7 +64,9 @@ export function deliveryGateTemplate(): string {
   const lines = [...GATE_AREAS, "FINAL"].map((a) =>
     a === "FINAL"
       ? `${a.padEnd(width)}PASS | FAIL`
-      : a === "PRODUCT"
+      : a === "UI"
+        ? `${a.padEnd(width)}PASS | FAIL | N/A  · one-line reason · point of view: <concept> | task UI`
+        : a === "PRODUCT"
         ? `${a.padEnd(width)}PASS | FAIL | N/A  · one-line reason · evidence Strong | Thin | None`
         : `${a.padEnd(width)}PASS | FAIL | N/A  · one-line reason`,
   );
