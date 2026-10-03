@@ -92,7 +92,7 @@ ryux's own agent runs say so ("ryux run 2026-10-02").
 | Fake urgency or scarcity | RX-AS-04 |
 | Missing critical states | RX-EC-01 |
 | Broken responsive behavior | RX-RD-01 |
-| Accessibility failures | RX-A11Y-01, RX-A11Y-02, RX-A11Y-03, RX-A11Y-04, RX-A11Y-05 |
+| Accessibility failures | RX-A11Y-01, RX-A11Y-02, RX-A11Y-03, RX-A11Y-04 |
 | Unclear primary action | RX-PR-03 |
 | Unexplained interaction behavior | RX-IX-01 |
 | Duplicate components | RX-DS-01 |
@@ -132,7 +132,7 @@ a result, ask **"Why does this exist?"** and remove it when there is no meaningf
 | Color roles | RX-UI-04 |
 | Terminology | RX-CD-05 |
 | Components | RX-DS-02 |
-| Interaction patterns and states | RX-DS-02, RX-DS-04 |
+| Interaction patterns and states | RX-DS-02 |
 | Responsive behavior | RX-RD-06 |
 | Visual hierarchy | RX-UI-01 |
 <!-- locks:end -->
@@ -143,7 +143,7 @@ UI, UX, copy, and frontend work ends with this report:
 
 <!-- gate:start -->
 ```
-PRODUCT        PASS | FAIL | N/A  · one-line reason
+PRODUCT        PASS | FAIL | N/A  · one-line reason · evidence Strong | Thin | None
 UX             PASS | FAIL | N/A  · one-line reason
 UI             PASS | FAIL | N/A  · one-line reason
 DESIGN SYSTEM  PASS | FAIL | N/A  · one-line reason
@@ -171,11 +171,11 @@ Claims in the report describe what was checked and how. "Pixel perfect", "fully 
 Generated from `packages/cli/src/content.ts` by `pnpm sync:skills`. Edit the rules there, not here.
 
 <!-- rules:start -->
-109 rules across 13 skills: 53 Required, 36 Preferred, 20 Contextual; 17 Hard Gates and 8 Quality Locks.
+76 rules across 13 skills: 50 Required, 13 Preferred, 13 Contextual; 16 Hard Gates and 7 Quality Locks.
 
 ### ryux-product: Product thinking (RX-PR)
 
-Group Foundation · gate area PRODUCT. Covers user, task, goal, primary action, constraints, assumptions. Load when starting a new screen or flow, or when the scope is unclear.
+Group Foundation · gate area PRODUCT. Covers user, task, goal, primary action, constraints, assumptions, and decisions backed by evidence. Load when starting a new screen or flow, choosing between patterns, or when the scope is unclear.
 
 #### RX-PR-01 [Required] State the context first
 
@@ -212,26 +212,20 @@ Group Foundation · gate area PRODUCT. Covers user, task, goal, primary action, 
 - Why: Payment, address, and trust habits differ locally (QRIS, virtual accounts, COD, WhatsApp). (ryux taxonomy of local patterns)
 - Check: search_screens
 
-#### RX-PR-06 [Preferred] Outcome before feature
+#### RX-PR-09 [Required] Compare patterns before choosing
 
-- Do: Lead with what the user gets or finishes, in their words, then explain the feature.
-- Do not: Open with product features or technology.
-- Why: People scan for relevance to their task before reading details. (NNGroup scanning research)
-- Check: review
+- Do: For a consequential decision (a new flow, payment, identity, navigation), list two or three candidate patterns with their context, strength, and weakness, then choose the one whose context matches, not the one that looks best.
+- Do not: Pick the first familiar pattern, or choose by taste.
+- Why: A pattern is right for a context, not in general; comparing makes the reason visible and checkable. (ryux evidence principle; NNGroup competitive usability practice)
+- Not when: small, reversible decisions inside an established pattern; follow the design system instead
+- Trade-off: takes longer than picking the familiar option
+- Check: search_screens, compare_apps
 
-#### RX-PR-07 [Preferred] Only what serves the task
+#### RX-PR-10 [Required] Say when the evidence is not enough
 
-- Do: Keep the elements and options the stated task needs and move the rest to a later step.
-- Do not: Add sections, stats, settings, or badges because similar products have them.
-- Why: Every extra element competes with the primary action and adds states to maintain. (Nielsen heuristic 8 (1994))
-- Check: review
-
-#### RX-PR-08 [Contextual] Follow the project's direction
-
-- When: the project has a DESIGN.md, a brand guide, or an existing design language
-- Do: Follow it and write down any deliberate departure as a design decision record.
-- Do not: Override it with the agent's default style.
-- Why: Ryux filters and reasons; visual direction belongs to the project. (ryux run 2026-10-02: rules alone produced honest but undirected layouts)
+- Do: Rate the evidence for a decision as Strong (two or more comparable screens in the same context), Thin (one, or a different context), or None; when it is None on a consequential choice, present the options and their trade-offs or ask, instead of picking silently.
+- Do not: Invent a reference, or present a judgment call as if real products backed it.
+- Why: Knowing what you do not know is part of design judgment; false certainty ships the wrong pattern. (ryux evidence principle)
 - Check: review
 
 ---
@@ -249,41 +243,14 @@ Group UX · gate area UX. Covers information architecture, navigation, flows, gr
 - Trade-off: a less familiar layout can cost users a moment of learning
 - Check: review
 
-#### RX-UX-02 [Preferred] Where am I, how do I leave
+#### RX-UX-02 [Preferred] Where am I, what's left, how do I leave
 
-- Do: Give each screen a clear title and keep a back or cancel path visible.
-- Do not: Leave screens without a title or a way out.
-- Why: Orientation and an exit lower anxiety and abandonment. (NNGroup wayfinding; Nielsen heuristic 3)
+- Do: Give each screen a clear title and keep a back or cancel path visible; in multi-step flows show the current step ("Langkah 2 dari 3") and a summary the user can review before committing.
+- Do not: Leave screens without a title or a way out, or run a multi-step flow with no sense of progress or review.
+- Why: Orientation, progress, and an exit lower anxiety and abandonment. (NNGroup wayfinding and progress-indicator research; Nielsen heuristic 3)
 - Not when: a focused full-screen step such as payment in progress, where leaving would lose state; say how to cancel instead
 - Trade-off: a persistent title and back path take vertical space on small screens
 - Check: heuristic_eval H-03
-
-#### RX-UX-03 [Preferred] Group by meaning
-
-- Do: Group content by what it means to the user (task, time, status) and label the groups.
-- Do not: Group by how the data is stored or by visual symmetry alone.
-- Why: Meaningful groups let people skip what is not relevant to them. (Gestalt proximity and common region; NNGroup)
-- Not when: the list is short enough to scan at once; extra group labels add noise
-- Trade-off: group labels and gaps make the page longer
-- Check: review
-
-#### RX-UX-04 [Preferred] Progressive disclosure
-
-- Do: Show what the current decision needs and put advanced or rare options behind a clearly labeled control.
-- Do not: Show every option at once, or hide options people need often.
-- Why: Disclosure keeps the main path simple without removing power. (NNGroup progressive disclosure)
-- Not when: most users need the advanced options every time; hiding them adds a click to the common path
-- Trade-off: hidden options are discovered later or not at all
-- Check: review
-
-#### RX-UX-05 [Preferred] Steps and a reviewable summary
-
-- Do: In multi-step flows, show the current step ("Langkah 2 dari 3") and a summary the user can review before committing.
-- Do not: Run a multi-step flow with no sense of progress or no review.
-- Why: Users commit more confidently when they see what is left and can check their choices. (NNGroup checkout and progress-indicator research)
-- Not when: a single short step; a progress indicator for one screen is clutter
-- Trade-off: a review step adds one more screen before commitment
-- Check: review
 
 #### RX-UX-06 [Contextual] Search, filter, and sort that match the hunt
 
@@ -313,15 +280,6 @@ Group UX · gate area UX. Covers information architecture, navigation, flows, gr
 - Not when: a one-time task, where showing history or saved values adds clutter
 - Trade-off: higher visual density; more on screen to scan
 - Check: heuristic_eval H-06
-
-#### RX-UX-09 [Preferred] The user's words and order
-
-- Do: Use the terms and ordering users already know (ongkir, transfer, kelurahan before kecamatan).
-- Do not: Put system terms such as SKU or transaction codes in the primary UI.
-- Why: Familiar language and order remove a translation step for the user. (Nielsen heuristic 2 (1994))
-- Not when: specialist tools where users are trained on the system terms
-- Trade-off: matching user words can diverge from the data model and the API names
-- Check: heuristic_eval H-02
 
 ---
 
@@ -374,34 +332,6 @@ Group UX · gate area UX. Covers before, during, result, recovery; feedback, con
 - Trade-off: a full breakdown adds lines to a small screen
 - Check: review
 
-#### RX-IX-06 [Required] Keyboard-operable actions
-
-- Do: Make actions reachable and operable from the keyboard (path-based input such as drawing excepted); Enter submits a form and Escape closes a dialog.
-- Do not: Build actions that only work with a pointer or a touch gesture.
-- Why: Keyboard, switch, and power users depend on it. (WCAG 2.2 SC 2.1.1)
-- Not when: path-based input such as drawing or a signature; offer an alternative
-- Trade-off: custom widgets need explicit key handling and testing
-- Check: review
-
-#### RX-IX-07 [Preferred] Disabled controls explain themselves
-
-- Do: When a control is disabled, show why or what enables it, or keep it enabled and explain on use.
-- Do not: Grey out a button with no explanation.
-- Why: An unexplained disabled state is a dead end. (NNGroup disabled-button guidance)
-- Not when: the reason is already visible right next to the control
-- Trade-off: explanations add text; an enabled control that explains on use can surprise
-- Check: review
-
-#### RX-IX-08 [Contextual] Shortcuts for repeat use
-
-- When: the product is used repeatedly or by experts (cashier, admin, daily tools)
-- Do: Offer shortcuts such as recent items, quick amounts, and keyboard actions.
-- Do not: Make frequent users walk the novice path every time.
-- Why: Accelerators keep repeat work fast without hurting new users. (Nielsen heuristic 7 (1994))
-- Not when: first-time or rare tasks; shortcuts clutter the novice path
-- Trade-off: shortcuts must be discoverable without crowding the screen
-- Check: heuristic_eval H-07
-
 #### RX-IX-09 [Contextual] QRIS: amount and merchant first
 
 - When: the flow takes a QRIS payment
@@ -447,15 +377,6 @@ Group UX · gate area UX. Covers labels, layout, validation, input preservation,
 - Trade-off: labels above fields make the form taller
 - Check: review
 
-#### RX-FM-02 [Preferred] Layout by relationship
-
-- Do: Default to one column for sequential input, and place short related fields together (date parts, city and postal code) when that matches how people read them.
-- Do not: Spread unrelated fields across columns to fill width.
-- Why: Reading order should match filling order; related fields read as one unit. (NNGroup form-design research)
-- Not when: short related fields people read as one unit (date parts, city and postal code)
-- Trade-off: one column makes longer pages
-- Check: review
-
 #### RX-FM-03 [Required] Validate near the field, keep the input
 
 - Do: Validate close to the field when it helps, and keep everything the user typed when something fails.
@@ -463,15 +384,6 @@ Group UX · gate area UX. Covers labels, layout, validation, input preservation,
 - Why: Re-entering data is the most frustrating part of a failed form. (NNGroup inline-validation research)
 - Not when: while the user is still typing; validate after they leave the field or the format is complete
 - Trade-off: early validation can nag; late validation can surprise
-- Check: review
-
-#### RX-FM-04 [Preferred] Fewest fields
-
-- Do: Ask only for what the task needs, mark the less common case (optional or required), and prefill sensible defaults.
-- Do not: Ask for data the task does not use, or mark every field required by default.
-- Why: Each extra field adds effort and a chance to quit. (NNGroup form-design research)
-- Not when: regulation or the business genuinely needs the data (e-KYC); explain why it is asked
-- Trade-off: fewer fields up front can mean asking later
 - Check: review
 
 #### RX-FM-05 [Preferred] The right keyboard and autofill
@@ -490,16 +402,6 @@ Group UX · gate area UX. Covers labels, layout, validation, input preservation,
 - Why: Submission is where users lose work and trust. (Nielsen heuristics 1 and 9)
 - Not when: instant local saves with no network round trip
 - Trade-off: more states to build and test
-- Check: review
-
-#### RX-FM-07 [Contextual] Protect unsaved work
-
-- When: a form holds work the user can lose by navigating away or timing out
-- Do: Autosave with a visible status, or warn before discarding changes.
-- Do not: Discard edits silently.
-- Why: Lost work is the most expensive form failure. (NNGroup guidance on data loss)
-- Not when: the form autosaves reliably and shows it; a leave warning would be redundant
-- Trade-off: autosave needs conflict handling; warnings can annoy if overused
 - Check: review
 
 #### RX-FM-08 [Contextual] OTP: channel choice and paste
@@ -552,26 +454,12 @@ Group UX · gate area EDGE CASES. Covers data, form, network, permission, and sy
 - Why: A recoverable error keeps the task alive. (Nielsen heuristic 9 (1994))
 - Check: heuristic_eval H-09
 
-#### RX-EC-03 [Preferred] Data volume and shape
+#### RX-EC-03 [Preferred] Data volume, shape, and length
 
-- Do: Check one item, many items, duplicates, and missing fields; paginate or virtualize long lists.
-- Do not: Design only for a tidy sample of five items.
-- Why: Real data is uneven, and layouts break at the extremes. (ryux review practice)
+- Do: Check one item, many items, duplicates, missing fields, long names and long Indonesian words, and large amounts such as Rp1.250.000.000; paginate or virtualize long lists, and wrap or truncate with access to the full value.
+- Do not: Design only around a tidy sample of five short items.
+- Why: Real data is uneven and longer than sample data, and layouts break at the extremes. (Localization practice; ryux review practice)
 - Check: visual QA
-
-#### RX-EC-04 [Preferred] Long text and large amounts
-
-- Do: Test with long names, long Indonesian words, and large amounts such as Rp1.250.000.000; wrap or truncate with access to the full value.
-- Do not: Design only around short sample strings.
-- Why: Real content is longer than sample content and breaks fixed layouts. (Localization practice; ryux review practice)
-- Check: visual QA
-
-#### RX-EC-05 [Preferred] First use and zero data
-
-- Do: Explain what will appear in an empty view and give one action to get started.
-- Do not: Leave a blank list or a lone "No data".
-- Why: An empty state is the first lesson in how the feature works. (NNGroup empty-state guidance)
-- Check: review
 
 #### RX-EC-06 [Contextual] Slow, timeout, offline, server failure
 
@@ -581,20 +469,12 @@ Group UX · gate area EDGE CASES. Covers data, form, network, permission, and sy
 - Why: Connection quality varies a lot between places and moments. (ryux review practice)
 - Check: review
 
-#### RX-EC-07 [Contextual] Roles and restricted access
+#### RX-EC-07 [Contextual] Roles, access, and sessions
 
-- When: the product has roles, permissions, or read-only modes
-- Do: Design the read-only and restricted states: say why an action is unavailable and who can do it. Use roles that exist in the product.
-- Do not: Invent roles or show actions that fail only after the user tries them.
-- Why: Users need to know whether to ask someone or give up. (ryux review practice)
-- Check: review
-
-#### RX-EC-08 [Contextual] Session expiry and unauthorized
-
-- When: the product has sessions or authentication
-- Do: On expiry, keep the user's work, ask them to sign in again, and return them to the same place.
-- Do not: Dump users on a login screen and lose their progress.
-- Why: Re-authentication should cost seconds, not the task. (ryux review practice)
+- When: the product has roles, permissions, read-only modes, or sessions
+- Do: Design read-only and restricted states (say why an action is unavailable and who can do it, using roles that exist), and on session expiry keep the user's work and return them to the same place after signing in.
+- Do not: Invent roles, show actions that fail only after the user tries them, or dump users on a login screen and lose their progress.
+- Why: Users need to know whether to ask someone, and re-authentication should cost seconds, not the task. (ryux review practice)
 - Check: review
 
 ---
@@ -617,11 +497,11 @@ Group UX · gate area UX. Covers specific copy, action labels, error messages, n
 - Why: It is the common Indonesian form; mixed formats look careless next to prices. (PUEBI currency notation; ryux run 2026-10-02)
 - Check: audit_copy C-07
 
-#### RX-CD-03 [Preferred] Labels name the real action
+#### RX-CD-03 [Preferred] Specific, plain copy
 
-- Do: Name the action and what it gets the user ("Bayar Rp45.000", "Simpan alamat").
-- Do not: Use vague labels ("Submit", "Learn more") or hype words ("unlock", "elevate", "seamlessly").
-- Why: Specific labels tell users what happens next. (NNGroup button and link-label guidance)
+- Do: Name the action and what it gets the user ("Bayar Rp45.000", "Simpan alamat"); use sentence case and plain lists, with at most one emoji where the channel expects it.
+- Do not: Use vague labels ("Submit", "Learn more"), hype words ("unlock", "elevate", "seamlessly"), emoji bullets, ALL CAPS, or stacked exclamation marks.
+- Why: Specific, plain copy tells users what happens next; decoration on every line buries it and reads as generated. (NNGroup button and link-label guidance; ryux run 2026-10-02: unconstrained WhatsApp copy)
 - Check: audit_copy
 
 #### RX-CD-04 [Required] Errors: what, why, how to recover
@@ -636,28 +516,6 @@ Group UX · gate area UX. Covers specific copy, action labels, error messages, n
 - Do: Use one term for each concept across screens, buttons, and messages.
 - Do not: Call the same thing "pesanan", "order", and "transaksi" on different screens.
 - Why: Changing terms make users wonder whether it is a different thing. (Nielsen heuristic 4 (1994))
-- Check: review
-
-#### RX-CD-06 [Preferred] Plain decoration
-
-- Do: Use sentence case and plain lists; one emoji is fine where the channel expects it.
-- Do not: Use emoji as bullets, ALL CAPS, or stacked exclamation marks.
-- Why: Decoration on every line buries the information and reads as generated. (ryux run 2026-10-02: unconstrained WhatsApp copy)
-- Check: audit_copy, review
-
-#### RX-CD-07 [Preferred] Help at the point of need
-
-- Do: Put short help where the question arises (a hint under a field, "Kenapa diminta?").
-- Do not: Send users to a separate FAQ for a field-level question.
-- Why: Help in context gets read; help elsewhere gets skipped. (Nielsen heuristic 10 (1994))
-- Check: heuristic_eval H-10
-
-#### RX-CD-08 [Contextual] Chat copy sounds like a person
-
-- When: the text goes to WhatsApp, Telegram, or another chat channel
-- Do: Use a short greeting, short paragraphs, sparse *bold*, and a clear contact line.
-- Do not: Paste a marketing page into a chat.
-- Why: Chat readers expect a message from a person, not an ad. (ryux run 2026-10-02: WhatsApp promo comparison)
 - Check: review
 
 #### RX-CD-09 [Required] Dates, times, and numbers in Indonesian form
@@ -681,15 +539,6 @@ Group UI · gate area UI. Covers hierarchy, type, spacing, layout, density, colo
 - Not when: screens with several equal peers, such as a dashboard of comparable items; use consistent hierarchy within each card instead
 - Trade-off: emphasizing one thing de-emphasizes the rest
 - Check: visual QA
-
-#### RX-UI-02 [Required] Functional before decorative
-
-- Do: Give each decorative element (card, gradient, shadow, badge, illustration, large display type) a stated reason; see the anti-slop purpose gates.
-- Do not: Add decoration because it looks modern.
-- Why: Unjustified decoration is the fastest route to generic UI. (Nielsen heuristic 8; ryux anti-slop principle)
-- Not when: brand or campaign pages where expression is the function; the decoration still needs its reason
-- Trade-off: plain interfaces can feel undifferentiated; direction comes from DESIGN.md
-- Check: review
 
 #### RX-UI-03 [Preferred] [Quality Lock] One spacing and type scale
 
@@ -718,15 +567,6 @@ Group UI · gate area UI. Covers hierarchy, type, spacing, layout, density, colo
 - Trade-off: custom layouts cost design and build time
 - Check: review
 
-#### RX-UI-06 [Preferred] Density fits the task
-
-- Do: Use compact density for repeat, data-heavy work and roomier layouts for first-time or high-stakes decisions.
-- Do not: Apply the same generous whitespace to a cashier screen and a landing page.
-- Why: The right density depends on how often and how carefully people use the screen. (Material density guidance)
-- Not when: one screen serves both new and expert users; offer a density setting or a sensible middle
-- Trade-off: dense screens are harder for newcomers; spacious ones slow experts
-- Check: review
-
 #### RX-UI-07 [Contextual] Imagery that is what it claims
 
 - When: the design uses photos or illustrations
@@ -735,15 +575,6 @@ Group UI · gate area UI. Covers hierarchy, type, spacing, layout, density, colo
 - Why: Borrowed faces imply endorsements that do not exist. (ryux run 2026-10-02: pen.dev landing without ryux)
 - Not when: pure illustration that clearly is not a photo of a customer
 - Trade-off: real product screenshots age quickly and need updating
-- Check: review
-
-#### RX-UI-08 [Preferred] Motion explains change
-
-- Do: Use motion for feedback and continuity (where something came from, what changed), keep it short, and let users act while it runs.
-- Do not: Animate for decoration alone or make users wait for an animation.
-- Why: Purposeful motion helps users follow state changes; slow motion is friction. (Material motion principles; Apple HIG motion)
-- Not when: reduced motion is requested; use a fade or a cut
-- Trade-off: motion adds build time and can delay the task if overdone
 - Check: review
 
 ---
@@ -759,9 +590,9 @@ Group UI · gate area DESIGN SYSTEM. Covers search before create, tokens, compon
 - Why: Duplicates drift apart, multiply maintenance, and break consistency. (Design-system practice)
 - Check: review
 
-#### RX-DS-02 [Required] [Quality Lock] Consistency and conventions
+#### RX-DS-02 [Required] [Quality Lock] Consistency, conventions, and states
 
-- Do: Follow platform conventions and the project's own patterns; the same component looks and behaves the same everywhere.
+- Do: Follow platform conventions and the project's own patterns; the same component looks and behaves the same everywhere, with its states (default, hover, focus, pressed, disabled, loading, error) defined once.
 - Do not: Style or wire similar components differently from screen to screen.
 - Why: Consistency lets users transfer what they learned. (Nielsen heuristic 4; Apple HIG; Material Design)
 - Check: heuristic_eval H-04
@@ -771,13 +602,6 @@ Group UI · gate area DESIGN SYSTEM. Covers search before create, tokens, compon
 - Do: Use tokens or variables for color, spacing, radius, elevation, and type.
 - Do not: Hard-code one-off values for things the system already defines.
 - Why: Tokens keep changes consistent and reviewable. (W3C Design Tokens Community Group)
-- Check: review
-
-#### RX-DS-04 [Preferred] [Quality Lock] Defined component states
-
-- Do: Define default, hover, focus, pressed, disabled, loading, and error states once per interactive component.
-- Do not: Leave states for each screen to improvise.
-- Why: Undefined states get designed inconsistently, or not at all. (Material Design state guidance)
 - Check: review
 
 ---
@@ -800,25 +624,18 @@ Group UI · gate area ACCESSIBILITY. Covers semantics, keyboard, focus, contrast
 - Why: Small text and targets cause misreads and mis-taps. (WCAG 2.2 SC 2.5.8 (24px minimum); Apple HIG 44pt; Material 48dp)
 - Check: audit_ui
 
-#### RX-A11Y-03 [Required] [Hard Gate] Visible focus, logical order
+#### RX-A11Y-03 [Required] [Hard Gate] Keyboard and visible focus
 
-- Do: Show a visible focus indicator and keep the focus order the same as the visual order.
-- Do not: Remove focus outlines without an accessible replacement.
-- Why: Keyboard and switch users navigate by focus. (WCAG 2.2 SC 2.4.3 and 2.4.7)
+- Do: Make actions operable from the keyboard (path-based input such as drawing excepted), show a visible focus indicator, and keep focus order the same as the visual order.
+- Do not: Build pointer-only actions, or remove focus outlines without an accessible replacement.
+- Why: Keyboard and switch users navigate and act by focus. (WCAG 2.2 SC 2.1.1, 2.4.3, and 2.4.7)
 - Check: review
 
-#### RX-A11Y-04 [Required] [Hard Gate] Semantic structure
+#### RX-A11Y-04 [Required] [Hard Gate] Semantic structure, native controls, and names
 
-- Do: Use real headings, landmarks, lists, buttons, and links so the structure exists without the styling.
-- Do not: Build structure from styled divs alone.
-- Why: Assistive technology navigates by semantics. (WCAG 2.2 SC 1.3.1)
-- Check: review
-
-#### RX-A11Y-05 [Required] [Hard Gate] Names for controls and images
-
-- Do: Give icon-only buttons and meaningful images an accessible name or alt text.
-- Do not: Ship unlabeled icon buttons.
-- Why: Screen readers announce unlabeled buttons as just "button". (WCAG 2.2 SC 1.1.1 and 4.1.2)
+- Do: Use real headings, landmarks, lists, buttons, links, and the right input types before custom elements, and give icon-only buttons and meaningful images an accessible name or alt text.
+- Do not: Build structure or controls from styled divs, or ship unlabeled icon buttons.
+- Why: Assistive technology navigates by semantics and announces unlabeled buttons as just "button"; native controls bring keyboard and platform behavior for free. (WCAG 2.2 SC 1.1.1, 1.3.1, and 4.1.2)
 - Check: review
 
 #### RX-A11Y-06 [Required] Not color alone
@@ -840,13 +657,6 @@ Group UI · gate area ACCESSIBILITY. Covers semantics, keyboard, focus, contrast
 - Do: When reduced motion is requested, replace large movement with a fade or a cut.
 - Do not: Ignore the system reduced-motion setting.
 - Why: Large motion can cause discomfort for people with vestibular disorders. (WCAG 2.2 SC 2.3.3; prefers-reduced-motion; Apple HIG)
-- Check: review
-
-#### RX-A11Y-09 [Preferred] ARIA only when native cannot
-
-- Do: Use native elements first, and add ARIA only for semantics HTML cannot express.
-- Do not: Add roles and ARIA attributes to elements that already have the right semantics.
-- Why: Wrong ARIA is worse than none. (W3C ARIA Authoring Practices (first rule of ARIA))
 - Check: review
 
 ---
@@ -882,24 +692,14 @@ Group UI · gate area RESPONSIVE. Covers prioritize, simplify, reorganize; table
 - Trade-off: bottom-anchored actions cover content and need scroll padding
 - Check: visual QA
 
-#### RX-RD-04 [Contextual] Tables on small screens
+#### RX-RD-04 [Contextual] Tables and overlays on small screens
 
-- When: the layout has a data table
-- Do: Pick the priority columns, then stack rows into labeled blocks or scroll the table inside its own container with the key column fixed.
-- Do not: Shrink a wide table until it is unreadable or scroll the whole page sideways.
-- Why: Tables carry comparisons; losing the key column loses the meaning. (NNGroup mobile tables guidance)
+- When: the layout has a data table, or modals, drawers, or popovers
+- Do: Pick a table's priority columns, then stack rows into labeled blocks or scroll the table inside its own container with the key column fixed; on phones, show overlays as a full-screen or bottom sheet with the close and primary actions reachable.
+- Do not: Shrink a wide table until it is unreadable, scroll the whole page sideways, or show a desktop-sized modal that overflows a phone.
+- Why: Tables carry comparisons and overlays can trap users when they overflow. (NNGroup mobile tables guidance; Apple HIG sheets; Material bottom sheets)
 - Not when: the table is two or three columns and fits as is
 - Trade-off: stacked rows lose side-by-side comparison
-- Check: visual QA
-
-#### RX-RD-05 [Contextual] Overlays on small screens
-
-- When: the layout uses modals, drawers, or popovers
-- Do: On phones, use a full-screen or bottom sheet and keep the close and primary actions reachable.
-- Do not: Show a desktop-sized modal that overflows a phone screen.
-- Why: Overflowing overlays trap users. (Apple HIG sheets; Material bottom sheets)
-- Not when: a small confirmation that fits comfortably as a centered dialog
-- Trade-off: full-screen sheets hide the context underneath
 - Check: visual QA
 
 #### RX-RD-06 [Preferred] [Quality Lock] Consistent responsive behavior
@@ -931,20 +731,6 @@ Group Engineering · gate area CODE QUALITY. Covers the repo's own stack, semant
 - Why: Invented logic ships as real behavior. (ryux product principle (see RX-PR-02))
 - Check: review
 
-#### RX-FE-03 [Required] Native, semantic controls
-
-- Do: Use native or semantic elements (button, a, label, the right input types) before custom elements with handlers.
-- Do not: Build clickable divs without roles, focus, or keyboard support.
-- Why: Native controls bring accessibility and platform behavior for free. (WCAG 2.2 SC 4.1.2; HTML specification)
-- Check: review
-
-#### RX-FE-04 [Preferred] Components with clear boundaries
-
-- Do: Split components by responsibility, keep state close to where it is used, and derive values instead of duplicating state.
-- Do not: Grow a single giant component that fetches, formats, and renders everything.
-- Why: Clear boundaries make UI predictable and testable. (Clean-code practice)
-- Check: review
-
 #### RX-FE-05 [Required] Actionable errors
 
 - Do: Handle errors with messages that say what to fix, in the user's language when users see them.
@@ -959,39 +745,11 @@ Group Engineering · gate area CODE QUALITY. Covers the repo's own stack, semant
 - Why: Restating comments add noise and drift out of date. (ryux run 2026-10-02: order-total.ts without ryux)
 - Check: review
 
-#### RX-FE-07 [Preferred] Specific names
+#### RX-FE-07 [Preferred] Fit the codebase
 
-- Do: Name variables and functions by what they hold or do.
-- Do not: Use data, temp, helper, or manager without context.
-- Why: Specific names make code readable without comments. (Clean-code practice)
-- Check: review
-
-#### RX-FE-08 [Preferred] No dead code
-
-- Do: Remove unused code, imports, and commented-out blocks.
-- Do not: Leave empty TODOs or disabled code behind.
-- Why: Dead code misleads the next reader. (Clean-code practice)
-- Check: review
-
-#### RX-FE-09 [Preferred] Match the surrounding style
-
-- Do: Follow the formatting, naming, and patterns of the surrounding files.
-- Do not: Introduce a new style inside an existing codebase.
-- Why: Mixed styles make every change harder to review. (Clean-code practice)
-- Check: review
-
-#### RX-FE-10 [Preferred] No speculative abstraction or dependencies
-
-- Do: Build for the needs that exist now, and add a dependency only when it clearly earns its weight.
-- Do not: Add abstractions, configuration, or packages for needs nobody has stated.
-- Why: Unused flexibility costs reading time, bundle size, and hides bugs. (Clean-code practice)
-- Check: review
-
-#### RX-FE-11 [Preferred] Mind performance
-
-- Do: Size and lazy-load heavy images and media, and avoid needless re-renders and large client bundles.
-- Do not: Ship full-size images or heavy libraries for small effects.
-- Why: Many Indonesian users are on mid-range phones and metered data. (web.dev Core Web Vitals)
+- Do: Follow the formatting, naming, and patterns of the surrounding files; name things by what they hold or do; remove unused code, imports, and commented-out blocks.
+- Do not: Introduce a new style, use data, temp, or helper without context, or leave dead code and empty TODOs behind.
+- Why: Code that reads like its neighbors is easier to review, and dead code misleads the next reader. (Clean-code practice)
 - Check: review
 
 #### RX-FE-12 [Contextual] Rupiah formatting in code
@@ -1008,18 +766,11 @@ Group Engineering · gate area CODE QUALITY. Covers the repo's own stack, semant
 
 Group Quality · gate area VISUAL QA. Covers did the build match the intended design: compare, list deviations, fix, render again. Load when something visual has been implemented and is about to be called done, or a build must match a design.
 
-#### RX-QA-01 [Required] Render it and look
+#### RX-QA-01 [Required] Render, inspect, fix, render again
 
-- Do: Render the result at the target viewport (browser, screenshot, or design-tool export) and inspect it before calling it done; if no render tool is available, say so in the report.
-- Do not: Claim visual quality for a layout you have only seen as code.
-- Why: Overlaps and clipping are invisible in source and obvious on screen. (ryux run 2026-10-02: two runs shipped overlaps they never saw)
-- Check: screenshot
-
-#### RX-QA-02 [Required] Fix, then render again
-
-- Do: Rank issues by impact (blocks the task, misleads, adds friction, polish), fix from the top, and render again to confirm.
-- Do not: Fix by guesswork without checking the result, or polish while a blocking issue remains.
-- Why: The loop is what turns a first draft into a reviewed result. (ryux visual QA loop)
+- Do: Render the result at the target viewport (browser, screenshot, or design-tool export), inspect the main state, one empty or error state, and the smallest supported width, rank issues by impact, fix from the top, and render again; if no render tool is available, say so in the report.
+- Do not: Claim visual quality for a layout you have only seen as code, or fix by guesswork without checking the result.
+- Why: Overlaps and clipping are invisible in source and obvious on screen; the loop turns a draft into a reviewed result. (ryux run 2026-10-02: two runs shipped overlaps they never saw)
 - Check: screenshot
 
 #### RX-QA-03 [Required] No covered or colliding text
@@ -1036,27 +787,12 @@ Group Quality · gate area VISUAL QA. Covers did the build match the intended de
 - Why: Readers check sums; one wrong total undermines everything else. (ryux README checkout image (items Rp125.000, subtotal Rp1.200.000))
 - Check: review
 
-#### RX-QA-05 [Preferred] Check states and widths
+#### RX-QA-06 [Preferred] Match the intended design
 
-- Do: Inspect at least the main state, one empty or error state, and the smallest supported width.
-- Do not: Review only the happy path at one width.
-- Why: Most visual bugs live outside the default screenshot. (ryux visual QA loop)
-- Check: screenshot
-
-#### RX-QA-06 [Preferred] Compare with the intended design or a reference
-
-- Do: Compare the result with the intended design or, without one, with at least one reference screen_id, and note any intentional difference.
-- Do not: Judge the result only against itself.
-- Why: A reference shows what you missed. (ryux evidence principle)
-- Check: search_screens
-
-#### RX-QA-07 [Contextual] Match the reference design
-
-- When: an intended design exists (a Figma or pen.dev frame, DESIGN.md, or an approved screenshot)
-- Do: Capture the reference and the implementation at the same viewport, compare spacing, typography, color, size, position, components, states, and responsive behavior, and list each deviation with its fix.
-- Do not: Call the build done while it visibly differs from the design without saying so.
-- Why: Visual QA answers whether the build matches the intent; whether the design is good is Critique's question. (ryux visual QA loop)
-- Check: screenshot comparison
+- Do: When a reference exists (a Figma or pen.dev frame, DESIGN.md, an approved screenshot), capture it and the build at the same viewport, compare spacing, typography, color, size, position, components, states, and responsive behavior, and list each deviation with its fix; without one, compare with at least one reference screen_id.
+- Do not: Call the build done while it visibly differs from the design without saying so, or judge it only against itself.
+- Why: Visual QA answers whether the build matches the intent; whether the design is good is Critique's question. (ryux visual QA loop; ryux evidence principle)
+- Check: screenshot comparison, search_screens
 
 ---
 
@@ -1101,8 +837,8 @@ Group Quality · gate area ANTI-SLOP. Covers hard gates, purpose gates, quality 
 
 #### RX-AS-06 [Required] [Hard Gate] Complexity with a reason
 
-- Do: Remove elements, options, states, and code paths that serve no stated need.
-- Do not: Add settings, sections, or abstractions "for later".
+- Do: Remove elements, options, states, code paths, abstractions, and dependencies that serve no stated need.
+- Do not: Add settings, sections, abstractions, or packages "for later", or features because similar products have them.
 - Why: Unneeded complexity costs every user and every future change. (Nielsen heuristic 8; clean-code practice)
 - Check: review
 
@@ -1147,6 +883,51 @@ Checks in `packages/core` (tool-local numbering `R-0x` and `C-0x`):
 | RX-EC-01 | `audit_ui` R-05 |
 | Nielsen heuristics 1-10 | `heuristic_eval` H-01..H-10 |
 
+## Retired in rules 1.3
+
+Rules 1.3 cut the rule set from 109 to 76. Retired IDs are not reused: each was merged into another
+rule or moved into its skill's guide as guidance, so nothing was lost.
+
+<!-- retired:start -->
+| Retired ID | Now in |
+| --- | --- |
+| RX-PR-06 | ryux-product guide |
+| RX-PR-07 | ryux-product guide; RX-AS-06 |
+| RX-PR-08 | ryux-product guide |
+| RX-UX-03 | ryux-ux guide |
+| RX-UX-04 | ryux-ux guide |
+| RX-UX-05 | RX-UX-02 |
+| RX-UX-09 | ryux-ux guide |
+| RX-IX-06 | RX-A11Y-03 |
+| RX-IX-07 | ryux-interaction guide |
+| RX-IX-08 | ryux-interaction guide |
+| RX-FM-02 | ryux-forms guide |
+| RX-FM-04 | ryux-forms guide |
+| RX-FM-07 | ryux-forms guide |
+| RX-EC-04 | RX-EC-03 |
+| RX-EC-05 | ryux-edge-cases guide |
+| RX-EC-08 | RX-EC-07 |
+| RX-CD-06 | RX-CD-03 |
+| RX-CD-07 | ryux-content guide |
+| RX-CD-08 | ryux-content guide |
+| RX-UI-02 | RX-AS-05 |
+| RX-UI-06 | ryux-ui guide |
+| RX-UI-08 | ryux-ui guide |
+| RX-DS-04 | RX-DS-02 |
+| RX-A11Y-05 | RX-A11Y-04 |
+| RX-A11Y-09 | ryux-accessibility guide |
+| RX-RD-05 | RX-RD-04 |
+| RX-FE-03 | RX-A11Y-04 |
+| RX-FE-04 | ryux-frontend guide |
+| RX-FE-08 | RX-FE-07 |
+| RX-FE-09 | RX-FE-07 |
+| RX-FE-10 | RX-AS-06 |
+| RX-FE-11 | ryux-frontend guide |
+| RX-QA-02 | RX-QA-01 |
+| RX-QA-05 | RX-QA-01 |
+| RX-QA-07 | RX-QA-06 |
+<!-- retired:end -->
+
 ## Migration from RX-1.x
 
 RX-2.0 regroups every rule by skill. Old IDs map as follows; some old rules were merged, and some
@@ -1164,26 +945,26 @@ were split across skills.
 | RX-C-07 | RX-UI-04 |
 | RX-C-08 | RX-UI-03 |
 | RX-C-09 | RX-AS-08 |
-| RX-C-10 | RX-CD-06, RX-AS-04 |
+| RX-C-10 | RX-CD-03, RX-AS-04 |
 | RX-H-01 | RX-IX-02 |
-| RX-H-02 | RX-UX-09 |
+| RX-H-02 | ryux-ux guide (retired RX-UX-09) |
 | RX-H-03 | RX-IX-03 |
 | RX-H-04 | RX-DS-02 |
 | RX-H-05 | RX-IX-04 |
 | RX-H-06 | RX-UX-08 |
-| RX-H-07 | RX-IX-08 |
-| RX-H-08 | RX-UI-02 |
+| RX-H-07 | ryux-interaction guide (retired RX-IX-08) |
+| RX-H-08 | RX-AS-05 |
 | RX-H-09 | RX-EC-02 |
-| RX-H-10 | RX-CD-07 |
+| RX-H-10 | ryux-content guide (retired RX-CD-07) |
 | RX-H-11 | RX-A11Y-01 |
 | RX-H-12 | RX-A11Y-02 |
 | RX-H-13 | RX-A11Y-03 |
 | RX-H-14 | RX-EC-01, RX-RD-01, RX-RD-03, RX-QA-03 |
 | RX-K-01 | RX-FE-06 |
 | RX-K-02 | RX-FE-07 |
-| RX-K-03 | RX-FE-08 |
-| RX-K-04 | RX-FE-09 |
-| RX-K-05 | RX-FE-10 |
+| RX-K-03 | RX-FE-07 |
+| RX-K-04 | RX-FE-07 |
+| RX-K-05 | RX-AS-06 |
 | RX-K-06 | RX-FE-05 |
 | RX-L-01 | RX-IX-09 |
 | RX-L-02 | RX-IX-10 |
@@ -1196,12 +977,12 @@ were split across skills.
 | RX-L-09 | RX-IX-11 |
 | RX-L-10 | RX-FM-10 |
 | RX-N-01 | RX-IX-02 |
-| RX-N-02 | RX-FM-01, RX-FM-02 |
+| RX-N-02 | RX-FM-01 |
 | RX-N-03 | RX-FM-03 |
-| RX-N-04 | RX-FM-04 |
+| RX-N-04 | ryux-forms guide (retired RX-FM-04) |
 | RX-N-05 | RX-CD-04 |
 | RX-N-06 | RX-IX-05 |
-| RX-N-07 | RX-UX-05 |
+| RX-N-07 | RX-UX-02 |
 | RX-N-08 | RX-UX-07 |
 | RX-N-09 | RX-AS-04 |
 | RX-N-10 | RX-FM-05 |

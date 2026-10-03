@@ -102,7 +102,7 @@ export const GROUPS: Group[] = [
 
 // Workflow order: an agent reaches these roughly top to bottom.
 export const SKILLS: Skill[] = [
-  { id: "product", role: "knowledge", evidence: "How comparable Indonesian products frame the same task and offer: `search_screens` (category, flow) and `get_flow` for the full sequence.", abbr: "PR", label: "Product thinking", group: "foundation", gateArea: "PRODUCT", summary: "user, task, goal, primary action, constraints, assumptions", loadWhen: "starting a new screen or flow, or when the scope is unclear" },
+  { id: "product", role: "knowledge", evidence: "How comparable Indonesian products frame the same task and offer: `search_screens` (category, flow) and `get_flow` for the full sequence.", abbr: "PR", label: "Product thinking", group: "foundation", gateArea: "PRODUCT", summary: "user, task, goal, primary action, constraints, assumptions, and decisions backed by evidence", loadWhen: "starting a new screen or flow, choosing between patterns, or when the scope is unclear" },
   { id: "ux", role: "knowledge", evidence: "How Indonesian apps sequence and structure this flow: `get_flow` for a reference flow, `compare_apps` to compare steps across apps.", abbr: "UX", label: "UX architecture", group: "ux", gateArea: "UX", summary: "information architecture, navigation, flows, grouping, disclosure, search and filters", loadWhen: "designing multi-screen flows, navigation, or data-heavy views" },
   { id: "interaction", role: "knowledge", evidence: "How local apps handle the same action and its states, and local payment patterns: `search_screens`, `get_local_pattern` (qris, virtual-account, paylater).", abbr: "IX", label: "Interaction design", group: "ux", gateArea: "UX", summary: "before, during, result, recovery; feedback, control, confirmation, states, keyboard, local payments", loadWhen: "adding or changing anything the user can act on" },
   { id: "forms", role: "knowledge", evidence: "Real Indonesian forms for the same data (address, OTP, e-KYC): `search_screens`, `get_local_pattern` (otp, address, e-kyc).", abbr: "FM", label: "Forms", group: "ux", gateArea: "UX", summary: "labels, layout, validation, input preservation, autofill, submission, unsaved work, OTP, address, e-KYC", loadWhen: "building or reviewing any form" },
@@ -117,11 +117,12 @@ export const SKILLS: Skill[] = [
   { id: "anti-slop", role: "gate", evidence: "Real screens show what real products do instead of invented numbers and urgency: `search_screens`; heuristic findings via `heuristic_eval`.", abbr: "AS", label: "Anti-slop", group: "quality", gateArea: "ANTI-SLOP", summary: "hard gates, purpose gates, quality locks, honest claims", loadWhen: "work is about to be delivered, or during visual refinement" },
 ];
 
-type RuleInput = Omit<Rule, "id" | "skill">;
+// Rule numbers are explicit and stable: a retired rule leaves a gap instead of renumbering the rest.
+type RuleInput = Omit<Rule, "id" | "skill"> & { num: number };
 
 function skill(id: SkillId, rules: RuleInput[]): Rule[] {
   const abbr = SKILLS.find((s) => s.id === id)!.abbr;
-  return rules.map((r, i) => ({ id: `RX-${abbr}-${String(i + 1).padStart(2, "0")}`, skill: id, ...r }));
+  return rules.map(({ num, ...r }) => ({ id: `RX-${abbr}-${String(num).padStart(2, "0")}`, skill: id, ...r }));
 }
 
 const RUN = "ryux run 2026-10-02";
@@ -129,6 +130,7 @@ const RUN = "ryux run 2026-10-02";
 export const RULES: Rule[] = [
   ...skill("product", [
     {
+      num: 1,
       title: "State the context first",
       level: "required",
       do: "Before designing, write down the user, their task, the business goal, the information that matters, the primary action, the constraints, and what success looks like.",
@@ -138,6 +140,7 @@ export const RULES: Rule[] = [
       check: "review",
     },
     {
+      num: 2,
       title: "Unknowns stay assumptions",
       level: "required",
       gate: "hard",
@@ -148,6 +151,7 @@ export const RULES: Rule[] = [
       check: "review",
     },
     {
+      num: 3,
       title: "One goal, one primary action",
       level: "required",
       gate: "hard",
@@ -158,6 +162,7 @@ export const RULES: Rule[] = [
       check: "review",
     },
     {
+      num: 4,
       title: "Back decisions with real screens",
       level: "required",
       do: "Cite at least one real screen_id for each meaningful design decision, or label it a judgment call with no reference.",
@@ -168,6 +173,7 @@ export const RULES: Rule[] = [
       formerly: ["RX-C-01"],
     },
     {
+      num: 5,
       title: "Indonesian context first",
       level: "required",
       do: "Start from how Indonesian apps and users work, and check a foreign pattern's local fit before reusing it.",
@@ -178,37 +184,32 @@ export const RULES: Rule[] = [
       formerly: ["RX-L-08"],
     },
     {
-      title: "Outcome before feature",
-      level: "preferred",
-      do: "Lead with what the user gets or finishes, in their words, then explain the feature.",
-      dont: "Open with product features or technology.",
-      why: "People scan for relevance to their task before reading details.",
-      basis: "NNGroup scanning research",
-      check: "review",
+      num: 9,
+      title: "Compare patterns before choosing",
+      level: "required",
+      do: "For a consequential decision (a new flow, payment, identity, navigation), list two or three candidate patterns with their context, strength, and weakness, then choose the one whose context matches, not the one that looks best.",
+      dont: "Pick the first familiar pattern, or choose by taste.",
+      why: "A pattern is right for a context, not in general; comparing makes the reason visible and checkable.",
+      basis: "ryux evidence principle; NNGroup competitive usability practice",
+      notWhen: "small, reversible decisions inside an established pattern; follow the design system instead",
+      tradeoff: "takes longer than picking the familiar option",
+      check: "search_screens, compare_apps",
     },
     {
-      title: "Only what serves the task",
-      level: "preferred",
-      do: "Keep the elements and options the stated task needs and move the rest to a later step.",
-      dont: "Add sections, stats, settings, or badges because similar products have them.",
-      why: "Every extra element competes with the primary action and adds states to maintain.",
-      basis: "Nielsen heuristic 8 (1994)",
-      check: "review",
-    },
-    {
-      title: "Follow the project's direction",
-      level: "contextual",
-      when: "the project has a DESIGN.md, a brand guide, or an existing design language",
-      do: "Follow it and write down any deliberate departure as a design decision record.",
-      dont: "Override it with the agent's default style.",
-      why: "Ryux filters and reasons; visual direction belongs to the project.",
-      basis: `${RUN}: rules alone produced honest but undirected layouts`,
+      num: 10,
+      title: "Say when the evidence is not enough",
+      level: "required",
+      do: "Rate the evidence for a decision as Strong (two or more comparable screens in the same context), Thin (one, or a different context), or None; when it is None on a consequential choice, present the options and their trade-offs or ask, instead of picking silently.",
+      dont: "Invent a reference, or present a judgment call as if real products backed it.",
+      why: "Knowing what you do not know is part of design judgment; false certainty ships the wrong pattern.",
+      basis: "ryux evidence principle",
       check: "review",
     },
   ]),
 
   ...skill("ux", [
     {
+      num: 1,
       title: "Structure from the user's goal",
       notWhen: "the product already has an established structure users rely on; change it only with evidence",
       tradeoff: "a less familiar layout can cost users a moment of learning",
@@ -220,52 +221,20 @@ export const RULES: Rule[] = [
       check: "review",
     },
     {
-      title: "Where am I, how do I leave",
+      num: 2,
+      title: "Where am I, what's left, how do I leave",
+      level: "preferred",
+      do: "Give each screen a clear title and keep a back or cancel path visible; in multi-step flows show the current step (\"Langkah 2 dari 3\") and a summary the user can review before committing.",
+      dont: "Leave screens without a title or a way out, or run a multi-step flow with no sense of progress or review.",
+      why: "Orientation, progress, and an exit lower anxiety and abandonment.",
+      basis: "NNGroup wayfinding and progress-indicator research; Nielsen heuristic 3",
       notWhen: "a focused full-screen step such as payment in progress, where leaving would lose state; say how to cancel instead",
       tradeoff: "a persistent title and back path take vertical space on small screens",
-      level: "preferred",
-      do: "Give each screen a clear title and keep a back or cancel path visible.",
-      dont: "Leave screens without a title or a way out.",
-      why: "Orientation and an exit lower anxiety and abandonment.",
-      basis: "NNGroup wayfinding; Nielsen heuristic 3",
       check: "heuristic_eval H-03",
-      formerly: ["RX-N-12"],
+      formerly: ["RX-N-12", "RX-N-07"],
     },
     {
-      title: "Group by meaning",
-      notWhen: "the list is short enough to scan at once; extra group labels add noise",
-      tradeoff: "group labels and gaps make the page longer",
-      level: "preferred",
-      do: "Group content by what it means to the user (task, time, status) and label the groups.",
-      dont: "Group by how the data is stored or by visual symmetry alone.",
-      why: "Meaningful groups let people skip what is not relevant to them.",
-      basis: "Gestalt proximity and common region; NNGroup",
-      check: "review",
-    },
-    {
-      title: "Progressive disclosure",
-      notWhen: "most users need the advanced options every time; hiding them adds a click to the common path",
-      tradeoff: "hidden options are discovered later or not at all",
-      level: "preferred",
-      do: "Show what the current decision needs and put advanced or rare options behind a clearly labeled control.",
-      dont: "Show every option at once, or hide options people need often.",
-      why: "Disclosure keeps the main path simple without removing power.",
-      basis: "NNGroup progressive disclosure",
-      check: "review",
-    },
-    {
-      title: "Steps and a reviewable summary",
-      notWhen: "a single short step; a progress indicator for one screen is clutter",
-      tradeoff: "a review step adds one more screen before commitment",
-      level: "preferred",
-      do: "In multi-step flows, show the current step (\"Langkah 2 dari 3\") and a summary the user can review before committing.",
-      dont: "Run a multi-step flow with no sense of progress or no review.",
-      why: "Users commit more confidently when they see what is left and can check their choices.",
-      basis: "NNGroup checkout and progress-indicator research",
-      check: "review",
-      formerly: ["RX-N-07"],
-    },
-    {
+      num: 6,
       title: "Search, filter, and sort that match the hunt",
       notWhen: "the list fits in a screen or two; filters slow down scanning",
       tradeoff: "each filter is UI to maintain and can hide items users expect to see",
@@ -278,6 +247,7 @@ export const RULES: Rule[] = [
       check: "review",
     },
     {
+      num: 7,
       title: "Ask for sign-in when it is needed",
       notWhen: "the core value requires an identity from the start (banking, a personal ledger)",
       tradeoff: "late sign-in can lose a cart or draft if it is not carried over",
@@ -291,6 +261,7 @@ export const RULES: Rule[] = [
       formerly: ["RX-N-08"],
     },
     {
+      num: 8,
       title: "Recognition over recall",
       notWhen: "a one-time task, where showing history or saved values adds clutter",
       tradeoff: "higher visual density; more on screen to scan",
@@ -302,22 +273,11 @@ export const RULES: Rule[] = [
       check: "heuristic_eval H-06",
       formerly: ["RX-H-06"],
     },
-    {
-      title: "The user's words and order",
-      notWhen: "specialist tools where users are trained on the system terms",
-      tradeoff: "matching user words can diverge from the data model and the API names",
-      level: "preferred",
-      do: "Use the terms and ordering users already know (ongkir, transfer, kelurahan before kecamatan).",
-      dont: "Put system terms such as SKU or transaction codes in the primary UI.",
-      why: "Familiar language and order remove a translation step for the user.",
-      basis: "Nielsen heuristic 2 (1994)",
-      check: "heuristic_eval H-02",
-      formerly: ["RX-H-02"],
-    },
   ]),
 
   ...skill("interaction", [
     {
+      num: 1,
       title: "Before, during, result, recovery",
       notWhen: "trivial actions with no wait and no failure mode (toggling a local view)",
       tradeoff: "more states to design, build, and test",
@@ -330,6 +290,7 @@ export const RULES: Rule[] = [
       check: "review",
     },
     {
+      num: 2,
       title: "Feedback that matches the wait",
       notWhen: "instant actions under about 0.1 s; a spinner that flashes is noise",
       tradeoff: "progress indicators need real progress data; a fake bar misleads",
@@ -342,6 +303,7 @@ export const RULES: Rule[] = [
       formerly: ["RX-H-01", "RX-N-01"],
     },
     {
+      num: 3,
       title: "Cancel, back, and undo",
       notWhen: "the step is genuinely irreversible once confirmed (a sent transfer); say so up front instead",
       tradeoff: "undo needs soft-delete or delayed execution in the backend",
@@ -354,6 +316,7 @@ export const RULES: Rule[] = [
       formerly: ["RX-H-03"],
     },
     {
+      num: 4,
       title: "Protect high-impact actions by reasoning",
       notWhen: "reversible, low-impact actions where undo is enough",
       tradeoff: "one extra step versus irreversible loss",
@@ -366,6 +329,7 @@ export const RULES: Rule[] = [
       formerly: ["RX-H-05", "RX-N-11"],
     },
     {
+      num: 5,
       title: "Full cost before commitment",
       notWhen: "prices are not known until a later choice (shipping before an address); show an estimate and say when it is final",
       tradeoff: "a full breakdown adds lines to a small screen",
@@ -378,41 +342,7 @@ export const RULES: Rule[] = [
       formerly: ["RX-N-06", "RX-L-04"],
     },
     {
-      title: "Keyboard-operable actions",
-      notWhen: "path-based input such as drawing or a signature; offer an alternative",
-      tradeoff: "custom widgets need explicit key handling and testing",
-      level: "required",
-      do: "Make actions reachable and operable from the keyboard (path-based input such as drawing excepted); Enter submits a form and Escape closes a dialog.",
-      dont: "Build actions that only work with a pointer or a touch gesture.",
-      why: "Keyboard, switch, and power users depend on it.",
-      basis: "WCAG 2.2 SC 2.1.1",
-      check: "review",
-    },
-    {
-      title: "Disabled controls explain themselves",
-      notWhen: "the reason is already visible right next to the control",
-      tradeoff: "explanations add text; an enabled control that explains on use can surprise",
-      level: "preferred",
-      do: "When a control is disabled, show why or what enables it, or keep it enabled and explain on use.",
-      dont: "Grey out a button with no explanation.",
-      why: "An unexplained disabled state is a dead end.",
-      basis: "NNGroup disabled-button guidance",
-      check: "review",
-    },
-    {
-      title: "Shortcuts for repeat use",
-      notWhen: "first-time or rare tasks; shortcuts clutter the novice path",
-      tradeoff: "shortcuts must be discoverable without crowding the screen",
-      level: "contextual",
-      when: "the product is used repeatedly or by experts (cashier, admin, daily tools)",
-      do: "Offer shortcuts such as recent items, quick amounts, and keyboard actions.",
-      dont: "Make frequent users walk the novice path every time.",
-      why: "Accelerators keep repeat work fast without hurting new users.",
-      basis: "Nielsen heuristic 7 (1994)",
-      check: "heuristic_eval H-07",
-      formerly: ["RX-H-07"],
-    },
-    {
+      num: 9,
       title: "QRIS: amount and merchant first",
       notWhen: "a static QRIS printed for any amount, where the user types the amount; show the merchant name",
       tradeoff: "an extra confirmation step before the code",
@@ -426,6 +356,7 @@ export const RULES: Rule[] = [
       formerly: ["RX-L-01"],
     },
     {
+      num: 10,
       title: "Virtual account: copy, deadline, steps",
       notWhen: "the app pays the VA itself in one step (auto-debit)",
       tradeoff: "per-bank steps make the screen longer",
@@ -439,6 +370,7 @@ export const RULES: Rule[] = [
       formerly: ["RX-L-02"],
     },
     {
+      num: 11,
       title: "Paylater and installments in full",
       notWhen: "a single full payment with no credit involved",
       tradeoff: "the full cost can discourage a purchase; that is the point of disclosure",
@@ -455,6 +387,7 @@ export const RULES: Rule[] = [
 
   ...skill("forms", [
     {
+      num: 1,
       title: "Visible labels tied to fields",
       notWhen: "a lone search field beside a labeled button, where context names it; still give it an accessible name",
       tradeoff: "labels above fields make the form taller",
@@ -467,18 +400,7 @@ export const RULES: Rule[] = [
       formerly: ["RX-N-02"],
     },
     {
-      title: "Layout by relationship",
-      notWhen: "short related fields people read as one unit (date parts, city and postal code)",
-      tradeoff: "one column makes longer pages",
-      level: "preferred",
-      do: "Default to one column for sequential input, and place short related fields together (date parts, city and postal code) when that matches how people read them.",
-      dont: "Spread unrelated fields across columns to fill width.",
-      why: "Reading order should match filling order; related fields read as one unit.",
-      basis: "NNGroup form-design research",
-      check: "review",
-      formerly: ["RX-N-02"],
-    },
-    {
+      num: 3,
       title: "Validate near the field, keep the input",
       notWhen: "while the user is still typing; validate after they leave the field or the format is complete",
       tradeoff: "early validation can nag; late validation can surprise",
@@ -491,18 +413,7 @@ export const RULES: Rule[] = [
       formerly: ["RX-N-03"],
     },
     {
-      title: "Fewest fields",
-      notWhen: "regulation or the business genuinely needs the data (e-KYC); explain why it is asked",
-      tradeoff: "fewer fields up front can mean asking later",
-      level: "preferred",
-      do: "Ask only for what the task needs, mark the less common case (optional or required), and prefill sensible defaults.",
-      dont: "Ask for data the task does not use, or mark every field required by default.",
-      why: "Each extra field adds effort and a chance to quit.",
-      basis: "NNGroup form-design research",
-      check: "review",
-      formerly: ["RX-N-04"],
-    },
-    {
+      num: 5,
       title: "The right keyboard and autofill",
       notWhen: "free-text fields where a restricted keyboard blocks valid input (names with punctuation)",
       tradeoff: "inputmode varies across browsers; test on real devices",
@@ -515,6 +426,7 @@ export const RULES: Rule[] = [
       formerly: ["RX-N-10"],
     },
     {
+      num: 6,
       title: "Submission states",
       notWhen: "instant local saves with no network round trip",
       tradeoff: "more states to build and test",
@@ -526,18 +438,7 @@ export const RULES: Rule[] = [
       check: "review",
     },
     {
-      title: "Protect unsaved work",
-      notWhen: "the form autosaves reliably and shows it; a leave warning would be redundant",
-      tradeoff: "autosave needs conflict handling; warnings can annoy if overused",
-      level: "contextual",
-      when: "a form holds work the user can lose by navigating away or timing out",
-      do: "Autosave with a visible status, or warn before discarding changes.",
-      dont: "Discard edits silently.",
-      why: "Lost work is the most expensive form failure.",
-      basis: "NNGroup guidance on data loss",
-      check: "review",
-    },
-    {
+      num: 8,
       title: "OTP: channel choice and paste",
       notWhen: "the channel is fixed by the provider or by regulation",
       tradeoff: "more channels mean more delivery paths to maintain",
@@ -551,6 +452,7 @@ export const RULES: Rule[] = [
       formerly: ["RX-L-03"],
     },
     {
+      num: 9,
       title: "Addresses with landmarks",
       notWhen: "delivery uses precise coordinates only (a pickup locker)",
       tradeoff: "more fields to fill",
@@ -564,6 +466,7 @@ export const RULES: Rule[] = [
       formerly: ["RX-L-05"],
     },
     {
+      num: 10,
       title: "e-KYC: reason and guidance first",
       notWhen: "a returning user who has already been verified",
       tradeoff: "an extra screen before the camera",
@@ -580,6 +483,7 @@ export const RULES: Rule[] = [
 
   ...skill("edge-cases", [
     {
+      num: 1,
       title: "Critical states exist",
       level: "required",
       gate: "hard",
@@ -591,6 +495,7 @@ export const RULES: Rule[] = [
       formerly: ["RX-H-14"],
     },
     {
+      num: 2,
       title: "Errors with a way forward",
       level: "required",
       do: "When something fails, say what happened, why if it helps, and the next action (retry, another method, contact).",
@@ -601,33 +506,17 @@ export const RULES: Rule[] = [
       formerly: ["RX-H-09"],
     },
     {
-      title: "Data volume and shape",
+      num: 3,
+      title: "Data volume, shape, and length",
       level: "preferred",
-      do: "Check one item, many items, duplicates, and missing fields; paginate or virtualize long lists.",
-      dont: "Design only for a tidy sample of five items.",
-      why: "Real data is uneven, and layouts break at the extremes.",
-      basis: "ryux review practice",
-      check: "visual QA",
-    },
-    {
-      title: "Long text and large amounts",
-      level: "preferred",
-      do: "Test with long names, long Indonesian words, and large amounts such as Rp1.250.000.000; wrap or truncate with access to the full value.",
-      dont: "Design only around short sample strings.",
-      why: "Real content is longer than sample content and breaks fixed layouts.",
+      do: "Check one item, many items, duplicates, missing fields, long names and long Indonesian words, and large amounts such as Rp1.250.000.000; paginate or virtualize long lists, and wrap or truncate with access to the full value.",
+      dont: "Design only around a tidy sample of five short items.",
+      why: "Real data is uneven and longer than sample data, and layouts break at the extremes.",
       basis: "Localization practice; ryux review practice",
       check: "visual QA",
     },
     {
-      title: "First use and zero data",
-      level: "preferred",
-      do: "Explain what will appear in an empty view and give one action to get started.",
-      dont: "Leave a blank list or a lone \"No data\".",
-      why: "An empty state is the first lesson in how the feature works.",
-      basis: "NNGroup empty-state guidance",
-      check: "review",
-    },
-    {
+      num: 6,
       title: "Slow, timeout, offline, server failure",
       level: "contextual",
       when: "the screen depends on network data",
@@ -638,22 +527,13 @@ export const RULES: Rule[] = [
       check: "review",
     },
     {
-      title: "Roles and restricted access",
+      num: 7,
+      title: "Roles, access, and sessions",
       level: "contextual",
-      when: "the product has roles, permissions, or read-only modes",
-      do: "Design the read-only and restricted states: say why an action is unavailable and who can do it. Use roles that exist in the product.",
-      dont: "Invent roles or show actions that fail only after the user tries them.",
-      why: "Users need to know whether to ask someone or give up.",
-      basis: "ryux review practice",
-      check: "review",
-    },
-    {
-      title: "Session expiry and unauthorized",
-      level: "contextual",
-      when: "the product has sessions or authentication",
-      do: "On expiry, keep the user's work, ask them to sign in again, and return them to the same place.",
-      dont: "Dump users on a login screen and lose their progress.",
-      why: "Re-authentication should cost seconds, not the task.",
+      when: "the product has roles, permissions, read-only modes, or sessions",
+      do: "Design read-only and restricted states (say why an action is unavailable and who can do it, using roles that exist), and on session expiry keep the user's work and return them to the same place after signing in.",
+      dont: "Invent roles, show actions that fail only after the user tries them, or dump users on a login screen and lose their progress.",
+      why: "Users need to know whether to ask someone, and re-authentication should cost seconds, not the task.",
       basis: "ryux review practice",
       check: "review",
     },
@@ -661,6 +541,7 @@ export const RULES: Rule[] = [
 
   ...skill("content", [
     {
+      num: 1,
       title: "Natural Bahasa Indonesia",
       level: "required",
       do: "Write the way Indonesian users speak; keep English only for terms they already use (checkout, promo).",
@@ -671,6 +552,7 @@ export const RULES: Rule[] = [
       formerly: ["RX-L-07"],
     },
     {
+      num: 2,
       title: "Rupiah as Rp1.250.000",
       level: "required",
       do: "Write money with Rp directly before the number, dots for thousands, and no decimals for whole Rupiah.",
@@ -681,16 +563,18 @@ export const RULES: Rule[] = [
       formerly: ["RX-L-06"],
     },
     {
-      title: "Labels name the real action",
+      num: 3,
+      title: "Specific, plain copy",
       level: "preferred",
-      do: "Name the action and what it gets the user (\"Bayar Rp45.000\", \"Simpan alamat\").",
-      dont: "Use vague labels (\"Submit\", \"Learn more\") or hype words (\"unlock\", \"elevate\", \"seamlessly\").",
-      why: "Specific labels tell users what happens next.",
-      basis: "NNGroup button and link-label guidance",
+      do: "Name the action and what it gets the user (\"Bayar Rp45.000\", \"Simpan alamat\"); use sentence case and plain lists, with at most one emoji where the channel expects it.",
+      dont: "Use vague labels (\"Submit\", \"Learn more\"), hype words (\"unlock\", \"elevate\", \"seamlessly\"), emoji bullets, ALL CAPS, or stacked exclamation marks.",
+      why: "Specific, plain copy tells users what happens next; decoration on every line buries it and reads as generated.",
+      basis: `NNGroup button and link-label guidance; ${RUN}: unconstrained WhatsApp copy`,
       check: "audit_copy",
-      formerly: ["RX-C-06"],
+      formerly: ["RX-C-06", "RX-C-10"],
     },
     {
+      num: 4,
       title: "Errors: what, why, how to recover",
       level: "required",
       do: "Say what happened, why when it helps the user act, and how to recover, next to where it happened, without blaming the user.",
@@ -701,6 +585,7 @@ export const RULES: Rule[] = [
       formerly: ["RX-N-05"],
     },
     {
+      num: 5,
       title: "One name per thing",
       level: "required",
       gate: "lock",
@@ -711,36 +596,7 @@ export const RULES: Rule[] = [
       check: "review",
     },
     {
-      title: "Plain decoration",
-      level: "preferred",
-      do: "Use sentence case and plain lists; one emoji is fine where the channel expects it.",
-      dont: "Use emoji as bullets, ALL CAPS, or stacked exclamation marks.",
-      why: "Decoration on every line buries the information and reads as generated.",
-      basis: `${RUN}: unconstrained WhatsApp copy`,
-      check: "audit_copy, review",
-      formerly: ["RX-C-10"],
-    },
-    {
-      title: "Help at the point of need",
-      level: "preferred",
-      do: "Put short help where the question arises (a hint under a field, \"Kenapa diminta?\").",
-      dont: "Send users to a separate FAQ for a field-level question.",
-      why: "Help in context gets read; help elsewhere gets skipped.",
-      basis: "Nielsen heuristic 10 (1994)",
-      check: "heuristic_eval H-10",
-      formerly: ["RX-H-10"],
-    },
-    {
-      title: "Chat copy sounds like a person",
-      level: "contextual",
-      when: "the text goes to WhatsApp, Telegram, or another chat channel",
-      do: "Use a short greeting, short paragraphs, sparse *bold*, and a clear contact line.",
-      dont: "Paste a marketing page into a chat.",
-      why: "Chat readers expect a message from a person, not an ad.",
-      basis: `${RUN}: WhatsApp promo comparison`,
-      check: "review",
-    },
-    {
+      num: 9,
       title: "Dates, times, and numbers in Indonesian form",
       level: "required",
       do: "Write dates as 2 Okt 2026 or Jumat, 2 Oktober 2026; times as 14.30 in 24-hour form, with WIB, WITA, or WIT when the time zone matters; decimals with a comma (1,5) and thousands with a dot (12.500); phone numbers as +62 812-3456-7890.",
@@ -753,6 +609,7 @@ export const RULES: Rule[] = [
 
   ...skill("ui", [
     {
+      num: 1,
       title: "Hierarchy follows priority",
       notWhen: "screens with several equal peers, such as a dashboard of comparable items; use consistent hierarchy within each card instead",
       tradeoff: "emphasizing one thing de-emphasizes the rest",
@@ -765,18 +622,7 @@ export const RULES: Rule[] = [
       check: "visual QA",
     },
     {
-      title: "Functional before decorative",
-      notWhen: "brand or campaign pages where expression is the function; the decoration still needs its reason",
-      tradeoff: "plain interfaces can feel undifferentiated; direction comes from DESIGN.md",
-      level: "required",
-      do: "Give each decorative element (card, gradient, shadow, badge, illustration, large display type) a stated reason; see the anti-slop purpose gates.",
-      dont: "Add decoration because it looks modern.",
-      why: "Unjustified decoration is the fastest route to generic UI.",
-      basis: "Nielsen heuristic 8; ryux anti-slop principle",
-      check: "review",
-      formerly: ["RX-H-08"],
-    },
-    {
+      num: 3,
       title: "One spacing and type scale",
       notWhen: "a one-off marketing piece outside the product",
       tradeoff: "a scale limits choices; occasional exceptions need a written reason",
@@ -790,6 +636,7 @@ export const RULES: Rule[] = [
       formerly: ["RX-C-08"],
     },
     {
+      num: 4,
       title: "A palette with roles",
       notWhen: "data visualization, which needs its own categorical or sequential palette",
       tradeoff: "fewer colors means relying on type and space for emphasis",
@@ -803,6 +650,7 @@ export const RULES: Rule[] = [
       formerly: ["RX-C-07"],
     },
     {
+      num: 5,
       title: "Layout from content, not a template",
       notWhen: "a standard pattern users expect fits the content (a settings list, a table); familiarity is the right choice",
       tradeoff: "custom layouts cost design and build time",
@@ -815,17 +663,7 @@ export const RULES: Rule[] = [
       formerly: ["RX-C-02"],
     },
     {
-      title: "Density fits the task",
-      notWhen: "one screen serves both new and expert users; offer a density setting or a sensible middle",
-      tradeoff: "dense screens are harder for newcomers; spacious ones slow experts",
-      level: "preferred",
-      do: "Use compact density for repeat, data-heavy work and roomier layouts for first-time or high-stakes decisions.",
-      dont: "Apply the same generous whitespace to a cashier screen and a landing page.",
-      why: "The right density depends on how often and how carefully people use the screen.",
-      basis: "Material density guidance",
-      check: "review",
-    },
-    {
+      num: 7,
       title: "Imagery that is what it claims",
       notWhen: "pure illustration that clearly is not a photo of a customer",
       tradeoff: "real product screenshots age quickly and need updating",
@@ -837,21 +675,11 @@ export const RULES: Rule[] = [
       basis: `${RUN}: pen.dev landing without ryux`,
       check: "review",
     },
-    {
-      title: "Motion explains change",
-      notWhen: "reduced motion is requested; use a fade or a cut",
-      tradeoff: "motion adds build time and can delay the task if overdone",
-      level: "preferred",
-      do: "Use motion for feedback and continuity (where something came from, what changed), keep it short, and let users act while it runs.",
-      dont: "Animate for decoration alone or make users wait for an animation.",
-      why: "Purposeful motion helps users follow state changes; slow motion is friction.",
-      basis: "Material motion principles; Apple HIG motion",
-      check: "review",
-    },
   ]),
 
   ...skill("design-system", [
     {
+      num: 1,
       title: "Search before you create",
       level: "required",
       gate: "hard",
@@ -862,10 +690,11 @@ export const RULES: Rule[] = [
       check: "review",
     },
     {
-      title: "Consistency and conventions",
+      num: 2,
+      title: "Consistency, conventions, and states",
       level: "required",
       gate: "lock",
-      do: "Follow platform conventions and the project's own patterns; the same component looks and behaves the same everywhere.",
+      do: "Follow platform conventions and the project's own patterns; the same component looks and behaves the same everywhere, with its states (default, hover, focus, pressed, disabled, loading, error) defined once.",
       dont: "Style or wire similar components differently from screen to screen.",
       why: "Consistency lets users transfer what they learned.",
       basis: "Nielsen heuristic 4; Apple HIG; Material Design",
@@ -873,6 +702,7 @@ export const RULES: Rule[] = [
       formerly: ["RX-H-04"],
     },
     {
+      num: 3,
       title: "Tokens over one-off values",
       level: "preferred",
       gate: "lock",
@@ -882,20 +712,11 @@ export const RULES: Rule[] = [
       basis: "W3C Design Tokens Community Group",
       check: "review",
     },
-    {
-      title: "Defined component states",
-      level: "preferred",
-      gate: "lock",
-      do: "Define default, hover, focus, pressed, disabled, loading, and error states once per interactive component.",
-      dont: "Leave states for each screen to improvise.",
-      why: "Undefined states get designed inconsistently, or not at all.",
-      basis: "Material Design state guidance",
-      check: "review",
-    },
   ]),
 
   ...skill("accessibility", [
     {
+      num: 1,
       title: "Readable contrast",
       level: "required",
       gate: "hard",
@@ -907,6 +728,7 @@ export const RULES: Rule[] = [
       formerly: ["RX-H-11"],
     },
     {
+      num: 2,
       title: "Readable text, reachable targets",
       level: "required",
       gate: "hard",
@@ -918,37 +740,30 @@ export const RULES: Rule[] = [
       formerly: ["RX-H-12"],
     },
     {
-      title: "Visible focus, logical order",
+      num: 3,
+      title: "Keyboard and visible focus",
       level: "required",
       gate: "hard",
-      do: "Show a visible focus indicator and keep the focus order the same as the visual order.",
-      dont: "Remove focus outlines without an accessible replacement.",
-      why: "Keyboard and switch users navigate by focus.",
-      basis: "WCAG 2.2 SC 2.4.3 and 2.4.7",
+      do: "Make actions operable from the keyboard (path-based input such as drawing excepted), show a visible focus indicator, and keep focus order the same as the visual order.",
+      dont: "Build pointer-only actions, or remove focus outlines without an accessible replacement.",
+      why: "Keyboard and switch users navigate and act by focus.",
+      basis: "WCAG 2.2 SC 2.1.1, 2.4.3, and 2.4.7",
       check: "review",
       formerly: ["RX-H-13"],
     },
     {
-      title: "Semantic structure",
+      num: 4,
+      title: "Semantic structure, native controls, and names",
       level: "required",
       gate: "hard",
-      do: "Use real headings, landmarks, lists, buttons, and links so the structure exists without the styling.",
-      dont: "Build structure from styled divs alone.",
-      why: "Assistive technology navigates by semantics.",
-      basis: "WCAG 2.2 SC 1.3.1",
+      do: "Use real headings, landmarks, lists, buttons, links, and the right input types before custom elements, and give icon-only buttons and meaningful images an accessible name or alt text.",
+      dont: "Build structure or controls from styled divs, or ship unlabeled icon buttons.",
+      why: "Assistive technology navigates by semantics and announces unlabeled buttons as just \"button\"; native controls bring keyboard and platform behavior for free.",
+      basis: "WCAG 2.2 SC 1.1.1, 1.3.1, and 4.1.2",
       check: "review",
     },
     {
-      title: "Names for controls and images",
-      level: "required",
-      gate: "hard",
-      do: "Give icon-only buttons and meaningful images an accessible name or alt text.",
-      dont: "Ship unlabeled icon buttons.",
-      why: "Screen readers announce unlabeled buttons as just \"button\".",
-      basis: "WCAG 2.2 SC 1.1.1 and 4.1.2",
-      check: "review",
-    },
-    {
+      num: 6,
       title: "Not color alone",
       level: "required",
       do: "Pair color with text or an icon when it carries meaning (errors, status, selection).",
@@ -958,6 +773,7 @@ export const RULES: Rule[] = [
       check: "review",
     },
     {
+      num: 7,
       title: "Errors announced and tied to fields",
       level: "required",
       do: "Link error messages to their fields and announce them to assistive technology.",
@@ -967,6 +783,7 @@ export const RULES: Rule[] = [
       check: "review",
     },
     {
+      num: 8,
       title: "Respect reduced motion",
       level: "required",
       do: "When reduced motion is requested, replace large movement with a fade or a cut.",
@@ -975,19 +792,11 @@ export const RULES: Rule[] = [
       basis: "WCAG 2.2 SC 2.3.3; prefers-reduced-motion; Apple HIG",
       check: "review",
     },
-    {
-      title: "ARIA only when native cannot",
-      level: "preferred",
-      do: "Use native elements first, and add ARIA only for semantics HTML cannot express.",
-      dont: "Add roles and ARIA attributes to elements that already have the right semantics.",
-      why: "Wrong ARIA is worse than none.",
-      basis: "W3C ARIA Authoring Practices (first rule of ARIA)",
-      check: "review",
-    },
   ]),
 
   ...skill("responsive", [
     {
+      num: 1,
       title: "Stated viewport plus the smallest",
       notWhen: "a desktop-only internal tool with a documented minimum width",
       tradeoff: "more widths to design and test",
@@ -1001,6 +810,7 @@ export const RULES: Rule[] = [
       formerly: ["RX-H-14"],
     },
     {
+      num: 2,
       title: "Prioritize, simplify, reorganize",
       notWhen: "the content is already simple enough to stack as is",
       tradeoff: "mobile users may need a tap to reach secondary content",
@@ -1012,6 +822,7 @@ export const RULES: Rule[] = [
       check: "visual QA",
     },
     {
+      num: 3,
       title: "Safe areas and thumb reach",
       notWhen: "desktop-only layouts",
       tradeoff: "bottom-anchored actions cover content and need scroll padding",
@@ -1024,30 +835,20 @@ export const RULES: Rule[] = [
       formerly: ["RX-H-14"],
     },
     {
-      title: "Tables on small screens",
+      num: 4,
+      title: "Tables and overlays on small screens",
+      level: "contextual",
+      when: "the layout has a data table, or modals, drawers, or popovers",
+      do: "Pick a table's priority columns, then stack rows into labeled blocks or scroll the table inside its own container with the key column fixed; on phones, show overlays as a full-screen or bottom sheet with the close and primary actions reachable.",
+      dont: "Shrink a wide table until it is unreadable, scroll the whole page sideways, or show a desktop-sized modal that overflows a phone.",
+      why: "Tables carry comparisons and overlays can trap users when they overflow.",
+      basis: "NNGroup mobile tables guidance; Apple HIG sheets; Material bottom sheets",
       notWhen: "the table is two or three columns and fits as is",
       tradeoff: "stacked rows lose side-by-side comparison",
-      level: "contextual",
-      when: "the layout has a data table",
-      do: "Pick the priority columns, then stack rows into labeled blocks or scroll the table inside its own container with the key column fixed.",
-      dont: "Shrink a wide table until it is unreadable or scroll the whole page sideways.",
-      why: "Tables carry comparisons; losing the key column loses the meaning.",
-      basis: "NNGroup mobile tables guidance",
       check: "visual QA",
     },
     {
-      title: "Overlays on small screens",
-      notWhen: "a small confirmation that fits comfortably as a centered dialog",
-      tradeoff: "full-screen sheets hide the context underneath",
-      level: "contextual",
-      when: "the layout uses modals, drawers, or popovers",
-      do: "On phones, use a full-screen or bottom sheet and keep the close and primary actions reachable.",
-      dont: "Show a desktop-sized modal that overflows a phone screen.",
-      why: "Overflowing overlays trap users.",
-      basis: "Apple HIG sheets; Material bottom sheets",
-      check: "visual QA",
-    },
-    {
+      num: 6,
       title: "Consistent responsive behavior",
       notWhen: "a page has a genuinely different purpose that needs a different pattern; write down why",
       tradeoff: "shared behavior can be suboptimal for an individual page",
@@ -1063,6 +864,7 @@ export const RULES: Rule[] = [
 
   ...skill("frontend", [
     {
+      num: 1,
       title: "Work in the repo's own stack",
       level: "required",
       do: "Before writing UI code, read package.json and nearby components, and use the framework, styling approach, and patterns already there.",
@@ -1072,6 +874,7 @@ export const RULES: Rule[] = [
       check: "review",
     },
     {
+      num: 2,
       title: "No invented logic in UI code",
       level: "required",
       gate: "hard",
@@ -1082,24 +885,7 @@ export const RULES: Rule[] = [
       check: "review",
     },
     {
-      title: "Native, semantic controls",
-      level: "required",
-      do: "Use native or semantic elements (button, a, label, the right input types) before custom elements with handlers.",
-      dont: "Build clickable divs without roles, focus, or keyboard support.",
-      why: "Native controls bring accessibility and platform behavior for free.",
-      basis: "WCAG 2.2 SC 4.1.2; HTML specification",
-      check: "review",
-    },
-    {
-      title: "Components with clear boundaries",
-      level: "preferred",
-      do: "Split components by responsibility, keep state close to where it is used, and derive values instead of duplicating state.",
-      dont: "Grow a single giant component that fetches, formats, and renders everything.",
-      why: "Clear boundaries make UI predictable and testable.",
-      basis: "Clean-code practice",
-      check: "review",
-    },
-    {
+      num: 5,
       title: "Actionable errors",
       level: "required",
       do: "Handle errors with messages that say what to fix, in the user's language when users see them.",
@@ -1110,6 +896,7 @@ export const RULES: Rule[] = [
       formerly: ["RX-K-06"],
     },
     {
+      num: 6,
       title: "Comments say why",
       level: "preferred",
       do: "Write comments that explain the reason behind the code.",
@@ -1120,55 +907,18 @@ export const RULES: Rule[] = [
       formerly: ["RX-K-01"],
     },
     {
-      title: "Specific names",
+      num: 7,
+      title: "Fit the codebase",
       level: "preferred",
-      do: "Name variables and functions by what they hold or do.",
-      dont: "Use data, temp, helper, or manager without context.",
-      why: "Specific names make code readable without comments.",
+      do: "Follow the formatting, naming, and patterns of the surrounding files; name things by what they hold or do; remove unused code, imports, and commented-out blocks.",
+      dont: "Introduce a new style, use data, temp, or helper without context, or leave dead code and empty TODOs behind.",
+      why: "Code that reads like its neighbors is easier to review, and dead code misleads the next reader.",
       basis: "Clean-code practice",
       check: "review",
-      formerly: ["RX-K-02"],
+      formerly: ["RX-K-02", "RX-K-03", "RX-K-04"],
     },
     {
-      title: "No dead code",
-      level: "preferred",
-      do: "Remove unused code, imports, and commented-out blocks.",
-      dont: "Leave empty TODOs or disabled code behind.",
-      why: "Dead code misleads the next reader.",
-      basis: "Clean-code practice",
-      check: "review",
-      formerly: ["RX-K-03"],
-    },
-    {
-      title: "Match the surrounding style",
-      level: "preferred",
-      do: "Follow the formatting, naming, and patterns of the surrounding files.",
-      dont: "Introduce a new style inside an existing codebase.",
-      why: "Mixed styles make every change harder to review.",
-      basis: "Clean-code practice",
-      check: "review",
-      formerly: ["RX-K-04"],
-    },
-    {
-      title: "No speculative abstraction or dependencies",
-      level: "preferred",
-      do: "Build for the needs that exist now, and add a dependency only when it clearly earns its weight.",
-      dont: "Add abstractions, configuration, or packages for needs nobody has stated.",
-      why: "Unused flexibility costs reading time, bundle size, and hides bugs.",
-      basis: "Clean-code practice",
-      check: "review",
-      formerly: ["RX-K-05"],
-    },
-    {
-      title: "Mind performance",
-      level: "preferred",
-      do: "Size and lazy-load heavy images and media, and avoid needless re-renders and large client bundles.",
-      dont: "Ship full-size images or heavy libraries for small effects.",
-      why: "Many Indonesian users are on mid-range phones and metered data.",
-      basis: "web.dev Core Web Vitals",
-      check: "review",
-    },
-    {
+      num: 12,
       title: "Rupiah formatting in code",
       level: "contextual",
       when: "code formats money for display",
@@ -1182,24 +932,17 @@ export const RULES: Rule[] = [
 
   ...skill("visual-qa", [
     {
-      title: "Render it and look",
+      num: 1,
+      title: "Render, inspect, fix, render again",
       level: "required",
-      do: "Render the result at the target viewport (browser, screenshot, or design-tool export) and inspect it before calling it done; if no render tool is available, say so in the report.",
-      dont: "Claim visual quality for a layout you have only seen as code.",
-      why: "Overlaps and clipping are invisible in source and obvious on screen.",
+      do: "Render the result at the target viewport (browser, screenshot, or design-tool export), inspect the main state, one empty or error state, and the smallest supported width, rank issues by impact, fix from the top, and render again; if no render tool is available, say so in the report.",
+      dont: "Claim visual quality for a layout you have only seen as code, or fix by guesswork without checking the result.",
+      why: "Overlaps and clipping are invisible in source and obvious on screen; the loop turns a draft into a reviewed result.",
       basis: `${RUN}: two runs shipped overlaps they never saw`,
       check: "screenshot",
     },
     {
-      title: "Fix, then render again",
-      level: "required",
-      do: "Rank issues by impact (blocks the task, misleads, adds friction, polish), fix from the top, and render again to confirm.",
-      dont: "Fix by guesswork without checking the result, or polish while a blocking issue remains.",
-      why: "The loop is what turns a first draft into a reviewed result.",
-      basis: "ryux visual QA loop",
-      check: "screenshot",
-    },
-    {
+      num: 3,
       title: "No covered or colliding text",
       level: "required",
       do: "Keep floating cards and mockups over empty space only, and keep navigation items clear of the logo and buttons.",
@@ -1210,6 +953,7 @@ export const RULES: Rule[] = [
       formerly: ["RX-H-14"],
     },
     {
+      num: 4,
       title: "Numbers agree",
       level: "required",
       do: "Make line items add up to subtotals and totals, and show the same value the same way everywhere on the screen.",
@@ -1219,37 +963,20 @@ export const RULES: Rule[] = [
       check: "review",
     },
     {
-      title: "Check states and widths",
+      num: 6,
+      title: "Match the intended design",
       level: "preferred",
-      do: "Inspect at least the main state, one empty or error state, and the smallest supported width.",
-      dont: "Review only the happy path at one width.",
-      why: "Most visual bugs live outside the default screenshot.",
-      basis: "ryux visual QA loop",
-      check: "screenshot",
-    },
-    {
-      title: "Compare with the intended design or a reference",
-      level: "preferred",
-      do: "Compare the result with the intended design or, without one, with at least one reference screen_id, and note any intentional difference.",
-      dont: "Judge the result only against itself.",
-      why: "A reference shows what you missed.",
-      basis: "ryux evidence principle",
-      check: "search_screens",
-    },
-    {
-      title: "Match the reference design",
-      level: "contextual",
-      when: "an intended design exists (a Figma or pen.dev frame, DESIGN.md, or an approved screenshot)",
-      do: "Capture the reference and the implementation at the same viewport, compare spacing, typography, color, size, position, components, states, and responsive behavior, and list each deviation with its fix.",
-      dont: "Call the build done while it visibly differs from the design without saying so.",
+      do: "When a reference exists (a Figma or pen.dev frame, DESIGN.md, an approved screenshot), capture it and the build at the same viewport, compare spacing, typography, color, size, position, components, states, and responsive behavior, and list each deviation with its fix; without one, compare with at least one reference screen_id.",
+      dont: "Call the build done while it visibly differs from the design without saying so, or judge it only against itself.",
       why: "Visual QA answers whether the build matches the intent; whether the design is good is Critique's question.",
-      basis: "ryux visual QA loop",
-      check: "screenshot comparison",
+      basis: "ryux visual QA loop; ryux evidence principle",
+      check: "screenshot comparison, search_screens",
     },
   ]),
 
   ...skill("anti-slop", [
     {
+      num: 1,
       title: "Only real numbers",
       level: "required",
       gate: "hard",
@@ -1261,6 +988,7 @@ export const RULES: Rule[] = [
       formerly: ["RX-C-03"],
     },
     {
+      num: 2,
       title: "No invented people",
       level: "required",
       gate: "hard",
@@ -1272,6 +1000,7 @@ export const RULES: Rule[] = [
       formerly: ["RX-C-04"],
     },
     {
+      num: 3,
       title: "Placeholders look like placeholders",
       level: "required",
       gate: "hard",
@@ -1283,6 +1012,7 @@ export const RULES: Rule[] = [
       formerly: ["RX-C-05"],
     },
     {
+      num: 4,
       title: "No fake urgency",
       level: "required",
       gate: "hard",
@@ -1294,6 +1024,7 @@ export const RULES: Rule[] = [
       formerly: ["RX-N-09", "RX-C-10"],
     },
     {
+      num: 5,
       title: "Decoration passes a purpose gate",
       level: "required",
       do: "For each potentially decorative pattern, answer \"why does this exist?\" with a real reason (grouping, emphasis, state, brand), or remove it.",
@@ -1301,18 +1032,22 @@ export const RULES: Rule[] = [
       why: "Unjustified decoration is what makes AI-generated UI look the same.",
       basis: "ryux anti-slop principle",
       check: "review",
+      formerly: ["RX-H-08"],
     },
     {
+      num: 6,
       title: "Complexity with a reason",
       level: "required",
       gate: "hard",
-      do: "Remove elements, options, states, and code paths that serve no stated need.",
-      dont: "Add settings, sections, or abstractions \"for later\".",
+      do: "Remove elements, options, states, code paths, abstractions, and dependencies that serve no stated need.",
+      dont: "Add settings, sections, abstractions, or packages \"for later\", or features because similar products have them.",
       why: "Unneeded complexity costs every user and every future change.",
       basis: "Nielsen heuristic 8; clean-code practice",
       check: "review",
+      formerly: ["RX-K-05"],
     },
     {
+      num: 7,
       title: "Claims match the evidence",
       level: "required",
       do: "Describe what was checked and how (\"keyboard and focus checked; no automated accessibility test was available\").",
@@ -1322,6 +1057,7 @@ export const RULES: Rule[] = [
       check: "review",
     },
     {
+      num: 8,
       title: "Human designer notes",
       level: "required",
       do: "Have a person write the \"why it works / weaknesses\" judgment; an agent may summarize it.",
@@ -1333,6 +1069,47 @@ export const RULES: Rule[] = [
     },
   ]),
 ];
+
+
+// Rules retired in rules 1.3: merged into another rule, or moved into a skill's guide as guidance.
+// "formerly" keeps the RX-1.x mapping for rules whose content now lives in a guide.
+export const RETIRED: Record<string, { to: string; formerly?: string[] }> = {
+  "RX-PR-06": { to: "ryux-product guide" },
+  "RX-PR-07": { to: "ryux-product guide; RX-AS-06" },
+  "RX-PR-08": { to: "ryux-product guide" },
+  "RX-UX-03": { to: "ryux-ux guide" },
+  "RX-UX-04": { to: "ryux-ux guide" },
+  "RX-UX-05": { to: "RX-UX-02" },
+  "RX-UX-09": { to: "ryux-ux guide", formerly: ["RX-H-02"] },
+  "RX-IX-06": { to: "RX-A11Y-03" },
+  "RX-IX-07": { to: "ryux-interaction guide" },
+  "RX-IX-08": { to: "ryux-interaction guide", formerly: ["RX-H-07"] },
+  "RX-FM-02": { to: "ryux-forms guide" },
+  "RX-FM-04": { to: "ryux-forms guide", formerly: ["RX-N-04"] },
+  "RX-FM-07": { to: "ryux-forms guide" },
+  "RX-EC-04": { to: "RX-EC-03" },
+  "RX-EC-05": { to: "ryux-edge-cases guide" },
+  "RX-EC-08": { to: "RX-EC-07" },
+  "RX-CD-06": { to: "RX-CD-03" },
+  "RX-CD-07": { to: "ryux-content guide", formerly: ["RX-H-10"] },
+  "RX-CD-08": { to: "ryux-content guide" },
+  "RX-UI-02": { to: "RX-AS-05" },
+  "RX-UI-06": { to: "ryux-ui guide" },
+  "RX-UI-08": { to: "ryux-ui guide" },
+  "RX-DS-04": { to: "RX-DS-02" },
+  "RX-A11Y-05": { to: "RX-A11Y-04" },
+  "RX-A11Y-09": { to: "ryux-accessibility guide" },
+  "RX-RD-05": { to: "RX-RD-04" },
+  "RX-FE-03": { to: "RX-A11Y-04" },
+  "RX-FE-04": { to: "ryux-frontend guide" },
+  "RX-FE-08": { to: "RX-FE-07" },
+  "RX-FE-09": { to: "RX-FE-07" },
+  "RX-FE-10": { to: "RX-AS-06" },
+  "RX-FE-11": { to: "ryux-frontend guide" },
+  "RX-QA-02": { to: "RX-QA-01" },
+  "RX-QA-05": { to: "RX-QA-01" },
+  "RX-QA-07": { to: "RX-QA-06" },
+};
 
 // Brief item: patterns that are allowed when they have a purpose, and removed when they do not.
 export interface PurposeGate {
@@ -1365,7 +1142,7 @@ export const HARD_GATES: { item: string; rules: string[] }[] = [
   { item: "Fake urgency or scarcity", rules: ["RX-AS-04"] },
   { item: "Missing critical states", rules: ["RX-EC-01"] },
   { item: "Broken responsive behavior", rules: ["RX-RD-01"] },
-  { item: "Accessibility failures", rules: ["RX-A11Y-01", "RX-A11Y-02", "RX-A11Y-03", "RX-A11Y-04", "RX-A11Y-05"] },
+  { item: "Accessibility failures", rules: ["RX-A11Y-01", "RX-A11Y-02", "RX-A11Y-03", "RX-A11Y-04"] },
   { item: "Unclear primary action", rules: ["RX-PR-03"] },
   { item: "Unexplained interaction behavior", rules: ["RX-IX-01"] },
   { item: "Duplicate components", rules: ["RX-DS-01"] },
@@ -1379,7 +1156,7 @@ export const QUALITY_LOCKS: { item: string; rules: string[] }[] = [
   { item: "Color roles", rules: ["RX-UI-04"] },
   { item: "Terminology", rules: ["RX-CD-05"] },
   { item: "Components", rules: ["RX-DS-02"] },
-  { item: "Interaction patterns and states", rules: ["RX-DS-02", "RX-DS-04"] },
+  { item: "Interaction patterns and states", rules: ["RX-DS-02"] },
   { item: "Responsive behavior", rules: ["RX-RD-06"] },
   { item: "Visual hierarchy", rules: ["RX-UI-01"] },
 ];
@@ -1470,7 +1247,7 @@ export const LEVEL_LABEL: Record<Level, string> = {
   contextual: "Contextual",
 };
 
-export const RULES_VERSION = "1.2.0";
+export const RULES_VERSION = "1.3.0";
 export const RULESET_VERSION = "RX-2.0";
 export const MCP_NAME = "ryux";
 export const MCP_URL = "https://mcp.ryux.design/mcp";

@@ -25,8 +25,9 @@ Define every meaningful action in four parts before implementing it:
    nothing; use undo.
 
 States to define for interactive elements: default, hover (pointer), focus, active or pressed,
-disabled (with a reason), loading, success, error. Keyboard: every action is reachable; Enter
-submits; Escape closes.
+disabled (with a reason, or keep it enabled and explain on use), loading, success, error. Keyboard:
+every action is reachable; Enter submits; Escape closes. For repeat or expert use, add shortcuts
+(recent items, quick amounts) without crowding the novice path.
 
 Does not cover: form-specific behavior (see ryux-forms).
 
@@ -83,34 +84,6 @@ How local apps handle the same action and its states, and local payment patterns
 - Not when: prices are not known until a later choice (shipping before an address); show an estimate and say when it is final
 - Trade-off: a full breakdown adds lines to a small screen
 - Check: review
-
-### RX-IX-06 [Required] Keyboard-operable actions
-
-- Do: Make actions reachable and operable from the keyboard (path-based input such as drawing excepted); Enter submits a form and Escape closes a dialog.
-- Do not: Build actions that only work with a pointer or a touch gesture.
-- Why: Keyboard, switch, and power users depend on it. (WCAG 2.2 SC 2.1.1)
-- Not when: path-based input such as drawing or a signature; offer an alternative
-- Trade-off: custom widgets need explicit key handling and testing
-- Check: review
-
-### RX-IX-07 [Preferred] Disabled controls explain themselves
-
-- Do: When a control is disabled, show why or what enables it, or keep it enabled and explain on use.
-- Do not: Grey out a button with no explanation.
-- Why: An unexplained disabled state is a dead end. (NNGroup disabled-button guidance)
-- Not when: the reason is already visible right next to the control
-- Trade-off: explanations add text; an enabled control that explains on use can surprise
-- Check: review
-
-### RX-IX-08 [Contextual] Shortcuts for repeat use
-
-- When: the product is used repeatedly or by experts (cashier, admin, daily tools)
-- Do: Offer shortcuts such as recent items, quick amounts, and keyboard actions.
-- Do not: Make frequent users walk the novice path every time.
-- Why: Accelerators keep repeat work fast without hurting new users. (Nielsen heuristic 7 (1994))
-- Not when: first-time or rare tasks; shortcuts clutter the novice path
-- Trade-off: shortcuts must be discoverable without crowding the screen
-- Check: heuristic_eval H-07
 
 ### RX-IX-09 [Contextual] QRIS: amount and merchant first
 

@@ -28,7 +28,7 @@ result, ask **"Why does this exist?"** If there is no meaningful reason, remove 
 | Fake urgency or scarcity | RX-AS-04 |
 | Missing critical states | RX-EC-01 |
 | Broken responsive behavior | RX-RD-01 |
-| Accessibility failures | RX-A11Y-01, RX-A11Y-02, RX-A11Y-03, RX-A11Y-04, RX-A11Y-05 |
+| Accessibility failures | RX-A11Y-01, RX-A11Y-02, RX-A11Y-03, RX-A11Y-04 |
 | Unclear primary action | RX-PR-03 |
 | Unexplained interaction behavior | RX-IX-01 |
 | Duplicate components | RX-DS-01 |
@@ -61,7 +61,7 @@ result, ask **"Why does this exist?"** If there is no meaningful reason, remove 
 | Color roles | RX-UI-04 |
 | Terminology | RX-CD-05 |
 | Components | RX-DS-02 |
-| Interaction patterns and states | RX-DS-02, RX-DS-04 |
+| Interaction patterns and states | RX-DS-02 |
 | Responsive behavior | RX-RD-06 |
 | Visual hierarchy | RX-UI-01 |
 
@@ -111,8 +111,8 @@ Real screens show what real products do instead of invented numbers and urgency:
 
 ### RX-AS-06 [Required] [Hard Gate] Complexity with a reason
 
-- Do: Remove elements, options, states, and code paths that serve no stated need.
-- Do not: Add settings, sections, or abstractions "for later".
+- Do: Remove elements, options, states, code paths, abstractions, and dependencies that serve no stated need.
+- Do not: Add settings, sections, abstractions, or packages "for later", or features because similar products have them.
 - Why: Unneeded complexity costs every user and every future change. (Nielsen heuristic 8; clean-code practice)
 - Check: review
 

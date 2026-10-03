@@ -8,4 +8,6 @@
     "bindings": [{ "name": "MCP_OBJECT", "class_name": "RyuxMCP" }]
   },
   "migrations": [{ "tag": "v1", "new_sqlite_classes": ["RyuxMCP"] }]
+  // Aktifkan setelah ryux.design terdaftar dan zone-nya ada di Cloudflare (lihat DEPLOY.md):
+  // ,"routes": [{ "pattern": "mcp.ryux.design", "custom_domain": true }]
 }

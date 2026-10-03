@@ -21,6 +21,9 @@ Avoid generic AI language: "unlock", "elevate", "transform", "seamlessly", "powe
 - **Indonesian** as users speak it; English only for terms they already use.
 - **Money**: Rp1.250.000.
 - **Dates, times, numbers**: 2 Okt 2026, 14.30 WIB, 1,5, 12.500, +62 812-3456-7890.
+- **Help** at the point of need (a hint under a field, "Kenapa diminta?"), not only in an FAQ.
+- **Chat channels** (WhatsApp, Telegram): a short greeting, short paragraphs, sparse *bold*, and a
+  clear contact line; not a marketing page.
 - **Offers and terms**: write only the terms you were given. Unknown minimums, quotas, deadlines,
   and codes stay placeholders (`[minimal belanja]`, `[tanggal selesai]`); do not add "kuota
   terbatas" or "sebelum kehabisan" unless a real limit was stated (RX-AS-04, RX-PR-02).
@@ -50,11 +53,11 @@ Real Indonesian labels, errors, and how money, dates, and times are written: `se
 - Why: It is the common Indonesian form; mixed formats look careless next to prices. (PUEBI currency notation; ryux run 2026-10-02)
 - Check: audit_copy C-07
 
-### RX-CD-03 [Preferred] Labels name the real action
+### RX-CD-03 [Preferred] Specific, plain copy
 
-- Do: Name the action and what it gets the user ("Bayar Rp45.000", "Simpan alamat").
-- Do not: Use vague labels ("Submit", "Learn more") or hype words ("unlock", "elevate", "seamlessly").
-- Why: Specific labels tell users what happens next. (NNGroup button and link-label guidance)
+- Do: Name the action and what it gets the user ("Bayar Rp45.000", "Simpan alamat"); use sentence case and plain lists, with at most one emoji where the channel expects it.
+- Do not: Use vague labels ("Submit", "Learn more"), hype words ("unlock", "elevate", "seamlessly"), emoji bullets, ALL CAPS, or stacked exclamation marks.
+- Why: Specific, plain copy tells users what happens next; decoration on every line buries it and reads as generated. (NNGroup button and link-label guidance; ryux run 2026-10-02: unconstrained WhatsApp copy)
 - Check: audit_copy
 
 ### RX-CD-04 [Required] Errors: what, why, how to recover
@@ -69,28 +72,6 @@ Real Indonesian labels, errors, and how money, dates, and times are written: `se
 - Do: Use one term for each concept across screens, buttons, and messages.
 - Do not: Call the same thing "pesanan", "order", and "transaksi" on different screens.
 - Why: Changing terms make users wonder whether it is a different thing. (Nielsen heuristic 4 (1994))
-- Check: review
-
-### RX-CD-06 [Preferred] Plain decoration
-
-- Do: Use sentence case and plain lists; one emoji is fine where the channel expects it.
-- Do not: Use emoji as bullets, ALL CAPS, or stacked exclamation marks.
-- Why: Decoration on every line buries the information and reads as generated. (ryux run 2026-10-02: unconstrained WhatsApp copy)
-- Check: audit_copy, review
-
-### RX-CD-07 [Preferred] Help at the point of need
-
-- Do: Put short help where the question arises (a hint under a field, "Kenapa diminta?").
-- Do not: Send users to a separate FAQ for a field-level question.
-- Why: Help in context gets read; help elsewhere gets skipped. (Nielsen heuristic 10 (1994))
-- Check: heuristic_eval H-10
-
-### RX-CD-08 [Contextual] Chat copy sounds like a person
-
-- When: the text goes to WhatsApp, Telegram, or another chat channel
-- Do: Use a short greeting, short paragraphs, sparse *bold*, and a clear contact line.
-- Do not: Paste a marketing page into a chat.
-- Why: Chat readers expect a message from a person, not an ad. (ryux run 2026-10-02: WhatsApp promo comparison)
 - Check: review
 
 ### RX-CD-09 [Required] Dates, times, and numbers in Indonesian form

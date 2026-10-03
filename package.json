@@ -10,6 +10,7 @@
     "dev:web": "pnpm --filter @ryux/web dev",
     "build:web": "pnpm --filter @ryux/web build",
     "sync:skills": "pnpm --filter @ryuxdsgn/ryux build && node packages/cli/scripts/sync-skills.mjs",
-    "typecheck": "pnpm -r typecheck"
+    "typecheck": "pnpm -r typecheck",
+    "knowledge": "pnpm --filter @ryux/pipeline run knowledge"
   }
 }

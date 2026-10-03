@@ -1,6 +1,6 @@
 ---
 name: ryux-product
-description: "Ryux Product thinking: user, task, goal, primary action, constraints, assumptions. Load when starting a new screen or flow, or when the scope is unclear."
+description: "Ryux Product thinking: user, task, goal, primary action, constraints, assumptions, and decisions backed by evidence. Load when starting a new screen or flow, choosing between patterns, or when the scope is unclear."
 ---
 
 # ryux-product: Product thinking
@@ -23,6 +23,25 @@ pricing, requirements, or API behavior; mark them [REAL DATA] or ask.
 
 Find evidence with the ryux MCP (`search_screens`, `get_flow`, `get_local_pattern`) and cite the
 `screen_id`, or call the decision a judgment call.
+
+Lead with the user's outcome, keep only what serves the task, and follow the project's DESIGN.md
+or brand when it exists (write down any deliberate departure).
+
+**Decide with evidence.** For a consequential decision, compare patterns, then choose by context:
+
+```
+Decision:   payment confirmation layout
+Context:    standalone bank transfer, first-time users
+Options:
+  A  QR success screen        scr_...  strength: instant      weakness: little detail
+  B  bank-transfer receipt    scr_...  strength: verifiable   weakness: dense
+  C  marketplace order status scr_...  strength: order link   weakness: not standalone
+Choice:     B, because the context is a standalone transfer
+Evidence:   Strong (2+ comparable screens, same context) | Thin (1, or other context) | None
+Trade-off:  higher density
+```
+
+With **None**, say so: present the options and their trade-offs, or ask. Never invent a reference.
 
 Does not cover: layout or visual decisions (see ryux-ux and ryux-ui).
 
@@ -70,24 +89,18 @@ How comparable Indonesian products frame the same task and offer: `search_screen
 - Why: Payment, address, and trust habits differ locally (QRIS, virtual accounts, COD, WhatsApp). (ryux taxonomy of local patterns)
 - Check: search_screens
 
-### RX-PR-06 [Preferred] Outcome before feature
+### RX-PR-09 [Required] Compare patterns before choosing
 
-- Do: Lead with what the user gets or finishes, in their words, then explain the feature.
-- Do not: Open with product features or technology.
-- Why: People scan for relevance to their task before reading details. (NNGroup scanning research)
-- Check: review
+- Do: For a consequential decision (a new flow, payment, identity, navigation), list two or three candidate patterns with their context, strength, and weakness, then choose the one whose context matches, not the one that looks best.
+- Do not: Pick the first familiar pattern, or choose by taste.
+- Why: A pattern is right for a context, not in general; comparing makes the reason visible and checkable. (ryux evidence principle; NNGroup competitive usability practice)
+- Not when: small, reversible decisions inside an established pattern; follow the design system instead
+- Trade-off: takes longer than picking the familiar option
+- Check: search_screens, compare_apps
 
-### RX-PR-07 [Preferred] Only what serves the task
+### RX-PR-10 [Required] Say when the evidence is not enough
 
-- Do: Keep the elements and options the stated task needs and move the rest to a later step.
-- Do not: Add sections, stats, settings, or badges because similar products have them.
-- Why: Every extra element competes with the primary action and adds states to maintain. (Nielsen heuristic 8 (1994))
-- Check: review
-
-### RX-PR-08 [Contextual] Follow the project's direction
-
-- When: the project has a DESIGN.md, a brand guide, or an existing design language
-- Do: Follow it and write down any deliberate departure as a design decision record.
-- Do not: Override it with the agent's default style.
-- Why: Ryux filters and reasons; visual direction belongs to the project. (ryux run 2026-10-02: rules alone produced honest but undirected layouts)
+- Do: Rate the evidence for a decision as Strong (two or more comparable screens in the same context), Thin (one, or a different context), or None; when it is None on a consequential choice, present the options and their trade-offs or ask, instead of picking silently.
+- Do not: Invent a reference, or present a judgment call as if real products backed it.
+- Why: Knowing what you do not know is part of design judgment; false certainty ships the wrong pattern. (ryux evidence principle)
 - Check: review
