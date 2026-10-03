@@ -42,18 +42,11 @@ The intended design (Figma, pen.dev, DESIGN.md) is the reference; Ryux screens a
 
 ## Rules
 
-### RX-QA-01 [Required] Render it and look
+### RX-QA-01 [Required] Render, inspect, fix, render again
 
-- Do: Render the result at the target viewport (browser, screenshot, or design-tool export) and inspect it before calling it done; if no render tool is available, say so in the report.
-- Do not: Claim visual quality for a layout you have only seen as code.
-- Why: Overlaps and clipping are invisible in source and obvious on screen. (ryux run 2026-10-02: two runs shipped overlaps they never saw)
-- Check: screenshot
-
-### RX-QA-02 [Required] Fix, then render again
-
-- Do: Rank issues by impact (blocks the task, misleads, adds friction, polish), fix from the top, and render again to confirm.
-- Do not: Fix by guesswork without checking the result, or polish while a blocking issue remains.
-- Why: The loop is what turns a first draft into a reviewed result. (ryux visual QA loop)
+- Do: Render the result at the target viewport (browser, screenshot, or design-tool export), inspect the main state, one empty or error state, and the smallest supported width, rank issues by impact, fix from the top, and render again; if no render tool is available, say so in the report.
+- Do not: Claim visual quality for a layout you have only seen as code, or fix by guesswork without checking the result.
+- Why: Overlaps and clipping are invisible in source and obvious on screen; the loop turns a draft into a reviewed result. (ryux run 2026-10-02: two runs shipped overlaps they never saw)
 - Check: screenshot
 
 ### RX-QA-03 [Required] No covered or colliding text
@@ -70,24 +63,9 @@ The intended design (Figma, pen.dev, DESIGN.md) is the reference; Ryux screens a
 - Why: Readers check sums; one wrong total undermines everything else. (ryux README checkout image (items Rp125.000, subtotal Rp1.200.000))
 - Check: review
 
-### RX-QA-05 [Preferred] Check states and widths
+### RX-QA-06 [Preferred] Match the intended design
 
-- Do: Inspect at least the main state, one empty or error state, and the smallest supported width.
-- Do not: Review only the happy path at one width.
-- Why: Most visual bugs live outside the default screenshot. (ryux visual QA loop)
-- Check: screenshot
-
-### RX-QA-06 [Preferred] Compare with the intended design or a reference
-
-- Do: Compare the result with the intended design or, without one, with at least one reference screen_id, and note any intentional difference.
-- Do not: Judge the result only against itself.
-- Why: A reference shows what you missed. (ryux evidence principle)
-- Check: search_screens
-
-### RX-QA-07 [Contextual] Match the reference design
-
-- When: an intended design exists (a Figma or pen.dev frame, DESIGN.md, or an approved screenshot)
-- Do: Capture the reference and the implementation at the same viewport, compare spacing, typography, color, size, position, components, states, and responsive behavior, and list each deviation with its fix.
-- Do not: Call the build done while it visibly differs from the design without saying so.
-- Why: Visual QA answers whether the build matches the intent; whether the design is good is Critique's question. (ryux visual QA loop)
-- Check: screenshot comparison
+- Do: When a reference exists (a Figma or pen.dev frame, DESIGN.md, an approved screenshot), capture it and the build at the same viewport, compare spacing, typography, color, size, position, components, states, and responsive behavior, and list each deviation with its fix; without one, compare with at least one reference screen_id.
+- Do not: Call the build done while it visibly differs from the design without saying so, or judge it only against itself.
+- Why: Visual QA answers whether the build matches the intent; whether the design is good is Critique's question. (ryux visual QA loop; ryux evidence principle)
+- Check: screenshot comparison, search_screens

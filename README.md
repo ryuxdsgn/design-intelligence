@@ -1,6 +1,6 @@
 <p align="center">
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-2ea44f" alt="MIT License"></a>
-  <img src="https://img.shields.io/badge/status-early__access%20v0.1-1f6feb" alt="Status: early access v0.1">
+  <img src="https://img.shields.io/badge/status-early__access%20%C2%B7%20rules%201.3-1f6feb" alt="Status: early access, rules 1.3">
   <img src="https://img.shields.io/badge/MCP%20tools-9-8957e5" alt="9 MCP tools">
   <img src="https://img.shields.io/badge/skills-14%20modular-e36209" alt="Ryux: 14 modular design skills">
 </p>
@@ -119,7 +119,7 @@ invented (RX-PR-02, RX-FE-02). Money comes out as `Rp1.250.000`, not `Rp 1.250.0
 
 <a href="assets/compare/chat/compare.png"><img src="assets/compare/chat/compare.png" alt="Two WhatsApp promo announcements side by side. Without Ryux: emoji on almost every line, emoji number bullets, ALL CAPS, and three urgency lines including selama persediaan masih ada and sebelum kehabisan. With Ryux: one emoji in the greeting, a plain list of terms where every unknown value stays a placeholder, no invented code or quota, and a clear line on how to ask or order" width="100%"></a>
 
-No emoji bullets or invented scarcity (RX-CD-06, RX-AS-04). Minimums, codes, and quotas the shop never
+No emoji bullets or invented scarcity (RX-CD-03, RX-AS-04). Minimums, codes, and quotas the shop never
 gave stay placeholders instead of invented terms (RX-PR-02), and the message ends with a clear next
 step.
 
@@ -217,8 +217,8 @@ npx @ryuxdsgn/ryux remove
 | Anything else | rules inline in `AGENTS.md` | `agents-md` |
 
 Presets: `--for designer`, `--for builder`, or `--for all`. Groups for fine control: `foundation`,
-`ux`, `ui`, `engineering`, `quality`, `analyze`, and `critique`. `ryux-core` always comes along. The reference data (Ryux Knowledge) is a separate hosted MCP service:
-`claude mcp add --transport http ryux https://mcp.ryux.design/mcp` (early access).
+`ux`, `ui`, `engineering`, `quality`, `analyze`, and `critique`. `ryux-core` always comes along. The reference data (Ryux Knowledge) will be a separate hosted MCP service at
+`https://mcp.ryux.design/mcp`. It is not live yet; see Status below. Until then you can run the MCP server locally (`pnpm dev:mcp`).
 
 ## Repo layout (pnpm monorepo)
 
@@ -260,9 +260,12 @@ To install Ryux into your own agent, see [Install](#install).
 
 ## Status
 
-**v0.1, early access, free.** The data is still sample data, there's no login yet, and quota lives
-in memory. On the way to production: Supabase (`published` data with RLS on), OAuth, ledger-based
-quota, and full-text plus pgvector search.
+**Rules 1.3, early access, free.** The skills and rules are ready to install today. Ryux Knowledge is
+in pilot. The capture pipeline (`pnpm knowledge`) works: screenshot import, AI draft tags marked
+`source: ai`, human review, and human-written designer notes before anything is published. The
+library itself is still small. The hosted MCP at `mcp.ryux.design` is not live yet, so agents
+without it get rules and standards but no `screen_id` evidence. Ryux says so instead of inventing a
+reference. Still to come: OAuth, ledger-based quota, and full-text plus pgvector search.
 
 ## Security
 

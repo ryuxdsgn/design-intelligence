@@ -8,6 +8,7 @@ import {
   MCP_ADD_CMD,
   PURPOSE_GATES,
   QUALITY_LOCKS,
+  RETIRED,
   RULES,
   RULES_VERSION,
   RULESET_VERSION,
@@ -61,7 +62,11 @@ export function activationTable(): string {
 export function deliveryGateTemplate(): string {
   const width = Math.max(...GATE_AREAS.map((a) => a.length), "FINAL".length) + 2;
   const lines = [...GATE_AREAS, "FINAL"].map((a) =>
-    a === "FINAL" ? `${a.padEnd(width)}PASS | FAIL` : `${a.padEnd(width)}PASS | FAIL | N/A  · one-line reason`,
+    a === "FINAL"
+      ? `${a.padEnd(width)}PASS | FAIL`
+      : a === "PRODUCT"
+        ? `${a.padEnd(width)}PASS | FAIL | N/A  · one-line reason · evidence Strong | Thin | None`
+        : `${a.padEnd(width)}PASS | FAIL | N/A  · one-line reason`,
   );
   return `\`\`\`\n${lines.join("\n")}\n\`\`\``;
 }
@@ -252,11 +257,17 @@ export function renderRulesDoc(): string {
 export function renderMigrationTable(): string {
   const rows: [string, string][] = [];
   for (const r of RULES) for (const old of r.formerly ?? []) rows.push([old, r.id]);
+  for (const [id, x] of Object.entries(RETIRED)) for (const old of x.formerly ?? []) rows.push([old, `${x.to} (retired ${id})`]);
   rows.sort((a, b) => a[0].localeCompare(b[0], "en", { numeric: true }));
   const grouped = new Map<string, string[]>();
   for (const [old, now] of rows) grouped.set(old, [...(grouped.get(old) ?? []), now]);
   const lines = [...grouped.entries()].map(([old, now]) => `| ${old} | ${now.join(", ")} |`);
   return `| RX-1.x ID | ${RULESET_VERSION} ID |\n| --- | --- |\n${lines.join("\n")}`;
+}
+
+export function retiredTable(): string {
+  const rows = Object.entries(RETIRED).map(([id, x]) => `| ${id} | ${x.to} |`);
+  return `| Retired ID | Now in |\n| --- | --- |\n${rows.join("\n")}`;
 }
 
 export function groupsTable(): string {

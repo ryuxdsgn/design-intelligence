@@ -66,24 +66,14 @@ How reference flows adapt across widths when captured: `get_flow`, `search_scree
 - Trade-off: bottom-anchored actions cover content and need scroll padding
 - Check: visual QA
 
-### RX-RD-04 [Contextual] Tables on small screens
+### RX-RD-04 [Contextual] Tables and overlays on small screens
 
-- When: the layout has a data table
-- Do: Pick the priority columns, then stack rows into labeled blocks or scroll the table inside its own container with the key column fixed.
-- Do not: Shrink a wide table until it is unreadable or scroll the whole page sideways.
-- Why: Tables carry comparisons; losing the key column loses the meaning. (NNGroup mobile tables guidance)
+- When: the layout has a data table, or modals, drawers, or popovers
+- Do: Pick a table's priority columns, then stack rows into labeled blocks or scroll the table inside its own container with the key column fixed; on phones, show overlays as a full-screen or bottom sheet with the close and primary actions reachable.
+- Do not: Shrink a wide table until it is unreadable, scroll the whole page sideways, or show a desktop-sized modal that overflows a phone.
+- Why: Tables carry comparisons and overlays can trap users when they overflow. (NNGroup mobile tables guidance; Apple HIG sheets; Material bottom sheets)
 - Not when: the table is two or three columns and fits as is
 - Trade-off: stacked rows lose side-by-side comparison
-- Check: visual QA
-
-### RX-RD-05 [Contextual] Overlays on small screens
-
-- When: the layout uses modals, drawers, or popovers
-- Do: On phones, use a full-screen or bottom sheet and keep the close and primary actions reachable.
-- Do not: Show a desktop-sized modal that overflows a phone screen.
-- Why: Overflowing overlays trap users. (Apple HIG sheets; Material bottom sheets)
-- Not when: a small confirmation that fits comfortably as a centered dialog
-- Trade-off: full-screen sheets hide the context underneath
 - Check: visual QA
 
 ### RX-RD-06 [Preferred] [Quality Lock] Consistent responsive behavior

@@ -17,7 +17,8 @@ The happy path is not enough. Walk this list for the screen you built:
 | Permissions | read-only, restricted, different roles (only roles that exist) |
 | System | session expired, unauthorized, unexpected error |
 
-For each case that can happen, decide what the user sees and what they can do next. Cases that
+For first use and zero data, explain what will appear and give one action to start. For each case
+that can happen, decide what the user sees and what they can do next. Cases that
 cannot happen in this product do not need a design; say so in the Delivery Gate.
 
 Does not cover: how errors are worded (see ryux-content).
@@ -45,26 +46,12 @@ How reference apps show empty, error, offline, and loading states for this flow:
 - Why: A recoverable error keeps the task alive. (Nielsen heuristic 9 (1994))
 - Check: heuristic_eval H-09
 
-### RX-EC-03 [Preferred] Data volume and shape
+### RX-EC-03 [Preferred] Data volume, shape, and length
 
-- Do: Check one item, many items, duplicates, and missing fields; paginate or virtualize long lists.
-- Do not: Design only for a tidy sample of five items.
-- Why: Real data is uneven, and layouts break at the extremes. (ryux review practice)
+- Do: Check one item, many items, duplicates, missing fields, long names and long Indonesian words, and large amounts such as Rp1.250.000.000; paginate or virtualize long lists, and wrap or truncate with access to the full value.
+- Do not: Design only around a tidy sample of five short items.
+- Why: Real data is uneven and longer than sample data, and layouts break at the extremes. (Localization practice; ryux review practice)
 - Check: visual QA
-
-### RX-EC-04 [Preferred] Long text and large amounts
-
-- Do: Test with long names, long Indonesian words, and large amounts such as Rp1.250.000.000; wrap or truncate with access to the full value.
-- Do not: Design only around short sample strings.
-- Why: Real content is longer than sample content and breaks fixed layouts. (Localization practice; ryux review practice)
-- Check: visual QA
-
-### RX-EC-05 [Preferred] First use and zero data
-
-- Do: Explain what will appear in an empty view and give one action to get started.
-- Do not: Leave a blank list or a lone "No data".
-- Why: An empty state is the first lesson in how the feature works. (NNGroup empty-state guidance)
-- Check: review
 
 ### RX-EC-06 [Contextual] Slow, timeout, offline, server failure
 
@@ -74,18 +61,10 @@ How reference apps show empty, error, offline, and loading states for this flow:
 - Why: Connection quality varies a lot between places and moments. (ryux review practice)
 - Check: review
 
-### RX-EC-07 [Contextual] Roles and restricted access
+### RX-EC-07 [Contextual] Roles, access, and sessions
 
-- When: the product has roles, permissions, or read-only modes
-- Do: Design the read-only and restricted states: say why an action is unavailable and who can do it. Use roles that exist in the product.
-- Do not: Invent roles or show actions that fail only after the user tries them.
-- Why: Users need to know whether to ask someone or give up. (ryux review practice)
-- Check: review
-
-### RX-EC-08 [Contextual] Session expiry and unauthorized
-
-- When: the product has sessions or authentication
-- Do: On expiry, keep the user's work, ask them to sign in again, and return them to the same place.
-- Do not: Dump users on a login screen and lose their progress.
-- Why: Re-authentication should cost seconds, not the task. (ryux review practice)
+- When: the product has roles, permissions, read-only modes, or sessions
+- Do: Design read-only and restricted states (say why an action is unavailable and who can do it, using roles that exist), and on session expiry keep the user's work and return them to the same place after signing in.
+- Do not: Invent roles, show actions that fail only after the user tries them, or dump users on a login screen and lose their progress.
+- Why: Users need to know whether to ask someone, and re-authentication should cost seconds, not the task. (ryux review practice)
 - Check: review

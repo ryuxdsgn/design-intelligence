@@ -45,20 +45,6 @@ The repo itself is the main evidence (stack, components, tokens); reference scre
 - Why: Invented logic ships as real behavior. (ryux product principle (see RX-PR-02))
 - Check: review
 
-### RX-FE-03 [Required] Native, semantic controls
-
-- Do: Use native or semantic elements (button, a, label, the right input types) before custom elements with handlers.
-- Do not: Build clickable divs without roles, focus, or keyboard support.
-- Why: Native controls bring accessibility and platform behavior for free. (WCAG 2.2 SC 4.1.2; HTML specification)
-- Check: review
-
-### RX-FE-04 [Preferred] Components with clear boundaries
-
-- Do: Split components by responsibility, keep state close to where it is used, and derive values instead of duplicating state.
-- Do not: Grow a single giant component that fetches, formats, and renders everything.
-- Why: Clear boundaries make UI predictable and testable. (Clean-code practice)
-- Check: review
-
 ### RX-FE-05 [Required] Actionable errors
 
 - Do: Handle errors with messages that say what to fix, in the user's language when users see them.
@@ -73,39 +59,11 @@ The repo itself is the main evidence (stack, components, tokens); reference scre
 - Why: Restating comments add noise and drift out of date. (ryux run 2026-10-02: order-total.ts without ryux)
 - Check: review
 
-### RX-FE-07 [Preferred] Specific names
+### RX-FE-07 [Preferred] Fit the codebase
 
-- Do: Name variables and functions by what they hold or do.
-- Do not: Use data, temp, helper, or manager without context.
-- Why: Specific names make code readable without comments. (Clean-code practice)
-- Check: review
-
-### RX-FE-08 [Preferred] No dead code
-
-- Do: Remove unused code, imports, and commented-out blocks.
-- Do not: Leave empty TODOs or disabled code behind.
-- Why: Dead code misleads the next reader. (Clean-code practice)
-- Check: review
-
-### RX-FE-09 [Preferred] Match the surrounding style
-
-- Do: Follow the formatting, naming, and patterns of the surrounding files.
-- Do not: Introduce a new style inside an existing codebase.
-- Why: Mixed styles make every change harder to review. (Clean-code practice)
-- Check: review
-
-### RX-FE-10 [Preferred] No speculative abstraction or dependencies
-
-- Do: Build for the needs that exist now, and add a dependency only when it clearly earns its weight.
-- Do not: Add abstractions, configuration, or packages for needs nobody has stated.
-- Why: Unused flexibility costs reading time, bundle size, and hides bugs. (Clean-code practice)
-- Check: review
-
-### RX-FE-11 [Preferred] Mind performance
-
-- Do: Size and lazy-load heavy images and media, and avoid needless re-renders and large client bundles.
-- Do not: Ship full-size images or heavy libraries for small effects.
-- Why: Many Indonesian users are on mid-range phones and metered data. (web.dev Core Web Vitals)
+- Do: Follow the formatting, naming, and patterns of the surrounding files; name things by what they hold or do; remove unused code, imports, and commented-out blocks.
+- Do not: Introduce a new style, use data, temp, or helper without context, or leave dead code and empty TODOs behind.
+- Why: Code that reads like its neighbors is easier to review, and dead code misleads the next reader. (Clean-code practice)
 - Check: review
 
 ### RX-FE-12 [Contextual] Rupiah formatting in code

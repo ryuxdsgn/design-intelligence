@@ -8,7 +8,7 @@
     {
       "name": "ryux",
       "source": "./",
-      "version": "1.2.0",
+      "version": "1.3.0",
       "description": "Ryux, a design intelligence layer for AI and designers: Analyze an existing interface, Build with senior product design reasoning, Critique a Figma link, pen.dev design, website URL, or screenshot, and QA the result. Loads as 16 skills: Analyze, Build, Critique, and QA."
     }
   ]

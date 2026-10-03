@@ -38,9 +38,9 @@ How reference apps keep components consistent for this pattern: `search_screens`
 - Why: Duplicates drift apart, multiply maintenance, and break consistency. (Design-system practice)
 - Check: review
 
-### RX-DS-02 [Required] [Quality Lock] Consistency and conventions
+### RX-DS-02 [Required] [Quality Lock] Consistency, conventions, and states
 
-- Do: Follow platform conventions and the project's own patterns; the same component looks and behaves the same everywhere.
+- Do: Follow platform conventions and the project's own patterns; the same component looks and behaves the same everywhere, with its states (default, hover, focus, pressed, disabled, loading, error) defined once.
 - Do not: Style or wire similar components differently from screen to screen.
 - Why: Consistency lets users transfer what they learned. (Nielsen heuristic 4; Apple HIG; Material Design)
 - Check: heuristic_eval H-04
@@ -50,11 +50,4 @@ How reference apps keep components consistent for this pattern: `search_screens`
 - Do: Use tokens or variables for color, spacing, radius, elevation, and type.
 - Do not: Hard-code one-off values for things the system already defines.
 - Why: Tokens keep changes consistent and reviewable. (W3C Design Tokens Community Group)
-- Check: review
-
-### RX-DS-04 [Preferred] [Quality Lock] Defined component states
-
-- Do: Define default, hover, focus, pressed, disabled, loading, and error states once per interactive component.
-- Do not: Leave states for each screen to improvise.
-- Why: Undefined states get designed inconsistently, or not at all. (Material Design state guidance)
 - Check: review

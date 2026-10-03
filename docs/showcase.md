@@ -148,7 +148,7 @@ Earlier pairs built in pen.dev under RX-1.x, one per former install concern. Rul
 | Before (no ryux) | After (`ryux-ux`) |
 |:--|:--|
 | <a href="../assets/compare/ux/ux-before.png"><img src="../assets/compare/ux/ux-before.png" alt="Poor sign-up form: cramped two columns, placeholder-only labels, every field required including referral, vague error banner, generic DAFTAR button" width="100%"></a> | <a href="../assets/compare/ux/ux-after.png"><img src="../assets/compare/ux/ux-after.png" alt="ryux sign-up form: single column, labels above fields, phone number with a numeric keypad and a valid status, password with an inline error that keeps the input, optional referral code, Lanjut button, scr_a3f091 evidence" width="100%"></a> |
-| Two columns, placeholder labels, everything required, a vague error. | One column with labels above the fields (RX-FM-02), inline validation that keeps what you typed (RX-FM-03), fewer fields (RX-FM-04), a numeric keypad (RX-FM-05). |
+| Two columns, placeholder labels, everything required, a vague error. | One column with labels above the fields (RX-FM-01, forms guide), inline validation that keeps what you typed (RX-FM-03), fewer fields (forms guide), a numeric keypad (RX-FM-05). |
 
 **`ryux-local`** · Indonesian patterns · QRIS, virtual account, fees, Rupiah
 

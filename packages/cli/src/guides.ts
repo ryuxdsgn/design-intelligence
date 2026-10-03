@@ -11,7 +11,7 @@ a design system.`;
 export const CORE_CAPABILITIES = `| Capability | When | Load |
 | --- | --- | --- |
 | **Analyze** | understand an interface that exists | \`ryux-analyze\` |
-| **Build** | create or change UI, copy, or frontend code | the workflow below and the task table |
+| **Build** | create or change UI, copy, or frontend code | decide with evidence (ryux-product), then the workflow and task table |
 | **Critique** | evaluate a design, page, or flow | \`ryux-critique\` |
 | **QA** | verify what was just built | \`ryux-visual-qa\` |
 
@@ -36,9 +36,9 @@ export const CORE_HONESTY = `Report what was checked, how, and what was not avai
 "fully accessible", "production ready", "senior-level", or "UX optimized" without evidence. Say
 "Keyboard and focus checked by hand; no automated accessibility test was available" instead.`;
 
-export const CORE_DECISION_RECORD = `For meaningful deviations only (from a rule, the design system, or a reference screen), write
-four lines: **Decision**, **Reason** (with a screen_id or "judgment call"), **Trade-off**, and
-**Alternative** considered. Skip trivial decisions.`;
+export const CORE_DECISION_RECORD = `For consequential choices (RX-PR-09) and deviations, write **Decision**, **Options** compared, **Evidence**,
+**Trade-off**, and **Choice**. Evidence is Strong (2+ comparable screen_ids), Thin (one, or another context),
+or None (no screen_id: a judgment call). With None on a consequential choice, show options or ask (RX-PR-10).`;
 
 export const GATE_RULES = `- Each area is PASS, FAIL, or N/A (with a reason when the area does not apply).
 - An area FAILS when a [Required] rule in its skills fails without a written exception.
@@ -63,6 +63,25 @@ pricing, requirements, or API behavior; mark them [REAL DATA] or ask.
 
 Find evidence with the ryux MCP (\`search_screens\`, \`get_flow\`, \`get_local_pattern\`) and cite the
 \`screen_id\`, or call the decision a judgment call.
+
+Lead with the user's outcome, keep only what serves the task, and follow the project's DESIGN.md
+or brand when it exists (write down any deliberate departure).
+
+**Decide with evidence.** For a consequential decision, compare patterns, then choose by context:
+
+\`\`\`
+Decision:   payment confirmation layout
+Context:    standalone bank transfer, first-time users
+Options:
+  A  QR success screen        scr_...  strength: instant      weakness: little detail
+  B  bank-transfer receipt    scr_...  strength: verifiable   weakness: dense
+  C  marketplace order status scr_...  strength: order link   weakness: not standalone
+Choice:     B, because the context is a standalone transfer
+Evidence:   Strong (2+ comparable screens, same context) | Thin (1, or other context) | None
+Trade-off:  higher density
+\`\`\`
+
+With **None**, say so: present the options and their trade-offs, or ask. Never invent a reference.
 
 Does not cover: layout or visual decisions (see ryux-ux and ryux-ui).`,
 
@@ -112,8 +131,9 @@ Does not cover: per-action behavior (see ryux-interaction), forms (see ryux-form
    nothing; use undo.
 
 States to define for interactive elements: default, hover (pointer), focus, active or pressed,
-disabled (with a reason), loading, success, error. Keyboard: every action is reachable; Enter
-submits; Escape closes.
+disabled (with a reason, or keep it enabled and explain on use), loading, success, error. Keyboard:
+every action is reachable; Enter submits; Escape closes. For repeat or expert use, add shortcuts
+(recent items, quick amounts) without crowding the novice path.
 
 Does not cover: form-specific behavior (see ryux-forms).`,
 
@@ -123,7 +143,8 @@ Does not cover: form-specific behavior (see ryux-forms).`,
 - **Labels**: visible and tied to the field; placeholders are examples, not labels.
 - **Layout**: one column for sequential input is the default; put short related fields side by
   side when people read them as one unit. Decide by relationship, not by filling width.
-- **Required and optional**: mark whichever is less common.
+- **Fewest fields**: ask only what the task needs; mark whichever of required or optional is less
+  common.
 - **Validation timing**: validate a field after the user leaves it or when the format is clear;
   never erase what they typed.
 - **Defaults and autofill**: prefill what you know; set autocomplete and inputmode.
@@ -145,7 +166,8 @@ ryux-content).`,
 | Permissions | read-only, restricted, different roles (only roles that exist) |
 | System | session expired, unauthorized, unexpected error |
 
-For each case that can happen, decide what the user sees and what they can do next. Cases that
+For first use and zero data, explain what will appear and give one action to start. For each case
+that can happen, decide what the user sees and what they can do next. Cases that
 cannot happen in this product do not need a design; say so in the Delivery Gate.
 
 Does not cover: how errors are worded (see ryux-content).`,
@@ -164,6 +186,9 @@ Avoid generic AI language: "unlock", "elevate", "transform", "seamlessly", "powe
 - **Indonesian** as users speak it; English only for terms they already use.
 - **Money**: Rp1.250.000.
 - **Dates, times, numbers**: 2 Okt 2026, 14.30 WIB, 1,5, 12.500, +62 812-3456-7890.
+- **Help** at the point of need (a hint under a field, "Kenapa diminta?"), not only in an FAQ.
+- **Chat channels** (WhatsApp, Telegram): a short greeting, short paragraphs, sparse *bold*, and a
+  clear contact line; not a marketing page.
 - **Offers and terms**: write only the terms you were given. Unknown minimums, quotas, deadlines,
   and codes stay placeholders (\`[minimal belanja]\`, \`[tanggal selesai]\`); do not add "kuota
   terbatas" or "sebelum kehabisan" unless a real limit was stated (RX-AS-04, RX-PR-02).

@@ -45,25 +45,18 @@ Standards are the main evidence (WCAG 2.2 success criteria); reference screens s
 - Why: Small text and targets cause misreads and mis-taps. (WCAG 2.2 SC 2.5.8 (24px minimum); Apple HIG 44pt; Material 48dp)
 - Check: audit_ui
 
-### RX-A11Y-03 [Required] [Hard Gate] Visible focus, logical order
+### RX-A11Y-03 [Required] [Hard Gate] Keyboard and visible focus
 
-- Do: Show a visible focus indicator and keep the focus order the same as the visual order.
-- Do not: Remove focus outlines without an accessible replacement.
-- Why: Keyboard and switch users navigate by focus. (WCAG 2.2 SC 2.4.3 and 2.4.7)
+- Do: Make actions operable from the keyboard (path-based input such as drawing excepted), show a visible focus indicator, and keep focus order the same as the visual order.
+- Do not: Build pointer-only actions, or remove focus outlines without an accessible replacement.
+- Why: Keyboard and switch users navigate and act by focus. (WCAG 2.2 SC 2.1.1, 2.4.3, and 2.4.7)
 - Check: review
 
-### RX-A11Y-04 [Required] [Hard Gate] Semantic structure
+### RX-A11Y-04 [Required] [Hard Gate] Semantic structure, native controls, and names
 
-- Do: Use real headings, landmarks, lists, buttons, and links so the structure exists without the styling.
-- Do not: Build structure from styled divs alone.
-- Why: Assistive technology navigates by semantics. (WCAG 2.2 SC 1.3.1)
-- Check: review
-
-### RX-A11Y-05 [Required] [Hard Gate] Names for controls and images
-
-- Do: Give icon-only buttons and meaningful images an accessible name or alt text.
-- Do not: Ship unlabeled icon buttons.
-- Why: Screen readers announce unlabeled buttons as just "button". (WCAG 2.2 SC 1.1.1 and 4.1.2)
+- Do: Use real headings, landmarks, lists, buttons, links, and the right input types before custom elements, and give icon-only buttons and meaningful images an accessible name or alt text.
+- Do not: Build structure or controls from styled divs, or ship unlabeled icon buttons.
+- Why: Assistive technology navigates by semantics and announces unlabeled buttons as just "button"; native controls bring keyboard and platform behavior for free. (WCAG 2.2 SC 1.1.1, 1.3.1, and 4.1.2)
 - Check: review
 
 ### RX-A11Y-06 [Required] Not color alone
@@ -85,11 +78,4 @@ Standards are the main evidence (WCAG 2.2 success criteria); reference screens s
 - Do: When reduced motion is requested, replace large movement with a fade or a cut.
 - Do not: Ignore the system reduced-motion setting.
 - Why: Large motion can cause discomfort for people with vestibular disorders. (WCAG 2.2 SC 2.3.3; prefers-reduced-motion; Apple HIG)
-- Check: review
-
-### RX-A11Y-09 [Preferred] ARIA only when native cannot
-
-- Do: Use native elements first, and add ARIA only for semantics HTML cannot express.
-- Do not: Add roles and ARIA attributes to elements that already have the right semantics.
-- Why: Wrong ARIA is worse than none. (W3C ARIA Authoring Practices (first rule of ARIA))
 - Check: review

@@ -45,15 +45,6 @@ A design direction from comparable screens: `extract_design_direction` (patterns
 - Trade-off: emphasizing one thing de-emphasizes the rest
 - Check: visual QA
 
-### RX-UI-02 [Required] Functional before decorative
-
-- Do: Give each decorative element (card, gradient, shadow, badge, illustration, large display type) a stated reason; see the anti-slop purpose gates.
-- Do not: Add decoration because it looks modern.
-- Why: Unjustified decoration is the fastest route to generic UI. (Nielsen heuristic 8; ryux anti-slop principle)
-- Not when: brand or campaign pages where expression is the function; the decoration still needs its reason
-- Trade-off: plain interfaces can feel undifferentiated; direction comes from DESIGN.md
-- Check: review
-
 ### RX-UI-03 [Preferred] [Quality Lock] One spacing and type scale
 
 - Do: Use the project's spacing and type scale, or define one (for example multiples of 4 or 8) and align elements to a shared grid.
@@ -81,15 +72,6 @@ A design direction from comparable screens: `extract_design_direction` (patterns
 - Trade-off: custom layouts cost design and build time
 - Check: review
 
-### RX-UI-06 [Preferred] Density fits the task
-
-- Do: Use compact density for repeat, data-heavy work and roomier layouts for first-time or high-stakes decisions.
-- Do not: Apply the same generous whitespace to a cashier screen and a landing page.
-- Why: The right density depends on how often and how carefully people use the screen. (Material density guidance)
-- Not when: one screen serves both new and expert users; offer a density setting or a sensible middle
-- Trade-off: dense screens are harder for newcomers; spacious ones slow experts
-- Check: review
-
 ### RX-UI-07 [Contextual] Imagery that is what it claims
 
 - When: the design uses photos or illustrations
@@ -98,13 +80,4 @@ A design direction from comparable screens: `extract_design_direction` (patterns
 - Why: Borrowed faces imply endorsements that do not exist. (ryux run 2026-10-02: pen.dev landing without ryux)
 - Not when: pure illustration that clearly is not a photo of a customer
 - Trade-off: real product screenshots age quickly and need updating
-- Check: review
-
-### RX-UI-08 [Preferred] Motion explains change
-
-- Do: Use motion for feedback and continuity (where something came from, what changed), keep it short, and let users act while it runs.
-- Do not: Animate for decoration alone or make users wait for an animation.
-- Why: Purposeful motion helps users follow state changes; slow motion is friction. (Material motion principles; Apple HIG motion)
-- Not when: reduced motion is requested; use a fade or a cut
-- Trade-off: motion adds build time and can delay the task if overdone
 - Check: review

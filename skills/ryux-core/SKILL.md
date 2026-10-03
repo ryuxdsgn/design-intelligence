@@ -5,7 +5,7 @@ description: "Ryux core - a design intelligence layer for AI and designers. Choo
 
 # ryux-core
 
-> Ryux RX-2.0 (rules v1.2.0), MIT licensed. Indonesia first, evidence first.
+> Ryux RX-2.0 (rules v1.3.0), MIT licensed. Indonesia first, evidence first.
 
 Ryux is a design intelligence layer for AI and designers: it helps understand, build, evaluate,
 and fix interfaces through design reasoning. It is not a UI generator, an anti-slop framework, or
@@ -16,7 +16,7 @@ a design system.
 | Capability | When | Load |
 | --- | --- | --- |
 | **Analyze** | understand an interface that exists | `ryux-analyze` |
-| **Build** | create or change UI, copy, or frontend code | the workflow below and the task table |
+| **Build** | create or change UI, copy, or frontend code | decide with evidence (ryux-product), then the workflow and task table |
 | **Critique** | evaluate a design, page, or flow | `ryux-critique` |
 | **QA** | verify what was just built | `ryux-visual-qa` |
 
@@ -60,11 +60,11 @@ These hold even when `ryux-anti-slop` is not loaded. No written exception; fix b
 - **Fake urgency or scarcity.** Do not write "sebelum kehabisan", "kuota terbatas", or fake countdowns with nothing behind them. (RX-AS-04)
 - **Missing critical states.** Do not ship only the filled, happy-path screen. (RX-EC-01)
 - **Broken responsive behavior.** Do not design for one width only. (RX-RD-01)
-- **Accessibility failures.** Do not put light grey text on white or white text on a pale accent. (RX-A11Y-01, RX-A11Y-02, RX-A11Y-03, RX-A11Y-04, RX-A11Y-05)
+- **Accessibility failures.** Do not put light grey text on white or white text on a pale accent. (RX-A11Y-01, RX-A11Y-02, RX-A11Y-03, RX-A11Y-04)
 - **Unclear primary action.** Do not put two equal-weight calls to action side by side, or leave the main action unclear. (RX-PR-03)
 - **Unexplained interaction behavior.** Do not ship an action whose in-progress, result, or failure behavior is undefined. (RX-IX-01)
 - **Duplicate components.** Do not create a near-duplicate component or pattern for one screen. (RX-DS-01)
-- **Unnecessary complexity.** Do not add settings, sections, or abstractions "for later". (RX-AS-06)
+- **Unnecessary complexity.** Do not add settings, sections, abstractions, or packages "for later", or features because similar products have them. (RX-AS-06)
 
 ## Build: load only what the task needs
 
@@ -85,7 +85,7 @@ These hold even when `ryux-anti-slop` is not loaded. No written exception; fix b
 End UI, UX, copy, or frontend work with this report:
 
 ```
-PRODUCT        PASS | FAIL | N/A  · one-line reason
+PRODUCT        PASS | FAIL | N/A  · one-line reason · evidence Strong | Thin | None
 UX             PASS | FAIL | N/A  · one-line reason
 UI             PASS | FAIL | N/A  · one-line reason
 DESIGN SYSTEM  PASS | FAIL | N/A  · one-line reason
@@ -112,9 +112,9 @@ Report what was checked, how, and what was not available. Do not claim "pixel pe
 
 ## Design Decision Record
 
-For meaningful deviations only (from a rule, the design system, or a reference screen), write
-four lines: **Decision**, **Reason** (with a screen_id or "judgment call"), **Trade-off**, and
-**Alternative** considered. Skip trivial decisions.
+For consequential choices (RX-PR-09) and deviations, write **Decision**, **Options** compared, **Evidence**,
+**Trade-off**, and **Choice**. Evidence is Strong (2+ comparable screen_ids), Thin (one, or another context),
+or None (no screen_id: a judgment call). With None on a consequential choice, show options or ask (RX-PR-10).
 
 Reference screens and structured review come from the ryux MCP (`search_screens`,
 `heuristic_eval`, `delivery_gate`). Connect: `claude mcp add --transport http ryux https://mcp.ryux.design/mcp`
