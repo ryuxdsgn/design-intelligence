@@ -80,7 +80,7 @@ see the real design.
 ## See the difference
 
 Each brief below ran headless (`claude -p`) in an empty folder, once without RYUX and once with the
-RYUX 1.3 skills installed by the CLI (`npx @ryuxdsgn/ryux`). The agent chose which skills to load.
+RYUX skills installed by the CLI (`npx @ryuxdsgn/ryux`): 1.4 for UI, 1.3 for Code and Copy. The agent chose which skills to load.
 Neither run had the RYUX MCP, so no reference screens were used. The screenshots are the agents' real
 output, not edited by hand. The colored boxes are annotations added afterwards.
 
@@ -89,14 +89,19 @@ output, not edited by hand. The colored boxes are annotations added afterwards.
 *"Design a desktop landing page, 1440 wide, for Tally, an invoicing and bookkeeping app for
 freelancers."* Both runs designed in pen.dev through its MCP.
 
-<a href="assets/compare/ui/compare.png"><img src="assets/compare/ui/compare.png" alt="Two Tally landing pages designed in pen.dev, stacked. Without RYUX: a polished hero whose product figures are presented as real, a 'No card required, free for your first 3 clients' offer nobody confirmed, 'Trusted by 38,000+ independents', and unsourced claims such as 'Avg. 48 seconds per invoice' and 'Paid 9 days faster on average'. With RYUX: an invoice list labeled Sample data whose outstanding total adds up, one primary action, and the unknown plan terms left as a visible placeholder" width="100%"></a>
+<a href="assets/compare/ui/compare.png"><img src="assets/compare/ui/compare.png" alt="Two Tally landing pages designed in pen.dev, stacked. Without RYUX: a polished hero whose product figures are presented as real, a 'No card required, free for your first 3 clients' offer nobody confirmed, 'Trusted by 38,000+ independents', and unsourced claims such as 'Avg. 48 seconds per invoice' and 'Paid 9 days faster on average'. With RYUX 1.4: a hero visual made of the product itself, where a paid $2,700 invoice appears as income in the books and is labeled example data, the focal point kept to the right of the copy, and one primary action" width="100%"></a>
 
 Both pages look finished, and that is the trap. Without RYUX, the polish hides an invented user
 count, unsourced performance claims, and a free offer nobody confirmed (RX-AS-01, RX-AS-07,
 RX-PR-02). Further down the page, it also invents a customer testimonial with a photo and three
-price tiers. With RYUX, the sample data is labeled and adds up (RX-AS-03), there is one primary
-action (RX-PR-03), and the unknown pricing stays a visible placeholder. Its Delivery Gate reported
-RESPONSIVE as FAIL, because only the 1440 frame was built.
+price tiers.
+
+With RYUX, the hero visual has a job: it shows the product's promise, a paid invoice landing in
+the books, and its numbers are labeled example data and add up (RX-UI-07, RX-AS-03). The visual
+sits to the right, so its focal point never competes with the headline (RX-UI-09), and there is
+one primary action (RX-PR-03). The page has no user counts, ratings, testimonials, prices, or
+trial terms. The agent even removed a "no card needed" line it had written, because it could not
+verify it, and listed the features it assumed for the team to confirm.
 
 ### Code
 

@@ -33,7 +33,7 @@ pnpm dev:mcp   # then: claude -p "<brief>" --mcp-config mcp.json --strict-mcp-co
 
 | Image | Without | With |
 | --- | --- | --- |
-| `ui/compare.png` | pen.dev MCP only | pen.dev MCP + all RYUX 1.3 skills (`--for all`); no RYUX MCP |
+| `ui/compare.png` | pen.dev MCP only | pen.dev MCP + all RYUX 1.4 skills (`--for all`); no RYUX MCP |
 | `code/compare.png` | no skills | all RYUX 1.3 skills; the agent picks which to load |
 | `chat/compare.png` | no skills | all RYUX 1.3 skills; the agent picks which to load |
 
