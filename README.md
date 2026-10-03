@@ -131,7 +131,7 @@ ryux/
 ## See the difference
 
 Each brief below ran headless (`claude -p`) in an empty folder, once without RYUX and once with the
-RYUX skills installed by the CLI (`npx @ryuxdsgn/ryux`): 1.5 for UI, 1.3 for Code and Copy. The agent chose which skills to load.
+RYUX installed by the CLI (`npx @ryuxdsgn/ryux`): RYUX 2.0 for UI, the 1.3 skills for Code and Copy. The agent chose which skills to load.
 Neither run had the RYUX MCP, so no reference screens were used. The screenshots are the agents' real
 output, not edited by hand. The colored boxes are annotations added afterwards.
 
@@ -140,21 +140,23 @@ output, not edited by hand. The colored boxes are annotations added afterwards.
 *"Design only the hero section of a landing page, 1440 wide by 900 tall, for RYUX: a design
 intelligence layer for AI coding agents and designers. It installs as skills into Claude Code,
 Cursor, Codex, and other agents (npx @ryuxdsgn/ryux), and an MCP server gives agents reference
-screens from real apps as evidence."* Both runs designed in pen.dev through its MCP.
+screens from real apps as evidence. The hero should feature a custom illustration; create it with
+pen.dev's Generate function."* Both runs designed in pen.dev and generated their illustration with
+pen.dev's `Generate`.
 
-<a href="assets/compare/ui/compare.png"><img src="assets/compare/ui/compare.png" alt="Two RYUX hero sections designed in pen.dev, stacked. Without RYUX: an invented 4.2k GitHub star count, and a mock agent session that calls a tool RYUX does not have, claims 'matched in 1,280 apps in 0.4s', and labels drawn screens with real app names as if they were evidence. With RYUX 1.5: a hero laid out like a cited paper, with the headline 'Your agent designs. Now it cites its sources.' carrying footnote marks, footnotes at the bottom that explain the skills and the MCP server, a sample design decision record labeled as an example, and one primary action, the install command" width="100%"></a>
+<a href="assets/compare/ui/compare.png"><img src="assets/compare/ui/compare.png" alt="Two RYUX hero sections with generated illustrations, stacked. Without RYUX: an invented 4.8k GitHub star count, Windsurf listed as a supported agent although the brief never named it, and a generic illustration of floating app screens wired to a code terminal with a sparkle. With RYUX 2.0: GitHub with no count, an illustration of the product's own idea, a design under review with numbered marks and pinned reference screens, labeled as 'Fig. 1', and one primary action, the install command" width="100%"></a>
 
-Without RYUX, the hero is the category default: copy on the left, an agent session on the right.
-Inside it, the agent invents a GitHub star count and a tool RYUX does not have, adds a "matched in
-1,280 apps" stat, and puts real app names on drawn screens so they read as evidence (RX-AS-01,
-RX-AS-07, RX-PR-02).
+Both heroes now have a generated illustration, and the difference is what it says. Without RYUX,
+the illustration is the category default: floating screens wired to a terminal, plus a sparkle.
+The page also invents a GitHub star count and lists an agent the brief never named (RX-AS-01,
+RX-PR-02).
 
-With RYUX, the agent first wrote three directions (Exhibits, Proofmarks, Footnoted) and chose
-Footnoted, because the product is about decisions that cite evidence (RX-UI-12). The headline
-carries footnote marks, the footnotes explain the skills and the MCP server using only real
-facts, and the sample decision record is labeled as an example. There is one primary action
-(RX-PR-03). The brief was the same plain one for both runs: the point of view came from the
-skills, not the prompt.
+With RYUX, the illustration shows the product's own idea: a design under review, with numbered
+marks, backed by pinned reference screens (RX-UI-07, RX-UI-12). It is captioned as a figure, so
+nobody reads it as a real screen, and there is one primary action (RX-PR-03). The brief was the same
+for both runs. Both agents ended their sessions while the illustrations were still generating,
+because generation is asynchronous, so we exported both frames once the illustrations arrived,
+without changing anything.
 
 ### Code
 
