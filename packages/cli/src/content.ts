@@ -591,10 +591,10 @@ export const RULES: Rule[] = [
       title: "One name per thing",
       level: "required",
       gate: "lock",
-      do: "Use one term for each concept across screens, buttons, and messages.",
-      dont: "Call the same thing \"pesanan\", \"order\", and \"transaksi\" on different screens.",
-      why: "Changing terms make users wonder whether it is a different thing.",
-      basis: "Nielsen heuristic 4 (1994)",
+      do: "Use one term for each concept across screens, buttons, and messages. Write product and brand names exactly as the brief or brand guide gives them, including the wordmark; when an older design in the file disagrees with the brief, follow the brief and say so.",
+      dont: "Call the same thing \"pesanan\", \"order\", and \"transaksi\" on different screens, or restyle a brand name (RYUX as \"ryux\") because an older frame did.",
+      why: "Changing terms make users wonder whether it is a different thing; a misspelled brand name looks careless or fake.",
+      basis: `Nielsen heuristic 4 (1994); ${RUN}: pen.dev hero wordmark`,
       check: "review",
     },
     {
@@ -1288,7 +1288,7 @@ export const LEVEL_LABEL: Record<Level, string> = {
   contextual: "Contextual",
 };
 
-export const RULES_VERSION = "1.4.0";
+export const RULES_VERSION = "1.4.1";
 export const RULESET_VERSION = "RX-2.0";
 export const MCP_NAME = "ryux";
 export const MCP_URL = "https://mcp.ryux.design/mcp";
