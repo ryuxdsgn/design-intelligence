@@ -86,22 +86,18 @@ output, not edited by hand. The colored boxes are annotations added afterwards.
 
 ### UI
 
-*"Design a desktop landing page, 1440 wide, for Tally, an invoicing and bookkeeping app for
-freelancers."* Both runs designed in pen.dev through its MCP.
+*"Design only the hero section of a landing page, 1440 wide by 900 tall, for Tally, an invoicing and
+bookkeeping app for freelancers."* Both runs designed in pen.dev through its MCP.
 
-<a href="assets/compare/ui/compare.png"><img src="assets/compare/ui/compare.png" alt="Two Tally landing pages designed in pen.dev, stacked. Without RYUX: a polished hero whose product figures are presented as real, a 'No card required, free for your first 3 clients' offer nobody confirmed, 'Trusted by 38,000+ independents', and unsourced claims such as 'Avg. 48 seconds per invoice' and 'Paid 9 days faster on average'. With RYUX 1.4: a hero visual made of the product itself, where a paid $2,700 invoice appears as income in the books and is labeled example data, the focal point kept to the right of the copy, and one primary action" width="100%"></a>
+<a href="assets/compare/ui/compare.png"><img src="assets/compare/ui/compare.png" alt="Two Tally hero sections designed in pen.dev, stacked. Without RYUX: product figures such as $21,480 Q4 profit and +18% presented as real, a 'Start free, no card needed' button nobody confirmed, five stars, 'Trusted by 38,000 freelancers', and 'Avg. 11 days faster payouts'. With RYUX 1.4: an invoice and a monthly summary whose sample totals add up ($1,800 + $540 + $120 = $2,460, the same amount shown as awaiting), a caption that labels them as an illustrative example, and one primary action, 'Create your first invoice'" width="100%"></a>
 
-Both pages look finished, and that is the trap. Without RYUX, the polish hides an invented user
-count, unsourced performance claims, and a free offer nobody confirmed (RX-AS-01, RX-AS-07,
-RX-PR-02). Further down the page, it also invents a customer testimonial with a photo and three
-price tiers.
+Both heroes look finished, and that is the trap. Without RYUX, the polish hides a star rating, a
+user count, and a payout claim nobody gave it, plus a free offer nobody confirmed (RX-AS-01,
+RX-AS-07, RX-PR-02). Its product figures read as real numbers.
 
-With RYUX, the hero visual has a job: it shows the product's promise, a paid invoice landing in
-the books, and its numbers are labeled example data and add up (RX-UI-07, RX-AS-03). The visual
-sits to the right, so its focal point never competes with the headline (RX-UI-09), and there is
-one primary action (RX-PR-03). The page has no user counts, ratings, testimonials, prices, or
-trial terms. The agent even removed a "no card needed" line it had written, because it could not
-verify it, and listed the features it assumed for the team to confirm.
+With RYUX, the visual shows the product doing its job and is labeled as an illustrative example
+(RX-UI-07). Its sample totals add up (RX-AS-03), and there is one primary action (RX-PR-03). The
+agent left out ratings, logos, and "Start free" because it did not know Tally's pricing.
 
 ### Code
 
