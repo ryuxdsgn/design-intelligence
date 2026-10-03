@@ -33,7 +33,7 @@ pnpm dev:mcp   # then: claude -p "<brief>" --mcp-config mcp.json --strict-mcp-co
 
 | Image | Without | With |
 | --- | --- | --- |
-| `ui/compare.png` | pen.dev MCP only; a hero section for RYUX itself | pen.dev MCP + the RYUX 1.5 skills; no RYUX MCP; same brief |
+| `ui/compare.png` | pen.dev MCP only; a RYUX hero with an illustration made by pen.dev's `Generate` | pen.dev MCP + RYUX 2.0 (one skill); no RYUX MCP; same brief; frames exported after the asynchronous illustration arrived |
 | `code/compare.png` | no skills | all RYUX 1.3 skills; the agent picks which to load |
 | `chat/compare.png` | no skills | all RYUX 1.3 skills; the agent picks which to load |
 
