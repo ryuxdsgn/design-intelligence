@@ -515,9 +515,9 @@ Group UX · gate area UX. Covers specific copy, action labels, error messages, t
 
 #### RX-CD-05 [Required] [Quality Lock] One name per thing
 
-- Do: Use one term for each concept across screens, buttons, and messages.
-- Do not: Call the same thing "pesanan", "order", and "transaksi" on different screens.
-- Why: Changing terms make users wonder whether it is a different thing. (Nielsen heuristic 4 (1994))
+- Do: Use one term for each concept across screens, buttons, and messages. Write product and brand names exactly as the brief or brand guide gives them, including the wordmark; when an older design in the file disagrees with the brief, follow the brief and say so.
+- Do not: Call the same thing "pesanan", "order", and "transaksi" on different screens, or restyle a brand name (RYUX as "ryux") because an older frame did.
+- Why: Changing terms make users wonder whether it is a different thing; a misspelled brand name looks careless or fake. (Nielsen heuristic 4 (1994); ryux run 2026-10-02: pen.dev hero wordmark)
 - Check: review
 
 #### RX-CD-09 [Contextual] Dates, times, and numbers in Indonesian form
