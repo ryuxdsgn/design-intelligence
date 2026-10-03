@@ -1,6 +1,6 @@
 # @ryuxdsgn/ryux
 
-Install **Ryux**, a design intelligence layer for AI and designers, with one command:
+Install **RYUX**, a design intelligence layer for AI and designers, with one command:
 
 - **Analyze** (`ryux-analyze`): understand an existing interface, with every finding labeled
   Measured, Observed, or Inferred.
@@ -21,7 +21,7 @@ npx @ryuxdsgn/ryux install --agent claude,cursor,codex      # non-interactive
 npx @ryuxdsgn/ryux install --agent all --for designer      # Analyze, Critique, QA
 npx @ryuxdsgn/ryux install --agent all --for builder       # Build, QA, Critique
 npx @ryuxdsgn/ryux install --agent all                      # every supported agent, every skill
-npx @ryuxdsgn/ryux install --agent all --groups critique    # Ryux Critique only
+npx @ryuxdsgn/ryux install --agent all --groups critique    # RYUX Critique only
 npx @ryuxdsgn/ryux install --agent claude --global          # into your home directory
 npx @ryuxdsgn/ryux update                                   # refresh what's installed
 npx @ryuxdsgn/ryux remove --yes                             # remove skills and marked blocks

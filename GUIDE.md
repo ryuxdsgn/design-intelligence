@@ -1,20 +1,20 @@
-# ryux Guide (from scratch)
+# RYUX Guide (from scratch)
 
-A short guide: what ryux is, how to install its rules into your agent, and how to connect to
+A short guide: what RYUX is, how to install its rules into your agent, and how to connect to
 the reference data over MCP. If you just want a quick overview, read the [README](./README.md).
 
-## What ryux is
+## What RYUX is
 
-ryux is two things that work together:
+RYUX is two things that work together:
 
-1. **Ryux** (installed with `npx @ryuxdsgn/ryux` or `npx skills add`): design skills (RX-2.0) that guide decisions and filter output so it doesn't
-   "smell like AI": evidence-backed, accessible, and fitted to the Indonesian context. Doc: [`docs/design-rules.md`](./docs/design-rules.md).
-2. **MCP server**: gives your agent access to **reference screens from Indonesian apps** (real
-   data, designer notes) plus audit tools. Nine tools; see [`apps/mcp/README.md`](./apps/mcp/README.md).
+1. **RYUX** (installed with `npx @ryuxdsgn/ryux` or `npx skills add`): design skills (RX-2.0) that guide decisions and filter output so it doesn't
+   "smell like AI": evidence-backed, accessible, and fitted to the product's market. Doc: [`docs/design-rules.md`](./docs/design-rules.md).
+2. **MCP server**: gives your agent access to **reference screens from real products** (captured
+   screens, designer notes) plus audit tools. Nine tools; see [`apps/mcp/README.md`](./apps/mcp/README.md).
 
-Rules without data are just style; data without rules is just a pile of images. ryux combines the two.
+Rules without data are just style; data without rules is just a pile of images. RYUX combines the two.
 
-## 1. Install Ryux into your agent
+## 1. Install RYUX into your agent
 
 One command, then answer a few questions (which agents you use, which groups to install, MCP connection):
 
@@ -51,7 +51,7 @@ npx skills add ryuxdsgn/design-intelligence     # alternative: skills.sh, any ag
 
 ## 2. Connect to MCP (reference data)
 
-The ryux rules are at their strongest when your agent can pull real evidence. Connect the ryux MCP:
+The RYUX rules are at their strongest when your agent can pull real evidence. Connect the RYUX MCP:
 
 ```bash
 claude mcp add --transport http ryux https://mcp.ryux.design/mcp
@@ -71,7 +71,7 @@ uses the Streamable HTTP transport).
 
 Ask your agent:
 
-- "Find a reference for a payment method picker with QRIS via ryux."
+- "Find a reference for a payment method picker with QRIS via RYUX."
 - "Review this checkout page with ryux-critique."
 - "Review this screen with `heuristic_eval`, and include a comparison screen as evidence."
 

@@ -1,6 +1,6 @@
 # ryux-mcp (local starter)
 
-The earliest version of the ryux MCP server, running on Cloudflare Workers. The data is still
+The earliest version of the RYUX MCP server, running on Cloudflare Workers. The data is still
 sample data, there's no login yet, and quotas are kept in memory. The goal is just to see the
 shape of the MCP first.
 

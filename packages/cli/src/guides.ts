@@ -1,10 +1,10 @@
-// Hand-written framework text for each Ryux skill: the questions, decision trees, and templates an
+// Hand-written framework text for each RYUX skill: the questions, decision trees, and templates an
 // agent reasons with. Rules (Do / Do not / Why) are generated from content.ts and appended below
 // each guide by render.ts. Keep each guide short; the core is loaded on every task.
 
 import type { SkillId } from "./content.js";
 
-export const CORE_POSITIONING = `Ryux is a design intelligence layer for AI and designers: it helps understand, build, evaluate,
+export const CORE_POSITIONING = `RYUX is a design intelligence layer for AI and designers: it helps understand, build, evaluate,
 and fix interfaces through design reasoning. It is not a UI generator, an anti-slop framework, or
 a design system.`;
 
@@ -18,7 +18,7 @@ export const CORE_CAPABILITIES = `| Capability | When | Load |
 Skill roles: **core** is the operating system; **knowledge** skills (product, ux, interaction,
 forms, edge-cases, content, ui, design-system, accessibility, responsive, frontend) say how to
 reason; **capability** skills (analyze, critique) are workflows; **gate** skills (visual-qa,
-anti-slop) verify and filter. Ryux Knowledge is the evidence layer for all of them. Every
+anti-slop) verify and filter. RYUX Knowledge is the evidence layer for all of them. Every
 capability ends at the Anti-Slop Quality Gate: the Hard Gates below and the Delivery Gate.`;
 
 export const CORE_PRINCIPLE = `Do not optimize for visual novelty. Optimize for clarity, usability, consistency, product fit,
@@ -183,9 +183,9 @@ Avoid generic AI language: "unlock", "elevate", "transform", "seamlessly", "powe
 - **Buttons** describe the actual action: "Bayar Rp45.000", not "Lanjutkan" when it pays.
 - **Error messages**: 1. what happened, 2. why it matters when that helps, 3. how to recover.
 - **Terminology**: one name per thing, everywhere.
-- **Indonesian** as users speak it; English only for terms they already use.
-- **Money**: Rp1.250.000.
-- **Dates, times, numbers**: 2 Okt 2026, 14.30 WIB, 1,5, 12.500, +62 812-3456-7890.
+- **Locale** comes from the product's market: language, money, dates, and numbers follow it.
+- **Indonesian copy**: as users speak it, English only for terms they already use; money as
+  Rp1.250.000; dates and numbers as 2 Okt 2026, 14.30 WIB, 1,5, 12.500, +62 812-3456-7890.
 - **Help** at the point of need (a hint under a field, "Kenapa diminta?"), not only in an FAQ.
 - **Chat channels** (WhatsApp, Telegram): a short greeting, short paragraphs, sparse *bold*, and a
   clear contact line; not a marketing page.

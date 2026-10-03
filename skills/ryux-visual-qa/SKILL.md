@@ -1,6 +1,6 @@
 ---
 name: ryux-visual-qa
-description: "Ryux Visual QA: did the build match the intended design: compare, list deviations, fix, render again. Load when something visual has been implemented and is about to be called done, or a build must match a design."
+description: "RYUX Visual QA: did the build match the intended design: compare, list deviations, fix, render again. Load when something visual has been implemented and is about to be called done, or a build must match a design."
 ---
 
 # ryux-visual-qa: Visual QA
@@ -33,9 +33,9 @@ tool; a design-tool export such as pen.dev `Export`. If none is available, say s
 **Rank issues by impact**: blocks the task, misleads (wrong numbers, unclear action), adds friction,
 polish.
 
-## Evidence from Ryux Knowledge
+## Evidence from RYUX Knowledge
 
-The intended design (Figma, pen.dev, DESIGN.md) is the reference; Ryux screens are a secondary comparison: `search_screens`. Without the ryux MCP, say the evidence comes from the design and standards alone.
+The intended design (Figma, pen.dev, DESIGN.md) is the reference; RYUX screens are a secondary comparison: `search_screens`. Without the ryux MCP, say the evidence comes from the design and standards alone.
 
 > Hard Gates always apply, whichever skills are loaded: no invented numbers, people, urgency, business
 > rules, or terms; no placeholder shipped as final; no missing critical states. See `ryux-core`.

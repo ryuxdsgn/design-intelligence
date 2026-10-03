@@ -76,7 +76,7 @@ function coreBody(installed: string[]): string {
   const note = missing.length ? `\n\nNot installed here: ${missing.join(", ")}.` : "";
   return `# ryux-core
 
-> Ryux ${RULESET_VERSION} (rules v${RULES_VERSION}), MIT licensed. Indonesia first, evidence first.
+> RYUX ${RULESET_VERSION} (rules v${RULES_VERSION}), MIT licensed. Evidence first, local where it matters.
 
 ${CORE_POSITIONING}
 
@@ -159,7 +159,7 @@ function skillBody(id: string): string {
 
 ${GUIDES[s.id]}${extra}
 
-## Evidence from Ryux Knowledge
+## Evidence from RYUX Knowledge
 
 ${s.evidence} Without the ryux MCP, say the evidence comes from the design and standards alone.
 
@@ -172,10 +172,10 @@ ${rulesOf(s.id).map(ruleBlock).join("\n\n")}`;
 }
 
 const CORE_DESCRIPTION =
-  "Ryux core - a design intelligence layer for AI and designers. Choose the capability (Analyze, Build, Critique, QA), then the levels, which Ryux skills to load, the Hard Gates, the Delivery Gate, and honest-claims wording. Load for any UI, UX, copy, or frontend task.";
+  "RYUX core - a design intelligence layer for AI and designers. Choose the capability (Analyze, Build, Critique, QA), then the levels, which RYUX skills to load, the Hard Gates, the Delivery Gate, and honest-claims wording. Load for any UI, UX, copy, or frontend task.";
 
 const skillDescription = (s: Skill): string =>
-  `Ryux ${s.label}: ${s.summary}. Load when ${s.loadWhen}.`;
+  `RYUX ${s.label}: ${s.summary}. Load when ${s.loadWhen}.`;
 
 // ── Claude Code skills ────────────────────────────────────────────────────────
 export function renderCoreSkill(installed: string[]): string {
@@ -232,9 +232,9 @@ export function renderAgentsBlock(installed: string[]): string {
 // ── Pointer block for CLAUDE.md / GEMINI.md / AGENTS.md ─────────────────────
 export function renderPointerBlock(installed: string[]): string {
   const list = ["ryux-core", ...installed.map((i) => `ryux-${i}`)].map((s) => `\`${s}\``).join(", ");
-  return `## Ryux
+  return `## RYUX
 
-Ryux design skills are installed in this project's agent skills folder: ${list}. For UI, UX, copy, or
+RYUX design skills are installed in this project's agent skills folder: ${list}. For UI, UX, copy, or
 frontend work, start in ryux-core by choosing the capability (Analyze, Build, Critique, QA), load only the
 skills the task needs, and end with the Delivery Gate. Reference data and structured review come from the
 ryux MCP: \`${MCP_ADD_CMD}\`.`;

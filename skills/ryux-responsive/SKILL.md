@@ -1,6 +1,6 @@
 ---
 name: ryux-responsive
-description: "Ryux Responsive design: prioritize, simplify, reorganize; tables, overlays, overflow, safe areas. Load when building a layout that ships to more than one width."
+description: "RYUX Responsive design: prioritize, simplify, reorganize; tables, overlays, overflow, safe areas. Load when building a layout that ships to more than one width."
 ---
 
 # ryux-responsive: Responsive design
@@ -30,7 +30,7 @@ that open a detail view.
 
 Check the stated viewport and the smallest supported width. No horizontal page scroll.
 
-## Evidence from Ryux Knowledge
+## Evidence from RYUX Knowledge
 
 How reference flows adapt across widths when captured: `get_flow`, `search_screens` for the mobile pattern. Without the ryux MCP, say the evidence comes from the design and standards alone.
 

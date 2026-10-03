@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "license": "MIT",
-  "description": "Internal Ryux Knowledge pipeline: ingest screenshots, draft tags, human review, publish.",
+  "description": "Internal RYUX Knowledge pipeline: ingest screenshots, draft tags, human review, publish.",
   "type": "module",
   "scripts": {
     "build": "tsc",

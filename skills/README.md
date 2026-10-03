@@ -1,12 +1,12 @@
-# Ryux skills
+# RYUX skills
 
-Browsable copies of the Ryux skills (RX-2.0), one folder per skill (each holds a `SKILL.md`). Ryux
+Browsable copies of the RYUX skills (RX-2.0), one folder per skill (each holds a `SKILL.md`). RYUX
 is a design intelligence layer for AI and designers. An agent loads `ryux-core`, chooses the
 capability (Analyze, Build, Critique, QA), then loads only the skills the task needs.
 
 Roles: **core** (the operating system), **knowledge** (how to reason about one area; rules say when
 they apply, when they do not, and the trade-off), **capability** (Analyze, Critique), and **gate**
-(Visual QA, anti-slop). Every skill names the evidence to pull from Ryux Knowledge.
+(Visual QA, anti-slop). Every skill names the evidence to pull from RYUX Knowledge.
 
 | Group | Skill | Covers |
 | --- | --- | --- |

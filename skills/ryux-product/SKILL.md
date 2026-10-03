@@ -1,6 +1,6 @@
 ---
 name: ryux-product
-description: "Ryux Product thinking: user, task, goal, primary action, constraints, assumptions, and decisions backed by evidence. Load when starting a new screen or flow, choosing between patterns, or when the scope is unclear."
+description: "RYUX Product thinking: user, task, goal, primary action, constraints, assumptions, and decisions backed by evidence. Load when starting a new screen or flow, choosing between patterns, or when the scope is unclear."
 ---
 
 # ryux-product: Product thinking
@@ -45,7 +45,7 @@ With **None**, say so: present the options and their trade-offs, or ask. Never i
 
 Does not cover: layout or visual decisions (see ryux-ux and ryux-ui).
 
-## Evidence from Ryux Knowledge
+## Evidence from RYUX Knowledge
 
 How comparable Indonesian products frame the same task and offer: `search_screens` (category, flow) and `get_flow` for the full sequence. Without the ryux MCP, say the evidence comes from the design and standards alone.
 
@@ -82,11 +82,11 @@ How comparable Indonesian products frame the same task and offer: `search_screen
 - Why: A cited screen makes a decision checkable instead of a matter of opinion. (ryux evidence principle)
 - Check: search_screens, delivery_gate
 
-### RX-PR-05 [Required] Indonesian context first
+### RX-PR-05 [Required] The product's market first
 
-- Do: Start from how Indonesian apps and users work, and check a foreign pattern's local fit before reusing it.
-- Do not: Import a pattern such as card-first checkout or dollar pricing without checking local relevance.
-- Why: Payment, address, and trust habits differ locally (QRIS, virtual accounts, COD, WhatsApp). (ryux taxonomy of local patterns)
+- Do: Start from how users in the product's own market pay, sign in, write addresses, and read money and dates; check a pattern from another market before reusing it. Take the market from the brief or the codebase, and ask when it is unclear.
+- Do not: Import card-first checkout into a QRIS market, or bring Rupiah, Bahasa Indonesia, or local tax rates into a product built for another market.
+- Why: Payment, address, and trust habits differ by market (in Indonesia: QRIS, virtual accounts, COD, WhatsApp). (ryux taxonomy of local patterns)
 - Check: search_screens
 
 ### RX-PR-09 [Required] Compare patterns before choosing

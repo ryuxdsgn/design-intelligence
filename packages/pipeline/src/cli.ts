@@ -7,7 +7,7 @@ import { editorClient } from "./supabase.js";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..", "..", "..");
 
-const HELP = `Ryux Knowledge pipeline (internal)
+const HELP = `RYUX Knowledge pipeline (internal)
 
 Usage: pnpm knowledge <command> [flow-folder]
 

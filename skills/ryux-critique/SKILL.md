@@ -1,15 +1,15 @@
 ---
 name: ryux-critique
-description: "Ryux Critique - get a senior design critique before your users do. Reviews a Figma link, a pen.dev design, a website URL, or a screenshot: analyzes it first, runs a Design Read across nine dimensions, then reports findings with ID, severity, category, evidence, impact, recommendation, confidence, and source. Use when asked to critique, review, or audit a UI, screen, or flow."
+description: "RYUX Critique - get a senior design critique before your users do. Reviews a Figma link, a pen.dev design, a website URL, or a screenshot: analyzes it first, runs a Design Read across nine dimensions, then reports findings with ID, severity, category, evidence, impact, recommendation, confidence, and source. Use when asked to critique, review, or audit a UI, screen, or flow."
 ---
 
-# ryux-critique: Ryux Critique
+# ryux-critique: RYUX Critique
 
 > Get a senior design critique before your users do.
 
 Critique answers "does this interface make sense, and what should change first?" It is an
-orchestrator, not a pile of rules: it analyzes the design, reasons with the Ryux knowledge skills,
-pulls evidence from Ryux Knowledge, and reports findings someone can act on.
+orchestrator, not a pile of rules: it analyzes the design, reasons with the RYUX knowledge skills,
+pulls evidence from RYUX Knowledge, and reports findings someone can act on.
 
 ```
 ryux-critique
@@ -19,7 +19,7 @@ ryux-analyze              what is actually there
 knowledge skills          ux, ui, interaction, forms, content, accessibility,
                           responsive, design-system, edge-cases, anti-slop
      ↓
-Ryux Knowledge            real Indonesian screens (search_screens, heuristic_eval)
+RYUX Knowledge            real Indonesian screens (search_screens, heuristic_eval)
      ↓
 findings
 ```
@@ -95,12 +95,12 @@ situation is present. Use their "Not when" lines so a rule is not applied mechan
 | Edge cases | ryux-edge-cases | empty, error, loading, long text, permissions |
 | Anti-slop | ryux-anti-slop | invented numbers or people, fake urgency, unjustified decoration |
 
-### 5. Evidence from Ryux Knowledge
+### 5. Evidence from RYUX Knowledge
 
 With the ryux MCP connected, find 1 to 3 comparison screens for each major finding with
 `search_screens`, then send the findings to `heuristic_eval` (`task_context` + `findings`).
 Its `heuristic` field takes the Nielsen codes `H-01` to `H-10`; map each finding and name the
-Ryux rule in `issue`:
+RYUX rule in `issue`:
 
 | Category | Map to |
 | --- | --- |
@@ -132,7 +132,7 @@ Each finding uses this schema:
 | Impact | who is affected, in which task, and how badly |
 | Recommendation | a concrete fix |
 | Confidence | High (seen directly), Medium (partly seen, such as one width), Low (inferred) |
-| Source | the Ryux rule ID, plus a screen_id, a standard (WCAG SC), or "this design" |
+| Source | the RYUX rule ID, plus a screen_id, a standard (WCAG SC), or "this design" |
 
 ```
 Verdict: one sentence (what works, the biggest risk)

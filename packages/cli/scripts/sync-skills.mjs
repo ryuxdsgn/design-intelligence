@@ -1,5 +1,5 @@
 // Regenerate the browsable skills/ folder and the generated sections of docs/design-rules.md from
-// the CLI's render functions, then install Ryux into this repo (dogfooding). Run: pnpm sync:skills
+// the CLI's render functions, then install RYUX into this repo (dogfooding). Run: pnpm sync:skills
 // (builds the CLI first). Source of truth: packages/cli/src/content.ts and guides.ts.
 import { readFile, readdir, mkdir, writeFile, rm } from "node:fs/promises";
 import { dirname, join } from "node:path";
@@ -65,7 +65,7 @@ for (const [name, body] of [
 }
 await writeFile(docPath, doc, "utf8");
 
-// Dogfood: install Ryux into this repo with the real CLI (all groups). The generated
+// Dogfood: install RYUX into this repo with the real CLI (all groups). The generated
 // .claude/skills/ryux-* folders are gitignored.
 execFileSync("node", [join(here, "..", "dist", "index.js"), "install", "--agent", "claude"], { cwd: root, stdio: "ignore" });
 

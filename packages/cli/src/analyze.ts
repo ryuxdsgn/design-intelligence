@@ -1,12 +1,12 @@
 import { CAPTURE_TABLE } from "./capture.js";
 
-// Ryux Analyze: understand an existing interface before changing it. Source of truth for
+// RYUX Analyze: understand an existing interface before changing it. Source of truth for
 // skills/ryux-analyze/SKILL.md, rendered by render.ts and installed by the CLI (group "analyze").
 
 export const ANALYZE_DESCRIPTION =
-  "Ryux Analyze - understand an existing interface before you change it. Inventories layout, type, spacing, color roles, components, hierarchy, navigation, interaction, and design language from a Figma link, pen.dev design, website URL, screenshot, or code, each with a confidence label. Use when asked to analyze, reverse-engineer, document, or learn from an existing design.";
+  "RYUX Analyze - understand an existing interface before you change it. Inventories layout, type, spacing, color roles, components, hierarchy, navigation, interaction, and design language from a Figma link, pen.dev design, website URL, screenshot, or code, each with a confidence label. Use when asked to analyze, reverse-engineer, document, or learn from an existing design.";
 
-export const ANALYZE_BODY = `# ryux-analyze: Ryux Analyze
+export const ANALYZE_BODY = `# ryux-analyze: RYUX Analyze
 
 > What is actually in this interface?
 
@@ -63,7 +63,7 @@ Indonesian screens by \`screen_id\`; without it, say the patterns come from this
 Structured, not an essay. This report is the input for \`ryux-critique\` and for a \`DESIGN.md\`.
 
 \`\`\`
-# Ryux Design Analysis
+# RYUX Design Analysis
 
 ## Context
 Source:        Figma frame "Checkout" (node 1:2) / https://... / pen.dev frame "..."
@@ -106,7 +106,7 @@ Feedback:   ...
 - Payment method picker with QRIS first (scr_...)
 
 ## Evidence
-Each item above carries its label and source; Ryux Knowledge screen_ids where used.
+Each item above carries its label and source; RYUX Knowledge screen_ids where used.
 
 ## Open questions
 - Are the amounts real data or examples?

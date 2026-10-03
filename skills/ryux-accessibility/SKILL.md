@@ -1,6 +1,6 @@
 ---
 name: ryux-accessibility
-description: "Ryux Accessibility: semantics, keyboard, focus, contrast, targets, names, errors, reduced motion. Load when building or reviewing any UI."
+description: "RYUX Accessibility: semantics, keyboard, focus, contrast, targets, names, errors, reduced motion. Load when building or reviewing any UI."
 ---
 
 # ryux-accessibility: Accessibility
@@ -22,7 +22,7 @@ Accessibility is product quality, not an enhancement. Check:
 
 Report what was checked and how. Do not claim full conformance without an audit.
 
-## Evidence from Ryux Knowledge
+## Evidence from RYUX Knowledge
 
 Standards are the main evidence (WCAG 2.2 success criteria); reference screens show local patterns that meet them: `search_screens`. Without the ryux MCP, say the evidence comes from the design and standards alone.
 

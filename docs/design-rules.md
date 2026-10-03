@@ -1,4 +1,4 @@
-# Ryux: design rules and skills
+# RYUX: design rules and skills
 
 > **© 2026 ryux (Redho Yurizal). License: MIT.** Original ryux.design ruleset.
 > Written from scratch based on public standards and methods: **Nielsen's 10 usability heuristics
@@ -9,9 +9,9 @@
 >
 > **Last updated:** 2026-10-02 · **Version:** RX-2.0
 
-Ryux is a design intelligence layer for AI and designers, packaged as skills. It has four
+RYUX is a design intelligence layer for AI and designers, packaged as skills. It has four
 capabilities: Analyze (`ryux-analyze`), Build (`ryux-core` and the knowledge skills below), Critique
-(`ryux-critique`), and QA (`ryux-visual-qa`). Anti-slop prevents bad, generic output; Ryux also
+(`ryux-critique`), and QA (`ryux-visual-qa`). Anti-slop prevents bad, generic output; RYUX also
 guides good design decisions. Three things make it
 distinctly ryux: **evidence-based** (real Indonesian screens), **Indonesia first**, and **human
 judgment** for designer notes.
@@ -171,7 +171,7 @@ Claims in the report describe what was checked and how. "Pixel perfect", "fully 
 Generated from `packages/cli/src/content.ts` by `pnpm sync:skills`. Edit the rules there, not here.
 
 <!-- rules:start -->
-76 rules across 13 skills: 50 Required, 13 Preferred, 13 Contextual; 16 Hard Gates and 7 Quality Locks.
+76 rules across 13 skills: 47 Required, 13 Preferred, 16 Contextual; 16 Hard Gates and 7 Quality Locks.
 
 ### ryux-product: Product thinking (RX-PR)
 
@@ -205,11 +205,11 @@ Group Foundation · gate area PRODUCT. Covers user, task, goal, primary action, 
 - Why: A cited screen makes a decision checkable instead of a matter of opinion. (ryux evidence principle)
 - Check: search_screens, delivery_gate
 
-#### RX-PR-05 [Required] Indonesian context first
+#### RX-PR-05 [Required] The product's market first
 
-- Do: Start from how Indonesian apps and users work, and check a foreign pattern's local fit before reusing it.
-- Do not: Import a pattern such as card-first checkout or dollar pricing without checking local relevance.
-- Why: Payment, address, and trust habits differ locally (QRIS, virtual accounts, COD, WhatsApp). (ryux taxonomy of local patterns)
+- Do: Start from how users in the product's own market pay, sign in, write addresses, and read money and dates; check a pattern from another market before reusing it. Take the market from the brief or the codebase, and ask when it is unclear.
+- Do not: Import card-first checkout into a QRIS market, or bring Rupiah, Bahasa Indonesia, or local tax rates into a product built for another market.
+- Why: Payment, address, and trust habits differ by market (in Indonesia: QRIS, virtual accounts, COD, WhatsApp). (ryux taxonomy of local patterns)
 - Check: search_screens
 
 #### RX-PR-09 [Required] Compare patterns before choosing
@@ -481,17 +481,19 @@ Group UX · gate area EDGE CASES. Covers data, form, network, permission, and sy
 
 ### ryux-content: Content design (RX-CD)
 
-Group UX · gate area UX. Covers specific copy, action labels, error messages, natural Indonesian, Rupiah, terminology. Load when writing or reviewing any user-facing text.
+Group UX · gate area UX. Covers specific copy, action labels, error messages, terminology, and locale (money, dates, natural Indonesian when the copy is Indonesian). Load when writing or reviewing any user-facing text.
 
-#### RX-CD-01 [Required] Natural Bahasa Indonesia
+#### RX-CD-01 [Contextual] Natural Bahasa Indonesia
 
+- When: the interface or message is in Bahasa Indonesia
 - Do: Write the way Indonesian users speak; keep English only for terms they already use (checkout, promo).
 - Do not: Ship stiff translations such as "Silakan melakukan pembayaran Anda".
 - Why: Natural language reads faster and feels trustworthy. (ryux copy principle)
 - Check: audit_copy, review
 
-#### RX-CD-02 [Required] Rupiah as Rp1.250.000
+#### RX-CD-02 [Contextual] Rupiah as Rp1.250.000
 
+- When: the product shows prices in Rupiah
 - Do: Write money with Rp directly before the number, dots for thousands, and no decimals for whole Rupiah.
 - Do not: Write Rp 1.250.000, IDR 1250000, or Rp1,250,000.
 - Why: It is the common Indonesian form; mixed formats look careless next to prices. (PUEBI currency notation; ryux run 2026-10-02)
@@ -518,8 +520,9 @@ Group UX · gate area UX. Covers specific copy, action labels, error messages, n
 - Why: Changing terms make users wonder whether it is a different thing. (Nielsen heuristic 4 (1994))
 - Check: review
 
-#### RX-CD-09 [Required] Dates, times, and numbers in Indonesian form
+#### RX-CD-09 [Contextual] Dates, times, and numbers in Indonesian form
 
+- When: the copy is in Bahasa Indonesia; other markets follow their own locale
 - Do: Write dates as 2 Okt 2026 or Jumat, 2 Oktober 2026; times as 14.30 in 24-hour form, with WIB, WITA, or WIT when the time zone matters; decimals with a comma (1,5) and thousands with a dot (12.500); phone numbers as +62 812-3456-7890.
 - Do not: Write 10/02/2026, 2:30 PM, or 1.5 in Indonesian copy.
 - Why: Slash dates are ambiguous and English number formats read as foreign or as the wrong value. (PUEBI number and time notation; id-ID locale conventions)
@@ -754,7 +757,7 @@ Group Engineering · gate area CODE QUALITY. Covers the repo's own stack, semant
 
 #### RX-FE-12 [Contextual] Rupiah formatting in code
 
-- When: code formats money for display
+- When: the product is built for the Indonesian market and shows Rupiah; elsewhere, use Intl with the user's locale and add no market-specific branches nobody asked for
 - Do: Format the number with id-ID grouping and prepend Rp yourself.
 - Do not: Rely on Intl currency style alone, which inserts a space after Rp.
 - Why: The built-in output does not match the Rp1.250.000 form used in copy. (ryux run 2026-10-02: order-total.ts with and without ryux)
@@ -871,7 +874,7 @@ installing removes folders from earlier releases. Browsable copies of every skil
 
 Checks in `packages/core` (tool-local numbering `R-0x` and `C-0x`):
 
-| Ryux rule | Check in code |
+| RYUX rule | Check in code |
 | --- | --- |
 | RX-PR-04 | `delivery_gate` (screen_id citations) |
 | RX-AS-03 | `audit_copy` C-01 |
