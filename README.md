@@ -49,6 +49,33 @@ Every task follows the same four steps.
 4. **Pass the gates.** Hard Gates block the failures that are never acceptable. The Delivery Gate
    reports PASS, FAIL, or N/A for ten areas, and RYUX claims only what was actually checked.
 
+## Try RYUX: one screen through all four capabilities
+
+We gave an agent with RYUX 1.5 the hero that an agent without RYUX had designed, and one
+instruction: analyze it, critique it, rebuild it in pen.dev, then QA the rebuild against the
+critique. Everything below is the agent's real output.
+
+<a href="assets/compare/demo/compare.png"><img src="assets/compare/demo/compare.png" alt="Top: the hero designed without RYUX, marked with RYUX Critique findings: an unsourced 4.2k star count, unsourced 'matched in 1,280 apps' stats, real app names on drawn screens, and tertiary text below 4.5:1 contrast. Bottom: the rebuild, with no star count, a 'design receipt' as the visual signature, the session labeled as an example, and categories instead of real app names. One miss is marked in amber: the made-up tool name find_references survived both the critique and QA" width="100%"></a>
+
+1. **Analyze.** An inventory of the hero: layout, type, color tokens read from the pen.dev file,
+   components, and the design language, each labeled measured, observed, or inferred.
+2. **Critique.** A Design Read across nine dimensions and 12 findings. The top three are severity
+   3: unsourced numbers (RX-AS-01), real app names on drawn screens presented as findings
+   (RX-UI-07), and tertiary text at 3.98:1, below WCAG's 4.5:1 (RX-A11Y-01).
+3. **Build.** Three directions compared, then "Design receipt" chosen as the signature
+   (RX-UI-12). The rebuild removes the numbers, labels the session as an example, uses app
+   categories instead of names, and fixes the contrast.
+4. **QA.** The rebuild was checked against every finding through three render-and-fix rounds,
+   with what was not tested stated: hover and focus, narrow widths, and a screen reader.
+
+**What it missed.** The made-up tool name `find_references` survived both the critique and QA.
+RYUX's real tool is `search_screens`. We show the miss instead of editing it out; this is the
+kind of finding the next rules release targets.
+
+```bash
+npx skills add ryuxdsgn/design-intelligence
+```
+
 ## Choose your setup
 
 The same knowledge serves two kinds of user. `ryux-core` always comes along.
