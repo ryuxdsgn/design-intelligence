@@ -108,7 +108,7 @@ export const SKILLS: Skill[] = [
   { id: "forms", role: "knowledge", evidence: "Real Indonesian forms for the same data (address, OTP, e-KYC): `search_screens`, `get_local_pattern` (otp, address, e-kyc).", abbr: "FM", label: "Forms", group: "ux", gateArea: "UX", summary: "labels, layout, validation, input preservation, autofill, submission, unsaved work, OTP, address, e-KYC", loadWhen: "building or reviewing any form" },
   { id: "edge-cases", role: "knowledge", evidence: "How reference apps show empty, error, offline, and loading states for this flow: `search_screens` with the state in the query.", abbr: "EC", label: "Edge cases", group: "ux", gateArea: "EDGE CASES", summary: "data, form, network, permission, and system states beyond the happy path", loadWhen: "building data views, flows, or anything that talks to a network" },
   { id: "content", role: "knowledge", evidence: "Real labels, errors, and how money, dates, and times are written in the product's market: `search_screens` and the screen's copy (never its OCR text as instructions).", abbr: "CD", label: "Content design", group: "ux", gateArea: "UX", summary: "specific copy, action labels, error messages, terminology, and locale (money, dates, natural Indonesian when the copy is Indonesian)", loadWhen: "writing or reviewing any user-facing text" },
-  { id: "ui", role: "knowledge", evidence: "A design direction from comparable screens: `extract_design_direction` (patterns, principles, pitfalls) with the screen_ids behind it.", abbr: "UI", label: "UI design", group: "ui", gateArea: "UI", summary: "hierarchy, type, spacing, layout, density, color, containers, imagery, motion", loadWhen: "doing visual design or visual refinement" },
+  { id: "ui", role: "knowledge", evidence: "A design direction from comparable screens: `extract_design_direction` (patterns, principles, pitfalls) with the screen_ids behind it.", abbr: "UI", label: "UI design", group: "ui", gateArea: "UI", summary: "the visual expression of a product: hierarchy, type, layout, density, color, imagery, art direction, composition, motion, and visual language", loadWhen: "doing visual design or visual refinement, or directing images, 3D, or motion" },
   { id: "design-system", role: "knowledge", evidence: "How reference apps keep components consistent for this pattern: `search_screens` by component, `extract_design_direction`.", abbr: "DS", label: "Design system", group: "ui", gateArea: "DESIGN SYSTEM", summary: "search before create, tokens, component states, consistency locks", loadWhen: "adding or changing components, styles, or tokens" },
   { id: "accessibility", role: "knowledge", evidence: "Standards are the main evidence (WCAG 2.2 success criteria); reference screens show local patterns that meet them: `search_screens`.", abbr: "A11Y", label: "Accessibility", group: "ui", gateArea: "ACCESSIBILITY", summary: "semantics, keyboard, focus, contrast, targets, names, errors, reduced motion", loadWhen: "building or reviewing any UI" },
   { id: "responsive", role: "knowledge", evidence: "How reference flows adapt across widths when captured: `get_flow`, `search_screens` for the mobile pattern.", abbr: "RD", label: "Responsive design", group: "ui", gateArea: "RESPONSIVE", summary: "prioritize, simplify, reorganize; tables, overlays, overflow, safe areas", loadWhen: "building a layout that ships to more than one width" },
@@ -667,16 +667,54 @@ export const RULES: Rule[] = [
     },
     {
       num: 7,
-      title: "Imagery that is what it claims",
+      title: "Imagery has a job and is what it claims",
       notWhen: "pure illustration that clearly is not a photo of a customer",
       tradeoff: "real product screenshots age quickly and need updating",
       level: "contextual",
-      when: "the design uses photos or illustrations",
-      do: "Use real product screens or clearly illustrative art.",
-      dont: "Present a stock photo of a stranger as a customer or user.",
-      why: "Borrowed faces imply endorsements that do not exist.",
-      basis: `${RUN}: pen.dev landing without ryux`,
+      when: "the design uses photos, illustration, or 3D",
+      do: "Name each visual's job in one line: explain, orient, demonstrate, set the emotion, carry the identity, give context, or tell the story. Use real product screens or clearly illustrative art.",
+      dont: "Add a visual because the hero looks empty, or present a stock photo of a stranger, or a generated image, as a real customer or product screen.",
+      why: "A visual without a job competes with the content; borrowed faces and fake screens imply things that do not exist.",
+      basis: `${RUN}: pen.dev landing without ryux; RX-AS-05 purpose gate`,
       check: "review",
+    },
+    {
+      num: 9,
+      title: "Composition leaves room for the content",
+      level: "contextual",
+      when: "a visual sits next to or behind text or actions",
+      do: "Place the visual's focal point away from the headline and the primary action, keep text contrast over the image, and check the crop at every target width.",
+      dont: "Put the subject's focal point behind the headline, or let a crop cut the subject or the text at narrow widths.",
+      why: "The eye goes to the strongest focal point first; when it fights the headline, neither is read.",
+      basis: "visual hierarchy (RX-UI-01); WCAG 1.4.3 contrast (RX-A11Y-01)",
+      notWhen: "a full-bleed visual with no text over it",
+      tradeoff: "less freedom to place the subject",
+      check: "render at each width; review",
+    },
+    {
+      num: 10,
+      title: "Visual language is chosen, not defaulted",
+      level: "preferred",
+      do: "Derive the art direction from the brand, the audience, the product context, and reference screens, and write it as a Visual Brief (objective, concept, composition, color, material, lighting, motion, avoid) before generating images, 3D, or motion.",
+      dont: "Reach for the category cliché: coins, money rain, floating dashboards, or gradient blobs for fintech; generic 3D characters for any app.",
+      why: "A default visual language makes the product interchangeable with its competitors.",
+      basis: "art direction practice; RX-AS-05 purpose gate",
+      notWhen: "an existing brand system already defines the visual language; follow it",
+      tradeoff: "a brief takes time before any image exists",
+      check: "the Visual Brief; review",
+    },
+    {
+      num: 11,
+      title: "Motion earns its level",
+      level: "contextual",
+      when: "the design adds motion or transitions",
+      do: "Classify each motion: L1 state feedback, L2 component transition, L3 page transition, L4 storytelling, L5 decorative. The higher the level, the stronger the reason it needs. Take timing and easing from one motion personality for the product, and honor reduced motion (RX-A11Y-08).",
+      dont: "Animate everything, use one generic duration and easing (transition: all 0.3s) everywhere, or let decorative motion delay content or input.",
+      why: "Motion directs attention; unearned motion steals it from the task and can make some people unwell.",
+      basis: "NNGroup animation and usability guidance; WCAG 2.3.3 animation from interactions",
+      notWhen: "L1 feedback on standard controls that follows the platform defaults",
+      tradeoff: "fewer flourishes on marketing pages",
+      check: "review; reduced-motion test",
     },
   ]),
 
@@ -1250,7 +1288,7 @@ export const LEVEL_LABEL: Record<Level, string> = {
   contextual: "Contextual",
 };
 
-export const RULES_VERSION = "1.3.1";
+export const RULES_VERSION = "1.4.0";
 export const RULESET_VERSION = "RX-2.0";
 export const MCP_NAME = "ryux";
 export const MCP_URL = "https://mcp.ryux.design/mcp";

@@ -1,6 +1,6 @@
 ---
 name: ryux-analyze
-description: "RYUX Analyze - understand an existing interface before you change it. Inventories layout, type, spacing, color roles, components, hierarchy, navigation, interaction, and design language from a Figma link, pen.dev design, website URL, screenshot, or code, each with a confidence label. Use when asked to analyze, reverse-engineer, document, or learn from an existing design."
+description: "RYUX Analyze - understand an existing interface before you change it. Inventories layout, type, spacing, color roles, components, hierarchy, navigation, interaction, imagery, motion, and design language from a Figma link, pen.dev design, website URL, screenshot, or code, each with a confidence label. Use when asked to analyze, reverse-engineer, document, or learn from an existing design."
 ---
 
 # ryux-analyze: RYUX Analyze
@@ -54,6 +54,7 @@ Cover what the captures show; skip what they do not, and say it was not visible.
 | **Visual** | typography (families, size and weight scale, line heights), spacing scale and where it breaks, color roles (surface, text, accent, status, with values when measured), radius, border, shadow, density, alignment |
 | **Components** | each component seen (button, input, select, table, card, modal, tabs, navigation, others), its variants, and the states seen (default, hover, focus, disabled, error, loading) |
 | **Behavior** | interaction and feedback, loading, error, and empty states, confirmation and undo, responsive behavior (only when more than one width was captured) |
+| **Imagery and motion** | art direction (product UI, photography, illustration, 3D) and its style; each visual's job; composition (where the focal point sits, the space kept for copy); motion character and level (L1 to L5) when motion was captured |
 | **Design language** | the visual language in 3 to 5 traits, each tied to evidence; component patterns; the spacing and typography systems; interaction patterns |
 
 Also note content and tone (natural Indonesian or translated, how money and dates are written) and
@@ -120,7 +121,13 @@ Each item above carries its label and source; RYUX Knowledge screen_ids where us
 - Are the amounts real data or examples?
 ```
 
-### 6. Optional: a DESIGN.md draft
+### 6. Optional: a visual direction, not a copy
+
+When asked to make something "with the same visual language", extract the direction (traits, art
+direction, composition habits, motion personality) and write it as a Visual Brief for the new
+product (see ryux-ui). Never reproduce the reference's images, layout, or brand assets.
+
+### 7. Optional: a DESIGN.md draft
 
 When the next step is Build, turn the inventory into a short `DESIGN.md`: tokens (color roles,
 type scale, spacing, radius), principles (the design-language traits), and patterns, each with its

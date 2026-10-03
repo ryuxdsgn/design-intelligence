@@ -1,6 +1,6 @@
 <p align="center">
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-2ea44f" alt="MIT License"></a>
-  <img src="https://img.shields.io/badge/status-early__access%20%C2%B7%20rules%201.3-1f6feb" alt="Status: early access, rules 1.3">
+  <img src="https://img.shields.io/badge/status-early__access%20%C2%B7%20rules%201.4-1f6feb" alt="Status: early access, rules 1.4">
   <img src="https://img.shields.io/badge/MCP%20tools-9-8957e5" alt="9 MCP tools">
   <img src="https://img.shields.io/badge/skills-14%20modular-e36209" alt="RYUX: 14 modular design skills">
 </p>

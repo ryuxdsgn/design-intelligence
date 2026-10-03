@@ -171,7 +171,7 @@ Claims in the report describe what was checked and how. "Pixel perfect", "fully 
 Generated from `packages/cli/src/content.ts` by `pnpm sync:skills`. Edit the rules there, not here.
 
 <!-- rules:start -->
-76 rules across 13 skills: 47 Required, 13 Preferred, 16 Contextual; 16 Hard Gates and 7 Quality Locks.
+79 rules across 13 skills: 47 Required, 14 Preferred, 18 Contextual; 16 Hard Gates and 7 Quality Locks.
 
 ### ryux-product: Product thinking (RX-PR)
 
@@ -532,7 +532,7 @@ Group UX · gate area UX. Covers specific copy, action labels, error messages, t
 
 ### ryux-ui: UI design (RX-UI)
 
-Group UI · gate area UI. Covers hierarchy, type, spacing, layout, density, color, containers, imagery, motion. Load when doing visual design or visual refinement.
+Group UI · gate area UI. Covers the visual expression of a product: hierarchy, type, layout, density, color, imagery, art direction, composition, motion, and visual language. Load when doing visual design or visual refinement, or directing images, 3D, or motion.
 
 #### RX-UI-01 [Required] [Quality Lock] Hierarchy follows priority
 
@@ -570,15 +570,44 @@ Group UI · gate area UI. Covers hierarchy, type, spacing, layout, density, colo
 - Trade-off: custom layouts cost design and build time
 - Check: review
 
-#### RX-UI-07 [Contextual] Imagery that is what it claims
+#### RX-UI-07 [Contextual] Imagery has a job and is what it claims
 
-- When: the design uses photos or illustrations
-- Do: Use real product screens or clearly illustrative art.
-- Do not: Present a stock photo of a stranger as a customer or user.
-- Why: Borrowed faces imply endorsements that do not exist. (ryux run 2026-10-02: pen.dev landing without ryux)
+- When: the design uses photos, illustration, or 3D
+- Do: Name each visual's job in one line: explain, orient, demonstrate, set the emotion, carry the identity, give context, or tell the story. Use real product screens or clearly illustrative art.
+- Do not: Add a visual because the hero looks empty, or present a stock photo of a stranger, or a generated image, as a real customer or product screen.
+- Why: A visual without a job competes with the content; borrowed faces and fake screens imply things that do not exist. (ryux run 2026-10-02: pen.dev landing without ryux; RX-AS-05 purpose gate)
 - Not when: pure illustration that clearly is not a photo of a customer
 - Trade-off: real product screenshots age quickly and need updating
 - Check: review
+
+#### RX-UI-09 [Contextual] Composition leaves room for the content
+
+- When: a visual sits next to or behind text or actions
+- Do: Place the visual's focal point away from the headline and the primary action, keep text contrast over the image, and check the crop at every target width.
+- Do not: Put the subject's focal point behind the headline, or let a crop cut the subject or the text at narrow widths.
+- Why: The eye goes to the strongest focal point first; when it fights the headline, neither is read. (visual hierarchy (RX-UI-01); WCAG 1.4.3 contrast (RX-A11Y-01))
+- Not when: a full-bleed visual with no text over it
+- Trade-off: less freedom to place the subject
+- Check: render at each width; review
+
+#### RX-UI-10 [Preferred] Visual language is chosen, not defaulted
+
+- Do: Derive the art direction from the brand, the audience, the product context, and reference screens, and write it as a Visual Brief (objective, concept, composition, color, material, lighting, motion, avoid) before generating images, 3D, or motion.
+- Do not: Reach for the category cliché: coins, money rain, floating dashboards, or gradient blobs for fintech; generic 3D characters for any app.
+- Why: A default visual language makes the product interchangeable with its competitors. (art direction practice; RX-AS-05 purpose gate)
+- Not when: an existing brand system already defines the visual language; follow it
+- Trade-off: a brief takes time before any image exists
+- Check: the Visual Brief; review
+
+#### RX-UI-11 [Contextual] Motion earns its level
+
+- When: the design adds motion or transitions
+- Do: Classify each motion: L1 state feedback, L2 component transition, L3 page transition, L4 storytelling, L5 decorative. The higher the level, the stronger the reason it needs. Take timing and easing from one motion personality for the product, and honor reduced motion (RX-A11Y-08).
+- Do not: Animate everything, use one generic duration and easing (transition: all 0.3s) everywhere, or let decorative motion delay content or input.
+- Why: Motion directs attention; unearned motion steals it from the task and can make some people unwell. (NNGroup animation and usability guidance; WCAG 2.3.3 animation from interactions)
+- Not when: L1 feedback on standard controls that follows the platform defaults
+- Trade-off: fewer flourishes on marketing pages
+- Check: review; reduced-motion test
 
 ---
 

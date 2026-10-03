@@ -195,8 +195,10 @@ Avoid generic AI language: "unlock", "elevate", "transform", "seamlessly", "powe
 
 Does not cover: layout of the text (see ryux-ui).`,
 
-  ui: `Separate functional UI from decorative UI. Functional UI helps the user read, decide, or act.
-Decorative UI needs a stated reason (see the purpose gates in ryux-anti-slop).
+  ui: `**Visuals are not decoration. They are communication.** RYUX UI owns the visual expression of
+a product: what each visual decision communicates, why it exists, and how it behaves. Functional UI
+helps the user read, decide, or act. Anything decorative needs a stated reason (see the purpose
+gates in ryux-anti-slop).
 
 Work in this order:
 1. **Hierarchy**: what is read first, second, third? The primary action and key information win.
@@ -206,7 +208,54 @@ Work in this order:
 5. **Color**: roles first (surface, text, accent for the primary action, status); contrast checked.
 6. **Containers**: use a container only when it groups or separates something.
 7. **Icons**: next to labels, from one set, at consistent sizes.
-8. **Motion**: only to explain change; short; never blocking.
+8. **Art direction and imagery**: each visual has a job (RX-UI-07); its composition leaves room for
+   the content (RX-UI-09); the visual language is chosen, not defaulted (RX-UI-10).
+9. **Motion**: each motion earns its level (RX-UI-11), below.
+
+**Motion.** The lifecycle of an action (before, trigger, feedback, waiting, result, recovery) is defined in
+ryux-interaction (RX-IX-01, RX-IX-02); motion only makes those states visible. Decide the trigger,
+duration, easing, distance, opacity or scale, and how several elements are choreographed.
+
+| Level | Examples | Needs |
+| --- | --- | --- |
+| L1 State feedback | button press, checkbox, toggle | nothing beyond being fast (about 100 to 200 ms) |
+| L2 Component transition | dropdown, modal, drawer, tooltip | shows where something came from or went |
+| L3 Page transition | navigation, route change | keeps the user oriented between places |
+| L4 Storytelling | onboarding, product introduction, marketing | a message that is clearer moving than still |
+| L5 Decorative | background particles, floating elements | a brand reason, and never delaying content or input |
+
+Pick one **motion personality** per product and derive timing and easing from it:
+
+| Trait | Calm (banking) | Energetic (game) |
+| --- | --- | --- |
+| Character | calm, precise | energetic, playful |
+| Speed | moderate | fast |
+| Easing | smooth ease-out | spring |
+| Movement | short, controlled | larger, expressive |
+| Expression | subtle | high |
+
+With reduced motion requested, large movement becomes a fade or a cut (RX-A11Y-08).
+
+**Visual Brief.** Before generating images, 3D, illustration, or motion, write the brief. RYUX directs the
+generator; it is not the generator.
+
+\`\`\`
+# Visual Brief
+Objective:      what the visual must make the viewer understand or feel
+Audience:       who sees it, in which context
+Concept:        the idea, in one sentence
+Art direction:  photography / illustration / 3D, and its style
+Composition:    where the subject sits, and the space kept for copy
+Color:          derived from the product palette
+Material:       surfaces, texture
+Lighting:       direction and softness
+Motion:         level (L1 to L5) and personality
+Avoid:          the category clichés (for fintech: coins, money rain, floating dashboards)
+Sources:        reference screen_ids or the analysis it came from
+\`\`\`
+
+Then: brief, generate, critique the result against the brief, refine. A generated image is
+illustrative art; never present it as a real customer or a real product screen (RX-UI-07).
 
 **Justify values.** Every value comes from the scale and has a reason you can say in one line:
 "12px between these two fields because they belong together; 24px before the next group because it
