@@ -2,7 +2,7 @@
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { loadEnv } from "./env.js";
-import { draft, ingest, publish, syncTags, writeReview } from "./commands.js";
+import { capture, draft, ingest, publish, syncTags, writeReview } from "./commands.js";
 import { editorClient } from "./supabase.js";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..", "..", "..");
@@ -12,6 +12,8 @@ const HELP = `RYUX Knowledge pipeline (internal)
 Usage: pnpm knowledge <command> [flow-folder]
 
   tags                 sync tag rows from docs/taxonomy.md
+  capture <folder> <url...> [--width 1440]
+                       screenshot web pages in order into a flow folder (web references)
   ingest  <folder>     upload screenshots and create draft rows
   draft   <folder>     Claude drafts tags and OCR (source: ai)
   review  <folder>     write review.md for the human review
@@ -24,13 +26,22 @@ RYUX_EDITOR_PASSWORD, and for draft ANTHROPIC_API_KEY (optional RYUX_TAG_MODEL).
 
 async function main(): Promise<void> {
   loadEnv(root);
-  const [cmd, folder] = process.argv.slice(2);
+  const [cmd, folder, ...rest] = process.argv.slice(2);
   if (!cmd || cmd === "help" || cmd === "--help") {
     console.log(HELP);
     return;
   }
   const dir = folder ? resolve(process.env.INIT_CWD ?? process.cwd(), folder) : "";
   if (cmd !== "tags" && !dir) throw new Error(`"${cmd}" needs a flow folder`);
+  if (cmd === "capture") {
+    const w = rest.indexOf("--width");
+    const width = w >= 0 ? Number(rest[w + 1]) : 1440;
+    if (!Number.isInteger(width) || width < 320) throw new Error("--width must be a whole number of 320 or more");
+    const urls = w >= 0 ? rest.filter((_, i) => i !== w && i !== w + 1) : rest;
+    const files = capture(dir, urls, width);
+    console.log(`Captured ${files.join(", ")} at ${width} wide into ${dir}. Fill in flow.yaml, then ingest.`);
+    return;
+  }
   const sb = await editorClient();
   switch (cmd) {
     case "tags": {
