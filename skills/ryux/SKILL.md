@@ -5,7 +5,7 @@ description: "RYUX - design intelligence for AI agents and designers. Tell it wh
 
 # RYUX
 
-> Design intelligence for AI agents and designers. RX-2.0 (rules v2.0.0), MIT licensed.
+> Design intelligence for AI agents and designers. RX-2.0 (rules v2.0.1), MIT licensed.
 
 RYUX is a design intelligence layer for AI and designers: it helps understand, build, evaluate,
 and fix interfaces through design reasoning. It is not a UI generator, an anti-slop framework, or
