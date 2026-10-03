@@ -1,6 +1,6 @@
 ---
 name: ryux-anti-slop
-description: "Ryux Anti-slop: hard gates, purpose gates, quality locks, honest claims. Load when work is about to be delivered, or during visual refinement."
+description: "RYUX Anti-slop: hard gates, purpose gates, quality locks, honest claims. Load when work is about to be delivered, or during visual refinement."
 ---
 
 # ryux-anti-slop: Anti-slop
@@ -65,7 +65,7 @@ result, ask **"Why does this exist?"** If there is no meaningful reason, remove 
 | Responsive behavior | RX-RD-06 |
 | Visual hierarchy | RX-UI-01 |
 
-## Evidence from Ryux Knowledge
+## Evidence from RYUX Knowledge
 
 Real screens show what real products do instead of invented numbers and urgency: `search_screens`; heuristic findings via `heuristic_eval`. Without the ryux MCP, say the evidence comes from the design and standards alone.
 

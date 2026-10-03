@@ -1,4 +1,4 @@
-// The read-only capture step shared by Ryux Analyze and Ryux Critique: how to see the real design
+// The read-only capture step shared by RYUX Analyze and RYUX Critique: how to see the real design
 // before saying anything about it. Embedded in both skills by analyze.ts and critique.ts.
 
 export const CAPTURE_TABLE = `| Source | How to capture | If it is not available |

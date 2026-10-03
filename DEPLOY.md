@@ -72,7 +72,7 @@ message instead of pretending to succeed. Deploy from the dashboard or:
 cd apps/web && vercel --prod
 ```
 
-## 4. Ryux Knowledge pipeline (`pnpm knowledge`)
+## 4. RYUX Knowledge pipeline (`pnpm knowledge`)
 
 The pipeline writes as an editor account through Supabase Auth and RLS (`is_staff()`). It never uses
 the service role key.

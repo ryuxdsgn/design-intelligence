@@ -1,6 +1,6 @@
 {
   "name": "design-intelligence",
-  "description": "Ryux: design intelligence from real Indonesian apps, for the AI agents that build and the designers who review.",
+  "description": "RYUX: design intelligence backed by real product screens, for the AI agents that build and the designers who review.",
   "owner": {
     "name": "ryuxdsgn"
   },
@@ -8,8 +8,8 @@
     {
       "name": "ryux",
       "source": "./",
-      "version": "1.3.0",
-      "description": "Ryux, a design intelligence layer for AI and designers: Analyze an existing interface, Build with senior product design reasoning, Critique a Figma link, pen.dev design, website URL, or screenshot, and QA the result. Loads as 16 skills: Analyze, Build, Critique, and QA."
+      "version": "1.3.1",
+      "description": "RYUX, a design intelligence layer for AI and designers: Analyze an existing interface, Build with senior product design reasoning, Critique a Figma link, pen.dev design, website URL, or screenshot, and QA the result. Loads as 16 skills: Analyze, Build, Critique, and QA."
     }
   ]
 }

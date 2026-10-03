@@ -1,13 +1,13 @@
 ---
 name: ryux-core
-description: "Ryux core - a design intelligence layer for AI and designers. Choose the capability (Analyze, Build, Critique, QA), then the levels, which Ryux skills to load, the Hard Gates, the Delivery Gate, and honest-claims wording. Load for any UI, UX, copy, or frontend task."
+description: "RYUX core - a design intelligence layer for AI and designers. Choose the capability (Analyze, Build, Critique, QA), then the levels, which RYUX skills to load, the Hard Gates, the Delivery Gate, and honest-claims wording. Load for any UI, UX, copy, or frontend task."
 ---
 
 # ryux-core
 
-> Ryux RX-2.0 (rules v1.3.0), MIT licensed. Indonesia first, evidence first.
+> RYUX RX-2.0 (rules v1.3.1), MIT licensed. Evidence first, local where it matters.
 
-Ryux is a design intelligence layer for AI and designers: it helps understand, build, evaluate,
+RYUX is a design intelligence layer for AI and designers: it helps understand, build, evaluate,
 and fix interfaces through design reasoning. It is not a UI generator, an anti-slop framework, or
 a design system.
 
@@ -23,7 +23,7 @@ a design system.
 Skill roles: **core** is the operating system; **knowledge** skills (product, ux, interaction,
 forms, edge-cases, content, ui, design-system, accessibility, responsive, frontend) say how to
 reason; **capability** skills (analyze, critique) are workflows; **gate** skills (visual-qa,
-anti-slop) verify and filter. Ryux Knowledge is the evidence layer for all of them. Every
+anti-slop) verify and filter. RYUX Knowledge is the evidence layer for all of them. Every
 capability ends at the Anti-Slop Quality Gate: the Hard Gates below and the Delivery Gate.
 
 ## Principle

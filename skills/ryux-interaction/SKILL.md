@@ -1,6 +1,6 @@
 ---
 name: ryux-interaction
-description: "Ryux Interaction design: before, during, result, recovery; feedback, control, confirmation, states, keyboard, local payments. Load when adding or changing anything the user can act on."
+description: "RYUX Interaction design: before, during, result, recovery; feedback, control, confirmation, states, keyboard, local payments. Load when adding or changing anything the user can act on."
 ---
 
 # ryux-interaction: Interaction design
@@ -31,7 +31,7 @@ every action is reachable; Enter submits; Escape closes. For repeat or expert us
 
 Does not cover: form-specific behavior (see ryux-forms).
 
-## Evidence from Ryux Knowledge
+## Evidence from RYUX Knowledge
 
 How local apps handle the same action and its states, and local payment patterns: `search_screens`, `get_local_pattern` (qris, virtual-account, paylater). Without the ryux MCP, say the evidence comes from the design and standards alone.
 

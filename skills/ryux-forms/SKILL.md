@@ -1,6 +1,6 @@
 ---
 name: ryux-forms
-description: "Ryux Forms: labels, layout, validation, input preservation, autofill, submission, unsaved work, OTP, address, e-KYC. Load when building or reviewing any form."
+description: "RYUX Forms: labels, layout, validation, input preservation, autofill, submission, unsaved work, OTP, address, e-KYC. Load when building or reviewing any form."
 ---
 
 # ryux-forms: Forms
@@ -26,7 +26,7 @@ A form is a conversation. Design it field by field, then as a whole.
 Does not cover: general interaction states (see ryux-interaction) or error copy wording (see
 ryux-content).
 
-## Evidence from Ryux Knowledge
+## Evidence from RYUX Knowledge
 
 Real Indonesian forms for the same data (address, OTP, e-KYC): `search_screens`, `get_local_pattern` (otp, address, e-kyc). Without the ryux MCP, say the evidence comes from the design and standards alone.
 

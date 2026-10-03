@@ -1,6 +1,6 @@
 ---
 name: ryux-ui
-description: "Ryux UI design: hierarchy, type, spacing, layout, density, color, containers, imagery, motion. Load when doing visual design or visual refinement."
+description: "RYUX UI design: hierarchy, type, spacing, layout, density, color, containers, imagery, motion. Load when doing visual design or visual refinement."
 ---
 
 # ryux-ui: UI design
@@ -27,7 +27,7 @@ cannot say why 8 and not 12, the choice is not a decision yet.
 
 Does not cover: component reuse and tokens (see ryux-design-system).
 
-## Evidence from Ryux Knowledge
+## Evidence from RYUX Knowledge
 
 A design direction from comparable screens: `extract_design_direction` (patterns, principles, pitfalls) with the screen_ids behind it. Without the ryux MCP, say the evidence comes from the design and standards alone.
 

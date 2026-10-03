@@ -75,7 +75,7 @@ const INSIDE = [
     body: "Research (search_screens, get_flow, compare_apps…), audit (audit_ui, audit_copy, heuristic_eval, delivery_gate), and a design bridge. Every result carries a screen_id, app, version, and capture date.",
   },
   {
-    title: "Ryux, a designer's reasoning",
+    title: "RYUX, a designer's reasoning",
     body: "107 rules in 14 modular skills, from product thinking to visual QA. Hard Gates, purpose gates instead of style bans, and a 10-area Delivery Gate before you ship.",
   },
   {
