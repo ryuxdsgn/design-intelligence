@@ -1,6 +1,6 @@
 ---
 name: ryux-ux
-description: "Ryux UX architecture: information architecture, navigation, flows, grouping, disclosure, search and filters. Load when designing multi-screen flows, navigation, or data-heavy views."
+description: "RYUX UX architecture: information architecture, navigation, flows, grouping, disclosure, search and filters. Load when designing multi-screen flows, navigation, or data-heavy views."
 ---
 
 # ryux-ux: UX architecture
@@ -35,7 +35,7 @@ Reason:     less memory burden in a repeated workflow
 Does not cover: per-action behavior (see ryux-interaction), forms (see ryux-forms), or states
 (see ryux-edge-cases).
 
-## Evidence from Ryux Knowledge
+## Evidence from RYUX Knowledge
 
 How Indonesian apps sequence and structure this flow: `get_flow` for a reference flow, `compare_apps` to compare steps across apps. Without the ryux MCP, say the evidence comes from the design and standards alone.
 

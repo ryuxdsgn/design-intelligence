@@ -1,6 +1,6 @@
 ---
 name: ryux-frontend
-description: "Ryux Frontend implementation: the repo's own stack, semantic elements, components, state, no invented logic. Load when writing or changing frontend code, including formatting, state, and data logic that users see."
+description: "RYUX Frontend implementation: the repo's own stack, semantic elements, components, state, no invented logic. Load when writing or changing frontend code, including formatting, state, and data logic that users see."
 ---
 
 # ryux-frontend: Frontend implementation
@@ -22,7 +22,7 @@ Connect design decisions to the code that ships them.
 
 Does not cover: visual decisions (see ryux-ui) or component reuse decisions (see ryux-design-system).
 
-## Evidence from Ryux Knowledge
+## Evidence from RYUX Knowledge
 
 The repo itself is the main evidence (stack, components, tokens); reference screens inform behavior, not code. Without the ryux MCP, say the evidence comes from the design and standards alone.
 
@@ -68,7 +68,7 @@ The repo itself is the main evidence (stack, components, tokens); reference scre
 
 ### RX-FE-12 [Contextual] Rupiah formatting in code
 
-- When: code formats money for display
+- When: the product is built for the Indonesian market and shows Rupiah; elsewhere, use Intl with the user's locale and add no market-specific branches nobody asked for
 - Do: Format the number with id-ID grouping and prepend Rp yourself.
 - Do not: Rely on Intl currency style alone, which inserts a space after Rp.
 - Why: The built-in output does not match the Rp1.250.000 form used in copy. (ryux run 2026-10-02: order-total.ts with and without ryux)

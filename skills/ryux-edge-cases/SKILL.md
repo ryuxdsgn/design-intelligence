@@ -1,6 +1,6 @@
 ---
 name: ryux-edge-cases
-description: "Ryux Edge cases: data, form, network, permission, and system states beyond the happy path. Load when building data views, flows, or anything that talks to a network."
+description: "RYUX Edge cases: data, form, network, permission, and system states beyond the happy path. Load when building data views, flows, or anything that talks to a network."
 ---
 
 # ryux-edge-cases: Edge cases
@@ -23,7 +23,7 @@ cannot happen in this product do not need a design; say so in the Delivery Gate.
 
 Does not cover: how errors are worded (see ryux-content).
 
-## Evidence from Ryux Knowledge
+## Evidence from RYUX Knowledge
 
 How reference apps show empty, error, offline, and loading states for this flow: `search_screens` with the state in the query. Without the ryux MCP, say the evidence comes from the design and standards alone.
 

@@ -106,7 +106,7 @@ async function install(agentIds: string[], skills: string[], scope: Scope): Prom
   return done;
 }
 
-/** Skill folders that already hold a Ryux install, with the skills found in each. */
+/** Skill folders that already hold a RYUX install, with the skills found in each. */
 function detectInstalled(scope: Scope): Map<string, string[]> {
   const found = new Map<string, string[]>();
   for (const a of AGENT_TARGETS) {
@@ -121,7 +121,7 @@ function detectInstalled(scope: Scope): Map<string, string[]> {
   return found;
 }
 
-/** Agent ids whose folders hold a Ryux install (or, for preselection, whose folders exist). */
+/** Agent ids whose folders hold a RYUX install (or, for preselection, whose folders exist). */
 function agentsAt(scope: Scope, requireInstall: boolean): string[] {
   return AGENT_TARGETS.filter((a) => {
     const dir = targetDir(a, scope);
@@ -251,7 +251,7 @@ async function runUpdate(flags: Flags): Promise<void> {
   const agentsFile = scope.global ? null : await readIfExists(join(scope.root, "AGENTS.md"));
   const inline = Boolean(agentsFile?.includes(MARK_START) && agentsFile.includes("# ryux-core"));
   if (!installed.size && !inline) {
-    console.log(`No Ryux install found. Run: ${CLI_CMD} install`);
+    console.log(`No RYUX install found. Run: ${CLI_CMD} install`);
     return;
   }
   const done: string[] = [];
@@ -287,11 +287,11 @@ async function runRemove(flags: Flags): Promise<void> {
   ).some(Boolean);
   const hasLegacyCursor = existsSync(join(scope.root, LEGACY_CURSOR_RULES_DIR));
   if (!hasSkills && !hasBlocks && !hasLegacyCursor) {
-    console.log("No Ryux install found.");
+    console.log("No RYUX install found.");
     return;
   }
   if (!flags.yes) {
-    const ok = await p.confirm({ message: `Remove Ryux from ${scope.global ? "your home directory" : "this project"}?` });
+    const ok = await p.confirm({ message: `Remove RYUX from ${scope.global ? "your home directory" : "this project"}?` });
     if (p.isCancel(ok) || !ok) {
       console.log("Cancelled.");
       return;
@@ -314,7 +314,7 @@ function help(): void {
     (g) => `  ${g.id.padEnd(12)} ${groupHint(g.id)}`,
   ).join("\n");
   const agents = AGENT_TARGETS.map((a) => `  ${a.id.padEnd(12)} ${a.label.padEnd(15)} ${a.dir}  (global ~/${a.globalDir})`).join("\n");
-  console.log(`ryux v${RULES_VERSION}: install Ryux, a design intelligence layer (Analyze, Build, Critique, QA), into your AI agents
+  console.log(`ryux v${RULES_VERSION}: install RYUX, a design intelligence layer (Analyze, Build, Critique, QA), into your AI agents
 
 Usage:
   ${CLI_CMD} [command] [options]
