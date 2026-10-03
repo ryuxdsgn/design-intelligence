@@ -1,4 +1,4 @@
-# ryux taxonomy (draft v0.1)
+# RYUX taxonomy (draft v0.2)
 
 The taxonomy has four layers of tags: app category, flow type, pattern, and component. Slugs use lowercase and hyphens, in English so agents can work with them easily; labels are shown in Indonesian.
 
@@ -16,7 +16,16 @@ The taxonomy has four layers of tags: app category, flow type, pattern, and comp
 | `travel` | Tickets and travel | Later |
 | `health` | Health and telemedicine | Later |
 | `edtech` | Education | Later |
-| `gov` | Government services | Later |
+| `gov` | Government services (web portals and apps) | Yes |
+| `saas` | Business software and SaaS (web) | Yes |
+
+## Platform
+
+| Slug | Label |
+| --- | --- |
+| `android` | Android app |
+| `ios` | iOS app |
+| `web` | Website or web app, captured at 1440 and 390 wide |
 
 ## Flow type
 
@@ -86,3 +95,4 @@ The taxonomy has four layers of tags: app category, flow type, pattern, and comp
 | Version | Change |
 | --- | --- |
 | v0.1 | Initial draft for the pilot |
+| v0.2 | Added `saas` and the Platform layer (`android`, `ios`, `web`); `gov` moved into the pilot, for web references |

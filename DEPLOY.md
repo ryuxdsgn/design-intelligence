@@ -108,6 +108,7 @@ knowledge/<app>/<version>/<flow>/01.png, 02.png, ...
 
 ```bash
 pnpm knowledge tags              # sync the vocabulary from docs/taxonomy.md
+pnpm knowledge capture <folder> <url...> [--width 390]   # web references: screenshots in order
 pnpm knowledge ingest  <folder>  # upload to the private bucket, rows as draft
 pnpm knowledge draft   <folder>  # AI tags (source: ai) and OCR (untrusted); skipped without a key
 pnpm knowledge review  <folder>  # write review.md
