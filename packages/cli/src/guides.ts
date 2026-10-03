@@ -219,6 +219,10 @@ content (RX-UI-09), and the visual language is chosen, not defaulted (RX-UI-10).
 language in a few words (editorial, product-centric, human, technical, playful, premium,
 institutional) and its form (shape language, geometric or organic, flat or with depth).
 
+**Composition exploration.** For an expressive surface, sketch three compositions of the chosen
+direction (subject left, subject right, centered or full-bleed) as quick frames, then choose by
+focal point, hierarchy, negative space, relation to the copy, and balance (RX-UI-09).
+
 **Expressive surfaces** (hero, landing, onboarding, empty states, brand moments). Restraint keeps
 task UI usable; on expressive surfaces it is only the floor. Work concept, then signature, then
 system:
@@ -236,7 +240,9 @@ needs invented numbers, people, or logos.
 
 **3. Motion.** The lifecycle of an action (before, trigger, feedback, waiting, result, recovery) is defined in
 ryux-interaction (RX-IX-01, RX-IX-02); motion only makes those states visible. Decide the trigger,
-duration, easing, distance, opacity or scale, and how several elements are choreographed.
+duration, easing, distance, opacity or scale, and how several elements are choreographed. Define
+duration and easing once as motion tokens, and animate transform and opacity rather than layout
+properties (width, height, top, margin), which cause jank.
 
 | Level | Examples | Needs |
 | --- | --- | --- |
@@ -258,7 +264,19 @@ Pick one **motion personality** per product and derive timing and easing from it
 
 With reduced motion requested, large movement becomes a fade or a cut (RX-A11Y-08).
 
-**4. Visual generation.** RYUX directs the generator; it is not the generator. Work context, goal,
+**4. Visual production.** Decide where each asset comes from before making anything (RX-UI-13):
+
+| Asset | First choice | Then | Never |
+| --- | --- | --- | --- |
+| Product visuals | real screens, labeled sample data | a rebuilt screen labeled illustrative | a fake dashboard shown as real |
+| Photography | the brand's own shoot | a licensed library you can name | a stranger presented as a customer |
+| Illustration and 3D | the brand's system | custom or generated from the brief, labeled | a generic character or blob unrelated to the product |
+| Icons | the project's set | one open-source set (for example Lucide or Phosphor) | mixed sets or hand-drawn one-offs |
+| Logos | official files from each owner | the name in plain text | a redrawn or imitated logo |
+| Video | real product footage | a screen recording of the real product | stock footage implying use |
+| Missing | a placeholder that looks like one (RX-AS-03) | | an invented stand-in |
+
+RYUX directs the generator; it is not the generator. Work context, goal,
 audience, role, art direction, composition, then generate, critique the result against the brief,
 and refine. A prompt without a brief is not art direction. Write the brief first:
 
@@ -268,7 +286,8 @@ Role:           its job (explain, orient, demonstrate, emotion, identity, contex
 Objective:      what the viewer must understand or feel
 Audience:       who sees it, in which context
 Emotion:        the feeling, in two or three words
-Concept:        the idea, in one sentence
+Concept:        the visual thesis, in one sentence
+Subject:        what is shown (the product concept, not a generic person or device)
 Visual language: editorial / product-centric / technical / ..., and the art direction
 Form:           shape language, geometric or organic, depth
 Composition:    where the subject sits, and the space kept for copy
@@ -388,5 +407,19 @@ from the rules.
 **Purpose Gates**: these patterns are allowed when they have a purpose. For each one in the
 result, ask **"Why does this exist?"** If there is no meaningful reason, remove it.
 
-**Quality Locks**: consistency that must hold across the product (listed below).`,
+**Quality Locks**: consistency that must hold across the product (listed below).
+
+**Visual tells.** These are signals that a reason is missing, not banned styles. When you see one,
+ask the purpose question; keep it only if the answer is real.
+
+| Tell | Why it hurts | Fix |
+| --- | --- | --- |
+| A blue-to-purple gradient wash behind everything | carries no meaning and appears on every AI page | color from the brand and its roles (RX-UI-10), or a plain surface |
+| A fake app, terminal, or agent window as the hero | the category default, often with invented output | a signature from the product's own idea; product UI only when real or labeled (RX-UI-12, RX-UI-07) |
+| Generic illustration: people with laptops, abstract blobs | unrelated to the product, so it steals attention and says nothing | a contextual illustration made from the brief, or no visual (RX-UI-07) |
+| Floating devices and dashboard mockups | fake screens imply features and data | real screens with labeled sample data (RX-UI-07, RX-AS-01) |
+| Endless floating or looping motion | decorative motion with no reason, competing with the task | a single L4 moment with a message, or none (RX-UI-11) |
+| A bento grid or three equal feature cards | a template that flattens hierarchy | a layout from the content and its priority (RX-UI-05, RX-UI-01) |
+| Glass, glow, and blur on every layer | decoration without a job that also lowers contrast | one surface treatment with a purpose (RX-AS-05, RX-A11Y-01) |
+| Stock teamwork or handshake photos | borrowed people implying endorsement | real people with consent, or no people (RX-AS-02, RX-UI-13) |`,
 };

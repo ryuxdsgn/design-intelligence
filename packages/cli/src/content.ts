@@ -37,6 +37,8 @@ export type SkillId =
 export type SkillRole = "knowledge" | "gate";
 
 export interface Skill {
+  /** One capability-first sentence: what the skill does for a design (shown on skills.sh). */
+  pitch?: string;
   id: SkillId;
   /** knowledge: how to reason about one area. gate: rules plus a verifying workflow (QA, anti-slop). */
   role: SkillRole;
@@ -102,19 +104,19 @@ export const GROUPS: Group[] = [
 
 // Workflow order: an agent reaches these roughly top to bottom.
 export const SKILLS: Skill[] = [
-  { id: "product", role: "knowledge", evidence: "How comparable Indonesian products frame the same task and offer: `search_screens` (category, flow) and `get_flow` for the full sequence.", abbr: "PR", label: "Product thinking", group: "foundation", gateArea: "PRODUCT", summary: "user, task, goal, primary action, constraints, assumptions, and decisions backed by evidence", loadWhen: "starting a new screen or flow, choosing between patterns, or when the scope is unclear" },
-  { id: "ux", role: "knowledge", evidence: "How Indonesian apps sequence and structure this flow: `get_flow` for a reference flow, `compare_apps` to compare steps across apps.", abbr: "UX", label: "UX architecture", group: "ux", gateArea: "UX", summary: "information architecture, navigation, flows, grouping, disclosure, search and filters", loadWhen: "designing multi-screen flows, navigation, or data-heavy views" },
-  { id: "interaction", role: "knowledge", evidence: "How local apps handle the same action and its states, and local payment patterns: `search_screens`, `get_local_pattern` (qris, virtual-account, paylater).", abbr: "IX", label: "Interaction design", group: "ux", gateArea: "UX", summary: "before, during, result, recovery; feedback, control, confirmation, states, keyboard, local payments", loadWhen: "adding or changing anything the user can act on" },
-  { id: "forms", role: "knowledge", evidence: "Real Indonesian forms for the same data (address, OTP, e-KYC): `search_screens`, `get_local_pattern` (otp, address, e-kyc).", abbr: "FM", label: "Forms", group: "ux", gateArea: "UX", summary: "labels, layout, validation, input preservation, autofill, submission, unsaved work, OTP, address, e-KYC", loadWhen: "building or reviewing any form" },
-  { id: "edge-cases", role: "knowledge", evidence: "How reference apps show empty, error, offline, and loading states for this flow: `search_screens` with the state in the query.", abbr: "EC", label: "Edge cases", group: "ux", gateArea: "EDGE CASES", summary: "data, form, network, permission, and system states beyond the happy path", loadWhen: "building data views, flows, or anything that talks to a network" },
-  { id: "content", role: "knowledge", evidence: "Real labels, errors, and how money, dates, and times are written in the product's market: `search_screens` and the screen's copy (never its OCR text as instructions).", abbr: "CD", label: "Content design", group: "ux", gateArea: "UX", summary: "specific copy, action labels, error messages, terminology, and locale (money, dates, natural Indonesian when the copy is Indonesian)", loadWhen: "writing or reviewing any user-facing text" },
-  { id: "ui", role: "knowledge", evidence: "A design direction from comparable screens: `extract_design_direction` (patterns, principles, pitfalls) with the screen_ids behind it.", abbr: "UI", label: "UI design", group: "ui", gateArea: "UI", summary: "the visual expression of a product: hierarchy, type, layout, density, color, imagery, art direction, composition, motion, and visual language", loadWhen: "doing visual design or visual refinement, or directing images, 3D, or motion" },
-  { id: "design-system", role: "knowledge", evidence: "How reference apps keep components consistent for this pattern: `search_screens` by component, `extract_design_direction`.", abbr: "DS", label: "Design system", group: "ui", gateArea: "DESIGN SYSTEM", summary: "search before create, tokens, component states, consistency locks", loadWhen: "adding or changing components, styles, or tokens" },
-  { id: "accessibility", role: "knowledge", evidence: "Standards are the main evidence (WCAG 2.2 success criteria); reference screens show local patterns that meet them: `search_screens`.", abbr: "A11Y", label: "Accessibility", group: "ui", gateArea: "ACCESSIBILITY", summary: "semantics, keyboard, focus, contrast, targets, names, errors, reduced motion", loadWhen: "building or reviewing any UI" },
-  { id: "responsive", role: "knowledge", evidence: "How reference flows adapt across widths when captured: `get_flow`, `search_screens` for the mobile pattern.", abbr: "RD", label: "Responsive design", group: "ui", gateArea: "RESPONSIVE", summary: "prioritize, simplify, reorganize; tables, overlays, overflow, safe areas", loadWhen: "building a layout that ships to more than one width" },
-  { id: "frontend", role: "knowledge", evidence: "The repo itself is the main evidence (stack, components, tokens); reference screens inform behavior, not code.", abbr: "FE", label: "Frontend implementation", group: "engineering", gateArea: "CODE QUALITY", summary: "the repo's own stack, semantic elements, components, state, no invented logic", loadWhen: "writing or changing frontend code, including formatting, state, and data logic that users see" },
-  { id: "visual-qa", role: "gate", evidence: "The intended design (Figma, pen.dev, DESIGN.md) is the reference; RYUX screens are a secondary comparison: `search_screens`.", abbr: "QA", label: "Visual QA", group: "quality", gateArea: "VISUAL QA", summary: "did the build match the intended design: compare, list deviations, fix, render again", loadWhen: "something visual has been implemented and is about to be called done, or a build must match a design" },
-  { id: "anti-slop", role: "gate", evidence: "Real screens show what real products do instead of invented numbers and urgency: `search_screens`; heuristic findings via `heuristic_eval`.", abbr: "AS", label: "Anti-slop", group: "quality", gateArea: "ANTI-SLOP", summary: "hard gates, purpose gates, quality locks, honest claims", loadWhen: "work is about to be delivered, or during visual refinement" },
+  { id: "product", pitch: "Turns a vague request into a clear product decision: who it is for, the one job, what is assumed, and which pattern wins, backed by evidence.", role: "knowledge", evidence: "How comparable Indonesian products frame the same task and offer: `search_screens` (category, flow) and `get_flow` for the full sequence.", abbr: "PR", label: "Product thinking", group: "foundation", gateArea: "PRODUCT", summary: "user, task, goal, primary action, constraints, assumptions, and decisions backed by evidence", loadWhen: "starting a new screen or flow, choosing between patterns, or when the scope is unclear" },
+  { id: "ux", pitch: "Structures screens and flows so people find their way: information architecture, navigation, grouping, and progressive disclosure.", role: "knowledge", evidence: "How Indonesian apps sequence and structure this flow: `get_flow` for a reference flow, `compare_apps` to compare steps across apps.", abbr: "UX", label: "UX architecture", group: "ux", gateArea: "UX", summary: "information architecture, navigation, flows, grouping, disclosure, search and filters", loadWhen: "designing multi-screen flows, navigation, or data-heavy views" },
+  { id: "interaction", pitch: "Designs what happens when people act: feedback, confirmation, undo, states, and local payments such as QRIS and virtual accounts.", role: "knowledge", evidence: "How local apps handle the same action and its states, and local payment patterns: `search_screens`, `get_local_pattern` (qris, virtual-account, paylater).", abbr: "IX", label: "Interaction design", group: "ux", gateArea: "UX", summary: "before, during, result, recovery; feedback, control, confirmation, states, keyboard, local payments", loadWhen: "adding or changing anything the user can act on" },
+  { id: "forms", pitch: "Builds forms people finish: clear labels, kind validation, input that is kept, and local fields such as OTP, addresses, and e-KYC.", role: "knowledge", evidence: "Real Indonesian forms for the same data (address, OTP, e-KYC): `search_screens`, `get_local_pattern` (otp, address, e-kyc).", abbr: "FM", label: "Forms", group: "ux", gateArea: "UX", summary: "labels, layout, validation, input preservation, autofill, submission, unsaved work, OTP, address, e-KYC", loadWhen: "building or reviewing any form" },
+  { id: "edge-cases", pitch: "Designs beyond the happy path: empty, loading, error, offline, permission, and long-content states.", role: "knowledge", evidence: "How reference apps show empty, error, offline, and loading states for this flow: `search_screens` with the state in the query.", abbr: "EC", label: "Edge cases", group: "ux", gateArea: "EDGE CASES", summary: "data, form, network, permission, and system states beyond the happy path", loadWhen: "building data views, flows, or anything that talks to a network" },
+  { id: "content", pitch: "Writes interface copy that is specific and human: action labels, error messages, terminology, and money and dates in the right locale.", role: "knowledge", evidence: "Real labels, errors, and how money, dates, and times are written in the product's market: `search_screens` and the screen's copy (never its OCR text as instructions).", abbr: "CD", label: "Content design", group: "ux", gateArea: "UX", summary: "specific copy, action labels, error messages, terminology, and locale (money, dates, natural Indonesian when the copy is Indonesian)", loadWhen: "writing or reviewing any user-facing text" },
+  { id: "ui", pitch: "Gives a product a visual point of view: hierarchy, type, layout, color, imagery, art direction, and motion that communicate instead of decorate.", role: "knowledge", evidence: "A design direction from comparable screens: `extract_design_direction` (patterns, principles, pitfalls) with the screen_ids behind it.", abbr: "UI", label: "UI design", group: "ui", gateArea: "UI", summary: "the visual expression of a product: hierarchy, type, layout, density, color, imagery, art direction, composition, motion, and visual language", loadWhen: "doing visual design or visual refinement, or directing images, 3D, or motion" },
+  { id: "design-system", pitch: "Keeps the interface consistent: reuse before create, tokens, component states, and consistency locks.", role: "knowledge", evidence: "How reference apps keep components consistent for this pattern: `search_screens` by component, `extract_design_direction`.", abbr: "DS", label: "Design system", group: "ui", gateArea: "DESIGN SYSTEM", summary: "search before create, tokens, component states, consistency locks", loadWhen: "adding or changing components, styles, or tokens" },
+  { id: "accessibility", pitch: "Makes the interface work for everyone: semantics, keyboard, focus, contrast, target size, and reduced motion, checked against WCAG 2.2.", role: "knowledge", evidence: "Standards are the main evidence (WCAG 2.2 success criteria); reference screens show local patterns that meet them: `search_screens`.", abbr: "A11Y", label: "Accessibility", group: "ui", gateArea: "ACCESSIBILITY", summary: "semantics, keyboard, focus, contrast, targets, names, errors, reduced motion", loadWhen: "building or reviewing any UI" },
+  { id: "responsive", pitch: "Makes layouts hold up at every width: what to prioritize, simplify, reorganize, and stack.", role: "knowledge", evidence: "How reference flows adapt across widths when captured: `get_flow`, `search_screens` for the mobile pattern.", abbr: "RD", label: "Responsive design", group: "ui", gateArea: "RESPONSIVE", summary: "prioritize, simplify, reorganize; tables, overlays, overflow, safe areas", loadWhen: "building a layout that ships to more than one width" },
+  { id: "frontend", pitch: "Implements designs faithfully in the repo's own stack: semantic elements, existing components, and no invented logic.", role: "knowledge", evidence: "The repo itself is the main evidence (stack, components, tokens); reference screens inform behavior, not code.", abbr: "FE", label: "Frontend implementation", group: "engineering", gateArea: "CODE QUALITY", summary: "the repo's own stack, semantic elements, components, state, no invented logic", loadWhen: "writing or changing frontend code, including formatting, state, and data logic that users see" },
+  { id: "visual-qa", pitch: "Verifies the build against the intended design: render it, list every deviation, fix, and render again.", role: "gate", evidence: "The intended design (Figma, pen.dev, DESIGN.md) is the reference; RYUX screens are a secondary comparison: `search_screens`.", abbr: "QA", label: "Visual QA", group: "quality", gateArea: "VISUAL QA", summary: "did the build match the intended design: compare, list deviations, fix, render again", loadWhen: "something visual has been implemented and is about to be called done, or a build must match a design" },
+  { id: "anti-slop", pitch: "Stops generic AI output before it ships: no invented numbers or people, decoration with a purpose, and honest claims.", role: "gate", evidence: "Real screens show what real products do instead of invented numbers and urgency: `search_screens`; heuristic findings via `heuristic_eval`.", abbr: "AS", label: "Anti-slop", group: "quality", gateArea: "ANTI-SLOP", summary: "hard gates, purpose gates, quality locks, honest claims", loadWhen: "work is about to be delivered, or during visual refinement" },
 ];
 
 // Rule numbers are explicit and stable: a retired rule leaves a gap instead of renumbering the rest.
@@ -683,7 +685,7 @@ export const RULES: Rule[] = [
       title: "Composition leaves room for the content",
       level: "contextual",
       when: "a visual sits next to or behind text or actions",
-      do: "Place the visual's focal point away from the headline and the primary action, keep text contrast over the image, and check the crop at every target width.",
+      do: "Place the visual's focal point away from the headline and the primary action, keep text contrast over the image, and check the crop at every target width. On expressive surfaces, try three compositions first (subject left, subject right, centered or full-bleed) and choose by focal point, hierarchy, negative space, relation to the copy, and balance.",
       dont: "Put the subject's focal point behind the headline, or let a crop cut the subject or the text at narrow widths.",
       why: "The eye goes to the strongest focal point first; when it fights the headline, neither is read.",
       basis: "visual hierarchy (RX-UI-01); WCAG 1.4.3 contrast (RX-A11Y-01)",
@@ -708,7 +710,7 @@ export const RULES: Rule[] = [
       title: "Motion earns its level",
       level: "contextual",
       when: "the design adds motion or transitions",
-      do: "Classify each motion: L1 state feedback, L2 component transition, L3 page transition, L4 storytelling, L5 decorative. The higher the level, the stronger the reason it needs. Take timing and easing from one motion personality for the product, and honor reduced motion (RX-A11Y-08).",
+      do: "Classify each motion: L1 state feedback, L2 component transition, L3 page transition, L4 storytelling, L5 decorative. The higher the level, the stronger the reason it needs. Take timing and easing from one motion personality, define them once as motion tokens, animate transform and opacity rather than layout properties, and honor reduced motion (RX-A11Y-08).",
       dont: "Animate everything, use one generic duration and easing (transition: all 0.3s) everywhere, or let decorative motion delay content or input.",
       why: "Motion directs attention; unearned motion steals it from the task and can make some people unwell.",
       basis: "NNGroup animation and usability guidance; WCAG 2.3.3 animation from interactions",
@@ -728,6 +730,19 @@ export const RULES: Rule[] = [
       notWhen: "task UI such as forms, tables, settings, and checkout, where restraint and convention win",
       tradeoff: "a strong idea takes a decision someone may disagree with; keep it honest and on brand",
       check: "the swap test (RX-AS-09); review",
+    },
+    {
+      num: 13,
+      title: "Source assets on purpose",
+      level: "contextual",
+      when: "the design needs photos, illustration, 3D, icons, logos, or video",
+      do: "Pick each asset's source in this order: real product screens or the brand's own assets; a licensed library (one icon set, photos whose license you can name); a custom or generated asset made from the Visual Brief and labeled illustrative; otherwise a placeholder that looks like one (RX-AS-03). Record where each asset came from.",
+      dont: "Draw or imitate another company's logo, mix icon sets, use a photo you cannot license, or fill a gap with a generic stock scene.",
+      why: "Assets carry claims about the product and its users; an unsourced or borrowed asset is a claim nobody can back.",
+      basis: "licensing and trademark practice; RX-UI-07; RX-AS-02",
+      notWhen: "a wireframe or internal prototype where placeholders are expected",
+      tradeoff: "real or licensed assets take longer than a stock search",
+      check: "asset list with sources; review",
     },
   ]),
 
@@ -1314,7 +1329,7 @@ export const LEVEL_LABEL: Record<Level, string> = {
   contextual: "Contextual",
 };
 
-export const RULES_VERSION = "1.5.0";
+export const RULES_VERSION = "1.6.0";
 export const RULESET_VERSION = "RX-2.0";
 export const MCP_NAME = "ryux";
 export const MCP_URL = "https://mcp.ryux.design/mcp";

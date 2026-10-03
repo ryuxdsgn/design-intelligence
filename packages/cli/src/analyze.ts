@@ -4,7 +4,7 @@ import { CAPTURE_TABLE } from "./capture.js";
 // skills/ryux-analyze/SKILL.md, rendered by render.ts and installed by the CLI (group "analyze").
 
 export const ANALYZE_DESCRIPTION =
-  "RYUX Analyze - understand an existing interface before you change it. Inventories layout, type, spacing, color roles, components, hierarchy, navigation, interaction, imagery, motion, and design language from a Figma link, pen.dev design, website URL, screenshot, or code, each with a confidence label. Use when asked to analyze, reverse-engineer, document, or learn from an existing design.";
+  "RYUX Analyze - understand an existing interface before you change or rebuild it. Extracts layout, type, spacing, color roles, components, hierarchy, navigation, interaction, imagery, motion, and design language from a Figma link, pen.dev design, website URL, screenshot, or code, each labeled measured, observed, or inferred. Use when asked to analyze, reverse-engineer, document, or learn from an existing design.";
 
 export const ANALYZE_BODY = `# ryux-analyze: RYUX Analyze
 

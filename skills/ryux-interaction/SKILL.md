@@ -1,6 +1,6 @@
 ---
 name: ryux-interaction
-description: "RYUX Interaction design: before, during, result, recovery; feedback, control, confirmation, states, keyboard, local payments. Load when adding or changing anything the user can act on."
+description: "RYUX Interaction design: Designs what happens when people act: feedback, confirmation, undo, states, and local payments such as QRIS and virtual accounts. Covers before, during, result, recovery; feedback, control, confirmation, states, keyboard, local payments. Load when adding or changing anything the user can act on."
 ---
 
 # ryux-interaction: Interaction design

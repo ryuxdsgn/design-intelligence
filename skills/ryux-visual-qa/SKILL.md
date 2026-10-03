@@ -1,6 +1,6 @@
 ---
 name: ryux-visual-qa
-description: "RYUX Visual QA: did the build match the intended design: compare, list deviations, fix, render again. Load when something visual has been implemented and is about to be called done, or a build must match a design."
+description: "RYUX Visual QA: Verifies the build against the intended design: render it, list every deviation, fix, and render again. Covers did the build match the intended design: compare, list deviations, fix, render again. Load when something visual has been implemented and is about to be called done, or a build must match a design."
 ---
 
 # ryux-visual-qa: Visual QA

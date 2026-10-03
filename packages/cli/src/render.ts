@@ -174,10 +174,10 @@ ${rulesOf(s.id).map(ruleBlock).join("\n\n")}`;
 }
 
 const CORE_DESCRIPTION =
-  "RYUX core - a design intelligence layer for AI and designers. Choose the capability (Analyze, Build, Critique, QA), then the levels, which RYUX skills to load, the Hard Gates, the Delivery Gate, and honest-claims wording. Load for any UI, UX, copy, or frontend task.";
+  "RYUX core - design intelligence for AI agents and designers. Routes each UI, UX, copy, or frontend task through Analyze, Build, Critique, or QA, loads only the knowledge it needs, decides with evidence, and closes with quality gates (Hard Gates and the Delivery Gate). Load for any UI, UX, copy, or frontend task.";
 
 const skillDescription = (s: Skill): string =>
-  `RYUX ${s.label}: ${s.summary}. Load when ${s.loadWhen}.`;
+  s.pitch ? `RYUX ${s.label}: ${s.pitch} Covers ${s.summary}. Load when ${s.loadWhen}.` : `RYUX ${s.label}: ${s.summary}. Load when ${s.loadWhen}.`;
 
 // ── Claude Code skills ────────────────────────────────────────────────────────
 export function renderCoreSkill(installed: string[]): string {

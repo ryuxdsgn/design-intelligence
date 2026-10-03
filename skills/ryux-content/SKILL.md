@@ -1,6 +1,6 @@
 ---
 name: ryux-content
-description: "RYUX Content design: specific copy, action labels, error messages, terminology, and locale (money, dates, natural Indonesian when the copy is Indonesian). Load when writing or reviewing any user-facing text."
+description: "RYUX Content design: Writes interface copy that is specific and human: action labels, error messages, terminology, and money and dates in the right locale. Covers specific copy, action labels, error messages, terminology, and locale (money, dates, natural Indonesian when the copy is Indonesian). Load when writing or reviewing any user-facing text."
 ---
 
 # ryux-content: Content design

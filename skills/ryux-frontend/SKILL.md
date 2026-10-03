@@ -1,6 +1,6 @@
 ---
 name: ryux-frontend
-description: "RYUX Frontend implementation: the repo's own stack, semantic elements, components, state, no invented logic. Load when writing or changing frontend code, including formatting, state, and data logic that users see."
+description: "RYUX Frontend implementation: Implements designs faithfully in the repo's own stack: semantic elements, existing components, and no invented logic. Covers the repo's own stack, semantic elements, components, state, no invented logic. Load when writing or changing frontend code, including formatting, state, and data logic that users see."
 ---
 
 # ryux-frontend: Frontend implementation
