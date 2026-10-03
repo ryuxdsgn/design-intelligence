@@ -1,6 +1,6 @@
 ---
 name: ryux-ui
-description: "RYUX UI design: the visual expression of a product: hierarchy, type, layout, density, color, imagery, art direction, composition, motion, and visual language. Load when doing visual design or visual refinement, or directing images, 3D, or motion."
+description: "RYUX UI design: Gives a product a visual point of view: hierarchy, type, layout, color, imagery, art direction, and motion that communicate instead of decorate. Covers the visual expression of a product: hierarchy, type, layout, density, color, imagery, art direction, composition, motion, and visual language. Load when doing visual design or visual refinement, or directing images, 3D, or motion."
 ---
 
 # ryux-ui: UI design
@@ -31,6 +31,10 @@ content (RX-UI-09), and the visual language is chosen, not defaulted (RX-UI-10).
 language in a few words (editorial, product-centric, human, technical, playful, premium,
 institutional) and its form (shape language, geometric or organic, flat or with depth).
 
+**Composition exploration.** For an expressive surface, sketch three compositions of the chosen
+direction (subject left, subject right, centered or full-bleed) as quick frames, then choose by
+focal point, hierarchy, negative space, relation to the copy, and balance (RX-UI-09).
+
 **Expressive surfaces** (hero, landing, onboarding, empty states, brand moments). Restraint keeps
 task UI usable; on expressive surfaces it is only the floor. Work concept, then signature, then
 system:
@@ -48,7 +52,9 @@ needs invented numbers, people, or logos.
 
 **3. Motion.** The lifecycle of an action (before, trigger, feedback, waiting, result, recovery) is defined in
 ryux-interaction (RX-IX-01, RX-IX-02); motion only makes those states visible. Decide the trigger,
-duration, easing, distance, opacity or scale, and how several elements are choreographed.
+duration, easing, distance, opacity or scale, and how several elements are choreographed. Define
+duration and easing once as motion tokens, and animate transform and opacity rather than layout
+properties (width, height, top, margin), which cause jank.
 
 | Level | Examples | Needs |
 | --- | --- | --- |
@@ -70,7 +76,19 @@ Pick one **motion personality** per product and derive timing and easing from it
 
 With reduced motion requested, large movement becomes a fade or a cut (RX-A11Y-08).
 
-**4. Visual generation.** RYUX directs the generator; it is not the generator. Work context, goal,
+**4. Visual production.** Decide where each asset comes from before making anything (RX-UI-13):
+
+| Asset | First choice | Then | Never |
+| --- | --- | --- | --- |
+| Product visuals | real screens, labeled sample data | a rebuilt screen labeled illustrative | a fake dashboard shown as real |
+| Photography | the brand's own shoot | a licensed library you can name | a stranger presented as a customer |
+| Illustration and 3D | the brand's system | custom or generated from the brief, labeled | a generic character or blob unrelated to the product |
+| Icons | the project's set | one open-source set (for example Lucide or Phosphor) | mixed sets or hand-drawn one-offs |
+| Logos | official files from each owner | the name in plain text | a redrawn or imitated logo |
+| Video | real product footage | a screen recording of the real product | stock footage implying use |
+| Missing | a placeholder that looks like one (RX-AS-03) | | an invented stand-in |
+
+RYUX directs the generator; it is not the generator. Work context, goal,
 audience, role, art direction, composition, then generate, critique the result against the brief,
 and refine. A prompt without a brief is not art direction. Write the brief first:
 
@@ -80,7 +98,8 @@ Role:           its job (explain, orient, demonstrate, emotion, identity, contex
 Objective:      what the viewer must understand or feel
 Audience:       who sees it, in which context
 Emotion:        the feeling, in two or three words
-Concept:        the idea, in one sentence
+Concept:        the visual thesis, in one sentence
+Subject:        what is shown (the product concept, not a generic person or device)
 Visual language: editorial / product-centric / technical / ..., and the art direction
 Form:           shape language, geometric or organic, depth
 Composition:    where the subject sits, and the space kept for copy
@@ -154,7 +173,7 @@ A design direction from comparable screens: `extract_design_direction` (patterns
 ### RX-UI-09 [Contextual] Composition leaves room for the content
 
 - When: a visual sits next to or behind text or actions
-- Do: Place the visual's focal point away from the headline and the primary action, keep text contrast over the image, and check the crop at every target width.
+- Do: Place the visual's focal point away from the headline and the primary action, keep text contrast over the image, and check the crop at every target width. On expressive surfaces, try three compositions first (subject left, subject right, centered or full-bleed) and choose by focal point, hierarchy, negative space, relation to the copy, and balance.
 - Do not: Put the subject's focal point behind the headline, or let a crop cut the subject or the text at narrow widths.
 - Why: The eye goes to the strongest focal point first; when it fights the headline, neither is read. (visual hierarchy (RX-UI-01); WCAG 1.4.3 contrast (RX-A11Y-01))
 - Not when: a full-bleed visual with no text over it
@@ -173,7 +192,7 @@ A design direction from comparable screens: `extract_design_direction` (patterns
 ### RX-UI-11 [Contextual] Motion earns its level
 
 - When: the design adds motion or transitions
-- Do: Classify each motion: L1 state feedback, L2 component transition, L3 page transition, L4 storytelling, L5 decorative. The higher the level, the stronger the reason it needs. Take timing and easing from one motion personality for the product, and honor reduced motion (RX-A11Y-08).
+- Do: Classify each motion: L1 state feedback, L2 component transition, L3 page transition, L4 storytelling, L5 decorative. The higher the level, the stronger the reason it needs. Take timing and easing from one motion personality, define them once as motion tokens, animate transform and opacity rather than layout properties, and honor reduced motion (RX-A11Y-08).
 - Do not: Animate everything, use one generic duration and easing (transition: all 0.3s) everywhere, or let decorative motion delay content or input.
 - Why: Motion directs attention; unearned motion steals it from the task and can make some people unwell. (NNGroup animation and usability guidance; WCAG 2.3.3 animation from interactions)
 - Not when: L1 feedback on standard controls that follows the platform defaults
@@ -189,3 +208,13 @@ A design direction from comparable screens: `extract_design_direction` (patterns
 - Not when: task UI such as forms, tables, settings, and checkout, where restraint and convention win
 - Trade-off: a strong idea takes a decision someone may disagree with; keep it honest and on brand
 - Check: the swap test (RX-AS-09); review
+
+### RX-UI-13 [Contextual] Source assets on purpose
+
+- When: the design needs photos, illustration, 3D, icons, logos, or video
+- Do: Pick each asset's source in this order: real product screens or the brand's own assets; a licensed library (one icon set, photos whose license you can name); a custom or generated asset made from the Visual Brief and labeled illustrative; otherwise a placeholder that looks like one (RX-AS-03). Record where each asset came from.
+- Do not: Draw or imitate another company's logo, mix icon sets, use a photo you cannot license, or fill a gap with a generic stock scene.
+- Why: Assets carry claims about the product and its users; an unsourced or borrowed asset is a claim nobody can back. (licensing and trademark practice; RX-UI-07; RX-AS-02)
+- Not when: a wireframe or internal prototype where placeholders are expected
+- Trade-off: real or licensed assets take longer than a stock search
+- Check: asset list with sources; review

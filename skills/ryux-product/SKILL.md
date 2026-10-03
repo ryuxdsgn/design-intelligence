@@ -1,6 +1,6 @@
 ---
 name: ryux-product
-description: "RYUX Product thinking: user, task, goal, primary action, constraints, assumptions, and decisions backed by evidence. Load when starting a new screen or flow, choosing between patterns, or when the scope is unclear."
+description: "RYUX Product thinking: Turns a vague request into a clear product decision: who it is for, the one job, what is assumed, and which pattern wins, backed by evidence. Covers user, task, goal, primary action, constraints, assumptions, and decisions backed by evidence. Load when starting a new screen or flow, choosing between patterns, or when the scope is unclear."
 ---
 
 # ryux-product: Product thinking

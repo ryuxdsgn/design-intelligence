@@ -1,6 +1,6 @@
 ---
 name: ryux-design-system
-description: "RYUX Design system: search before create, tokens, component states, consistency locks. Load when adding or changing components, styles, or tokens."
+description: "RYUX Design system: Keeps the interface consistent: reuse before create, tokens, component states, and consistency locks. Covers search before create, tokens, component states, consistency locks. Load when adding or changing components, styles, or tokens."
 ---
 
 # ryux-design-system: Design system

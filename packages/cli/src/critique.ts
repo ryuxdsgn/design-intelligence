@@ -4,7 +4,7 @@ import { CAPTURE_TABLE } from "./capture.js";
 // Knowledge into findings. Source of truth for skills/ryux-critique/SKILL.md (group "critique").
 
 export const CRITIQUE_DESCRIPTION =
-  "RYUX Critique - get a senior design critique before your users do. Reviews a Figma link, a pen.dev design, a website URL, or a screenshot: analyzes it first, runs a Design Read across nine dimensions, then reports findings with ID, severity, category, evidence, impact, recommendation, confidence, and source. Use when asked to critique, review, or audit a UI, screen, or flow.";
+  "RYUX Critique - senior UX and UI design critique for Figma, pen.dev, websites, screenshots, and built interfaces. Analyzes first, runs a Design Read across nine dimensions, then reports prioritized findings with severity, evidence, impact, recommendation, confidence, and source, plus what to keep. Use when asked to critique, review, or audit a UI, screen, or flow.";
 
 export const CRITIQUE_BODY = `# ryux-critique: RYUX Critique
 

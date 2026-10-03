@@ -171,7 +171,7 @@ Claims in the report describe what was checked and how. "Pixel perfect", "fully 
 Generated from `packages/cli/src/content.ts` by `pnpm sync:skills`. Edit the rules there, not here.
 
 <!-- rules:start -->
-81 rules across 13 skills: 47 Required, 14 Preferred, 20 Contextual; 16 Hard Gates and 7 Quality Locks.
+82 rules across 13 skills: 47 Required, 14 Preferred, 21 Contextual; 16 Hard Gates and 7 Quality Locks.
 
 ### ryux-product: Product thinking (RX-PR)
 
@@ -583,7 +583,7 @@ Group UI · gate area UI. Covers the visual expression of a product: hierarchy, 
 #### RX-UI-09 [Contextual] Composition leaves room for the content
 
 - When: a visual sits next to or behind text or actions
-- Do: Place the visual's focal point away from the headline and the primary action, keep text contrast over the image, and check the crop at every target width.
+- Do: Place the visual's focal point away from the headline and the primary action, keep text contrast over the image, and check the crop at every target width. On expressive surfaces, try three compositions first (subject left, subject right, centered or full-bleed) and choose by focal point, hierarchy, negative space, relation to the copy, and balance.
 - Do not: Put the subject's focal point behind the headline, or let a crop cut the subject or the text at narrow widths.
 - Why: The eye goes to the strongest focal point first; when it fights the headline, neither is read. (visual hierarchy (RX-UI-01); WCAG 1.4.3 contrast (RX-A11Y-01))
 - Not when: a full-bleed visual with no text over it
@@ -602,7 +602,7 @@ Group UI · gate area UI. Covers the visual expression of a product: hierarchy, 
 #### RX-UI-11 [Contextual] Motion earns its level
 
 - When: the design adds motion or transitions
-- Do: Classify each motion: L1 state feedback, L2 component transition, L3 page transition, L4 storytelling, L5 decorative. The higher the level, the stronger the reason it needs. Take timing and easing from one motion personality for the product, and honor reduced motion (RX-A11Y-08).
+- Do: Classify each motion: L1 state feedback, L2 component transition, L3 page transition, L4 storytelling, L5 decorative. The higher the level, the stronger the reason it needs. Take timing and easing from one motion personality, define them once as motion tokens, animate transform and opacity rather than layout properties, and honor reduced motion (RX-A11Y-08).
 - Do not: Animate everything, use one generic duration and easing (transition: all 0.3s) everywhere, or let decorative motion delay content or input.
 - Why: Motion directs attention; unearned motion steals it from the task and can make some people unwell. (NNGroup animation and usability guidance; WCAG 2.3.3 animation from interactions)
 - Not when: L1 feedback on standard controls that follows the platform defaults
@@ -618,6 +618,16 @@ Group UI · gate area UI. Covers the visual expression of a product: hierarchy, 
 - Not when: task UI such as forms, tables, settings, and checkout, where restraint and convention win
 - Trade-off: a strong idea takes a decision someone may disagree with; keep it honest and on brand
 - Check: the swap test (RX-AS-09); review
+
+#### RX-UI-13 [Contextual] Source assets on purpose
+
+- When: the design needs photos, illustration, 3D, icons, logos, or video
+- Do: Pick each asset's source in this order: real product screens or the brand's own assets; a licensed library (one icon set, photos whose license you can name); a custom or generated asset made from the Visual Brief and labeled illustrative; otherwise a placeholder that looks like one (RX-AS-03). Record where each asset came from.
+- Do not: Draw or imitate another company's logo, mix icon sets, use a photo you cannot license, or fill a gap with a generic stock scene.
+- Why: Assets carry claims about the product and its users; an unsourced or borrowed asset is a claim nobody can back. (licensing and trademark practice; RX-UI-07; RX-AS-02)
+- Not when: a wireframe or internal prototype where placeholders are expected
+- Trade-off: real or licensed assets take longer than a stock search
+- Check: asset list with sources; review
 
 ---
 

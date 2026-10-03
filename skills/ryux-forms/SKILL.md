@@ -1,6 +1,6 @@
 ---
 name: ryux-forms
-description: "RYUX Forms: labels, layout, validation, input preservation, autofill, submission, unsaved work, OTP, address, e-KYC. Load when building or reviewing any form."
+description: "RYUX Forms: Builds forms people finish: clear labels, kind validation, input that is kept, and local fields such as OTP, addresses, and e-KYC. Covers labels, layout, validation, input preservation, autofill, submission, unsaved work, OTP, address, e-KYC. Load when building or reviewing any form."
 ---
 
 # ryux-forms: Forms

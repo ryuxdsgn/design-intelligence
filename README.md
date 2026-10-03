@@ -1,19 +1,40 @@
 <p align="center">
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-2ea44f" alt="MIT License"></a>
-  <img src="https://img.shields.io/badge/status-early__access%20%C2%B7%20rules%201.5-1f6feb" alt="Status: early access, rules 1.5">
+  <img src="https://img.shields.io/badge/status-early__access%20%C2%B7%20rules%201.6-1f6feb" alt="Status: early access, rules 1.6">
+  <img src="https://img.shields.io/badge/capabilities-Analyze%20%C2%B7%20Build%20%C2%B7%20Critique%20%C2%B7%20QA-e36209" alt="Capabilities: Analyze, Build, Critique, QA">
   <img src="https://img.shields.io/badge/MCP%20tools-9-8957e5" alt="9 MCP tools">
-  <img src="https://img.shields.io/badge/skills-14%20modular-e36209" alt="RYUX: 14 modular design skills">
 </p>
 
 # RYUX: design intelligence
 
-> **RYUX is a design intelligence layer for AI agents and designers.** It helps them analyze, build,
-> critique, and verify interfaces with design reasoning and evidence, instead of generic output.
->
-> Not an AI UI generator. Not an anti-slop framework. Not a design system.
+> **Design intelligence for AI agents and designers.** RYUX helps agents and designers analyze,
+> build, critique, and verify interfaces with design reasoning and evidence, instead of generic
+> output. Not an AI UI generator, not an anti-slop framework, not a design system.
 
-> **New here?** Start with [GUIDE.md](./GUIDE.md). It walks you through installing the skills into
-> your agent and connecting it to the reference data.
+```bash
+npx skills add ryuxdsgn/design-intelligence
+```
+
+Works in Claude Code, Codex, Cursor, Gemini CLI, OpenCode, Cline, Copilot, and more. New here? Start
+with [GUIDE.md](./GUIDE.md).
+
+## Four capabilities
+
+```
+   ANALYZE  ──────►  BUILD  ──────►  CRITIQUE  ──────►  QA
+  understand        create          evaluate          verify
+  what is there     with a point    what should       the build
+                    of view         change first      against intent
+        ──────────────────────────────────────────────────────
+         powered by design reasoning, RYUX Knowledge, and quality gates
+```
+
+| Capability | Question it answers | What you get |
+| --- | --- | --- |
+| **Analyze** | What is actually in this interface? | an inventory of layout, type, color, components, interaction, imagery, and motion, each labeled measured, observed, or inferred |
+| **Build** | How do we make this well, not generically? | evidence-backed decisions, a point of view on expressive surfaces, and a Delivery Gate at the end |
+| **Critique** | What should change first, and why? | at most 12 findings with severity, evidence, impact, a fix, and its source, plus what to keep |
+| **QA** | Did the build match the intent? | every deviation at every width and state, fixed and rendered again |
 
 ## How RYUX works
 
@@ -28,40 +49,35 @@ Every task follows the same four steps.
 4. **Pass the gates.** Hard Gates block the failures that are never acceptable. The Delivery Gate
    reports PASS, FAIL, or N/A for ten areas, and RYUX claims only what was actually checked.
 
-```
-  ANALYZE          BUILD           CRITIQUE           QA
-  understand       create          evaluate           verify
-       \              |                |              /
-        +-------------+----------------+-------------+
-                              |
-        DESIGN REASONING   product, UX, interaction, forms, content, UI,
-                           design system, accessibility, responsive,
-                           frontend, edge cases
-                              |
-        QUALITY GATES      anti-slop, Hard Gates, Delivery Gate
-                              |
-        RYUX KNOWLEDGE     real product screens and designer notes
-```
+## Choose your setup
 
-| Capability | Question it answers | Skill |
+The same knowledge serves two kinds of user. `ryux-core` always comes along.
+
+| Setup | For | Includes |
 | --- | --- | --- |
-| **Analyze** | What is actually in this interface? | `ryux-analyze` |
-| **Build** | How do we make this without generic AI output? | `ryux-core` plus the knowledge skills |
-| **Critique** | Does this interface make sense, and what should change first? | `ryux-critique` |
-| **QA** | Did the build match the intended design, at every width and state? | `ryux-visual-qa` |
+| **Designer** | reviewing and improving designs, no code needed | Analyze, Critique, Visual QA, anti-slop, and the UX and UI knowledge |
+| **Builder** | AI coding agents that build UI | product, UX, UI, interaction, forms, design system, accessibility, responsive, frontend, Visual QA, anti-slop, and Critique |
+| **Everything** | both | all 16 skills |
 
-The 16 skills have four roles, so RYUX is a way of working rather than a pile of rules.
+```bash
+npx @ryuxdsgn/ryux install --agent all --for designer
+npx @ryuxdsgn/ryux install --agent all --for builder
+npx @ryuxdsgn/ryux install --agent all --for all
+```
 
-| Role | Skills | Job |
-| --- | --- | --- |
-| **Core** | `ryux-core` | Picks the capability and the skills, then runs the decision protocol and the gates |
-| **Knowledge** | product, ux, interaction, forms, edge-cases, content, ui, design-system, accessibility, responsive, frontend | Reasoning for one area. Each rule says when it applies, when it does not, and what it costs |
-| **Capability** | `ryux-analyze`, `ryux-critique` | Workflows that combine the knowledge skills |
-| **Gate** | `ryux-visual-qa`, `ryux-anti-slop` | Verify the build and filter generic output |
+Shared team standards on top of hosted RYUX Knowledge are planned; see Status.
 
-The skills work on their own. The RYUX MCP server adds evidence from RYUX Knowledge
-(`search_screens`, `heuristic_eval`, `delivery_gate`). Figma, pen.dev, and browser tools let RYUX
-see the real design.
+## RYUX Knowledge
+
+The evidence layer: real product screens and flows, what each screen visibly does
+(observations), patterns with where they were observed, and designer notes written by people,
+never generated. Agents reach it through the RYUX MCP (`search_screens`, `compare_apps`,
+`get_local_pattern`), and every result carries a `screen_id`, app, version, and capture date.
+
+Indonesia is the first market, because it is where global libraries are thinnest: QRIS, virtual
+accounts, WhatsApp OTP, paylater, e-KYC, and Rupiah formats. Knowledge is in pilot: the capture and
+review pipeline works, the library is still small, and the hosted MCP is not live yet. Without it,
+RYUX says the evidence is "None" instead of inventing a reference.
 
 ## What makes it different
 
@@ -73,9 +89,19 @@ see the real design.
 
 ## What's inside
 
-- **Nine MCP tools** in three groups: research (`search_screens`, `get_flow`, `get_local_pattern`, `compare_apps`, `extract_design_direction`), audit (`audit_ui`, `audit_copy`, `heuristic_eval`, `delivery_gate`), and a design bridge.
-- **RYUX** is 16 skills: a small `ryux-core` (choose the capability, which skills to load, Hard Gates, a 10-area Delivery Gate, honest claims), 13 knowledge skills from product thinking to visual QA, and the capability skills `ryux-analyze` and `ryux-critique`. Each skill is a short framework plus rules marked [Required], [Preferred], or [Contextual], with Hard Gates, Purpose Gates instead of style bans, and Quality Locks.
-- **One install for every agent.** `npx skills add`, the `npx @ryuxdsgn/ryux` CLI, or the Claude Code plugin put the skills into Claude Code, Codex, Cursor, Gemini CLI, OpenCode, Cline, Copilot, and more. Agents load only the skills a task needs. Browse every skill in [`skills/`](./skills).
+The four capabilities run on 16 skills with four roles, so RYUX is a way of working rather than a
+pile of rules.
+
+| Role | Skills | Job |
+| --- | --- | --- |
+| **Core** | `ryux-core` | Picks the capability and the skills, then runs the decision protocol and the gates |
+| **Knowledge** | product, ux, interaction, forms, edge-cases, content, ui, design-system, accessibility, responsive, frontend | Reasoning for one area. Each rule says when it applies, when it does not, and what it costs |
+| **Capability** | `ryux-analyze`, `ryux-critique` | Workflows that combine the knowledge skills |
+| **Gate** | `ryux-visual-qa`, `ryux-anti-slop` | Verify the build and filter generic output |
+
+- **Nine MCP tools**: research (`search_screens`, `get_flow`, `get_local_pattern`, `compare_apps`, `extract_design_direction`) and audit (`audit_ui`, `audit_copy`, `heuristic_eval`, `delivery_gate`).
+- **Rules with levels**: every rule is [Required], [Preferred], or [Contextual], with Hard Gates, Purpose Gates instead of style bans, and Quality Locks. Browse them in [`skills/`](./skills) and [`docs/design-rules.md`](./docs/design-rules.md).
+- **One install for every agent**: `npx skills add`, the `npx @ryuxdsgn/ryux` CLI, or the Claude Code plugin.
 
 ## See the difference
 
@@ -267,12 +293,13 @@ To install RYUX into your own agent, see [Install](#install).
 
 ## Status
 
-**Rules 1.3, early access, free.** The skills and rules are ready to install today. RYUX Knowledge is
-in pilot. The capture pipeline (`pnpm knowledge`) works: screenshot import, AI draft tags marked
-`source: ai`, human review, and human-written designer notes before anything is published. The
-library itself is still small. The hosted MCP at `mcp.ryux.design` is not live yet, so agents
-without it get rules and standards but no `screen_id` evidence. RYUX says so instead of inventing a
-reference. Still to come: OAuth, ledger-based quota, and full-text plus pgvector search.
+Rules 1.6, early access, free.
+
+| | What |
+| --- | --- |
+| **Available now** | 16 skills; Analyze, Build, Critique, and QA; anti-slop gates; the CLI (`npx @ryuxdsgn/ryux`); skills.sh; the Claude Code plugin; the MCP server, run locally (`pnpm dev:mcp`) |
+| **Early access** | RYUX Knowledge pilot: the capture and review pipeline (`pnpm knowledge`), with screenshot and web capture, AI draft tags and observations that a person reviews, and human-written designer notes |
+| **Coming soon** | the hosted MCP at `mcp.ryux.design`, Knowledge search (full text and pgvector), OAuth and quota, and shared team standards |
 
 ## Security
 
