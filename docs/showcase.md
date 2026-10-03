@@ -33,12 +33,12 @@ pnpm dev:mcp   # then: claude -p "<brief>" --mcp-config mcp.json --strict-mcp-co
 
 | Image | Without | With |
 | --- | --- | --- |
-| `ui/compare.png` | pen.dev MCP only; hero section only | pen.dev MCP + all RYUX 1.4 skills (`--for all`); no RYUX MCP; hero section only |
+| `ui/compare.png` | pen.dev MCP only; a hero section for RYUX itself | pen.dev MCP + all RYUX 1.4 skills (`--for all`); no RYUX MCP; same brief |
 | `code/compare.png` | no skills | all RYUX 1.3 skills; the agent picks which to load |
 | `chat/compare.png` | no skills | all RYUX 1.3 skills; the agent picks which to load |
 
-The current briefs are international (Tally, an invoicing app for freelancers), because RYUX is not
-only for the Indonesian market. The Indonesian set (`compare-id.png`) is kept under
+The UI brief is a hero section for RYUX itself; the code and copy briefs are international (Tally,
+an invoicing app for freelancers), because RYUX is not only for the Indonesian market. The Indonesian set (`compare-id.png`) is kept under
 [Indonesian market examples](#indonesian-market-examples).
 
 pen.dev's `execute` always targets the open document, so UI runs add one new top-level frame and

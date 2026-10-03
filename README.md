@@ -86,18 +86,22 @@ output, not edited by hand. The colored boxes are annotations added afterwards.
 
 ### UI
 
-*"Design only the hero section of a landing page, 1440 wide by 900 tall, for Tally, an invoicing and
-bookkeeping app for freelancers."* Both runs designed in pen.dev through its MCP.
+*"Design only the hero section of a landing page, 1440 wide by 900 tall, for RYUX: a design
+intelligence layer for AI coding agents and designers. It installs as skills into Claude Code,
+Cursor, Codex, and other agents (npx @ryuxdsgn/ryux), and an MCP server gives agents reference
+screens from real apps as evidence."* Both runs designed in pen.dev through its MCP.
 
-<a href="assets/compare/ui/compare.png"><img src="assets/compare/ui/compare.png" alt="Two Tally hero sections designed in pen.dev, stacked. Without RYUX: product figures such as $21,480 Q4 profit and +18% presented as real, a 'Start free, no card needed' button nobody confirmed, five stars, 'Trusted by 38,000 freelancers', and 'Avg. 11 days faster payouts'. With RYUX 1.4: an invoice and a monthly summary whose sample totals add up ($1,800 + $540 + $120 = $2,460, the same amount shown as awaiting), a caption that labels them as an illustrative example, and one primary action, 'Create your first invoice'" width="100%"></a>
+<a href="assets/compare/ui/compare.png"><img src="assets/compare/ui/compare.png" alt="Two RYUX hero sections designed in pen.dev, stacked. Without RYUX: an invented 4.2k GitHub star count, and a mock agent session that calls a tool RYUX does not have (find_references), claims 'matched in 1,280 apps in 0.4s', and labels drawn screens with real app names (Duolingo, Calm, Headspace, Strava) as if they were evidence. With RYUX 1.4: the RYUX wordmark as given, an agent session labeled 'Illustrative session' that uses the real search_screens tool and shows a Delivery Gate failing a missing state, and one primary action, the real install command" width="100%"></a>
 
-Both heroes look finished, and that is the trap. Without RYUX, the polish hides a star rating, a
-user count, and a payout claim nobody gave it, plus a free offer nobody confirmed (RX-AS-01,
-RX-AS-07, RX-PR-02). Its product figures read as real numbers.
+Both heroes look finished, and that is the trap. Without RYUX, the agent invents a GitHub star
+count and a tool RYUX does not have, adds a "matched in 1,280 apps" stat, and puts real app names
+on drawn screens so they read as evidence (RX-AS-01, RX-AS-07, RX-PR-02).
 
-With RYUX, the visual shows the product doing its job and is labeled as an illustrative example
-(RX-UI-07). Its sample totals add up (RX-AS-03), and there is one primary action (RX-PR-03). The
-agent left out ratings, logos, and "Start free" because it did not know Tally's pricing.
+With RYUX, the demo session uses the real `search_screens` tool and is labeled as illustrative
+(RX-UI-07). Its sample Delivery Gate fails a missing state instead of claiming everything passes.
+The install command is the one primary action (RX-PR-03), and the wordmark is RYUX as given. Two
+earlier runs had written it as "ryux", copying an older frame in the file, so RX-CD-05 now says to
+follow the brief's spelling of brand names, and this run did.
 
 ### Code
 
