@@ -4,9 +4,15 @@
 
 import type { SkillId } from "./content.js";
 
-export const CORE_POSITIONING = `RYUX is a design intelligence layer for AI and designers: it helps understand, build, evaluate,
-and fix interfaces through design reasoning. It is not a UI generator, an anti-slop framework, or
-a design system.`;
+export const CORE_POSITIONING = `RYUX is a design intelligence layer for AI and designers. It helps understand, reason, design,
+build, critique, and verify interfaces using design knowledge and evidence. It is not a UI
+generator, an anti-slop framework, a design system, or a prompt library.
+
+**Understand before you design. Don't design from imagination when evidence is available.**
+
+\`\`\`
+Analyze → Design → Build → Critique → QA → Anti-Slop (final gate) → done
+\`\`\``;
 
 export const CORE_CAPABILITIES = `Tell RYUX what you are doing; RYUX decides what it needs to know. Pick the entry point, read its
 file, then read only the knowledge modules the task needs (task table below). Paths are relative
@@ -23,7 +29,16 @@ to this skill's folder.
 Knowledge modules (\`knowledge/\`): product, ux, interaction, forms, edge-cases, content, ui,
 design-system, accessibility, responsive, frontend, and anti-slop. RYUX Knowledge, through the
 ryux MCP, is the evidence for all of them. Every entry point ends at the quality gates: the Hard
-Gates below and the Delivery Gate.`;
+Gates below and the Delivery Gate, with anti-slop as the last check, never the starting point.
+
+Keep the capabilities apart; do not collapse them into one generic "design" answer:
+
+| Capability | Answers | Example |
+| --- | --- | --- |
+| Analyze | What exists? | "The screen uses a 24px horizontal container." (observed) |
+| Design | What should we do, and why? | "Keep 24px: it matches the existing layout system." |
+| Critique | Is this decision right? | "24px leaves the table too sparse at 1440 for daily use." |
+| QA | Does the build match the intent? | "The build uses 16px where the design says 24px." |`;
 
 export const CORE_PRINCIPLE = `Do not optimize for visual novelty. Optimize for clarity, usability, consistency, product fit,
 accessibility, and intentional decisions. Understand the context before deciding; separate observed
@@ -43,29 +58,68 @@ Skip steps that do not apply, but never go from "generate" straight to "done".`;
 
 export const DESIGN_BODY = `# RYUX Design
 
-> Create or improve UI and UX without writing code: in Figma, pen.dev, a mockup, or the copy.
+> What should we design, and why? Design is the bridge between Analyze and Build. It works without
+> code (Figma, pen.dev, a mockup, the copy) and ends in a Design Direction that Build follows.
+
+## Workflow
 
 1. **Context.** Who, what task, which product and market (knowledge/product.md). Write the
    assumptions down.
-2. **Decide with evidence.** For consequential choices, compare two or three patterns, using
+2. **Understand what exists.** When there is a screen, product, or design system already, read its
+   analysis or run Analyze first (capabilities/analyze.md). Understand before you design.
+3. **Decide with evidence.** For consequential choices, compare two or three patterns, using
    reference screens when the ryux MCP is connected (RX-PR-09), and rate the evidence (RX-PR-10).
-3. **Direction.**
-   - On an expressive surface (hero, landing, onboarding, empty state, brand moment), write three
-     directions, choose one, and write a Visual Brief (RX-UI-12, RX-UI-10).
-   - On task UI, follow conventions and the design system.
-4. **Read the modules the task needs** from the task table, for example ux, interaction, forms,
-   and content for a form, or ui and responsive for a layout.
-5. **Design in the tool.** Use the Figma MCP or the pen.dev MCP. Design every state that matters
+4. **Direction.** Write the Design Direction below. On an expressive surface (hero, landing,
+   onboarding, empty state, brand moment), write three directions, choose one, and fill the Visual
+   Direction (RX-UI-12, RX-UI-10). On task UI, follow conventions and the design system.
+5. **Read the modules the task needs** from the task table, for example ux, interaction, forms, and
+   content for a form, or ui and responsive for a layout.
+6. **Design in the tool.** Use the Figma MCP or the pen.dev MCP. Design every state that matters
    (empty, loading, error) and every width you claim, and source assets on purpose (RX-UI-13).
-6. **Render and inspect.** Screenshot what you made, check it against the brief and the rules,
+7. **Render and inspect.** Screenshot what you made, check it against the direction and the rules,
    fix, and render again (capabilities/qa.md). Generated images and illustrations arrive
    asynchronously: wait until each one has landed and render again before exporting or closing the
    gate. Never finish with an asset still pending.
-7. **Close with the Delivery Gate**, saying what was not designed, such as other widths or states.
+8. **Fact check, then the gate.** Check every product fact on the canvas (tool and command names,
+   integrations, platforms, pages, numbers) against the brief or the repo (RX-PR-02), then close
+   with the Delivery Gate, saying what was not designed, such as other widths or states.
 
 Do not edit frames you were not asked to change. Do not hand off a design as "final" with
-placeholder or invented content. Before the gate, check every product fact on the canvas (tool and
-command names, integrations, platforms, pages, numbers) against the brief or the repo (RX-PR-02).`;
+placeholder or invented content.
+
+## Design Direction (the output)
+
+Write only the sections the task needs: a button fix needs three lines, a new flow needs most of
+them. Every significant decision carries a one-line reason; a visual choice without a reason is not
+a decision yet.
+
+\`\`\`
+# Design Direction: <surface>
+
+Context        who, which task, where in the product; what exists (from Analyze)
+User goal      what the user must finish, and how we know it worked
+
+UX direction   flow and steps; information hierarchy (first, second, third); interaction model;
+               states (empty, loading, error, success, permission); edge cases; constraints and
+               business rules given (never invented)
+UI direction   layout and grid; type scale; spacing and density; color roles; containers;
+               components reused or added; the focal point
+Design language personality, tone, interaction personality, density, formality; each with its
+               reason from the product, the audience, or the existing system
+Visual direction for expressive surfaces: the Visual Brief (knowledge/ui.md, Visual production)
+Motion direction each motion: lifecycle (before, trigger, transition, new state, feedback),
+               level L1 to L5, timing and easing from one personality, reduced-motion behavior
+Asset direction per asset: purpose, source, style, composition, context, consistency, usage,
+               avoid, provenance (observed, sourced, illustrative, generated, inferred)
+Responsive     what changes, stays, disappears, or stacks at each width
+
+Evidence       per decision: Strong, Thin, or None, with screen_ids or the standard
+Assumptions    everything guessed, visible
+Decisions      decision, options compared, choice, rationale, trade-off
+\`\`\`
+
+Visual, motion, and asset rules and tables live in knowledge/ui.md (RX-UI-07 to RX-UI-13); this
+direction only records the choices made with them.`;
 
 export const BUILD_BODY = `# RYUX Build
 
@@ -73,8 +127,9 @@ export const BUILD_BODY = `# RYUX Build
 
 1. **Read the repo first**: the stack, components, tokens, and conventions (knowledge/frontend.md,
    knowledge/design-system.md). Reuse before creating.
-2. **Find the design source**: a Figma or pen.dev design, a DESIGN.md, or an approved mockup. If
-   there is none, run Design first (capabilities/design.md) instead of inventing one in code.
+2. **Find the design source**: the Design Direction, a Figma or pen.dev design, a DESIGN.md, or an
+   approved mockup; it is the spec. If there is none, run Design first (capabilities/design.md)
+   instead of inventing one in code.
 3. **Read the modules the task needs** from the task table: for example accessibility, responsive,
    and edge-cases for any UI, and forms and content for a form.
 4. **Implement.** Use semantic elements, existing components, and real data paths. Invent no
@@ -83,6 +138,21 @@ export const BUILD_BODY = `# RYUX Build
    (capabilities/qa.md).
 6. **Close with the Delivery Gate.** CODE QUALITY and VISUAL QA need real checks (typecheck,
    render), or say what was not run.`;
+
+export const CORE_EVIDENCE = `Say where every claim comes from:
+
+| Source | Meaning | Example |
+| --- | --- | --- |
+| **Observed** (or Measured) | seen in the design, a capture, or read from its values | "body text is 16/24, from the CSS" |
+| **Inferred** | a reasonable guess; say it is one | "probably an 8px scale" |
+| **Knowledge** | a known pattern or standard, cited | "WCAG 1.4.3", "observed in 4 screens, scr_..." |
+
+Rate the evidence for a decision **Strong** (2+ comparable screens), **Thin** (one, or another
+context), or **None** (a judgment call; say so, RX-PR-10). Label every visual asset's provenance:
+**observed** (from the real product), **sourced** (licensed, with its source), **illustrative**
+(made to explain, labeled), **generated** (from a Visual Brief, labeled), or **inferred** (a
+stand-in until the real one exists). Never invent numbers, user behavior, business rules, research,
+compliance, product or competitor facts, screenshots, or references (RX-PR-02, RX-AS-01).`;
 
 export const CORE_HONESTY = `Report what was checked, how, and what was not available. Do not claim "pixel perfect",
 "fully accessible", "production ready", "senior-level", or "UX optimized" without evidence. Say
@@ -290,8 +360,9 @@ Then run the swap test (RX-AS-09): with a competitor's name and logo, would anyt
 If not, the surface has no point of view yet. Stay honest while being bold: a strong idea never
 needs invented numbers, people, or logos.
 
-**3. Motion.** The lifecycle of an action (before, trigger, feedback, waiting, result, recovery) is defined in
-ryux-interaction (RX-IX-01, RX-IX-02); motion only makes those states visible. Decide the trigger,
+**3. Motion.** Every motion follows one lifecycle: before, trigger, transition, new state, feedback.
+The states themselves (waiting, result, recovery) are defined in ryux-interaction (RX-IX-01,
+RX-IX-02); motion only makes them visible, and it never compensates for weak UX. Decide the trigger,
 duration, easing, distance, opacity or scale, and how several elements are choreographed. Define
 duration and easing once as motion tokens, and animate transform and opacity rather than layout
 properties (width, height, top, margin), which cause jank.
@@ -327,6 +398,9 @@ With reduced motion requested, large movement becomes a fade or a cut (RX-A11Y-0
 | Logos | official files from each owner | the name in plain text | a redrawn or imitated logo |
 | Video | real product footage | a screen recording of the real product | stock footage implying use |
 | Missing | a placeholder that looks like one (RX-AS-03) | | an invented stand-in |
+
+Label every asset's provenance: observed (from the real product), sourced (licensed, with its
+source), illustrative, generated, or inferred (a stand-in). See the evidence model in the router.
 
 RYUX directs the generator; it is not the generator. Work context, goal,
 audience, role, art direction, composition, then generate, critique the result against the brief,
@@ -449,7 +523,8 @@ tool; a design-tool export such as pen.dev \`Export\`. If none is available, say
 **Rank issues by impact**: blocks the task, misleads (wrong numbers, unclear action), adds friction,
 polish.`,
 
-  "anti-slop": `Anti-slop is the floor, not the ceiling: a tidy, generic surface still fails on expressive
+  "anti-slop": `Anti-slop runs last, after design, build, critique, and QA; it is the final quality gate, never the
+starting point. Anti-slop is the floor, not the ceiling: a tidy, generic surface still fails on expressive
 surfaces (RX-AS-09), and the point of view comes from RX-UI-12. Anti-slop is not a list of banned
 styles. It has three parts.
 

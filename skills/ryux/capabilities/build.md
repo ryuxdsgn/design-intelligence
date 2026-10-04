@@ -4,8 +4,9 @@
 
 1. **Read the repo first**: the stack, components, tokens, and conventions (knowledge/frontend.md,
    knowledge/design-system.md). Reuse before creating.
-2. **Find the design source**: a Figma or pen.dev design, a DESIGN.md, or an approved mockup. If
-   there is none, run Design first (capabilities/design.md) instead of inventing one in code.
+2. **Find the design source**: the Design Direction, a Figma or pen.dev design, a DESIGN.md, or an
+   approved mockup; it is the spec. If there is none, run Design first (capabilities/design.md)
+   instead of inventing one in code.
 3. **Read the modules the task needs** from the task table: for example accessibility, responsive,
    and edge-cases for any UI, and forms and content for a form.
 4. **Implement.** Use semantic elements, existing components, and real data paths. Invent no
