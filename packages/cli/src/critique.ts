@@ -10,7 +10,8 @@ export const CRITIQUE_BODY = `# RYUX Critique
 
 > Get a senior design critique before your users do.
 
-Critique answers "does this interface make sense, and what should change first?" It is an
+Critique answers "does this interface make sense, and what should change first?" It judges
+decisions; it is not Analyze (what exists) or QA (does the build match its design). It is an
 orchestrator, not a pile of rules: it analyzes the design, reasons with the RYUX knowledge modules,
 pulls evidence from RYUX Knowledge, and reports findings someone can act on.
 
