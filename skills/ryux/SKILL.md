@@ -5,7 +5,7 @@ description: "RYUX - design intelligence for AI agents and designers. Tell it wh
 
 # RYUX
 
-> Design intelligence for AI agents and designers. RX-2.0 (rules v2.0.1), MIT licensed.
+> Design intelligence for AI agents and designers. RX-2.0 (rules v2.1.0), MIT licensed.
 
 RYUX is a design intelligence layer for AI and designers: it helps understand, build, evaluate,
 and fix interfaces through design reasoning. It is not a UI generator, an anti-slop framework, or
@@ -64,7 +64,7 @@ No written exception; fix before delivery.
 
 - **Fake data or fake metrics.** Do not invent "48.000+ users", "4,8★", or "+12%". (RX-AS-01)
 - **Fake testimonials or people.** Do not make up testimonials, reviewers, or customer photos. (RX-AS-02)
-- **Invented business rules or product requirements.** Do not invent business rules, metrics, user data, permissions, pricing, requirements, or API behavior. (RX-PR-02, RX-FE-02)
+- **Invented business rules or product requirements.** Do not invent business rules, metrics, user data, permissions, pricing, requirements, or API behavior, or name a tool, command, integration, platform, or page the product does not have. (RX-PR-02, RX-FE-02)
 - **Placeholder copy shipped as final.** Do not ship placeholder copy or data disguised as final. (RX-AS-03)
 - **Fake urgency or scarcity.** Do not write "sebelum kehabisan", "kuota terbatas", or fake countdowns with nothing behind them. (RX-AS-04)
 - **Missing critical states.** Do not ship only the filled, happy-path screen. (RX-EC-01)

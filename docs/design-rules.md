@@ -194,8 +194,8 @@ Gate area PRODUCT. Covers user, task, goal, primary action, constraints, assumpt
 
 #### RX-PR-02 [Required] [Hard Gate] Unknowns stay assumptions
 
-- Do: List what you do not know as assumptions, and mark the matching UI with [REAL DATA] or a question.
-- Do not: Invent business rules, metrics, user data, permissions, pricing, requirements, or API behavior.
+- Do: List what you do not know as assumptions, and mark the matching UI with [REAL DATA] or a question. Product facts (feature and tool names, commands, integrations, supported platforms, page names) come only from the brief, the repo, or the product's own docs.
+- Do not: Invent business rules, metrics, user data, permissions, pricing, requirements, or API behavior, or name a tool, command, integration, platform, or page the product does not have.
 - Why: Invented facts turn into promises and bugs that someone has to unwind. (ryux run 2026-10-02: an unconstrained agent invented a 30-day trial and user counts)
 - Check: review
 

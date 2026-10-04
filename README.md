@@ -1,6 +1,6 @@
 <p align="center">
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-2ea44f" alt="MIT License"></a>
-  <img src="https://img.shields.io/badge/status-early__access%20%C2%B7%20rules%202.0-1f6feb" alt="Status: early access, rules 2.0">
+  <img src="https://img.shields.io/badge/status-early__access%20%C2%B7%20rules%202.1-1f6feb" alt="Status: early access, rules 2.1">
   <img src="https://img.shields.io/badge/capabilities-Analyze%20%C2%B7%20Build%20%C2%B7%20Critique%20%C2%B7%20QA-e36209" alt="Capabilities: Analyze, Build, Critique, QA">
   <img src="https://img.shields.io/badge/MCP%20tools-9-8957e5" alt="9 MCP tools">
 </p>
@@ -72,9 +72,12 @@ critique. Everything below is the agent's real output.
 4. **QA.** The rebuild was checked against every finding through three render-and-fix rounds,
    with what was not tested stated: hover and focus, narrow widths, and a screen reader.
 
-**What it missed.** The made-up tool name `find_references` survived both the critique and QA.
-RYUX's real tool is `search_screens`. We show the miss instead of editing it out; this is the
-kind of finding the next rules release targets.
+**What it missed, and what we changed.** The made-up tool name `find_references` survived both
+the critique and QA; RYUX's real tool is `search_screens`. We show the miss instead of editing it
+out. RYUX 2.1 added a fact check to Critique: every product fact on the screen (tool and command
+names, integrations, platforms, pages, numbers) is marked sourced or unsourced (RX-PR-02). Run on
+the same rebuilt hero, Critique 2.1 listed `find_references` as its first finding, marked
+"contradicted", next to the real tool names.
 
 ```bash
 npx skills add ryuxdsgn/design-intelligence
@@ -318,7 +321,7 @@ To install RYUX into your own agent, see [Install](#install).
 
 ## Status
 
-RYUX 2.0, early access, free.
+RYUX 2.1, early access, free.
 
 | | What |
 | --- | --- |

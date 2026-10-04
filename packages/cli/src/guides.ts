@@ -64,7 +64,8 @@ export const DESIGN_BODY = `# RYUX Design
 7. **Close with the Delivery Gate**, saying what was not designed, such as other widths or states.
 
 Do not edit frames you were not asked to change. Do not hand off a design as "final" with
-placeholder or invented content.`;
+placeholder or invented content. Before the gate, check every product fact on the canvas (tool and
+command names, integrations, platforms, pages, numbers) against the brief or the repo (RX-PR-02).`;
 
 export const BUILD_BODY = `# RYUX Build
 
