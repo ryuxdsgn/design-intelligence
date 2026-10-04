@@ -10,8 +10,8 @@ export const ANALYZE_BODY = `# RYUX Analyze
 
 > What is actually in this interface?
 
-Analyze describes an existing design so that the next decision (build, extend, redesign, or
-critique) starts from facts. It is not screenshot-to-code, and it does not judge quality; that is
+Analyze answers "what exists?" and nothing more: it describes an existing design so that the next
+decision (design, build, or critique) starts from facts. It is not screenshot-to-code, and it does not judge quality; that is
 \`ryux-critique\`. When the ryux MCP is connected, comparable Indonesian screens back the patterns
 you name (\`search_screens\`, \`get_local_pattern\`).
 
@@ -59,7 +59,9 @@ local patterns (QRIS, virtual accounts, OTP, addresses, paylater, e-KYC).
 Name the recurring patterns and where they appear. With the ryux MCP connected, cite comparable
 screens by \`screen_id\`; without it, say the patterns come from this design alone. A pattern seen in
 real apps is an **observed pattern**, not a best practice: say where it was observed, when it is
-useful, and its risk. Popular apps can be wrong.
+useful, and its risk. Popular apps can be wrong. Keep three sources apart: what you **observed**
+in this design, what you **inferred**, and what is **knowledge** (a known pattern or standard,
+cited).
 
 ### 5. Report
 

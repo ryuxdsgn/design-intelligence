@@ -18,6 +18,7 @@ import {
 import {
   CORE_CAPABILITIES,
   CORE_DECISION_RECORD,
+  CORE_EVIDENCE,
   CORE_HONESTY,
   CORE_POSITIONING,
   CORE_PRINCIPLE,
@@ -92,6 +93,10 @@ ${CORE_WORKFLOW}
 ## Principle
 
 ${CORE_PRINCIPLE}
+
+## Evidence model
+
+${CORE_EVIDENCE}
 
 ## Levels
 

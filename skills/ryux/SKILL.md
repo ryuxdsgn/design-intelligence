@@ -5,11 +5,17 @@ description: "RYUX - design intelligence for AI agents and designers. Tell it wh
 
 # RYUX
 
-> Design intelligence for AI agents and designers. RX-2.0 (rules v2.1.0), MIT licensed.
+> Design intelligence for AI agents and designers. RX-2.0 (rules v2.2.0), MIT licensed.
 
-RYUX is a design intelligence layer for AI and designers: it helps understand, build, evaluate,
-and fix interfaces through design reasoning. It is not a UI generator, an anti-slop framework, or
-a design system.
+RYUX is a design intelligence layer for AI and designers. It helps understand, reason, design,
+build, critique, and verify interfaces using design knowledge and evidence. It is not a UI
+generator, an anti-slop framework, a design system, or a prompt library.
+
+**Understand before you design. Don't design from imagination when evidence is available.**
+
+```
+Analyze → Design → Build → Critique → QA → Anti-Slop (final gate) → done
+```
 
 ## Start with what you are doing
 
@@ -28,7 +34,16 @@ to this skill's folder.
 Knowledge modules (`knowledge/`): product, ux, interaction, forms, edge-cases, content, ui,
 design-system, accessibility, responsive, frontend, and anti-slop. RYUX Knowledge, through the
 ryux MCP, is the evidence for all of them. Every entry point ends at the quality gates: the Hard
-Gates below and the Delivery Gate.
+Gates below and the Delivery Gate, with anti-slop as the last check, never the starting point.
+
+Keep the capabilities apart; do not collapse them into one generic "design" answer:
+
+| Capability | Answers | Example |
+| --- | --- | --- |
+| Analyze | What exists? | "The screen uses a 24px horizontal container." (observed) |
+| Design | What should we do, and why? | "Keep 24px: it matches the existing layout system." |
+| Critique | Is this decision right? | "24px leaves the table too sparse at 1440 for daily use." |
+| QA | Does the build match the intent? | "The build uses 16px where the design says 24px." |
 
 ## How RYUX works
 
@@ -49,6 +64,23 @@ Do not optimize for visual novelty. Optimize for clarity, usability, consistency
 accessibility, and intentional decisions. Understand the context before deciding; separate observed
 facts from assumptions; prefer evidence over aesthetic preference; do not invent requirements;
 explain meaningful decisions with their trade-off; validate before claiming.
+
+## Evidence model
+
+Say where every claim comes from:
+
+| Source | Meaning | Example |
+| --- | --- | --- |
+| **Observed** (or Measured) | seen in the design, a capture, or read from its values | "body text is 16/24, from the CSS" |
+| **Inferred** | a reasonable guess; say it is one | "probably an 8px scale" |
+| **Knowledge** | a known pattern or standard, cited | "WCAG 1.4.3", "observed in 4 screens, scr_..." |
+
+Rate the evidence for a decision **Strong** (2+ comparable screens), **Thin** (one, or another
+context), or **None** (a judgment call; say so, RX-PR-10). Label every visual asset's provenance:
+**observed** (from the real product), **sourced** (licensed, with its source), **illustrative**
+(made to explain, labeled), **generated** (from a Visual Brief, labeled), or **inferred** (a
+stand-in until the real one exists). Never invent numbers, user behavior, business rules, research,
+compliance, product or competitor facts, screenshots, or references (RX-PR-02, RX-AS-01).
 
 ## Levels
 
