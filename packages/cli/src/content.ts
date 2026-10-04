@@ -146,8 +146,8 @@ export const RULES: Rule[] = [
       title: "Unknowns stay assumptions",
       level: "required",
       gate: "hard",
-      do: "List what you do not know as assumptions, and mark the matching UI with [REAL DATA] or a question.",
-      dont: "Invent business rules, metrics, user data, permissions, pricing, requirements, or API behavior.",
+      do: "List what you do not know as assumptions, and mark the matching UI with [REAL DATA] or a question. Product facts (feature and tool names, commands, integrations, supported platforms, page names) come only from the brief, the repo, or the product's own docs.",
+      dont: "Invent business rules, metrics, user data, permissions, pricing, requirements, or API behavior, or name a tool, command, integration, platform, or page the product does not have.",
       why: "Invented facts turn into promises and bugs that someone has to unwind.",
       basis: `${RUN}: an unconstrained agent invented a 30-day trial and user counts`,
       check: "review",
@@ -1329,7 +1329,7 @@ export const LEVEL_LABEL: Record<Level, string> = {
   contextual: "Contextual",
 };
 
-export const RULES_VERSION = "2.0.1";
+export const RULES_VERSION = "2.1.0";
 export const RULESET_VERSION = "RX-2.0";
 export const MCP_NAME = "ryux";
 export const MCP_URL = "https://mcp.ryux.design/mcp";

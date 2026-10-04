@@ -70,7 +70,14 @@ Rate each dimension **Strong**, **Adequate**, or **Weak**, with one sentence of 
 | Recoverability | Can users recover from mistakes and failures? |
 | Accessibility | Can people with different abilities and input methods operate and understand it? |
 
-### 4. Evaluate by category
+### 4. Fact check
+
+List every product fact the design states: names of features, tools, and commands, integrations,
+supported platforms, numbers, dates, prices, people, and claims. Mark each one sourced (the brief,
+the repo, the product's docs, a screen_id) or unsourced. Every unsourced fact is a finding under
+RX-PR-02 or RX-AS-01, even when it looks plausible, and even inside a sample or example panel.
+
+### 5. Evaluate by category
 
 Read the knowledge modules that apply and walk the design with their rules. [Required] rules are the
 gate, [Preferred] rules need a reason when broken, and [Contextual] rules count only when their
@@ -90,7 +97,7 @@ situation is present. Use their "Not when" lines so a rule is not applied mechan
 | Edge cases | `knowledge/edge-cases.md` | empty, error, loading, long text, permissions |
 | Anti-slop | `knowledge/anti-slop.md` | invented numbers or people, fake urgency, unjustified decoration |
 
-### 5. Evidence from RYUX Knowledge
+### 6. Evidence from RYUX Knowledge
 
 With the ryux MCP connected, find 1 to 3 comparison screens for each major finding with
 `search_screens`, then send the findings to `heuristic_eval` (`task_context` + `findings`).
@@ -113,7 +120,7 @@ RYUX rule in `issue`:
 The tool rejects major findings without valid evidence, caps the list at 12, and returns PASS or
 FAIL. Without the MCP, say the evidence comes from the design and standards alone.
 
-### 6. Report
+### 7. Report
 
 Each finding uses this schema:
 
