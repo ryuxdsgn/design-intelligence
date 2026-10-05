@@ -2,7 +2,7 @@
 
 Turns a vague request into a clear product decision: who it is for, the one job, what is assumed, and which pattern wins, backed by evidence.
 
-> Group Foundation · Delivery Gate area PRODUCT · RYUX 2.3.0. Levels are defined in `SKILL.md`.
+> Group Foundation · Delivery Gate area PRODUCT · RYUX 2.3.1. Levels are defined in `SKILL.md`.
 
 Answer these before any layout exists. Write the answers down; they are the brief.
 
