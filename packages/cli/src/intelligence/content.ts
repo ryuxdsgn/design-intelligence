@@ -1280,48 +1280,6 @@ export const PRESETS: Record<string, { label: string; groups: GroupId[] }> = {
 // Where each agent reads skills (SKILL.md folders). Verified against each agent's docs and the
 // conventions used by other skill installers. "pointer" is the instruction file that gets a short
 // marked block telling the agent RYUX is installed (project installs only).
-export type PointerFile = "CLAUDE.md" | "GEMINI.md" | "AGENTS.md";
-
-export interface AgentTarget {
-  id: string;
-  label: string;
-  dir: string;
-  globalDir: string;
-  pointer: PointerFile;
-}
-
-export const AGENT_TARGETS: AgentTarget[] = [
-  { id: "claude", label: "Claude Code", dir: ".claude/skills", globalDir: ".claude/skills", pointer: "CLAUDE.md" },
-  { id: "codex", label: "Codex", dir: ".codex/skills", globalDir: ".agents/skills", pointer: "AGENTS.md" },
-  { id: "cursor", label: "Cursor", dir: ".cursor/skills", globalDir: ".cursor/skills", pointer: "AGENTS.md" },
-  { id: "gemini", label: "Gemini CLI", dir: ".gemini/skills", globalDir: ".gemini/skills", pointer: "GEMINI.md" },
-  { id: "opencode", label: "OpenCode", dir: ".opencode/skills", globalDir: ".config/opencode/skills", pointer: "AGENTS.md" },
-  { id: "cline", label: "Cline", dir: ".cline/skills", globalDir: ".cline/skills", pointer: "AGENTS.md" },
-  { id: "copilot", label: "GitHub Copilot", dir: ".agents/skills", globalDir: ".agents/skills", pointer: "AGENTS.md" },
-  { id: "amp", label: "Amp", dir: ".agents/skills", globalDir: ".config/agents/skills", pointer: "AGENTS.md" },
-  { id: "kimi", label: "Kimi Code", dir: ".agents/skills", globalDir: ".agents/skills", pointer: "AGENTS.md" },
-  { id: "antigravity", label: "Antigravity", dir: ".agents/skills", globalDir: ".gemini/config/skills", pointer: "AGENTS.md" },
-];
-
-/** Inline target for any other agent: the full rules written into AGENTS.md (project only). */
-export const AGENTS_MD_INLINE = { id: "agents-md", label: "Any other agent (rules inline in AGENTS.md)" };
-
-// Old per-concern installs (ruleset RX-1.x) mapped to the new skills, for --concerns.
-export const LEGACY_CONCERNS: Record<string, SkillId[]> = {
-  ui: ["ui", "design-system", "responsive"],
-  copy: ["content"],
-  a11y: ["accessibility"],
-  ux: ["ux", "interaction", "forms", "edge-cases"],
-  local: ["product", "interaction", "forms", "content"],
-  code: ["frontend"],
-};
-
-// Skill folder names from earlier releases that no longer exist. "ui" and "ux" are not listed:
-// they are current skill names again and get overwritten or removed with the current set.
-export const LEGACY_SKILL_DIRS = ["rules", "copy", "a11y", "local", "code"];
-
-/** Cursor used .mdc rule files before it read skill folders (ryux-rules 0.x). */
-export const LEGACY_CURSOR_RULES_DIR = ".cursor/rules";
 
 export const LEVEL_LABEL: Record<Level, string> = {
   required: "Required",
@@ -1329,11 +1287,3 @@ export const LEVEL_LABEL: Record<Level, string> = {
   contextual: "Contextual",
 };
 
-export const RULES_VERSION = "2.2.0";
-export const RULESET_VERSION = "RX-2.0";
-export const MCP_NAME = "ryux";
-export const MCP_URL = "https://mcp.ryux.design/mcp";
-export const MCP_ADD_CMD = `claude mcp add --transport http ${MCP_NAME} ${MCP_URL}`;
-export const CLI_CMD = "npx @ryuxdsgn/ryux";
-export const MARK_START = "<!-- ryux-rules:start -->";
-export const MARK_END = "<!-- ryux-rules:end -->";

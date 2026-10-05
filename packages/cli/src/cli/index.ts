@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import { existsSync, readdirSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { homedir } from "node:os";
 import { join } from "node:path";
 import * as p from "@clack/prompts";
@@ -7,18 +7,17 @@ import pc from "picocolors";
 import {
   AGENT_TARGETS,
   AGENTS_MD_INLINE,
-  ALL_INSTALLABLE_IDS,
-  CLI_CMD,
   LEGACY_CURSOR_RULES_DIR,
   LEGACY_SKILL_DIRS,
-  MARK_START,
-  MCP_ADD_CMD,
-  RULES_VERSION,
   type AgentTarget,
   type PointerFile,
-} from "./content.js";
-import { renderAgentsBlock, renderBundle, renderPointerBlock, SKILL_NAME } from "./render.js";
-import { readIfExists, rel, removeBlock, removePath, upsertBlock, writeFileEnsured } from "./fsutil.js";
+} from "../adapters.js";
+import { ALL_INSTALLABLE_IDS } from "../intelligence/content.js";
+import { CLI_CMD, CONTEXT_END, CONTEXT_FILE, CONTEXT_START, MARK_START, MCP_ADD_CMD, VERSION } from "../product.js";
+import { validateBundle } from "../validate.js";
+import { renderAgentsBlock, renderBundle, renderPointerBlock, SKILL_NAME } from "../render.js";
+import { hasBlock, readIfExists, rel, removeBlock, removePath, upsertBlock, writeFileEnsured } from "./fsutil.js";
+import { readFile, readdir } from "node:fs/promises";
 
 type Flags = Record<string, string | boolean>;
 
@@ -212,7 +211,7 @@ async function runUpdate(flags: Flags): Promise<void> {
       done.push(`${file} (block)`);
     }
   }
-  console.log(`${pc.green("✓ ")}Updated to v${RULES_VERSION}:\n${done.map((d) => `  ${d}`).join("\n")}`);
+  console.log(`${pc.green("✓ ")}Updated to v${VERSION}:\n${done.map((d) => `  ${d}`).join("\n")}`);
 }
 
 async function runRemove(flags: Flags): Promise<void> {
@@ -247,16 +246,121 @@ async function runRemove(flags: Flags): Promise<void> {
   console.log(removed.length ? removed.map((r) => pc.red("− ") + r).join("\n") : "No files removed.");
 }
 
+/** Read every file of an installed skill folder, keyed by its path inside the folder. */
+async function readBundle(skillDir: string): Promise<Record<string, string>> {
+  const files: Record<string, string> = {};
+  for (const entry of await readdir(skillDir, { recursive: true, withFileTypes: true })) {
+    if (!entry.isFile()) continue;
+    const full = join(entry.parentPath, entry.name);
+    files[full.slice(skillDir.length + 1)] = await readFile(full, "utf8");
+  }
+  return files;
+}
+
+async function runCheck(flags: Flags): Promise<void> {
+  const scope = scopeOf(flags);
+  const ok = (m: string): void => console.log(`${pc.green("✓")} ${m}`);
+  const warn = (m: string): void => console.log(`${pc.yellow("!")} ${m}`);
+  const fail = (m: string): void => {
+    console.log(`${pc.red("✗")} ${m}`);
+    process.exitCode = 1;
+  };
+
+  const dirs = detectInstalled(scope);
+  if (!dirs.length) {
+    fail(`RYUX is not installed ${scope.global ? "in your home directory" : "in this project"}. Run: ${CLI_CMD} init`);
+    return;
+  }
+  for (const dir of dirs) {
+    const where = rel(dir);
+    const skillDir = join(dir, SKILL_NAME);
+    const leftovers = OLD_SKILL_DIRS.filter((n) => existsSync(join(dir, n)));
+    if (leftovers.length) fail(`${where}: RYUX 1.x folders remain (${leftovers.length}). Run: ${CLI_CMD} update`);
+    if (!existsSync(join(skillDir, "SKILL.md"))) {
+      fail(`${where}: no ${SKILL_NAME}/ skill. Run: ${CLI_CMD} update`);
+      continue;
+    }
+    const report = validateBundle(await readBundle(skillDir));
+    for (const e of report.errors) fail(`${where}/${SKILL_NAME}: ${e}`);
+    for (const w of report.warnings) warn(`${where}/${SKILL_NAME}: ${w}`);
+    if (report.version && report.version !== VERSION) warn(`${where}: installed RYUX ${report.version}, this CLI is ${VERSION}. Run: ${CLI_CMD} update`);
+    if (!report.errors.length) ok(`${where}/${SKILL_NAME}: complete, RYUX ${report.version}`);
+  }
+
+  if (!scope.global) {
+    const agentsHere = agentsAt(scope, true);
+    for (const file of pointersFor(agentsHere)) {
+      if (hasBlock(await readIfExists(join(scope.root, file)))) ok(`${file}: RYUX pointer block present`);
+      else warn(`${file}: no RYUX pointer block. Run: ${CLI_CMD} update`);
+    }
+    const context = await readIfExists(join(scope.root, CONTEXT_FILE));
+    if (hasBlock(context, [CONTEXT_START, CONTEXT_END])) ok(`${CONTEXT_FILE}: project context present`);
+    else warn(`${CONTEXT_FILE}: no RYUX project context. Run: ${CLI_CMD} init`);
+  }
+  if (!process.exitCode) console.log(pc.green("\nRYUX is ready."));
+}
+
+/** Facts init can detect without guessing: the project name and where design tokens live. */
+function detectContext(root: string): { name: string | null; system: string[] } {
+  let name: string | null = null;
+  try {
+    name = (JSON.parse(readFileSync(join(root, "package.json"), "utf8")) as { name?: string }).name ?? null;
+  } catch {
+    name = null;
+  }
+  const candidates = [
+    "tailwind.config.ts", "tailwind.config.js", "tailwind.config.mjs", "tokens.json", "design-tokens.json",
+    "src/components", "components", "app/components", "src/styles", "styles",
+  ];
+  return { name, system: candidates.filter((c) => existsSync(join(root, c))) };
+}
+
+function contextBlock(root: string): string {
+  const { name, system } = detectContext(root);
+  return `## RYUX project context
+
+RYUX reads this block before any design task. Fill in what you know and leave the rest blank;
+RYUX treats blanks as unknown instead of guessing.
+
+- **Product**: ${name ?? ""} (what it does, in one sentence:)
+- **Audience**:
+- **Market and locale**: (for example Indonesia, id-ID, Rupiah; or global, en-US, USD)
+- **Brand and design system**: ${system.length ? system.map((x) => `\`${x}\``).join(", ") : ""}
+- **Evidence sources**: RYUX MCP (${MCP_ADD_CMD}), Figma files, reference URLs:
+- **Constraints**: platforms, accessibility target (for example WCAG 2.2 AA), what must not change:`;
+}
+
+async function runInit(flags: Flags): Promise<void> {
+  if (flags.global) {
+    console.error(`init sets up a project. For a global install, use: ${CLI_CMD} install --global`);
+    process.exitCode = 1;
+    return;
+  }
+  await runInstall(flags);
+  if (process.exitCode) return;
+  const scope = scopeOf(flags);
+  const path = join(scope.root, CONTEXT_FILE);
+  if (hasBlock(await readIfExists(path), [CONTEXT_START, CONTEXT_END])) {
+    console.log(`${pc.green("✓ ")}${CONTEXT_FILE}: project context already present (left as you wrote it)`);
+  } else {
+    await upsertBlock(path, contextBlock(scope.root), [CONTEXT_START, CONTEXT_END]);
+    console.log(`${pc.green("✓ ")}${CONTEXT_FILE}: project context added. Fill it in so RYUX knows the product and market.`);
+  }
+  console.log(`\nNext: ${CLI_CMD} check`);
+}
+
 function help(): void {
   const agents = AGENT_TARGETS.map((a) => `  ${a.id.padEnd(12)} ${a.label.padEnd(15)} ${a.dir}  (global ~/${a.globalDir})`).join("\n");
-  console.log(`ryux v${RULES_VERSION}: install RYUX, design intelligence for AI agents and designers, into your agents.
+  console.log(`ryux v${VERSION}: install RYUX, design intelligence for AI agents and designers, into your agents.
 One skill, five entry points: Analyze, Design, Build, Critique, QA. RYUX picks the knowledge each task needs.
 
 Usage:
   ${CLI_CMD} [command] [options]
 
 Commands:
+  init        Install RYUX and add a project context block to DESIGN.md. Start here.
   install     Install RYUX (interactive, or with flags). Default.
+  check       Check the install: files, version, references, pointers, project context.
   update      Update an install to this version (also migrates RYUX 1.x folders).
   remove      Remove RYUX and the marked blocks.
   help        Show this help.
@@ -272,6 +376,8 @@ Options:
   --yes                skip the confirmation (remove)
 
 Examples:
+  ${CLI_CMD} init --agent claude
+  ${CLI_CMD} check
   ${CLI_CMD}
   ${CLI_CMD} install --agent claude,cursor,codex
   ${CLI_CMD} install --agent all
@@ -286,7 +392,7 @@ async function main(): Promise<void> {
 
   if (argv.includes("--help") || argv.includes("-h") || first === "help") return help();
   if (argv.includes("--version") || argv.includes("-v") || first === "version") {
-    console.log(RULES_VERSION);
+    console.log(VERSION);
     return;
   }
 
@@ -296,6 +402,11 @@ async function main(): Promise<void> {
   switch (cmd) {
     case "update":
       return runUpdate(flags);
+    case "check":
+    case "doctor":
+      return runCheck(flags);
+    case "init":
+      return runInit(flags);
     case "remove":
       return runRemove(flags);
     case "install":

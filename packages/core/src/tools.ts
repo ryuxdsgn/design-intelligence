@@ -35,11 +35,18 @@ export const searchScreensInput = {
 };
 
 export type SearchScreensArgs = z.infer<z.ZodObject<typeof searchScreensInput>>;
-export type ScreenResult = Screen & { report_url: string };
+/** Where a piece of evidence came from, so an agent can cite it and never invent one. */
+export type EvidenceSource = { type: "observed" | "inferred" | "knowledge"; origin: string; reference: string };
 
-// Attach a report link to a screen (used by search_screens and get_flow).
+export type ScreenResult = Screen & { report_url: string; source: EvidenceSource };
+
+// Attach a report link and the evidence source to a screen (used by search_screens and get_flow).
 export function toScreenResult(s: Screen): ScreenResult {
-  return { ...s, report_url: `https://ryux.design/laporkan/${s.screen_id}` };
+  return {
+    ...s,
+    report_url: `https://ryux.design/laporkan/${s.screen_id}`,
+    source: { type: "knowledge", origin: "ryux-knowledge", reference: s.screen_id },
+  };
 }
 
 export function searchScreens({ query, category, pattern, platform, limit }: SearchScreensArgs): ScreenResult[] {
