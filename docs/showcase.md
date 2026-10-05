@@ -172,6 +172,40 @@ No emoji bullets or invented scarcity (RX-CD-03, RX-AS-04). Minimums, codes, and
 gave stay placeholders instead of invented terms (RX-PR-02), and the message ends with a clear next
 step.
 
+## Earlier demo: a landing-page hero, end to end
+
+This was the README demo before the checkout run. Made with an earlier RYUX release (rules as of then).
+
+One hero section through the whole loop. Every step below is a real agent run with RYUX installed,
+quoted as it came out.
+
+**"Analyze this hero, then critique it."** The input is a hero that an agent without RYUX designed.
+RYUX inventoried it, then reported 12 findings. The top three are severity 3: unsourced numbers
+(RX-AS-01), real app names on drawn screens presented as findings (RX-UI-07), and tertiary text at
+3.98:1, below WCAG's 4.5:1 (RX-A11Y-01).
+
+**"Now improve it."** RYUX compared three directions and chose a "design receipt" as the
+signature (RX-UI-12). The redesign removes the numbers, labels the session as an example, uses app
+categories instead of names, and fixes the contrast.
+
+<a href="../assets/compare/demo/compare.png"><img src="../assets/compare/demo/compare.png" alt="Top: the hero designed without RYUX, marked with RYUX Critique findings: an unsourced 4.2k star count, unsourced 'matched in 1,280 apps' stats, real app names on drawn screens, and tertiary text below 4.5:1 contrast. Bottom: the redesign, with no star count, a 'design receipt' as the visual signature, the session labeled as an example, and categories instead of real app names. One miss is marked in amber: the made-up tool name find_references survived" width="100%"></a>
+
+**"Build it."** RYUX built the redesign as one HTML and CSS file from the pen.dev frame's exact
+values, responsive down to 390 wide. Links the design did not specify point to `#` instead of
+invented URLs.
+
+**"QA it."** RYUX compared the renders with the design: a close match at 1440, with one deviation
+(rows 22px apart where the design says 27px), and three defects at 390, where no design existed.
+Its Delivery Gate said FAIL until two one-line CSS fixes are made, and listed what it did not
+check: hover, focus, and the Copy states.
+
+<a href="../assets/compare/demo/qa.png"><img src="../assets/compare/demo/qa.png" alt="The approved pen.dev design, the HTML build at 1440 with QA finding 1 marked (reference rows 22px apart where the design says 27px), and the build at 390 with findings 2 to 4 marked: thumbnail content overflowing the card, a separator starting a line, and an orphaned citation" width="100%"></a>
+
+**What it missed, and what we changed.** The made-up tool name `find_references` survived the
+first critique; RYUX's real tool is `search_screens`. RYUX 2.1 added a fact check to Critique, and
+on the same screen Critique 2.1 listed `find_references` as its first finding, marked
+"contradicted".
+
 ## Earlier gallery
 
 Earlier pairs built in pen.dev under RX-1.x, one per former install concern. Rule IDs are shown in current numbering.
