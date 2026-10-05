@@ -114,10 +114,26 @@ Asset direction per asset: purpose, source, style, composition, context, consist
                avoid, provenance (observed, sourced, illustrative, generated, inferred)
 Responsive     what changes, stays, disappears, or stacks at each width
 
-Evidence       per decision: Strong, Thin, or None, with screen_ids or the standard
 Assumptions    everything guessed, visible
-Decisions      decision, options compared, choice, rationale, trade-off
+Decisions      one Decision Receipt per major decision (below)
 \`\`\`
+
+**Decision Receipt.** Write one for each major decision: the navigation model, payment method
+priority, information hierarchy, checkout structure, interaction model, or responsive strategy.
+Small choices ("8px between icon and label") need none; keep receipts few and short.
+
+\`\`\`
+Decision     what was chosen
+Options      A / B / C compared
+Evidence     count, type, and ids: "3 observed checkout flows (scr_...) + RX-IX-05" | None
+Confidence   High | Medium | Low
+Why          one line, from the evidence or the stated goal
+Trade-off    what it costs
+Assumption   what must be true for it to hold
+\`\`\`
+
+Evidence names its count and never generalizes past it. "Evidence None, Confidence Low, Why:
+business priority was not provided" is a valid receipt; keep it visible instead of upgrading it.
 
 Visual, motion, and asset rules and tables live in knowledge/ui.md (RX-UI-07 to RX-UI-13); this
 direction only records the choices made with them.`;
@@ -133,8 +149,10 @@ export const BUILD_BODY = `# RYUX Build
    instead of inventing one in code.
 3. **Read the modules the task needs** from the task table: for example accessibility, responsive,
    and edge-cases for any UI, and forms and content for a form.
-4. **Implement.** Use semantic elements, existing components, and real data paths. Invent no
-   business logic, prices, or limits (RX-FE-02, RX-PR-02); mark every assumption.
+4. **Implement faithfully.** Use semantic elements, existing components, and real data paths.
+   Build must not invent business rules, prices, or limits; API behavior or response shapes; or
+   data presented as real (RX-FE-02, RX-PR-02). It must not silently change a design decision: a
+   change goes back to Design as a new Decision Receipt. Mark every assumption in the code.
 5. **Render and verify.** Run it, check every width and state, and fix deviations from the design
    (capabilities/qa.md).
 6. **Close with the Delivery Gate.** CODE QUALITY and VISUAL QA need real checks (typecheck,

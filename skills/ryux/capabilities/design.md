@@ -55,10 +55,26 @@ Asset direction per asset: purpose, source, style, composition, context, consist
                avoid, provenance (observed, sourced, illustrative, generated, inferred)
 Responsive     what changes, stays, disappears, or stacks at each width
 
-Evidence       per decision: Strong, Thin, or None, with screen_ids or the standard
 Assumptions    everything guessed, visible
-Decisions      decision, options compared, choice, rationale, trade-off
+Decisions      one Decision Receipt per major decision (below)
 ```
+
+**Decision Receipt.** Write one for each major decision: the navigation model, payment method
+priority, information hierarchy, checkout structure, interaction model, or responsive strategy.
+Small choices ("8px between icon and label") need none; keep receipts few and short.
+
+```
+Decision     what was chosen
+Options      A / B / C compared
+Evidence     count, type, and ids: "3 observed checkout flows (scr_...) + RX-IX-05" | None
+Confidence   High | Medium | Low
+Why          one line, from the evidence or the stated goal
+Trade-off    what it costs
+Assumption   what must be true for it to hold
+```
+
+Evidence names its count and never generalizes past it. "Evidence None, Confidence Low, Why:
+business priority was not provided" is a valid receipt; keep it visible instead of upgrading it.
 
 Visual, motion, and asset rules and tables live in knowledge/ui.md (RX-UI-07 to RX-UI-13); this
 direction only records the choices made with them.

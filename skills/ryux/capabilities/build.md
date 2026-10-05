@@ -9,8 +9,10 @@
    instead of inventing one in code.
 3. **Read the modules the task needs** from the task table: for example accessibility, responsive,
    and edge-cases for any UI, and forms and content for a form.
-4. **Implement.** Use semantic elements, existing components, and real data paths. Invent no
-   business logic, prices, or limits (RX-FE-02, RX-PR-02); mark every assumption.
+4. **Implement faithfully.** Use semantic elements, existing components, and real data paths.
+   Build must not invent business rules, prices, or limits; API behavior or response shapes; or
+   data presented as real (RX-FE-02, RX-PR-02). It must not silently change a design decision: a
+   change goes back to Design as a new Decision Receipt. Mark every assumption in the code.
 5. **Render and verify.** Run it, check every width and state, and fix deviations from the design
    (capabilities/qa.md).
 6. **Close with the Delivery Gate.** CODE QUALITY and VISUAL QA need real checks (typecheck,

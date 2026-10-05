@@ -1,6 +1,6 @@
 {
   "name": "@ryuxdsgn/ryux",
-  "version": "2.3.0",
+  "version": "2.3.1",
   "description": "RYUX: design intelligence for AI agents and designers. One skill, five entry points: Analyze, Design, Build, Critique, and QA, for Claude Code, Codex, Cursor, Gemini CLI, OpenCode, Cline, Copilot, and more.",
   "type": "module",
   "bin": {
