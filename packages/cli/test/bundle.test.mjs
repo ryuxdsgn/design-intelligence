@@ -55,3 +55,10 @@ test("one version: package, plugin manifests, and router agree", () => {
   }
   assert.match(renderBundle()["SKILL.md"], new RegExp(`RYUX ${pkg.replace(/\./g, "\\.")}`));
 });
+
+test("every bundle file is tracked by git, so skills.sh and the plugin ship it", async () => {
+  const { spawnSync } = await import("node:child_process");
+  const tracked = new Set(spawnSync("git", ["ls-files", "skills/ryux"], { cwd: root, encoding: "utf8" }).stdout.split("\n"));
+  const missing = expectedFiles().filter((f) => !tracked.has(`skills/ryux/${f}`));
+  assert.deepEqual(missing, [], "not tracked (check .gitignore)");
+});
