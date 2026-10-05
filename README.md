@@ -22,28 +22,29 @@ Analyze → Design → Build → Critique → QA
 
 ## What can I do with RYUX?
 
-Give RYUX a screenshot, a Figma or pen.dev design, a URL, or a problem. Tell it what you are doing;
-it picks the knowledge it needs.
+Give RYUX a screen. It separates what it sees from what it assumes and from what it doesn't know.
+Then it makes design decisions, each with its evidence and confidence. Then it builds. Then it
+checks whether the build matches the decision.
 
-**Analyze**: understand an interface that exists.
+```
+WITHOUT RYUX   "Use QRIS as the primary payment method because Indonesian users prefer it."
 
-→ layout and hierarchy → patterns → states → design language → evidence kept apart from assumptions
+RYUX           Decision    Prioritize QRIS
+               Evidence    3 observed checkout flows
+               Confidence  Medium
+               Why         QRIS appears as a primary payment option across the observed references
+               Unknown     the actual business conversion priority
+```
 
-**Design**: turn understanding into design decisions.
+*An illustration of the Decision Receipt format, not a real run.* With no references, the same
+receipt reads **Evidence None, Confidence Low**, and RYUX says so, as it did in the
+[checkout run](#one-interface-end-to-end-design-reasoning).
 
-→ UX direction → UI direction → visual direction → interaction → motion → responsive behavior
-
-**Build**: turn the decisions into an implementation in your stack.
-
-→ components → layout → interaction → states → responsive UI
-
-**Critique**: find what to fix before shipping.
-
-→ evidence → impact → recommendation → severity → confidence
-
-**QA**: verify the implementation against the design.
-
-→ visual mismatches → missing states → responsive issues → Delivery Gate
+- **Analyze** an interface that exists: what it sees, what it infers, what it doesn't know.
+- **Design** the decisions: UX, UI, visual, interaction, and responsive, each with a receipt.
+- **Build** them in your stack, without inventing rules, data, or API behavior.
+- **Critique** before shipping: prioritized findings with evidence, impact, and a fix.
+- **QA** the build against the design: expected versus actual, at every width and state.
 
 ## See the difference
 

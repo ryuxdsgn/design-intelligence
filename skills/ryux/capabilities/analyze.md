@@ -39,6 +39,11 @@ captured: the frames or URLs, the viewports, and the tools.
 Never present an inferred value as measured. When only a screenshot is available, most values are
 Observed or Inferred; say so.
 
+Then list what is **Unknown**: what matters for the next decision and the input cannot answer, such
+as what an action does on tap, the business priority behind an order, a fact's source, or a rule
+nobody gave. Never fill an unknown with a guess. List meaningful unknowns, not mandatory ones: if
+the input answers something, it is not unknown, and a short list is fine.
+
 ### 3. Inventory
 
 Cover what the captures show; skip what they do not, and say it was not visible.
@@ -114,8 +119,10 @@ Feedback:   ...
 ## Evidence
 Each item above carries its label and source; RYUX Knowledge screen_ids where used.
 
-## Open questions
-- Are the amounts real data or examples?
+## Unknown
+- What the primary action does on tap: loading, result, failure
+- Why QRIS is first: business priority or habit
+- Whether the amounts are real data or examples
 ```
 
 ### 6. Optional: a visual direction, not a copy
