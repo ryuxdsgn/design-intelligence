@@ -26,7 +26,7 @@ repo, so the repo's own `CLAUDE.md` does not leak in:
 
 ```bash
 # rules on: install the stage skills into the run folder
-node packages/cli/dist/index.js install --agent claude
+node packages/cli/dist/cli/index.js install --agent claude
 # reference data on: start the local MCP and pass it to the run
 pnpm dev:mcp   # then: claude -p "<brief>" --mcp-config mcp.json --strict-mcp-config
 ```

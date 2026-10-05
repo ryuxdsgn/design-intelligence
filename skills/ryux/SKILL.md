@@ -5,7 +5,7 @@ description: "RYUX - design intelligence for AI agents and designers. Tell it wh
 
 # RYUX
 
-> Design intelligence for AI agents and designers. RX-2.0 (rules v2.2.0), MIT licensed.
+> Design intelligence for AI agents and designers. RYUX 2.3.0, MIT licensed.
 
 RYUX is a design intelligence layer for AI and designers. It helps understand, reason, design,
 build, critique, and verify interfaces using design knowledge and evidence. It is not a UI
@@ -47,7 +47,8 @@ Keep the capabilities apart; do not collapse them into one generic "design" answ
 
 ## How RYUX works
 
-1. **Understand the request**: who, what task, which product and market (RX-PR-01).
+1. **Understand the request**: who, what task, which product and market (RX-PR-01). Read the
+   RYUX project context in DESIGN.md first when it exists; do not guess what it leaves blank.
 2. **Pick the entry point** and read its file.
 3. **Select knowledge**: read the modules the task table lists, and no others.
 4. **Gather evidence**: reference screens through the ryux MCP when connected; otherwise say so.
@@ -81,6 +82,11 @@ context), or **None** (a judgment call; say so, RX-PR-10). Label every visual as
 (made to explain, labeled), **generated** (from a Visual Brief, labeled), or **inferred** (a
 stand-in until the real one exists). Never invent numbers, user behavior, business rules, research,
 compliance, product or competitor facts, screenshots, or references (RX-PR-02, RX-AS-01).
+
+Record a source as `{ type: observed | inferred | knowledge, origin, reference }`, for example
+`{ knowledge, ryux-knowledge, scr_123 }` from the ryux MCP, or `{ observed, screenshot, hero.png }`.
+Optional sources (the ryux MCP, Figma, a browser, screenshots, other reference libraries) add
+evidence when connected; none is required.
 
 ## Levels
 
