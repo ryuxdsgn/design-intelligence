@@ -18,6 +18,8 @@ Original work by ryux.design, MIT licensed. Rules and rationale:
 ## Usage
 
 ```bash
+npx @ryuxdsgn/ryux init --agent claude                      # start here: install + project context
+npx @ryuxdsgn/ryux check                                    # health check (exit 1 on problems)
 npx @ryuxdsgn/ryux                                          # interactive: agents, scope
 npx @ryuxdsgn/ryux install --agent claude,cursor,codex      # non-interactive
 npx @ryuxdsgn/ryux install --agent all                      # every supported agent
@@ -27,6 +29,17 @@ npx @ryuxdsgn/ryux remove --yes                             # remove RYUX and ma
 ```
 
 `ryux-rules` still works as an alias of the same command.
+
+| Command | What it does |
+| --- | --- |
+| `init` | Installs RYUX, then adds a `<!-- ryux-context -->` block to `DESIGN.md` (product, audience, market and locale, design system, evidence sources, constraints), prefilled only with what it can detect. Re-running never overwrites what you wrote. |
+| `install` | Writes the `ryux/` skill into each agent's folder and a short pointer block into `CLAUDE.md`, `GEMINI.md`, or `AGENTS.md`. |
+| `check` (`doctor`) | Checks every install: all files present, frontmatter valid, version matches this CLI, every module reference resolves, no RYUX 1.x folders, pointer blocks, project context. Exits 1 on errors, so it works in CI. |
+| `update` | Rewrites installs at this version and migrates RYUX 1.x. |
+| `remove` | Removes the skill and the pointer blocks. Leaves your `DESIGN.md` context. |
+
+One version: `packages/cli/package.json`. The skill header, the plugin manifests, and
+`ryux --version` all derive from it.
 
 ## Agents
 
@@ -85,6 +98,8 @@ npx skills add ryuxdsgn/design-intelligence      # skills.sh, any agent
 
 ```bash
 pnpm --filter @ryuxdsgn/ryux build      # tsc -> dist/
-node packages/cli/dist/index.js --help
-pnpm sync:skills              # regenerate skills/ryux/ and docs/design-rules.md
+node packages/cli/dist/cli/index.js --help
+pnpm sync:skills              # regenerate skills/ryux/, docs/design-rules.md, plugin versions
+pnpm test                     # unit + CLI integration tests (node:test, no extra dependencies)
+pnpm check:sync               # CI: fail if the committed skill, docs, or versions drift from the sources
 ```

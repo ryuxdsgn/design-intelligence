@@ -1004,7 +1004,7 @@ RX-2.0 regroups every rule by skill. Old IDs map as follows; some old rules were
 were split across skills.
 
 <!-- migration:start -->
-| RX-1.x ID | RX-2.0 ID |
+| RX-1.x ID | Current ID |
 | --- | --- |
 | RX-C-01 | RX-PR-04 |
 | RX-C-02 | RX-UI-05 |

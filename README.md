@@ -218,7 +218,15 @@ Earlier examples, including the Indonesian-market set (QRIS, Rupiah, WhatsApp), 
 
 ## Install
 
-Three ways in, all installing the same single skill.
+**Start here** (installs RYUX for your agent and adds a short project context to `DESIGN.md`, so
+RYUX knows your product, audience, and market before it designs anything):
+
+```bash
+npx @ryuxdsgn/ryux init --agent claude
+npx @ryuxdsgn/ryux check        # anything wrong? this says what, and the command that fixes it
+```
+
+Or pick one of three ways in. All install the same single skill.
 
 **1. Any agent, via [skills.sh](https://skills.sh)**
 
@@ -231,6 +239,8 @@ in sync, and handles update and remove)
 
 ```bash
 npx @ryuxdsgn/ryux                                     # interactive
+npx @ryuxdsgn/ryux init --agent claude                 # install + DESIGN.md project context
+npx @ryuxdsgn/ryux check                               # verify files, version, references, context
 npx @ryuxdsgn/ryux install --agent claude,cursor,codex # non-interactive
 npx @ryuxdsgn/ryux install --agent all                 # every supported agent
 npx @ryuxdsgn/ryux install --agent claude --global     # into your home directory

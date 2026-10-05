@@ -4,17 +4,15 @@ import {
   GROUPS,
   HARD_GATES,
   LEVEL_LABEL,
-  MCP_ADD_CMD,
   PURPOSE_GATES,
   QUALITY_LOCKS,
   RETIRED,
   RULES,
-  RULES_VERSION,
-  RULESET_VERSION,
   SKILLS,
   type Rule,
   type Skill,
-} from "./content.js";
+} from "./intelligence/content.js";
+import { MCP_ADD_CMD, VERSION } from "./product.js";
 import {
   CORE_CAPABILITIES,
   CORE_DECISION_RECORD,
@@ -27,9 +25,9 @@ import {
   DESIGN_BODY,
   GATE_RULES,
   GUIDES,
-} from "./guides.js";
-import { CRITIQUE_BODY, CRITIQUE_DESCRIPTION } from "./critique.js";
-import { ANALYZE_BODY, ANALYZE_DESCRIPTION } from "./analyze.js";
+} from "./intelligence/guides.js";
+import { CRITIQUE_BODY, CRITIQUE_DESCRIPTION } from "./intelligence/critique.js";
+import { ANALYZE_BODY, ANALYZE_DESCRIPTION } from "./intelligence/analyze.js";
 
 const skillById = (id: string): Skill | undefined => SKILLS.find((s) => s.id === id);
 const rulesOf = (id: string): Rule[] => RULES.filter((r) => r.skill === id);
@@ -78,7 +76,7 @@ export function deliveryGateTemplate(): string {
 function routerBody(): string {
   return `# RYUX
 
-> Design intelligence for AI agents and designers. ${RULESET_VERSION} (rules v${RULES_VERSION}), MIT licensed.
+> Design intelligence for AI agents and designers. RYUX ${VERSION}, MIT licensed.
 
 ${CORE_POSITIONING}
 
@@ -161,7 +159,7 @@ function skillBody(id: string): string {
       : "";
   return `# ryux-${s.id}: ${s.label}
 
-> Group ${groupLabel(s.group)} · Delivery Gate area ${s.gateArea} · ${RULESET_VERSION}. Levels are defined in \`ryux-core\`.
+> Group ${groupLabel(s.group)} · Delivery Gate area ${s.gateArea} · RYUX ${VERSION}. Levels are defined in \`ryux-core\`.
 
 ${GUIDES[s.id]}${extra}
 
@@ -263,7 +261,7 @@ export function renderMigrationTable(): string {
   const grouped = new Map<string, string[]>();
   for (const [old, now] of rows) grouped.set(old, [...(grouped.get(old) ?? []), now]);
   const lines = [...grouped.entries()].map(([old, now]) => `| ${old} | ${now.join(", ")} |`);
-  return `| RX-1.x ID | ${RULESET_VERSION} ID |\n| --- | --- |\n${lines.join("\n")}`;
+  return `| RX-1.x ID | Current ID |\n| --- | --- |\n${lines.join("\n")}`;
 }
 
 export function retiredTable(): string {
