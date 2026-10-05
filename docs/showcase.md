@@ -1,5 +1,8 @@
 # Before/After Playbook for RYUX (showcase)
 
+> This is the deep dive: method, setup, full case studies, and history. New to RYUX? Start with the
+> [README](../README.md), which shows the checkout demo and a short [proof](../README.md#see-the-proof).
+
 A guide to creating 3 **before vs after** comparisons for the README: real proof that RYUX
 turns "AI-smelling" output into something grounded and natural. Principle: **honest, not a fake mockup**
 (RX-AS-03). "Before" = agent output without RYUX; "After" = the same agent's output **with**
@@ -172,9 +175,9 @@ No emoji bullets or invented scarcity (RX-CD-03, RX-AS-04). Minimums, codes, and
 gave stay placeholders instead of invented terms (RX-PR-02), and the message ends with a clear next
 step.
 
-## Earlier demo: a landing-page hero, end to end
+## Hero case study: the full run
 
-This was the README demo before the checkout run. Made with an earlier RYUX release (rules as of then).
+The README's [See the proof](../README.md#see-the-proof) summarizes this run. Made with an earlier RYUX release (rules as of then).
 
 One hero section through the whole loop. Every step below is a real agent run with RYUX installed,
 quoted as it came out.
@@ -261,7 +264,7 @@ Real evidence (`scr_a3f091`, app, version, date) in place of a fake logo wall (R
 
 | Before | After |
 | --- | --- |
-| "Put QRIS at the top because it looks good." | "Put QRIS at the top, since that's what Indonesian F&B apps do for small amounts (`scr_demo_001`)." |
+| "Put QRIS at the top because it looks good." | "Put QRIS first, based on the observed reference `scr_demo_001` (evidence Thin: one screen)." |
 
 `RX-PR-04` rejects any decision that has no `screen_id` behind it, and `delivery_gate` enforces that.
 

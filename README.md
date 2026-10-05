@@ -18,7 +18,7 @@ using design knowledge and evidence.
 Analyze → Design → Build → Critique → QA
 ```
 
-**[Install](#install)** · **[See the demo](#one-interface-end-to-end-design-reasoning)** · **[GitHub](https://github.com/ryuxdsgn/design-intelligence)**
+**[Install](#install)** · **[See the demo](#one-interface-end-to-end-design-reasoning)** · **[See the proof](#see-the-proof)** · **[GitHub](https://github.com/ryuxdsgn/design-intelligence)**
 
 ## What can I do with RYUX?
 
@@ -145,7 +145,7 @@ build.
 
 > RYUX doesn't pretend to know. It shows what it knows, what it infers, and what remains unknown.
 
-An earlier end-to-end run, on a landing-page hero, is in [the showcase](docs/showcase.md#earlier-demo-a-landing-page-hero-end-to-end).
+Does RYUX actually reason, or just produce nicer UI? See [the proof](#see-the-proof).
 
 ```bash
 npx skills add ryuxdsgn/design-intelligence
@@ -180,6 +180,35 @@ With RYUX:     context → analyze → evidence → reason → design → build 
 - **Human judgment.** Designer notes explain why a flow works and where it falls short. People write them, not AI, and they are the most valuable part of the library.
 - **Local depth where global libraries are thin.** The first market covered is Indonesia: QRIS, virtual accounts, WhatsApp OTP, paylater, and e-KYC.
 - **Its own ruleset.** RYUX's rules (IDs start with `RX-`) are original work, MIT-licensed, with no third-party rule dependencies.
+
+## See the proof
+
+Does RYUX reason, or does it just make a prettier UI? One hero section, a real run, every step
+quoted.
+
+1. **Analyze and Critique.** RYUX inventoried the hero, then reported 12 findings. The top three are
+   severity 3: unsourced numbers, real app names on drawn screens presented as findings, and
+   tertiary text at 3.98:1, below WCAG's 4.5:1.
+2. **Design.** RYUX compared three directions and chose a "design receipt" as the signature.
+3. **Build.** One HTML and CSS file from the pen.dev frame's exact values, responsive down to 390 wide.
+4. **QA.** Rows 22px apart where the design says 27px, and three defects at 390, where no design
+   existed. The Delivery Gate said FAIL and listed what it did not check.
+
+<a href="assets/compare/demo/compare.png"><img src="assets/compare/demo/compare.png" alt="Top: the hero designed without RYUX, marked with RYUX Critique findings: an unsourced 4.2k star count, unsourced 'matched in 1,280 apps' stats, real app names on drawn screens, and tertiary text below 4.5:1 contrast. Bottom: the redesign, with no star count, a 'design receipt' as the visual signature, the session labeled as an example, and categories instead of real app names. One miss is marked in amber: the made-up tool name find_references survived" width="100%"></a>
+
+<a href="assets/compare/demo/qa.png"><img src="assets/compare/demo/qa.png" alt="The approved pen.dev design, the HTML build at 1440 with QA finding 1 marked (reference rows 22px apart where the design says 27px), and the build at 390 with findings 2 to 4 marked: thumbnail content overflowing the card, a separator starting a line, and an orphaned citation" width="100%"></a>
+
+**It missed something, and that became a rule.** The made-up tool name `find_references` survived
+the first critique; RYUX's real tool is `search_screens`. A fact check was added to Critique, and a
+rerun on the same screen listed `find_references` as its first finding, marked "contradicted".
+
+```
+miss → evidence → rule → rerun → caught
+```
+
+> RYUX improves through evidence, not confidence.
+
+The full write-up, with method and history, is in [the showcase](docs/showcase.md#hero-case-study-the-full-run).
 
 ## Design knowledge, not just design rules
 

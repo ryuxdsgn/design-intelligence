@@ -77,7 +77,9 @@ Say where every claim comes from:
 | **Knowledge** | a known pattern or standard, cited | "WCAG 1.4.3", "observed in 4 screens, scr_..." |
 
 Rate the evidence for a decision **Strong** (2+ comparable screens), **Thin** (one, or another
-context), or **None** (a judgment call; say so, RX-PR-10). Label every visual asset's provenance:
+context), or **None** (a judgment call; say so, RX-PR-10). Scope each claim to its evidence: one
+screen supports "observed in scr_x", not "apps do X"; name the count ("in 4 observed screens"), and
+never generalize to a market or category from Thin evidence (RX-PR-02). Label every visual asset's provenance:
 **observed** (from the real product), **sourced** (licensed, with its source), **illustrative**
 (made to explain, labeled), **generated** (from a Visual Brief, labeled), or **inferred** (a
 stand-in until the real one exists). Never invent numbers, user behavior, business rules, research,
