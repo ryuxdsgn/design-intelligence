@@ -18,7 +18,7 @@ using design knowledge and evidence.
 Analyze → Design → Build → Critique → QA
 ```
 
-**[Install](#install)** · **[See the demo](#see-it)** · **[GitHub](https://github.com/ryuxdsgn/design-intelligence)**
+**[Install](#install)** · **[See the demo](#one-interface-end-to-end-design-reasoning)** · **[GitHub](https://github.com/ryuxdsgn/design-intelligence)**
 
 ## What can I do with RYUX?
 
@@ -105,37 +105,47 @@ flagged for the team.
 Earlier examples, including the Indonesian-market set (QRIS, Rupiah, WhatsApp), are in
 [`docs/showcase.md`](docs/showcase.md#indonesian-market-examples).
 
-## See it
+## One interface. End-to-end design reasoning.
 
-One screen through the whole loop. Every step below is a real agent run with RYUX installed,
-quoted as it came out.
+The checkout is only the example: it shows how RYUX reasons about a real interface, from first look
+to final check. Every card is a real agent run with RYUX installed. Quotes are verbatim, and "…"
+marks a cut.
 
-**"Analyze this hero, then critique it."** The input is a hero that an agent without RYUX designed.
-RYUX inventoried it, then reported 12 findings. The top three are severity 3: unsourced numbers
-(RX-AS-01), real app names on drawn screens presented as findings (RX-UI-07), and tertiary text at
-3.98:1, below WCAG's 4.5:1 (RX-A11Y-01).
+The run uses the five capabilities in order, Analyze → Design → Build → Critique → QA, with one
+addition: Critique runs twice. First on the existing screen, to find what to fix, then on our own
+build.
 
-**"Now improve it."** RYUX compared three directions and chose a "design receipt" as the
-signature (RX-UI-12). The redesign removes the numbers, labels the session as an example, uses app
-categories instead of names, and fixes the contrast.
+<img src="assets/demo/1-analyze.png" alt="Analyze. The input is a payment step designed without RYUX. RYUX's analysis in three columns. Observed: BCA VA shows 'Biaya admin Rp1.000', Mandiri, BNI, and BRI VA show none, the card row says 'Cicilan 0% hingga 12 bulan', and 412.000 + 18.000 + 1.000 − 25.000 = 406.000. Inferred: tapping the CTA creates the order and shows a VA number; only the selected method expands; the bottom bar is sticky. Unknown: what the CTA does on tap, whether the voucher depends on the method, the source of the OJK and Bank Indonesia claim, and why the methods are in this order" width="100%">
 
-<a href="assets/compare/demo/compare.png"><img src="assets/compare/demo/compare.png" alt="Top: the hero designed without RYUX, marked with RYUX Critique findings: an unsourced 4.2k star count, unsourced 'matched in 1,280 apps' stats, real app names on drawn screens, and tertiary text below 4.5:1 contrast. Bottom: the redesign, with no star count, a 'design receipt' as the visual signature, the session labeled as an example, and categories instead of real app names. One miss is marked in amber: the made-up tool name find_references survived" width="100%"></a>
+<img src="assets/demo/2-critique-1.png" alt="Critique 1, on the existing design. C-04, severity 3: only the happy, filled state is provided; six states are missing: processing, result, failure, method unavailable, list failed, voucher invalid. C-01, severity 3: only BCA VA and COD show a fee. C-02, severity 3: an unsourced compliance claim, 'diawasi OJK &amp; Bank Indonesia'" width="100%">
 
-**"Build it."** RYUX built the redesign as one HTML and CSS file from the pen.dev frame's exact
-values, responsive down to 390 wide. Links the design did not specify point to `#` instead of
-invented URLs.
+<img src="assets/demo/3-design.png" alt="Design. A note says no decision had Strong evidence because the ryux MCP was not connected. Before and after screens with marks. Decision D3, remove the 0% installment line and the cashback pill: evidence Thin, confidence High. Decision D4, disable GoPay when the balance is too low and say why: evidence None, confidence Low, because whether the product supports top-up is unknown" width="100%">
 
-**"QA it."** RYUX compared the renders with the design: a close match at 1440, with one deviation
-(rows 22px apart where the design says 27px), and three defects at 390, where no design existed.
-Its Delivery Gate said FAIL until two one-line CSS fixes are made, and listed what it did not
-check: hover, focus, and the Copy states.
+<img src="assets/demo/4-build.png" alt="Build. One index.html with seven states opened by URL hash and rendered at 390 by 844: default, processing, result with the VA number, failure, method unavailable, method list failed, and voucher invalid" width="100%">
 
-<a href="assets/compare/demo/qa.png"><img src="assets/compare/demo/qa.png" alt="The approved pen.dev design, the HTML build at 1440 with QA finding 1 marked (reference rows 22px apart where the design says 27px), and the build at 390 with findings 2 to 4 marked: thumbnail content overflowing the card, a separator starting a line, and an orphaned citation" width="100%"></a>
+<img src="assets/demo/5-critique-2.png" alt="Critique 2, on the build. C-01, severity 4, confidence High: tapping the CTA resets the selection, so a buyer who chose COD at Rp432.500 sees BCA VA at Rp406.000. C-02: 7 of the 10 methods have no defined in-progress or result behavior. C-06: the COD voucher rule is an unconfirmed example" width="100%">
 
-**What it missed, and what we changed.** The made-up tool name `find_references` survived the
-first critique; RYUX's real tool is `search_screens`. RYUX 2.1 added a fact check to Critique, and
-on the same screen Critique 2.1 listed `find_references` as its first finding, marked
-"contradicted".
+<img src="assets/demo/6-qa.png" alt="QA. Q-01, misleads: in the processing state the design keeps the BCA radio solid green, but the build greys out every radio. Q-02, visible defect: the selected COD row in the build has a white strip under its panel. Delivery Gate final: FAIL, with 2 visible mismatches and 5 polish deviations; the numbers agree across every state" width="100%">
+
+**RYUX improved**
+
+- ✓ The six missing states Critique named are designed and built: processing, result, failure,
+  method unavailable, list failed, voucher invalid
+- ✓ Every payment method has a fee slot, with `[REAL DATA]` where the fee is unknown
+- ✓ Unsourced claims are gone: the OJK and Bank Indonesia line, the 0% installments, the cashback
+- ✓ The money adds up in every state: Rp406.000, Rp405.000, Rp432.500
+
+**RYUX flagged**
+
+- ⚠ Its own build: the pay button throws away the buyer's chosen method (C-01, severity 4)
+- ⚠ The voucher rule for COD is an unconfirmed example, not a business rule
+- ⚠ Unknown: whether GoPay top-up exists, and why the methods are in this order
+- ⚠ No decision had Strong evidence, because the ryux MCP was not connected
+- ⚠ Delivery Gate: FAIL until the build defects are fixed
+
+> RYUX doesn't pretend to know. It shows what it knows, what it infers, and what remains unknown.
+
+An earlier end-to-end run, on a landing-page hero, is in [the showcase](docs/showcase.md#earlier-demo-a-landing-page-hero-end-to-end).
 
 ```bash
 npx skills add ryuxdsgn/design-intelligence
