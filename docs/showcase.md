@@ -136,7 +136,7 @@ Always fill in a descriptive `alt` (accessibility, RX-A11Y-03). Every image is c
 ## Indonesian market examples
 
 These three pairs were the README examples for rules 1.2, with an Indonesian brief for each. Both
-runs used the RX-2.0 skills of that time, and the UI "with" run also had the RYUX MCP for reference
+runs used the RYUX rules of that time, and the UI "with" run also had the RYUX MCP for reference
 screens.
 
 ### UI
@@ -174,7 +174,7 @@ step.
 
 ## Earlier gallery
 
-Earlier pairs built in pen.dev under RX-1.x, one per former install concern. Rule IDs are shown in RX-2.0 numbering.
+Earlier pairs built in pen.dev under RX-1.x, one per former install concern. Rule IDs are shown in current numbering.
 
 **`ryux-copy`** · Indonesian copywriting · natural language, Rupiah, error messages
 

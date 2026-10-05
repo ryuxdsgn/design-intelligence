@@ -23,6 +23,7 @@ import {
   deliveryGateTemplate,
 } from "../dist/render.js";
 import { validateBundle, validateRules } from "../dist/validate.js";
+import { VERSION } from "../dist/product.js";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const root = join(here, "..", "..", "..");
@@ -61,7 +62,26 @@ for (const [name, body] of [
   doc = fill(doc, name, body);
 }
 
+// One version: the README badge and Status line and the design-rules header follow VERSION.
+const minor = VERSION.split(".").slice(0, 2).join(".");
+const withVersion = {
+  "README.md": (t) =>
+    t
+      .replace(/rules%20\d+\.\d+(-1f6feb" alt="Status: early access, rules )\d+\.\d+/, `rules%20${minor}$1${minor}`)
+      .replace(/^RYUX \d+\.\d+, early access, free\./m, `RYUX ${minor}, early access, free.`),
+  "docs/design-rules.md": (t) =>
+    t.replace(/\*\*Last updated:\*\* [^·\n]*· /, "").replace(/\*\*Version:\*\* [^\n]*/, `**Version:** RYUX ${VERSION}`),
+};
+const versioned = {};
+for (const [file, apply] of Object.entries(withVersion)) {
+  const current = file === "docs/design-rules.md" ? doc : await readFile(join(root, file), "utf8");
+  versioned[file] = apply(current);
+}
+doc = versioned["docs/design-rules.md"];
+
 if (check) {
+  const readme = await readFile(join(root, "README.md"), "utf8");
+  if (readme !== versioned["README.md"]) problems.push(`README.md version mentions differ from ${VERSION}`);
   const committed = {};
   const dir = join(skillsDir, SKILL_NAME);
   if (existsSync(dir)) {
@@ -104,6 +124,7 @@ for (const [path, content] of Object.entries(files)) {
   await writeFile(target, content, "utf8");
 }
 await writeFile(docPath, doc, "utf8");
+await writeFile(join(root, "README.md"), versioned["README.md"], "utf8");
 execFileSync("node", [join(here, "version.mjs")], { stdio: "inherit" });
 
 // Dogfood: install RYUX into this repo with the real CLI. The generated .claude/skills/ryux folder

@@ -7,7 +7,7 @@ the reference data over MCP. If you just want a quick overview, read the [README
 
 RYUX is two things that work together:
 
-1. **RYUX** (installed with `npx @ryuxdsgn/ryux` or `npx skills add`): design skills (RX-2.0) that guide decisions and filter output so it doesn't
+1. **RYUX** (installed with `npx @ryuxdsgn/ryux` or `npx skills add`): design skills that guide decisions and filter output so it doesn't
    "smell like AI": evidence-backed, accessible, and fitted to the product's market. Doc: [`docs/design-rules.md`](./docs/design-rules.md).
 2. **MCP server**: gives your agent access to **reference screens from real products** (captured
    screens, designer notes) plus audit tools. Nine tools; see [`apps/mcp/README.md`](./apps/mcp/README.md).

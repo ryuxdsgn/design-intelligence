@@ -62,3 +62,10 @@ test("every bundle file is tracked by git, so skills.sh and the plugin ship it",
   const missing = expectedFiles().filter((f) => !tracked.has(`skills/ryux/${f}`));
   assert.deepEqual(missing, [], "not tracked (check .gitignore)");
 });
+
+test("the README shows the current version", () => {
+  const minor = VERSION.split(".").slice(0, 2).join(".");
+  const readme = readFileSync(join(root, "README.md"), "utf8");
+  assert.match(readme, new RegExp(`rules%20${minor.replace(".", "\\.")}-`));
+  assert.match(readme, new RegExp(`^RYUX ${minor.replace(".", "\\.")}, early access`, "m"));
+});

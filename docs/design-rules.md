@@ -7,7 +7,7 @@
 > References to standards are factual; all explanations, examples, and numbering are written by us.
 > **Not a derivative of any third-party licensed text** and not affiliated with NN/g or anyone else.
 >
-> **Last updated:** 2026-10-02 · **Version:** RX-2.0
+> **Version:** RYUX 2.3.0
 
 RYUX is design intelligence for AI agents and designers, packaged as one skill, `ryux`. It has five
 entry points: Analyze, Design, Build, Critique, and QA. The router (`SKILL.md`) picks the
@@ -1000,7 +1000,7 @@ rule or moved into its skill's guide as guidance, so nothing was lost.
 
 ## Migration from RX-1.x
 
-RX-2.0 regroups every rule by skill. Old IDs map as follows; some old rules were merged, and some
+The current rule set groups every rule by module. RX-1.x IDs map as follows; some old rules were merged, and some
 were split across skills.
 
 <!-- migration:start -->
