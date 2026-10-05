@@ -1,6 +1,6 @@
 <p align="center">
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-2ea44f" alt="MIT License"></a>
-  <img src="https://img.shields.io/badge/status-early__access%20%C2%B7%20rules%202.2-1f6feb" alt="Status: early access, rules 2.2">
+  <img src="https://img.shields.io/badge/status-early__access%20%C2%B7%20rules%202.3-1f6feb" alt="Status: early access, rules 2.3">
   <img src="https://img.shields.io/badge/capabilities-Analyze%20%C2%B7%20Design%20%C2%B7%20Build%20%C2%B7%20Critique%20%C2%B7%20QA-e36209" alt="Capabilities: Analyze, Design, Build, Critique, QA">
   <img src="https://img.shields.io/badge/MCP%20tools-9-8957e5" alt="9 MCP tools">
 </p>
@@ -8,6 +8,8 @@
 # RYUX: design intelligence
 
 > **Understand before you design.**
+>
+> AI can generate an interface in seconds. RYUX makes it understand what it is building first.
 
 RYUX helps AI agents and designers analyze, design, build, critique, and verify digital interfaces
 using design knowledge and evidence.
@@ -42,6 +44,66 @@ it picks the knowledge it needs.
 **QA**: verify the implementation against the design.
 
 → visual mismatches → missing states → responsive issues → Delivery Gate
+
+## See the difference
+
+Same prompt. Different reasoning.
+
+Each brief below ran headless (`claude -p`) in an empty folder, once without RYUX and once with the
+RYUX installed by the CLI (`npx @ryuxdsgn/ryux`), using earlier RYUX releases; [the showcase](docs/showcase.md) lists the exact version behind each image. The agent chose which skills to load.
+Neither run had the RYUX MCP, so no reference screens were used. The screenshots are the agents' real
+output, not edited by hand. The colored boxes are annotations added afterwards.
+
+### UI
+
+*"Design only the hero section of a landing page, 1440 wide by 900 tall, for RYUX: a design
+intelligence layer for AI coding agents and designers. It installs as skills into Claude Code,
+Cursor, Codex, and other agents (npx @ryuxdsgn/ryux), and an MCP server gives agents reference
+screens from real apps as evidence. The hero should feature a custom illustration; create it with
+pen.dev's Generate function."* Both runs designed in pen.dev and generated their illustration with
+pen.dev's `Generate`.
+
+<a href="assets/compare/ui/compare.png"><img src="assets/compare/ui/compare.png" alt="Two RYUX hero sections with generated illustrations, stacked. Without RYUX: an invented 4.8k GitHub star count, Windsurf listed as a supported agent although the brief never named it, and a generic illustration of floating app screens wired to a code terminal with a sparkle. With RYUX 2.0: GitHub with no count, an illustration of the product's own idea, a design under review with numbered marks and pinned reference screens, labeled as 'Fig. 1', and one primary action, the install command" width="100%"></a>
+
+Both heroes now have a generated illustration, and the difference is what it says. Without RYUX,
+the illustration is the category default: floating screens wired to a terminal, plus a sparkle.
+The page also invents a GitHub star count and lists an agent the brief never named (RX-AS-01,
+RX-PR-02).
+
+With RYUX, the illustration shows the product's own idea: a design under review, with numbered
+marks, backed by pinned reference screens (RX-UI-07, RX-UI-12). It is captioned as a figure, so
+nobody reads it as a real screen, and there is one primary action (RX-PR-03). The brief was the same
+for both runs. Both agents ended their sessions while the illustrations were still generating,
+because generation is asynchronous, so we exported both frames once the illustrations arrived,
+without changing anything.
+
+### Code
+
+*"Write a TypeScript module, order-total.ts, that calculates an order total with shipping, a service
+fee, and sales tax, and formats it as currency for the user's locale."*
+
+<a href="assets/compare/code/compare.png"><img src="assets/compare/code/compare.png" alt="Two versions of order-total.ts side by side. Without RYUX: 154 lines that add a free-shipping threshold and a fixed fee nobody asked for, and silently default tax on shipping and fees to off. With RYUX: 124 lines with only the charges the brief named, and taxability as a required decision for the caller" width="100%"></a>
+
+Both versions use integer cents and Intl formatting. The difference is what they decide on their
+own. Without RYUX, the module adds pricing rules nobody asked for and quietly decides that shipping
+and fees are never taxed (RX-AS-06, RX-PR-02). With RYUX, it builds only the named charges and makes
+taxability a required input, because it differs by jurisdiction. It also left out Rupiah formatting,
+since no market was named, and offered to add it (RX-PR-05).
+
+### Copy
+
+*"Our product is Tally, an invoicing app for freelancers. Write an in-app announcement and a short
+email telling existing customers about a new feature: scheduled invoices."*
+
+<a href="assets/compare/chat/compare.png"><img src="assets/compare/chat/compare.png" alt="Two launch announcements side by side. Without RYUX: fluent copy that invents time-of-day sending, a delivery notification, a menu path, and a promise that every reply is read. With RYUX: the same story, with unknown labels and links as placeholders, an open question about plans, and an unsubscribe line" width="100%"></a>
+
+Both read well. Without RYUX, the copy describes a product nobody specified: a time picker, a
+delivery notification, an arrow menu next to Send, and a Scheduled tab (RX-PR-02, RX-AS-07). With
+RYUX, unknown labels and links stay placeholders (RX-AS-03), and the open question about plans is
+flagged for the team.
+
+Earlier examples, including the Indonesian-market set (QRIS, Rupiah, WhatsApp), are in
+[`docs/showcase.md`](docs/showcase.md#indonesian-market-examples).
 
 ## See it
 
@@ -107,7 +169,7 @@ With RYUX:     context → analyze → evidence → reason → design → build 
 - **Honest about what it knows.** RYUX rates its evidence and reports what it did not check. It never claims "pixel perfect" or "fully accessible" without proof.
 - **Human judgment.** Designer notes explain why a flow works and where it falls short. People write them, not AI, and they are the most valuable part of the library.
 - **Local depth where global libraries are thin.** The first market covered is Indonesia: QRIS, virtual accounts, WhatsApp OTP, paylater, and e-KYC.
-- **Its own ruleset.** RYUX (RX-2.0) is original work, MIT-licensed, with no third-party rule dependencies.
+- **Its own ruleset.** RYUX's rules (IDs start with `RX-`) are original work, MIT-licensed, with no third-party rule dependencies.
 
 ## Design knowledge, not just design rules
 
@@ -157,64 +219,6 @@ Analyze → Design → Build → Critique → QA → Anti-Slop → done
 - **Visual QA** asks whether the build matches the design, at every width and state.
 - **Anti-Slop** runs last. RYUX does not use anti-slop rules to decide what good design is; it uses them to catch generic, invented, unnecessary, or unsupported output before delivery.
 - **The Delivery Gate** reports PASS, FAIL, or N/A for ten areas, and claims only what was checked.
-
-## See the difference
-
-Each brief below ran headless (`claude -p`) in an empty folder, once without RYUX and once with the
-RYUX installed by the CLI (`npx @ryuxdsgn/ryux`): RYUX 2.0 for UI, the 1.3 skills for Code and Copy. The agent chose which skills to load.
-Neither run had the RYUX MCP, so no reference screens were used. The screenshots are the agents' real
-output, not edited by hand. The colored boxes are annotations added afterwards.
-
-### UI
-
-*"Design only the hero section of a landing page, 1440 wide by 900 tall, for RYUX: a design
-intelligence layer for AI coding agents and designers. It installs as skills into Claude Code,
-Cursor, Codex, and other agents (npx @ryuxdsgn/ryux), and an MCP server gives agents reference
-screens from real apps as evidence. The hero should feature a custom illustration; create it with
-pen.dev's Generate function."* Both runs designed in pen.dev and generated their illustration with
-pen.dev's `Generate`.
-
-<a href="assets/compare/ui/compare.png"><img src="assets/compare/ui/compare.png" alt="Two RYUX hero sections with generated illustrations, stacked. Without RYUX: an invented 4.8k GitHub star count, Windsurf listed as a supported agent although the brief never named it, and a generic illustration of floating app screens wired to a code terminal with a sparkle. With RYUX 2.0: GitHub with no count, an illustration of the product's own idea, a design under review with numbered marks and pinned reference screens, labeled as 'Fig. 1', and one primary action, the install command" width="100%"></a>
-
-Both heroes now have a generated illustration, and the difference is what it says. Without RYUX,
-the illustration is the category default: floating screens wired to a terminal, plus a sparkle.
-The page also invents a GitHub star count and lists an agent the brief never named (RX-AS-01,
-RX-PR-02).
-
-With RYUX, the illustration shows the product's own idea: a design under review, with numbered
-marks, backed by pinned reference screens (RX-UI-07, RX-UI-12). It is captioned as a figure, so
-nobody reads it as a real screen, and there is one primary action (RX-PR-03). The brief was the same
-for both runs. Both agents ended their sessions while the illustrations were still generating,
-because generation is asynchronous, so we exported both frames once the illustrations arrived,
-without changing anything.
-
-### Code
-
-*"Write a TypeScript module, order-total.ts, that calculates an order total with shipping, a service
-fee, and sales tax, and formats it as currency for the user's locale."*
-
-<a href="assets/compare/code/compare.png"><img src="assets/compare/code/compare.png" alt="Two versions of order-total.ts side by side. Without RYUX: 154 lines that add a free-shipping threshold and a fixed fee nobody asked for, and silently default tax on shipping and fees to off. With RYUX: 124 lines with only the charges the brief named, and taxability as a required decision for the caller" width="100%"></a>
-
-Both versions use integer cents and Intl formatting. The difference is what they decide on their
-own. Without RYUX, the module adds pricing rules nobody asked for and quietly decides that shipping
-and fees are never taxed (RX-AS-06, RX-PR-02). With RYUX, it builds only the named charges and makes
-taxability a required input, because it differs by jurisdiction. It also left out Rupiah formatting,
-since no market was named, and offered to add it (RX-PR-05).
-
-### Copy
-
-*"Our product is Tally, an invoicing app for freelancers. Write an in-app announcement and a short
-email telling existing customers about a new feature: scheduled invoices."*
-
-<a href="assets/compare/chat/compare.png"><img src="assets/compare/chat/compare.png" alt="Two launch announcements side by side. Without RYUX: fluent copy that invents time-of-day sending, a delivery notification, a menu path, and a promise that every reply is read. With RYUX: the same story, with unknown labels and links as placeholders, an open question about plans, and an unsubscribe line" width="100%"></a>
-
-Both read well. Without RYUX, the copy describes a product nobody specified: a time picker, a
-delivery notification, an arrow menu next to Send, and a Scheduled tab (RX-PR-02, RX-AS-07). With
-RYUX, unknown labels and links stay placeholders (RX-AS-03), and the open question about plans is
-flagged for the team.
-
-Earlier examples, including the Indonesian-market set (QRIS, Rupiah, WhatsApp), are in
-[`docs/showcase.md`](docs/showcase.md#indonesian-market-examples).
 
 ## Install
 
@@ -372,7 +376,7 @@ apps/mcp/         MCP server (Cloudflare Workers), 9 tools
 apps/web/         ryux.design site (Next.js), landing + waitlist
 packages/core/    @ryux/core, shared data and tool logic
 packages/cli/     ryux, the CLI that installs the skills into agents (npx @ryuxdsgn/ryux)
-skills/           the 16 RYUX skills (Analyze, Build, Critique, QA), one folder each
+skills/ryux/      the one RYUX skill: router, 5 capabilities, 12 knowledge modules (generated from packages/cli/src)
 .claude-plugin/   Claude Code plugin and marketplace manifests
 docs/             taxonomy.md, design-rules.md
 ```
@@ -407,7 +411,7 @@ To install RYUX into your own agent, see [Install](#install).
 
 ## Status
 
-RYUX 2.1, early access, free.
+RYUX 2.3, early access, free.
 
 | | What |
 | --- | --- |
