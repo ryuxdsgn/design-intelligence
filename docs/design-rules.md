@@ -7,7 +7,7 @@
 > References to standards are factual; all explanations, examples, and numbering are written by us.
 > **Not a derivative of any third-party licensed text** and not affiliated with NN/g or anyone else.
 >
-> **Version:** RYUX 2.3.1
+> **Version:** RYUX 2.3.2
 
 RYUX is design intelligence for AI agents and designers, packaged as one skill, `ryux`. It has five
 entry points: Analyze, Design, Build, Critique, and QA. The router (`SKILL.md`) picks the
@@ -47,7 +47,7 @@ framework (questions, decision trees, templates) followed by its rules.
 | `knowledge/design-system.md` | Design system: search before create, tokens, component states, consistency locks | RX-DS |
 | `knowledge/accessibility.md` | Accessibility: semantics, keyboard, focus, contrast, targets, names, errors, reduced motion | RX-A11Y |
 | `knowledge/responsive.md` | Responsive design: prioritize, simplify, reorganize; tables, overlays, overflow, safe areas | RX-RD |
-| `knowledge/frontend.md` | Frontend implementation: the repo's own stack, semantic elements, components, state, no invented logic | RX-FE |
+| `knowledge/frontend.md` | Frontend implementation: the repo's own stack, semantic elements, one home for each piece of logic, tests, no invented logic | RX-FE |
 | `capabilities/qa.md` | Visual QA: did the build match the intended design: compare, list deviations, fix, render again | RX-QA |
 | `knowledge/anti-slop.md` | Anti-slop: hard gates, purpose gates, quality locks, honest claims | RX-AS |
 <!-- groups:end -->
@@ -179,7 +179,7 @@ Claims in the report describe what was checked and how. "Pixel perfect", "fully 
 Generated from `packages/cli/src/content.ts` by `pnpm sync:skills`. Edit the rules there, not here.
 
 <!-- rules:start -->
-82 rules across 13 modules: 47 Required, 14 Preferred, 21 Contextual; 16 Hard Gates and 7 Quality Locks.
+84 rules across 13 modules: 49 Required, 14 Preferred, 21 Contextual; 16 Hard Gates and 7 Quality Locks.
 
 ### Product thinking (RX-PR) · `knowledge/product.md`
 
@@ -775,7 +775,7 @@ Gate area RESPONSIVE. Covers prioritize, simplify, reorganize; tables, overlays,
 
 ### Frontend implementation (RX-FE) · `knowledge/frontend.md`
 
-Gate area CODE QUALITY. Covers the repo's own stack, semantic elements, components, state, no invented logic. Read when writing or changing frontend code, including formatting, state, and data logic that users see.
+Gate area CODE QUALITY. Covers the repo's own stack, semantic elements, one home for each piece of logic, tests, no invented logic. Read when writing or changing frontend code, including formatting, state, data logic that users see, and its tests.
 
 #### RX-FE-01 [Required] Work in the repo's own stack
 
@@ -819,6 +819,20 @@ Gate area CODE QUALITY. Covers the repo's own stack, semantic elements, componen
 - Do not: Rely on Intl currency style alone, which inserts a space after Rp.
 - Why: The built-in output does not match the Rp1.250.000 form used in copy. (ryux run 2026-10-02: order-total.ts with and without ryux)
 - Check: audit_copy C-07 on rendered strings
+
+#### RX-FE-13 [Required] One home for each piece of logic
+
+- Do: Put logic in the layer the repo already uses: components render, hooks or stores hold state, pure modules hold calculations, formatting, and validation, and one data-access layer talks to the API. Before writing a function, search for an existing one and reuse or extend it.
+- Do not: Copy logic between components, add a near-duplicate helper, mix API calls or business logic into render code, or add a layer, abstraction, or pattern the repo does not use.
+- Why: Logic with one home is changed once and tested once; copies drift apart and ship different behavior. (Clean-code practice; owner review 2026-10-06)
+- Check: review
+
+#### RX-FE-14 [Required] Test logic and critical flows
+
+- Do: Write unit tests for every new or changed pure function (calculations, formatting, validation, state transitions), including edge cases such as zero, empty, maximum, and invalid input, and integration tests for critical flows (checkout, payment, form submit, sign-in) covering the success and failure paths. Use the repo's test runner and conventions; with none, propose one as an assumption and ask before adding the dependency. Run the tests.
+- Do not: Ship changed logic without tests, write snapshot-only tests or tests that mock the code under test, or claim tested without running the tests.
+- Why: Tests catch the regressions review misses, before users find them in production. (Testing practice; owner review 2026-10-06)
+- Check: run the project's tests
 
 ---
 

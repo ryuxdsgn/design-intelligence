@@ -2,7 +2,7 @@
 
 Builds forms people finish: clear labels, kind validation, input that is kept, and local fields such as OTP, addresses, and e-KYC.
 
-> Group UX · Delivery Gate area UX · RYUX 2.3.1. Levels are defined in `SKILL.md`.
+> Group UX · Delivery Gate area UX · RYUX 2.3.2. Levels are defined in `SKILL.md`.
 
 A form is a conversation. Design it field by field, then as a whole.
 
