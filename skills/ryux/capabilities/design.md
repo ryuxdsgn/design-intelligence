@@ -5,8 +5,11 @@
 
 ## Workflow
 
-1. **Context.** Who, what task, which product and market (knowledge/product.md). Write the
-   assumptions down.
+1. **Context.** Who, what task, which product and market, and the design intent
+   (knowledge/product.md). Take it from the prompt, then DESIGN.md, then knowledge and evidence.
+   Ask only when a missing answer would change a major decision: those questions alone, at most
+   three, in one message, before designing. Complete context means no questions. Never ask what
+   the prompt or DESIGN.md already answers; write the rest down as assumptions (RX-PR-01).
 2. **Understand what exists.** When there is a screen, product, or design system already, read its
    analysis or run Analyze first (capabilities/analyze.md). Understand before you design.
 3. **Decide with evidence.** For consequential choices, compare two or three patterns, using
@@ -39,7 +42,7 @@ a decision yet.
 # Design Direction: <surface>
 
 Context        who, which task, where in the product; what exists (from Analyze)
-User goal      what the user must finish, and how we know it worked
+Design intent  what the user must understand, feel, and do here, and how we know it worked
 
 UX direction   flow and steps; information hierarchy (first, second, third); interaction model;
                states (empty, loading, error, success, permission); edge cases; constraints and
@@ -49,8 +52,10 @@ UI direction   layout and grid; type scale; spacing and density; color roles; co
 Design language personality, tone, interaction personality, density, formality; each with its
                reason from the product, the audience, or the existing system
 Visual direction for expressive surfaces: the Visual Brief (knowledge/ui.md, Visual production)
-Motion direction each motion: lifecycle (before, trigger, transition, new state, feedback),
-               level L1 to L5, timing and easing from one personality, reduced-motion behavior
+Motion direction each motion: purpose (what it communicates: state change, feedback, spatial
+               relationship, progress, hierarchy), lifecycle (before, trigger, transition, new
+               state, feedback), level L1 to L5, timing and easing from one personality,
+               reduced-motion behavior
 Asset direction per asset: purpose, source, style, composition, context, consistency, usage,
                avoid, provenance (observed, sourced, illustrative, generated, inferred)
 Responsive     what changes, stays, disappears, or stacks at each width
@@ -58,6 +63,11 @@ Responsive     what changes, stays, disappears, or stacks at each width
 Assumptions    everything guessed, visible
 Decisions      one Decision Receipt per major decision (below)
 ```
+
+A direction the user gives, in the prompt or DESIGN.md, is input, not a suggestion: follow it,
+and any deviation needs a Decision Receipt. A UI direction is a character ("calm, trustworthy,
+minimal"), not a specification; translate it into concrete decisions (restrained color, strong
+hierarchy, little decoration, clear status) instead of swapping in a style you prefer.
 
 **Decision Receipt.** Write one for each major decision: the navigation model, payment method
 priority, information hierarchy, checkout structure, interaction model, or responsive strategy.

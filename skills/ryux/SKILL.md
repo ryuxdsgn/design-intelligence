@@ -5,7 +5,7 @@ description: "RYUX - design intelligence for AI agents and designers. Tell it wh
 
 # RYUX
 
-> Design intelligence for AI agents and designers. RYUX 2.3.2, MIT licensed.
+> Design intelligence for AI agents and designers. RYUX 2.3.3, MIT licensed.
 
 RYUX is a design intelligence layer for AI and designers. It helps understand, reason, design,
 build, critique, and verify interfaces using design knowledge and evidence. It is not a UI
@@ -48,7 +48,9 @@ Keep the capabilities apart; do not collapse them into one generic "design" answ
 ## How RYUX works
 
 1. **Understand the request**: who, what task, which product and market (RX-PR-01). Read the
-   RYUX project context in DESIGN.md first when it exists; do not guess what it leaves blank.
+   RYUX project context in DESIGN.md first when it exists; do not guess what it leaves blank. Ask
+   only when the answer would change a major decision (at most three, usually none), and assume
+   the rest visibly.
 2. **Pick the entry point** and read its file.
 3. **Select knowledge**: read the modules the task table lists, and no others.
 4. **Gather evidence**: reference screens through the ryux MCP when connected; otherwise say so.

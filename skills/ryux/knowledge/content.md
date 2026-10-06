@@ -2,7 +2,7 @@
 
 Writes interface copy that is specific and human: action labels, error messages, terminology, and money and dates in the right locale.
 
-> Group UX · Delivery Gate area UX · RYUX 2.3.2. Levels are defined in `SKILL.md`.
+> Group UX · Delivery Gate area UX · RYUX 2.3.3. Levels are defined in `SKILL.md`.
 
 Content is interface: labels, CTAs, errors, empty states, confirmations, helper text, terminology,
 numbers, dates, currency, and localization are all designed, not filled in last. Write them

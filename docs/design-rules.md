@@ -7,7 +7,7 @@
 > References to standards are factual; all explanations, examples, and numbering are written by us.
 > **Not a derivative of any third-party licensed text** and not affiliated with NN/g or anyone else.
 >
-> **Version:** RYUX 2.3.2
+> **Version:** RYUX 2.3.3
 
 RYUX is design intelligence for AI agents and designers, packaged as one skill, `ryux`. It has five
 entry points: Analyze, Design, Build, Critique, and QA. The router (`SKILL.md`) picks the
@@ -187,8 +187,8 @@ Gate area PRODUCT. Covers user, task, goal, primary action, constraints, assumpt
 
 #### RX-PR-01 [Required] State the context first
 
-- Do: Before designing, write down the user, their task, the business goal, the information that matters, the primary action, the constraints, and what success looks like.
-- Do not: Start from a generic template with no stated user or task.
+- Do: Before designing, write down the user, their task, the business goal, the design intent (what the user must understand, feel, and do), the information that matters, the primary action, the constraints, and what success looks like. Take what the prompt and DESIGN.md already give; ask only when a missing answer would change a major decision, at most three questions in one message (none when the context is complete), and write the rest as assumptions.
+- Do not: Start from a generic template with no stated user or task, or ask questions the prompt or DESIGN.md already answers.
 - Why: Without a task, design and review drift into taste. (`capabilities/critique.md` playbook; NNGroup task-based evaluation)
 - Check: review
 

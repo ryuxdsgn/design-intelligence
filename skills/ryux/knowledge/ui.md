@@ -2,7 +2,7 @@
 
 Gives a product a visual point of view: hierarchy, type, layout, color, imagery, art direction, and motion that communicate instead of decorate.
 
-> Group UI · Delivery Gate area UI · RYUX 2.3.2. Levels are defined in `SKILL.md`.
+> Group UI · Delivery Gate area UI · RYUX 2.3.3. Levels are defined in `SKILL.md`.
 
 **Visuals are not decoration. They are communication.** RYUX UI owns the visual expression of
 a product: what each visual decision communicates, why it exists, and how it behaves. Functional UI
@@ -47,7 +47,8 @@ Then run the swap test (RX-AS-09): with a competitor's name and logo, would anyt
 If not, the surface has no point of view yet. Stay honest while being bold: a strong idea never
 needs invented numbers, people, or logos.
 
-**3. Motion.** Every motion follows one lifecycle: before, trigger, transition, new state, feedback.
+**3. Motion.** Start from purpose: what the motion communicates; with no purpose, no motion.
+Every motion follows one lifecycle: before, trigger, transition, new state, feedback.
 The states themselves (waiting, result, recovery) are defined in `knowledge/interaction.md` (RX-IX-01,
 RX-IX-02); motion only makes them visible, and it never compensates for weak UX. Decide the trigger,
 duration, easing, distance, opacity or scale, and how several elements are choreographed. Define
