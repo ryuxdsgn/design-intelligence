@@ -2,7 +2,7 @@
 
 Keeps the interface consistent: reuse before create, tokens, component states, and consistency locks.
 
-> Group UI · Delivery Gate area DESIGN SYSTEM · RYUX 2.3.2. Levels are defined in `SKILL.md`.
+> Group UI · Delivery Gate area DESIGN SYSTEM · RYUX 2.3.3. Levels are defined in `SKILL.md`.
 
 Prioritize the existing system. Before creating anything:
 

@@ -2,7 +2,7 @@
 
 Turns a vague request into a clear product decision: who it is for, the one job, what is assumed, and which pattern wins, backed by evidence.
 
-> Group Foundation · Delivery Gate area PRODUCT · RYUX 2.3.2. Levels are defined in `SKILL.md`.
+> Group Foundation · Delivery Gate area PRODUCT · RYUX 2.3.3. Levels are defined in `SKILL.md`.
 
 Answer these before any layout exists. Write the answers down; they are the brief.
 
@@ -53,8 +53,8 @@ How comparable Indonesian products frame the same task and offer: `search_screen
 
 ### RX-PR-01 [Required] State the context first
 
-- Do: Before designing, write down the user, their task, the business goal, the information that matters, the primary action, the constraints, and what success looks like.
-- Do not: Start from a generic template with no stated user or task.
+- Do: Before designing, write down the user, their task, the business goal, the design intent (what the user must understand, feel, and do), the information that matters, the primary action, the constraints, and what success looks like. Take what the prompt and DESIGN.md already give; ask only when a missing answer would change a major decision, at most three questions in one message (none when the context is complete), and write the rest as assumptions.
+- Do not: Start from a generic template with no stated user or task, or ask questions the prompt or DESIGN.md already answers.
 - Why: Without a task, design and review drift into taste. (`capabilities/critique.md` playbook; NNGroup task-based evaluation)
 - Check: review
 
