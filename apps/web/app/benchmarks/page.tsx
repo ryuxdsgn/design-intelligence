@@ -16,12 +16,12 @@ const METHOD = [
 ];
 
 const TD_ROWS: [string, ...string[]][] = [
-  ["Questions asked", "6", "3", "4", "3", "5", "3"],
-  ["Screens designed", "1", "4", "1", "6", "3", "6"],
-  ["Unknowns marked", "no", "yes", "no", "yes", "no", "yes"],
-  ["Invented business rules", "1 (notes)", "0", "0", "0", "2 (on screen)", "0"],
-  ["Design intent written", "no", "yes", "no", "yes", "no", "yes"],
-  ["Decision Receipts", "none", "yes", "none", "yes", "none", "yes"],
+  ["Questions asked", "0", "3", "0", "3", "0", "3"],
+  ["Screens designed", "1", "6", "1", "6", "1", "6"],
+  ["Currency", "USD, assumed", "[CUR]", "USD, assumed", "[CUR]", "USD, assumed", "[CUR]"],
+  ["Made-up business rules", "1", "0", "1", "0", "0", "0"],
+  ["Features nobody asked for", "2", "0", "3", "0", "5", "0"],
+  ["Decision receipts", "none", "yes", "none", "yes", "none", "yes"],
 ];
 
 const WALLET_ROWS = [
@@ -77,19 +77,19 @@ export default function Benchmarks() {
             </div>
             <Block label="Prompt">
               <Prompt>“Design a transaction detail page for a fintech app, shown after the user pays. Make it in pen.dev.”</Prompt>
-              <p>Facts given to both: an Indonesian wallet paying merchants by QRIS and bank transfer, statuses Berhasil, Diproses, Gagal, the data fields, and three actions. Everything else: not decided.</p>
+              <p>Answers available to both, for any question: a global product in English, market and currency not decided, card and bank transfer, statuses Completed, Processing, and Failed, the data fields, and three actions. The runs without RYUX asked nothing, so they never received these answers.</p>
             </Block>
             <figure className="flex flex-col gap-3">
               <div className="overflow-x-auto">
               <Image
-                src="/proof/td-pair.png"
-                alt="Pair 3. Without RYUX: three screens, Berhasil, Diproses, and Gagal, with an invented processing time on Diproses. With RYUX: six screens, the same statuses plus loading, failed to load, and a narrow width with long data, and unknowns kept as [REAL DATA] markers"
-                width={2400}
-                height={2051}
-                className="w-full min-w-[880px] rounded-md border border-hair lg:min-w-0"
+                src="/proof/en-td-pair-wide.png"
+                alt="Pair 2. Without RYUX: one completed screen in dollars with a 30-day reporting window and a Save PDF button nobody asked for. With RYUX: six screens, completed, processing, failed, loading, a load error, and a narrow width, with the currency left as [CUR]"
+                width={2459}
+                height={3421}
+                className="w-full min-w-[720px] rounded-md border border-hair md:min-w-0"
               />
               </div>
-              <figcaption className="text-[14px] text-muted">Scroll sideways on a small screen. Pair 3, the median pair, chosen before looking at the images. Real output, sample data.</figcaption>
+              <figcaption className="text-[14px] text-muted">Scroll sideways on a small screen. Pair 2: every pair had the same screen difference, so the pre-set tie rule picked the strongest run without RYUX. Real output, sample data.</figcaption>
             </figure>
             <Block label="Without vs with RYUX">
               <div className="overflow-x-auto">
@@ -118,14 +118,14 @@ export default function Benchmarks() {
               </div>
             </Block>
             <Block label="What changed">
-              <p>In 3 of 3 pairs, RYUX designed more states, kept unknowns visible, invented no business rules, wrote its intent and receipts, and asked at most three questions. Without RYUX, the agent invented a rule in 2 of 3.</p>
+              <p>In 3 of 3 pairs, RYUX asked three questions first, designed six screens, left the currency open, added no feature that was not asked for, and wrote decision receipts. Without RYUX, the agent assumed dollars in 3 of 3, made up a business rule in 2 of 3, and added features nobody asked for in 3 of 3.</p>
             </Block>
             <Block label="What RYUX got wrong">
-              <p>No outright miss here, but the gap is narrower than it first looked: in pair 3 the run without RYUX also designed all three statuses. The steady difference is the states around them and the unknowns, not the happy path alone.</p>
-              <p>RYUX always produced more screens and longer reasoning: 103 to 152 lines against 32 to 57 without it. On a task this small that is a risk of over-analysis.</p>
+              <p>All three runs with RYUX put “This page updates when the status changes” on the processing screen. Each flagged it as an assumption to confirm, but the sentence still ships on the screen.</p>
+              <p>RYUX asks for a written design intent; only one of the three runs wrote one. Its questions offered examples from one specific market to a generic prompt, a local bias in its knowledge. And its reasoning ran three to five times longer, a risk of over-analysis on a task this small.</p>
             </Block>
             <Block label="What we learned">
-              <p>RYUX's clearest effect is on uncertainty: what to do with what nobody said. That is the claim we make, and only that one.</p>
+              <p>RYUX's clearest effect is on uncertainty: it asks, and what it still does not know stays visible instead of being filled in. That is the claim we make, and only that one.</p>
             </Block>
           </div>
         </section>
@@ -140,20 +140,6 @@ export default function Benchmarks() {
               <Prompt>“Design the home screen of a digital wallet app in pen.dev, mobile 390 wide … The current design feels too utilitarian: give it a visual personality with illustration, UI ornament, and motion where they fit.”</Prompt>
               <p>Scored blind by the owner, 1 to 5 on eight areas: context fit, originality, restraint, visual hierarchy, consistency, production plausibility, AI-slop resistance, intentionality. Labels X and Y were drawn by script and opened after scoring.</p>
             </Block>
-            <figure className="flex flex-col gap-3">
-              <div className="grid [&>*]:min-w-0 grid-cols-2 gap-5 sm:gap-10 lg:max-w-[760px]">
-                {[
-                  ["Without RYUX · 4.38", "/proof/wallet-without.png", 780, 1800, "Pair 2 without RYUX: a dark teal header with a skyline illustration and a citrus Bayar tile"],
-                  ["With RYUX · 3.13", "/proof/wallet-with.png", 780, 2172, "Pair 2 with RYUX: an indigo receipt concept with the balance printed on a paper slip and a torn-edge transaction list"],
-                ].map(([label, src, w, h, alt]) => (
-                  <div key={src as string} className="flex flex-col gap-3">
-                    <p className="text-[14px] font-semibold">{label}</p>
-                    <Image src={src as string} alt={alt as string} width={w as number} height={h as number} className="w-full rounded-[18px] border border-hair" />
-                  </div>
-                ))}
-              </div>
-              <figcaption className="text-[14px] text-muted">Pair 2, where RYUX lost. Real output, sample data, home screen only.</figcaption>
-            </figure>
             <Block label="Without vs with RYUX">
               <table className="w-full max-w-[560px] text-left text-[16px]">
                 <caption className="sr-only">Wallet home, blind visual score per pair</caption>
@@ -198,7 +184,7 @@ export default function Benchmarks() {
               will be repeated before it is published here.
             </p>
             <a href={`${REPO}/blob/main/docs/showcase.md#repeated-benchmark-ryux-233`} className="inline-flex min-h-11 items-center self-start text-[17px] font-medium underline underline-offset-4">
-              Full method and every run in the showcase
+              The earlier Indonesian-language runs and their method, in the showcase
             </a>
           </div>
         </section>

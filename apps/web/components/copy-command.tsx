@@ -36,7 +36,7 @@ export function CopyCommand({ command, night = false, prompt = "$" }: { command:
           {prompt}
         </span>
       )}
-      <code ref={codeRef} className="min-w-0 flex-1 break-all sm:overflow-x-auto sm:break-normal sm:whitespace-nowrap">
+      <code ref={codeRef} className="min-w-0 flex-1 overflow-x-auto whitespace-nowrap py-1">
         {command}
       </code>
       <button

@@ -5,9 +5,7 @@ export const DOCS = `${REPO}/blob/main/GUIDE.md`;
 
 const NAV = [
   { label: "Proof", href: "/#proof" },
-  { label: "Examples", href: "/#cases" },
   { label: "How it works", href: "/#how" },
-  { label: "Evidence", href: "/#evidence" },
   { label: "Benchmarks", href: "/benchmarks" },
   { label: "Docs", href: DOCS },
 ];
