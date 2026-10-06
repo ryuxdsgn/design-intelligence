@@ -142,8 +142,9 @@ export const BUILD_BODY = `# RYUX Build
 
 > Implement or change the interface in code, faithfully and in the repo's own stack.
 
-1. **Read the repo first**: the stack, components, tokens, and conventions (knowledge/frontend.md,
-   knowledge/design-system.md). Reuse before creating.
+1. **Read the repo first**: the stack, components, tokens, conventions, the architecture already
+   used (where components, state, pure logic, and data access live), and the test runner
+   (knowledge/frontend.md, knowledge/design-system.md). Reuse before creating.
 2. **Find the design source**: the Design Direction, a Figma or pen.dev design, a DESIGN.md, or an
    approved mockup; it is the spec. If there is none, run Design first (capabilities/design.md)
    instead of inventing one in code.
@@ -152,11 +153,15 @@ export const BUILD_BODY = `# RYUX Build
 4. **Implement faithfully.** Use semantic elements, existing components, and real data paths.
    Build must not invent business rules, prices, or limits; API behavior or response shapes; or
    data presented as real (RX-FE-02, RX-PR-02). It must not silently change a design decision: a
-   change goes back to Design as a new Decision Receipt. Mark every assumption in the code.
-5. **Render and verify.** Run it, check every width and state, and fix deviations from the design
-   (capabilities/qa.md).
-6. **Close with the Delivery Gate.** CODE QUALITY and VISUAL QA need real checks (typecheck,
-   render), or say what was not run.`;
+   change goes back to Design as a new Decision Receipt. Mark every assumption in the code. Give
+   each piece of logic one home in the repo's existing layers, never a copy (RX-FE-13).
+5. **Test what can break.** Unit tests for new or changed pure logic, edge cases included;
+   integration tests for critical flows such as checkout, payment, and form submit. Use the
+   repo's runner; with none, propose one and ask before adding it (RX-FE-14).
+6. **Render and verify.** Run it and the tests, check every width and state, and fix deviations
+   from the design (capabilities/qa.md).
+7. **Close with the Delivery Gate.** CODE QUALITY and VISUAL QA need real checks (typecheck,
+   tests, render), or say what was not run.`;
 
 export const CORE_EVIDENCE = `Say where every claim comes from:
 
@@ -192,6 +197,7 @@ export const GATE_RULES = `- Each area is PASS, FAIL, or N/A (with a reason when
 - An area FAILS when a [Required] rule in its skills fails without a written exception.
 - A Hard Gate failure cannot be excepted: fix it before declaring the work complete.
 - VISUAL QA cannot PASS without a render when a render tool is available; say which tool was used.
+- CODE QUALITY cannot PASS while changed logic has no test run; say which checks ran (typecheck, tests).
 - FINAL is PASS only when no area is FAIL.`;
 
 export const GUIDES: Record<SkillId, string> = {
@@ -513,13 +519,17 @@ Check the stated viewport and the smallest supported width. No horizontal page s
 1. **Detect the stack first**: read package.json, the router, the styling approach, and two or
    three nearby components. Write in that stack. Do not assume React or Tailwind.
 2. **Semantic HTML** and native controls before custom ones.
-3. **Components** split by responsibility; state close to where it is used; derived values
-   instead of duplicated state.
+3. **Architecture**: follow the layers the repo already has. Components render; state lives close
+   to where it is used; calculations, formatting, and validation live in pure modules; one layer
+   talks to the API. Each piece of logic has one home: search before writing, never copy.
+   Derived values instead of duplicated state.
 4. **Tokens** instead of magic numbers; no duplicate styles.
 5. **No invented logic**: prices, limits, and permissions come from data or are marked as
    assumptions.
 6. **Dependencies** only when they clearly earn their weight.
 7. **Performance**: sized and lazy-loaded media; no heavy libraries for small effects.
+8. **Tests**: unit tests for pure logic with its edge cases, integration tests for critical flows,
+   in the repo's own runner. Run them before claiming the work is done.
 
 Does not cover: visual decisions (see ryux-ui) or component reuse decisions (see ryux-design-system).`,
 
