@@ -8,15 +8,16 @@ import { Arrow, DOCS, Eyebrow, GUTTER, REPO, SiteFooter, SiteHeader } from "@/co
 
 /* Pins sit on the real benchmark screen; x and y are percentages of the image. */
 const HERO_NOTES = [
-  { x: 41, y: 16.5, tag: "State", body: "Diproses is one of six screens RYUX designed, not only Berhasil." },
-  { x: 86, y: 43.8, tag: "Unknown", body: "Nobody gave a processing time, so it stays [REAL DATA] instead of a promise." },
-  { x: 88, y: 93.7, tag: "Assumption", body: "No “Bagikan bukti” until the payment settles, written down as an assumption." },
+  { x: 69, y: 20.7, tag: "State", body: "Processing is one of six screens RYUX designed, not only Completed." },
+  { x: 72, y: 35.6, tag: "Assumption", body: "Live updates are not confirmed, so RYUX lists this line as an assumption to check." },
+  { x: 58, y: 75.4, tag: "Unknown", body: "Nobody chose a currency, so it stays [CUR] instead of a made-up dollar sign." },
 ];
 
 const SUMMARY = [
-  { measure: "Screens designed, per run", without: "1, 1, 3", with: "4, 6, 6" },
-  { measure: "Unknowns marked", without: "0 of 3 runs", with: "3 of 3 runs" },
+  { measure: "Screens designed, per run", without: "1, 1, 1", with: "6, 6, 6" },
+  { measure: "Currency", without: "Dollars, 3 of 3", with: "Left open, 3 of 3" },
   { measure: "Made-up business rules", without: "2 of 3 runs", with: "0 of 3 runs" },
+  { measure: "Features nobody asked for", without: "3 of 3 runs", with: "0 of 3 runs" },
 ];
 
 const CAPABILITIES = [
@@ -27,21 +28,19 @@ const CAPABILITIES = [
   { name: "QA", body: "Checks the build against the design at each width and state, and says what it could not check." },
 ];
 
-/* Quoted from a real run (transaction detail, pair 2). */
+/* Quoted from a real run (English transaction detail benchmark, pair 2). */
 const RECEIPT = [
-  { key: "Decision", value: "“Kembali ke beranda” is primary; “Bagikan bukti” is secondary, stacked above it" },
-  { key: "Options", value: "Share as primary · Home as primary · Both side by side with equal weight, rejected" },
+  { key: "Decision", value: "Amount + Fee = Total paid, shown in the card" },
   { key: "Evidence", value: "None" },
-  { key: "Confidence", value: "Medium" },
-  { key: "Why", value: "Every user who arrives here has to leave. Only some need to share." },
-  { key: "Trade-off", value: "Users who always share, to show the cashier, must look at the second button." },
+  { key: "Confidence", value: "Low" },
+  { key: "Assumption", value: "[CONFIRM] The fee is charged on top of the amount. If the fee is taken out of the amount instead, the rows change." },
 ];
 
 const MARKS = [
   { mark: "Observed", meaning: "Seen in the design or read from its values.", example: "Body text is 16/24, read from the CSS." },
   { mark: "Inferred", meaning: "A reasonable guess, labeled as one.", example: "Probably an 8px spacing scale." },
   { mark: "Knowledge", meaning: "A known pattern or standard, cited.", example: "WCAG 1.4.3: text contrast at least 4.5:1." },
-  { mark: "Unknown", meaning: "Something nobody said. It stays visible.", example: "[REAL DATA: perkiraan lama proses]" },
+  { mark: "Unknown", meaning: "Something nobody said. It stays visible.", example: "[CUR] 49.00, currency not decided" },
 ];
 
 const INSTALL = [
@@ -77,7 +76,7 @@ function Hero() {
           ))}
         </h1>
         <p className="max-w-[580px] text-[19px] leading-[1.55] text-ink-2">
-          RYUX is a skill your AI agent installs. Before it designs, it writes down what it observed, what it is guessing,
+          RYUX is a skill you add to your AI agent. Before it designs, it writes down what it observed, what it is guessing,
           and what nobody told it, and it keeps those unknowns on the screen instead of filling them in.
         </p>
         <div className="flex flex-wrap items-center gap-x-7 gap-y-4 pt-1">
@@ -93,10 +92,10 @@ function Hero() {
       <figure className="mx-auto w-full max-w-[300px] lg:mx-0 lg:mr-[280px] lg:w-[300px]">
         <div className="relative">
           <Image
-            src="/proof/td-with.png"
-            alt="A pending payment screen designed with RYUX: status Diproses, Rp252.500, a note telling the user not to pay again, and the processing time left as [REAL DATA: perkiraan lama proses]"
-            width={786}
-            height={1780}
+            src="/proof/en-td-with.png"
+            alt="A processing payment screen designed with RYUX: the status Processing, the amount shown as [CUR] 49.00 because no currency was chosen, a note asking the user not to pay again, and the transaction details"
+            width={789}
+            height={2050}
             priority
             className="w-full rounded-[22px] border border-hair"
           />
@@ -138,21 +137,21 @@ function Proof() {
   const screens = [
     {
       label: "Without RYUX",
-      src: "/proof/td-without.png",
-      w: 788,
-      h: 1768,
+      src: "/proof/en-td-without.png",
+      w: 780,
+      h: 1926,
       tag: "Made up",
-      body: "“Biasanya selesai dalam beberapa menit.” A processing time, and an auto-update, that nobody gave it.",
-      alt: "The pending screen designed without RYUX, promising that the payment usually completes within a few minutes and that the status updates by itself",
+      body: "“Report it within 30 days.” A dollar currency, a 30-day window, and a Save PDF button that nobody asked for.",
+      alt: "The completed payment screen designed without RYUX: $24.50 paid to a coffee shop, the wallet balance, a promise to look into problems reported within 30 days, and Save PDF and Share receipt buttons",
     },
     {
       label: "With RYUX",
-      src: "/proof/td-with.png",
-      w: 786,
-      h: 1780,
+      src: "/proof/en-td-with-completed.png",
+      w: 791,
+      h: 1931,
       tag: "Left open",
-      body: "“[REAL DATA: perkiraan lama proses]”. It also designed loading, failed to load, and a narrow screen.",
-      alt: "The pending screen designed with RYUX, with the processing time left as a [REAL DATA] marker",
+      body: "“[CUR] 49.00.” The currency stays open, and five more screens: processing, failed, loading, a load error, and a narrow width.",
+      alt: "The completed payment screen designed with RYUX: [CUR] 49.00 paid to [Merchant name], with the fee and total shown and only the actions that were asked for",
     },
   ];
   return (
@@ -162,11 +161,11 @@ function Proof() {
           <div className="flex flex-col gap-5">
             <Eyebrow night>Benchmark · same prompt, same agent, one with RYUX</Eyebrow>
             <h2 id="proof-title" className="text-[38px] leading-[1.08] font-semibold tracking-[-0.03em] sm:text-[52px]">
-              Six screens. Nothing made up.
+              Six screens. Unknowns left open.
             </h2>
             <p className="max-w-[620px] text-[18px] leading-[1.55] text-night-sub">
-              With RYUX the agent designed every state around the payment and left the unknown processing time open instead
-              of promising one.
+              With RYUX the agent asked first, designed every state around the payment, and left the currency open instead
+              of picking one.
             </p>
           </div>
           <div className="flex flex-col gap-2.5 border-l border-night-hair pl-5">
@@ -177,8 +176,8 @@ function Proof() {
           </div>
         </div>
 
-        <div className="grid gap-12 [&>*]:min-w-0 lg:grid-cols-[300px_300px_1fr]">
-          <div className="grid grid-cols-2 gap-5 [&>*]:min-w-0 sm:gap-8 lg:contents">
+        <div className="grid gap-12 [&>*]:min-w-0 xl:grid-cols-[300px_300px_1fr]">
+          <div className="grid max-w-[680px] grid-cols-2 gap-5 [&>*]:min-w-0 sm:gap-8 xl:contents">
             {screens.map((s) => (
               <figure key={s.label} className="flex flex-col gap-4">
                 <figcaption className="text-[15px] font-semibold">{s.label}</figcaption>
@@ -191,7 +190,7 @@ function Proof() {
             ))}
           </div>
 
-          <div className="flex flex-col gap-7 lg:pt-10 lg:pl-6">
+          <div className="flex flex-col gap-7 xl:pt-10 xl:pl-6">
             <p className="text-[21px] font-medium">Repeated three times, counted from the outputs.</p>
             <table className="w-full text-left">
               <caption className="sr-only">Three paired runs, without and with RYUX</caption>
@@ -206,12 +205,16 @@ function Proof() {
                 {SUMMARY.map((r) => (
                   <tr key={r.measure} className="border-b border-night-hair">
                     <th scope="row" className="py-3.5 pr-3 font-normal text-night-sub">{r.measure}</th>
-                    <td className="py-3.5 pr-3">{r.without}</td>
-                    <td className="py-3.5 font-semibold">{r.with}</td>
+                    <td className="py-3.5 pr-3 sm:whitespace-nowrap">{r.without}</td>
+                    <td className="py-3.5 font-semibold sm:whitespace-nowrap">{r.with}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
+            <p className="text-[16px] leading-[1.55] text-night-sub">
+              Without RYUX the agent asked nothing and filled every gap itself. With RYUX it asked three questions and kept
+              what was still undecided visible.
+            </p>
             <p className="text-[16px] leading-[1.55]">
               <span className="font-semibold text-mark-night">What it did not change:</span> how good the screens look. In a
               blind visual test of a wallet home screen, RYUX scored 3.71 against 3.67 out of 5.
@@ -224,7 +227,7 @@ function Proof() {
 
         <p className="text-[14px] leading-[1.6] text-night-sub">
           How it was run: a fresh agent each time, the same model, no reference screens on either side, and sample data in
-          every screen. The screens above are from the third pair. Three pairs is a small benchmark, not a study.
+          every screen. The screens above are from the second pair. Three pairs is a small benchmark, not a study.
         </p>
       </Reveal>
     </section>
@@ -242,7 +245,7 @@ function Cases() {
           </h2>
           <p className="text-[18px] leading-[1.55] text-ink-2">
             Each pair is one brief given to the same agent twice, once without RYUX and once with it, on an earlier release
-            with sample data. Screens are shown in English.
+            with sample data. The screen text was translated into English from the original runs.
           </p>
         </div>
         <BeforeAfter />
@@ -259,11 +262,11 @@ function HowItWorks() {
         <div className="flex flex-col gap-6">
           <Eyebrow>How it works</Eyebrow>
           <h2 id="how-title" className="text-[38px] leading-[1.08] font-semibold tracking-[-0.03em] sm:text-[52px]">
-            Reviews like a product designer.
+            Looks first, then decides.
           </h2>
           <p className="text-[18px] leading-[1.55] text-ink-2">
-            It circles what is there, questions what is assumed, notes what is missing, and only then decides. RYUX gives your
-            agent that habit, plus the design knowledge the task in front of it needs, and nothing more.
+            Tell your agent what you are doing. RYUX picks the step, reads only the design knowledge that step needs, and
+            before it calls the work done, lists what it checked and what it could not.
           </p>
         </div>
         <figure className="flex flex-col gap-3">
@@ -318,8 +321,8 @@ function HowItWorks() {
             ))}
           </dl>
           <figcaption className="pt-4 text-[14px] leading-[1.5] text-muted">
-            Quoted from a real run, shortened. Evidence “None” means no reference screens were connected, so the choice is a
-            judgment call and the receipt says so.
+            Quoted from a real run, shortened. Low confidence and a [CONFIRM] tag: the guess is visible instead of being
+            built in quietly.
           </figcaption>
         </figure>
       </div>
@@ -335,10 +338,11 @@ function Evidence() {
         <div className="flex flex-col gap-6">
           <Eyebrow>Evidence</Eyebrow>
           <h2 id="evidence-title" className="text-[38px] leading-[1.08] font-semibold tracking-[-0.03em] sm:text-[48px]">
-            Every claim shows its source.
+            Known, guessed, or unknown.
           </h2>
           <p className="text-[17px] leading-[1.55] text-ink-2">
-            RYUX labels what it states with one of four marks, so you can tell a measurement from a guess at a glance.
+            RYUX keeps what it saw apart from what it is guessing, and leaves what nobody told it in plain sight. These are
+            the labels it uses.
           </p>
           <div className="mt-4 flex flex-col gap-4 rounded-xl border border-hair bg-white p-6">
             <h3 className="text-[19px] font-semibold">The reference library is coming</h3>
@@ -352,10 +356,10 @@ function Evidence() {
         </div>
         <dl className="lg:pt-12">
           {MARKS.map((m) => (
-            <div key={m.mark} className="grid gap-2 border-b border-hair py-6 first:border-t sm:grid-cols-[130px_1fr_260px] sm:gap-8">
+            <div key={m.mark} className="grid gap-2 border-b border-hair py-6 first:border-t sm:grid-cols-[130px_1fr] sm:gap-x-8 lg:grid-cols-1 xl:grid-cols-[130px_1fr_260px]">
               <dt className="text-[15px] font-semibold text-mark">{m.mark}</dt>
               <dd className="text-[18px] leading-[1.4]">{m.meaning}</dd>
-              <dd className="font-mono text-[13px] leading-[1.55] text-ink-2">{m.example}</dd>
+              <dd className="font-mono text-[13px] leading-[1.55] text-ink-2 sm:col-start-2 lg:col-start-auto">{m.example}</dd>
             </div>
           ))}
         </dl>
@@ -367,7 +371,7 @@ function Evidence() {
 function TryRyux() {
   return (
     <section id="try" aria-labelledby="try-title" className="bg-night text-night-text">
-      <Reveal className={`${GUTTER} grid gap-14 py-20 [&>*]:min-w-0 lg:grid-cols-[1fr_560px] lg:gap-24 lg:py-28`}>
+      <Reveal className={`${GUTTER} grid gap-14 py-20 [&>*]:min-w-0 xl:grid-cols-[1fr_560px] xl:gap-24 lg:py-28`}>
         <div className="flex flex-col gap-6">
           <h2 id="try-title" className="text-[44px] leading-[1.02] font-semibold tracking-[-0.035em] sm:text-[64px]">
             Install RYUX

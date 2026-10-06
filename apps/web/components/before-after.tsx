@@ -5,8 +5,8 @@ import { useEffect, useRef, useState } from "react";
 
 type Pair = { id: string; tab: string; before: string[]; after: string[]; alt: [string, string] };
 
-/* Every pair is set on the same 780 by 1121 canvas, top-aligned, so the slider never changes size between tabs. */
-const CANVAS = { w: 780, h: 1121 };
+/* Every pair is set on the same 780 by 979 canvas, top-aligned, so the slider never changes size between tabs. */
+const CANVAS = { w: 780, h: 979 };
 
 /* Pairs from the showcase gallery (docs/showcase.md), one run each on an earlier release, sample data,
    with the screen text translated from Indonesian to English. */
@@ -29,16 +29,6 @@ const PAIRS: Pair[] = [
     alt: [
       "Settings screen without RYUX: low-contrast 11px grey text, placeholder-only labels, small targets, a washed-out save button",
       "Settings screen with RYUX: readable text, a labeled field with a visible focus ring, a large toggle, a clear save button",
-    ],
-  },
-  {
-    id: "local",
-    tab: "Local payment",
-    before: ["A global card form", "Dollars", "Foreign payment methods", "No local pattern"],
-    after: ["A virtual account with a copy button", "A payment deadline", "A transparent admin fee", "Rupiah throughout"],
-    alt: [
-      "Payment screen without RYUX: a global card form in dollars with VISA, Mastercard, PayPal and Google Pay",
-      "Payment screen with RYUX: a BCA virtual account number with a copy button, a payment deadline, the admin fee, and how to pay with m-BCA",
     ],
   },
 ];
@@ -103,7 +93,7 @@ export function BeforeAfter() {
 
   return (
     <div className="grid gap-10 [&>*]:min-w-0 lg:grid-cols-[1fr_380px_1fr] lg:items-center lg:gap-14">
-      <div role="tablist" aria-label="Examples" aria-orientation="vertical" className="flex flex-wrap gap-2 lg:flex-col lg:gap-1">
+      <div role="tablist" aria-label="Examples" aria-orientation="vertical" className="flex flex-wrap gap-2 lg:flex-col lg:gap-1 lg:self-start lg:pt-9">
         {PAIRS.map((p, i) => (
           <button
             key={p.id}
@@ -138,9 +128,9 @@ export function BeforeAfter() {
           className="relative w-full overflow-hidden rounded-[24px] border border-hair bg-white shadow-[0_24px_60px_-24px_rgba(11,22,43,0.35)] select-none"
           style={{ aspectRatio: `${CANVAS.w} / ${CANVAS.h}` }}
         >
-          <Image key={`a-${pair.id}`} src={`/before-after/${pair.id}-after.png`} alt={pair.alt[1]} fill sizes="380px" className="object-cover object-top" />
+          <Image key={`a-${pair.id}`} src={`/before-after/${pair.id}-en-after.png`} alt={pair.alt[1]} fill sizes="380px" className="object-cover object-top" />
           <div className="absolute inset-0" style={{ clipPath: `inset(0 ${100 - pos}% 0 0)` }}>
-            <Image key={`b-${pair.id}`} src={`/before-after/${pair.id}-before.png`} alt={pair.alt[0]} fill sizes="380px" className="object-cover object-top" />
+            <Image key={`b-${pair.id}`} src={`/before-after/${pair.id}-en-before.png`} alt={pair.alt[0]} fill sizes="380px" className="object-cover object-top" />
           </div>
           <div aria-hidden className="pointer-events-none absolute inset-y-0 w-0.5 bg-white shadow-[0_0_0_1px_rgba(11,22,43,0.25)]" style={{ left: `${pos}%` }}>
             <span className="absolute top-1/2 left-1/2 flex size-10 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-white text-ink shadow-[0_4px_16px_rgba(11,22,43,0.25)]">
