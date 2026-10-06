@@ -14,69 +14,60 @@
 RYUX helps AI agents and designers analyze, design, build, critique, and verify digital interfaces
 using design knowledge and evidence.
 
-```
-Analyze → Design → Build → Critique → QA
-```
+**[Install](#install)** · **[The proof](#the-proof)** · **[How it works](#how-ryux-works)** · **[Showcase](docs/showcase.md)** · **[GitHub](https://github.com/ryuxdsgn/design-intelligence)**
 
-**[Install](#install)** · **[See the demo](#one-interface-end-to-end-design-reasoning)** · **[See the proof](#see-the-proof)** · **[GitHub](https://github.com/ryuxdsgn/design-intelligence)**
+## The proof
 
-## What can I do with RYUX?
+**Same prompt. Same agent. One has RYUX.**
 
-Give RYUX a screen. It separates what it sees from what it assumes and from what it doesn't know.
-Then it makes design decisions, each with its evidence and confidence. Then it builds. Then it
-checks whether the build matches the decision.
+*"Design a transaction detail page for a fintech app, shown after the user pays. Make it in pen.dev."*
 
-```
-WITHOUT RYUX   "Use QRIS as the primary payment method because Indonesian users prefer it."
+Both agents asked questions first and got the same answers: an Indonesian wallet that pays merchants
+by QRIS and bank transfer, three statuses (Berhasil, Diproses, Gagal), and three actions. Nothing
+else was decided. Below is the median of three pairs, exported from pen.dev as the agents made it.
 
-RYUX           Decision    Prioritize QRIS
-               Evidence    3 observed checkout flows
-               Confidence  Medium
-               Why         QRIS appears as a primary payment option across the observed references
-               Unknown     the actual business conversion priority
-```
+<a href="assets/compare/states/compare.png"><img src="assets/compare/states/compare.png" alt="Two transaction detail designs for an Indonesian digital wallet, stacked. Without RYUX: three screens, Berhasil, Diproses, and Gagal; the Diproses screen promises 'Biasanya selesai dalam beberapa menit' and that the status will change by itself, which nobody specified. With RYUX: six screens, the same three statuses plus loading, detail failed to load (kept apart from a failed payment), and a narrow width with a long merchant name and a long ID; the unknown processing time, failure reason, and refund rule stay visible as [REAL DATA] markers" width="100%"></a>
 
-*An illustration of the Decision Receipt format, not a real run.* With no references, the same
-receipt reads **Evidence None, Confidence Low**, and RYUX says so, as it did in the
-[checkout run](#one-interface-end-to-end-design-reasoning).
+Both designed the three statuses. The difference is what each did with what it did not know:
 
-- **Analyze** an interface that exists: what it sees, what it infers, what it doesn't know.
-- **Design** the decisions: UX, UI, visual, interaction, and responsive, each with a receipt.
-- **Build** them in your stack, without inventing rules, data, or API behavior.
-- **Critique** before shipping: prioritized findings with evidence, impact, and a fix.
-- **QA** the build against the design: expected versus actual, at every width and state.
+- **Without RYUX**, the pending screen says *"Biasanya selesai dalam beberapa menit"* and that the
+  status will update by itself: a processing time and a behavior nobody gave it (RX-PR-02).
+- **With RYUX**, the processing time, the failure reason, and the refund rule stay visible as
+  `[REAL DATA: …]`. It also designed the states around the statuses: loading, a detail that failed
+  to load (kept apart from a failed payment), and a narrow screen with long data (RX-EC-01).
 
-## See the difference
+| Pair | Screens, without / with | Unknowns marked, without / with | Invented rules, without / with |
+| --- | --- | --- | --- |
+| 1 | 1 / 4 | no / yes | 1\* / 0 |
+| 2 | 1 / 6 | no / yes | 0 / 0 |
+| 3 (above) | 3 / 6 | no / yes | 1 / 0 |
 
-Same prompt. Different reasoning.
+\* "Biasanya selesai dalam 1×24 jam", in the agent's notes for the pending screen.
 
-Each brief below ran headless (`claude -p`) in an empty folder, once without RYUX and once with the
-RYUX installed by the CLI (`npx @ryuxdsgn/ryux`), using earlier RYUX releases; [the showcase](docs/showcase.md) lists the exact version behind each image. The agent chose which skills to load.
-Neither run had the RYUX MCP, so no reference screens were used. The screenshots are the agents' real
-output, not edited by hand. The colored boxes are annotations added afterwards.
+> In 3 of 3 paired runs, RYUX designed the states beyond the happy path and marked what it did not
+> know instead of inventing it. Without RYUX, the agent invented a business rule in 2 of 3.
 
-### UI
+How this was run: a fresh agent per run, same model, pen.dev, RYUX 2.3.3 as the only difference.
+No RYUX MCP, so no reference screens: every decision in every run is evidence None. Counts are ours,
+from the outputs. Three pairs is a small benchmark, not a study. Method and every run are in
+[the showcase](docs/showcase.md#repeated-benchmark-ryux-233).
 
-*"Design only the hero section of a landing page, 1440 wide by 900 tall, for RYUX: a design
-intelligence layer for AI coding agents and designers. It installs as skills into Claude Code,
-Cursor, Codex, and other agents (npx @ryuxdsgn/ryux), and an MCP server gives agents reference
-screens from real apps as evidence. The hero should feature a custom illustration; create it with
-pen.dev's Generate function."* Both runs designed in pen.dev and generated their illustration with
-pen.dev's `Generate`.
+## What changed, and what did not
 
-<a href="assets/compare/ui/compare.png"><img src="assets/compare/ui/compare.png" alt="Two RYUX hero sections with generated illustrations, stacked. Without RYUX: an invented 4.8k GitHub star count, Windsurf listed as a supported agent although the brief never named it, and a generic illustration of floating app screens wired to a code terminal with a sparkle. With RYUX 2.0: GitHub with no count, an illustration of the product's own idea, a design under review with numbered marks and pinned reference screens, labeled as 'Fig. 1', and one primary action, the install command" width="100%"></a>
+- **States.** RYUX designed more screens than the run without it in every pair; in two of three it
+  added loading, failed to load, and a narrow width with long data.
+- **Unknowns.** What the brief did not say stayed a visible placeholder instead of a confident sentence.
+- **Decisions.** Every RYUX run wrote its design intent and a Decision Receipt per major decision; no run without RYUX did.
+- **Not visual polish.** In a repeated blind test of a wallet home screen with illustration, ornament,
+  and motion, RYUX did not score consistently better (3.71 vs 3.67 out of 5 across three pairs),
+  and its restraint was never higher. RYUX changes the reasoning; it does not reliably make a screen prettier.
 
-Both heroes now have a generated illustration, and the difference is what it says. Without RYUX,
-the illustration is the category default: floating screens wired to a terminal, plus a sparkle.
-The page also invents a GitHub star count and lists an agent the brief never named (RX-AS-01,
-RX-PR-02).
+## More comparisons
 
-With RYUX, the illustration shows the product's own idea: a design under review, with numbered
-marks, backed by pinned reference screens (RX-UI-07, RX-UI-12). It is captioned as a figure, so
-nobody reads it as a real screen, and there is one primary action (RX-PR-03). The brief was the same
-for both runs. Both agents ended their sessions while the illustrations were still generating,
-because generation is asynchronous, so we exported both frames once the illustrations arrived,
-without changing anything.
+Single runs, headless (`claude -p`) in an empty folder, once without RYUX and once with it, on
+earlier RYUX releases. Neither run had the RYUX MCP. The colored boxes are annotations added
+afterwards. A landing-page hero comparison from the same series is in
+[the showcase](docs/showcase.md#landing-page-hero-single-run).
 
 ### Code
 
@@ -106,7 +97,66 @@ flagged for the team.
 Earlier examples, including the Indonesian-market set (QRIS, Rupiah, WhatsApp), are in
 [`docs/showcase.md`](docs/showcase.md#indonesian-market-examples).
 
-## One interface. End-to-end design reasoning.
+## How RYUX works
+
+Give RYUX a screen. It separates what it sees from what it assumes and from what it doesn't know.
+Then it makes design decisions, each with its evidence and confidence. Then it builds. Then it
+checks whether the build matches the decision.
+
+```
+WITHOUT RYUX   "Use QRIS as the primary payment method because Indonesian users prefer it."
+
+RYUX           Decision    Prioritize QRIS
+               Evidence    3 observed checkout flows
+               Confidence  Medium
+               Why         QRIS appears as a primary payment option across the observed references
+               Unknown     the actual business conversion priority
+```
+
+*An illustration of the Decision Receipt format, not a real run.* With no references, the same
+receipt reads **Evidence None, Confidence Low**, and RYUX says so, as it did in the
+[checkout run](#end-to-end-one-checkout-five-capabilities).
+
+- **Analyze** an interface that exists: what it sees, what it infers, what it doesn't know.
+- **Design** the decisions: UX, UI, visual, interaction, and responsive, each with a receipt.
+- **Build** them in your stack, without inventing rules, data, or API behavior.
+- **Critique** before shipping: prioritized findings with evidence, impact, and a fix.
+- **QA** the build against the design: expected versus actual, at every width and state.
+
+### Why RYUX
+
+Most AI design tools start generating too early. RYUX starts by understanding the problem, the
+interface, the context, and the evidence available.
+
+RYUX is not another UI generator. It does not start with "make me a beautiful dashboard". It starts
+with: what are we designing, why, and what evidence do we have? When there is none, it says so
+instead of inventing a reference.
+
+```
+Without RYUX:  prompt → generate → generic UI → invented content → missing states
+With RYUX:     context → analyze → evidence → reason → design → build → critique → QA
+```
+
+| Without RYUX | With RYUX |
+| --- | --- |
+| UI straight away | Analyze what exists first |
+| Invented numbers, users, and features | Evidence: observed, inferred, or a cited pattern, and "None" when there is none |
+| The category's default layout | Three directions compared, one chosen for a reason |
+| A happy path only | Every state and width, rendered and checked |
+| "Done" | A Delivery Gate that says what was not checked |
+
+### What makes it different
+
+- **Evidence over taste.** Every result carries a `screen_id`, app name, version, and capture date. A design decision points at a real screen, or it is marked as a judgment call.
+- **Honest about what it knows.** RYUX rates its evidence and reports what it did not check. It never claims "pixel perfect" or "fully accessible" without proof.
+- **Human judgment.** Designer notes explain why a flow works and where it falls short. People write them, not AI, and they are the most valuable part of the library.
+- **Local depth where global libraries are thin.** The first market covered is Indonesia: QRIS, virtual accounts, WhatsApp OTP, paylater, and e-KYC.
+- **Its own ruleset.** RYUX's rules (IDs start with `RX-`) are original work, MIT-licensed, with no third-party rule dependencies.
+
+### End-to-end: one checkout, five capabilities
+
+<details>
+<summary>A real run through Analyze → Design → Build → Critique → QA, with what RYUX improved and what it flagged</summary>
 
 The checkout is only the example: it shows how RYUX reasons about a real interface, from first look
 to final check. Every card is a real agent run with RYUX installed. Quotes are verbatim, and "…"
@@ -146,119 +196,7 @@ build.
 
 > RYUX doesn't pretend to know. It shows what it knows, what it infers, and what remains unknown.
 
-Does RYUX actually reason, or just produce nicer UI? See [the proof](#see-the-proof).
-
-```bash
-npx skills add ryuxdsgn/design-intelligence
-```
-
-## Why RYUX
-
-Most AI design tools start generating too early. RYUX starts by understanding the problem, the
-interface, the context, and the evidence available.
-
-RYUX is not another UI generator. It does not start with "make me a beautiful dashboard". It starts
-with: what are we designing, why, and what evidence do we have? When there is none, it says so
-instead of inventing a reference.
-
-```
-Without RYUX:  prompt → generate → generic UI → invented content → missing states
-With RYUX:     context → analyze → evidence → reason → design → build → critique → QA
-```
-
-| Without RYUX | With RYUX |
-| --- | --- |
-| UI straight away | Analyze what exists first |
-| Invented numbers, users, and features | Evidence: observed, inferred, or a cited pattern, and "None" when there is none |
-| The category's default layout | Three directions compared, one chosen for a reason |
-| A happy path only | Every state and width, rendered and checked |
-| "Done" | A Delivery Gate that says what was not checked |
-
-### What makes it different
-
-- **Evidence over taste.** Every result carries a `screen_id`, app name, version, and capture date. A design decision points at a real screen, or it is marked as a judgment call.
-- **Honest about what it knows.** RYUX rates its evidence and reports what it did not check. It never claims "pixel perfect" or "fully accessible" without proof.
-- **Human judgment.** Designer notes explain why a flow works and where it falls short. People write them, not AI, and they are the most valuable part of the library.
-- **Local depth where global libraries are thin.** The first market covered is Indonesia: QRIS, virtual accounts, WhatsApp OTP, paylater, and e-KYC.
-- **Its own ruleset.** RYUX's rules (IDs start with `RX-`) are original work, MIT-licensed, with no third-party rule dependencies.
-
-## See the proof
-
-Does RYUX reason, or does it just make a prettier UI? One hero section, a real run, every step
-quoted.
-
-1. **Analyze and Critique.** RYUX inventoried the hero, then reported 12 findings. The top three are
-   severity 3: unsourced numbers, real app names on drawn screens presented as findings, and
-   tertiary text at 3.98:1, below WCAG's 4.5:1.
-2. **Design.** RYUX compared three directions and chose a "design receipt" as the signature.
-3. **Build.** One HTML and CSS file from the pen.dev frame's exact values, responsive down to 390 wide.
-4. **QA.** Rows 22px apart where the design says 27px, and three defects at 390, where no design
-   existed. The Delivery Gate said FAIL and listed what it did not check.
-
-<a href="assets/compare/demo/compare.png"><img src="assets/compare/demo/compare.png" alt="Top: the hero designed without RYUX, marked with RYUX Critique findings: an unsourced 4.2k star count, unsourced 'matched in 1,280 apps' stats, real app names on drawn screens, and tertiary text below 4.5:1 contrast. Bottom: the redesign, with no star count, a 'design receipt' as the visual signature, the session labeled as an example, and categories instead of real app names. One miss is marked in amber: the made-up tool name find_references survived" width="100%"></a>
-
-<a href="assets/compare/demo/qa.png"><img src="assets/compare/demo/qa.png" alt="The approved pen.dev design, the HTML build at 1440 with QA finding 1 marked (reference rows 22px apart where the design says 27px), and the build at 390 with findings 2 to 4 marked: thumbnail content overflowing the card, a separator starting a line, and an orphaned citation" width="100%"></a>
-
-**It missed something, and that became a rule.** The made-up tool name `find_references` survived
-the first critique; RYUX's real tool is `search_screens`. A fact check was added to Critique, and a
-rerun on the same screen listed `find_references` as its first finding, marked "contradicted".
-
-```
-miss → evidence → rule → rerun → caught
-```
-
-> RYUX improves through evidence, not confidence.
-
-The full write-up, with method and history, is in [the showcase](docs/showcase.md#hero-case-study-the-full-run).
-
-## Design knowledge, not just design rules
-
-RYUX can work from curated references: real product screens, flows, local patterns, observations,
-and designer notes. This is RYUX Knowledge, the evidence layer. Each entry keeps what was seen
-apart from what it means:
-
-```
-Interface (screen_id) → Observation (what it visibly does) → Why it works or not (designer note)
-  → Context (market, category, flow) → Pattern (observed in N screens across M apps) → Design implication
-```
-
-- **References**: real product screens and flows, each with a `screen_id`, app, version, and capture date.
-- **Observations**: what a screen visibly does, drafted by AI and confirmed by a person.
-- **Patterns**: when a pattern is useful, its risk, and where it was observed. An observed pattern, never a "best practice".
-- **Designer notes**: why a flow works and where it falls short, written by people, never generated.
-
-Agents reach it through the RYUX MCP (`search_screens`, `compare_apps`, `get_local_pattern`), and
-RYUX keeps three sources apart: "I observed this", "I inferred this", and "this is a known pattern".
-
-It is being built first with Indonesian products (fintech, e-commerce, government, telco, and SaaS),
-because that is where global libraries are thinnest: QRIS, virtual
-accounts, WhatsApp OTP, paylater, e-KYC, and Rupiah formats. Knowledge is in pilot: the capture and
-review pipeline works, the library is still small, and the hosted MCP is not live yet. Without it,
-RYUX says the evidence is "None" instead of inventing a reference.
-
-## Design intelligence
-
-The knowledge RYUX reasons with, read only when a task needs it:
-
-- **UX**: structure, flows, navigation, grouping, and disclosure.
-- **UI**: hierarchy, type, layout, density, and color, plus a point of view on expressive surfaces.
-- **Visual**: art direction, imagery, illustration, and composition, with a Visual Brief before anything is generated, and the source of every asset.
-- **Interaction**: what happens before, during, and after an action; confirmation, undo, and local payments.
-- **Motion**: a lifecycle and a level for every motion, one motion personality, and reduced motion.
-- **Accessibility**: semantics, keyboard, focus, contrast, and targets, checked against WCAG 2.2.
-- **Responsive**: what changes, stays, disappears, or stacks at each width.
-- Also: product thinking, forms, content, edge cases, design systems, and frontend.
-
-## Quality: a gate, not the design process
-
-```
-Analyze → Design → Build → Critique → QA → Anti-Slop → done
-```
-
-- **Critique** asks whether the design is right, after a fact check of every product claim.
-- **Visual QA** asks whether the build matches the design, at every width and state.
-- **Anti-Slop** runs last. RYUX does not use anti-slop rules to decide what good design is; it uses them to catch generic, invented, unnecessary, or unsupported output before delivery.
-- **The Delivery Gate** reports PASS, FAIL, or N/A for ten areas, and claims only what was checked.
+</details>
 
 ## Install
 
@@ -324,14 +262,45 @@ hosted server at `mcp.ryux.design` is not live yet; until then, run it locally w
 claude mcp add --transport http ryux https://mcp.ryux.design/mcp
 ```
 
+## Deep proof
+
+Does RYUX reason, or does it just make a prettier UI? One hero section, a real run, every step
+quoted.
+
+1. **Analyze and Critique.** RYUX inventoried the hero, then reported 12 findings. The top three are
+   severity 3: unsourced numbers, real app names on drawn screens presented as findings, and
+   tertiary text at 3.98:1, below WCAG's 4.5:1.
+2. **Design.** RYUX compared three directions and chose a "design receipt" as the signature.
+3. **Build.** One HTML and CSS file from the pen.dev frame's exact values, responsive down to 390 wide.
+4. **QA.** Rows 22px apart where the design says 27px, and three defects at 390, where no design
+   existed. The Delivery Gate said FAIL and listed what it did not check.
+
+<a href="assets/compare/demo/compare.png"><img src="assets/compare/demo/compare.png" alt="Top: the hero designed without RYUX, marked with RYUX Critique findings: an unsourced 4.2k star count, unsourced 'matched in 1,280 apps' stats, real app names on drawn screens, and tertiary text below 4.5:1 contrast. Bottom: the redesign, with no star count, a 'design receipt' as the visual signature, the session labeled as an example, and categories instead of real app names. One miss is marked in amber: the made-up tool name find_references survived" width="100%"></a>
+
+
+**It missed something, and that became a rule.** The made-up tool name `find_references` survived
+the first critique; RYUX's real tool is `search_screens`. A fact check was added to Critique, and a
+rerun on the same screen listed `find_references` as its first finding, marked "contradicted".
+
+```
+miss → evidence → rule → rerun → caught
+```
+
+> RYUX improves through evidence, not confidence.
+
+The full write-up, with method and history, is in [the showcase](docs/showcase.md#hero-case-study-the-full-run), including the QA renders.
+
 ## Under the hood
 
 RYUX is modular inside, but you never manage its parts.
 
+RYUX Knowledge, the design intelligence modules, and the quality gates are described in
+[GUIDE.md](GUIDE.md#how-ryux-thinks).
+
 <details>
 <summary>How RYUX works, the skill layout, and the deeper capability guides</summary>
 
-### How RYUX works
+### The four steps
 
 Every task follows the same four steps.
 

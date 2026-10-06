@@ -82,6 +82,59 @@ npx @ryuxdsgn/ryux update     # update the rules you've installed
 npx @ryuxdsgn/ryux remove     # remove them (restores your files to their original state)
 ```
 
+## How RYUX thinks
+
+The evidence RYUX can reason with, the knowledge it reads, and the gates every task ends with.
+
+### Design knowledge, not just design rules
+
+RYUX can work from curated references: real product screens, flows, local patterns, observations,
+and designer notes. This is RYUX Knowledge, the evidence layer. Each entry keeps what was seen
+apart from what it means:
+
+```
+Interface (screen_id) → Observation (what it visibly does) → Why it works or not (designer note)
+  → Context (market, category, flow) → Pattern (observed in N screens across M apps) → Design implication
+```
+
+- **References**: real product screens and flows, each with a `screen_id`, app, version, and capture date.
+- **Observations**: what a screen visibly does, drafted by AI and confirmed by a person.
+- **Patterns**: when a pattern is useful, its risk, and where it was observed. An observed pattern, never a "best practice".
+- **Designer notes**: why a flow works and where it falls short, written by people, never generated.
+
+Agents reach it through the RYUX MCP (`search_screens`, `compare_apps`, `get_local_pattern`), and
+RYUX keeps three sources apart: "I observed this", "I inferred this", and "this is a known pattern".
+
+It is being built first with Indonesian products (fintech, e-commerce, government, telco, and SaaS),
+because that is where global libraries are thinnest: QRIS, virtual
+accounts, WhatsApp OTP, paylater, e-KYC, and Rupiah formats. Knowledge is in pilot: the capture and
+review pipeline works, the library is still small, and the hosted MCP is not live yet. Without it,
+RYUX says the evidence is "None" instead of inventing a reference.
+
+### Design intelligence
+
+The knowledge RYUX reasons with, read only when a task needs it:
+
+- **UX**: structure, flows, navigation, grouping, and disclosure.
+- **UI**: hierarchy, type, layout, density, and color, plus a point of view on expressive surfaces.
+- **Visual**: art direction, imagery, illustration, and composition, with a Visual Brief before anything is generated, and the source of every asset.
+- **Interaction**: what happens before, during, and after an action; confirmation, undo, and local payments.
+- **Motion**: a lifecycle and a level for every motion, one motion personality, and reduced motion.
+- **Accessibility**: semantics, keyboard, focus, contrast, and targets, checked against WCAG 2.2.
+- **Responsive**: what changes, stays, disappears, or stacks at each width.
+- Also: product thinking, forms, content, edge cases, design systems, and frontend.
+
+### Quality: a gate, not the design process
+
+```
+Analyze → Design → Build → Critique → QA → Anti-Slop → done
+```
+
+- **Critique** asks whether the design is right, after a fact check of every product claim.
+- **Visual QA** asks whether the build matches the design, at every width and state.
+- **Anti-Slop** runs last. RYUX does not use anti-slop rules to decide what good design is; it uses them to catch generic, invented, unnecessary, or unsupported output before delivery.
+- **The Delivery Gate** reports PASS, FAIL, or N/A for ten areas, and claims only what was checked.
+
 ## What's next
 
 - Full rules: [`docs/design-rules.md`](./docs/design-rules.md)

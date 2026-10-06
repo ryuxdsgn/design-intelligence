@@ -1,12 +1,96 @@
 # Before/After Playbook for RYUX (showcase)
 
 > This is the deep dive: method, setup, full case studies, and history. New to RYUX? Start with the
-> [README](../README.md), which shows the checkout demo and a short [proof](../README.md#see-the-proof).
+> [README](../README.md), which shows [the proof](../README.md#the-proof) and a short [deep proof](../README.md#deep-proof).
 
 A guide to creating 3 **before vs after** comparisons for the README: real proof that RYUX
 turns "AI-smelling" output into something grounded and natural. Principle: **honest, not a fake mockup**
 (RX-AS-03). "Before" = agent output without RYUX; "After" = the same agent's output **with**
 RYUX + the RYUX MCP.
+
+## Repeated benchmark (RYUX 2.3.3)
+
+The README's [proof](../README.md#the-proof) comes from this benchmark. It was run to answer one
+question honestly: does RYUX change what an AI agent designs, and does that hold when the run is
+repeated? Same prompt per task, a fresh agent per run, the same model, pen.dev, and RYUX 2.3.3 as
+the only difference. No RYUX MCP, so no reference screens: every decision is evidence None. Three
+pairs per task. Counts and scores are ours; this is a small benchmark, not a study.
+
+### Transaction detail (UX reasoning)
+
+*"Design a transaction detail page for a fintech app, shown after the user pays. Make it in
+pen.dev."* Questions were answered from one fixed fact sheet: an Indonesian wallet (QRIS and bank
+transfer), statuses Berhasil, Diproses, Gagal, data fields, three actions; everything else "not
+decided".
+
+| Measure | P1 without | P1 with | P2 without | P2 with | P3 without | P3 with |
+| --- | --- | --- | --- | --- | --- | --- |
+| Questions asked | 6 | 3 | 4 | 3 | 5 | 3 |
+| Screens designed | 1 | 4 | 1 | 6 | 3 | 6 |
+| Unknowns marked on canvas | no | yes | no | yes | no | yes |
+| Invented business rules | 1 (notes) | 0 | 0 | 0 | 2 (on canvas) | 0 |
+| Design intent written | no | yes | no | yes | no | yes |
+| Decision Receipts | none | yes | none | yes | none | yes |
+
+Consistent in 3 of 3 pairs: more screens, unknowns marked, no invented rules, intent and receipts,
+at most three questions. Pair 3 is the one in the README: the median pair, chosen before looking at
+the images, and the strongest run without RYUX (it also designed all three statuses).
+
+### Wallet home (visual direction): no consistent difference
+
+*"Design the home screen of a digital wallet app in pen.dev, mobile 390 wide …"* with the product
+context in the prompt and the request to add illustration, UI ornament, and motion where they fit.
+The owner scored each pair blind (labels X and Y drawn by script, mapping opened after scoring), 1
+to 5 on eight areas: context fit, originality, restraint, visual hierarchy, consistency,
+production plausibility, AI-slop resistance, and intentionality.
+
+| Pair | Without RYUX | With RYUX | Difference |
+| --- | --- | --- | --- |
+| 1 | 3.25 | 4.00 | +0.75 |
+| 2 | 4.38 | 3.13 | −1.25 |
+| 3 | 3.38 | 4.00 | +0.63 |
+| Mean | 3.67 | 3.71 | +0.04 |
+
+No area moved the same way in all three pairs, and restraint was never higher with RYUX. In pair
+2, RYUX chose a bold "receipt" concept (three directions and a signature, RX-UI-12) that scored 2
+on context fit and on restraint. Motion was written as a specification, so only motion reasoning
+was compared, not motion quality.
+
+### What we learned
+
+- **RYUX helped:** states beyond the happy path, unknowns kept visible instead of invented, and
+  decisions written down, in every transaction-detail pair.
+- **RYUX did not help:** visual quality. Both conditions often reached the same visual idea (the
+  city, the commuter train, the morning sun).
+- **RYUX introduced problems:** a push toward a strong point of view can beat context and
+  restraint, and RYUX runs always produce more screens and longer reasoning, which risks
+  over-analysis on small tasks.
+
+## Landing-page hero (single run)
+
+Moved from the README. A single run on an earlier release; the repeated wallet-home benchmark above
+found no consistent visual difference, so read this as one example, not a pattern.
+
+*"Design only the hero section of a landing page, 1440 wide by 900 tall, for RYUX: a design
+intelligence layer for AI coding agents and designers. It installs as skills into Claude Code,
+Cursor, Codex, and other agents (npx @ryuxdsgn/ryux), and an MCP server gives agents reference
+screens from real apps as evidence. The hero should feature a custom illustration; create it with
+pen.dev's Generate function."* Both runs designed in pen.dev and generated their illustration with
+pen.dev's `Generate`.
+
+<a href="../assets/compare/ui/compare.png"><img src="../assets/compare/ui/compare.png" alt="Two RYUX hero sections with generated illustrations, stacked. Without RYUX: an invented 4.8k GitHub star count, Windsurf listed as a supported agent although the brief never named it, and a generic illustration of floating app screens wired to a code terminal with a sparkle. With RYUX 2.0: GitHub with no count, an illustration of the product's own idea, a design under review with numbered marks and pinned reference screens, labeled as 'Fig. 1', and one primary action, the install command" width="100%"></a>
+
+Both heroes now have a generated illustration, and the difference is what it says. Without RYUX,
+the illustration is the category default: floating screens wired to a terminal, plus a sparkle.
+The page also invents a GitHub star count and lists an agent the brief never named (RX-AS-01,
+RX-PR-02).
+
+With RYUX, the illustration shows the product's own idea: a design under review, with numbered
+marks, backed by pinned reference screens (RX-UI-07, RX-UI-12). It is captioned as a figure, so
+nobody reads it as a real screen, and there is one primary action (RX-PR-03). The brief was the same
+for both runs. Both agents ended their sessions while the illustrations were still generating,
+because generation is asynchronous, so we exported both frames once the illustrations arrived,
+without changing anything.
 
 ## Setup (one time)
 
@@ -23,7 +107,7 @@ RYUX + the RYUX MCP.
 
 ## README headline: one image each for UI, Code, Copy (headless runs)
 
-The README "See the difference" section shows one image per area, each pairing a run without RYUX
+The README "More comparisons" section shows one image per area, each pairing a run without RYUX
 and a run with RYUX. Each variant runs headless (`claude -p`) in its own empty folder outside this
 repo, so the repo's own `CLAUDE.md` does not leak in:
 
@@ -118,7 +202,7 @@ coba lagi."; "BAYAR SEKARANG" → "Bayar sekarang"; "Pelajari selengkapnya" → 
 
 ## Putting it in the README
 
-Replace/complete the text table in the **"See the difference"** section with images (a pattern like other repos use):
+Replace/complete the text table in the **"More comparisons"** section with images (a pattern like other repos use):
 
 ```md
 | Before | After |
@@ -177,7 +261,7 @@ step.
 
 ## Hero case study: the full run
 
-The README's [See the proof](../README.md#see-the-proof) summarizes this run. Made with an earlier RYUX release (rules as of then).
+The README's [Deep proof](../README.md#deep-proof) summarizes this run. Made with an earlier RYUX release (rules as of then).
 
 One hero section through the whole loop. Every step below is a real agent run with RYUX installed,
 quoted as it came out.
