@@ -26,7 +26,7 @@ export function WaitlistForm() {
         return;
       }
       setStatus("ok");
-      setMessage("You're on the list. We'll email you when production data opens.");
+      setMessage("You're on the list. We'll email you when the hosted reference library opens.");
       setEmail("");
     } catch {
       setStatus("error");
@@ -36,7 +36,7 @@ export function WaitlistForm() {
 
   if (status === "ok") {
     return (
-      <p className="flex items-center gap-2 text-[15px] font-medium text-ok" role="status">
+      <p className="flex items-center gap-2 text-[15px] font-medium text-ink" role="status">
         <span aria-hidden>✓</span> {message}
       </p>
     );
@@ -59,23 +59,23 @@ export function WaitlistForm() {
           placeholder="you@company.com"
           aria-invalid={status === "error"}
           aria-describedby={status === "error" ? "wl-msg" : undefined}
-          className="min-h-12 flex-1 rounded-xl border border-hair bg-white px-4 text-[15px] text-ink outline-none placeholder:text-sub/70 focus:border-accent focus:ring-2 focus:ring-accent/30"
+          className="min-h-12 flex-1 rounded-md border border-hair bg-white px-4 text-[15px] text-ink outline-none placeholder:text-muted focus:border-ink focus:ring-2 focus:ring-ink/20"
         />
         <button
           type="submit"
           disabled={status === "loading"}
-          className="min-h-12 rounded-xl bg-accent px-6 text-[15px] font-bold text-white transition-opacity hover:opacity-90 disabled:opacity-60"
+          className="min-h-12 rounded-md bg-ink px-6 text-[15px] font-semibold text-paper transition-opacity hover:opacity-90 disabled:opacity-60"
         >
           {status === "loading" ? "Joining…" : "Join the waitlist"}
         </button>
       </div>
       {status === "error" && (
-        <p id="wl-msg" className="mt-2 text-sm text-red-600" role="alert">
+        <p id="wl-msg" className="mt-2 text-sm text-mark" role="alert">
           {message}
         </p>
       )}
-      <p className="mt-3 text-[13px] text-sub">
-        We email you once, when reviewed production screens and paid plans are ready. No spam.
+      <p className="mt-3 text-[13px] text-muted">
+        One email, when the hosted reference library opens. No spam.
       </p>
     </form>
   );
