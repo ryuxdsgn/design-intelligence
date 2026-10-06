@@ -1,23 +1,25 @@
 @import "tailwindcss";
 
 @theme {
-  --font-sans: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
-  --font-display: var(--font-instrument-serif), ui-serif, Georgia, serif;
-  --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, monospace;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains-mono), ui-monospace, SFMono-Regular, monospace;
 
-  /* Paper and ink. Mark is the review-markup red: annotations only, never actions. */
-  --color-paper: #f4f1ea;
-  --color-paper-2: #eae5d9;
-  --color-ink: #16140f;
-  --color-ink-2: #3d3a33;
-  --color-muted: #615c52;
-  --color-hair: #d6cfbf;
-  --color-mark: #b83a0e;
-  --color-night: #16140f;
-  --color-night-text: #f4f1ea;
-  --color-night-sub: #b9b2a3;
-  --color-night-hair: #3a362e;
-  --color-mark-night: #ff9a6c;
+  /* From the RYUX brand sheet: navy ink, indigo for actions only.
+     Mark is the proof-correction red, used for annotations and nothing else. */
+  --color-paper: #ffffff;
+  --color-paper-2: #f4f5f7;
+  --color-ink: #0b162b;
+  --color-ink-2: #2e3a50;
+  --color-muted: #566074;
+  --color-hair: #e1e4ea;
+  --color-accent: #4f42f4;
+  --color-mark: #c8321c;
+  --color-night: #0b162b;
+  --color-night-text: #f5f6f8;
+  --color-night-sub: #a9b2c3;
+  --color-night-hair: #24324d;
+  --color-mark-night: #ff8a73;
 }
 
 html {
@@ -32,4 +34,47 @@ html {
 
 body {
   -webkit-font-smoothing: antialiased;
+}
+
+/* Motion: calm and precise. One easing, short distances, transform and opacity only. */
+:root {
+  --ease-out: cubic-bezier(0.2, 0, 0, 1);
+}
+
+.reveal {
+  transition: opacity 600ms var(--ease-out), transform 600ms var(--ease-out);
+}
+.reveal[data-shown="false"] {
+  opacity: 0;
+  transform: translateY(16px);
+}
+
+/* Hero markup is drawn in reading order: pin, then its leader, then its note. */
+@keyframes pin-in {
+  from { opacity: 0; transform: scale(0.6); }
+  to { opacity: 1; transform: scale(1); }
+}
+@keyframes draw-x {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+@keyframes note-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: none; }
+}
+.pin-in { animation: pin-in 320ms var(--ease-out) both; }
+.draw-x { transform-origin: left center; animation: draw-x 420ms var(--ease-out) both; }
+.note-in { animation: note-in 420ms var(--ease-out) both; }
+
+.case-panel { animation: note-in 260ms var(--ease-out) both; }
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal, .reveal[data-shown="false"] { opacity: 1; transform: none; transition: none; }
+  .pin-in, .draw-x, .note-in, .case-panel { animation: none; }
+}
+
+/* Code is quoted verbatim: no ligatures, so "?:" and "=>" read as typed. */
+code,
+.font-mono {
+  font-variant-ligatures: none;
 }
