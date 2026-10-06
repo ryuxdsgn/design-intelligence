@@ -1,7 +1,7 @@
 # Before/After Playbook for RYUX (showcase)
 
 > This is the deep dive: method, setup, full case studies, and history. New to RYUX? Start with the
-> [README](../README.md), which shows [the proof](../README.md#the-proof) and a short [deep proof](../README.md#deep-proof).
+> [README](../README.md), which shows [the difference](../README.md#see-the-difference) from the English benchmark.
 
 A guide to creating 3 **before vs after** comparisons for the README: real proof that RYUX
 turns "AI-smelling" output into something grounded and natural. Principle: **honest, not a fake mockup**
@@ -10,7 +10,7 @@ RYUX + the RYUX MCP.
 
 ## Repeated benchmark (RYUX 2.3.3)
 
-The README's [proof](../README.md#the-proof) comes from this benchmark. It was run to answer one
+This is the first, Indonesian-language run of the benchmark. The README and ryux.design now show an English rerun with a generic scenario (same prompt, same harness); its results are summarized at [ryux.design/benchmarks](https://ryux.design/benchmarks). It was run to answer one
 question honestly: does RYUX change what an AI agent designs, and does that hold when the run is
 repeated? Same prompt per task, a fresh agent per run, the same model, pen.dev, and RYUX 2.3.3 as
 the only difference. No RYUX MCP, so no reference screens: every decision is evidence None. Three
@@ -261,7 +261,7 @@ step.
 
 ## Hero case study: the full run
 
-The README's [Deep proof](../README.md#deep-proof) summarizes this run. Made with an earlier RYUX release (rules as of then).
+An earlier README summarized this run. Made with an earlier RYUX release (rules as of then).
 
 One hero section through the whole loop. Every step below is a real agent run with RYUX installed,
 quoted as it came out.
