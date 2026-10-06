@@ -34,7 +34,7 @@ const WALLET_ROWS = [
 function Block({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div className="grid [&>*]:min-w-0 gap-3 border-t border-hair pt-6 lg:grid-cols-[220px_1fr] lg:gap-10">
-      <h3 className="font-mono text-[13px] font-semibold tracking-[0.1em] text-mark uppercase">{label}</h3>
+      <h3 className="text-[15px] font-semibold text-mark">{label}</h3>
       <div className="flex max-w-[760px] flex-col gap-3 text-[17px] leading-[1.55] text-ink-2">{children}</div>
     </div>
   );
@@ -51,17 +51,16 @@ export default function Benchmarks() {
       <main>
         <section aria-labelledby="bench-title" className={`${GUTTER} grid [&>*]:min-w-0 gap-12 py-16 lg:grid-cols-[1fr_480px] lg:gap-24 lg:py-24`}>
           <div className="flex flex-col gap-6">
-            <Eyebrow>BENCHMARKS</Eyebrow>
-            <h1 id="bench-title" className="font-display text-[56px] leading-[0.98] sm:text-[88px]">
-              Same prompt. Same agent. One has RYUX.
+            <Eyebrow>Benchmarks</Eyebrow>
+            <h1 id="bench-title" className="font-semibold tracking-[-0.03em] text-[56px] leading-[0.98] sm:text-[88px]">
+              Same prompt, same agent, one with RYUX
             </h1>
             <p className="max-w-[600px] text-[19px] leading-[1.5] text-ink-2">
-              We are not looking for the benchmark that makes RYUX win. We are looking for the one that shows most honestly
-              what RYUX does to an AI's output, including where it does nothing.
+              What changes when an AI agent designs with RYUX, measured on repeated runs and reported with what did not change.
             </p>
           </div>
           <div className="lg:pt-12">
-            <h2 className="font-mono text-[13px] tracking-[0.12em] text-muted">HOW WE RAN IT</h2>
+            <h2 className="text-[15px] font-medium text-muted">How we ran it</h2>
             <ul className="mt-3">
               {METHOD.map((m) => (
                 <li key={m} className="border-b border-hair py-3.5 text-[16px] leading-[1.45] text-ink-2">{m}</li>
@@ -73,8 +72,8 @@ export default function Benchmarks() {
         <section id="transaction-detail" aria-labelledby="td-title" className="bg-paper-2">
           <div className={`${GUTTER} flex flex-col gap-10 py-20 lg:py-28`}>
             <div className="flex flex-col gap-4">
-              <Eyebrow>01 · UX REASONING · A PROOF CASE</Eyebrow>
-              <h2 id="td-title" className="font-display text-[44px] leading-[1.02] sm:text-[60px]">Transaction detail</h2>
+              <Eyebrow>01 · UX reasoning · a proof case</Eyebrow>
+              <h2 id="td-title" className="font-semibold tracking-[-0.03em] text-[44px] leading-[1.02] sm:text-[60px]">Transaction detail</h2>
             </div>
             <Block label="Prompt">
               <Prompt>“Design a transaction detail page for a fintech app, shown after the user pays. Make it in pen.dev.”</Prompt>
@@ -90,14 +89,14 @@ export default function Benchmarks() {
                 className="w-full min-w-[880px] rounded-md border border-hair lg:min-w-0"
               />
               </div>
-              <figcaption className="font-mono text-[12px] text-muted">Scroll sideways on a small screen. Pair 3, the median pair, chosen before looking at the images. Real output, sample data.</figcaption>
+              <figcaption className="text-[14px] text-muted">Scroll sideways on a small screen. Pair 3, the median pair, chosen before looking at the images. Real output, sample data.</figcaption>
             </figure>
             <Block label="Without vs with RYUX">
               <div className="overflow-x-auto">
                 <table className="w-full min-w-[640px] text-left text-[15px]">
                   <caption className="sr-only">Transaction detail, per pair, without and with RYUX</caption>
                   <thead>
-                    <tr className="border-b border-ink font-mono text-[12px] tracking-[0.06em] text-muted">
+                    <tr className="border-b border-ink text-[14px] text-muted">
                       <th scope="col" className="py-3 pr-4 font-normal">Measure</th>
                       {["1", "2", "3"].flatMap((p) => [
                         <th key={p + "a"} scope="col" className="py-3 pr-4 font-normal">P{p} without</th>,
@@ -134,8 +133,8 @@ export default function Benchmarks() {
         <section id="wallet-home" aria-labelledby="wh-title">
           <div className={`${GUTTER} flex flex-col gap-10 py-20 lg:py-28`}>
             <div className="flex flex-col gap-4">
-              <Eyebrow>02 · VISUAL DIRECTION · NOT A PROOF CASE</Eyebrow>
-              <h2 id="wh-title" className="font-display text-[44px] leading-[1.02] sm:text-[60px]">Wallet home</h2>
+              <Eyebrow>02 · Visual direction · not a proof case</Eyebrow>
+              <h2 id="wh-title" className="font-semibold tracking-[-0.03em] text-[44px] leading-[1.02] sm:text-[60px]">Wallet home</h2>
             </div>
             <Block label="Prompt">
               <Prompt>“Design the home screen of a digital wallet app in pen.dev, mobile 390 wide … The current design feels too utilitarian: give it a visual personality with illustration, UI ornament, and motion where they fit.”</Prompt>
@@ -148,18 +147,18 @@ export default function Benchmarks() {
                   ["With RYUX · 3.13", "/proof/wallet-with.png", 780, 2172, "Pair 2 with RYUX: an indigo receipt concept with the balance printed on a paper slip and a torn-edge transaction list"],
                 ].map(([label, src, w, h, alt]) => (
                   <div key={src as string} className="flex flex-col gap-3">
-                    <p className="font-mono text-[12px] font-semibold tracking-[0.08em] uppercase">{label}</p>
+                    <p className="text-[14px] font-semibold">{label}</p>
                     <Image src={src as string} alt={alt as string} width={w as number} height={h as number} className="w-full rounded-[18px] border border-hair" />
                   </div>
                 ))}
               </div>
-              <figcaption className="font-mono text-[12px] text-muted">Pair 2, where RYUX lost. Real output, sample data, home screen only.</figcaption>
+              <figcaption className="text-[14px] text-muted">Pair 2, where RYUX lost. Real output, sample data, home screen only.</figcaption>
             </figure>
             <Block label="Without vs with RYUX">
               <table className="w-full max-w-[560px] text-left text-[16px]">
                 <caption className="sr-only">Wallet home, blind visual score per pair</caption>
                 <thead>
-                  <tr className="border-b border-ink font-mono text-[12px] tracking-[0.06em] text-muted">
+                  <tr className="border-b border-ink text-[14px] text-muted">
                     <th scope="col" className="py-3 pr-4 font-normal">Pair</th>
                     <th scope="col" className="py-3 pr-4 font-normal">Without</th>
                     <th scope="col" className="py-3 pr-4 font-normal">With</th>
@@ -192,8 +191,8 @@ export default function Benchmarks() {
 
         <section id="design-md" aria-labelledby="dm-title" className="bg-paper-2">
           <div className={`${GUTTER} flex flex-col gap-6 py-20 lg:py-24`}>
-            <Eyebrow>03 · PROJECT DIRECTION · COMING NEXT</Eyebrow>
-            <h2 id="dm-title" className="font-display text-[44px] leading-[1.02] sm:text-[60px]">DESIGN.md</h2>
+            <Eyebrow>03 · Project direction · coming next</Eyebrow>
+            <h2 id="dm-title" className="font-semibold tracking-[-0.03em] text-[44px] leading-[1.02] sm:text-[60px]">DESIGN.md</h2>
             <p className="max-w-[760px] text-[17px] leading-[1.55] text-ink-2">
               Without context versus RYUX with a filled DESIGN.md. One run so far, which is not enough to claim anything. It
               will be repeated before it is published here.

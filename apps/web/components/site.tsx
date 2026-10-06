@@ -4,7 +4,8 @@ export const REPO = "https://github.com/ryuxdsgn/design-intelligence";
 export const DOCS = `${REPO}/blob/main/GUIDE.md`;
 
 const NAV = [
-  { label: "Product", href: "/#what" },
+  { label: "Proof", href: "/#proof" },
+  { label: "Use cases", href: "/#cases" },
   { label: "How it works", href: "/#how" },
   { label: "Evidence", href: "/#evidence" },
   { label: "Benchmarks", href: "/benchmarks" },
@@ -30,20 +31,41 @@ export function Arrow({ down = false }: { down?: boolean }) {
   );
 }
 
-/** Small mono label that opens a section. `night` is for dark sections. */
-export function Eyebrow({ children, night = false }: { children: React.ReactNode; night?: boolean }) {
+/* The RYUX mark from the brand sheet: four strokes that stop short of the center. */
+const MARK_STROKES = [
+  { x: 0.52, y: 1.115, d: "M0 21.87l22.14-21.87 73.03499 72.9-21.95997 22.00501-73.21502-73.03501z", accent: false },
+  { x: 103.66, y: 1.115, d: "M95.44498 21.87l-22.31998-21.87-73.125 72.81001 22.22998 22.095 73.215-73.03501z", accent: true },
+  { x: 0.52, y: 107.99, d: "M0 73.17l22.18501 22.095 72.945-72.99002-21.96-22.27498-73.17001 73.17z", accent: false },
+  { x: 103.66, y: 107.99, d: "M95.44498 73.17l-22.22998 22.095-73.215-72.99002 22.14-22.27498 73.30498 73.17z", accent: false },
+];
+
+export function Mark({ size = 24, night = false }: { size?: number; night?: boolean }) {
   return (
-    <p className={`font-mono text-[13px] tracking-[0.12em] ${night ? "text-night-sub" : "text-muted"}`}>{children}</p>
+    <svg width={size} height={size} viewBox="0 0 200 204" aria-hidden>
+      {MARK_STROKES.map((s) => (
+        <path
+          key={s.d}
+          d={s.d}
+          transform={`translate(${s.x} ${s.y})`}
+          fill={s.accent ? "#4F42F4" : night ? "#F5F6F8" : "#0B162B"}
+        />
+      ))}
+    </svg>
   );
+}
+
+/** Small label that opens a section. Sentence case, set by the caller. */
+export function Eyebrow({ children, night = false }: { children: React.ReactNode; night?: boolean }) {
+  return <p className={`text-[15px] font-medium ${night ? "text-night-sub" : "text-muted"}`}>{children}</p>;
 }
 
 export function SiteHeader() {
   return (
     <header className="border-b border-hair">
       <div className={`${GUTTER} flex items-center justify-between gap-6 py-5`}>
-        <Link href="/" className="flex items-baseline gap-3" aria-label="RYUX home">
-          <span className="text-xl font-bold tracking-[0.15em]">RYUX</span>
-          <span className="hidden font-mono text-[13px] text-muted sm:inline">design intelligence</span>
+        <Link href="/" className="flex items-center gap-2.5" aria-label="RYUX home">
+          <Mark size={26} />
+          <span className="text-[21px] font-bold tracking-[-0.01em]">RYUX</span>
         </Link>
         <nav aria-label="Main" className="hidden items-center gap-9 text-[15px] text-ink-2 lg:flex">
           {NAV.map((n) => (
@@ -54,7 +76,7 @@ export function SiteHeader() {
         </nav>
         <a
           href={REPO}
-          className="inline-flex min-h-11 items-center gap-2 rounded-md border border-ink px-4 text-[15px] font-medium hover:bg-ink hover:text-paper"
+          className="inline-flex min-h-11 items-center gap-2 rounded-lg border border-hair bg-white px-4 text-[15px] font-medium hover:border-ink"
         >
           <GitHubIcon />
           GitHub
@@ -71,17 +93,55 @@ export function SiteHeader() {
   );
 }
 
+const FOOTER = [
+  {
+    title: "Product",
+    links: [
+      { label: "Benchmarks", href: "/benchmarks" },
+      { label: "Install", href: "/#try" },
+      { label: "npm package", href: "https://www.npmjs.com/package/@ryuxdsgn/ryux" },
+    ],
+  },
+  {
+    title: "Resources",
+    links: [
+      { label: "Docs", href: DOCS },
+      { label: "Design rules", href: `${REPO}/blob/main/docs/design-rules.md` },
+      { label: "Showcase", href: `${REPO}/blob/main/docs/showcase.md` },
+    ],
+  },
+  {
+    title: "Project",
+    links: [
+      { label: "GitHub", href: REPO },
+      { label: "Issues", href: `${REPO}/issues` },
+      { label: "License (MIT)", href: `${REPO}/blob/main/LICENSE` },
+    ],
+  },
+];
+
 export function SiteFooter() {
   return (
     <footer className="border-t border-hair">
-      <div className={`${GUTTER} flex flex-col gap-3 py-10 text-[15px] text-muted sm:flex-row sm:items-center sm:justify-between`}>
-        <p>RYUX · MIT licensed · Early access, free</p>
-        <nav aria-label="Footer" className="flex flex-wrap gap-6">
-          <a href={REPO} className="hover:text-ink">GitHub</a>
-          <a href={DOCS} className="hover:text-ink">Docs</a>
-          <Link href="/benchmarks" className="hover:text-ink">Benchmarks</Link>
-          <a href={`${REPO}/blob/main/LICENSE`} className="hover:text-ink">License</a>
-        </nav>
+      <div className={`${GUTTER} grid gap-12 py-14 sm:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr_1fr]`}>
+        <div className="flex flex-col gap-4">
+          <p className="flex items-center gap-2.5 text-[19px] font-bold"><Mark size={22} /> RYUX</p>
+          <p className="max-w-[300px] text-[15px] leading-[1.55] text-muted">
+            Design intelligence for AI agents and designers. Early access, free.
+          </p>
+        </div>
+        {FOOTER.map((col) => (
+          <nav key={col.title} aria-label={col.title} className="flex flex-col gap-3 text-[15px]">
+            <p className="font-semibold">{col.title}</p>
+            {col.links.map((l) =>
+              l.href.startsWith("/") ? (
+                <Link key={l.label} href={l.href} className="text-muted hover:text-ink">{l.label}</Link>
+              ) : (
+                <a key={l.label} href={l.href} className="text-muted hover:text-ink">{l.label}</a>
+              ),
+            )}
+          </nav>
+        ))}
       </div>
     </footer>
   );
