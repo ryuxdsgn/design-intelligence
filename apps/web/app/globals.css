@@ -1,20 +1,33 @@
 @import "tailwindcss";
 
 @theme {
-  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-instrument-serif), ui-serif, Georgia, serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, monospace;
 
-  --color-paper: #faf9f6;
-  --color-ink: #0f172a;
-  --color-sub: #64748b;
-  --color-hair: #e2e8f0;
-  --color-card: #f8fafc;
-  --color-accent: #4f46e5;
-  --color-accent-soft: #eef2ff;
-  --color-ok: #059669;
+  /* Paper and ink. Mark is the review-markup red: annotations only, never actions. */
+  --color-paper: #f4f1ea;
+  --color-paper-2: #eae5d9;
+  --color-ink: #16140f;
+  --color-ink-2: #3d3a33;
+  --color-muted: #615c52;
+  --color-hair: #d6cfbf;
+  --color-mark: #b83a0e;
+  --color-night: #16140f;
+  --color-night-text: #f4f1ea;
+  --color-night-sub: #b9b2a3;
+  --color-night-hair: #3a362e;
+  --color-mark-night: #ff9a6c;
 }
 
 html {
   scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
 }
 
 body {
