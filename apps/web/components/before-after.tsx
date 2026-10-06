@@ -3,25 +3,27 @@
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 
-type Pair = { id: string; tab: string; height: number; before: string[]; after: string[]; alt: [string, string] };
+type Pair = { id: string; tab: string; before: string[]; after: string[]; alt: [string, string] };
 
-/* Pairs from the showcase gallery (docs/showcase.md), one run each on an earlier release, sample data. */
+/* Every pair is set on the same 780 by 1121 canvas, top-aligned, so the slider never changes size between tabs. */
+const CANVAS = { w: 780, h: 1121 };
+
+/* Pairs from the showcase gallery (docs/showcase.md), one run each on an earlier release, sample data,
+   with the screen text translated from Indonesian to English. */
 const PAIRS: Pair[] = [
   {
     id: "ux",
     tab: "Sign-up form",
-    height: 963,
     before: ["Two columns", "Placeholder-only labels", "Every field required", "A vague error banner"],
     after: ["One column, labels above fields", "Inline validation that keeps what you typed", "Fewer fields", "A numeric keypad for the phone number"],
     alt: [
       "Sign-up form without RYUX: cramped two columns, placeholder-only labels, every field required including referral, a vague error banner",
-      "Sign-up form with RYUX: one column, labels above fields, an inline password error that keeps the input, an optional referral code",
+      "Sign-up form with RYUX: one column, labels above fields, an inline password error that keeps what was typed, an optional referral code",
     ],
   },
   {
     id: "a11y",
     tab: "Accessibility",
-    height: 905,
     before: ["11px text at roughly 2:1 contrast", "Placeholder-only labels", "Small touch targets", "A washed-out button"],
     after: ["16px and up at AA contrast", "Targets of 48px and up", "A visible focus state", "Labels that stay on screen"],
     alt: [
@@ -32,23 +34,11 @@ const PAIRS: Pair[] = [
   {
     id: "local",
     tab: "Local payment",
-    height: 1090,
     before: ["A global card form", "Dollars", "Foreign payment methods", "No local pattern"],
     after: ["A virtual account with a copy button", "A payment deadline", "A transparent admin fee", "Rupiah throughout"],
     alt: [
       "Payment screen without RYUX: a global card form in dollars with VISA, Mastercard, PayPal and Google Pay",
-      "Payment screen with RYUX: a BCA virtual account number with a copy button, a payment deadline, the admin fee, and steps in m-BCA",
-    ],
-  },
-  {
-    id: "copy",
-    tab: "Failed payment",
-    height: 1258,
-    before: ["“Payment Failed”", "A vague message", "A technical error code", "An amount in the wrong format"],
-    after: ["“Pembayaran gagal” with the cause", "What the user can do next", "Natural Indonesian", "Rp1.250.000"],
-    alt: [
-      "Failed payment without RYUX: Payment Failed, Something went wrong, error code TXN_0x8004, a red TRY AGAIN button",
-      "Failed payment with RYUX: Pembayaran gagal, the balance is not enough for Rp1.250.000, two ways to continue, and a link to help",
+      "Payment screen with RYUX: a BCA virtual account number with a copy button, a payment deadline, the admin fee, and how to pay with m-BCA",
     ],
   },
 ];
@@ -146,7 +136,7 @@ export function BeforeAfter() {
         <div
           ref={frame}
           className="relative w-full overflow-hidden rounded-[24px] border border-hair bg-white shadow-[0_24px_60px_-24px_rgba(11,22,43,0.35)] select-none"
-          style={{ aspectRatio: `780 / ${pair.height}` }}
+          style={{ aspectRatio: `${CANVAS.w} / ${CANVAS.h}` }}
         >
           <Image key={`a-${pair.id}`} src={`/before-after/${pair.id}-after.png`} alt={pair.alt[1]} fill sizes="380px" className="object-cover object-top" />
           <div className="absolute inset-0" style={{ clipPath: `inset(0 ${100 - pos}% 0 0)` }}>
