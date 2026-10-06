@@ -5,7 +5,7 @@ export const DOCS = `${REPO}/blob/main/GUIDE.md`;
 
 const NAV = [
   { label: "Proof", href: "/#proof" },
-  { label: "Use cases", href: "/#cases" },
+  { label: "Examples", href: "/#cases" },
   { label: "How it works", href: "/#how" },
   { label: "Evidence", href: "/#evidence" },
   { label: "Benchmarks", href: "/benchmarks" },
@@ -31,25 +31,17 @@ export function Arrow({ down = false }: { down?: boolean }) {
   );
 }
 
-/* The RYUX mark from the brand sheet: four strokes that stop short of the center. */
-const MARK_STROKES = [
-  { x: 0.52, y: 1.115, d: "M0 21.87l22.14-21.87 73.03499 72.9-21.95997 22.00501-73.21502-73.03501z", accent: false },
-  { x: 103.66, y: 1.115, d: "M95.44498 21.87l-22.31998-21.87-73.125 72.81001 22.22998 22.095 73.215-73.03501z", accent: true },
-  { x: 0.52, y: 107.99, d: "M0 73.17l22.18501 22.095 72.945-72.99002-21.96-22.27498-73.17001 73.17z", accent: false },
-  { x: 103.66, y: 107.99, d: "M95.44498 73.17l-22.22998 22.095-73.215-72.99002 22.14-22.27498 73.30498 73.17z", accent: false },
-];
+/* The RYUX mark: R and X sharing one stroke, the second arm of the X in indigo. */
+const MARK_RX =
+  "M163.27272 73.18182l-24.27274-25.72726-46.99999-47.45456-91.99999 0 0 162.36365 29.27272 0 0-69.09091 18.54547 0 61.81816 69.09091 40.63639 0-63.8182-69.09091 9.90911 0 22.90907-22.54546 23.45454 22.54546 0.72728 0 64.00002 69.09091 10.45453 0 0-30.7273-54.63637-58.45453z m-77.45453-6.09089l-56.54547 0 0-38.18184 50.72728 0 20 22.9091-14.18181 15.27274z";
+const MARK_ARM = "M46.9091 0l-46.9091 47.45456 24.27274 25.72726 54.54545-56 0-17.18182-31.90909 0z";
 
+/** `size` is the height in px; the mark is wider than tall. */
 export function Mark({ size = 24, night = false }: { size?: number; night?: boolean }) {
   return (
-    <svg width={size} height={size} viewBox="0 0 200 204" aria-hidden>
-      {MARK_STROKES.map((s) => (
-        <path
-          key={s.d}
-          d={s.d}
-          transform={`translate(${s.x} ${s.y})`}
-          fill={s.accent ? "#4F42F4" : night ? "#F5F6F8" : "#0B162B"}
-        />
-      ))}
+    <svg width={(size * 218) / 163} height={size} viewBox="0 0 218 163" aria-hidden>
+      <path d={MARK_RX} fill={night ? "#F5F6F8" : "#0B162B"} />
+      <path d={MARK_ARM} transform="translate(139 0)" fill="#4F42F4" />
     </svg>
   );
 }
@@ -64,7 +56,7 @@ export function SiteHeader() {
     <header className="border-b border-hair">
       <div className={`${GUTTER} flex items-center justify-between gap-6 py-5`}>
         <Link href="/" className="flex items-center gap-2.5" aria-label="RYUX home">
-          <Mark size={26} />
+          <Mark size={22} />
           <span className="text-[21px] font-bold tracking-[-0.01em]">RYUX</span>
         </Link>
         <nav aria-label="Main" className="hidden items-center gap-9 text-[15px] text-ink-2 lg:flex">
@@ -125,7 +117,7 @@ export function SiteFooter() {
     <footer className="border-t border-hair">
       <div className={`${GUTTER} grid gap-12 py-14 sm:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr_1fr]`}>
         <div className="flex flex-col gap-4">
-          <p className="flex items-center gap-2.5 text-[19px] font-bold"><Mark size={22} /> RYUX</p>
+          <p className="flex items-center gap-2.5 text-[19px] font-bold"><Mark size={18} /> RYUX</p>
           <p className="max-w-[300px] text-[15px] leading-[1.55] text-muted">
             Design intelligence for AI agents and designers. Early access, free.
           </p>

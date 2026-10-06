@@ -68,9 +68,24 @@ body {
 
 .case-panel { animation: note-in 260ms var(--ease-out) both; }
 
+@keyframes word-in {
+  from { opacity: 0; transform: translateY(0.35em); }
+  to { opacity: 1; transform: none; }
+}
+.word-in { animation: word-in 640ms var(--ease-out) both; }
+
+/* Children of a revealed block arrive one after another, in reading order. */
+.reveal[data-shown="false"] .stagger > * { opacity: 0; transform: translateY(12px); }
+.stagger > * { transition: opacity 500ms var(--ease-out), transform 500ms var(--ease-out); }
+.stagger > *:nth-child(2) { transition-delay: 90ms; }
+.stagger > *:nth-child(3) { transition-delay: 180ms; }
+.stagger > *:nth-child(4) { transition-delay: 270ms; }
+.stagger > *:nth-child(5) { transition-delay: 360ms; }
+
 @media (prefers-reduced-motion: reduce) {
   .reveal, .reveal[data-shown="false"] { opacity: 1; transform: none; transition: none; }
-  .pin-in, .draw-x, .note-in, .case-panel { animation: none; }
+  .pin-in, .draw-x, .note-in, .case-panel, .word-in { animation: none; }
+  .stagger > *, .reveal[data-shown="false"] .stagger > * { opacity: 1; transform: none; transition: none; }
 }
 
 /* Code is quoted verbatim: no ligatures, so "?:" and "=>" read as typed. */
