@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { CopyCommand } from "@/components/copy-command";
 import { Reveal } from "@/components/reveal";
-import { UseCases } from "@/components/use-cases";
+import { BeforeAfter } from "@/components/before-after";
 import { WaitlistForm } from "@/components/waitlist-form";
 import { Arrow, DOCS, Eyebrow, GUTTER, REPO, SiteFooter, SiteHeader } from "@/components/site";
 
@@ -70,7 +70,11 @@ function Hero() {
       <div className="flex flex-col gap-7">
         <Eyebrow>Design intelligence for AI agents</Eyebrow>
         <h1 id="hero-title" className="text-[52px] leading-[1] font-semibold tracking-[-0.035em] sm:text-[76px] xl:text-[92px]">
-          Understand before you design.
+          {"Understand before you design.".split(" ").map((w, i) => (
+            <span key={w} className="word-in inline-block" style={{ animationDelay: `${i * 90}ms` }}>
+              {w}&nbsp;
+            </span>
+          ))}
         </h1>
         <p className="max-w-[580px] text-[19px] leading-[1.55] text-ink-2">
           RYUX is a skill your AI agent installs. Before it designs, it writes down what it observed, what it is guessing,
@@ -198,7 +202,7 @@ function Proof() {
                   <th scope="col" className="py-3 font-normal">With RYUX</th>
                 </tr>
               </thead>
-              <tbody className="text-[16px] sm:text-[17px]">
+              <tbody className="stagger text-[16px] sm:text-[17px]">
                 {SUMMARY.map((r) => (
                   <tr key={r.measure} className="border-b border-night-hair">
                     <th scope="row" className="py-3.5 pr-3 font-normal text-night-sub">{r.measure}</th>
@@ -229,18 +233,19 @@ function Proof() {
 
 function Cases() {
   return (
-    <section id="cases" aria-labelledby="cases-title" className="bg-paper-2">
-      <Reveal className={`${GUTTER} flex flex-col gap-12 py-20 lg:py-28`}>
+    <section id="cases" aria-labelledby="cases-title" className="overflow-hidden bg-paper-2">
+      <Reveal className={`${GUTTER} flex flex-col gap-14 py-20 lg:py-28`}>
         <div className="flex max-w-[760px] flex-col gap-5">
-          <Eyebrow>Use cases</Eyebrow>
+          <Eyebrow>Before and after</Eyebrow>
           <h2 id="cases-title" className="text-[38px] leading-[1.08] font-semibold tracking-[-0.03em] sm:text-[52px]">
-            The same habit, on copy, code, and critique.
+            Same brief. Drag to see what changes.
           </h2>
           <p className="text-[18px] leading-[1.55] text-ink-2">
-            Three more runs from the repository, each with the same prompt given once without RYUX and once with it.
+            Each pair is one brief given to the same agent twice, once without RYUX and once with it, on an earlier release
+            with sample data.
           </p>
         </div>
-        <UseCases />
+        <BeforeAfter />
       </Reveal>
     </section>
   );
@@ -272,7 +277,7 @@ function HowItWorks() {
         </figure>
       </div>
 
-      <ol className="grid border-t border-ink [&>*]:min-w-0 sm:grid-cols-2 lg:grid-cols-5">
+      <ol className="stagger grid border-t border-ink [&>*]:min-w-0 sm:grid-cols-2 lg:grid-cols-5">
         {CAPABILITIES.map((c, i) => (
           <li key={c.name} className={`flex flex-col gap-3 border-b border-hair pt-6 pb-8 lg:border-b-0 lg:pr-6 ${i ? "lg:border-l lg:pl-6" : ""}`}>
             <span className="font-mono text-[13px] text-muted">{i + 1}</span>
