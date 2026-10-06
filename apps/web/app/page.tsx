@@ -242,7 +242,7 @@ function Cases() {
           </h2>
           <p className="text-[18px] leading-[1.55] text-ink-2">
             Each pair is one brief given to the same agent twice, once without RYUX and once with it, on an earlier release
-            with sample data.
+            with sample data. Screens are shown in English.
           </p>
         </div>
         <BeforeAfter />
