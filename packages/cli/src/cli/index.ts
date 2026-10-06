@@ -327,7 +327,11 @@ RYUX treats blanks as unknown instead of guessing.
 - **Market and locale**: (for example Indonesia, id-ID, Rupiah; or global, en-US, USD)
 - **Brand and design system**: ${system.length ? system.map((x) => `\`${x}\``).join(", ") : ""}
 - **Evidence sources**: RYUX MCP (${MCP_ADD_CMD}), Figma files, reference URLs:
-- **Constraints**: platforms, accessibility target (for example WCAG 2.2 AA), what must not change:`;
+- **Constraints**: platforms, accessibility target (for example WCAG 2.2 AA), what must not change:
+- **Design intent**: (what users should understand, feel, and do)
+- **UX direction**:
+- **UI direction**: (character, for example calm, trustworthy, restrained)
+- **Motion direction**: (feel, what motion communicates, what to avoid)`;
 }
 
 async function runInit(flags: Flags): Promise<void> {
