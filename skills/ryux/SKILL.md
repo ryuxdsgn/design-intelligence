@@ -5,7 +5,7 @@ description: "RYUX - design intelligence for AI agents and designers. Tell it wh
 
 # RYUX
 
-> Design intelligence for AI agents and designers. RYUX 2.3.1, MIT licensed.
+> Design intelligence for AI agents and designers. RYUX 2.3.2, MIT licensed.
 
 RYUX is a design intelligence layer for AI and designers. It helps understand, reason, design,
 build, critique, and verify interfaces using design knowledge and evidence. It is not a UI
@@ -151,6 +151,7 @@ FINAL          PASS | FAIL
 - An area FAILS when a [Required] rule in its skills fails without a written exception.
 - A Hard Gate failure cannot be excepted: fix it before declaring the work complete.
 - VISUAL QA cannot PASS without a render when a render tool is available; say which tool was used.
+- CODE QUALITY cannot PASS while changed logic has no test run; say which checks ran (typecheck, tests).
 - FINAL is PASS only when no area is FAIL.
 
 ## Honest claims
