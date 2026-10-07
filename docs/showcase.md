@@ -134,6 +134,27 @@ left the Total row out, because the rule was not given.
 - Inferred: our reading that RYUX made uncertainty explicit.
 - Not tested: visual quality, other models and tools, real users.
 
+### RYUX 2.4 rerun (clean harness)
+
+The same prompt and fact sheet, rerun for the 2.4 release in a clean harness: each agent in an empty
+folder outside any project, three runs without RYUX and six with RYUX 2.4.
+[Every run, raw](benchmarks/en-td-2.4/).
+
+| | 2.3.3 (3 runs, old harness) | 2.4 (6 runs, clean harness) |
+| --- | --- | --- |
+| Questions before designing | 3/3 | 6/6 |
+| Six screens | 3/3 | 6/6 |
+| No rule or feature nobody gave | 3/3 | 6/6 |
+| Currency left open as `[CUR]` | 3/3 | 5/6 |
+| Examples from only one market | 3/3 | 1/6 |
+| A design intent | 1/3 | 5/6 |
+| Live-updates line on screen | 3/3 | 5/6 |
+
+The skill and the harness both changed, so this cannot say how much of the difference is RYUX 2.4.
+One run used "$" as a labeled stand-in instead of `[CUR]`, and five of six still state the
+unconfirmed live-updates line. Without RYUX, the agent again asked nothing, designed one screen in
+two of three runs, assumed a currency in all three, and added features nobody asked for in all three.
+
 ### What RYUX did not prove: visual quality
 
 *"Design the home screen of a digital wallet app in pen.dev, mobile 390 wide …"* with the product
