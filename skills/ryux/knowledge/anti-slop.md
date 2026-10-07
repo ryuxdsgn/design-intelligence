@@ -43,7 +43,7 @@ ask the purpose question; keep it only if the answer is real.
 | Missing critical states | RX-EC-01 |
 | Broken responsive behavior | RX-RD-01 |
 | Accessibility failures | RX-A11Y-01, RX-A11Y-02, RX-A11Y-03, RX-A11Y-04 |
-| Unclear primary action | RX-PR-03 |
+| Unclear goal or competing actions | RX-PR-03 |
 | Unexplained interaction behavior | RX-IX-01 |
 | Duplicate components | RX-DS-01 |
 | Unnecessary complexity | RX-AS-06 |
@@ -112,7 +112,7 @@ Real screens show what real products do instead of invented numbers and urgency:
 ### RX-AS-04 [Required] [Hard Gate] No fake urgency
 
 - Do: State a deadline or a quota only when it is real, as a plain fact.
-- Do not: Write "sebelum kehabisan", "kuota terbatas", or fake countdowns with nothing behind them.
+- Do not: Write "only 2 left", "offer ends tonight", or fake countdowns with nothing behind them.
 - Why: Manufactured pressure erodes trust once users notice. (NNGroup credibility research; ryux run 2026-10-02: WhatsApp promo)
 - Check: review
 
