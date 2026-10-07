@@ -54,8 +54,7 @@ export function SiteHeader() {
     <header className="border-b border-hair">
       <div className={`${GUTTER} flex items-center justify-between gap-6 py-5`}>
         <Link href="/" className="flex items-center gap-2.5" aria-label="RYUX home">
-          <Mark size={22} />
-          <span className="text-[21px] font-bold tracking-[-0.01em]">RYUX</span>
+          <Mark size={26} />
         </Link>
         <nav aria-label="Main" className="hidden items-center gap-9 text-[15px] text-ink-2 lg:flex">
           {NAV.map((n) => (
@@ -115,7 +114,7 @@ export function SiteFooter() {
     <footer className="border-t border-hair">
       <div className={`${GUTTER} grid gap-12 py-14 sm:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr_1fr]`}>
         <div className="flex flex-col gap-4">
-          <p className="flex items-center gap-2.5 text-[19px] font-bold"><Mark size={18} /> RYUX</p>
+          <p><Mark size={22} /><span className="sr-only">RYUX</span></p>
           <p className="max-w-[300px] text-[15px] leading-[1.55] text-muted">
             Design intelligence for AI agents and designers. Early access, free.
           </p>
