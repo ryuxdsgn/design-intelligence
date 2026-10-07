@@ -161,7 +161,7 @@ pnpm typecheck
 
 - [GUIDE.md](GUIDE.md): install, MCP, and how RYUX reasons
 - [docs/design-rules.md](docs/design-rules.md): every rule, level, and gate
-- [docs/showcase.md](docs/showcase.md): earlier runs, case studies, and benchmark history
+- [docs/showcase.md](docs/showcase.md): the proof, every raw run, and the history
 
 </details>
 

@@ -253,6 +253,36 @@ export function renderRulesDoc(): string {
   return toModuleRefs(`${RULES.length} rules across ${SKILLS.length} modules: ${counts}; ${hard} Hard Gates and ${locks} Quality Locks.\n\n${sections.join("\n\n---\n\n")}`);
 }
 
+// ── docs/design-rules.md: rule provenance ───────────────────────────────────
+// Where each rule comes from, read from its basis (the source printed at the end of its Why line). A rule can cite
+// several kinds of source. Where a rule comes from says nothing about how good or effective it is.
+const PROVENANCE: { label: string; test: RegExp }[] = [
+  {
+    label: "Public standard or research",
+    test: /WCAG|W3C|Nielsen|NNGroup|Baymard|Apple HIG|Material|Hick's law|HTML inputmode|prefers-reduced-motion|PUEBI|QRIS standard|UU PDP|OJK|locale conventions/,
+  },
+  { label: "Industry practice", test: /\b(?:[Cc]lean-code|Design-system|[Aa]rt direction|[Ll]icensing and trademark|Localization|Testing|responsive design) practice/ },
+  { label: "Observed in a RYUX run", test: /ryux run|ryux README checkout image/ },
+  {
+    label: "RYUX principle, taxonomy, or review",
+    test: /ryux (?:[a-z-]+ )?(?:principle|taxonomy|reference screens|review practice|interaction model|visual QA loop)|critique\.md` playbook|Critique Design Read|owner review/,
+  },
+];
+
+const citation = (r: Rule): string => r.basis;
+
+export function renderProvenanceDoc(): string {
+  const kinds = RULES.map((r) => ({ id: r.id, kinds: PROVENANCE.filter((p) => p.test.test(citation(r))).map((p) => p.label) }));
+  const unmatched = kinds.filter((k) => k.kinds.length === 0).map((k) => k.id);
+  if (unmatched.length) throw new Error(`rule provenance: no source kind for ${unmatched.join(", ")}`);
+  const rows = PROVENANCE.map((p) => {
+    const ids = kinds.filter((k) => k.kinds.includes(p.label)).map((k) => k.id);
+    const only = kinds.filter((k) => k.kinds.length === 1 && k.kinds[0] === p.label).length;
+    return `| ${p.label} | ${ids.length} | ${only} |`;
+  });
+  return `| Source cited | Rules citing it | Rules citing only this |\n| --- | --- | --- |\n${rows.join("\n")}\n\nAll ${RULES.length} rules cite a source; ${kinds.filter((k) => k.kinds.length > 1).length} cite more than one kind, so the "Rules citing it" column adds up to more than ${RULES.length}.`;
+}
+
 export function renderMigrationTable(): string {
   const rows: [string, string][] = [];
   for (const r of RULES) for (const old of r.formerly ?? []) rows.push([old, r.id]);
