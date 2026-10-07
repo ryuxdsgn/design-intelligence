@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import { Eyebrow, GUTTER, REPO, SiteFooter, SiteHeader } from "@/components/site";
+import { Reveal } from "@/components/reveal";
+import { Scoreboard } from "@/components/scoreboard";
 
 export const metadata: Metadata = {
   title: "Benchmarks · RYUX",
@@ -79,6 +81,12 @@ export default function Benchmarks() {
               <Prompt>“Design a transaction detail page for a fintech app, shown after the user pays. Make it in pen.dev.”</Prompt>
               <p>Answers available to both, for any question: a global product in English, market and currency not decided, card and bank transfer, statuses Completed, Processing, and Failed, the data fields, and three actions. The runs without RYUX asked nothing, so they never received these answers.</p>
             </Block>
+            <Block label="Across three pairs">
+              <Reveal>
+                <Scoreboard />
+              </Reveal>
+              <p className="text-[15px] text-muted">One dot per paired run, filled when it happened. Every count is in the table below.</p>
+            </Block>
             <figure className="flex flex-col gap-3">
               <div className="overflow-x-auto">
               <Image
@@ -86,7 +94,7 @@ export default function Benchmarks() {
                 alt="Pair 2. Without RYUX: one completed screen in dollars with a 30-day reporting window and a Save PDF button nobody asked for. With RYUX: six screens, completed, processing, failed, loading, a load error, and a narrow width, with the currency left as [CUR]"
                 width={2459}
                 height={3421}
-                className="w-full min-w-[720px] rounded-md border border-hair md:min-w-0"
+                className="canvas-grid w-full min-w-[720px] rounded-xl border border-hair md:min-w-0"
               />
               </div>
               <figcaption className="text-[14px] text-muted">Scroll sideways on a small screen. Pair 2: every pair had the same screen difference, so the pre-set tie rule picked the strongest run without RYUX. Real output, sample data.</figcaption>

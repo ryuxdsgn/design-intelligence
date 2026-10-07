@@ -20,6 +20,7 @@
   --color-night-sub: #a9b2c3;
   --color-night-hair: #24324d;
   --color-mark-night: #ff8a73;
+  --color-accent-night: #a9a2ff;
 }
 
 html {
@@ -92,4 +93,38 @@ body {
 code,
 .font-mono {
   font-variant-ligatures: none;
+}
+
+/* The review canvas: a dot grid like a designer's proofing sheet. Decoration only, behind real screens. */
+.canvas-grid {
+  background-color: var(--color-paper-2);
+  background-image: radial-gradient(circle at 1px 1px, rgba(11, 22, 43, 0.14) 1px, transparent 0);
+  background-size: 22px 22px;
+}
+.canvas-grid-night {
+  background-image: radial-gradient(circle at 1px 1px, rgba(245, 246, 248, 0.09) 1px, transparent 0);
+  background-size: 22px 22px;
+}
+
+/* A review ring drawn around a value, like a pen circling it. Uses pathLength="1" on the shape. */
+@keyframes ring-draw {
+  from { stroke-dashoffset: 1; }
+  to { stroke-dashoffset: 0; }
+}
+.ring-draw { stroke-dasharray: 1; animation: ring-draw 700ms var(--ease-out) both; }
+.reveal[data-shown="false"] .ring-draw { animation: none; stroke-dashoffset: 1; }
+
+/* Tally dots: one per run, filled when it happened. */
+.tally > * { transition: transform 400ms var(--ease-out), opacity 400ms var(--ease-out); }
+.reveal[data-shown="false"] .tally > * { opacity: 0; transform: scale(0.4); }
+
+@media (prefers-reduced-motion: reduce) {
+  .ring-draw, .reveal[data-shown="false"] .ring-draw { animation: none; stroke-dashoffset: 0; }
+  .tally > *, .reveal[data-shown="false"] .tally > * { opacity: 1; transform: none; transition: none; }
+}
+
+/* Markup inside a section waits for the section to be revealed, then draws in order. */
+.reveal[data-shown="false"] .pin-in { animation: none; opacity: 0; }
+@media (prefers-reduced-motion: reduce) {
+  .reveal[data-shown="false"] .pin-in { opacity: 1; }
 }
