@@ -191,7 +191,7 @@ export default function Benchmarks() {
               Without context versus RYUX with a filled DESIGN.md. One run so far, which is not enough to claim anything. It
               will be repeated before it is published here.
             </p>
-            <a href={`${REPO}/blob/main/docs/showcase.md#repeated-benchmark-ryux-233`} className="inline-flex min-h-11 items-center self-start text-[17px] font-medium underline underline-offset-4">
+            <a href={`${REPO}/blob/main/docs/showcase.md#the-first-transaction-detail-run-indonesian-ryux-233`} className="inline-flex min-h-11 items-center self-start text-[17px] font-medium underline underline-offset-4">
               The earlier Indonesian-language runs and their method, in the showcase
             </a>
           </div>
