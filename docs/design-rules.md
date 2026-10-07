@@ -13,7 +13,8 @@ RYUX is design intelligence for AI agents and designers, packaged as one skill, 
 entry points: Analyze, Design, Build, Critique, and QA. The router (`SKILL.md`) picks the
 knowledge modules each task needs. Anti-slop prevents bad, generic output; RYUX also guides good
 design decisions. Three things make it distinctly RYUX: **evidence-based** (real product screens),
-**local depth** (Indonesia first), and **human judgment** for designer notes.
+a **global core with local market depth** (Indonesia is the first market), and **human judgment** for
+designer notes.
 
 ## Principle and workflow
 
@@ -173,6 +174,26 @@ FINAL          PASS | FAIL
 
 Claims in the report describe what was checked and how. "Pixel perfect", "fully accessible",
 "production ready", "senior-level", and "UX optimized" are not used without evidence.
+
+## Rule provenance
+
+Every rule ends its Why line with the source it comes from: a public standard or research, an
+industry practice, something observed in a RYUX agent run, or a RYUX principle or review. A rule can
+cite more than one. **Provenance describes where a rule comes from, not how authoritative or effective
+it is.** A standard gives authority; a RYUX run gives an observation; they are not equivalent evidence.
+The point is that all 84 rules can be traced, not that the counts score them. Read each rule's Why
+line below for its exact source.
+
+<!-- provenance:start -->
+| Source cited | Rules citing it | Rules citing only this |
+| --- | --- | --- |
+| Public standard or research | 48 | 37 |
+| Industry practice | 12 | 6 |
+| Observed in a RYUX run | 12 | 8 |
+| RYUX principle, taxonomy, or review | 26 | 19 |
+
+All 84 rules cite a source; 14 cite more than one kind, so the "Rules citing it" column adds up to more than 84.
+<!-- provenance:end -->
 
 ## Rules
 
