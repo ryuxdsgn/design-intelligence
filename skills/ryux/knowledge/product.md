@@ -44,7 +44,7 @@ Does not cover: layout or visual decisions (see `knowledge/ux.md` and `knowledge
 
 ## Evidence from RYUX Knowledge
 
-How comparable Indonesian products frame the same task and offer: `search_screens` (category, flow) and `get_flow` for the full sequence. Without the ryux MCP, say the evidence comes from the design and standards alone.
+How comparable products frame the same task and offer: `search_screens` (category, flow) and `get_flow` for the full sequence. Without the ryux MCP, say the evidence comes from the design and standards alone.
 
 > Hard Gates always apply, whichever skills are loaded: no invented numbers, people, urgency, business
 > rules, or terms; no placeholder shipped as final; no missing critical states. See `SKILL.md`.
@@ -65,11 +65,12 @@ How comparable Indonesian products frame the same task and offer: `search_screen
 - Why: Invented facts turn into promises and bugs that someone has to unwind. (ryux run 2026-10-02: an unconstrained agent invented a 30-day trial and user counts)
 - Check: review
 
-### RX-PR-03 [Required] [Hard Gate] One goal, one primary action
+### RX-PR-03 [Required] [Hard Gate] One clear goal; one primary action when the task has one
 
-- Do: Give each screen one primary goal and one primary action; make secondary actions look secondary.
-- Do not: Put two equal-weight calls to action side by side, or leave the main action unclear.
+- Do: Give each screen one clear, dominant goal. When the task has a clear next step (a form, checkout, a confirmation), give it one primary action and make secondary actions look secondary.
+- Do not: Put two equal-weight calls to action side by side, or leave the screen's goal unclear.
 - Why: A single clear path shortens the decision and the task. (Hick's law; NNGroup visual hierarchy)
+- Not when: Monitoring and configuration screens (dashboards, settings) need a clear goal but not a single dominant action; do not invent one to satisfy this rule.
 - Check: review
 
 ### RX-PR-04 [Required] Back decisions with real screens
@@ -82,8 +83,8 @@ How comparable Indonesian products frame the same task and offer: `search_screen
 ### RX-PR-05 [Required] The product's market first
 
 - Do: Start from how users in the product's own market pay, sign in, write addresses, and read money and dates; check a pattern from another market before reusing it. Take the market from the brief or the codebase, and ask when it is unclear.
-- Do not: Import card-first checkout into a QRIS market, or bring Rupiah, Bahasa Indonesia, or local tax rates into a product built for another market.
-- Why: Payment, address, and trust habits differ by market (in Indonesia: QRIS, virtual accounts, COD, WhatsApp). (ryux taxonomy of local patterns)
+- Do not: Import one market's checkout, currency, language, or tax rules into a product built for another market.
+- Why: Payment, address, and trust habits differ by market (local payment rails, address formats, messaging channels). (ryux taxonomy of local patterns)
 - Check: search_screens
 
 ### RX-PR-09 [Required] Compare patterns before choosing

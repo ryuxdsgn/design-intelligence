@@ -32,8 +32,8 @@ to this skill's folder.
 | **QA** | verify a build against the intended design | `capabilities/qa.md` |
 
 Knowledge modules (`knowledge/`): product, ux, interaction, forms, edge-cases, content, ui,
-design-system, accessibility, responsive, frontend, and anti-slop. RYUX Knowledge, through the
-ryux MCP, is the evidence for all of them. Every entry point ends at the quality gates: the Hard
+design-system, accessibility, responsive, frontend, and anti-slop. Evidence comes from the brief, the
+project, product data, standards, and the ryux MCP when connected; none is required. Every entry point ends at the quality gates: the Hard
 Gates below and the Delivery Gate, with anti-slop as the last check, never the starting point.
 
 Keep the capabilities apart; do not collapse them into one generic "design" answer:
@@ -78,6 +78,12 @@ Say where every claim comes from:
 | **Inferred** | a reasonable guess; say it is one | "probably an 8px scale" |
 | **Knowledge** | a known pattern or standard, cited | "WCAG 1.4.3", "observed in 4 screens, scr_..." |
 
+Product evidence (brief, requirements, analytics, research, support data) is Observed when sourced;
+reference screens show what products do, not what this product's users need. Four questions, not four
+output fields: where it came from (source, above), is it known (known, inferred, or **unknown**, kept
+visible), how strong is the basis (Strong, Thin, None), how sure is the choice (High, Medium, Low).
+Knowledge is what is generally known, evidence is what this context shows, judgment chooses from both.
+
 Rate the evidence for a decision **Strong** (2+ comparable screens), **Thin** (one, or another
 context), or **None** (a judgment call; say so, RX-PR-10). Scope each claim to its evidence: one
 screen supports "observed in scr_x", not "apps do X"; name the count ("in 4 observed screens"), and
@@ -108,11 +114,11 @@ No written exception; fix before delivery.
 - **Fake testimonials or people.** Do not make up testimonials, reviewers, or customer photos. (RX-AS-02)
 - **Invented business rules or product requirements.** Do not invent business rules, metrics, user data, permissions, pricing, requirements, or API behavior, or name a tool, command, integration, platform, or page the product does not have. (RX-PR-02, RX-FE-02)
 - **Placeholder copy shipped as final.** Do not ship placeholder copy or data disguised as final. (RX-AS-03)
-- **Fake urgency or scarcity.** Do not write "sebelum kehabisan", "kuota terbatas", or fake countdowns with nothing behind them. (RX-AS-04)
+- **Fake urgency or scarcity.** Do not write "only 2 left", "offer ends tonight", or fake countdowns with nothing behind them. (RX-AS-04)
 - **Missing critical states.** Do not ship only the filled, happy-path screen. (RX-EC-01)
 - **Broken responsive behavior.** Do not design for one width only. (RX-RD-01)
 - **Accessibility failures.** Do not put light grey text on white or white text on a pale accent. (RX-A11Y-01, RX-A11Y-02, RX-A11Y-03, RX-A11Y-04)
-- **Unclear primary action.** Do not put two equal-weight calls to action side by side, or leave the main action unclear. (RX-PR-03)
+- **Unclear goal or competing actions.** Do not put two equal-weight calls to action side by side, or leave the screen's goal unclear. (RX-PR-03)
 - **Unexplained interaction behavior.** Do not ship an action whose in-progress, result, or failure behavior is undefined. (RX-IX-01)
 - **Duplicate components.** Do not create a near-duplicate component or pattern for one screen. (RX-DS-01)
 - **Unnecessary complexity.** Do not add settings, sections, abstractions, or packages "for later", or features because similar products have them. (RX-AS-06)

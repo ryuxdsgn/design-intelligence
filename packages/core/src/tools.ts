@@ -423,12 +423,13 @@ export const UI_RULES: UiRule[] = [
   },
   {
     rule: "R-04",
-    title: "Exactly one primary action",
+    title: "No competing primary actions",
     severity: "warning",
+    // RX-PR-03: one primary action when the task has one; monitoring and configuration screens may have none.
     evaluate: (s) =>
       s.primary_actions === undefined
         ? { applicable: false, pass: false, note: "primary_actions not provided" }
-        : { applicable: true, pass: s.primary_actions === 1, note: `primary_actions=${s.primary_actions} (ideally 1)` },
+        : { applicable: true, pass: s.primary_actions <= 1, note: `primary_actions=${s.primary_actions} (at most 1; 0 is fine when the screen has no single next step)` },
   },
   {
     rule: "R-05",

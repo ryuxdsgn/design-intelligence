@@ -77,3 +77,12 @@ they added on their own. It is not a rule they broke.
 - All three RYUX runs offered examples from one market (QRIS, virtual account, Rp) in questions about
   a generic prompt.
 - The reasoning files are 3 to 5 times longer with RYUX.
+
+## Harness note (added 2026-10-07)
+
+These runs were made by subagents working inside the RYUX repo. The repo's project instructions
+describe the Indonesian market (Rupiah, QRIS, virtual accounts), and that context reached every run,
+with and without RYUX, although each agent was told to ignore it. It most likely inflated the
+one-market examples in RYUX's questions. A follow-up in a clean environment (an empty folder, no
+project instructions) still showed some tilt from RYUX's own wording, which RYUX 2.4 makes neutral.
+Later runs use the clean harness. The other counts compare A and B under the same context.

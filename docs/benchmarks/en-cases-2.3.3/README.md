@@ -72,3 +72,12 @@ screen, brand, design system, anything else: not decided.
   The run reported this itself. Next to DB-A1 the page looks plain.
 - OR-B1: "$" stands in for the undecided currency. It is labeled, but `[CUR]` would have been
   clearer. Its questions again offered examples from one market.
+
+## Harness note (added 2026-10-07)
+
+These runs were made by subagents working inside the RYUX repo. The repo's project instructions
+describe the Indonesian market (Rupiah, QRIS, virtual accounts), and that context reached every run,
+with and without RYUX, although each agent was told to ignore it. It most likely inflated the
+one-market examples in RYUX's questions. A follow-up in a clean environment (an empty folder, no
+project instructions) still showed some tilt from RYUX's own wording, which RYUX 2.4 makes neutral.
+Later runs use the clean harness. The other counts compare A and B under the same context.
