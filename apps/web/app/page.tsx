@@ -2,7 +2,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { CopyCommand } from "@/components/copy-command";
 import { Reveal } from "@/components/reveal";
-import { BeforeAfter } from "@/components/before-after";
+import { Cases as CaseStudies } from "@/components/cases";
+import { Pin, PinAt, Ring, type Tone } from "@/components/markup";
+import { Scoreboard } from "@/components/scoreboard";
 import { WaitlistForm } from "@/components/waitlist-form";
 import { Arrow, DOCS, Eyebrow, GUTTER, REPO, SiteFooter, SiteHeader } from "@/components/site";
 
@@ -11,13 +13,6 @@ const HERO_NOTES = [
   { x: 69, y: 20.7, tag: "State", body: "Processing is one of six screens RYUX designed, not only Completed." },
   { x: 72, y: 35.6, tag: "Assumption", body: "Live updates are not confirmed, so RYUX lists this line as an assumption to check." },
   { x: 58, y: 75.4, tag: "Unknown", body: "Nobody chose a currency, so it stays [CUR] instead of a made-up dollar sign." },
-];
-
-const SUMMARY = [
-  { measure: "Screens designed, per run", without: "1, 1, 1", with: "6, 6, 6" },
-  { measure: "Currency", without: "Dollars, 3 of 3", with: "Left open, 3 of 3" },
-  { measure: "Made-up business rules", without: "2 of 3 runs", with: "0 of 3 runs" },
-  { measure: "Features nobody asked for", without: "3 of 3 runs", with: "0 of 3 runs" },
 ];
 
 const CAPABILITIES = [
@@ -55,23 +50,25 @@ const INSTALL = [
 
 const AGENTS = "Claude Code, Codex, Cursor, Gemini CLI, OpenCode, Cline, GitHub Copilot, Amp, Kimi Code, and Antigravity";
 
-function Pin({ n }: { n: number }) {
-  return (
-    <span className="flex size-6 shrink-0 items-center justify-center rounded-full border-[1.5px] border-mark bg-white font-mono text-[11px] font-semibold text-mark">
-      {n}
-    </span>
-  );
-}
-
 function Hero() {
   return (
-    <section aria-labelledby="hero-title" className={`${GUTTER} grid items-center gap-16 py-16 [&>*]:min-w-0 lg:grid-cols-[1fr_auto] lg:gap-20 lg:py-24`}>
+    <section aria-labelledby="hero-title" className={`${GUTTER} grid items-center gap-14 py-14 [&>*]:min-w-0 xl:grid-cols-[1fr_auto] xl:gap-16 xl:py-20`}>
       <div className="flex flex-col gap-7">
         <Eyebrow>Design intelligence for AI agents</Eyebrow>
-        <h1 id="hero-title" className="text-[52px] leading-[1] font-semibold tracking-[-0.035em] sm:text-[76px] xl:text-[92px]">
+        <h1 id="hero-title" className="text-[52px] leading-[1] font-semibold tracking-[-0.035em] sm:text-[76px] xl:text-[88px]">
           {"Understand before you design.".split(" ").map((w, i) => (
             <span key={w} className="word-in inline-block" style={{ animationDelay: `${i * 90}ms` }}>
-              {w}&nbsp;
+              {w === "design." ? (
+                <span className="relative inline-block">
+                  design
+                  <svg aria-hidden className="absolute -bottom-[0.2em] left-0 h-[0.14em] w-full overflow-visible" viewBox="0 0 100 10" preserveAspectRatio="none">
+                    <path d="M1 7 C 25 2, 60 2, 99 5" pathLength={1} fill="none" strokeWidth="3" vectorEffect="non-scaling-stroke" strokeLinecap="round" className="ring-draw stroke-mark" style={{ animationDelay: "700ms" }} />
+                  </svg>
+                </span>
+              ) : (
+                w
+              )}
+              {w === "design." ? "." : null}&nbsp;
             </span>
           ))}
         </h1>
@@ -89,8 +86,12 @@ function Hero() {
         </div>
       </div>
 
-      <figure className="mx-auto w-full max-w-[300px] lg:mx-0 lg:mr-[280px] lg:w-[300px]">
-        <div className="relative">
+      <figure className="canvas-grid relative mx-auto w-full max-w-[680px] rounded-[28px] border border-hair px-5 pt-16 pb-8 sm:px-10 xl:mx-0 xl:w-[640px] xl:pr-[300px] xl:pl-10">
+        <figcaption className="absolute top-5 right-5 left-5 flex items-center justify-between gap-3 font-mono text-[12px] text-muted sm:right-7 sm:left-7">
+          <span>Review · benchmark output</span>
+          <span className="hidden sm:inline">Real run, sample data</span>
+        </figcaption>
+        <div className="relative mx-auto w-full max-w-[300px] shadow-[0_30px_60px_-30px_rgba(11,22,43,0.35)] xl:mx-0 rounded-[22px]">
           <Image
             src="/proof/en-td-with.png"
             alt="A processing payment screen designed with RYUX: the status Processing, the amount shown as [CUR] 49.00 because no currency was chosen, a note asking the user not to pay again, and the transaction details"
@@ -99,6 +100,7 @@ function Hero() {
             priority
             className="w-full rounded-[22px] border border-hair"
           />
+          <Ring x={77} y={76.9} w={34} h={4.4} tone="mark" delay={2200} />
           {HERO_NOTES.map((note, i) => (
             <div key={note.tag} className="absolute" style={{ left: `${note.x}%`, top: `${note.y}%` }}>
               <div className="-translate-x-1/2 -translate-y-1/2">
@@ -108,17 +110,17 @@ function Hero() {
               </div>
               <span
                 aria-hidden
-                className="draw-x absolute top-0 hidden h-px bg-mark lg:block"
+                className="draw-x absolute top-0 hidden h-px bg-mark xl:block"
                 style={{ left: 12, width: `calc(${(300 * (100 - note.x)) / 100}px + 28px)`, animationDelay: `${650 + i * 450}ms` }}
               />
-              <div className="note-in absolute -top-3 hidden w-[220px] lg:block" style={{ left: `calc(${(300 * (100 - note.x)) / 100}px + 48px)`, animationDelay: `${900 + i * 450}ms` }}>
+              <div className="note-in absolute -top-3 hidden w-[220px] xl:block" style={{ left: `calc(${(300 * (100 - note.x)) / 100}px + 48px)`, animationDelay: `${900 + i * 450}ms` }}>
                 <p className="text-[13px] font-semibold text-mark">{note.tag}</p>
                 <p className="mt-1 text-[15px] leading-[1.45] text-ink-2">{note.body}</p>
               </div>
             </div>
           ))}
         </div>
-        <ol className="mt-6 flex flex-col gap-4 lg:hidden">
+        <ol className="mx-auto mt-8 flex max-w-[480px] flex-col gap-4 xl:hidden">
           {HERO_NOTES.map((note, i) => (
             <li key={note.tag} className="flex gap-3">
               <Pin n={i + 1} />
@@ -128,34 +130,43 @@ function Hero() {
             </li>
           ))}
         </ol>
-              </figure>
+      </figure>
     </section>
   );
 }
 
+type Mark = { x: number; y: number; ring?: [number, number, number, number]; note: string };
+
 function Proof() {
-  const screens = [
+  const screens: {
+    label: string; src: string; w: number; h: number; alt: string; tone: Tone; marks: Mark[]; after?: string;
+  }[] = [
     {
       label: "Without RYUX",
       src: "/proof/en-td-without.png",
       w: 780,
       h: 1926,
-      tag: "Made up",
-      body: "“Report it within 30 days.” A dollar currency, a 30-day window, and a Save PDF button that nobody asked for.",
+      tone: "mark-night",
       alt: "The completed payment screen designed without RYUX: $24.50 paid to a coffee shop, the wallet balance, a promise to look into problems reported within 30 days, and Save PDF and Share receipt buttons",
+      marks: [
+        { x: 21, y: 22.3, ring: [50, 22.3, 50, 6.4], note: "Dollars, though the prompt named no currency." },
+        { x: 5, y: 79.3, ring: [48, 79.3, 70, 3.6], note: "“Report it within 30 days”: a rule nobody decided." },
+        { x: 95, y: 84.6, ring: [75.5, 87.4, 44, 5.4], note: "Save PDF, which nobody asked for." },
+      ],
     },
     {
       label: "With RYUX",
       src: "/proof/en-td-with-completed.png",
       w: 791,
       h: 1931,
-      tag: "Left open",
-      body: "“[CUR] 49.00.” The currency stays open, and five more screens: processing, failed, loading, a load error, and a narrow width.",
+      tone: "accent-night",
       alt: "The completed payment screen designed with RYUX: [CUR] 49.00 paid to [Merchant name], with the fee and total shown and only the actions that were asked for",
+      marks: [{ x: 13, y: 27.5, ring: [50, 27.5, 68, 6.4], note: "[CUR]: the currency stays open until someone chooses it." }],
+      after: "Plus five more screens: processing, failed, loading, a load error, and a narrow width.",
     },
   ];
   return (
-    <section id="proof" aria-labelledby="proof-title" className="bg-night text-night-text">
+    <section id="proof" aria-labelledby="proof-title" className="canvas-grid-night bg-night text-night-text">
       <Reveal className={`${GUTTER} flex flex-col gap-14 py-20 lg:py-28`}>
         <div className="grid gap-10 [&>*]:min-w-0 lg:grid-cols-[1fr_420px] lg:items-end lg:gap-20">
           <div className="flex flex-col gap-5">
@@ -176,45 +187,36 @@ function Proof() {
           </div>
         </div>
 
-        <div className="grid gap-12 [&>*]:min-w-0 xl:grid-cols-[300px_300px_1fr]">
+        <div className="grid gap-14 [&>*]:min-w-0 xl:grid-cols-[300px_300px_1fr] xl:gap-12">
           <div className="grid max-w-[680px] grid-cols-2 gap-5 [&>*]:min-w-0 sm:gap-8 xl:contents">
             {screens.map((s) => (
               <figure key={s.label} className="flex flex-col gap-4">
-                <figcaption className="text-[15px] font-semibold">{s.label}</figcaption>
-                <Image src={s.src} alt={s.alt} width={s.w} height={s.h} className="w-full rounded-[20px]" />
-                <div>
-                  <p className="text-[14px] font-semibold text-mark-night">{s.tag}</p>
-                  <p className="mt-1.5 text-[15px] leading-[1.5] text-night-sub sm:text-[16px]">{s.body}</p>
+                <figcaption className={`text-[15px] font-semibold ${s.tone === "mark-night" ? "text-mark-night" : "text-accent-night"}`}>{s.label}</figcaption>
+                <div className="relative">
+                  <Image src={s.src} alt={s.alt} width={s.w} height={s.h} className="w-full rounded-[20px]" />
+                  {s.marks.map((m, i) => (
+                    <div key={m.note}>
+                      {m.ring && <Ring x={m.ring[0]} y={m.ring[1]} w={m.ring[2]} h={m.ring[3]} tone={s.tone} delay={300 + i * 350} />}
+                      <PinAt n={i + 1} x={m.x} y={m.y} tone={s.tone} delay={200 + i * 350} />
+                    </div>
+                  ))}
                 </div>
+                <ol className="flex flex-col gap-3">
+                  {s.marks.map((m, i) => (
+                    <li key={m.note} className="flex gap-2.5">
+                      <Pin n={i + 1} tone={s.tone} />
+                      <p className="text-[14px] leading-[1.5] text-night-sub sm:text-[15px]">{m.note}</p>
+                    </li>
+                  ))}
+                  {s.after && <li className="text-[14px] leading-[1.5] text-night-text sm:text-[15px]">{s.after}</li>}
+                </ol>
               </figure>
             ))}
           </div>
 
           <div className="flex flex-col gap-7 xl:pt-10 xl:pl-6">
-            <p className="text-[21px] font-medium">Repeated three times, counted from the outputs.</p>
-            <table className="w-full text-left">
-              <caption className="sr-only">Three paired runs, without and with RYUX</caption>
-              <thead>
-                <tr className="border-b border-night-hair text-[14px] text-night-sub">
-                  <th scope="col" className="py-3 pr-3 font-normal"><span className="sr-only">Measure</span></th>
-                  <th scope="col" className="py-3 pr-3 font-normal">Without RYUX</th>
-                  <th scope="col" className="py-3 font-normal">With RYUX</th>
-                </tr>
-              </thead>
-              <tbody className="stagger text-[16px] sm:text-[17px]">
-                {SUMMARY.map((r) => (
-                  <tr key={r.measure} className="border-b border-night-hair">
-                    <th scope="row" className="py-3.5 pr-3 font-normal text-night-sub">{r.measure}</th>
-                    <td className="py-3.5 pr-3 sm:whitespace-nowrap">{r.without}</td>
-                    <td className="py-3.5 font-semibold sm:whitespace-nowrap">{r.with}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-            <p className="text-[16px] leading-[1.55] text-night-sub">
-              Without RYUX the agent asked nothing and filled every gap itself. With RYUX it asked three questions and kept
-              what was still undecided visible.
-            </p>
+            <p className="text-[21px] font-medium">Repeated three times. One dot per run.</p>
+            <Scoreboard night />
             <p className="text-[16px] leading-[1.55]">
               <span className="font-semibold text-mark-night">What it did not change:</span> how good the screens look. In a
               blind visual test of a wallet home screen, RYUX scored 3.71 against 3.67 out of 5.
@@ -239,16 +241,16 @@ function Cases() {
     <section id="cases" aria-labelledby="cases-title" className="overflow-hidden bg-paper-2">
       <Reveal className={`${GUTTER} flex flex-col gap-14 py-20 lg:py-28`}>
         <div className="flex max-w-[760px] flex-col gap-5">
-          <Eyebrow>Before and after</Eyebrow>
+          <Eyebrow>Two more runs</Eyebrow>
           <h2 id="cases-title" className="text-[38px] leading-[1.08] font-semibold tracking-[-0.03em] sm:text-[52px]">
-            Same brief. Drag to see what changes.
+            Looking finished is not the same as being right.
           </h2>
           <p className="text-[18px] leading-[1.55] text-ink-2">
-            Each pair is one brief given to the same agent twice, once without RYUX and once with it, on an earlier release
-            with sample data. The screen text was translated into English from the original runs.
+            Two more prompts, run the same way as the benchmark: a fresh agent, the same model, sample data. One run each,
+            so read them as examples, not proof. The screens are the agents&apos; own exports; the rings are ours.
           </p>
         </div>
-        <BeforeAfter />
+        <CaseStudies />
       </Reveal>
     </section>
   );
