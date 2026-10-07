@@ -27,8 +27,8 @@ to this skill's folder.
 | **QA** | verify a build against the intended design | \`capabilities/qa.md\` |
 
 Knowledge modules (\`knowledge/\`): product, ux, interaction, forms, edge-cases, content, ui,
-design-system, accessibility, responsive, frontend, and anti-slop. RYUX Knowledge, through the
-ryux MCP, is the evidence for all of them. Every entry point ends at the quality gates: the Hard
+design-system, accessibility, responsive, frontend, and anti-slop. Evidence comes from the brief, the
+project, product data, standards, and the ryux MCP when connected; none is required. Every entry point ends at the quality gates: the Hard
 Gates below and the Delivery Gate, with anti-slop as the last check, never the starting point.
 
 Keep the capabilities apart; do not collapse them into one generic "design" answer:
@@ -182,6 +182,12 @@ export const CORE_EVIDENCE = `Say where every claim comes from:
 | **Observed** (or Measured) | seen in the design, a capture, or read from its values | "body text is 16/24, from the CSS" |
 | **Inferred** | a reasonable guess; say it is one | "probably an 8px scale" |
 | **Knowledge** | a known pattern or standard, cited | "WCAG 1.4.3", "observed in 4 screens, scr_..." |
+
+Product evidence (brief, requirements, analytics, research, support data) is Observed when sourced;
+reference screens show what products do, not what this product's users need. Four questions, not four
+output fields: where it came from (source, above), is it known (known, inferred, or **unknown**, kept
+visible), how strong is the basis (Strong, Thin, None), how sure is the choice (High, Medium, Low).
+Knowledge is what is generally known, evidence is what this context shows, judgment chooses from both.
 
 Rate the evidence for a decision **Strong** (2+ comparable screens), **Thin** (one, or another
 context), or **None** (a judgment call; say so, RX-PR-10). Scope each claim to its evidence: one

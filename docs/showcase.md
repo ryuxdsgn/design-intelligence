@@ -243,8 +243,11 @@ Evidence: None.
 
 1. Make two empty folders per pair, A and B. Copy RYUX (`skills/ryux/` from this repo) into
    `B/.claude/skills/ryux/`. Nothing goes into A.
-2. Start a fresh agent per run with the same model, working only in its folder, told to ignore any
-   other project's instructions. B is told to follow the installed skill; A uses no design skill.
+2. Start a fresh agent per run with the same model, working only in its folder. Run it from an empty
+   folder outside any project (for example `claude -p` in that folder), so no project instructions or
+   memory reach it. Telling an agent to ignore them is not enough: the 2.3.3 runs above were made
+   inside the RYUX repo and picked up its Indonesian context. B follows the installed skill; A uses no
+   design skill.
 3. Give both the identical prompt. If an agent asks questions, answer only from the fact sheet, the
    same for both sides. An agent that asks nothing gets nothing.
 4. Each run adds one new frame to the shared pen.dev canvas, exports a PNG, and writes its reasoning.
@@ -265,9 +268,15 @@ The prompts, fact sheets, and counts for each experiment are in its README in
 - **Evidence None everywhere.** The ryux MCP was off, so these runs say nothing about reasoning with
   reference screens.
 - **One tool.** Every run designed in pen.dev.
-- **A known bias.** RYUX's questions offered examples from one market in 4 of 5 English runs. We think
-  RYUX's own knowledge text causes it (its examples come from the first market it covers), but that
-  is not tested yet.
+- **A known bias, and a harness flaw behind it.** RYUX's questions offered examples from one market
+  in 4 of 5 English runs. A follow-up test found two causes. First, the harness: every run in this
+  section ran inside the RYUX repo, whose project instructions describe the Indonesian market, so that
+  context reached both sides even though the agents were told to ignore it. With RYUX's own examples
+  made neutral, runs in that environment still gave Indonesian examples in 3 of 3. Second, RYUX's
+  text: in a clean environment (an empty folder, no project instructions), RYUX as shipped gave an
+  Indonesia-only example in 1 of 2 runs, and the neutral wording gave several markets in 2 of 2. Two
+  runs per condition is too few for a rate. RYUX 2.4 uses the neutral wording, and later runs use the
+  clean harness.
 
 ## 08 · Historical: not the current benchmark
 
