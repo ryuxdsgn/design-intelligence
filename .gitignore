@@ -8,6 +8,7 @@ dist
 
 # Internal notes (kept local)
 docs/prd.md
+docs/ops.md
 CLAUDE.md
 
 # RYUX Knowledge captures (screenshots, review.md): data, never in git
