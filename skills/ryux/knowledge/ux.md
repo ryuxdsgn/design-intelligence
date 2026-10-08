@@ -2,7 +2,7 @@
 
 Structures screens and flows so people find their way: information architecture, navigation, grouping, and progressive disclosure.
 
-> Group UX · Delivery Gate area UX · RYUX 2.4.1. Levels are defined in `SKILL.md`.
+> Group UX · Delivery Gate area UX · RYUX 2.5.0. Levels are defined in `SKILL.md`.
 
 Choose structure from the user's goal, not from a template.
 

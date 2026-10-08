@@ -16,7 +16,7 @@ Rules without data are just style; data without rules is just a pile of images. 
 
 ## 1. Install RYUX into your agent
 
-One command, then answer a few questions (which agents you use, which groups to install, MCP connection):
+One command, then answer a few questions (which agents you use, and an optional project setup):
 
 ```bash
 npx @ryuxdsgn/ryux
@@ -39,6 +39,21 @@ Build, Critique, QA), and the knowledge modules the router reads when a task nee
 
 Your files are never overwritten wholesale. Changes stay inside the block
 `<!-- ryux-rules:start -->` … `<!-- ryux-rules:end -->`.
+
+### Project setup
+
+After the install, the CLI offers a short setup: product, audience, market and locale, constraints,
+design intent, and UX, UI, and motion direction. Press Enter to skip any question. The answers go
+into a `<!-- ryux-context -->` block in `DESIGN.md`, which RYUX reads before every design task.
+Blanks stay unknown; RYUX does not fill them in by guessing.
+
+Change the answers later, or set them without questions:
+
+```bash
+npx @ryuxdsgn/ryux setup
+npx @ryuxdsgn/ryux setup --audience "small business owners" --market "Indonesia, id-ID, IDR"
+npx @ryuxdsgn/ryux check     # shows how many setup fields are filled
+```
 
 ### Non-interactive
 
@@ -67,7 +82,32 @@ uses the Streamable HTTP transport).
 
 ## 3. Try it
 
-Ask your agent:
+Talk to your agent as you would to a designer. There is no special RYUX prompt:
+
+```text
+Design a transaction detail page for our app.
+```
+
+RYUX reads DESIGN.md and the prompt, finds what is missing, and asks only the questions that would
+change a major decision (at most three, often none). Then it designs, critiques, and checks its
+work.
+
+You can give it more up front. Good input answers what you are making, who it is for, what the user
+should accomplish, which constraints exist, and what evidence you have. Leave out what you don't
+know; RYUX asks when it matters.
+
+```text
+Design a transaction detail page for our mobile banking app. Users are consumers in Indonesia.
+It shows after a successful payment, and it should help them understand what happened and what
+they can do next. Use the existing design system.
+```
+
+```text
+Here are three existing screens and our support-ticket findings. Design the new checkout flow
+from them.
+```
+
+All three use the same RYUX. More examples:
 
 - "Find a reference for a payment method picker with QRIS via RYUX."
 - "Critique this checkout page." RYUX routes to Critique on its own.

@@ -1,6 +1,6 @@
 <p align="center">
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-2ea44f" alt="MIT License"></a>
-  <img src="https://img.shields.io/badge/status-early__access%20%C2%B7%20rules%202.4-1f6feb" alt="Status: early access, rules 2.4">
+  <img src="https://img.shields.io/badge/status-early__access%20%C2%B7%20rules%202.5-1f6feb" alt="Status: early access, rules 2.5">
 </p>
 
 # RYUX
@@ -88,27 +88,53 @@ start from a purpose and a brief: what the visual should communicate and what to
 it look less AI. Make it look more intentional. In our own blind test of a wallet home screen, RYUX
 did not make screens consistently prettier; its effect is on reasoning, not polish.
 
-**DESIGN.md gives RYUX your project's direction.** `ryux init` adds a short context block with
-fields for product, audience, market, constraints, design intent, and UX, UI, and motion direction.
-You fill in what you know; RYUX reads it before it designs, treats blanks as unknown, and asks only
-when a missing answer would change a major decision.
+**DESIGN.md gives RYUX your project's direction.** `ryux setup` asks a few questions about product,
+audience, market, constraints, design intent, and UX, UI, and motion direction, and saves the answers
+to a short block in DESIGN.md. Every question can be skipped. RYUX reads the block before it
+designs and treats blanks as unknown.
 
 ```
 prompt → DESIGN.md → design knowledge → evidence → decisions
 ```
 
+## Using RYUX
+
+You don't need a special prompt. Say what you are making, in your own words:
+
+```text
+Design a transaction detail page for our app.
+```
+
+RYUX checks whether that is enough. It reads DESIGN.md and what the project already shows, and asks
+only the questions whose answers would change a major decision, at most three and often none. Then it
+designs.
+
+More context gives a better start. Good input answers some of these:
+
+- What are we making?
+- Who is it for?
+- What should the user accomplish?
+- What constraints already exist?
+- What evidence do we have: screens, research, data?
+
+Don't know something? Leave it out. RYUX asks when it matters.
+
+A short request, a request with context, and a request with your own screens and research all use
+the same RYUX. RYUX doesn't just answer the prompt. It checks whether the prompt is enough.
+
 ## Get started
+
+```bash
+npx @ryuxdsgn/ryux
+```
+
+It asks which agents you use, installs RYUX, then offers a short project setup that writes
+DESIGN.md. Run `npx @ryuxdsgn/ryux setup` again any time to change the answers.
 
 Any agent, through [skills.sh](https://skills.sh):
 
 ```bash
 npx skills add ryuxdsgn/design-intelligence
-```
-
-With project context (writes DESIGN.md):
-
-```bash
-npx @ryuxdsgn/ryux init --agent claude
 ```
 
 As a Claude Code plugin, inside Claude Code:
@@ -174,7 +200,7 @@ pnpm typecheck
 
 ## Status
 
-RYUX 2.4, early access, free. Available now: the skill, the CLI, skills.sh, the Claude Code plugin,
+RYUX 2.5, early access, free. Available now: the skill, the CLI, skills.sh, the Claude Code plugin,
 and the MCP server run locally. Coming: the hosted MCP and a larger reference library.
 
 ## Contributing, security, license

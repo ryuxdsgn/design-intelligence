@@ -65,6 +65,42 @@ test("init adds project context once and keeps what the user wrote", () => {
   rmSync(dir, { recursive: true, force: true });
 });
 
+test("setup fills only the answered fields and keeps the rest", () => {
+  const dir = project();
+  run(dir, "init", "--agent", "claude");
+  const design = readFileSync(join(dir, "DESIGN.md"), "utf8");
+  writeFileSync(join(dir, "DESIGN.md"), design.replace("**UX direction**:", "**UX direction**: guide first-time users"));
+  const s = run(dir, "setup", "--audience", "Small business owners", "--market", "Indonesia, id-ID, IDR");
+  assert.equal(s.code, 0, s.out);
+  const after = readFileSync(join(dir, "DESIGN.md"), "utf8");
+  assert.match(after, /\*\*Audience\*\*: Small business owners\n/);
+  assert.match(after, /\*\*Market and locale\*\*: Indonesia, id-ID, IDR\n/);
+  assert.match(after, /\*\*Product\*\*: acme-app \(what it does/);
+  assert.match(after, /\*\*UX direction\*\*: guide first-time users/);
+  assert.match(after, /\*\*Design intent\*\*: \(what users should understand/);
+  assert.match(run(dir, "check").out, /4 of 8 setup fields filled/);
+  rmSync(dir, { recursive: true, force: true });
+});
+
+test("setup writes a context block when none exists", () => {
+  const dir = project();
+  assert.equal(run(dir, "setup", "--intent", "Make financial status easy to understand").code, 0);
+  const design = readFileSync(join(dir, "DESIGN.md"), "utf8");
+  assert.match(design, /ryux-context:start/);
+  assert.match(design, /\*\*Design intent\*\*: Make financial status easy to understand\n/);
+  rmSync(dir, { recursive: true, force: true });
+});
+
+test("setup without a terminal or flags, or with --global, explains and fails", () => {
+  const dir = project();
+  const a = run(dir, "setup");
+  assert.equal(a.code, 1);
+  assert.match(a.out, /--audience/);
+  assert.ok(!existsSync(join(dir, "DESIGN.md")));
+  assert.equal(run(dir, "setup", "--global", "--audience", "x").code, 1);
+  rmSync(dir, { recursive: true, force: true });
+});
+
 test("remove takes RYUX out but leaves the project context", () => {
   const dir = project();
   run(dir, "init", "--agent", "claude");
