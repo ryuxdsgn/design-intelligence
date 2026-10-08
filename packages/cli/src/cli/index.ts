@@ -323,25 +323,125 @@ function detectContext(root: string): { name: string | null; system: string[] } 
   return { name, system: candidates.filter((c) => existsSync(join(root, c))) };
 }
 
+interface Choice {
+  value: string;
+  label: string;
+  hint?: string;
+}
+
 interface ContextField {
   label: string;
   /** Text the template shows while the field is blank. */
   hint: string;
   /** Asked by `setup`, settable with --<flag>. Fields without it are detected or keep their default. */
-  ask?: { flag: string; group: "Project" | "Design"; question: string; placeholder?: string };
+  ask?: {
+    flag: string;
+    group: "Project" | "Design";
+    question: string;
+    /** Plain-language choices for people who are not designers; "Write my own" and "Skip" are always added. */
+    options: Choice[];
+    multi?: boolean;
+    max?: number;
+  };
 }
 
+/** A choice whose value is empty means "not decided": the field stays unknown. */
 const CONTEXT_FIELDS: ContextField[] = [
-  { label: "Product", hint: "(what it does, in one sentence:)", ask: { flag: "product", group: "Project", question: "What's the product? One sentence." } },
-  { label: "Audience", hint: "", ask: { flag: "audience", group: "Project", question: "Who is it for?" } },
-  { label: "Market and locale", hint: "(for example Indonesia, id-ID, Rupiah; or global, en-US, USD)", ask: { flag: "market", group: "Project", question: "Market and locale?", placeholder: "for example Indonesia, id-ID, IDR; or global, en-US, USD" } },
+  {
+    label: "Product", hint: "(what it does, in one sentence:)",
+    ask: { flag: "product", group: "Project", question: "What kind of product is it?", options: [
+      { value: "Online store", label: "Online store" },
+      { value: "Payments or finance", label: "Payments or finance" },
+      { value: "Marketplace", label: "Marketplace" },
+      { value: "Booking or scheduling", label: "Booking or scheduling" },
+      { value: "SaaS or dashboard", label: "SaaS or dashboard", hint: "a tool people use for work" },
+      { value: "Content or media", label: "Content or media" },
+      { value: "Internal tool", label: "Internal tool", hint: "used by your own team" },
+    ] },
+  },
+  {
+    label: "Current work", hint: "",
+    ask: { flag: "work", group: "Project", question: "What are you building right now?", options: [
+      { value: "A new product", label: "A new product" },
+      { value: "A new feature", label: "A new feature" },
+      { value: "A new screen", label: "A new screen" },
+      { value: "An existing flow", label: "An existing flow", hint: "changing something that already exists" },
+      { value: "A redesign", label: "A redesign" },
+      { value: "", label: "Not decided yet", hint: "stays unknown" },
+    ] },
+  },
+  {
+    label: "Audience", hint: "",
+    ask: { flag: "audience", group: "Project", question: "Who is it for?", options: [
+      { value: "Consumers", label: "Consumers", hint: "people using it for themselves" },
+      { value: "Small business owners", label: "Small business owners" },
+      { value: "Professionals at work", label: "Professionals at work" },
+      { value: "An internal team", label: "An internal team" },
+      { value: "Developers", label: "Developers" },
+    ] },
+  },
+  {
+    label: "Market and locale", hint: "(for example Indonesia, id-ID, Rupiah; or global, en-US, USD)",
+    ask: { flag: "market", group: "Project", question: "Where is it used? This sets language and currency.", options: [
+      { value: "Global, several markets", label: "Global, several markets" },
+      { value: "Indonesia (id-ID, IDR)", label: "Indonesia", hint: "id-ID, Rupiah" },
+      { value: "United States (en-US, USD)", label: "United States", hint: "en-US, US dollar" },
+      { value: "", label: "Not decided yet", hint: "stays unknown" },
+    ] },
+  },
   { label: "Brand and design system", hint: "" },
   { label: "Evidence sources", hint: `RYUX MCP (hosted server not live yet; local: ${MCP_LOCAL_ADD_CMD}), Figma files, reference URLs:` },
-  { label: "Constraints", hint: "platforms, accessibility target (for example WCAG 2.2 AA), what must not change:", ask: { flag: "constraints", group: "Project", question: "Anything RYUX must not change?", placeholder: "platforms, accessibility target, brand, existing flows" } },
-  { label: "Design intent", hint: "(what users should understand, feel, and do)", ask: { flag: "intent", group: "Design", question: "Design intent: what should users understand, feel, and do?" } },
-  { label: "UX direction", hint: "", ask: { flag: "ux", group: "Design", question: "UX direction?", placeholder: "for example fast for repeat use, or guide first-time users" } },
-  { label: "UI direction", hint: "(character, for example calm, trustworthy, restrained)", ask: { flag: "ui", group: "Design", question: "UI direction?", placeholder: "character, for example calm, trustworthy, restrained" } },
-  { label: "Motion direction", hint: "(feel, what motion communicates, what to avoid)", ask: { flag: "motion", group: "Design", question: "Motion direction?", placeholder: "feel, what motion communicates, what to avoid" } },
+  {
+    label: "Constraints", hint: "platforms, accessibility target (for example WCAG 2.2 AA), what must not change:",
+    ask: { flag: "constraints", group: "Project", question: "What must RYUX keep or support?", multi: true, options: [
+      { value: "Mobile app", label: "Mobile app" },
+      { value: "Web", label: "Web" },
+      { value: "Responsive web", label: "Responsive web", hint: "one site for phone and desktop" },
+      { value: "Web and mobile app", label: "Web and mobile app" },
+      { value: "Existing design system", label: "Existing design system" },
+      { value: "Existing brand identity", label: "Existing brand identity" },
+      { value: "Accessibility, WCAG 2.2 AA", label: "Accessibility", hint: "WCAG 2.2 AA" },
+    ] },
+  },
+  {
+    label: "Design intent", hint: "(what users should understand, feel, and do)",
+    ask: { flag: "intent", group: "Design", question: "What should people get from it?", options: [
+      { value: "Understand their status at a glance", label: "Understand their status at a glance" },
+      { value: "Finish a task quickly", label: "Finish a task quickly" },
+      { value: "Feel safe and in control", label: "Feel safe and in control" },
+      { value: "Learn the product step by step", label: "Learn the product step by step" },
+    ] },
+  },
+  {
+    label: "UX direction", hint: "",
+    ask: { flag: "ux", group: "Design", question: "How should the experience help users?", options: [
+      { value: "Fast for people who use it often", label: "Fast for people who use it often" },
+      { value: "Clear for people using it for the first time", label: "Clear for people using it for the first time" },
+      { value: "Easy to scan and understand", label: "Easy to scan and understand" },
+      { value: "Guided through a complex task", label: "Guided through a complex task" },
+    ] },
+  },
+  {
+    label: "UI direction", hint: "(character, for example calm, trustworthy, restrained)",
+    ask: { flag: "ui", group: "Design", question: "What character should it have? A character, not colors or fonts. Pick up to 3.", multi: true, max: 3, options: [
+      { value: "Calm", label: "Calm" },
+      { value: "Trustworthy", label: "Trustworthy" },
+      { value: "Friendly", label: "Friendly" },
+      { value: "Playful", label: "Playful" },
+      { value: "Bold", label: "Bold" },
+      { value: "Minimal", label: "Minimal" },
+      { value: "Information-rich", label: "Information-rich" },
+      { value: "Premium", label: "Premium" },
+    ] },
+  },
+  {
+    label: "Motion direction", hint: "(feel, what motion communicates, what to avoid)",
+    ask: { flag: "motion", group: "Design", question: "How much motion?", options: [
+      { value: "No motion unless necessary", label: "No motion unless necessary" },
+      { value: "Subtle, only to show change", label: "Subtle, only to show change" },
+      { value: "Expressive, part of the brand", label: "Expressive, part of the brand" },
+    ] },
+  },
 ];
 const ASKED_FIELDS = CONTEXT_FIELDS.filter((f) => f.ask);
 const CONTEXT_MARKS: [string, string] = [CONTEXT_START, CONTEXT_END];
@@ -357,8 +457,9 @@ function contextBlock(root: string): string {
   };
   return `## RYUX project context
 
-RYUX reads this block before any design task. Fill in what you know and leave the rest blank;
-RYUX treats blanks as unknown instead of guessing.
+RYUX reads this block before any design task. These answers are the team's context and direction,
+not evidence or verified facts: RYUX follows them and still backs its decisions with evidence.
+Blanks stay unknown. UI direction describes character, not colors, fonts, or spacing.
 
 ${CONTEXT_FIELDS.map((f) => fieldLine(f.label, initial[f.label] ?? f.hint)).join("\n")}`;
 }
@@ -391,30 +492,97 @@ async function writeContext(root: string, answers: Record<string, string>): Prom
     const value = answers[f.label]?.trim();
     if (!value) continue;
     const line = fieldLine(f.label, value);
-    body = fieldRe(f.label).test(body) ? body.replace(fieldRe(f.label), () => line) : `${body}\n${line}`;
+    if (fieldRe(f.label).test(body)) {
+      body = body.replace(fieldRe(f.label), () => line);
+      continue;
+    }
+    // A field added in a later version (e.g. Current work): place it after the field before it.
+    const prev = CONTEXT_FIELDS[CONTEXT_FIELDS.indexOf(f) - 1];
+    const anchor = prev && body.match(fieldRe(prev.label));
+    body = anchor ? body.replace(fieldRe(prev.label), (m) => `${m}\n${line}`) : `${body}\n${line}`;
   }
   await upsertBlock(path, body, CONTEXT_MARKS);
   return body;
 }
 
-/** Ask the setup questions; Enter keeps the current value. Returns null when cancelled. */
+const OWN = "\u0000own";
+const KEEP = "\u0000keep";
+const SKIP = "\u0000skip";
+
+/** One select: Keep (when set), the choices, Write my own, Skip. Returns "" for skip, null on cancel. */
+async function askOne(question: string, options: Choice[], current: string): Promise<string | null> {
+  const v = await p.select({
+    message: question,
+    options: [
+      ...(current ? [{ value: KEEP, label: `Keep: ${current}` }] : []),
+      ...options.map((o) => ({ value: o.value || SKIP, label: o.label, hint: o.hint })),
+      { value: OWN, label: "Write my own…" },
+      { value: SKIP, label: "Skip, leave unknown" },
+    ],
+    initialValue: current ? KEEP : SKIP,
+  });
+  if (p.isCancel(v)) return null;
+  if (v === KEEP || v === SKIP) return "";
+  if (v === OWN) {
+    const t = await p.text({ message: question, placeholder: "Enter to skip" });
+    return p.isCancel(t) ? null : (t ?? "").trim();
+  }
+  return v as string;
+}
+
+/** A multiselect: pick any, or none to skip. Returns "" for skip, null on cancel. */
+async function askMany(question: string, options: Choice[], current: string, max?: number): Promise<string | null> {
+  const parts = current ? current.split(",").map((x) => x.trim()).filter(Boolean) : [];
+  const known = options.map((o) => o.value);
+  const custom = parts.filter((x) => !known.includes(x)).join(", ");
+  for (;;) {
+    const v = await p.multiselect({
+      message: `${question} Select any, or press Enter to skip.`,
+      options: [
+        ...(custom ? [{ value: KEEP, label: `Keep: ${custom}` }] : []),
+        ...options.map((o) => ({ value: o.value, label: o.label, hint: o.hint })),
+        { value: OWN, label: "Write my own…" },
+      ],
+      initialValues: [...(custom ? [KEEP] : []), ...parts.filter((x) => known.includes(x))],
+      required: false,
+    });
+    if (p.isCancel(v)) return null;
+    const picked = v as string[];
+    const values = picked.filter((x) => x !== KEEP && x !== OWN);
+    if (picked.includes(KEEP)) values.push(custom);
+    if (picked.includes(OWN)) {
+      const t = await p.text({ message: question, placeholder: "Enter to skip" });
+      if (p.isCancel(t)) return null;
+      if (t?.trim()) values.push(t.trim());
+    }
+    if (max && values.length > max) {
+      p.log.warn(`Pick up to ${max}.`);
+      continue;
+    }
+    return values.join(", ");
+  }
+}
+
+/** Ask the setup questions as choices; every answer can be skipped. Returns null when cancelled. */
 async function askContext(root: string): Promise<Record<string, string> | null> {
   const body = contextBody(await readIfExists(join(root, CONTEXT_FILE))) ?? contextBlock(root);
   const answers: Record<string, string> = {};
   let group = "";
   for (const f of ASKED_FIELDS) {
-    if (f.ask!.group !== group) {
-      group = f.ask!.group;
+    const ask = f.ask!;
+    if (ask.group !== group) {
+      group = ask.group;
       p.log.step(group === "Project" ? "Project setup" : "Design setup");
     }
     const current = fieldValue(body, f);
-    const v = await p.text({
-      message: f.ask!.question,
-      placeholder: f.ask!.placeholder ?? "Enter to skip",
-      initialValue: current,
-    });
-    if (p.isCancel(v)) return null;
-    answers[f.label] = typeof v === "string" ? v : "";
+    const v = ask.multi ? await askMany(ask.question, ask.options, current, ask.max) : await askOne(ask.question, ask.options, current);
+    if (v === null) return null;
+    answers[f.label] = v;
+    if (f.label === "Product" && v) {
+      const t = await p.text({ message: "In one sentence, what does it do?", placeholder: "Enter to skip" });
+      if (p.isCancel(t)) return null;
+      if (t?.trim()) answers[f.label] = `${v}: ${t.trim()}`;
+    }
   }
   return answers;
 }
@@ -503,7 +671,7 @@ Options:
   --global             install into your home directory instead of this project
   --mcp                print the ryux MCP connect command
   --yes                skip the confirmation (remove)
-  --product, --audience, --market, --constraints, --intent, --ux, --ui, --motion <text>
+  --product, --work, --audience, --market, --constraints, --intent, --ux, --ui, --motion <text>
                        set project context fields without questions (setup)
 
 Examples:

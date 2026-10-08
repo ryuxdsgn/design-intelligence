@@ -42,10 +42,15 @@ Your files are never overwritten wholesale. Changes stay inside the block
 
 ### Project setup
 
-After the install, the CLI offers a short setup: product, audience, market and locale, constraints,
-design intent, and UX, UI, and motion direction. Press Enter to skip any question. The answers go
-into a `<!-- ryux-context -->` block in `DESIGN.md`, which RYUX reads before every design task.
-Blanks stay unknown; RYUX does not fill them in by guessing.
+After the install, the CLI offers a short setup: product, what you are building right now,
+audience, market and locale, constraints, design intent, and UX, UI, and motion direction. You don't
+need design vocabulary: each question offers plain choices, "Write my own", or "Skip, leave unknown".
+The answers go into a `<!-- ryux-context -->` block in `DESIGN.md`, which RYUX reads before every
+design task.
+
+The answers are your team's context and direction, not evidence: RYUX follows them and still backs
+its decisions with evidence. Blanks stay unknown; RYUX does not fill them in by guessing. A UI
+direction such as "trustworthy" describes character, not a color or font.
 
 Change the answers later, or set them without questions:
 

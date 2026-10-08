@@ -34,7 +34,7 @@ npx @ryuxdsgn/ryux remove --yes                             # remove RYUX and ma
 
 | Command | What it does |
 | --- | --- |
-| `setup` | Asks a few questions, each skippable: product, audience, market and locale, constraints, design intent, and UX, UI, and motion direction. Saves the answers to the `<!-- ryux-context -->` block in `DESIGN.md`, changing only the fields you answer. Without a terminal, set fields with `--product`, `--audience`, `--market`, `--constraints`, `--intent`, `--ux`, `--ui`, `--motion`. |
+| `setup` | Asks a few questions with plain choices, "Write my own", or Skip: product, current work, audience, market and locale, constraints, design intent, and UX, UI, and motion direction. Saves the answers to the `<!-- ryux-context -->` block in `DESIGN.md`, changing only the fields you answer. The answers are direction, not evidence. Without a terminal, set fields with `--product`, `--work`, `--audience`, `--market`, `--constraints`, `--intent`, `--ux`, `--ui`, `--motion`. |
 | `init` | Installs RYUX, then adds a `<!-- ryux-context -->` block to `DESIGN.md` (product, audience, market and locale, design system, evidence sources, constraints), prefilled only with what it can detect. Re-running never overwrites what you wrote. |
 | `install` | Writes the `ryux/` skill into each agent's folder and a short pointer block into `CLAUDE.md`, `GEMINI.md`, or `AGENTS.md`. Interactive installs then offer `setup`. |
 | `check` (`doctor`) | Checks every install: all files present, frontmatter valid, version matches this CLI, every module reference resolves, no RYUX 1.x folders, pointer blocks, project context and how many setup fields are filled. Exits 1 on errors, so it works in CI. |
