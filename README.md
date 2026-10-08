@@ -1,6 +1,6 @@
 <p align="center">
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-2ea44f" alt="MIT License"></a>
-  <img src="https://img.shields.io/badge/status-early__access%20%C2%B7%20rules%202.5-1f6feb" alt="Status: early access, rules 2.5">
+  <img src="https://img.shields.io/badge/version-early__access%20v2.5-1f6feb" alt="Version: early access v2.5">
 </p>
 
 # RYUX
