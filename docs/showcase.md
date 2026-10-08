@@ -549,13 +549,16 @@ screens.
 *"A 1920×1080 landing page for Catat, a cashier and bookkeeping app for Indonesian UMKM."* Both runs
 designed in pen.dev through its MCP. The "with" run also had the ryux MCP for reference screens.
 
-<a href="../assets/compare/ui/compare-id.png"><img src="../assets/compare/ui/compare-id.png" alt="Two Catat landing pages designed in pen.dev, stacked. Without RYUX: a polished hero with invented stats (48.000+ warung, 210 kota, 4,8 stars on Google Play), an unconfirmed 30-day trial, an unsourced +12% growth tag, amounts written as Rp 2.840.000 with a space, and a stock photo of a stranger presented as the user. With RYUX: one primary action, a sales ledger labeled Contoh data whose cash and QRIS totals add up to Rp164.000, and a plain three-step strip with no invented counts, ratings, or photos" width="100%"></a>
+<a href="../assets/compare/ui/compare-id.png"><img src="../assets/compare/ui/compare-id.png" alt="Two Catat landing pages designed in pen.dev, stacked. Without RYUX: a polished hero with invented stats (48.000+ warung, 210 kota, 4,8 stars on Google Play), an unconfirmed 30-day trial, an unsourced +12% growth tag, amounts written as Rp 2.840.000 with a space, and a stock photo of a stranger presented as the user (blurred here). With RYUX: one primary action, a sales ledger labeled Contoh data whose cash and QRIS totals add up to Rp164.000, and a plain three-step strip with no invented counts, ratings, or photos" width="100%"></a>
 
 Both look finished, and that is the trap. Without RYUX, the polish hides invented numbers, a borrowed
 face, and the wrong Rupiah format (RX-AS-01, RX-AS-02, RX-CD-02). With RYUX, there is one primary
 action (RX-PR-03), the sample data is labeled and adds up (RX-AS-03, RX-QA-04), and the agent closed
 with a Delivery Gate that marked its own gap honestly: only the 1920 frame was drawn, so RESPONSIVE
 was reported as FAIL.
+
+The stock photo in the "without" design is blurred in this image: the agent pulled it in during the
+run, and its source and license are unknown.
 
 #### Code
 

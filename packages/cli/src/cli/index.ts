@@ -13,7 +13,7 @@ import {
   type PointerFile,
 } from "../adapters.js";
 import { ALL_INSTALLABLE_IDS } from "../intelligence/content.js";
-import { CLI_CMD, CONTEXT_END, CONTEXT_FILE, CONTEXT_START, MARK_START, MCP_ADD_CMD, VERSION } from "../product.js";
+import { CLI_CMD, CONTEXT_END, CONTEXT_FILE, CONTEXT_START, MARK_START, MCP_LOCAL_ADD_CMD, MCP_STATUS, VERSION } from "../product.js";
 import { validateBundle } from "../validate.js";
 import { renderAgentsBlock, renderBundle, renderPointerBlock, SKILL_NAME } from "../render.js";
 import { hasBlock, readIfExists, rel, removeBlock, removePath, upsertBlock, writeFileEnsured } from "./fsutil.js";
@@ -168,7 +168,7 @@ async function runInstall(flags: Flags): Promise<void> {
       required: true,
     });
     if (p.isCancel(a)) return cancel();
-    const m = await p.confirm({ message: "Show the ryux MCP connect command?", initialValue: false });
+    const m = await p.confirm({ message: "Show how to connect the ryux MCP?", initialValue: false });
     if (p.isCancel(m)) return cancel();
     agents = a as string[];
     showMcp = Boolean(m);
@@ -185,8 +185,8 @@ async function runInstall(flags: Flags): Promise<void> {
   else p.note(summary, "Installed");
 
   if (showMcp) {
-    if (nonInteractive) console.log(`\nMCP: ${MCP_ADD_CMD}`);
-    else p.note(MCP_ADD_CMD, "Connect the ryux MCP");
+    if (nonInteractive) console.log(`\nMCP: ${MCP_STATUS}`);
+    else p.note(MCP_STATUS, "ryux MCP");
   }
   if (!nonInteractive) p.outro(`Try: ${pc.cyan('"Critique this page: https://..."')}`);
 }
@@ -326,7 +326,7 @@ RYUX treats blanks as unknown instead of guessing.
 - **Audience**:
 - **Market and locale**: (for example Indonesia, id-ID, Rupiah; or global, en-US, USD)
 - **Brand and design system**: ${system.length ? system.map((x) => `\`${x}\``).join(", ") : ""}
-- **Evidence sources**: RYUX MCP (${MCP_ADD_CMD}), Figma files, reference URLs:
+- **Evidence sources**: RYUX MCP (hosted server not live yet; local: ${MCP_LOCAL_ADD_CMD}), Figma files, reference URLs:
 - **Constraints**: platforms, accessibility target (for example WCAG 2.2 AA), what must not change:
 - **Design intent**: (what users should understand, feel, and do)
 - **UX direction**:

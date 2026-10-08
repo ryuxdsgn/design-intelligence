@@ -2,7 +2,7 @@
 
 Implements designs faithfully in the repo's own stack: semantic elements, existing components, and no invented logic.
 
-> Group Engineering · Delivery Gate area CODE QUALITY · RYUX 2.4.0. Levels are defined in `SKILL.md`.
+> Group Engineering · Delivery Gate area CODE QUALITY · RYUX 2.4.1. Levels are defined in `SKILL.md`.
 
 Connect design decisions to the code that ships them.
 
