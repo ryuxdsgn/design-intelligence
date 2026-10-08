@@ -89,9 +89,9 @@ it look less AI. Make it look more intentional. In our own blind test of a walle
 did not make screens consistently prettier; its effect is on reasoning, not polish.
 
 **DESIGN.md gives RYUX your project's direction.** `ryux setup` asks a few questions about product,
-audience, market, constraints, design intent, and UX, UI, and motion direction, and saves the answers
-to a short block in DESIGN.md. Every question can be skipped. RYUX reads the block before it
-designs and treats blanks as unknown.
+current work, audience, market, constraints, design intent, and UX, UI, and motion direction. Each
+offers plain choices, your own answer, or Skip, and the answers go into a short block in DESIGN.md.
+RYUX reads it before it designs, follows it as direction (not evidence), and treats blanks as unknown.
 
 ```
 prompt → DESIGN.md → design knowledge → evidence → decisions

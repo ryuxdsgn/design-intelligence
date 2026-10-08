@@ -48,7 +48,7 @@ explain meaningful decisions with their trade-off; validate before claiming.`;
 export const CORE_WORKFLOW = `1. **Understand the request**: who, what task, which product and market (RX-PR-01). Read the
    RYUX project context in DESIGN.md first when it exists; do not guess what it leaves blank. Ask
    only when the answer would change a major decision (at most three, usually none), and assume
-   the rest visibly.
+   the rest visibly. DESIGN.md answers are direction, not evidence of what users need.
 2. **Pick the entry point** and read its file.
 3. **Select knowledge**: read the modules the task table lists, and no others.
 4. **Gather evidence**: reference screens through the ryux MCP when connected; otherwise say so.
@@ -125,10 +125,12 @@ Assumptions    everything guessed, visible
 Decisions      one Decision Receipt per major decision (below)
 \`\`\`
 
-A direction the user gives, in the prompt or DESIGN.md, is input, not a suggestion: follow it,
-and any deviation needs a Decision Receipt. A UI direction is a character ("calm, trustworthy,
+A direction the user gives, in the prompt or DESIGN.md, is input, not a suggestion: follow it, and
+any deviation needs a Decision Receipt. A UI direction is a character ("calm, trustworthy,
 minimal"), not a specification; translate it into concrete decisions (restrained color, strong
-hierarchy, little decoration, clear status) instead of swapping in a style you prefer.
+hierarchy, little decoration, clear status) instead of swapping in a style you prefer. Character
+words are not a recipe: "trustworthy" does not mean blue and "premium" does not mean serif. Choose
+color, type, spacing, and components from the brand, the design system, and evidence, and say which.
 
 **Decision Receipt.** Write one for each major decision: the navigation model, payment method
 priority, information hierarchy, checkout structure, interaction model, or responsive strategy.
