@@ -69,7 +69,7 @@ const minor = VERSION.split(".").slice(0, 2).join(".");
 const withVersion = {
   "README.md": (t) =>
     t
-      .replace(/rules%20\d+\.\d+(-1f6feb" alt="Status: early access, rules )\d+\.\d+/, `rules%20${minor}$1${minor}`)
+      .replace(/access%20v\d+\.\d+(-1f6feb" alt="Version: early access v)\d+\.\d+/, `access%20v${minor}$1${minor}`)
       .replace(/^RYUX \d+\.\d+, early access, free\./m, `RYUX ${minor}, early access, free.`),
   "docs/design-rules.md": (t) =>
     t.replace(/\*\*Last updated:\*\* [^·\n]*· /, "").replace(/\*\*Version:\*\* [^\n]*/, `**Version:** RYUX ${VERSION}`),
