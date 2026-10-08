@@ -2,7 +2,7 @@
 
 Verifies the build against the intended design: render it, list every deviation, fix, and render again.
 
-> Group Quality · Delivery Gate area VISUAL QA · RYUX 2.4.0. Levels are defined in `SKILL.md`.
+> Group Quality · Delivery Gate area VISUAL QA · RYUX 2.4.1. Levels are defined in `SKILL.md`.
 
 Visual QA asks one question: **did the implementation match the intended design?** Whether the
 design itself is good is Critique's question (`capabilities/critique.md`).

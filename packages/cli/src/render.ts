@@ -12,7 +12,7 @@ import {
   type Rule,
   type Skill,
 } from "./intelligence/content.js";
-import { MCP_ADD_CMD, VERSION } from "./product.js";
+import { MCP_LOCAL_ADD_CMD, VERSION } from "./product.js";
 import {
   CORE_CAPABILITIES,
   CORE_DECISION_RECORD,
@@ -127,7 +127,8 @@ ${CORE_HONESTY}
 ${CORE_DECISION_RECORD}
 
 Reference screens and structured review come from the ryux MCP (\`search_screens\`,
-\`heuristic_eval\`, \`delivery_gate\`). Connect: \`${MCP_ADD_CMD}\``;
+\`heuristic_eval\`, \`delivery_gate\`). The hosted server is not live yet; run it locally and connect:
+\`${MCP_LOCAL_ADD_CMD}\``;
 }
 
 function hardGatesBrief(): string {
@@ -236,7 +237,7 @@ export function renderPointerBlock(): string {
 RYUX is installed as one skill, \`ryux\`, in this project's agent skills folder. For UI, UX, copy, or
 frontend work, say what you are doing (analyze, design, build, critique, or QA); RYUX picks the
 knowledge it needs and ends with the Delivery Gate. Reference data and structured review come from
-the ryux MCP: \`${MCP_ADD_CMD}\`.`;
+the ryux MCP (hosted server not live yet; local: \`${MCP_LOCAL_ADD_CMD}\`).`;
 }
 
 // ── docs/design-rules.md generated sections ──────────────────────────────────

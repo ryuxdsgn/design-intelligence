@@ -123,6 +123,12 @@ today (`pnpm dev:mcp`). The hosted server at `mcp.ryux.design` is not live yet.
 
 The [guide](GUIDE.md) covers other agents, global installs, updates, and the MCP setup.
 
+### Reference data
+
+RYUX may use reference screens and product evidence during analysis. Private reference data is not
+included in this repository. The open-source repository contains the schemas, rules, and tooling used
+to work with evidence, not private source material.
+
 <details>
 <summary><b>Technical details</b></summary>
 
@@ -162,6 +168,7 @@ pnpm typecheck
 - [GUIDE.md](GUIDE.md): install, MCP, and how RYUX reasons
 - [docs/design-rules.md](docs/design-rules.md): every rule, level, and gate
 - [docs/showcase.md](docs/showcase.md): the proof, every raw run, and the history
+- [DEPLOY.md](DEPLOY.md): run your own instance (database, MCP server, website)
 
 </details>
 
@@ -178,3 +185,7 @@ To report a vulnerability, see [SECURITY.md](./SECURITY.md).
 
 **MIT**, © 2026 ryux.design (see [LICENSE](./LICENSE)). The code and the RYUX skill are covered by
 this license. The reference data and the hosted service are separate.
+
+Assets in this repository are synthetic outputs and illustrations created for RYUX experiments and
+its website, unless otherwise noted. Brand names may appear as text in mock interfaces and do not
+indicate affiliation.

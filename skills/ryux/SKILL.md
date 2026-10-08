@@ -5,7 +5,7 @@ description: "RYUX - design intelligence for AI agents and designers. Tell it wh
 
 # RYUX
 
-> Design intelligence for AI agents and designers. RYUX 2.4.0, MIT licensed.
+> Design intelligence for AI agents and designers. RYUX 2.4.1, MIT licensed.
 
 RYUX is a design intelligence layer for AI and designers. It helps understand, reason, design,
 build, critique, and verify interfaces using design knowledge and evidence. It is not a UI
@@ -175,4 +175,5 @@ For consequential choices (RX-PR-09) and deviations, write **Decision**, **Optio
 or None (no screen_id: a judgment call). With None on a consequential choice, show options or ask (RX-PR-10).
 
 Reference screens and structured review come from the ryux MCP (`search_screens`,
-`heuristic_eval`, `delivery_gate`). Connect: `claude mcp add --transport http ryux https://mcp.ryux.design/mcp`
+`heuristic_eval`, `delivery_gate`). The hosted server is not live yet; run it locally and connect:
+`claude mcp add --transport http ryux http://localhost:8787/mcp`

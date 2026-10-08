@@ -50,18 +50,17 @@ npx skills add ryuxdsgn/design-intelligence     # alternative: skills.sh, any ag
 
 ## 2. Connect to MCP (reference data)
 
-The RYUX rules are at their strongest when your agent can pull real evidence. Connect the RYUX MCP:
-
-```bash
-claude mcp add --transport http ryux https://mcp.ryux.design/mcp
-```
-
-For local development, run the server yourself:
+The RYUX rules are at their strongest when your agent can pull real evidence. The hosted MCP
+(`mcp.ryux.design`) is not live yet. RYUX works without it and rates evidence None. To use the MCP
+now, run the server yourself from this repo and connect to it:
 
 ```bash
 pnpm install
 pnpm dev:mcp        # http://localhost:8787/mcp
+claude mcp add --transport http ryux http://localhost:8787/mcp
 ```
+
+Without Supabase env, the local server serves the bundled sample data, not the reference library.
 
 Connect through an MCP client (Claude Code, MCP Inspector), not a regular browser (the endpoint
 uses the Streamable HTTP transport).
