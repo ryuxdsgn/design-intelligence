@@ -64,10 +64,12 @@ Assumptions    everything guessed, visible
 Decisions      one Decision Receipt per major decision (below)
 ```
 
-A direction the user gives, in the prompt or DESIGN.md, is input, not a suggestion: follow it,
-and any deviation needs a Decision Receipt. A UI direction is a character ("calm, trustworthy,
+A direction the user gives, in the prompt or DESIGN.md, is input, not a suggestion: follow it, and
+any deviation needs a Decision Receipt. A UI direction is a character ("calm, trustworthy,
 minimal"), not a specification; translate it into concrete decisions (restrained color, strong
-hierarchy, little decoration, clear status) instead of swapping in a style you prefer.
+hierarchy, little decoration, clear status) instead of swapping in a style you prefer. Character
+words are not a recipe: "trustworthy" does not mean blue and "premium" does not mean serif. Choose
+color, type, spacing, and components from the brand, the design system, and evidence, and say which.
 
 **Decision Receipt.** Write one for each major decision: the navigation model, payment method
 priority, information hierarchy, checkout structure, interaction model, or responsive strategy.

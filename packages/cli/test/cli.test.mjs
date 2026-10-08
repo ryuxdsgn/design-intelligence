@@ -78,7 +78,18 @@ test("setup fills only the answered fields and keeps the rest", () => {
   assert.match(after, /\*\*Product\*\*: acme-app \(what it does/);
   assert.match(after, /\*\*UX direction\*\*: guide first-time users/);
   assert.match(after, /\*\*Design intent\*\*: \(what users should understand/);
-  assert.match(run(dir, "check").out, /4 of 8 setup fields filled/);
+  assert.match(run(dir, "check").out, /4 of 9 setup fields filled/);
+  rmSync(dir, { recursive: true, force: true });
+});
+
+test("setup adds a field that an older block does not have, after the field before it", () => {
+  const dir = project();
+  run(dir, "init", "--agent", "claude");
+  const path = join(dir, "DESIGN.md");
+  writeFileSync(path, readFileSync(path, "utf8").replace("- **Current work**:\n", ""));
+  assert.doesNotMatch(readFileSync(path, "utf8"), /Current work/);
+  assert.equal(run(dir, "setup", "--work", "A redesign").code, 0);
+  assert.match(readFileSync(path, "utf8"), /\*\*Product\*\*:.*\n- \*\*Current work\*\*: A redesign\n- \*\*Audience\*\*/);
   rmSync(dir, { recursive: true, force: true });
 });
 
