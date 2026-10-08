@@ -188,7 +188,14 @@ async function runInstall(flags: Flags): Promise<void> {
     if (nonInteractive) console.log(`\nMCP: ${MCP_STATUS}`);
     else p.note(MCP_STATUS, "ryux MCP");
   }
-  if (!nonInteractive) p.outro(`Try: ${pc.cyan('"Critique this page: https://..."')}`);
+  if (nonInteractive) return;
+  if (!scope.global) {
+    const s = await p.confirm({ message: "Set up project context now? Every question can be skipped.", initialValue: true });
+    if (p.isCancel(s)) return cancel();
+    if (s && !(await setupInteractive(scope.root))) return cancel();
+    if (!s) p.log.info(`Set it up later with: ${CLI_CMD} setup`);
+  }
+  p.outro(`RYUX is ready. Try: ${pc.cyan('"Design a transaction detail page for our app."')}`);
 }
 
 async function runUpdate(flags: Flags): Promise<void> {
@@ -293,9 +300,10 @@ async function runCheck(flags: Flags): Promise<void> {
       if (hasBlock(await readIfExists(join(scope.root, file)))) ok(`${file}: RYUX pointer block present`);
       else warn(`${file}: no RYUX pointer block. Run: ${CLI_CMD} update`);
     }
-    const context = await readIfExists(join(scope.root, CONTEXT_FILE));
-    if (hasBlock(context, [CONTEXT_START, CONTEXT_END])) ok(`${CONTEXT_FILE}: project context present`);
-    else warn(`${CONTEXT_FILE}: no RYUX project context. Run: ${CLI_CMD} init`);
+    const context = contextBody(await readIfExists(join(scope.root, CONTEXT_FILE)));
+    if (context !== null) {
+      ok(`${CONTEXT_FILE}: project context present, ${filledCount(context)} of ${ASKED_FIELDS.length} setup fields filled (blanks are treated as unknown)`);
+    } else warn(`${CONTEXT_FILE}: no RYUX project context. Run: ${CLI_CMD} setup`);
   }
   if (!process.exitCode) console.log(pc.green("\nRYUX is ready."));
 }
@@ -315,23 +323,138 @@ function detectContext(root: string): { name: string | null; system: string[] } 
   return { name, system: candidates.filter((c) => existsSync(join(root, c))) };
 }
 
+interface ContextField {
+  label: string;
+  /** Text the template shows while the field is blank. */
+  hint: string;
+  /** Asked by `setup`, settable with --<flag>. Fields without it are detected or keep their default. */
+  ask?: { flag: string; group: "Project" | "Design"; question: string; placeholder?: string };
+}
+
+const CONTEXT_FIELDS: ContextField[] = [
+  { label: "Product", hint: "(what it does, in one sentence:)", ask: { flag: "product", group: "Project", question: "What's the product? One sentence." } },
+  { label: "Audience", hint: "", ask: { flag: "audience", group: "Project", question: "Who is it for?" } },
+  { label: "Market and locale", hint: "(for example Indonesia, id-ID, Rupiah; or global, en-US, USD)", ask: { flag: "market", group: "Project", question: "Market and locale?", placeholder: "for example Indonesia, id-ID, IDR; or global, en-US, USD" } },
+  { label: "Brand and design system", hint: "" },
+  { label: "Evidence sources", hint: `RYUX MCP (hosted server not live yet; local: ${MCP_LOCAL_ADD_CMD}), Figma files, reference URLs:` },
+  { label: "Constraints", hint: "platforms, accessibility target (for example WCAG 2.2 AA), what must not change:", ask: { flag: "constraints", group: "Project", question: "Anything RYUX must not change?", placeholder: "platforms, accessibility target, brand, existing flows" } },
+  { label: "Design intent", hint: "(what users should understand, feel, and do)", ask: { flag: "intent", group: "Design", question: "Design intent: what should users understand, feel, and do?" } },
+  { label: "UX direction", hint: "", ask: { flag: "ux", group: "Design", question: "UX direction?", placeholder: "for example fast for repeat use, or guide first-time users" } },
+  { label: "UI direction", hint: "(character, for example calm, trustworthy, restrained)", ask: { flag: "ui", group: "Design", question: "UI direction?", placeholder: "character, for example calm, trustworthy, restrained" } },
+  { label: "Motion direction", hint: "(feel, what motion communicates, what to avoid)", ask: { flag: "motion", group: "Design", question: "Motion direction?", placeholder: "feel, what motion communicates, what to avoid" } },
+];
+const ASKED_FIELDS = CONTEXT_FIELDS.filter((f) => f.ask);
+const CONTEXT_MARKS: [string, string] = [CONTEXT_START, CONTEXT_END];
+
+const fieldLine = (label: string, text: string): string => `- **${label}**:${text ? ` ${text}` : ""}`;
+const fieldRe = (label: string): RegExp => new RegExp(`^- \\*\\*${label}\\*\\*:.*$`, "m");
+
 function contextBlock(root: string): string {
   const { name, system } = detectContext(root);
+  const initial: Record<string, string> = {
+    Product: `${name ?? ""} ${CONTEXT_FIELDS[0].hint}`,
+    "Brand and design system": system.map((x) => `\`${x}\``).join(", "),
+  };
   return `## RYUX project context
 
 RYUX reads this block before any design task. Fill in what you know and leave the rest blank;
 RYUX treats blanks as unknown instead of guessing.
 
-- **Product**: ${name ?? ""} (what it does, in one sentence:)
-- **Audience**:
-- **Market and locale**: (for example Indonesia, id-ID, Rupiah; or global, en-US, USD)
-- **Brand and design system**: ${system.length ? system.map((x) => `\`${x}\``).join(", ") : ""}
-- **Evidence sources**: RYUX MCP (hosted server not live yet; local: ${MCP_LOCAL_ADD_CMD}), Figma files, reference URLs:
-- **Constraints**: platforms, accessibility target (for example WCAG 2.2 AA), what must not change:
-- **Design intent**: (what users should understand, feel, and do)
-- **UX direction**:
-- **UI direction**: (character, for example calm, trustworthy, restrained)
-- **Motion direction**: (feel, what motion communicates, what to avoid)`;
+${CONTEXT_FIELDS.map((f) => fieldLine(f.label, initial[f.label] ?? f.hint)).join("\n")}`;
+}
+
+/** The body between the context markers, or null when there is no block. */
+function contextBody(content: string | null): string | null {
+  if (!content) return null;
+  const start = content.indexOf(CONTEXT_START);
+  const end = content.indexOf(CONTEXT_END, start);
+  return start === -1 || end === -1 ? null : content.slice(start + CONTEXT_START.length, end).trim();
+}
+
+/** What the user (or detection) wrote for a field; template hints count as blank. */
+function fieldValue(body: string, f: ContextField): string {
+  const line = body.match(fieldRe(f.label))?.[0];
+  if (!line) return "";
+  const value = line.slice(line.indexOf(":") + 1).trim();
+  if (!f.hint) return value;
+  if (value === f.hint) return "";
+  return value.endsWith(` ${f.hint}`) ? value.slice(0, -f.hint.length).trim() : value;
+}
+
+const filledCount = (body: string): number => ASKED_FIELDS.filter((f) => fieldValue(body, f)).length;
+
+/** Replace only the answered field lines; every other line of the block stays as the user left it. */
+async function writeContext(root: string, answers: Record<string, string>): Promise<string> {
+  const path = join(root, CONTEXT_FILE);
+  let body = contextBody(await readIfExists(path)) ?? contextBlock(root);
+  for (const f of ASKED_FIELDS) {
+    const value = answers[f.label]?.trim();
+    if (!value) continue;
+    const line = fieldLine(f.label, value);
+    body = fieldRe(f.label).test(body) ? body.replace(fieldRe(f.label), () => line) : `${body}\n${line}`;
+  }
+  await upsertBlock(path, body, CONTEXT_MARKS);
+  return body;
+}
+
+/** Ask the setup questions; Enter keeps the current value. Returns null when cancelled. */
+async function askContext(root: string): Promise<Record<string, string> | null> {
+  const body = contextBody(await readIfExists(join(root, CONTEXT_FILE))) ?? contextBlock(root);
+  const answers: Record<string, string> = {};
+  let group = "";
+  for (const f of ASKED_FIELDS) {
+    if (f.ask!.group !== group) {
+      group = f.ask!.group;
+      p.log.step(group === "Project" ? "Project setup" : "Design setup");
+    }
+    const current = fieldValue(body, f);
+    const v = await p.text({
+      message: f.ask!.question,
+      placeholder: f.ask!.placeholder ?? "Enter to skip",
+      initialValue: current,
+    });
+    if (p.isCancel(v)) return null;
+    answers[f.label] = typeof v === "string" ? v : "";
+  }
+  return answers;
+}
+
+async function setupInteractive(root: string): Promise<boolean> {
+  p.log.info("Teach RYUX about this project. Every question can be skipped: blanks stay unknown, and RYUX asks when they matter.");
+  const answers = await askContext(root);
+  if (!answers) return false;
+  const body = await writeContext(root, answers);
+  p.log.success(`${CONTEXT_FILE} updated · ${filledCount(body)} of ${ASKED_FIELDS.length} setup fields filled`);
+  return true;
+}
+
+async function runSetup(flags: Flags): Promise<void> {
+  if (flags.global) {
+    console.error(`setup is per project. Run it inside the project folder: ${CLI_CMD} setup`);
+    process.exitCode = 1;
+    return;
+  }
+  const root = scopeOf(flags).root;
+  const fromFlags: Record<string, string> = {};
+  for (const f of ASKED_FIELDS) {
+    const v = flags[f.ask!.flag];
+    if (typeof v === "string") fromFlags[f.label] = v;
+  }
+
+  if (Object.keys(fromFlags).length) {
+    const body = await writeContext(root, fromFlags);
+    console.log(`${pc.green("✓ ")}${CONTEXT_FILE} updated · ${filledCount(body)} of ${ASKED_FIELDS.length} setup fields filled`);
+    return;
+  }
+  if (!process.stdin.isTTY) {
+    const names = ASKED_FIELDS.map((f) => `--${f.ask!.flag}`).join(" ");
+    console.error(`setup asks questions and needs a terminal. Without one, pass fields as flags (${names}) or edit ${CONTEXT_FILE}.`);
+    process.exitCode = 1;
+    return;
+  }
+  p.intro(pc.bgCyan(pc.black(" RYUX setup ")));
+  if (!(await setupInteractive(root))) return cancel();
+  p.outro(`RYUX is ready. Next: ${CLI_CMD} check`);
 }
 
 async function runInit(flags: Flags): Promise<void> {
@@ -340,15 +463,16 @@ async function runInit(flags: Flags): Promise<void> {
     process.exitCode = 1;
     return;
   }
-  await runInstall(flags);
-  if (process.exitCode) return;
   const scope = scopeOf(flags);
   const path = join(scope.root, CONTEXT_FILE);
-  if (hasBlock(await readIfExists(path), [CONTEXT_START, CONTEXT_END])) {
-    console.log(`${pc.green("✓ ")}${CONTEXT_FILE}: project context already present (left as you wrote it)`);
-  } else {
-    await upsertBlock(path, contextBlock(scope.root), [CONTEXT_START, CONTEXT_END]);
-    console.log(`${pc.green("✓ ")}${CONTEXT_FILE}: project context added. Fill it in so RYUX knows the product and market.`);
+  const had = hasBlock(await readIfExists(path), CONTEXT_MARKS);
+  await runInstall(flags);
+  if (process.exitCode) return;
+  if (had) {
+    console.log(`${pc.green("✓ ")}${CONTEXT_FILE}: project context already present (left as you wrote it). Edit it with: ${CLI_CMD} setup`);
+  } else if (!hasBlock(await readIfExists(path), CONTEXT_MARKS)) {
+    await upsertBlock(path, contextBlock(scope.root), CONTEXT_MARKS);
+    console.log(`${pc.green("✓ ")}${CONTEXT_FILE}: project context added. Fill it in with: ${CLI_CMD} setup`);
   }
   console.log(`\nNext: ${CLI_CMD} check`);
 }
@@ -362,8 +486,9 @@ Usage:
   ${CLI_CMD} [command] [options]
 
 Commands:
-  init        Install RYUX and add a project context block to DESIGN.md. Start here.
-  install     Install RYUX (interactive, or with flags). Default.
+  install     Install RYUX (interactive, or with flags). Interactive also offers setup. Default. Start here.
+  setup       Teach RYUX about this project: a few skippable questions, saved to DESIGN.md.
+  init        Install RYUX and add the DESIGN.md project context block.
   check       Check the install: files, version, references, pointers, project context.
   update      Update an install to this version (also migrates RYUX 1.x folders).
   remove      Remove RYUX and the marked blocks.
@@ -378,11 +503,15 @@ Options:
   --global             install into your home directory instead of this project
   --mcp                print the ryux MCP connect command
   --yes                skip the confirmation (remove)
+  --product, --audience, --market, --constraints, --intent, --ux, --ui, --motion <text>
+                       set project context fields without questions (setup)
 
 Examples:
+  ${CLI_CMD}
+  ${CLI_CMD} setup
+  ${CLI_CMD} setup --audience "small business owners" --market "Indonesia, id-ID, IDR"
   ${CLI_CMD} init --agent claude
   ${CLI_CMD} check
-  ${CLI_CMD}
   ${CLI_CMD} install --agent claude,cursor,codex
   ${CLI_CMD} install --agent all
   ${CLI_CMD} install --agent claude --global
@@ -411,6 +540,8 @@ async function main(): Promise<void> {
       return runCheck(flags);
     case "init":
       return runInit(flags);
+    case "setup":
+      return runSetup(flags);
     case "remove":
       return runRemove(flags);
     case "install":

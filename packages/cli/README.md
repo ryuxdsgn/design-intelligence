@@ -18,9 +18,11 @@ Original work by ryux.design, MIT licensed. Rules and rationale:
 ## Usage
 
 ```bash
-npx @ryuxdsgn/ryux init --agent claude                      # start here: install + project context
+npx @ryuxdsgn/ryux                                          # start here: agents, install, project setup
+npx @ryuxdsgn/ryux setup                                    # teach RYUX about the project (DESIGN.md)
+npx @ryuxdsgn/ryux setup --audience "..." --market "..."    # same, without questions
 npx @ryuxdsgn/ryux check                                    # health check (exit 1 on problems)
-npx @ryuxdsgn/ryux                                          # interactive: agents, scope
+npx @ryuxdsgn/ryux init --agent claude                      # install + empty project context block
 npx @ryuxdsgn/ryux install --agent claude,cursor,codex      # non-interactive
 npx @ryuxdsgn/ryux install --agent all                      # every supported agent
 npx @ryuxdsgn/ryux install --agent claude --global          # into your home directory
@@ -32,9 +34,10 @@ npx @ryuxdsgn/ryux remove --yes                             # remove RYUX and ma
 
 | Command | What it does |
 | --- | --- |
+| `setup` | Asks a few questions, each skippable: product, audience, market and locale, constraints, design intent, and UX, UI, and motion direction. Saves the answers to the `<!-- ryux-context -->` block in `DESIGN.md`, changing only the fields you answer. Without a terminal, set fields with `--product`, `--audience`, `--market`, `--constraints`, `--intent`, `--ux`, `--ui`, `--motion`. |
 | `init` | Installs RYUX, then adds a `<!-- ryux-context -->` block to `DESIGN.md` (product, audience, market and locale, design system, evidence sources, constraints), prefilled only with what it can detect. Re-running never overwrites what you wrote. |
-| `install` | Writes the `ryux/` skill into each agent's folder and a short pointer block into `CLAUDE.md`, `GEMINI.md`, or `AGENTS.md`. |
-| `check` (`doctor`) | Checks every install: all files present, frontmatter valid, version matches this CLI, every module reference resolves, no RYUX 1.x folders, pointer blocks, project context. Exits 1 on errors, so it works in CI. |
+| `install` | Writes the `ryux/` skill into each agent's folder and a short pointer block into `CLAUDE.md`, `GEMINI.md`, or `AGENTS.md`. Interactive installs then offer `setup`. |
+| `check` (`doctor`) | Checks every install: all files present, frontmatter valid, version matches this CLI, every module reference resolves, no RYUX 1.x folders, pointer blocks, project context and how many setup fields are filled. Exits 1 on errors, so it works in CI. |
 | `update` | Rewrites installs at this version and migrates RYUX 1.x. |
 | `remove` | Removes the skill and the pointer blocks. Leaves your `DESIGN.md` context. |
 
