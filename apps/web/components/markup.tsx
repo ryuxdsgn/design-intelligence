@@ -20,7 +20,8 @@ export function Pin({ n, tone = "mark" }: { n: number; tone?: Tone }) {
 
 const RING_TONE: Record<Tone, string> = { mark: "stroke-mark", accent: "stroke-accent", "mark-night": "stroke-mark-night", "accent-night": "stroke-accent-night" };
 
-/** A pen ring drawn around a value on a real screen. x, y (centre), w, h are percentages of the image. */
+/** A pen ring drawn around a value on a real screen. x, y (centre), w, h are percentages of the image.
+    The stroke scales with the ring: pathLength with a non-scaling stroke drew only part of the ellipse. */
 export function Ring({ x, y, w, h, tone, delay = 0 }: { x: number; y: number; w: number; h: number; tone: Tone; delay?: number }) {
   return (
     <svg
@@ -37,8 +38,7 @@ export function Ring({ x, y, w, h, tone, delay = 0 }: { x: number; y: number; w:
         ry="19"
         pathLength={1}
         fill="none"
-        strokeWidth="1.75"
-        vectorEffect="non-scaling-stroke"
+        strokeWidth="1.2"
         className={`ring-draw ${RING_TONE[tone]}`}
         style={{ animationDelay: `${delay}ms` }}
       />
