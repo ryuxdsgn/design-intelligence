@@ -28,15 +28,23 @@ findings
 3. **Evidence over taste.** Every finding names its source; severity 3 or more needs a real
    comparison `screen_id` when the ryux MCP is connected.
 4. **Honest scope.** A static frame shows no hover, focus, loading, or narrow widths. Say what was
-   not tested, and lower the confidence of anything inferred.
+   not tested, and lower the confidence of anything inferred. Missing from the artifact is not
+   missing from the product: a frame without a loading state shows the frame, not the build.
 5. **Concise and prioritized.** At most 12 findings; the ones that hurt users most come first.
+6. **A preference is not a defect.** A taste (rounder corners, another typeface, more white space)
+   becomes a finding only when the brief, evidence, a requirement, or a stated context reason makes
+   it one; otherwise list it under "Optional ideas" or leave it out.
 
 ## Steps
 
 ### 1. Context
 
 Who the user is, what task happens on this screen, the platform, and the point in the flow. If the
-request does not say, infer it from the design and list it as an assumption.
+request does not say, infer it from the design and list it as an assumption. Name the surface type,
+because it decides which Design Read dimensions weigh most: **task UI** (settings, tables, checkout:
+Clarity, Efficiency, Recoverability), **flow or form** (Confidence, Recoverability), or **expressive
+surface** (hero, landing, onboarding, app home with a personality brief: Specificity and
+Coherence weigh more).
 
 ### 2. Analyze first
 
@@ -63,11 +71,11 @@ Rate each dimension **Strong**, **Adequate**, or **Weak**, with one sentence of 
 | --- | --- |
 | Clarity | Can the user understand what this screen is for? |
 | Hierarchy | Can the user identify what matters first? |
-| Coherence | Does it feel like part of the same product? |
+| Coherence | Does it feel like part of the same product, and does it keep the decisions already stated (DESIGN.md, an earlier Design Direction)? |
 | Density | Is the information density right for how often and how carefully it is used? |
 | Confidence | Does the user have enough information to act safely (cost, consequence, status)? |
 | Efficiency | Can the task be done without unnecessary work? |
-| Specificity | Does it feel designed for this product, or could it belong to any generic SaaS app? |
+| Specificity | Does it feel designed for this product, or could it belong to any generic app? Use the swap test (RX-AS-09). |
 | Recoverability | Can users recover from mistakes and failures? |
 | Accessibility | Can people with different abilities and input methods operate and understand it? |
 
@@ -121,7 +129,21 @@ RYUX rule in `issue`:
 The tool rejects major findings without valid evidence, caps the list at 12, and returns PASS or
 FAIL. Without the MCP, say the evidence comes from the design and standards alone.
 
-### 7. Report
+### 7. Validate before reporting
+
+Check every candidate finding before it reaches the report:
+
+- **Can the source show it?** A screenshot supports hierarchy, contrast, and copy; it cannot prove
+  that a button is broken or that a state is missing from the product.
+- **Does the criterion apply** to this surface type and this brief?
+- **Is it a duplicate** of another finding, or a symptom of one?
+- **Is there a reasonable other reading** (a deliberate choice the brief explains)?
+- **Does the fix address the cause** you observed, not just the symptom?
+
+A finding that fails moves to "Not verifiable from this source" or is dropped. Fewer, true findings
+beat a long list.
+
+### 8. Report
 
 Each finding uses this schema:
 
@@ -132,10 +154,12 @@ Each finding uses this schema:
 | Category | one of the categories above |
 | Finding | where it is and what the problem is |
 | Evidence | what you saw: the capture, a measured value, a comparison screen |
-| Impact | who is affected, in which task, and how badly |
+| Status | Confirmed (the source shows it) · Hypothesis (likely, not shown) · Not verifiable from this source |
+| Impact | who is affected and in which task; a predicted consequence is worded as one ("may") |
 | Recommendation | a concrete fix |
 | Confidence | High (seen directly), Medium (partly seen, such as one width), Low (inferred) |
 | Source | the RYUX rule ID, plus a screen_id, a standard (WCAG SC), or "this design" |
+| Verify by | how a revision would show it is fixed: re-render and check X, measure Y, test Z |
 
 ```
 Verdict: one sentence (what works, the biggest risk)
@@ -151,12 +175,20 @@ Design Read
   (all nine)
 
 Findings (most severe first, at most 12)
-  C-01 · severity 3 · Interaction · confidence High
-    Finding:         Payment confirmation shows no status while verifying
-    Evidence:        no loading or progress element in the frame (Observed)
+  C-01 · severity 3 · Interaction · confidence Medium · Hypothesis
+    Finding:         The design shows no status while the payment verifies
+    Evidence:        no loading or progress element in any frame provided (Observed in the
+                     frames; the build was not tested)
     Impact:          buyers paying by QRIS may tap twice and pay twice
     Recommendation:  show status with a time estimate; disable the button while verifying
     Source:          RX-IX-02; scr_demo_001
+    Verify by:       a verifying-state frame exists and the button reads as disabled in it
+
+Not verifiable from this source
+  - ...
+
+Optional ideas (preferences, not defects)
+  - ...
 
 What works (keep it)
   - ...
@@ -171,6 +203,8 @@ Fix priorities
 - Don't edit the source file while reviewing.
 - Don't give a finding without a location, a source, and a reason.
 - Don't raise severity to major without evidence, or claim "app X does this" without a `screen_id`.
-- Don't mark an inferred issue High confidence.
+- Don't mark an inferred issue High confidence, or call a Hypothesis Confirmed.
+- Don't claim a behavior was tested when you saw only a static image.
+- Don't report a preference as a defect (principle 6).
 - Don't paste generic advice ("modernize", "add white space") without a real problem.
 - Don't call the result "fully accessible" or "UX optimized"; say what was checked.

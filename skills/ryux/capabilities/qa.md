@@ -42,7 +42,7 @@ The intended design (Figma, pen.dev, DESIGN.md) is the reference; RYUX screens a
 
 ### RX-QA-01 [Required] Render, inspect, fix, render again
 
-- Do: Render the result at the target viewport (browser, screenshot, or design-tool export), inspect the main state, one empty or error state, and the smallest supported width, rank issues by impact, fix from the top, and render again; if no render tool is available, say so in the report.
+- Do: Render the result at the target viewport (browser, screenshot, or design-tool export), inspect the main state, one empty or error state, and the smallest supported width, rank issues by impact, fix from the top, and render again; if no render tool is available, say so in the report. Whether the design itself is right or intentional is Critique's call; QA reports what it can verify.
 - Do not: Claim visual quality for a layout you have only seen as code, or fix by guesswork without checking the result.
 - Why: Overlaps and clipping are invisible in source and obvious on screen; the loop turns a draft into a reviewed result. (ryux run 2026-10-02: two runs shipped overlaps they never saw)
 - Check: screenshot
