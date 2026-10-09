@@ -1,0 +1,11 @@
+Read the image file IMAGE_PATH. It shows two mobile home-screen designs side by side for the same brief: a digital wallet app (pay merchants by QR, send money to friends, top up) for adults 22-40 in large cities; market, currency and brand not decided; the goal was more personality while staying trustworthy. The screens show their full scroll height.
+
+Judge them as an experienced product designer would. Answer ONLY with one JSON object, no other text:
+{"polished": "left"|"right"|"none", "senior_ship": "left"|"right"|"none", "why": "<one sentence>", "visawi": {"left": [s,d,c,p], "right": [s,d,c,p]}}
+
+"polished": which looks more polished and well crafted. "senior_ship": which would a senior product team more likely ship. Use "none" only if you truly see no difference.
+"visawi": for each screen rate four statements from 1 (strongly disagree) to 7 (strongly agree), in this order:
+s = "Everything goes together on this screen."
+d = "The layout is pleasantly varied."
+c = "The color composition is attractive."
+p = "The layout appears professionally designed."
