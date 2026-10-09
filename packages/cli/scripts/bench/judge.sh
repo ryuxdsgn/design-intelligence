@@ -18,8 +18,7 @@ for p in range(len(files)//2):
 json.dump(jobs,open(f"{J}/jobs.json","w"))
 PY
 G=$HOME/.claude/skills/ryux; ASIDE=$(mktemp -d)/ryux
-[[ -d $G ]] && mv $G $ASIDE
-trap '[[ -d $ASIDE ]] && mv $ASIDE $G' EXIT
+if [[ -d $G ]]; then mv $G $ASIDE; trap 'mv $ASIDE $G' EXIT; fi
 for rep in $(seq 1 $REPS); do for f in $J/img/*.png; do n=$(basename $f .png); d=$J/run-$n-$rep; mkdir -p $d; cp $f $d/image.png
   (cd $d && claude -p "$(sed "s#IMAGE_PATH#$d/image.png#" $HERE/judge-prompt.txt)" --model ${BENCH_MODEL:-claude-opus-5-5} --allowedTools Read --output-format json < /dev/null > $J/out/$n-$rep.json 2>/dev/null) &
 done; wait; done
