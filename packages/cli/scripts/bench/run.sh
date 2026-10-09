@@ -12,6 +12,6 @@ CLI=$ROOT/packages/cli/dist/cli/index.js
 G=$HOME/.claude/skills/ryux; ASIDE=$(mktemp -d)/ryux
 mkdir -p $OUT && cd $OUT
 [[ $COND == B && ! -d .claude/skills/ryux ]] && node $CLI install --agent claude >/dev/null
-[[ -d $G ]] && mv $G $ASIDE
-trap '[[ -d $ASIDE ]] && mv $ASIDE $G' EXIT
+# Runs are sequential: a parallel run could find the global skill already moved.
+if [[ -d $G ]]; then mv $G $ASIDE; trap 'mv $ASIDE $G' EXIT; fi
 claude -p "$(cat $PROMPT_FILE)" --model ${BENCH_MODEL:-claude-opus-5-5} --output-format stream-json --verbose < /dev/null > turn1.jsonl 2> turn1.err
