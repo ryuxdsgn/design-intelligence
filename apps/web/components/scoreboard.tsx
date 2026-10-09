@@ -54,21 +54,6 @@ export function Scoreboard({ night = false }: { night?: boolean }) {
         </tr>
       </thead>
       <tbody className="text-[15px] sm:text-[16px]">
-        <tr className={`border-b ${hair}`}>
-          <th scope="row" className={`py-4 pr-3 font-normal ${sub}`}>Screens designed, each run</th>
-          <td className="py-4 pr-3">
-            <span className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-3">
-              <Screens count={SCREENS.without} night={night} tone="mark" />
-              <span>{SCREENS.without}</span>
-            </span>
-          </td>
-          <td className="py-4 font-semibold">
-            <span className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-3">
-              <Screens count={SCREENS.with} night={night} tone="accent" />
-              <span>{SCREENS.with}</span>
-            </span>
-          </td>
-        </tr>
         {EVENTS.map((r) => (
           <tr key={r.label} className={`border-b ${hair}`}>
             <th scope="row" className={`py-4 pr-3 font-normal ${sub}`}>{r.label}</th>
@@ -86,6 +71,21 @@ export function Scoreboard({ night = false }: { night?: boolean }) {
             </td>
           </tr>
         ))}
+        <tr className={`border-b ${hair}`}>
+          <th scope="row" className={`py-4 pr-3 font-normal ${sub}`}>States and widths covered, each run</th>
+          <td className="py-4 pr-3">
+            <span className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-3">
+              <Screens count={SCREENS.without} night={night} tone="mark" />
+              <span>{SCREENS.without}</span>
+            </span>
+          </td>
+          <td className="py-4 font-semibold">
+            <span className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-3">
+              <Screens count={SCREENS.with} night={night} tone="accent" />
+              <span>{SCREENS.with}</span>
+            </span>
+          </td>
+        </tr>
       </tbody>
     </table>
   );
