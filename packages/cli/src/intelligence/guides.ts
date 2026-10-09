@@ -83,7 +83,9 @@ export const DESIGN_BODY = `# RYUX Design
 6. **Design in the tool.** Use the Figma MCP or the pen.dev MCP. Design every state that matters
    (empty, loading, error) and every width you claim, and source assets on purpose (RX-UI-13).
 7. **Render and inspect.** Screenshot what you made, check it against the direction and the rules,
-   fix, and render again (capabilities/qa.md). Generated images and illustrations arrive
+   fix, and render again (capabilities/qa.md). Check the result against the Liveliness you set, and
+   put each prominent or decorative element through the purpose gate (RX-AS-05: purpose,
+   contribution, necessity); on calm task UI, deliberate restraint is a valid answer. Generated images and illustrations arrive
    asynchronously: wait until each one has landed and render again before exporting or closing the
    gate. Never finish with an asset still pending.
 8. **Fact check, then the gate.** Check every product fact on the canvas (tool and command names,
@@ -117,6 +119,10 @@ Motion direction each motion: purpose (what it communicates: state change, feedb
                relationship, progress, hierarchy), lifecycle (before, trigger, transition, new
                state, feedback), level L1 to L5, timing and easing from one personality,
                reduced-motion behavior
+Liveliness     energy 1-3 (calm, balanced, expressive), rhythm 1-3 (even, steady with variation,
+               varied), motion as its RX-UI-11 level; each with its reason from the product and
+               the task. A decision, not a setup question: an operations dashboard can be energy
+               1 and rhythm 2 on purpose; calm is a valid choice when it is chosen
 Asset direction per asset: purpose, source, style, composition, context, consistency, usage,
                avoid, provenance (observed, sourced, illustrative, generated, inferred)
 Responsive     what changes, stays, disappears, or stacks at each width
@@ -213,12 +219,12 @@ export const CORE_DECISION_RECORD = `For consequential choices (RX-PR-09) and de
 **Trade-off**, and **Choice**. Evidence is Strong (2+ comparable screen_ids), Thin (one, or another context),
 or None (no screen_id: a judgment call). With None on a consequential choice, show options or ask (RX-PR-10).`;
 
-export const GATE_RULES = `- Each area is PASS, FAIL, or N/A (with a reason when the area does not apply).
+export const GATE_RULES = `- Each area is PASS, FAIL, NOT VERIFIED (it applies, but the evidence was not available: name what is missing), or N/A (it does not apply: say why).
 - An area FAILS when a [Required] rule in its skills fails without a written exception.
 - A Hard Gate failure cannot be excepted: fix it before declaring the work complete.
-- VISUAL QA cannot PASS without a render when a render tool is available; say which tool was used.
-- CODE QUALITY cannot PASS while changed logic has no test run; say which checks ran (typecheck, tests).
-- FINAL is PASS only when no area is FAIL.`;
+- VISUAL QA without a render is NOT VERIFIED; say which render tool was used.
+- CODE QUALITY is NOT VERIFIED while changed logic has no test run; say which checks ran (typecheck, tests).
+- FINAL is FAIL if any area fails, NOT VERIFIED if none fails but one is not verified, else PASS. PASS means the checked criteria were met, not that the design is good.`;
 
 export const GUIDES: Record<SkillId, string> = {
   product: `Answer these before any layout exists. Write the answers down; they are the brief.
@@ -408,6 +414,9 @@ system:
    lever: type (scale contrast, a distinctive face), composition (a broken grid, an unexpected
    crop, a large number), art direction, color temperature, motion personality, or copy voice.
 3. **System**: everything else stays quiet and consistent so the signature reads.
+The Liveliness you set (Design Direction) turns into these levers: one focal point per screen,
+contrast in size and weight that builds the hierarchy, whitespace that groups, one deliberate
+accent, and a motif the signature repeats. Low energy uses the same levers, quietly.
 Then run the swap test (RX-AS-09): with a competitor's name and logo, would anything need to change?
 If not, the surface has no point of view yet. Stay honest while being bold: a strong idea never
 needs invented numbers, people, or logos.
@@ -589,21 +598,29 @@ styles. It has three parts.
 from the rules.
 
 **Purpose Gates**: these patterns are allowed when they have a purpose. For each one in the
-result, ask **"Why does this exist?"** If there is no meaningful reason, remove it.
+result, ask three questions: **purpose** (what does it do?), **contribution** (what does it add to
+understanding, interaction, or character?), and **necessity** (would something simpler do the
+same?). "It looks more interesting" answers none of them; remove what fails.
 
 **Quality Locks**: consistency that must hold across the product (listed below).
 
 **Visual tells.** These are signals that a reason is missing, not banned styles. When you see one,
-ask the purpose question; keep it only if the answer is real.
+run the purpose gate; keep it when the answer is real, as in the last column.
 
-| Tell | Why it hurts | Fix |
-| --- | --- | --- |
-| A blue-to-purple gradient wash behind everything | carries no meaning and appears on every AI page | color from the brand and its roles (RX-UI-10), or a plain surface |
-| A fake app, terminal, or agent window as the hero | the category default, often with invented output | a signature from the product's own idea; product UI only when real or labeled (RX-UI-12, RX-UI-07) |
-| Generic illustration: people with laptops, abstract blobs | unrelated to the product, so it steals attention and says nothing | a contextual illustration made from the brief, or no visual (RX-UI-07) |
-| Floating devices and dashboard mockups | fake screens imply features and data | real screens with labeled sample data (RX-UI-07, RX-AS-01) |
-| Endless floating or looping motion | decorative motion with no reason, competing with the task | a single L4 moment with a message, or none (RX-UI-11) |
-| A bento grid or three equal feature cards | a template that flattens hierarchy | a layout from the content and its priority (RX-UI-05, RX-UI-01) |
-| Glass, glow, and blur on every layer | decoration without a job that also lowers contrast | one surface treatment with a purpose (RX-AS-05, RX-A11Y-01) |
-| Stock teamwork or handshake photos | borrowed people implying endorsement | real people with consent, or no people (RX-AS-02, RX-UI-13) |`,
+| Tell | Why it hurts | Fix | Fine when |
+| --- | --- | --- | --- |
+| A blue-to-purple gradient wash behind everything | carries no meaning and appears on every AI page | color from the brand and its roles (RX-UI-10), or a plain surface | the gradient is the brand, or it encodes a value |
+| A fake app, terminal, or agent window as the hero | the category default, often with invented output | a signature from the product's own idea; product UI only when real or labeled (RX-UI-12, RX-UI-07) | it is the real product with labeled sample data |
+| Generic illustration: people with laptops, abstract blobs | unrelated to the product, so it steals attention and says nothing | a contextual illustration made from the brief, or no visual (RX-UI-07) | it explains a concept or an empty state words cannot |
+| Floating devices and dashboard mockups | fake screens imply features and data | real screens with labeled sample data (RX-UI-07, RX-AS-01) | the screens are real and labeled |
+| The template section order (hero, three cards, three-column pricing, four-column footer) | the page follows a template instead of what this content needs | order and form sections by what the reader needs next (RX-UI-05) | the content really has that shape |
+| Identical feature cards in a row | equal boxes flatten priorities that are not equal | give the main point more weight; a list or one strong block (RX-UI-01) | the items are equal and compared side by side |
+| A bento grid | a fashionable frame that hides which item matters | a layout from the content and its priority (RX-UI-05) | the items are independent and similar in weight |
+| A typeface picked because it is in fashion | the same few faces on every generated page | a face chosen for the product's voice and legibility (RX-UI-10) | the brand already uses it |
+| Monospace to look technical | mood instead of meaning; harder to read in prose | monospace only for code, IDs, and aligned numbers | it shows code, commands, or tabular figures |
+| A sparkle or robot icon on every AI feature | says "AI" instead of what the feature does | an icon for the action, or none | the product's own AI mark, used once |
+| A small badge above the headline that repeats it | a label that adds no information | cut it, or say something the headline does not | it carries real status: beta, new version, date |
+| Endless floating, looping, or scroll-triggered motion | decorative motion with no reason, competing with the task | a single L4 moment with a message, or none (RX-UI-11) | it shows state, continuity, or the product's idea once |
+| Glass, glow, and blur on every layer | decoration without a job that also lowers contrast | one surface treatment with a purpose (RX-AS-05, RX-A11Y-01) | one overlay needs to show what is behind it |
+| Stock teamwork or handshake photos | borrowed people implying endorsement | real people with consent, or no people (RX-AS-02, RX-UI-13) | never as evidence of customers |`,
 };

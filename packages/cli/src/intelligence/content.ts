@@ -128,6 +128,8 @@ function skill(id: SkillId, rules: RuleInput[]): Rule[] {
 }
 
 const RUN = "ryux run 2026-10-02";
+// Rules that cover a pattern another MIT ruleset also names; the text and numbering are RYUX's own.
+const AS = "anti-slop (MIT)";
 
 export const RULES: Rule[] = [
   ...skill("product", [
@@ -386,6 +388,16 @@ export const RULES: Rule[] = [
       check: "review",
       formerly: ["RX-L-09"],
     },
+    {
+      num: 12,
+      title: "Every control leads somewhere real",
+      level: "required",
+      do: "Give every link, button, tab, menu item, and form a destination or an effect that exists: a page or section that is there, an action that runs. A control whose target is not built yet is removed, or shown disabled with the reason.",
+      dont: "Ship navigation to sections that do not exist, buttons that do nothing, or forms that pretend to submit.",
+      why: "A dead control breaks trust the moment someone tries it, and it hides what the product really does.",
+      basis: `pattern also in ${AS} R-24, R-26; written for RYUX`,
+      check: "click every control in the render; review",
+    },
   ]),
 
   ...skill("forms", [
@@ -572,7 +584,7 @@ export const RULES: Rule[] = [
       title: "Specific, plain copy",
       level: "preferred",
       do: "Name the action and what it gets the user (\"Bayar Rp45.000\", \"Simpan alamat\"); use sentence case and plain lists, with at most one emoji where the channel expects it.",
-      dont: "Use vague labels (\"Submit\", \"Learn more\"), hype words (\"unlock\", \"elevate\", \"seamlessly\"), emoji bullets, ALL CAPS, or stacked exclamation marks.",
+      dont: "Use vague labels (\"Submit\", \"Learn more\", \"Get started\" when a specific action exists), hype words (\"unlock\", \"elevate\", \"seamlessly\", \"revolutionary\", \"next-generation\"), emoji bullets, ALL CAPS, or stacked exclamation marks.",
       why: "Specific, plain copy tells users what happens next; decoration on every line buries it and reads as generated.",
       basis: `NNGroup button and link-label guidance; ${RUN}: unconstrained WhatsApp copy`,
       check: "audit_copy",
@@ -610,6 +622,17 @@ export const RULES: Rule[] = [
       why: "Slash dates are ambiguous and English number formats read as foreign or as the wrong value.",
       basis: "PUEBI number and time notation; id-ID locale conventions",
       check: "audit_copy C-08",
+    },
+    {
+      num: 10,
+      title: "A FAQ answers questions people ask",
+      level: "contextual",
+      when: "The page has a FAQ or help section.",
+      do: "Take the questions from support data, sales calls, the brief, or the product's docs, and answer them with the product's real policies; mark an answer that nobody has confirmed as [CONFIRM].",
+      dont: "Fill a FAQ with template questions (\"Is it secure?\", \"Can I cancel anytime?\") or answer with policies nobody decided.",
+      why: "A template FAQ answers nothing, and an invented answer becomes a promise someone has to keep.",
+      basis: `pattern also in ${AS} R-28; written for RYUX`,
+      check: "review",
     },
   ]),
 
@@ -781,6 +804,17 @@ export const RULES: Rule[] = [
       why: "Tokens keep changes consistent and reviewable.",
       basis: "W3C Design Tokens Community Group",
       check: "review",
+    },
+    {
+      num: 5,
+      title: "Every theme you ship works",
+      level: "contextual",
+      when: "The product ships more than one theme (light and dark, or brand themes), or a theme is being chosen.",
+      do: "Choose the default theme from the product, its users, and where it is used, then check every shipped theme with the same care: contrast, every component state, images and charts, and focus.",
+      dont: "Pick dark mode because the product is technical, or ship a toggle whose second theme was never rendered.",
+      why: "A theme that was never checked fails for everyone who picks it, often in contrast and states first.",
+      basis: `pattern also in ${AS} R-21, R-34; written for RYUX`,
+      check: "render each theme; contrast check",
     },
   ]),
 
@@ -1018,6 +1052,16 @@ export const RULES: Rule[] = [
       basis: "Testing practice; owner review 2026-10-06",
       check: "run the project's tests",
     },
+    {
+      num: 15,
+      title: "Change the source, not the output",
+      level: "required",
+      do: "Make UI changes in the source files that own them (components, styles, tokens), so the next build and the next person see the same code.",
+      dont: "Build a feature with a script that rewrites CSS or source by string replacement, or patch generated files.",
+      why: "Patched output is overwritten by the next build and hides where the behavior lives.",
+      basis: `pattern also in ${AS} R-33; written for RYUX`,
+      check: "review the diff",
+    },
   ]),
 
   ...skill("visual-qa", [
@@ -1117,8 +1161,8 @@ export const RULES: Rule[] = [
       num: 5,
       title: "Decoration passes a purpose gate",
       level: "required",
-      do: "For each potentially decorative pattern, answer \"why does this exist?\" with a real reason (grouping, emphasis, state, brand), or remove it.",
-      dont: "Keep cards, gradients, badges, shadows, or animation that have no reason.",
+      do: "For each potentially decorative pattern, answer three questions: purpose (what does it do?), contribution (what does it add to understanding, interaction, or the product's character?), and necessity (would something simpler do the same?). Keep it only when all three have a real answer. Three feature cards pass when the features are equal and compared; when one matters more, give it more weight instead.",
+      dont: "Keep cards, gradients, badges, shadows, or animation that have no reason, or accept \"it looks more interesting\" as one.",
       why: "Unjustified decoration is what makes AI-generated UI look the same.",
       basis: "ryux anti-slop principle",
       check: "review",
@@ -1233,6 +1277,11 @@ export const PURPOSE_GATES: PurposeGate[] = [
   { pattern: "Unusual layouts", acceptableWhen: "the content or task genuinely differs from standard patterns" },
   { pattern: "Generous whitespace", acceptableWhen: "it separates groups or slows a high-stakes decision, not when it hides thin content" },
   { pattern: "Borders", acceptableWhen: "they separate regions that spacing alone cannot" },
+  { pattern: "Typeface choice", acceptableWhen: "it is chosen for the product's character and legibility, not because it is the model's usual pick" },
+  { pattern: "Background patterns (grid, dots, noise)", acceptableWhen: "they carry the identity or support the content, such as a canvas for a design tool" },
+  { pattern: "Arrows on buttons", acceptableWhen: "the action moves the user somewhere (next step, another page), not on every button" },
+  { pattern: "Glass and blur", acceptableWhen: "one surface needs to show what is behind it (an overlay over content), and text on it keeps its contrast" },
+  { pattern: "Glow", acceptableWhen: "it marks the one element that needs attention, not every card, button, and icon" },
   { pattern: "Rounded containers", acceptableWhen: "the rounding follows the system radius and the container groups something" },
 ];
 
@@ -1247,7 +1296,7 @@ export const HARD_GATES: { item: string; rules: string[] }[] = [
   { item: "Broken responsive behavior", rules: ["RX-RD-01"] },
   { item: "Accessibility failures", rules: ["RX-A11Y-01", "RX-A11Y-02", "RX-A11Y-03", "RX-A11Y-04"] },
   { item: "Unclear goal or competing actions", rules: ["RX-PR-03"] },
-  { item: "Unexplained interaction behavior", rules: ["RX-IX-01"] },
+  { item: "Unexplained interaction behavior", rules: ["RX-IX-01", "RX-IX-12"] },
   { item: "Duplicate components", rules: ["RX-DS-01"] },
   { item: "Unnecessary complexity", rules: ["RX-AS-06"] },
 ];
@@ -1262,6 +1311,7 @@ export const QUALITY_LOCKS: { item: string; rules: string[] }[] = [
   { item: "Interaction patterns and states", rules: ["RX-DS-02"] },
   { item: "Responsive behavior", rules: ["RX-RD-06"] },
   { item: "Visual hierarchy", rules: ["RX-UI-01"] },
+  { item: "Radius", rules: ["RX-UI-03", "RX-DS-03"] },
 ];
 
 // Contextual activation: load only what the task needs (core is always loaded).

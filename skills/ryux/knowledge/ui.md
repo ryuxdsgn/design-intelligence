@@ -43,6 +43,9 @@ system:
    lever: type (scale contrast, a distinctive face), composition (a broken grid, an unexpected
    crop, a large number), art direction, color temperature, motion personality, or copy voice.
 3. **System**: everything else stays quiet and consistent so the signature reads.
+The Liveliness you set (Design Direction) turns into these levers: one focal point per screen,
+contrast in size and weight that builds the hierarchy, whitespace that groups, one deliberate
+accent, and a motif the signature repeats. Low energy uses the same levers, quietly.
 Then run the swap test (RX-AS-09): with a competitor's name and logo, would anything need to change?
 If not, the surface has no point of view yet. Stay honest while being bold: a strong idea never
 needs invented numbers, people, or logos.

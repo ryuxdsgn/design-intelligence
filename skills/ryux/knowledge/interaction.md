@@ -111,3 +111,10 @@ How local apps handle the same action and its states, and local payment patterns
 - Not when: a single full payment with no credit involved
 - Trade-off: the full cost can discourage a purchase; that is the point of disclosure
 - Check: review
+
+### RX-IX-12 [Required] Every control leads somewhere real
+
+- Do: Give every link, button, tab, menu item, and form a destination or an effect that exists: a page or section that is there, an action that runs. A control whose target is not built yet is removed, or shown disabled with the reason.
+- Do not: Ship navigation to sections that do not exist, buttons that do nothing, or forms that pretend to submit.
+- Why: A dead control breaks trust the moment someone tries it, and it hides what the product really does. (pattern also in anti-slop (MIT) R-24, R-26; written for RYUX)
+- Check: click every control in the render; review

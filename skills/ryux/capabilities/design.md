@@ -22,7 +22,9 @@
 6. **Design in the tool.** Use the Figma MCP or the pen.dev MCP. Design every state that matters
    (empty, loading, error) and every width you claim, and source assets on purpose (RX-UI-13).
 7. **Render and inspect.** Screenshot what you made, check it against the direction and the rules,
-   fix, and render again (capabilities/qa.md). Generated images and illustrations arrive
+   fix, and render again (capabilities/qa.md). Check the result against the Liveliness you set, and
+   put each prominent or decorative element through the purpose gate (RX-AS-05: purpose,
+   contribution, necessity); on calm task UI, deliberate restraint is a valid answer. Generated images and illustrations arrive
    asynchronously: wait until each one has landed and render again before exporting or closing the
    gate. Never finish with an asset still pending.
 8. **Fact check, then the gate.** Check every product fact on the canvas (tool and command names,
@@ -56,6 +58,10 @@ Motion direction each motion: purpose (what it communicates: state change, feedb
                relationship, progress, hierarchy), lifecycle (before, trigger, transition, new
                state, feedback), level L1 to L5, timing and easing from one personality,
                reduced-motion behavior
+Liveliness     energy 1-3 (calm, balanced, expressive), rhythm 1-3 (even, steady with variation,
+               varied), motion as its RX-UI-11 level; each with its reason from the product and
+               the task. A decision, not a setup question: an operations dashboard can be energy
+               1 and rhythm 2 on purpose; calm is a valid choice when it is chosen
 Asset direction per asset: purpose, source, style, composition, context, consistency, usage,
                avoid, provenance (observed, sourced, illustrative, generated, inferred)
 Responsive     what changes, stays, disappears, or stacks at each width

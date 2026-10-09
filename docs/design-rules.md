@@ -103,7 +103,7 @@ ryux's own agent runs say so ("ryux run 2026-10-02").
 | Broken responsive behavior | RX-RD-01 |
 | Accessibility failures | RX-A11Y-01, RX-A11Y-02, RX-A11Y-03, RX-A11Y-04 |
 | Unclear goal or competing actions | RX-PR-03 |
-| Unexplained interaction behavior | RX-IX-01 |
+| Unexplained interaction behavior | RX-IX-01, RX-IX-12 |
 | Duplicate components | RX-DS-01 |
 | Unnecessary complexity | RX-AS-06 |
 <!-- hardgates:end -->
@@ -128,6 +128,11 @@ a result, ask **"Why does this exist?"** and remove it when there is no meaningf
 | Unusual layouts | the content or task genuinely differs from standard patterns |
 | Generous whitespace | it separates groups or slows a high-stakes decision, not when it hides thin content |
 | Borders | they separate regions that spacing alone cannot |
+| Typeface choice | it is chosen for the product's character and legibility, not because it is the model's usual pick |
+| Background patterns (grid, dots, noise) | they carry the identity or support the content, such as a canvas for a design tool |
+| Arrows on buttons | the action moves the user somewhere (next step, another page), not on every button |
+| Glass and blur | one surface needs to show what is behind it (an overlay over content), and text on it keeps its contrast |
+| Glow | it marks the one element that needs attention, not every card, button, and icon |
 | Rounded containers | the rounding follows the system radius and the container groups something |
 <!-- purpose:end -->
 
@@ -144,6 +149,7 @@ a result, ask **"Why does this exist?"** and remove it when there is no meaningf
 | Interaction patterns and states | RX-DS-02 |
 | Responsive behavior | RX-RD-06 |
 | Visual hierarchy | RX-UI-01 |
+| Radius | RX-UI-03, RX-DS-03 |
 <!-- locks:end -->
 
 ## Delivery Gate
@@ -152,17 +158,17 @@ UI, UX, copy, and frontend work ends with this report:
 
 <!-- gate:start -->
 ```
-PRODUCT        PASS | FAIL | N/A  · one-line reason · evidence Strong | Thin | None
-UX             PASS | FAIL | N/A  · one-line reason
-UI             PASS | FAIL | N/A  · one-line reason · point of view: <concept> | task UI
-DESIGN SYSTEM  PASS | FAIL | N/A  · one-line reason
-ACCESSIBILITY  PASS | FAIL | N/A  · one-line reason
-RESPONSIVE     PASS | FAIL | N/A  · one-line reason
-EDGE CASES     PASS | FAIL | N/A  · one-line reason
-CODE QUALITY   PASS | FAIL | N/A  · one-line reason
-VISUAL QA      PASS | FAIL | N/A  · one-line reason
-ANTI-SLOP      PASS | FAIL | N/A  · one-line reason
-FINAL          PASS | FAIL
+PRODUCT        PASS | FAIL | NOT VERIFIED | N/A  · one-line reason · evidence Strong | Thin | None
+UX             PASS | FAIL | NOT VERIFIED | N/A  · one-line reason
+UI             PASS | FAIL | NOT VERIFIED | N/A  · one-line reason · point of view: <concept> | task UI
+DESIGN SYSTEM  PASS | FAIL | NOT VERIFIED | N/A  · one-line reason
+ACCESSIBILITY  PASS | FAIL | NOT VERIFIED | N/A  · one-line reason
+RESPONSIVE     PASS | FAIL | NOT VERIFIED | N/A  · one-line reason
+EDGE CASES     PASS | FAIL | NOT VERIFIED | N/A  · one-line reason
+CODE QUALITY   PASS | FAIL | NOT VERIFIED | N/A  · one-line reason
+VISUAL QA      PASS | FAIL | NOT VERIFIED | N/A  · one-line reason
+ANTI-SLOP      PASS | FAIL | NOT VERIFIED | N/A  · one-line reason
+FINAL          PASS | FAIL | NOT VERIFIED
 ```
 <!-- gate:end -->
 
@@ -190,9 +196,10 @@ line below for its exact source.
 | Public standard or research | 48 | 37 |
 | Industry practice | 12 | 6 |
 | Observed in a RYUX run | 12 | 8 |
+| Pattern also in another MIT ruleset (text written for RYUX) | 4 | 4 |
 | RYUX principle, taxonomy, or review | 26 | 19 |
 
-All 84 rules cite a source; 14 cite more than one kind, so the "Rules citing it" column adds up to more than 84.
+All 88 rules cite a source; 14 cite more than one kind, so the "Rules citing it" column adds up to more than 88.
 <!-- provenance:end -->
 
 ## Rules
@@ -200,7 +207,7 @@ All 84 rules cite a source; 14 cite more than one kind, so the "Rules citing it"
 Generated from `packages/cli/src/content.ts` by `pnpm sync:skills`. Edit the rules there, not here.
 
 <!-- rules:start -->
-84 rules across 13 modules: 49 Required, 14 Preferred, 21 Contextual; 16 Hard Gates and 7 Quality Locks.
+88 rules across 13 modules: 51 Required, 14 Preferred, 23 Contextual; 16 Hard Gates and 7 Quality Locks.
 
 ### Product thinking (RX-PR) · `knowledge/product.md`
 
@@ -392,6 +399,13 @@ Gate area UX. Covers before, during, result, recovery; feedback, control, confir
 - Trade-off: the full cost can discourage a purchase; that is the point of disclosure
 - Check: review
 
+#### RX-IX-12 [Required] Every control leads somewhere real
+
+- Do: Give every link, button, tab, menu item, and form a destination or an effect that exists: a page or section that is there, an action that runs. A control whose target is not built yet is removed, or shown disabled with the reason.
+- Do not: Ship navigation to sections that do not exist, buttons that do nothing, or forms that pretend to submit.
+- Why: A dead control breaks trust the moment someone tries it, and it hides what the product really does. (pattern also in anti-slop (MIT) R-24, R-26; written for RYUX)
+- Check: click every control in the render; review
+
 ---
 
 ### Forms (RX-FM) · `knowledge/forms.md`
@@ -532,7 +546,7 @@ Gate area UX. Covers specific copy, action labels, error messages, terminology, 
 #### RX-CD-03 [Preferred] Specific, plain copy
 
 - Do: Name the action and what it gets the user ("Bayar Rp45.000", "Simpan alamat"); use sentence case and plain lists, with at most one emoji where the channel expects it.
-- Do not: Use vague labels ("Submit", "Learn more"), hype words ("unlock", "elevate", "seamlessly"), emoji bullets, ALL CAPS, or stacked exclamation marks.
+- Do not: Use vague labels ("Submit", "Learn more", "Get started" when a specific action exists), hype words ("unlock", "elevate", "seamlessly", "revolutionary", "next-generation"), emoji bullets, ALL CAPS, or stacked exclamation marks.
 - Why: Specific, plain copy tells users what happens next; decoration on every line buries it and reads as generated. (NNGroup button and link-label guidance; ryux run 2026-10-02: unconstrained WhatsApp copy)
 - Check: audit_copy
 
@@ -557,6 +571,14 @@ Gate area UX. Covers specific copy, action labels, error messages, terminology, 
 - Do not: Write 10/02/2026, 2:30 PM, or 1.5 in Indonesian copy.
 - Why: Slash dates are ambiguous and English number formats read as foreign or as the wrong value. (PUEBI number and time notation; id-ID locale conventions)
 - Check: audit_copy C-08
+
+#### RX-CD-10 [Contextual] A FAQ answers questions people ask
+
+- When: The page has a FAQ or help section.
+- Do: Take the questions from support data, sales calls, the brief, or the product's docs, and answer them with the product's real policies; mark an answer that nobody has confirmed as [CONFIRM].
+- Do not: Fill a FAQ with template questions ("Is it secure?", "Can I cancel anytime?") or answer with policies nobody decided.
+- Why: A template FAQ answers nothing, and an invented answer becomes a promise someone has to keep. (pattern also in anti-slop (MIT) R-28; written for RYUX)
+- Check: review
 
 ---
 
@@ -685,6 +707,14 @@ Gate area DESIGN SYSTEM. Covers search before create, tokens, component states, 
 - Do not: Hard-code one-off values for things the system already defines.
 - Why: Tokens keep changes consistent and reviewable. (W3C Design Tokens Community Group)
 - Check: review
+
+#### RX-DS-05 [Contextual] Every theme you ship works
+
+- When: The product ships more than one theme (light and dark, or brand themes), or a theme is being chosen.
+- Do: Choose the default theme from the product, its users, and where it is used, then check every shipped theme with the same care: contrast, every component state, images and charts, and focus.
+- Do not: Pick dark mode because the product is technical, or ship a toggle whose second theme was never rendered.
+- Why: A theme that was never checked fails for everyone who picks it, often in contrast and states first. (pattern also in anti-slop (MIT) R-21, R-34; written for RYUX)
+- Check: render each theme; contrast check
 
 ---
 
@@ -856,6 +886,13 @@ Gate area CODE QUALITY. Covers the repo's own stack, semantic elements, one home
 - Why: Tests catch the regressions review misses, before users find them in production. (Testing practice; owner review 2026-10-06)
 - Check: run the project's tests
 
+#### RX-FE-15 [Required] Change the source, not the output
+
+- Do: Make UI changes in the source files that own them (components, styles, tokens), so the next build and the next person see the same code.
+- Do not: Build a feature with a script that rewrites CSS or source by string replacement, or patch generated files.
+- Why: Patched output is overwritten by the next build and hides where the behavior lives. (pattern also in anti-slop (MIT) R-33; written for RYUX)
+- Check: review the diff
+
 ---
 
 ### Visual QA (RX-QA) · `capabilities/qa.md`
@@ -926,8 +963,8 @@ Gate area ANTI-SLOP. Covers hard gates, purpose gates, quality locks, honest cla
 
 #### RX-AS-05 [Required] Decoration passes a purpose gate
 
-- Do: For each potentially decorative pattern, answer "why does this exist?" with a real reason (grouping, emphasis, state, brand), or remove it.
-- Do not: Keep cards, gradients, badges, shadows, or animation that have no reason.
+- Do: For each potentially decorative pattern, answer three questions: purpose (what does it do?), contribution (what does it add to understanding, interaction, or the product's character?), and necessity (would something simpler do the same?). Keep it only when all three have a real answer. Three feature cards pass when the features are equal and compared; when one matters more, give it more weight instead.
+- Do not: Keep cards, gradients, badges, shadows, or animation that have no reason, or accept "it looks more interesting" as one.
 - Why: Unjustified decoration is what makes AI-generated UI look the same. (ryux anti-slop principle)
 - Check: review
 

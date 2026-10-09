@@ -55,7 +55,7 @@ Real labels, errors, and how money, dates, and times are written in the product'
 ### RX-CD-03 [Preferred] Specific, plain copy
 
 - Do: Name the action and what it gets the user ("Bayar Rp45.000", "Simpan alamat"); use sentence case and plain lists, with at most one emoji where the channel expects it.
-- Do not: Use vague labels ("Submit", "Learn more"), hype words ("unlock", "elevate", "seamlessly"), emoji bullets, ALL CAPS, or stacked exclamation marks.
+- Do not: Use vague labels ("Submit", "Learn more", "Get started" when a specific action exists), hype words ("unlock", "elevate", "seamlessly", "revolutionary", "next-generation"), emoji bullets, ALL CAPS, or stacked exclamation marks.
 - Why: Specific, plain copy tells users what happens next; decoration on every line buries it and reads as generated. (NNGroup button and link-label guidance; ryux run 2026-10-02: unconstrained WhatsApp copy)
 - Check: audit_copy
 
@@ -80,3 +80,11 @@ Real labels, errors, and how money, dates, and times are written in the product'
 - Do not: Write 10/02/2026, 2:30 PM, or 1.5 in Indonesian copy.
 - Why: Slash dates are ambiguous and English number formats read as foreign or as the wrong value. (PUEBI number and time notation; id-ID locale conventions)
 - Check: audit_copy C-08
+
+### RX-CD-10 [Contextual] A FAQ answers questions people ask
+
+- When: The page has a FAQ or help section.
+- Do: Take the questions from support data, sales calls, the brief, or the product's docs, and answer them with the product's real policies; mark an answer that nobody has confirmed as [CONFIRM].
+- Do not: Fill a FAQ with template questions ("Is it secure?", "Can I cancel anytime?") or answer with policies nobody decided.
+- Why: A template FAQ answers nothing, and an invented answer becomes a promise someone has to keep. (pattern also in anti-slop (MIT) R-28; written for RYUX)
+- Check: review
