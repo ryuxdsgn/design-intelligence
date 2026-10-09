@@ -29,20 +29,28 @@ With RYUX       context → evidence → reasoning → decision → interface �
 Same prompt, same agent, one with RYUX:
 *"Design a transaction detail page for a fintech app, shown after the user pays. Make it in pen.dev."*
 
-<a href="assets/compare/en-states/compare.png"><img src="assets/compare/en-states/compare.png" alt="Two transaction detail screens. Without RYUX: $24.50 paid to a named coffee shop, a wallet balance, a promise to look into problems reported within 30 days, and a Save PDF button. With RYUX: the amount shown as [CUR] 49.00 because no currency was chosen, a placeholder merchant name, and only the actions that were asked for" width="100%"></a>
+<a href="assets/compare/en-states/compare-marked.png"><img src="assets/compare/en-states/compare-marked.png" alt="Two transaction detail screens from the same prompt, marked up. Without RYUX, three things are circled as invented: the amount in dollars though no currency was named, a promise to look into problems reported within 30 days, and a Save PDF button nobody asked for. With RYUX, the amount reads [CUR] 49.00, circled as unresolved: the currency is kept open on purpose because none was chosen" width="100%"></a>
 
-- **Without RYUX**, the agent asked nothing. It chose dollars, promised a 30-day reporting window,
-  and added a Save PDF button. Nobody had decided any of that.
-- **With RYUX**, it asked three questions first. The currency stayed `[CUR]` because no market was
-  chosen, and it designed five more screens: processing, failed, loading, a load error, and a narrow
-  width.
+- **Invented.** Without RYUX, the agent asked nothing and chose dollars, a 30-day reporting rule,
+  and a Save PDF button. Nobody decided any of that, and it would ship looking as if someone had.
+- **Unresolved.** With RYUX, the agent asked three questions first. The currency stays `[CUR]` on
+  purpose: no market was chosen, so the placeholder marks a decision that is still open, not an
+  unfinished design. It also flagged its fee rule as an assumption to confirm.
+- **Missing.** Without RYUX, only the success state was designed. With RYUX, the agent also covered
+  the states this screen really has: processing, failed, loading, a load error, and a narrow width
+  ([see the full board](docs/benchmarks/en-td-2.3.3/b2/output.png)).
+
+More screens is not the goal; a simple product may need one. The point is that the states a screen
+really has are covered, and nothing undecided is filled in.
 
 Repeated three times, the pattern held: without RYUX, dollars assumed in 3 of 3 runs, a made-up
-business rule in 2 of 3, features nobody asked for in 3 of 3, one screen each. With RYUX, none of
-those, and six screens each. It also showed its own limits: every RYUX run stated that the page
-updates live, and flagged that as an assumption to confirm.
+business rule in 2 of 3, features nobody asked for in 3 of 3, and only the success state. With
+RYUX, none of those, and the same five extra states each time. It also showed its own limits: every
+RYUX run stated that the page updates live, and flagged that as an assumption to confirm.
 Fresh agent per run, same model, no reference screens. A small benchmark, not a study.
 [Every run and the full method](https://ryux.design/benchmarks).
+
+The goal isn't more UI. It's fewer decisions made silently.
 
 ## Decisions come with a receipt
 
