@@ -8,12 +8,20 @@ import { Scoreboard } from "@/components/scoreboard";
 import { WaitlistForm } from "@/components/waitlist-form";
 import { Arrow, DOCS, Eyebrow, GUTTER, REPO, SiteFooter, SiteHeader } from "@/components/site";
 
-/* Pins sit on the real benchmark screen; x and y are percentages of the image. */
-const HERO_NOTES = [
+/* The hero replays the benchmark: the screen made without RYUX, its invented facts marked, then the
+   screen made with RYUX from the same prompt, with what it kept open. x and y are percentages of each
+   full image; the stage shows only the top of both. */
+const INVENTED = [
+  { x: 21, y: 22.3, ring: [50, 22.3, 50, 6.4], body: "Dollars, though the prompt named no currency." },
+  { x: 81, y: 27.2, ring: [56.5, 27.2, 32, 3.6], body: "A coffee shop in San Francisco that nobody named." },
+] as const;
+const KEPT_OPEN = [
+  { x: 13, y: 25.6, ring: [49, 25.6, 66, 5.6], tag: "Unknown", body: "Nobody chose a currency, so it stays [CUR]." },
   { x: 69, y: 20.7, tag: "State", body: "Processing is one of six screens RYUX designed, not only Completed." },
-  { x: 72, y: 35.6, tag: "Assumption", body: "Live updates are not confirmed, so RYUX lists this line as an assumption to check." },
-  { x: 58, y: 75.4, tag: "Unknown", body: "Nobody chose a currency, so it stays [CUR] instead of a made-up dollar sign." },
-];
+  { x: 89, y: 35.5, tag: "Assumption", body: "Live updates are not confirmed, so RYUX lists this line to check." },
+] as const;
+/* Swap from the first screen to the second at this point (ms); markup on each follows it. */
+const SWAP = 2800;
 
 const CAPABILITIES = [
   { name: "Analyze", body: "Reads the screen you already have and separates what it sees from what it is guessing." },
@@ -52,17 +60,17 @@ const AGENTS = "Claude Code, Codex, Cursor, Gemini CLI, OpenCode, Cline, GitHub 
 
 function Hero() {
   return (
-    <section aria-labelledby="hero-title" className={`${GUTTER} grid items-center gap-14 py-14 [&>*]:min-w-0 xl:grid-cols-[1fr_auto] xl:gap-16 xl:py-20`}>
-      <div className="flex flex-col gap-7">
+    <section aria-labelledby="hero-title" className={`${GUTTER} grid items-center gap-10 py-8 [&>*]:min-w-0 lg:grid-cols-[minmax(0,1fr)_auto] lg:gap-12 lg:py-10`}>
+      <div className="flex flex-col gap-5 lg:gap-6">
         <Eyebrow>Design intelligence for AI agents</Eyebrow>
-        <h1 id="hero-title" className="text-[52px] leading-[1] font-semibold tracking-[-0.035em] sm:text-[76px] xl:text-[88px]">
+        <h1 id="hero-title" className="text-[42px] leading-[1] font-semibold tracking-[-0.035em] sm:text-[64px] xl:text-[76px]">
           {"Understand before you design.".split(" ").map((w, i) => (
             <span key={w} className="word-in inline-block" style={{ animationDelay: `${i * 90}ms` }}>
               {w === "design." ? (
                 <span className="relative inline-block">
                   design
                   <svg aria-hidden className="absolute -bottom-[0.2em] left-0 h-[0.14em] w-full overflow-visible" viewBox="0 0 100 10" preserveAspectRatio="none">
-                    <path d="M1 7 C 25 2, 60 2, 99 5" pathLength={1} fill="none" strokeWidth="3" vectorEffect="non-scaling-stroke" strokeLinecap="round" className="ring-draw stroke-mark" style={{ animationDelay: "700ms" }} />
+                    <path d="M1 7 C 25 2, 60 2, 99 5" pathLength={1} fill="none" strokeWidth="3" strokeLinecap="round" className="ring-draw stroke-mark" style={{ animationDelay: "700ms" }} />
                   </svg>
                 </span>
               ) : (
@@ -72,11 +80,11 @@ function Hero() {
             </span>
           ))}
         </h1>
-        <p className="max-w-[580px] text-[19px] leading-[1.55] text-ink-2">
+        <p className="max-w-[560px] text-[17px] leading-[1.55] text-ink-2 sm:text-[19px]">
           RYUX is a skill you add to your AI agent. Before it designs, it writes down what it observed, what it is guessing,
           and what nobody told it, and it keeps those unknowns on the screen instead of filling them in.
         </p>
-        <div className="flex flex-wrap items-center gap-x-7 gap-y-4 pt-1">
+        <div className="flex flex-wrap items-center gap-x-7 gap-y-3">
           <a href="#try" className="inline-flex min-h-12 items-center gap-2.5 rounded-lg bg-accent px-6 text-[17px] font-semibold text-white hover:opacity-90">
             Install RYUX <Arrow />
           </a>
@@ -85,53 +93,72 @@ function Hero() {
           </a>
         </div>
       </div>
+      <HeroProof />
+    </section>
+  );
+}
 
-      <figure className="canvas-grid relative mx-auto w-full max-w-[680px] rounded-[28px] border border-hair px-5 pt-16 pb-8 sm:px-10 xl:mx-0 xl:w-[640px] xl:pr-[300px] xl:pl-10">
-        <figcaption className="absolute top-5 right-5 left-5 flex items-center justify-between gap-3 font-mono text-[12px] text-muted sm:right-7 sm:left-7">
-          <span>Review · benchmark output</span>
-          <span className="hidden sm:inline">Real run, sample data</span>
-        </figcaption>
-        <div className="relative mx-auto w-full max-w-[300px] shadow-[0_30px_60px_-30px_rgba(11,22,43,0.35)] xl:mx-0 rounded-[22px]">
-          <Image
-            src="/proof/en-td-with.png"
-            alt="A processing payment screen designed with RYUX: the status Processing, the amount shown as [CUR] 49.00 because no currency was chosen, a note asking the user not to pay again, and the transaction details"
-            width={789}
-            height={2050}
-            priority
-            className="w-full rounded-[22px] border border-hair"
-          />
-          <Ring x={77} y={76.9} w={34} h={4.4} tone="mark" delay={2200} />
-          {HERO_NOTES.map((note, i) => (
-            <div key={note.tag} className="absolute" style={{ left: `${note.x}%`, top: `${note.y}%` }}>
-              <div className="-translate-x-1/2 -translate-y-1/2">
-                <div className="pin-in" style={{ animationDelay: `${500 + i * 450}ms` }}>
-                  <Pin n={i + 1} />
-                </div>
-              </div>
-              <span
-                aria-hidden
-                className="draw-x absolute top-0 hidden h-px bg-mark xl:block"
-                style={{ left: 12, width: `calc(${(300 * (100 - note.x)) / 100}px + 28px)`, animationDelay: `${650 + i * 450}ms` }}
-              />
-              <div className="note-in absolute -top-3 hidden w-[220px] xl:block" style={{ left: `calc(${(300 * (100 - note.x)) / 100}px + 48px)`, animationDelay: `${900 + i * 450}ms` }}>
-                <p className="text-[13px] font-semibold text-mark">{note.tag}</p>
-                <p className="mt-1 text-[15px] leading-[1.45] text-ink-2">{note.body}</p>
-              </div>
-            </div>
-          ))}
+/* Two layers in one frame. The first (without RYUX) fades out at SWAP; the second (with RYUX) fades in.
+   With reduced motion only the second shows, already marked. */
+function HeroProof() {
+  return (
+    <figure className="flex flex-col gap-5 xl:flex-row xl:items-start xl:gap-8">
+      <p className="sr-only">
+        The same prompt run twice. Without RYUX the agent showed dollars and a named coffee shop that nobody asked for. With
+        RYUX the currency stays [CUR], the processing state is designed, and live updates are listed as an assumption.
+      </p>
+      <div aria-hidden className="canvas-grid relative mx-auto w-full max-w-[400px] shrink-0 rounded-[24px] border border-hair p-4 pt-11 sm:p-5 sm:pt-12 lg:w-[360px] xl:mx-0">
+        <div className="absolute top-4 right-5 left-5 flex items-center justify-between gap-3 font-mono text-[12px]">
+          <span className="relative">
+            <span className="swap-out font-semibold text-mark" style={{ animationDelay: `${SWAP}ms` }}>Without RYUX</span>
+            <span className="swap-in absolute top-0 left-0 font-semibold whitespace-nowrap text-accent motion-reduce:static" style={{ animationDelay: `${SWAP}ms` }}>With RYUX</span>
+          </span>
+          <span className="text-muted">Real run, same prompt</span>
         </div>
-        <ol className="mx-auto mt-8 flex max-w-[480px] flex-col gap-4 xl:hidden">
-          {HERO_NOTES.map((note, i) => (
-            <li key={note.tag} className="flex gap-3">
+        <div className="relative aspect-[780/880] overflow-hidden rounded-[18px] border border-hair bg-[#f4f3ef] shadow-[0_30px_60px_-30px_rgba(11,22,43,0.35)]">
+          <div className="swap-out absolute inset-x-0 top-0" style={{ animationDelay: `${SWAP}ms` }}>
+            <Image src="/proof/en-td-without.png" alt="" width={780} height={1926} priority className="w-full" />
+            {INVENTED.map((m, i) => (
+              <div key={m.body}>
+                <Ring x={m.ring[0]} y={m.ring[1]} w={m.ring[2]} h={m.ring[3]} tone="mark" delay={500 + i * 700} />
+                <PinAt n={i + 1} x={m.x} y={m.y} tone="mark" delay={400 + i * 700} />
+              </div>
+            ))}
+          </div>
+          <div className="swap-in absolute inset-x-0 top-0" style={{ animationDelay: `${SWAP}ms` }}>
+            <Image src="/proof/en-td-with.png" alt="" width={789} height={2050} priority className="w-full" />
+            {KEPT_OPEN.map((m, i) => (
+              <div key={m.tag}>
+                {"ring" in m && <Ring x={m.ring[0]} y={m.ring[1]} w={m.ring[2]} h={m.ring[3]} tone="accent" delay={SWAP + 500} />}
+                <PinAt n={i + 1} x={m.x} y={m.y} tone="accent" delay={SWAP + 400 + i * 450} />
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+      <div aria-hidden className="relative mx-auto w-full max-w-[400px] xl:mx-0 xl:w-[230px] xl:pt-14">
+        <ol className="swap-out flex flex-col gap-4" style={{ animationDelay: `${SWAP}ms` }}>
+          {INVENTED.map((m, i) => (
+            <li key={m.body} className="note-in flex gap-3" style={{ animationDelay: `${700 + i * 700}ms` }}>
               <Pin n={i + 1} />
               <p className="text-[15px] leading-[1.45] text-ink-2">
-                <span className="font-semibold text-mark">{note.tag}.</span> {note.body}
+                <span className="font-semibold text-mark">Invented.</span> {m.body}
               </p>
             </li>
           ))}
         </ol>
-      </figure>
-    </section>
+        <ol className="swap-in absolute inset-x-0 top-0 flex flex-col gap-4 motion-reduce:static xl:top-14" style={{ animationDelay: `${SWAP}ms` }}>
+          {KEPT_OPEN.map((m, i) => (
+            <li key={m.tag} className="note-in flex gap-3" style={{ animationDelay: `${SWAP + 600 + i * 450}ms` }}>
+              <Pin n={i + 1} tone="accent" />
+              <p className="text-[15px] leading-[1.45] text-ink-2">
+                <span className="font-semibold text-accent">{m.tag}.</span> {m.body}
+              </p>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </figure>
   );
 }
 
