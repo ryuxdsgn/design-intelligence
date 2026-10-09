@@ -2,7 +2,7 @@
 
 Gives a product a visual point of view: hierarchy, type, layout, color, imagery, art direction, and motion that communicate instead of decorate.
 
-> Group UI · Delivery Gate area UI · RYUX 2.5.0. Levels are defined in `SKILL.md`.
+> Group UI · Delivery Gate area UI · RYUX 2.6.0. Levels are defined in `SKILL.md`.
 
 **Visuals are not decoration. They are communication.** RYUX UI owns the visual expression of
 a product: what each visual decision communicates, why it exists, and how it behaves. Functional UI
