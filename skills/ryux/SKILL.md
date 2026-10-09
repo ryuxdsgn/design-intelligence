@@ -119,7 +119,7 @@ No written exception; fix before delivery.
 - **Broken responsive behavior.** Do not design for one width only. (RX-RD-01)
 - **Accessibility failures.** Do not put light grey text on white or white text on a pale accent. (RX-A11Y-01, RX-A11Y-02, RX-A11Y-03, RX-A11Y-04)
 - **Unclear goal or competing actions.** Do not put two equal-weight calls to action side by side, or leave the screen's goal unclear. (RX-PR-03)
-- **Unexplained interaction behavior.** Do not ship an action whose in-progress, result, or failure behavior is undefined. (RX-IX-01)
+- **Unexplained interaction behavior.** Do not ship an action whose in-progress, result, or failure behavior is undefined. (RX-IX-01, RX-IX-12)
 - **Duplicate components.** Do not create a near-duplicate component or pattern for one screen. (RX-DS-01)
 - **Unnecessary complexity.** Do not add settings, sections, abstractions, or packages "for later", or features because similar products have them. (RX-AS-06)
 
@@ -142,25 +142,25 @@ No written exception; fix before delivery.
 End UI, UX, copy, or frontend work with this report:
 
 ```
-PRODUCT        PASS | FAIL | N/A  · one-line reason · evidence Strong | Thin | None
-UX             PASS | FAIL | N/A  · one-line reason
-UI             PASS | FAIL | N/A  · one-line reason · point of view: <concept> | task UI
-DESIGN SYSTEM  PASS | FAIL | N/A  · one-line reason
-ACCESSIBILITY  PASS | FAIL | N/A  · one-line reason
-RESPONSIVE     PASS | FAIL | N/A  · one-line reason
-EDGE CASES     PASS | FAIL | N/A  · one-line reason
-CODE QUALITY   PASS | FAIL | N/A  · one-line reason
-VISUAL QA      PASS | FAIL | N/A  · one-line reason
-ANTI-SLOP      PASS | FAIL | N/A  · one-line reason
-FINAL          PASS | FAIL
+PRODUCT        PASS | FAIL | NOT VERIFIED | N/A  · one-line reason · evidence Strong | Thin | None
+UX             PASS | FAIL | NOT VERIFIED | N/A  · one-line reason
+UI             PASS | FAIL | NOT VERIFIED | N/A  · one-line reason · point of view: <concept> | task UI
+DESIGN SYSTEM  PASS | FAIL | NOT VERIFIED | N/A  · one-line reason
+ACCESSIBILITY  PASS | FAIL | NOT VERIFIED | N/A  · one-line reason
+RESPONSIVE     PASS | FAIL | NOT VERIFIED | N/A  · one-line reason
+EDGE CASES     PASS | FAIL | NOT VERIFIED | N/A  · one-line reason
+CODE QUALITY   PASS | FAIL | NOT VERIFIED | N/A  · one-line reason
+VISUAL QA      PASS | FAIL | NOT VERIFIED | N/A  · one-line reason
+ANTI-SLOP      PASS | FAIL | NOT VERIFIED | N/A  · one-line reason
+FINAL          PASS | FAIL | NOT VERIFIED
 ```
 
-- Each area is PASS, FAIL, or N/A (with a reason when the area does not apply).
+- Each area is PASS, FAIL, NOT VERIFIED (it applies, but the evidence was not available: name what is missing), or N/A (it does not apply: say why).
 - An area FAILS when a [Required] rule in its skills fails without a written exception.
 - A Hard Gate failure cannot be excepted: fix it before declaring the work complete.
-- VISUAL QA cannot PASS without a render when a render tool is available; say which tool was used.
-- CODE QUALITY cannot PASS while changed logic has no test run; say which checks ran (typecheck, tests).
-- FINAL is PASS only when no area is FAIL.
+- VISUAL QA without a render is NOT VERIFIED; say which render tool was used.
+- CODE QUALITY is NOT VERIFIED while changed logic has no test run; say which checks ran (typecheck, tests).
+- FINAL is FAIL if any area fails, NOT VERIFIED if none fails but one is not verified, else PASS. PASS means the checked criteria were met, not that the design is good.
 
 ## Honest claims
 

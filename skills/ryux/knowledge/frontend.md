@@ -88,3 +88,10 @@ The repo itself is the main evidence (stack, components, tokens); reference scre
 - Do not: Ship changed logic without tests, write snapshot-only tests or tests that mock the code under test, or claim tested without running the tests.
 - Why: Tests catch the regressions review misses, before users find them in production. (Testing practice; owner review 2026-10-06)
 - Check: run the project's tests
+
+### RX-FE-15 [Required] Change the source, not the output
+
+- Do: Make UI changes in the source files that own them (components, styles, tokens), so the next build and the next person see the same code.
+- Do not: Build a feature with a script that rewrites CSS or source by string replacement, or patch generated files.
+- Why: Patched output is overwritten by the next build and hides where the behavior lives. (pattern also in anti-slop (MIT) R-33; written for RYUX)
+- Check: review the diff
