@@ -2,10 +2,10 @@
 type Row = { label: string; without: number[]; with: number[] };
 
 const EVENTS: Row[] = [
+  { label: "Added features nobody asked for", without: [1, 1, 1], with: [0, 0, 0] },
+  { label: "Made up a business rule", without: [1, 1, 0], with: [0, 0, 0] },
   { label: "Asked questions before designing", without: [0, 0, 0], with: [1, 1, 1] },
   { label: "Assumed a currency", without: [1, 1, 1], with: [0, 0, 0] },
-  { label: "Made up a business rule", without: [1, 1, 0], with: [0, 0, 0] },
-  { label: "Added features nobody asked for", without: [1, 1, 1], with: [0, 0, 0] },
 ];
 
 const SCREENS = { without: 1, with: 6 };

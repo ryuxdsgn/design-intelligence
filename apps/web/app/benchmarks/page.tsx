@@ -18,12 +18,12 @@ const METHOD = [
 ];
 
 const TD_ROWS: [string, ...string[]][] = [
-  ["Questions asked", "0", "3", "0", "3", "0", "3"],
   ["Screens designed", "1", "6", "1", "6", "1", "6"],
-  ["Currency", "USD, assumed", "[CUR]", "USD, assumed", "[CUR]", "USD, assumed", "[CUR]"],
-  ["Made-up business rules", "1", "0", "1", "0", "0", "0"],
   ["Features nobody asked for", "2", "0", "3", "0", "5", "0"],
+  ["Made-up business rules", "1", "0", "1", "0", "0", "0"],
+  ["Questions asked", "0", "3", "0", "3", "0", "3"],
   ["Decision receipts", "none", "yes", "none", "yes", "none", "yes"],
+  ["Currency", "USD, assumed", "[CUR]", "USD, assumed", "[CUR]", "USD, assumed", "[CUR]"],
 ];
 
 const WALLET_ROWS = [

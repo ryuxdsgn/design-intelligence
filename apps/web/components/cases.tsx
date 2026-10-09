@@ -41,8 +41,11 @@ const CASES: Case[] = [
       w: 1440,
       h: 900,
       alt: "Dashboard with RYUX: a getting-started page with one primary action, Create a project, plus Import from a CSV file and Invite teammates, outlined boxes for what the page will show later, and the product name as a [Product name] placeholder",
-      marks: [{ pin: [6.2, 9.4], ring: [6.2, 3.6, 10, 5], note: "[Product name]: no name was decided, so it stays a placeholder." }],
-      extra: "It asked three questions first, used only the three actions that exist, and drew loading, error, and 390-wide versions too.",
+      marks: [
+        { pin: [13.6, 58.2], ring: [21.8, 58.2, 14, 6.4], note: "One clear first step: Create a project." },
+        { pin: [11.6, 72.2], ring: [18.9, 72.2, 13, 3.6], note: "Says what the page will show once there is work, instead of fake projects." },
+      ],
+      extra: "It also drew loading, error, and 390-wide versions, used only the three actions that exist, and asked three questions first.",
     },
     wrong: "The outlined button’s border is about 2:1 against white, below the 3:1 that controls need. And next to the version without RYUX, it looks plain.",
   },
