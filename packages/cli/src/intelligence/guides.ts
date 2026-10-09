@@ -71,6 +71,9 @@ export const DESIGN_BODY = `# RYUX Design
    Read the product docs first (the router, step 1). Ask only when a missing answer materially
    affects the user flow, what the product can do, or whether the content is correct, those
    questions alone, most consequential first, at most three, in one message, before designing.
+   A product rule that changes which states or actions the screen has (refunds, fees, what happens
+   on failure) is a major decision. When the prompt and DESIGN.md disagree, the prompt wins for
+   this task; say so.
    **Direction is the user's call:** when neither the prompt nor DESIGN.md sets the UI direction
    (character, or brand colour and type) or the motion direction, ask for it in that message (it
    counts toward the three) instead of choosing it yourself. **No DESIGN.md and no product docs is the
@@ -85,7 +88,9 @@ export const DESIGN_BODY = `# RYUX Design
    with those two fields. Change only those field lines; leave every other line as it is. Your own
    assumptions do not go into DESIGN.md.
 2. **Understand what exists.** When there is a screen, product, or design system already, read its
-   analysis or run Analyze first (capabilities/analyze.md). Understand before you design.
+   analysis or run Analyze first (capabilities/analyze.md). Existing screens, components, and any
+   screenshot or reference provided are your examples: read them before choosing patterns, take
+   their principles, and never copy their facts. Understand before you design.
 3. **Decide with evidence.** For consequential choices, compare two or three patterns, using
    reference screens when the ryux MCP is connected (RX-PR-09), and rate the evidence (RX-PR-10).
 4. **Direction.** Write the Design Direction below. On an expressive surface (hero, landing,
