@@ -162,7 +162,7 @@ function Proof() {
       tone: "accent-night",
       alt: "The completed payment screen designed with RYUX: [CUR] 49.00 paid to [Merchant name], with the fee and total shown and only the actions that were asked for",
       marks: [{ x: 13, y: 27.5, ring: [50, 27.5, 68, 6.4], note: "[CUR]: the currency stays open until someone chooses it." }],
-      after: "Plus five more screens: processing, failed, loading, a load error, and a narrow width.",
+      after: "Plus the states this screen has: processing, failed, loading, a load error, and a narrow width.",
     },
   ];
   return (
@@ -172,11 +172,11 @@ function Proof() {
           <div className="flex flex-col gap-5">
             <Eyebrow night>Benchmark · same prompt, same agent, one with RYUX</Eyebrow>
             <h2 id="proof-title" className="text-[38px] leading-[1.08] font-semibold tracking-[-0.03em] sm:text-[52px]">
-              Six screens. Unknowns left open.
+              Nothing invented. Unknowns left open.
             </h2>
             <p className="max-w-[620px] text-[18px] leading-[1.55] text-night-sub">
-              With RYUX the agent asked first, designed every state around the payment, and left the currency open instead
-              of picking one.
+              Without RYUX the agent filled in what nobody decided. With RYUX it asked first, left the currency open instead
+              of picking one, and covered the states a payment screen has.
             </p>
           </div>
           <div className="flex flex-col gap-2.5 border-l border-night-hair pl-5">
@@ -342,10 +342,6 @@ function Evidence() {
           <h2 id="evidence-title" className="text-[38px] leading-[1.08] font-semibold tracking-[-0.03em] sm:text-[48px]">
             Known, guessed, or unknown.
           </h2>
-          <p className="text-[17px] leading-[1.55] text-ink-2">
-            RYUX keeps what it saw apart from what it is guessing, and leaves what nobody told it in plain sight. These are
-            the labels it uses.
-          </p>
           <div className="mt-4 flex flex-col gap-4 rounded-xl border border-hair bg-white p-6">
             <h3 className="text-[19px] font-semibold">The reference library is coming</h3>
             <p className="text-[15px] leading-[1.55] text-ink-2">
