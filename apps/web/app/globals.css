@@ -69,6 +69,22 @@ body {
 
 .case-panel { animation: note-in 260ms var(--ease-out) both; }
 
+/* Hero replay: one screen hands over to the other once, then holds. Delays are set inline. */
+@keyframes swap-out {
+  from { opacity: 1; visibility: visible; }
+  to { opacity: 0; visibility: hidden; }
+}
+@keyframes swap-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.swap-out { animation: swap-out 500ms var(--ease-out) both; }
+.swap-in { animation: swap-in 500ms var(--ease-out) both; }
+@media (prefers-reduced-motion: reduce) {
+  .swap-out { display: none; }
+  .swap-in { animation: none; }
+}
+
 @keyframes word-in {
   from { opacity: 0; transform: translateY(0.35em); }
   to { opacity: 1; transform: none; }
