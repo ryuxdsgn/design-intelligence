@@ -52,6 +52,13 @@ Fresh agent per run, same model, no reference screens. A small benchmark, not a 
 
 The goal isn't more UI. It's fewer decisions made silently.
 
+### What about visual quality?
+
+That's a separate question, and RYUX hasn't proven it yet. In blind tests of a wallet home screen,
+RYUX and the plain agent scored about the same, and both leaned on the same default fonts and
+colors. We're testing changes against those defaults with human designers and will publish the
+result either way. [Visual benchmarks](https://ryux.design/benchmarks#wallet-home).
+
 ## Decisions come with a receipt
 
 For each major choice, RYUX writes down what it decided and how sure it is. This one is quoted from
@@ -93,8 +100,7 @@ Every task ends with a check of what was verified and what was not.
 
 **Visual direction is part of Design.** Illustration, iconography, imagery, ornament, and motion
 start from a purpose and a brief: what the visual should communicate and what to avoid. Don't make
-it look less AI. Make it look more intentional. In our own blind test of a wallet home screen, RYUX
-did not make screens consistently prettier; its effect is on reasoning, not polish.
+it look less AI. Make it look more intentional.
 
 **DESIGN.md gives RYUX your project's direction.** `ryux setup` asks a few questions about product,
 current work, audience, market, constraints, design intent, and UX, UI, and motion direction. Each
