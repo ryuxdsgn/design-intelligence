@@ -8,20 +8,23 @@ import { Scoreboard } from "@/components/scoreboard";
 import { WaitlistForm } from "@/components/waitlist-form";
 import { Arrow, DOCS, Eyebrow, GUTTER, REPO, SiteFooter, SiteHeader } from "@/components/site";
 
-/* The hero replays the benchmark: the screen made without RYUX, its invented facts marked, then the
-   screen made with RYUX from the same prompt, with what it kept open. x and y are percentages of each
-   full image; the stage shows only the top of both. */
-const INVENTED = [
-  { x: 21, y: 22.3, ring: [50, 22.3, 50, 6.4], body: "Dollars, though the prompt named no currency." },
-  { x: 81, y: 27.2, ring: [56.5, 27.2, 32, 3.6], body: "A coffee shop in San Francisco that nobody named." },
+/* The hero replays the benchmark as people would see it: the screen made without RYUX (only the
+   success state, with a rule and a button nobody asked for), then the screen made with RYUX from the
+   same prompt (the processing state and what it tells people). x and y are percentages of each full
+   image; the stage shows the bottom of the first and the top of the second. */
+const WITHOUT_TOP = 54.3; // % of the first image hidden above the stage
+const WITHOUT = [
+  { x: 64, y: 69.4, ring: [79, 69.4, 24, 3.4], tag: "Missing", body: "Only the success screen. Nothing for a payment that is still processing or fails." },
+  { x: 5, y: 79.3, ring: [48, 79.3, 70, 3.6], tag: "Invented", body: "A 30-day reporting rule nobody decided." },
+  { x: 95, y: 84.6, ring: [75.5, 87.4, 44, 5.4], tag: "Invented", body: "A Save PDF button nobody asked for." },
 ] as const;
-const KEPT_OPEN = [
-  { x: 13, y: 25.6, ring: [49, 25.6, 66, 5.6], tag: "Unknown", body: "Nobody chose a currency, so it stays [CUR]." },
-  { x: 69, y: 20.7, tag: "State", body: "Processing is one of six screens RYUX designed, not only Completed." },
-  { x: 89, y: 35.5, tag: "Assumption", body: "Live updates are not confirmed, so RYUX lists this line to check." },
+const WITH = [
+  { x: 69, y: 20.7, ring: [49, 20.7, 26, 3], tag: "Status", body: "Shows the payment is still processing." },
+  { x: 89, y: 35.5, tag: "Guidance", body: "Tells people not to pay again while they wait." },
 ] as const;
+const WITH_AFTER = "One of six screens it designed: completed, processing, failed, loading, a load error, and a narrow width.";
 /* Swap from the first screen to the second at this point (ms); markup on each follows it. */
-const SWAP = 2800;
+const SWAP = 3400;
 
 const CAPABILITIES = [
   { name: "Analyze", body: "Reads the screen you already have and separates what it sees from what it is guessing." },
@@ -81,8 +84,8 @@ function Hero() {
           ))}
         </h1>
         <p className="max-w-[560px] text-[17px] leading-[1.55] text-ink-2 sm:text-[19px]">
-          RYUX is a skill you add to your AI agent. Before it designs, it writes down what it observed, what it is guessing,
-          and what nobody told it, and it keeps those unknowns on the screen instead of filling them in.
+          RYUX is a skill you add to your AI agent. It has the agent design the screens people actually go through, like a
+          payment that is still processing or a page that fails to load, and nothing nobody asked for.
         </p>
         <div className="flex flex-wrap items-center gap-x-7 gap-y-3">
           <a href="#try" className="inline-flex min-h-12 items-center gap-2.5 rounded-lg bg-accent px-6 text-[17px] font-semibold text-white hover:opacity-90">
@@ -104,8 +107,9 @@ function HeroProof() {
   return (
     <figure className="flex flex-col gap-5 xl:flex-row xl:items-start xl:gap-8">
       <p className="sr-only">
-        The same prompt run twice. Without RYUX the agent showed dollars and a named coffee shop that nobody asked for. With
-        RYUX the currency stays [CUR], the processing state is designed, and live updates are listed as an assumption.
+        The same prompt run twice. Without RYUX the agent designed only the success screen and added a 30-day reporting rule
+        and a Save PDF button nobody asked for. With RYUX it designed six screens, including a processing screen that tells
+        people not to pay again while they wait.
       </p>
       <div aria-hidden className="canvas-grid relative mx-auto w-full max-w-[400px] shrink-0 rounded-[24px] border border-hair p-4 pt-11 sm:p-5 sm:pt-12 lg:w-[360px] xl:mx-0">
         <div className="absolute top-4 right-5 left-5 flex items-center justify-between gap-3 font-mono text-[12px]">
@@ -116,9 +120,9 @@ function HeroProof() {
           <span className="text-muted">Real run, same prompt</span>
         </div>
         <div className="relative aspect-[780/880] overflow-hidden rounded-[18px] border border-hair bg-[#f4f3ef] shadow-[0_30px_60px_-30px_rgba(11,22,43,0.35)]">
-          <div className="swap-out absolute inset-x-0 top-0" style={{ animationDelay: `${SWAP}ms` }}>
+          <div className="swap-out absolute inset-x-0 top-0" style={{ animationDelay: `${SWAP}ms`, transform: `translateY(-${WITHOUT_TOP}%)` }}>
             <Image src="/proof/en-td-without.png" alt="" width={780} height={1926} priority className="w-full" />
-            {INVENTED.map((m, i) => (
+            {WITHOUT.map((m, i) => (
               <div key={m.body}>
                 <Ring x={m.ring[0]} y={m.ring[1]} w={m.ring[2]} h={m.ring[3]} tone="mark" delay={500 + i * 700} />
                 <PinAt n={i + 1} x={m.x} y={m.y} tone="mark" delay={400 + i * 700} />
@@ -127,9 +131,9 @@ function HeroProof() {
           </div>
           <div className="swap-in absolute inset-x-0 top-0" style={{ animationDelay: `${SWAP}ms` }}>
             <Image src="/proof/en-td-with.png" alt="" width={789} height={2050} priority className="w-full" />
-            {KEPT_OPEN.map((m, i) => (
+            {WITH.map((m, i) => (
               <div key={m.tag}>
-                {"ring" in m && <Ring x={m.ring[0]} y={m.ring[1]} w={m.ring[2]} h={m.ring[3]} tone="accent" delay={SWAP + 500} />}
+                {"ring" in m && <Ring x={m.ring[0]} y={m.ring[1]} w={m.ring[2]} h={m.ring[3]} tone="accent" delay={SWAP + 500 + i * 450} />}
                 <PinAt n={i + 1} x={m.x} y={m.y} tone="accent" delay={SWAP + 400 + i * 450} />
               </div>
             ))}
@@ -138,17 +142,17 @@ function HeroProof() {
       </div>
       <div aria-hidden className="relative mx-auto w-full max-w-[400px] xl:mx-0 xl:w-[230px] xl:pt-14">
         <ol className="swap-out flex flex-col gap-4" style={{ animationDelay: `${SWAP}ms` }}>
-          {INVENTED.map((m, i) => (
+          {WITHOUT.map((m, i) => (
             <li key={m.body} className="note-in flex gap-3" style={{ animationDelay: `${700 + i * 700}ms` }}>
               <Pin n={i + 1} />
               <p className="text-[15px] leading-[1.45] text-ink-2">
-                <span className="font-semibold text-mark">Invented.</span> {m.body}
+                <span className="font-semibold text-mark">{m.tag}.</span> {m.body}
               </p>
             </li>
           ))}
         </ol>
         <ol className="swap-in absolute inset-x-0 top-0 flex flex-col gap-4 motion-reduce:static xl:top-14" style={{ animationDelay: `${SWAP}ms` }}>
-          {KEPT_OPEN.map((m, i) => (
+          {WITH.map((m, i) => (
             <li key={m.tag} className="note-in flex gap-3" style={{ animationDelay: `${SWAP + 600 + i * 450}ms` }}>
               <Pin n={i + 1} tone="accent" />
               <p className="text-[15px] leading-[1.45] text-ink-2">
@@ -156,6 +160,9 @@ function HeroProof() {
               </p>
             </li>
           ))}
+          <li className="note-in text-[15px] leading-[1.45] text-ink-2" style={{ animationDelay: `${SWAP + 600 + WITH.length * 450}ms` }}>
+            {WITH_AFTER}
+          </li>
         </ol>
       </div>
     </figure>
@@ -176,7 +183,7 @@ function Proof() {
       tone: "mark-night",
       alt: "The completed payment screen designed without RYUX: $24.50 paid to a coffee shop, the wallet balance, a promise to look into problems reported within 30 days, and Save PDF and Share receipt buttons",
       marks: [
-        { x: 21, y: 22.3, ring: [50, 22.3, 50, 6.4], note: "Dollars, though the prompt named no currency." },
+        { x: 62, y: 69.4, ring: [79, 69.4, 24, 3.4], note: "Only Completed: no screen for a payment still processing or one that fails." },
         { x: 5, y: 79.3, ring: [48, 79.3, 70, 3.6], note: "“Report it within 30 days”: a rule nobody decided." },
         { x: 95, y: 84.6, ring: [75.5, 87.4, 44, 5.4], note: "Save PDF, which nobody asked for." },
       ],
@@ -188,8 +195,11 @@ function Proof() {
       h: 1931,
       tone: "accent-night",
       alt: "The completed payment screen designed with RYUX: [CUR] 49.00 paid to [Merchant name], with the fee and total shown and only the actions that were asked for",
-      marks: [{ x: 13, y: 27.5, ring: [50, 27.5, 68, 6.4], note: "[CUR]: the currency stays open until someone chooses it." }],
-      after: "Plus the states this screen has: processing, failed, loading, a load error, and a narrow width.",
+      marks: [
+        { x: 9, y: 77.4, ring: [50, 77.4, 76, 3.6], note: "A way to report a problem, without a deadline nobody set." },
+        { x: 5, y: 87.2, note: "Two actions instead of three: share the receipt or go home." },
+      ],
+      after: "Plus the screens a payment goes through: processing, failed, loading, a load error, and a narrow width.",
     },
   ];
   return (
@@ -199,11 +209,11 @@ function Proof() {
           <div className="flex flex-col gap-5">
             <Eyebrow night>Benchmark · same prompt, same agent, one with RYUX</Eyebrow>
             <h2 id="proof-title" className="text-[38px] leading-[1.08] font-semibold tracking-[-0.03em] sm:text-[52px]">
-              Nothing invented. Unknowns left open.
+              One screen became six.
             </h2>
             <p className="max-w-[620px] text-[18px] leading-[1.55] text-night-sub">
-              Without RYUX the agent filled in what nobody decided. With RYUX it asked first, left the currency open instead
-              of picking one, and covered the states a payment screen has.
+              Without RYUX the agent designed only the success screen, and added a rule and a button nobody asked for. With
+              RYUX it designed every screen a payment goes through, so people can tell what happened to their money.
             </p>
           </div>
           <div className="flex flex-col gap-2.5 border-l border-night-hair pl-5">
