@@ -48,3 +48,11 @@ How reference apps keep components consistent for this pattern: `search_screens`
 - Do not: Hard-code one-off values for things the system already defines.
 - Why: Tokens keep changes consistent and reviewable. (W3C Design Tokens Community Group)
 - Check: review
+
+### RX-DS-05 [Contextual] Every theme you ship works
+
+- When: The product ships more than one theme (light and dark, or brand themes), or a theme is being chosen.
+- Do: Choose the default theme from the product, its users, and where it is used, then check every shipped theme with the same care: contrast, every component state, images and charts, and focus.
+- Do not: Pick dark mode because the product is technical, or ship a toggle whose second theme was never rendered.
+- Why: A theme that was never checked fails for everyone who picks it, often in contrast and states first. (pattern also in anti-slop (MIT) R-21, R-34; written for RYUX)
+- Check: render each theme; contrast check

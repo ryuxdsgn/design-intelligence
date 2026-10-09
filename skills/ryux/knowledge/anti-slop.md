@@ -13,23 +13,31 @@ styles. It has three parts.
 from the rules.
 
 **Purpose Gates**: these patterns are allowed when they have a purpose. For each one in the
-result, ask **"Why does this exist?"** If there is no meaningful reason, remove it.
+result, ask three questions: **purpose** (what does it do?), **contribution** (what does it add to
+understanding, interaction, or character?), and **necessity** (would something simpler do the
+same?). "It looks more interesting" answers none of them; remove what fails.
 
 **Quality Locks**: consistency that must hold across the product (listed below).
 
 **Visual tells.** These are signals that a reason is missing, not banned styles. When you see one,
-ask the purpose question; keep it only if the answer is real.
+run the purpose gate; keep it when the answer is real, as in the last column.
 
-| Tell | Why it hurts | Fix |
-| --- | --- | --- |
-| A blue-to-purple gradient wash behind everything | carries no meaning and appears on every AI page | color from the brand and its roles (RX-UI-10), or a plain surface |
-| A fake app, terminal, or agent window as the hero | the category default, often with invented output | a signature from the product's own idea; product UI only when real or labeled (RX-UI-12, RX-UI-07) |
-| Generic illustration: people with laptops, abstract blobs | unrelated to the product, so it steals attention and says nothing | a contextual illustration made from the brief, or no visual (RX-UI-07) |
-| Floating devices and dashboard mockups | fake screens imply features and data | real screens with labeled sample data (RX-UI-07, RX-AS-01) |
-| Endless floating or looping motion | decorative motion with no reason, competing with the task | a single L4 moment with a message, or none (RX-UI-11) |
-| A bento grid or three equal feature cards | a template that flattens hierarchy | a layout from the content and its priority (RX-UI-05, RX-UI-01) |
-| Glass, glow, and blur on every layer | decoration without a job that also lowers contrast | one surface treatment with a purpose (RX-AS-05, RX-A11Y-01) |
-| Stock teamwork or handshake photos | borrowed people implying endorsement | real people with consent, or no people (RX-AS-02, RX-UI-13) |
+| Tell | Why it hurts | Fix | Fine when |
+| --- | --- | --- | --- |
+| A blue-to-purple gradient wash behind everything | carries no meaning and appears on every AI page | color from the brand and its roles (RX-UI-10), or a plain surface | the gradient is the brand, or it encodes a value |
+| A fake app, terminal, or agent window as the hero | the category default, often with invented output | a signature from the product's own idea; product UI only when real or labeled (RX-UI-12, RX-UI-07) | it is the real product with labeled sample data |
+| Generic illustration: people with laptops, abstract blobs | unrelated to the product, so it steals attention and says nothing | a contextual illustration made from the brief, or no visual (RX-UI-07) | it explains a concept or an empty state words cannot |
+| Floating devices and dashboard mockups | fake screens imply features and data | real screens with labeled sample data (RX-UI-07, RX-AS-01) | the screens are real and labeled |
+| The template section order (hero, three cards, three-column pricing, four-column footer) | the page follows a template instead of what this content needs | order and form sections by what the reader needs next (RX-UI-05) | the content really has that shape |
+| Identical feature cards in a row | equal boxes flatten priorities that are not equal | give the main point more weight; a list or one strong block (RX-UI-01) | the items are equal and compared side by side |
+| A bento grid | a fashionable frame that hides which item matters | a layout from the content and its priority (RX-UI-05) | the items are independent and similar in weight |
+| A typeface picked because it is in fashion | the same few faces on every generated page | a face chosen for the product's voice and legibility (RX-UI-10) | the brand already uses it |
+| Monospace to look technical | mood instead of meaning; harder to read in prose | monospace only for code, IDs, and aligned numbers | it shows code, commands, or tabular figures |
+| A sparkle or robot icon on every AI feature | says "AI" instead of what the feature does | an icon for the action, or none | the product's own AI mark, used once |
+| A small badge above the headline that repeats it | a label that adds no information | cut it, or say something the headline does not | it carries real status: beta, new version, date |
+| Endless floating, looping, or scroll-triggered motion | decorative motion with no reason, competing with the task | a single L4 moment with a message, or none (RX-UI-11) | it shows state, continuity, or the product's idea once |
+| Glass, glow, and blur on every layer | decoration without a job that also lowers contrast | one surface treatment with a purpose (RX-AS-05, RX-A11Y-01) | one overlay needs to show what is behind it |
+| Stock teamwork or handshake photos | borrowed people implying endorsement | real people with consent, or no people (RX-AS-02, RX-UI-13) | never as evidence of customers |
 
 ## Hard Gates
 
@@ -44,7 +52,7 @@ ask the purpose question; keep it only if the answer is real.
 | Broken responsive behavior | RX-RD-01 |
 | Accessibility failures | RX-A11Y-01, RX-A11Y-02, RX-A11Y-03, RX-A11Y-04 |
 | Unclear goal or competing actions | RX-PR-03 |
-| Unexplained interaction behavior | RX-IX-01 |
+| Unexplained interaction behavior | RX-IX-01, RX-IX-12 |
 | Duplicate components | RX-DS-01 |
 | Unnecessary complexity | RX-AS-06 |
 
@@ -64,6 +72,11 @@ ask the purpose question; keep it only if the answer is real.
 | Unusual layouts | the content or task genuinely differs from standard patterns |
 | Generous whitespace | it separates groups or slows a high-stakes decision, not when it hides thin content |
 | Borders | they separate regions that spacing alone cannot |
+| Typeface choice | it is chosen for the product's character and legibility, not because it is the model's usual pick |
+| Background patterns (grid, dots, noise) | they carry the identity or support the content, such as a canvas for a design tool |
+| Arrows on buttons | the action moves the user somewhere (next step, another page), not on every button |
+| Glass and blur | one surface needs to show what is behind it (an overlay over content), and text on it keeps its contrast |
+| Glow | it marks the one element that needs attention, not every card, button, and icon |
 | Rounded containers | the rounding follows the system radius and the container groups something |
 
 ## Quality Locks
@@ -78,6 +91,7 @@ ask the purpose question; keep it only if the answer is real.
 | Interaction patterns and states | RX-DS-02 |
 | Responsive behavior | RX-RD-06 |
 | Visual hierarchy | RX-UI-01 |
+| Radius | RX-UI-03, RX-DS-03 |
 
 ## Evidence from RYUX Knowledge
 
@@ -118,8 +132,8 @@ Real screens show what real products do instead of invented numbers and urgency:
 
 ### RX-AS-05 [Required] Decoration passes a purpose gate
 
-- Do: For each potentially decorative pattern, answer "why does this exist?" with a real reason (grouping, emphasis, state, brand), or remove it.
-- Do not: Keep cards, gradients, badges, shadows, or animation that have no reason.
+- Do: For each potentially decorative pattern, answer three questions: purpose (what does it do?), contribution (what does it add to understanding, interaction, or the product's character?), and necessity (would something simpler do the same?). Keep it only when all three have a real answer. Three feature cards pass when the features are equal and compared; when one matters more, give it more weight instead.
+- Do not: Keep cards, gradients, badges, shadows, or animation that have no reason, or accept "it looks more interesting" as one.
 - Why: Unjustified decoration is what makes AI-generated UI look the same. (ryux anti-slop principle)
 - Check: review
 

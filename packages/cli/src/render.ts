@@ -63,12 +63,12 @@ export function deliveryGateTemplate(): string {
   const width = Math.max(...GATE_AREAS.map((a) => a.length), "FINAL".length) + 2;
   const lines = [...GATE_AREAS, "FINAL"].map((a) =>
     a === "FINAL"
-      ? `${a.padEnd(width)}PASS | FAIL`
+      ? `${a.padEnd(width)}PASS | FAIL | NOT VERIFIED`
       : a === "UI"
-        ? `${a.padEnd(width)}PASS | FAIL | N/A  · one-line reason · point of view: <concept> | task UI`
+        ? `${a.padEnd(width)}PASS | FAIL | NOT VERIFIED | N/A  · one-line reason · point of view: <concept> | task UI`
         : a === "PRODUCT"
-        ? `${a.padEnd(width)}PASS | FAIL | N/A  · one-line reason · evidence Strong | Thin | None`
-        : `${a.padEnd(width)}PASS | FAIL | N/A  · one-line reason`,
+        ? `${a.padEnd(width)}PASS | FAIL | NOT VERIFIED | N/A  · one-line reason · evidence Strong | Thin | None`
+        : `${a.padEnd(width)}PASS | FAIL | NOT VERIFIED | N/A  · one-line reason`,
   );
   return `\`\`\`\n${lines.join("\n")}\n\`\`\``;
 }
@@ -264,6 +264,7 @@ const PROVENANCE: { label: string; test: RegExp }[] = [
   },
   { label: "Industry practice", test: /\b(?:[Cc]lean-code|Design-system|[Aa]rt direction|[Ll]icensing and trademark|Localization|Testing|responsive design) practice/ },
   { label: "Observed in a RYUX run", test: /ryux run|ryux README checkout image/ },
+  { label: "Pattern also in another MIT ruleset (text written for RYUX)", test: /anti-slop \(MIT\)/ },
   {
     label: "RYUX principle, taxonomy, or review",
     test: /ryux (?:[a-z-]+ )?(?:principle|taxonomy|reference screens|review practice|interaction model|visual QA loop)|critique\.md` playbook|Critique Design Read|owner review/,
