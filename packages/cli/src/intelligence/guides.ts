@@ -103,7 +103,10 @@ export const DESIGN_BODY = `# RYUX Design
 7. **Render and inspect.** Screenshot what you made, check it against the direction and the rules,
    fix, and render again (capabilities/qa.md). Check the result against the Liveliness you set, and
    put each prominent or decorative element through the purpose gate (RX-AS-05: purpose,
-   contribution, necessity); on calm task UI, deliberate restraint is a valid answer. Generated images and illustrations arrive
+   contribution, necessity); on calm task UI, deliberate restraint is a valid answer. Then judge the main state as a
+   reviewer would, not as a checklist: rate Clarity, Hierarchy, and Specificity from the Design Read
+   (capabilities/critique.md), plus Craft (type steps, spacing rhythm, alignment, detail), Strong,
+   Adequate, or Weak with one reason each, and fix anything Weak before the gate. Generated images and illustrations arrive
    asynchronously: wait until each one has landed and render again before exporting or closing the
    gate. Never finish with an asset still pending.
 8. **Fact check, then the gate.** Check every product fact on the canvas (tool and command names,
