@@ -8,11 +8,10 @@ import { Scoreboard } from "@/components/scoreboard";
 import { WaitlistForm } from "@/components/waitlist-form";
 import { Arrow, DOCS, Eyebrow, GUTTER, REPO, SiteFooter, SiteHeader } from "@/components/site";
 
-/* The hero replays the benchmark as people would see it: the screen made without RYUX (only the
-   success state, with a rule and a button nobody asked for), then the screen made with RYUX from the
-   same prompt (the processing state and what it tells people). x and y are percentages of each full
-   image; the phone-shaped stage shows the lower part of the first and the top of the second. */
-const WITHOUT_TOP = 32; // % of the first image hidden above the stage
+/* The hero shows the benchmark as people would see it, as two whole phones: the screen made without
+   RYUX (only the success state, with a rule and a button nobody asked for), then the screen made with
+   RYUX from the same prompt (the processing state and what it tells people). x and y are percentages
+   of each full image. */
 const WITHOUT = [
   { x: 64, y: 69.4, ring: [79, 69.4, 24, 3.4], tag: "Missing", body: "Only the success screen. Nothing for a payment that is still processing or fails." },
   { x: 5, y: 79.3, ring: [48, 79.3, 70, 3.6], tag: "Invented", body: "A 30-day reporting rule nobody decided." },
@@ -22,9 +21,8 @@ const WITH = [
   { x: 69, y: 20.7, ring: [49, 20.7, 26, 3], tag: "Status", body: "Shows the payment is still processing." },
   { x: 89, y: 35.5, tag: "Guidance", body: "Tells people not to pay again while they wait." },
 ] as const;
-const WITH_AFTER = "One of six screens it designed: completed, processing, failed, loading, a load error, and a narrow width.";
-/* Swap from the first screen to the second at this point (ms); markup on each follows it. */
-const SWAP = 3400;
+/* The second phone arrives at this point (ms); its markup follows it. */
+const SECOND = 1900;
 
 /* The six screens RYUX designed in the same benchmark run, cut from its exported board. 320 is the
    narrow-width check the board names; the others are 390 wide. */
@@ -121,70 +119,54 @@ function Hero() {
   );
 }
 
-/* Two layers in one frame. The first (without RYUX) fades out at SWAP; the second (with RYUX) fades in.
-   With reduced motion only the second shows, already marked. */
+/* Two whole phones. The first is marked first; the second slides in after it, then its marks and the
+   390 redline draw. With reduced motion both are shown at rest, already marked. */
 function HeroProof() {
+  const phones = [
+    {
+      key: "without", label: "Without RYUX", count: "1 screen", src: "/proof/en-td-without.png", w: 780, h: 1926, tone: "mark" as const,
+      marks: WITHOUT, start: 0,
+      caption: "Only the success screen, plus a 30-day rule and a Save PDF button nobody asked for.",
+    },
+    {
+      key: "with", label: "With RYUX", count: "1 of 6 screens", src: "/proof/en-td-with.png", w: 789, h: 2050, tone: "accent" as const,
+      marks: WITH, start: SECOND,
+      caption: "Processing: says the payment is on its way and asks people not to pay again.",
+    },
+  ];
   return (
-    <figure className="flex flex-col gap-5 xl:flex-row xl:items-start xl:gap-8">
+    <figure className="flex flex-col gap-4">
       <p className="sr-only">
         The same prompt run twice. Without RYUX the agent designed only the success screen and added a 30-day reporting rule
         and a Save PDF button nobody asked for. With RYUX it designed six screens, including a processing screen that tells
         people not to pay again while they wait.
       </p>
-      <div aria-hidden className="canvas-grid relative mx-auto w-full max-w-[320px] shrink-0 rounded-[24px] border border-hair p-4 pt-11 pb-8 sm:p-5 sm:pt-12 sm:pb-9 lg:w-[300px] xl:mx-0">
-        <div className="absolute top-4 right-5 left-5 flex items-center justify-between gap-3 font-mono text-[12px]">
-          <span className="relative">
-            <span className="swap-out font-semibold text-mark" style={{ animationDelay: `${SWAP}ms` }}>Without RYUX</span>
-            <span className="swap-in absolute top-0 left-0 font-semibold whitespace-nowrap text-accent motion-reduce:static" style={{ animationDelay: `${SWAP}ms` }}>With RYUX</span>
-          </span>
-          <span className="text-muted">Real run, same prompt</span>
-        </div>
-        <div className="relative aspect-[780/1300] overflow-hidden rounded-[18px] border border-hair bg-[#f4f3ef] shadow-[0_30px_60px_-30px_rgba(11,22,43,0.35)]">
-          <div className="swap-out absolute inset-x-0 top-0" style={{ animationDelay: `${SWAP}ms`, transform: `translateY(-${WITHOUT_TOP}%)` }}>
-            <Image src="/proof/en-td-without.png" alt="" width={780} height={1926} priority className="w-full" />
-            {WITHOUT.map((m, i) => (
-              <div key={m.body}>
-                <Ring x={m.ring[0]} y={m.ring[1]} w={m.ring[2]} h={m.ring[3]} tone="mark" delay={500 + i * 700} />
-                <PinAt n={i + 1} x={m.x} y={m.y} tone="mark" delay={400 + i * 700} />
+      <div aria-hidden className="grid grid-cols-2 items-start gap-4 sm:gap-6 lg:w-[404px]">
+        {phones.map((ph) => (
+          <div key={ph.key} className="phone-in flex min-w-0 flex-col gap-3" style={{ animationDelay: `${ph.start}ms` }}>
+            <p className="flex flex-col gap-0.5 font-mono text-[12px] sm:flex-row sm:items-baseline sm:justify-between sm:gap-2">
+              <span className={ph.tone === "mark" ? "text-mark" : "text-accent"}>{ph.label}</span>
+              <span className="text-muted">{ph.count}</span>
+            </p>
+            <div className="rounded-[30px] bg-ink p-[6px] shadow-[0_30px_60px_-30px_rgba(11,22,43,0.45)]">
+              <div className="relative overflow-hidden rounded-[24px] bg-white">
+                <Image src={ph.src} alt="" width={ph.w} height={ph.h} priority className="w-full" />
+                {ph.marks.map((m, i) => (
+                  <div key={m.body}>
+                    {"ring" in m && <Ring x={m.ring[0]} y={m.ring[1]} w={m.ring[2]} h={m.ring[3]} tone={ph.tone} delay={ph.start + 600 + i * 450} />}
+                    <PinAt n={i + 1} x={m.x} y={m.y} tone={ph.tone} delay={ph.start + 500 + i * 450} />
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
-          <div className="swap-in absolute inset-x-0 top-0" style={{ animationDelay: `${SWAP}ms` }}>
-            <Image src="/proof/en-td-with.png" alt="" width={789} height={2050} priority className="w-full" />
-            {WITH.map((m, i) => (
-              <div key={m.tag}>
-                {"ring" in m && <Ring x={m.ring[0]} y={m.ring[1]} w={m.ring[2]} h={m.ring[3]} tone="accent" delay={SWAP + 500 + i * 450} />}
-                <PinAt n={i + 1} x={m.x} y={m.y} tone="accent" delay={SWAP + 400 + i * 450} />
+            </div>
+            {ph.key === "with" && (
+              <div className="relative h-4">
+                <Dim label="390" delay={SECOND + 1500} className="inset-x-0 top-0" />
               </div>
-            ))}
+            )}
+            <p className={`text-[13px] leading-[1.45] text-ink-2 ${ph.key === "without" ? "sm:pb-7" : ""}`}>{ph.caption}</p>
           </div>
-        </div>
-        <Dim label="390" delay={SWAP + 700} className="bottom-0.5 left-4 right-4 sm:left-5 sm:right-5" />
-      </div>
-      <div aria-hidden className="relative mx-auto w-full max-w-[320px] xl:mx-0 xl:w-[260px] xl:pt-14">
-        <ol className="swap-out flex flex-col gap-4" style={{ animationDelay: `${SWAP}ms` }}>
-          {WITHOUT.map((m, i) => (
-            <li key={m.body} className="note-in flex gap-3" style={{ animationDelay: `${700 + i * 700}ms` }}>
-              <Pin n={i + 1} />
-              <p className="text-[15px] leading-[1.45] text-ink-2">
-                <span className="font-semibold text-mark">{m.tag}.</span> {m.body}
-              </p>
-            </li>
-          ))}
-        </ol>
-        <ol className="swap-in absolute inset-x-0 top-0 flex flex-col gap-4 motion-reduce:static xl:top-14" style={{ animationDelay: `${SWAP}ms` }}>
-          {WITH.map((m, i) => (
-            <li key={m.tag} className="note-in flex gap-3" style={{ animationDelay: `${SWAP + 600 + i * 450}ms` }}>
-              <Pin n={i + 1} tone="accent" />
-              <p className="text-[15px] leading-[1.45] text-ink-2">
-                <span className="font-semibold text-accent">{m.tag}.</span> {m.body}
-              </p>
-            </li>
-          ))}
-          <li className="note-in text-[15px] leading-[1.45] text-ink-2" style={{ animationDelay: `${SWAP + 600 + WITH.length * 450}ms` }}>
-            {WITH_AFTER}
-          </li>
-        </ol>
+        ))}
       </div>
     </figure>
   );

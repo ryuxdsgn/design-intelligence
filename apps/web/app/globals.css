@@ -68,6 +68,11 @@ h1, h2 {
   .reveal[data-shown="false"] .dim-line, .reveal[data-shown="false"] .dim-label { opacity: 1; }
 }
 
+/* Hero phones: each arrives once, from a short distance; delays are set inline. */
+@keyframes phone-in { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
+.phone-in { animation: phone-in 700ms var(--ease-out) both; }
+@media (prefers-reduced-motion: reduce) { .phone-in { animation: none; } }
+
 /* A row of frames that arrive one after another once their section is revealed. */
 .frames > * { transition: opacity 500ms var(--ease-out), transform 500ms var(--ease-out); transition-delay: calc(var(--i, 0) * 110ms); }
 .reveal[data-shown="false"] .frames > * { opacity: 0; transform: translateY(18px); }
@@ -106,22 +111,6 @@ h1, h2 {
 .note-in { animation: note-in 420ms var(--ease-out) both; }
 
 .case-panel { animation: note-in 260ms var(--ease-out) both; }
-
-/* Hero replay: one screen hands over to the other once, then holds. Delays are set inline. */
-@keyframes swap-out {
-  from { opacity: 1; visibility: visible; }
-  to { opacity: 0; visibility: hidden; }
-}
-@keyframes swap-in {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-.swap-out { animation: swap-out 500ms var(--ease-out) both; }
-.swap-in { animation: swap-in 500ms var(--ease-out) both; }
-@media (prefers-reduced-motion: reduce) {
-  .swap-out { display: none; }
-  .swap-in { animation: none; }
-}
 
 @keyframes word-in {
   from { opacity: 0; transform: translateY(0.35em); }
