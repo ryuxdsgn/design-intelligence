@@ -16,6 +16,7 @@ Scripts for the RYUX visual and decision benchmarks. Results live in `docs/bench
 | Script | Use |
 | --- | --- |
 | `run.sh <A\|B> <out_dir> <prompt_file>` | One run; writes `turn1.jsonl` |
+| `turn2.sh <run_dir> <factsheet_file>` | Answers turn-1 questions from the fact sheet in the same session; writes `turn2.jsonl` |
 | `run-summary.py <turn1.jsonl> [chars]` | Skill path loaded, tools used, the final answer |
 | `genericness.py name=<turn1.jsonl> …` | Counts 11 model defaults (fonts, colors, layout tells) from the executed pen.dev code, plus font-set diversity |
 | `judge.sh <work_dir> <A1.png> <B1.png> …` | AI judge: pairwise in both orders, `REPS` times (default 3), plus VisAWI-S. The prompt in `judge-prompt.txt` holds the wallet-home brief; edit it per scenario |
