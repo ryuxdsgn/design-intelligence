@@ -47,6 +47,30 @@ export function Tilt({ children, className = "" }: { children: React.ReactNode; 
 }
 
 /**
+ * Marks the main-nav link of the section being read (data-active), so the header shows where you are.
+ * Renders nothing; it only reads the page's own sections and links.
+ */
+export function SectionSpy({ ids }: { ids: string[] }) {
+  useEffect(() => {
+    const links = new Map(ids.map((id) => [id, document.querySelectorAll<HTMLElement>(`a.nav-link[href$="#${id}"]`)]));
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          links.get(e.target.id)?.forEach((a) => a.setAttribute("data-active", String(e.isIntersecting)));
+        }
+      },
+      { rootMargin: "-45% 0px -50% 0px" },
+    );
+    for (const id of ids) {
+      const el = document.getElementById(id);
+      if (el) io.observe(el);
+    }
+    return () => io.disconnect();
+  }, [ids]);
+  return null;
+}
+
+/**
  * Turns vertical scroll into a horizontal pass over a row of screens: the row sticks while the page scrolls
  * and moves one screen at a time, with a "2 / 6 · Processing" readout. Only at 1024 and wider without a
  * reduced-motion preference; otherwise the row simply scrolls sideways.
@@ -100,7 +124,7 @@ export function ScrubStrip({ children, steps }: { children: React.ReactNode; ste
   }
   return (
     <div ref={outer} data-scrub="on" style={{ height: `calc(80vh + ${distance * 2}px)` }}>
-      <div className="sticky top-[12vh] flex flex-col gap-5">
+      <div className="sticky top-[max(12vh,104px)] flex flex-col gap-5">
         <div className="overflow-hidden [mask-image:linear-gradient(90deg,transparent,#000_40px,#000_calc(100%-40px),transparent)]">
           <div ref={track} data-active={active} className="will-change-transform">
             {children}
