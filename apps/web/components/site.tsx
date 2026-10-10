@@ -46,7 +46,7 @@ export function Mark({ size = 24, night = false }: { size?: number; night?: bool
 
 /** Small label that opens a section. Sentence case, set by the caller. */
 export function Eyebrow({ children, night = false }: { children: React.ReactNode; night?: boolean }) {
-  return <p className={`text-[15px] font-medium ${night ? "text-night-sub" : "text-muted"}`}>{children}</p>;
+  return <p className={`font-mono text-[13px] ${night ? "text-night-sub" : "text-muted"}`}>{children}</p>;
 }
 
 export function SiteHeader() {
