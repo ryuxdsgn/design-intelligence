@@ -23,7 +23,7 @@ export function GitHubIcon({ className = "" }: { className?: string }) {
 
 export function Arrow({ down = false }: { down?: boolean }) {
   return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+    <svg className="arrow" data-dir={down ? "down" : "right"} width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
       {down ? <path d="M12 5v14m-6-6 6 6 6-6" /> : <path d="M5 12h14m-6-6 6 6-6 6" />}
     </svg>
   );
@@ -51,14 +51,14 @@ export function Eyebrow({ children, night = false }: { children: React.ReactNode
 
 export function SiteHeader() {
   return (
-    <header className="border-b border-hair">
+    <header className="site-header">
       <div className={`${GUTTER} flex items-center justify-between gap-6 py-5`}>
         <Link href="/" className="flex items-center gap-2.5" aria-label="RYUX home">
           <Mark size={26} />
         </Link>
         <nav aria-label="Main" className="hidden items-center gap-9 text-[15px] text-ink-2 lg:flex">
           {NAV.map((n) => (
-            <a key={n.label} href={n.href} className="hover:text-ink">
+            <a key={n.label} href={n.href} className="nav-link hover:text-ink">
               {n.label}
             </a>
           ))}

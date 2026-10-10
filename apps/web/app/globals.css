@@ -92,6 +92,57 @@ h1, h2 {
 .tactile:hover { transform: scale(0.975); }
 .tactile:active { transform: scale(0.955); }
 
+/* Header: sticks, and its hairline appears once the page has scrolled (scroll-driven where supported;
+   elsewhere the line is simply always there). The current section is underlined in the nav. */
+.site-header { position: sticky; top: 0; z-index: 40; background: var(--color-paper); border-bottom: 1px solid var(--color-hair); }
+@supports (animation-timeline: scroll()) {
+  .site-header { animation: header-line linear both; animation-timeline: scroll(); animation-range: 0 80px; }
+}
+@keyframes header-line { from { border-bottom-color: transparent; } to { border-bottom-color: var(--color-hair); } }
+.nav-link { position: relative; transition: color 200ms var(--ease-ios); }
+.nav-link::after { content: ""; position: absolute; left: 0; right: 0; bottom: -6px; height: 2px; background: var(--color-mark); transform: scaleX(0); transform-origin: left center; transition: transform 350ms var(--ease-ios); }
+.nav-link:hover::after { transform: scaleX(0.35); }
+.nav-link[data-active="true"] { color: var(--color-ink); }
+.nav-link[data-active="true"]::after { transform: scaleX(1); }
+
+/* Arrows point where a link goes, and lean that way on hover. */
+.arrow { transition: transform 300ms var(--ease-spring); }
+a:hover .arrow { transform: translateX(3px); }
+a:hover .arrow[data-dir="down"] { transform: translateY(3px); }
+
+/* Copy: the icon turns into a check with a small pop, and the command row flashes once. */
+@keyframes pop { 0% { transform: scale(0.4); opacity: 0; } 70% { transform: scale(1.15); opacity: 1; } 100% { transform: scale(1); } }
+.pop { animation: pop 380ms var(--ease-spring) both; }
+@keyframes flash { from { box-shadow: 0 0 0 2px var(--color-accent); } to { box-shadow: 0 0 0 2px transparent; } }
+.copy-row[data-status="copied"] { animation: flash 900ms var(--ease-ios); }
+
+/* Before and after values: the old value is struck through with a drawn line, then the new one arrives. */
+.strike { position: relative; }
+.strike::after { content: ""; position: absolute; left: -2px; right: -2px; top: 52%; height: 1.5px; background: var(--color-mark); transform-origin: left center; transition: transform 500ms var(--ease-ios); transition-delay: calc(var(--i, 0) * 120ms + 300ms); }
+.after-in { display: inline-block; transition: opacity 400ms var(--ease-ios), transform 400ms var(--ease-spring); transition-delay: calc(var(--i, 0) * 120ms + 650ms); }
+.reveal[data-shown="false"] .strike::after { transform: scaleX(0); }
+.reveal[data-shown="false"] .after-in { opacity: 0; transform: translateY(4px) scale(0.9); }
+
+/* A drawn check for a finished action. */
+@keyframes draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+.check-draw { stroke-dasharray: 1; animation: draw 450ms var(--ease-ios) 100ms both; }
+
+/* Pins that can be hovered grow a little; focus rings settle in instead of snapping. */
+.pin-hit .pin-in > span { transition: transform 250ms var(--ease-spring); }
+.pin-hit:hover .pin-in > span { transform: scale(1.15); }
+@keyframes ring-in { from { outline-offset: 7px; } to { outline-offset: 2px; } }
+:focus-visible { animation: ring-in 200ms var(--ease-ios); }
+
+@media (prefers-reduced-motion: reduce) {
+  .site-header { animation: none; }
+  .nav-link::after, .arrow, .pin-hit .pin-in > span { transition: none; }
+  a:hover .arrow, a:hover .arrow[data-dir="down"], .pin-hit:hover .pin-in > span { transform: none; }
+  .pop, .copy-row[data-status="copied"], .check-draw, :focus-visible { animation: none; }
+  .strike::after, .after-in { transition: none; }
+  .reveal[data-shown="false"] .strike::after { transform: none; }
+  .reveal[data-shown="false"] .after-in { opacity: 1; transform: none; }
+}
+
 /* Inspect: hovering or focusing a phone redraws its measurements, like Alt-hover in a design tool.
    The layer goes from display:none to block, so the redline animation plays again each time. */
 .inspect { position: relative; cursor: crosshair; outline: none; }
