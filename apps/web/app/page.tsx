@@ -101,7 +101,7 @@ function Hero() {
     <section aria-labelledby="hero-title" className={`${GUTTER} grid items-center gap-10 py-8 [&>*]:min-w-0 lg:grid-cols-[minmax(0,1fr)_auto] lg:gap-12 lg:py-10`}>
       <div className="flex flex-col gap-5 lg:gap-6">
         <Eyebrow>Design intelligence for AI agents</Eyebrow>
-        <h1 id="hero-title" className="text-[38px] leading-[1.02] font-semibold tracking-[-0.03em] sm:text-[56px] lg:text-[48px] xl:text-[56px]">
+        <h1 id="hero-title" className="text-[min(38px,11vw)] leading-[1.02] font-semibold tracking-[-0.03em] sm:text-[56px] lg:text-[48px] xl:text-[56px]">
           {"Understand before you design.".split(" ").map((w, i) => (
             <span key={w} className="word-in inline-block" style={{ animationDelay: `${i * 90}ms` }}>
               {w === "design." ? (
