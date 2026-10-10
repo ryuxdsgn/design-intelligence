@@ -64,7 +64,7 @@ export function WaitlistForm() {
         <button
           type="submit"
           disabled={status === "loading"}
-          className="min-h-12 rounded-md bg-ink px-6 text-[15px] font-semibold text-paper transition-opacity hover:opacity-90 disabled:opacity-60"
+          className="tactile min-h-12 rounded-md bg-ink px-6 text-[15px] font-semibold text-paper disabled:opacity-60"
         >
           {status === "loading" ? "Joining…" : "Join the waitlist"}
         </button>

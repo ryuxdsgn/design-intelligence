@@ -65,7 +65,7 @@ export function SiteHeader() {
         </nav>
         <a
           href={REPO}
-          className="inline-flex min-h-11 items-center gap-2 rounded-lg border border-hair bg-white px-4 text-[15px] font-medium hover:border-ink"
+          className="tactile inline-flex min-h-11 items-center gap-2 rounded-lg border border-hair bg-white px-4 text-[15px] font-medium hover:border-ink"
         >
           <GitHubIcon />
           GitHub

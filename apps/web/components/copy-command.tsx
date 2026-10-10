@@ -42,7 +42,7 @@ export function CopyCommand({ command, night = false, prompt = "$" }: { command:
       <button
         type="button"
         onClick={copy}
-        className={`min-h-9 shrink-0 rounded px-3 text-[13px] ${
+        className={`tactile min-h-9 shrink-0 rounded px-3 text-[13px] ${
           night ? "text-night-sub hover:text-night-text" : "text-muted hover:text-ink"
         }`}
       >
