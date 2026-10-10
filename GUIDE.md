@@ -7,7 +7,7 @@ the reference data over MCP. If you just want a quick overview, read the [README
 
 RYUX is two things that work together:
 
-1. **RYUX** (installed with `npx @ryuxdsgn/ryux` or `npx skills add`): design skills that guide decisions and filter output so it doesn't
+1. **RYUX** (installed with `npx @ryuxdsgn/design-intelligence` or `npx skills add`): design skills that guide decisions and filter output so it doesn't
    "smell like AI": evidence-backed, accessible, and fitted to the product's market. Doc: [`docs/design-rules.md`](./docs/design-rules.md).
 2. **MCP server**: gives your agent access to **reference screens from real products** (captured
    screens, designer notes) plus audit tools. Nine tools; see [`apps/mcp/README.md`](./apps/mcp/README.md).
@@ -19,7 +19,7 @@ Rules without data are just style; data without rules is just a pile of images. 
 One command, then answer a few questions (which agents you use, and an optional project setup):
 
 ```bash
-npx @ryuxdsgn/ryux
+npx @ryuxdsgn/design-intelligence
 ```
 
 The CLI writes to the right place for each agent:
@@ -55,16 +55,16 @@ direction such as "trustworthy" describes character, not a color or font.
 Change the answers later, or set them without questions:
 
 ```bash
-npx @ryuxdsgn/ryux setup
-npx @ryuxdsgn/ryux setup --audience "small business owners" --market "Indonesia, id-ID, IDR"
-npx @ryuxdsgn/ryux check     # shows how many setup fields are filled
+npx @ryuxdsgn/design-intelligence setup
+npx @ryuxdsgn/design-intelligence setup --audience "small business owners" --market "Indonesia, id-ID, IDR"
+npx @ryuxdsgn/design-intelligence check     # shows how many setup fields are filled
 ```
 
 ### Non-interactive
 
 ```bash
-npx @ryuxdsgn/ryux install --agent claude,cursor,codex   # these agents, this project
-npx @ryuxdsgn/ryux install --agent all --global         # every agent, home directory
+npx @ryuxdsgn/design-intelligence install --agent claude,cursor,codex   # these agents, this project
+npx @ryuxdsgn/design-intelligence install --agent all --global         # every agent, home directory
 npx skills add ryuxdsgn/design-intelligence     # alternative: skills.sh, any agent
 ```
 
@@ -122,8 +122,8 @@ All three use the same RYUX. More examples:
 ## Update & Remove
 
 ```bash
-npx @ryuxdsgn/ryux update     # update the rules you've installed
-npx @ryuxdsgn/ryux remove     # remove them (restores your files to their original state)
+npx @ryuxdsgn/design-intelligence update     # update the rules you've installed
+npx @ryuxdsgn/design-intelligence remove     # remove them (restores your files to their original state)
 ```
 
 ## How RYUX thinks

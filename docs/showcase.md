@@ -353,7 +353,7 @@ found no consistent visual difference, so read this as one example, not a patter
 
 *"Design only the hero section of a landing page, 1440 wide by 900 tall, for RYUX: a design
 intelligence layer for AI coding agents and designers. It installs as skills into Claude Code,
-Cursor, Codex, and other agents (npx @ryuxdsgn/ryux), and an MCP server gives agents reference
+Cursor, Codex, and other agents (npx @ryuxdsgn/design-intelligence), and an MCP server gives agents reference
 screens from real apps as evidence. The hero should feature a custom illustration; create it with
 pen.dev's Generate function."* Both runs designed in pen.dev and generated their illustration with
 pen.dev's `Generate`.

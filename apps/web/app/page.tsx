@@ -86,7 +86,7 @@ const MARKS = [
 
 const INSTALL = [
   { label: "Any agent, through skills.sh", commands: ["npx skills add ryuxdsgn/design-intelligence"], inClaude: false },
-  { label: "The RYUX CLI, which also writes DESIGN.md", commands: ["npx @ryuxdsgn/ryux init --agent claude"], inClaude: false },
+  { label: "The RYUX CLI, which also writes DESIGN.md", commands: ["npx @ryuxdsgn/design-intelligence init --agent claude"], inClaude: false },
   {
     label: "As a Claude Code plugin, inside Claude Code",
     commands: ["/plugin marketplace add ryuxdsgn/design-intelligence", "/plugin install ryux@design-intelligence"],
@@ -419,7 +419,7 @@ function HowItWorks() {
             decision.
           </p>
           <div className="max-w-[480px]">
-            <CopyCommand command="npx @ryuxdsgn/ryux init --agent claude" />
+            <CopyCommand command="npx @ryuxdsgn/design-intelligence init --agent claude" />
           </div>
         </div>
         <figure className="rounded-xl border border-hair bg-white px-6 py-6 sm:px-7">

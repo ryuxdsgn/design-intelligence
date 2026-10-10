@@ -7,7 +7,7 @@
 > References to standards are factual; all explanations, examples, and numbering are written by us.
 > **Not a derivative of any third-party licensed text** and not affiliated with NN/g or anyone else.
 >
-> **Version:** RYUX 2.6.0
+> **Version:** RYUX 2.6.1
 
 RYUX is design intelligence for AI agents and designers, packaged as one skill, `ryux`. It has five
 entry points: Analyze, Design, Build, Critique, and QA. The router (`SKILL.md`) picks the
@@ -1003,7 +1003,7 @@ Gate area ANTI-SLOP. Covers hard gates, purpose gates, quality locks, honest cla
 ## Installation via CLI
 
 ```bash
-npx @ryuxdsgn/ryux install --agent claude          # or --agent all; see the README for every agent
+npx @ryuxdsgn/design-intelligence install --agent claude          # or --agent all; see the README for every agent
 ```
 
 RYUX 2 installs one folder, `ryux/`. Installing or updating removes the per-skill folders of RYUX 1.x

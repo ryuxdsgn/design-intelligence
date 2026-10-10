@@ -13,7 +13,7 @@ export const MCP_LOCAL_ADD_CMD = `claude mcp add --transport http ${MCP_NAME} ht
 export const MCP_STATUS =
   "The hosted ryux MCP is not live yet. RYUX works without it and rates evidence None. " +
   `To run the server yourself, see https://github.com/ryuxdsgn/design-intelligence/tree/main/apps/mcp, then: ${MCP_LOCAL_ADD_CMD}`;
-export const CLI_CMD = "npx @ryuxdsgn/ryux";
+export const CLI_CMD = "npx @ryuxdsgn/design-intelligence";
 export const MARK_START = "<!-- ryux-rules:start -->";
 export const MARK_END = "<!-- ryux-rules:end -->";
 export const CONTEXT_START = "<!-- ryux-context:start -->";

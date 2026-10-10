@@ -88,7 +88,7 @@ const FOOTER = [
     links: [
       { label: "Benchmarks", href: "/benchmarks" },
       { label: "Install", href: "/#try" },
-      { label: "npm package", href: "https://www.npmjs.com/package/@ryuxdsgn/ryux" },
+      { label: "npm package", href: "https://www.npmjs.com/package/@ryuxdsgn/design-intelligence" },
     ],
   },
   {
