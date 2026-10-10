@@ -44,7 +44,7 @@ test("old skill names map to module paths", () => {
   assert.equal(modulePath("visual-qa"), "capabilities/qa.md");
   assert.equal(modulePath("core"), "SKILL.md");
   assert.equal(toModuleRefs("Load `ryux-critique` and ryux-forms."), "Load `capabilities/critique.md` and `knowledge/forms.md`.");
-  assert.equal(toModuleRefs("npx @ryuxdsgn/ryux and ryux.design"), "npx @ryuxdsgn/ryux and ryux.design");
+  assert.equal(toModuleRefs("npx @ryuxdsgn/design-intelligence and ryux.design"), "npx @ryuxdsgn/design-intelligence and ryux.design");
 });
 
 test("one version: package, plugin manifests, and router agree", () => {

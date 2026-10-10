@@ -138,11 +138,11 @@ the same RYUX. RYUX doesn't just answer the prompt. It checks whether the prompt
 ## Get started
 
 ```bash
-npx @ryuxdsgn/ryux
+npx @ryuxdsgn/design-intelligence
 ```
 
 It asks which agents you use, installs RYUX, then offers a short project setup that writes
-DESIGN.md. Run `npx @ryuxdsgn/ryux setup` again any time to change the answers.
+DESIGN.md. Run `npx @ryuxdsgn/design-intelligence setup` again any time to change the answers.
 
 Any agent, through [skills.sh](https://skills.sh):
 
@@ -190,7 +190,7 @@ Nine tools: research (`search_screens`, `get_flow`, `get_local_pattern`, `compar
 apps/mcp/         MCP server (Cloudflare Workers)
 apps/web/         ryux.design (Next.js)
 packages/core/    shared tool logic
-packages/cli/     the ryux CLI (npx @ryuxdsgn/ryux)
+packages/cli/     the ryux CLI (npx @ryuxdsgn/design-intelligence)
 skills/ryux/      the RYUX skill, generated from packages/cli/src
 docs/             design rules, taxonomy, showcase
 ```
