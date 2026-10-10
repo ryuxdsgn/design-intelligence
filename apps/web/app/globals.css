@@ -152,6 +152,8 @@ a:hover .arrow[data-dir="down"] { transform: translateY(3px); }
 .inspect:hover .inspect-layer, .inspect:focus-visible .inspect-layer { display: block; }
 .inspect .marks { transition: opacity 300ms var(--ease-ios); }
 .inspect:hover .marks, .inspect:focus-visible .marks { opacity: 0.25; }
+.inspect .pin-hit { transition: opacity 300ms var(--ease-ios); }
+.inspect:hover .pin-hit:not(:hover), .inspect:focus-visible .pin-hit { opacity: 0.25; }
 .inspect:focus-visible { box-shadow: 0 0 0 3px var(--color-accent); border-radius: 30px; }
 .hint-touch { display: none; }
 @media (hover: none) { .hint-touch { display: inline; } .hint-pointer { display: none; } }
