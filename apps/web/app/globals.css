@@ -1,9 +1,9 @@
 @import "tailwindcss";
 
 @theme {
-  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-  --font-display: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-  --font-mono: var(--font-jetbrains-mono), ui-monospace, SFMono-Regular, monospace;
+  --font-sans: var(--font-mona), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-anybody), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-fragment), ui-monospace, SFMono-Regular, monospace;
 
   /* From the RYUX brand sheet: navy ink, indigo for actions only.
      Mark is the proof-correction red, used for annotations and nothing else. */
@@ -35,6 +35,44 @@ html {
 
 body {
   -webkit-font-smoothing: antialiased;
+}
+
+/* Headings use the wide display cut; reading text stays in the plain sans. */
+h1, h2 {
+  font-family: var(--font-display);
+  font-variation-settings: "wdth" 118;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+/* Redlines: a dimension line with end ticks and a measurement label, drawn like a spec handoff.
+   Only real values go in a label. --d is the delay; inside a Reveal they wait to be shown. */
+.dim { --dc: var(--color-mark); position: absolute; display: flex; align-items: center; justify-content: center; pointer-events: none; }
+.dim-h { height: 14px; }
+.dim-v { width: 14px; flex-direction: column; }
+.dim-line { position: absolute; background: var(--dc); }
+.dim-h .dim-line { left: 0; right: 0; top: 50%; height: 1px; transform-origin: left center; animation: dim-x 700ms var(--ease-out) var(--d, 0ms) both; }
+.dim-v .dim-line { top: 0; bottom: 0; left: 50%; width: 1px; transform-origin: center top; animation: dim-y 700ms var(--ease-out) var(--d, 0ms) both; }
+.dim-h .dim-line::before, .dim-h .dim-line::after { content: ""; position: absolute; top: -6px; width: 1px; height: 13px; background: var(--dc); }
+.dim-h .dim-line::before { left: 0; } .dim-h .dim-line::after { right: 0; }
+.dim-v .dim-line::before, .dim-v .dim-line::after { content: ""; position: absolute; left: -6px; height: 1px; width: 13px; background: var(--dc); }
+.dim-v .dim-line::before { top: 0; } .dim-v .dim-line::after { bottom: 0; }
+.dim-label { position: relative; font: 400 12px/1 var(--font-mono); white-space: nowrap; color: #fff; background: var(--dc); padding: 3px 6px; border-radius: 3px; animation: dim-label 300ms var(--ease-out) calc(var(--d, 0ms) + 500ms) both; }
+.dim.night { --dc: var(--color-mark-night); } .dim.night .dim-label { color: var(--color-night); }
+@keyframes dim-x { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+@keyframes dim-y { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+@keyframes dim-label { from { opacity: 0; transform: translateY(3px); } to { opacity: 1; transform: none; } }
+.reveal[data-shown="false"] .dim-line, .reveal[data-shown="false"] .dim-label { animation: none; opacity: 0; }
+@media (prefers-reduced-motion: reduce) {
+  .dim .dim-line, .dim .dim-label { animation: none; }
+  .reveal[data-shown="false"] .dim-line, .reveal[data-shown="false"] .dim-label { opacity: 1; }
+}
+
+/* A row of frames that arrive one after another once their section is revealed. */
+.frames > * { transition: opacity 500ms var(--ease-out), transform 500ms var(--ease-out); transition-delay: calc(var(--i, 0) * 110ms); }
+.reveal[data-shown="false"] .frames > * { opacity: 0; transform: translateY(18px); }
+@media (prefers-reduced-motion: reduce) {
+  .frames > *, .reveal[data-shown="false"] .frames > * { opacity: 1; transform: none; transition: none; }
 }
 
 /* Motion: calm and precise. One easing, short distances, transform and opacity only. */

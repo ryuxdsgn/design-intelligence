@@ -3,7 +3,7 @@ import Link from "next/link";
 import { CopyCommand } from "@/components/copy-command";
 import { Reveal } from "@/components/reveal";
 import { Cases as CaseStudies } from "@/components/cases";
-import { Pin, PinAt, Ring, type Tone } from "@/components/markup";
+import { Dim, Pin, PinAt, Ring, type Tone } from "@/components/markup";
 import { Scoreboard } from "@/components/scoreboard";
 import { WaitlistForm } from "@/components/waitlist-form";
 import { Arrow, DOCS, Eyebrow, GUTTER, REPO, SiteFooter, SiteHeader } from "@/components/site";
@@ -25,6 +25,26 @@ const WITH = [
 const WITH_AFTER = "One of six screens it designed: completed, processing, failed, loading, a load error, and a narrow width.";
 /* Swap from the first screen to the second at this point (ms); markup on each follows it. */
 const SWAP = 3400;
+
+/* The six screens RYUX designed in the same benchmark run, cut from its exported board. 320 is the
+   narrow-width check the board names; the others are 390 wide. */
+const STATES = [
+  { src: "/proof/states/1-completed.png", w: 502, h: 1239, name: "Completed" },
+  { src: "/proof/states/2-processing.png", w: 503, h: 1315, name: "Processing" },
+  { src: "/proof/states/3-failed.png", w: 503, h: 1287, name: "Failed" },
+  { src: "/proof/states/4-loading.png", w: 502, h: 1090, name: "Loading" },
+  { src: "/proof/states/5-couldnt-load.png", w: 503, h: 1090, name: "Couldn't load" },
+  { src: "/proof/states/6-narrow.png", w: 413, h: 1413, name: "320 wide", narrow: true },
+];
+
+/* A review RYUX ran on a real product: Plausible's public demo dashboard, 9 Oct 2026. Before/after values
+   were measured in the browser (Playwright, DOM and accessibility tree). */
+const PLAUSIBLE_RESULTS = [
+  { what: "Tab height on a phone", before: "16px", after: "44px" },
+  { what: "Controls with no name for screen readers", before: "1", after: "0" },
+  { what: "Headings for the dashboard panels", before: "0", after: "6" },
+  { what: "Words split in the middle at 390", before: "2", after: "0" },
+];
 
 const CAPABILITIES = [
   { name: "Analyze", body: "Reads the screen you already have and separates what it sees from what it is guessing." },
@@ -66,7 +86,7 @@ function Hero() {
     <section aria-labelledby="hero-title" className={`${GUTTER} grid items-center gap-10 py-8 [&>*]:min-w-0 lg:grid-cols-[minmax(0,1fr)_auto] lg:gap-12 lg:py-10`}>
       <div className="flex flex-col gap-5 lg:gap-6">
         <Eyebrow>Design intelligence for AI agents</Eyebrow>
-        <h1 id="hero-title" className="text-[42px] leading-[1] font-semibold tracking-[-0.035em] sm:text-[64px] xl:text-[76px]">
+        <h1 id="hero-title" className="text-[38px] leading-[1.02] font-semibold tracking-[-0.03em] sm:text-[56px] lg:text-[48px] xl:text-[56px]">
           {"Understand before you design.".split(" ").map((w, i) => (
             <span key={w} className="word-in inline-block" style={{ animationDelay: `${i * 90}ms` }}>
               {w === "design." ? (
@@ -139,6 +159,7 @@ function HeroProof() {
             ))}
           </div>
         </div>
+        <Dim label="390" delay={SWAP + 700} className="bottom-0.5 left-4 right-4 sm:left-5 sm:right-5" />
       </div>
       <div aria-hidden className="relative mx-auto w-full max-w-[400px] xl:mx-0 xl:w-[230px] xl:pt-14">
         <ol className="swap-out flex flex-col gap-4" style={{ animationDelay: `${SWAP}ms` }}>
@@ -188,19 +209,6 @@ function Proof() {
         { x: 95, y: 84.6, ring: [75.5, 87.4, 44, 5.4], note: "Save PDF, which nobody asked for." },
       ],
     },
-    {
-      label: "With RYUX",
-      src: "/proof/en-td-with-completed.png",
-      w: 791,
-      h: 1931,
-      tone: "accent-night",
-      alt: "The completed payment screen designed with RYUX: [CUR] 49.00 paid to [Merchant name], with the fee and total shown and only the actions that were asked for",
-      marks: [
-        { x: 9, y: 77.4, ring: [50, 77.4, 76, 3.6], note: "A way to report a problem, without a deadline nobody set." },
-        { x: 5, y: 87.2, note: "Two actions instead of three: share the receipt or go home." },
-      ],
-      after: "Plus the screens a payment goes through: processing, failed, loading, a load error, and a narrow width.",
-    },
   ];
   return (
     <section id="proof" aria-labelledby="proof-title" className="canvas-grid-night bg-night text-night-text">
@@ -224,36 +232,74 @@ function Proof() {
           </div>
         </div>
 
-        <div className="grid gap-14 [&>*]:min-w-0 xl:grid-cols-[300px_300px_1fr] xl:gap-12">
-          <div className="grid max-w-[680px] grid-cols-2 gap-5 [&>*]:min-w-0 sm:gap-8 xl:contents">
-            {screens.map((s) => (
-              <figure key={s.label} className="flex flex-col gap-4">
-                <figcaption className={`text-[15px] font-semibold ${s.tone === "mark-night" ? "text-mark-night" : "text-accent-night"}`}>{s.label}</figcaption>
-                <div className="relative">
-                  <Image src={s.src} alt={s.alt} width={s.w} height={s.h} className="w-full rounded-[20px]" />
-                  {s.marks.map((m, i) => (
-                    <div key={m.note}>
-                      {m.ring && <Ring x={m.ring[0]} y={m.ring[1]} w={m.ring[2]} h={m.ring[3]} tone={s.tone} delay={300 + i * 350} />}
-                      <PinAt n={i + 1} x={m.x} y={m.y} tone={s.tone} delay={200 + i * 350} />
-                    </div>
-                  ))}
-                </div>
-                <ol className="flex flex-col gap-3">
-                  {s.marks.map((m, i) => (
-                    <li key={m.note} className="flex gap-2.5">
-                      <Pin n={i + 1} tone={s.tone} />
-                      <p className="text-[14px] leading-[1.5] text-night-sub sm:text-[15px]">{m.note}</p>
-                    </li>
-                  ))}
-                  {s.after && <li className="text-[14px] leading-[1.5] text-night-text sm:text-[15px]">{s.after}</li>}
-                </ol>
-              </figure>
-            ))}
-          </div>
+        <div className="frames grid gap-12 [&>*]:min-w-0 xl:grid-cols-[260px_minmax(0,1fr)] xl:gap-14">
+          {screens.map((sc) => (
+            <figure key={sc.label} className="flex max-w-[260px] flex-col gap-4 sm:max-w-[300px]">
+              <figcaption className="flex items-baseline justify-between gap-3 font-mono text-[13px]">
+                <span className="text-mark-night">{sc.label}</span>
+                <span className="text-night-sub">1 screen</span>
+              </figcaption>
+              <div className="relative">
+                <Image src={sc.src} alt={sc.alt} width={sc.w} height={sc.h} className="w-full rounded-[18px]" />
+                {sc.marks.map((m, i) => (
+                  <div key={m.note}>
+                    {m.ring && <Ring x={m.ring[0]} y={m.ring[1]} w={m.ring[2]} h={m.ring[3]} tone={sc.tone} delay={300 + i * 350} />}
+                    <PinAt n={i + 1} x={m.x} y={m.y} tone={sc.tone} delay={200 + i * 350} />
+                  </div>
+                ))}
+              </div>
+              <ol className="flex flex-col gap-3">
+                {sc.marks.map((m, i) => (
+                  <li key={m.note} className="flex gap-2.5">
+                    <Pin n={i + 1} tone={sc.tone} />
+                    <p className="text-[14px] leading-[1.5] text-night-sub sm:text-[15px]">{m.note}</p>
+                  </li>
+                ))}
+              </ol>
+            </figure>
+          ))}
 
-          <div className="flex flex-col gap-7 xl:pt-10 xl:pl-6">
+          <div className="flex flex-col gap-16" style={{ ["--i" as string]: 1 } as React.CSSProperties}>
+          <figure className="flex flex-col gap-4">
+            <figcaption className="flex items-baseline justify-between gap-3 font-mono text-[13px]">
+              <span className="text-accent-night">With RYUX</span>
+              <span className="text-night-sub">6 screens</span>
+            </figcaption>
+            <div className="-mx-5 overflow-x-auto px-5 pb-3 sm:-mx-10 sm:px-10 xl:mx-0 xl:px-0">
+              <ol className="frames flex w-max items-start gap-4">
+                {STATES.map((st, i) => (
+                  <li key={st.name} className="flex shrink-0 flex-col gap-3" style={{ width: st.narrow ? 123 : 150, ["--i" as string]: i + 2 } as React.CSSProperties}>
+                    <Image
+                      src={st.src}
+                      alt={`Screen ${i + 1} of 6, ${st.name}, designed with RYUX`}
+                      width={st.w}
+                      height={st.h}
+                      className="w-full rounded-[12px]"
+                    />
+                    {(i === 0 || st.narrow) && (
+                      <div className="relative h-4">
+                        <Dim label={st.narrow ? "320" : "390"} night delay={500 + i * 110} className="inset-x-0 top-0" />
+                      </div>
+                    )}
+                    <p className="font-mono text-[12px] leading-[1.4] text-night-sub">
+                      <span className="text-night-text">{i + 1}</span> {st.name}
+                    </p>
+                  </li>
+                ))}
+              </ol>
+            </div>
+            <p className="max-w-[640px] text-[15px] leading-[1.55] text-night-sub">
+              Processing tells people not to pay again. Failed says what to do next. Couldn&apos;t load offers Try again. The
+              last one checks the narrowest phone, with long values.
+            </p>
+          </figure>
+
+          <div className="grid gap-10 [&>*]:min-w-0 lg:grid-cols-[minmax(0,1fr)_minmax(0,300px)] lg:gap-14">
+          <div className="flex flex-col gap-7">
             <p className="text-[21px] font-medium">Repeated three times. One dot per run.</p>
             <Scoreboard night />
+          </div>
+          <div className="flex flex-col gap-6 lg:pt-12">
             <p className="text-[16px] leading-[1.55]">
               <span className="font-semibold text-mark-night">What it did not change:</span> how good the screens look. In a
               blind visual test of a wallet home screen, RYUX scored 3.71 against 3.67 out of 5.
@@ -263,10 +309,12 @@ function Proof() {
             </Link>
           </div>
         </div>
+          </div>
+        </div>
 
         <p className="text-[14px] leading-[1.6] text-night-sub">
           How it was run: a fresh agent each time, the same model, no reference screens on either side, and sample data in
-          every screen. The screens above are from the second pair. Three pairs is a small benchmark, not a study.
+          every screen. The screens above are from the second pair, unedited; only the marks and measurements are ours. Three pairs is a small benchmark, not a study.
         </p>
       </Reveal>
     </section>
@@ -297,7 +345,7 @@ function HowItWorks() {
   return (
     <section id="how" aria-labelledby="how-title" className={`${GUTTER} py-20 lg:py-28`}>
       <Reveal className="flex flex-col gap-16">
-      <div className="grid gap-10 [&>*]:min-w-0 lg:grid-cols-[minmax(0,560px)_1fr] lg:gap-20">
+      <div className="max-w-[760px]">
         <div className="flex flex-col gap-6">
           <Eyebrow>How it works</Eyebrow>
           <h2 id="how-title" className="text-[38px] leading-[1.08] font-semibold tracking-[-0.03em] sm:text-[52px]">
@@ -308,15 +356,6 @@ function HowItWorks() {
             before it calls the work done, lists what it checked and what it could not.
           </p>
         </div>
-        <figure className="flex flex-col gap-3">
-          <Image
-            src="/illustration/review-desk.png"
-            alt="A designer's hands marking up printed phone screens with a red pencil, with sticky notes and a pencil flow sketch on the desk"
-            width={1600}
-            height={1067}
-            className="w-full"
-          />
-        </figure>
       </div>
 
       <ol className="stagger grid border-t border-ink [&>*]:min-w-0 sm:grid-cols-2 lg:grid-cols-5">
@@ -328,6 +367,8 @@ function HowItWorks() {
           </li>
         ))}
       </ol>
+
+      <RealProduct />
 
       <div className="grid gap-12 [&>*]:min-w-0 lg:grid-cols-[1fr_560px] lg:items-start lg:gap-20">
         <div className="flex flex-col gap-5">
@@ -367,6 +408,79 @@ function HowItWorks() {
       </div>
       </Reveal>
     </section>
+  );
+}
+
+/* Analyze, Critique, Design and QA on a product that already exists. Values are measured, not estimated. */
+function RealProduct() {
+  return (
+    <div className="grid gap-12 border-t border-hair pt-14 [&>*]:min-w-0 lg:grid-cols-[minmax(0,1fr)_minmax(0,620px)] lg:gap-20">
+      <div className="flex flex-col gap-6">
+        <p className="font-mono text-[13px] text-muted">On a real product</p>
+        <h3 className="text-[28px] leading-[1.15] font-semibold tracking-[-0.02em] sm:text-[34px]">
+          A review of a dashboard people already use.
+        </h3>
+        <p className="text-[17px] leading-[1.55] text-ink-2">
+          RYUX analyzed and critiqued Plausible&apos;s public demo dashboard at 1440 and 390 wide, designed fixes for what it
+          found, and checked them in the browser. The original is strong, so the fixes are small and most of it stays.
+        </p>
+        <dl className="frames border-t border-ink">
+          {PLAUSIBLE_RESULTS.map((r, i) => (
+            <div key={r.what} className="grid grid-cols-[1fr_auto] items-center gap-4 border-b border-hair py-3.5" style={{ ["--i" as string]: i } as React.CSSProperties}>
+              <dt className="text-[15px] leading-[1.4] text-ink-2">{r.what}</dt>
+              <dd className="flex items-center gap-2 font-mono text-[14px] tabular-nums">
+                <span className="text-muted line-through decoration-mark/70">{r.before}</span>
+                <span aria-hidden className="text-muted">→</span>
+                <span className="sr-only">changed to</span>
+                <span className="font-semibold text-ink">{r.after}</span>
+              </dd>
+            </div>
+          ))}
+        </dl>
+        <p className="text-[13px] leading-[1.55] text-muted">
+          Not affiliated with Plausible. Unsolicited study; the fixes are a prototype, not their product.
+        </p>
+      </div>
+
+      <figure className="flex flex-col gap-4">
+        <div className="frames grid gap-6 sm:grid-cols-2">
+          <div className="flex flex-col gap-3">
+            <p className="font-mono text-[12px] text-muted">Before · live, 9 Oct 2026</p>
+            <div className="relative">
+              <Image
+                src="/cases/plausible/before-390.png"
+                alt="Plausible's demo dashboard at 390 wide: the live visitor count shows only the number 202, with no label, and the key figures show percentage changes without saying what they compare with"
+                width={390}
+                height={338}
+                className="w-full rounded-[10px] border border-hair"
+              />
+              <Ring x={21} y={6.8} w={20} h={9} tone="mark" delay={300} />
+            </div>
+          </div>
+          <div className="flex flex-col gap-3" style={{ ["--i" as string]: 1 } as React.CSSProperties}>
+            <p className="font-mono text-[12px] text-accent">After · RYUX prototype</p>
+            <div className="relative">
+              <Image
+                src="/cases/plausible/after-390.png"
+                alt="The same dashboard redesigned at 390 wide: the live count reads 201 current visitors, and a line above the key figures says the changes are versus the previous 28 days"
+                width={390}
+                height={378}
+                className="w-full rounded-[10px] border border-hair"
+              />
+              <Ring x={79} y={5.6} w={40} h={8} tone="accent" delay={700} />
+              <Ring x={28} y={31.2} w={46} h={6} tone="accent" delay={900} />
+            </div>
+            <div className="relative h-4">
+              <Dim label="390" delay={1100} className="inset-x-0 top-0" />
+            </div>
+          </div>
+        </div>
+        <figcaption className="text-[14px] leading-[1.55] text-muted">
+          At 390 the live count lost its label, and the percentage changes never said what they compare with. Both are
+          back. The live counts differ because the two captures were taken at different times on the same day.
+        </figcaption>
+      </figure>
+    </div>
   );
 }
 

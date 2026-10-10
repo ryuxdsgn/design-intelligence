@@ -46,6 +46,19 @@ export function Ring({ x, y, w, h, tone, delay = 0 }: { x: number; y: number; w:
   );
 }
 
+/** A redline: a dimension line with end ticks and a measurement label. Place it with `className`/`style`
+    (absolute, inside a relative parent). Labels carry only real, measured or stated values. */
+export function Dim({ label, vertical = false, night = false, delay = 0, className = "", style }: {
+  label: string; vertical?: boolean; night?: boolean; delay?: number; className?: string; style?: React.CSSProperties;
+}) {
+  return (
+    <span aria-hidden className={`dim ${vertical ? "dim-v" : "dim-h"} ${night ? "night" : ""} ${className}`} style={{ ...style, ["--d" as string]: `${delay}ms` }}>
+      <span className="dim-line" />
+      <span className="dim-label">{label}</span>
+    </span>
+  );
+}
+
 /** A numbered pin placed on a real screen; x and y are percentages of the image. */
 export function PinAt({ n, x, y, tone, delay = 0 }: { n: number; x: number; y: number; tone: Tone; delay?: number }) {
   return (
