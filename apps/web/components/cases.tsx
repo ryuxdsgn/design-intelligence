@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useRef, useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 import { Pin, PinAt, Ring, type Tone } from "@/components/markup";
 
 type Mark = { pin: [number, number]; ring: [number, number, number, number]; note: string };
@@ -116,7 +116,19 @@ function Screen({ side, tone, label }: { side: Side; tone: Tone; label: string }
 export function Cases() {
   const [active, setActive] = useState(0);
   const tabs = useRef<(HTMLButtonElement | null)[]>([]);
+  const [pill, setPill] = useState<{ left: number; width: number } | null>(null);
   const c = CASES[active];
+
+  // The dark pill slides to the selected tab, so the change of tab is seen, not only read.
+  useLayoutEffect(() => {
+    const place = () => {
+      const t = tabs.current[active];
+      if (t) setPill({ left: t.offsetLeft, width: t.offsetWidth });
+    };
+    place();
+    window.addEventListener("resize", place);
+    return () => window.removeEventListener("resize", place);
+  }, [active]);
 
   function onKey(e: React.KeyboardEvent, i: number) {
     const step = e.key === "ArrowRight" ? 1 : e.key === "ArrowLeft" ? -1 : 0;
@@ -129,7 +141,14 @@ export function Cases() {
 
   return (
     <div className="flex flex-col gap-8">
-      <div role="tablist" aria-label="Runs" className="flex self-start rounded-full border border-hair bg-white p-1">
+      <div role="tablist" aria-label="Runs" className="relative flex self-start rounded-full border border-hair bg-white p-1">
+        {pill && (
+          <span
+            aria-hidden
+            className="absolute inset-y-1 rounded-full bg-ink transition-[left,width] duration-[400ms] ease-[cubic-bezier(0.34,1.4,0.64,1)] motion-reduce:transition-none"
+            style={{ left: pill.left, width: pill.width }}
+          />
+        )}
         {CASES.map((x, i) => (
           <button
             key={x.id}
@@ -143,8 +162,8 @@ export function Cases() {
             tabIndex={i === active ? 0 : -1}
             onClick={() => setActive(i)}
             onKeyDown={(e) => onKey(e, i)}
-            className={`tactile min-h-11 rounded-full px-5 text-[15px] font-medium ${
-              i === active ? "bg-ink text-white" : "text-ink-2 hover:text-ink"
+            className={`tactile relative min-h-11 rounded-full px-5 text-[15px] font-medium transition-colors duration-300 ${
+              i === active ? (pill ? "text-white" : "bg-ink text-white") : "text-ink-2 hover:text-ink"
             }`}
           >
             {x.tab}

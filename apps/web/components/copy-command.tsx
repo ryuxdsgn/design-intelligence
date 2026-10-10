@@ -27,7 +27,8 @@ export function CopyCommand({ command, night = false, prompt = "$" }: { command:
 
   return (
     <div
-      className={`flex max-w-full items-center gap-3 rounded-md py-2 pr-2 pl-4 font-mono text-[14px] ${
+      data-status={status}
+      className={`copy-row flex max-w-full items-center gap-3 rounded-md py-2 pr-2 pl-4 font-mono text-[14px] ${
         night ? "bg-night-hair/60 text-night-text" : "bg-paper-2 text-ink"
       }`}
     >
@@ -42,10 +43,20 @@ export function CopyCommand({ command, night = false, prompt = "$" }: { command:
       <button
         type="button"
         onClick={copy}
-        className={`tactile min-h-9 shrink-0 rounded px-3 text-[13px] ${
+        className={`tactile inline-flex min-h-9 shrink-0 items-center gap-1.5 rounded px-3 text-[13px] ${
           night ? "text-night-sub hover:text-night-text" : "text-muted hover:text-ink"
         }`}
       >
+        {status === "copied" ? (
+          <svg key="ok" className="pop" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+            <path d="m5 12 5 5 9-10" />
+          </svg>
+        ) : (
+          <svg key="copy" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+            <rect x="9" y="9" width="11" height="11" rx="2" />
+            <path d="M5 15V6a2 2 0 0 1 2-2h9" />
+          </svg>
+        )}
         <span aria-live="polite">{label}</span>
       </button>
     </div>

@@ -4,7 +4,7 @@ import { CopyCommand } from "@/components/copy-command";
 import { Reveal } from "@/components/reveal";
 import { Cases as CaseStudies } from "@/components/cases";
 import { Dim, Pin, PinAt, Ring, type Tone } from "@/components/markup";
-import { ScrubStrip, Tilt } from "@/components/motion";
+import { ScrubStrip, SectionSpy, Tilt } from "@/components/motion";
 import { Scoreboard } from "@/components/scoreboard";
 import { WaitlistForm } from "@/components/waitlist-form";
 import { Arrow, DOCS, Eyebrow, GUTTER, REPO, SiteFooter, SiteHeader } from "@/components/site";
@@ -189,7 +189,7 @@ function HeroProof() {
                 ))}
               </div>
               {ph.marks.map((m, i) => (
-                <div key={m.body} className="group/pin absolute z-10 -translate-x-1/2 -translate-y-1/2" style={{ left: `calc(6px + (100% - 12px) * ${m.x / 100})`, top: `calc(6px + (100% - 12px) * ${m.y / 100})` }}>
+                <div key={m.body} className="pin-hit group/pin absolute z-10 -translate-x-1/2 -translate-y-1/2" style={{ left: `calc(6px + (100% - 12px) * ${m.x / 100})`, top: `calc(6px + (100% - 12px) * ${m.y / 100})` }}>
                   <div className="pin-in" style={{ animationDelay: `${ph.start + 500 + i * 450}ms` }}>
                     <Pin n={i + 1} tone={ph.tone} />
                   </div>
@@ -462,10 +462,10 @@ function RealProduct() {
             <div key={r.what} className="grid grid-cols-[1fr_auto] items-center gap-4 border-b border-hair py-3.5" style={{ ["--i" as string]: i } as React.CSSProperties}>
               <dt className="text-[15px] leading-[1.4] text-ink-2">{r.what}</dt>
               <dd className="flex items-center gap-2 font-mono text-[14px] tabular-nums">
-                <span className="text-muted line-through decoration-mark/70">{r.before}</span>
+                <span className="strike text-muted">{r.before}</span>
                 <span aria-hidden className="text-muted">→</span>
                 <span className="sr-only">changed to</span>
-                <span className="font-semibold text-ink">{r.after}</span>
+                <span className="after-in font-semibold text-ink">{r.after}</span>
               </dd>
             </div>
           ))}
@@ -586,6 +586,7 @@ export default function Home() {
   return (
     <>
       <SiteHeader />
+      <SectionSpy ids={["proof", "how"]} />
       <main>
         <Hero />
         <Proof />
