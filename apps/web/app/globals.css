@@ -80,9 +80,46 @@ h1, h2 {
   .frames > *, .reveal[data-shown="false"] .frames > * { opacity: 1; transform: none; transition: none; }
 }
 
-/* Motion: calm and precise. One easing, short distances, transform and opacity only. */
+/* Motion: calm and precise. One curve for movement, one spring for touch; transform and opacity only. */
 :root {
-  --ease-out: cubic-bezier(0.2, 0, 0, 1);
+  --ease-ios: cubic-bezier(0.32, 0.72, 0, 1);
+  --ease-out: var(--ease-ios);
+  --ease-spring: cubic-bezier(0.34, 1.4, 0.64, 1);
+}
+
+/* Buttons that answer the pointer: a small press, with a spring back. */
+.tactile { transition: transform 350ms var(--ease-spring), background-color 300ms var(--ease-ios), opacity 300ms var(--ease-ios); }
+.tactile:hover { transform: scale(0.975); }
+.tactile:active { transform: scale(0.955); }
+
+/* Inspect: hovering or focusing a phone redraws its measurements, like Alt-hover in a design tool.
+   The layer goes from display:none to block, so the redline animation plays again each time. */
+.inspect { position: relative; cursor: crosshair; outline: none; }
+.inspect-layer { display: none; position: absolute; inset: 0; pointer-events: none; }
+.inspect:hover .inspect-layer, .inspect:focus-visible .inspect-layer { display: block; }
+.inspect .marks { transition: opacity 300ms var(--ease-ios); }
+.inspect:hover .marks, .inspect:focus-visible .marks { opacity: 0.25; }
+.inspect:focus-visible { box-shadow: 0 0 0 3px var(--color-accent); border-radius: 30px; }
+.hint-touch { display: none; }
+@media (hover: none) { .hint-touch { display: inline; } .hint-pointer { display: none; } }
+
+/* Six-screen strip: fixed widths when it scrolls sideways; sized to the viewport height when scrubbed. */
+.state-item { width: var(--w); }
+[data-scrub="on"] .state-item { width: calc(var(--ar) * 62vh); }
+[data-scrub="on"] .state-item { opacity: 0.45; transition: opacity 300ms var(--ease-ios); }
+[data-active="0"] .state-item:nth-child(1),
+[data-active="1"] .state-item:nth-child(2),
+[data-active="2"] .state-item:nth-child(3),
+[data-active="3"] .state-item:nth-child(4),
+[data-active="4"] .state-item:nth-child(5),
+[data-active="5"] .state-item:nth-child(6) { opacity: 1; }
+
+/* Tilt: the hero phones lean toward the pointer (set by Tilt in components/motion.tsx). */
+.tilt { transform: perspective(1100px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)); transition: transform 600ms var(--ease-ios); transform-style: preserve-3d; }
+
+@media (prefers-reduced-motion: reduce) {
+  .tactile, .tactile:hover, .tactile:active { transform: none; transition: none; }
+  .tilt { transform: none; transition: none; }
 }
 
 .reveal {

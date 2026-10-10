@@ -143,7 +143,7 @@ export function Cases() {
             tabIndex={i === active ? 0 : -1}
             onClick={() => setActive(i)}
             onKeyDown={(e) => onKey(e, i)}
-            className={`min-h-11 rounded-full px-5 text-[15px] font-medium transition-colors duration-200 ${
+            className={`tactile min-h-11 rounded-full px-5 text-[15px] font-medium ${
               i === active ? "bg-ink text-white" : "text-ink-2 hover:text-ink"
             }`}
           >
