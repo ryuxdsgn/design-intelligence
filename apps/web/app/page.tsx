@@ -4,6 +4,7 @@ import { CopyCommand } from "@/components/copy-command";
 import { Reveal } from "@/components/reveal";
 import { Cases as CaseStudies } from "@/components/cases";
 import { Dim, Pin, PinAt, Ring, type Tone } from "@/components/markup";
+import { ScrubStrip, Tilt } from "@/components/motion";
 import { Scoreboard } from "@/components/scoreboard";
 import { WaitlistForm } from "@/components/waitlist-form";
 import { Arrow, DOCS, Eyebrow, GUTTER, REPO, SiteFooter, SiteHeader } from "@/components/site";
@@ -21,18 +22,32 @@ const WITH = [
   { x: 69, y: 20.7, ring: [49, 20.7, 26, 3], tag: "Status", body: "Shows the payment is still processing." },
   { x: 89, y: 35.5, tag: "Guidance", body: "Tells people not to pay again while they wait." },
 ] as const;
+/* Measurements shown when a hero phone is inspected, in pt at 390 wide, measured from the exported PNGs
+   (pixel bounds divided by the export scale, rounded). left/top/width/height are % of the full image. */
+const INSPECT = {
+  without: [
+    { label: "20", left: 0, top: 93.8, width: 5.1 },
+    { label: "52", left: 97.6, top: 91.1, height: 5.3, vertical: true },
+  ],
+  with: [
+    { label: "22", left: 0, top: 38.5, width: 5.6 },
+    { label: "96", left: 97.6, top: 33.8, height: 9.4, vertical: true },
+    { label: "51", left: 97.6, top: 91.3, height: 5.0, vertical: true },
+  ],
+};
+
 /* The second phone arrives at this point (ms); its markup follows it. */
 const SECOND = 1900;
 
 /* The six screens RYUX designed in the same benchmark run, cut from its exported board. 320 is the
    narrow-width check the board names; the others are 390 wide. */
 const STATES = [
-  { src: "/proof/states/1-completed.png", w: 502, h: 1239, name: "Completed" },
-  { src: "/proof/states/2-processing.png", w: 503, h: 1315, name: "Processing" },
-  { src: "/proof/states/3-failed.png", w: 503, h: 1287, name: "Failed" },
-  { src: "/proof/states/4-loading.png", w: 502, h: 1090, name: "Loading" },
-  { src: "/proof/states/5-couldnt-load.png", w: 503, h: 1090, name: "Couldn't load" },
-  { src: "/proof/states/6-narrow.png", w: 413, h: 1413, name: "320 wide", narrow: true },
+  { src: "/proof/states/1-completed.png", w: 502, h: 1239, name: "Completed", caption: "The full breakdown, a receipt to share, and a way to report a problem." },
+  { src: "/proof/states/2-processing.png", w: 503, h: 1315, name: "Processing", caption: "Says the payment is on its way and asks people not to pay again." },
+  { src: "/proof/states/3-failed.png", w: 503, h: 1287, name: "Failed", caption: "Says it didn't go through, and what to do if money left the account." },
+  { src: "/proof/states/4-loading.png", w: 502, h: 1090, name: "Loading", caption: "Holds the layout while the details load, so nothing jumps." },
+  { src: "/proof/states/5-couldnt-load.png", w: 503, h: 1090, name: "Couldn't load", caption: "Offers Try again, and says reloading doesn't change the payment." },
+  { src: "/proof/states/6-narrow.png", w: 413, h: 1413, name: "320 wide", narrow: true, caption: "The narrowest phone, with a long merchant name and a large amount." },
 ];
 
 /* A review RYUX ran on a real product: Plausible's public demo dashboard, 9 Oct 2026. Before/after values
@@ -106,7 +121,7 @@ function Hero() {
           payment that is still processing or a page that fails to load, and nothing nobody asked for.
         </p>
         <div className="flex flex-wrap items-center gap-x-7 gap-y-3">
-          <a href="#try" className="inline-flex min-h-12 items-center gap-2.5 rounded-lg bg-accent px-6 text-[17px] font-semibold text-white hover:opacity-90">
+          <a href="#try" className="tactile inline-flex min-h-12 items-center gap-2.5 rounded-lg bg-accent px-6 text-[17px] font-semibold text-white">
             Install RYUX <Arrow />
           </a>
           <a href="#proof" className="inline-flex min-h-12 items-center gap-1.5 text-[17px] font-medium underline underline-offset-4">
@@ -141,33 +156,65 @@ function HeroProof() {
         and a Save PDF button nobody asked for. With RYUX it designed six screens, including a processing screen that tells
         people not to pay again while they wait.
       </p>
-      <div aria-hidden className="grid grid-cols-2 items-start gap-4 sm:gap-6 lg:w-[404px]">
+      <Tilt className="grid grid-cols-2 items-start gap-4 sm:gap-6 lg:w-[404px]">
         {phones.map((ph) => (
           <div key={ph.key} className="phone-in flex min-w-0 flex-col gap-3" style={{ animationDelay: `${ph.start}ms` }}>
-            <p className="flex flex-col gap-0.5 font-mono text-[12px] sm:flex-row sm:items-baseline sm:justify-between sm:gap-2">
+            <p aria-hidden className="flex flex-col gap-0.5 font-mono text-[12px] sm:flex-row sm:items-baseline sm:justify-between sm:gap-2">
               <span className={ph.tone === "mark" ? "text-mark" : "text-accent"}>{ph.label}</span>
               <span className="text-muted">{ph.count}</span>
             </p>
-            <div className="rounded-[30px] bg-ink p-[6px] shadow-[0_30px_60px_-30px_rgba(11,22,43,0.45)]">
-              <div className="relative overflow-hidden rounded-[24px] bg-white">
+            <div
+              tabIndex={0}
+              aria-label={`${ph.label}: inspect the measurements of this screen`}
+              className="inspect rounded-[30px] bg-ink p-[6px] shadow-[0_30px_60px_-30px_rgba(11,22,43,0.45)]"
+            >
+              <div aria-hidden className="relative overflow-hidden rounded-[24px] bg-white">
                 <Image src={ph.src} alt="" width={ph.w} height={ph.h} priority className="w-full" />
-                {ph.marks.map((m, i) => (
-                  <div key={m.body}>
-                    {"ring" in m && <Ring x={m.ring[0]} y={m.ring[1]} w={m.ring[2]} h={m.ring[3]} tone={ph.tone} delay={ph.start + 600 + i * 450} />}
-                    <PinAt n={i + 1} x={m.x} y={m.y} tone={ph.tone} delay={ph.start + 500 + i * 450} />
-                  </div>
+                <div className="marks">
+                  {ph.marks.map((m, i) => "ring" in m && (
+                    <Ring key={m.body} x={m.ring[0]} y={m.ring[1]} w={m.ring[2]} h={m.ring[3]} tone={ph.tone} delay={ph.start + 600 + i * 450} />
+                  ))}
+                </div>
+              </div>
+              <div aria-hidden className="inspect-layer" style={{ inset: 6 }}>
+                {INSPECT[ph.key as "with" | "without"].map((d) => (
+                  <Dim
+                    key={d.label}
+                    label={d.label}
+                    vertical={"vertical" in d}
+                    style={"vertical" in d
+                      ? { left: `${d.left}%`, top: `${d.top}%`, height: `${d.height}%`, transform: "translateX(-50%)" }
+                      : { left: `${d.left}%`, top: `${d.top}%`, width: `${d.width}%`, transform: "translateY(-50%)" }}
+                  />
                 ))}
               </div>
+              {ph.marks.map((m, i) => (
+                <div key={m.body} className="group/pin absolute z-10 -translate-x-1/2 -translate-y-1/2" style={{ left: `calc(6px + (100% - 12px) * ${m.x / 100})`, top: `calc(6px + (100% - 12px) * ${m.y / 100})` }}>
+                  <div className="pin-in" style={{ animationDelay: `${ph.start + 500 + i * 450}ms` }}>
+                    <Pin n={i + 1} tone={ph.tone} />
+                  </div>
+                  <span
+                    role="tooltip"
+                    className={`pointer-events-none absolute bottom-full mb-2 hidden w-[190px] rounded-md bg-ink px-2.5 py-2 text-[12px] leading-[1.4] text-white shadow-lg group-hover/pin:block ${m.x > 50 ? "right-0" : "left-0"}`}
+                  >
+                    <b className="font-semibold">{m.tag}.</b> {m.body}
+                  </span>
+                </div>
+              ))}
             </div>
             {ph.key === "with" && (
-              <div className="relative h-4">
+              <div aria-hidden className="relative h-4">
                 <Dim label="390" delay={SECOND + 1500} className="inset-x-0 top-0" />
               </div>
             )}
             <p className={`text-[13px] leading-[1.45] text-ink-2 ${ph.key === "without" ? "sm:pb-7" : ""}`}>{ph.caption}</p>
           </div>
         ))}
-      </div>
+      </Tilt>
+      <p aria-hidden className="font-mono text-[12px] text-muted">
+        <span className="hint-pointer">Hover a screen to inspect it</span>
+        <span className="hint-touch">Tap a screen to inspect it</span>
+      </p>
     </figure>
   );
 }
@@ -247,10 +294,14 @@ function Proof() {
               <span className="text-accent-night">With RYUX</span>
               <span className="text-night-sub">6 screens</span>
             </figcaption>
-            <div className="-mx-5 overflow-x-auto px-5 pb-3 sm:-mx-10 sm:px-10 xl:mx-0 xl:px-0">
+            <ScrubStrip steps={STATES.map((st) => ({ name: st.name, caption: st.caption }))}>
               <ol className="frames flex w-max items-start gap-4">
                 {STATES.map((st, i) => (
-                  <li key={st.name} className="flex shrink-0 flex-col gap-3" style={{ width: st.narrow ? 123 : 150, ["--i" as string]: i + 2 } as React.CSSProperties}>
+                  <li
+                    key={st.name}
+                    className="state-item flex shrink-0 flex-col gap-3"
+                    style={{ ["--w" as string]: `${st.narrow ? 123 : 150}px`, ["--ar" as string]: (st.w / st.h).toFixed(3), ["--i" as string]: i + 2 } as React.CSSProperties}
+                  >
                     <Image
                       src={st.src}
                       alt={`Screen ${i + 1} of 6, ${st.name}, designed with RYUX`}
@@ -269,7 +320,7 @@ function Proof() {
                   </li>
                 ))}
               </ol>
-            </div>
+            </ScrubStrip>
             <p className="max-w-[640px] text-[15px] leading-[1.55] text-night-sub">
               Processing tells people not to pay again. Failed says what to do next. Couldn&apos;t load offers Try again. The
               last one checks the narrowest phone, with long values.
