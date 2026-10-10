@@ -1,4 +1,4 @@
-# @ryuxdsgn/ryux
+# @ryuxdsgn/design-intelligence
 
 Install **RYUX**, design intelligence for AI agents and designers, with one command. RYUX is one
 skill with five entry points. Tell your agent what you are doing; RYUX picks the knowledge the task
@@ -18,16 +18,16 @@ Original work by ryux.design, MIT licensed. Rules and rationale:
 ## Usage
 
 ```bash
-npx @ryuxdsgn/ryux                                          # start here: agents, install, project setup
-npx @ryuxdsgn/ryux setup                                    # teach RYUX about the project (DESIGN.md)
-npx @ryuxdsgn/ryux setup --audience "..." --market "..."    # same, without questions
-npx @ryuxdsgn/ryux check                                    # health check (exit 1 on problems)
-npx @ryuxdsgn/ryux init --agent claude                      # install + empty project context block
-npx @ryuxdsgn/ryux install --agent claude,cursor,codex      # non-interactive
-npx @ryuxdsgn/ryux install --agent all                      # every supported agent
-npx @ryuxdsgn/ryux install --agent claude --global          # into your home directory
-npx @ryuxdsgn/ryux update                                   # refresh, and migrate RYUX 1.x installs
-npx @ryuxdsgn/ryux remove --yes                             # remove RYUX and marked blocks
+npx @ryuxdsgn/design-intelligence                                          # start here: agents, install, project setup
+npx @ryuxdsgn/design-intelligence setup                                    # teach RYUX about the project (DESIGN.md)
+npx @ryuxdsgn/design-intelligence setup --audience "..." --market "..."    # same, without questions
+npx @ryuxdsgn/design-intelligence check                                    # health check (exit 1 on problems)
+npx @ryuxdsgn/design-intelligence init --agent claude                      # install + empty project context block
+npx @ryuxdsgn/design-intelligence install --agent claude,cursor,codex      # non-interactive
+npx @ryuxdsgn/design-intelligence install --agent all                      # every supported agent
+npx @ryuxdsgn/design-intelligence install --agent claude --global          # into your home directory
+npx @ryuxdsgn/design-intelligence update                                   # refresh, and migrate RYUX 1.x installs
+npx @ryuxdsgn/design-intelligence remove --yes                             # remove RYUX and marked blocks
 ```
 
 `ryux-rules` still works as an alias of the same command.
@@ -100,7 +100,7 @@ npx skills add ryuxdsgn/design-intelligence      # skills.sh, any agent
 ## Develop
 
 ```bash
-pnpm --filter @ryuxdsgn/ryux build      # tsc -> dist/
+pnpm --filter @ryuxdsgn/design-intelligence build      # tsc -> dist/
 node packages/cli/dist/cli/index.js --help
 pnpm sync:skills              # regenerate skills/ryux/, docs/design-rules.md, plugin versions
 pnpm test                     # unit + CLI integration tests (node:test, no extra dependencies)

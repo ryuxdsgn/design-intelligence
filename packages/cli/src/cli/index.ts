@@ -159,7 +159,7 @@ async function runInstall(flags: Flags): Promise<void> {
     p.intro(pc.bgCyan(pc.black(" RYUX ")));
     const detected = agentsAt(scope, false);
     const a = await p.multiselect({
-      message: "Which agents do you use?",
+      message: `Which agents do you use?${keys("↑/↓ move", "Space select", "a all", "Enter continue", "Ctrl+C cancel")}`,
       options: [
         ...AGENT_TARGETS.map((x) => ({ value: x.id, label: x.label, hint: scope.global ? `~/${x.globalDir}` : x.dir })),
         { value: AGENTS_MD_INLINE.id, label: AGENTS_MD_INLINE.label, hint: "AGENTS.md" },
@@ -168,7 +168,7 @@ async function runInstall(flags: Flags): Promise<void> {
       required: true,
     });
     if (p.isCancel(a)) return cancel();
-    const m = await p.confirm({ message: "Show how to connect the ryux MCP?", initialValue: false });
+    const m = await p.confirm({ message: `Show how to connect the ryux MCP?${keys(YES_NO, "Enter continue")}`, initialValue: false });
     if (p.isCancel(m)) return cancel();
     agents = a as string[];
     showMcp = Boolean(m);
@@ -190,7 +190,7 @@ async function runInstall(flags: Flags): Promise<void> {
   }
   if (nonInteractive) return;
   if (!scope.global) {
-    const s = await p.confirm({ message: "Set up project context now? Every question can be skipped.", initialValue: true });
+    const s = await p.confirm({ message: `Set up project context now? Every question can be skipped.${keys(YES_NO, "Enter continue")}`, initialValue: true });
     if (p.isCancel(s)) return cancel();
     if (s && !(await setupInteractive(scope.root))) return cancel();
     if (!s) p.log.info(`Set it up later with: ${CLI_CMD} setup`);
@@ -235,7 +235,7 @@ async function runRemove(flags: Flags): Promise<void> {
     return;
   }
   if (!flags.yes) {
-    const ok = await p.confirm({ message: `Remove RYUX from ${scope.global ? "your home directory" : "this project"}?` });
+    const ok = await p.confirm({ message: `Remove RYUX from ${scope.global ? "your home directory" : "this project"}?${keys(YES_NO, "Enter confirm")}` });
     if (p.isCancel(ok) || !ok) {
       console.log("Cancelled.");
       return;
@@ -505,6 +505,14 @@ async function writeContext(root: string, answers: Record<string, string>): Prom
   return body;
 }
 
+/** A dim second line under a prompt's question: which keys move, select, and what Enter does here. */
+function keys(...parts: string[]): string {
+  return `\n${pc.gray("│")}  ${pc.dim(parts.join(" · "))}`;
+}
+
+const YES_NO = "←/→ or y/n choose";
+const TEXT_KEYS = "Type, then Enter save (empty skips)";
+
 const OWN = "\u0000own";
 const KEEP = "\u0000keep";
 const SKIP = "\u0000skip";
@@ -512,7 +520,7 @@ const SKIP = "\u0000skip";
 /** One select: Keep (when set), the choices, Write my own, Skip. Returns "" for skip, null on cancel. */
 async function askOne(question: string, options: Choice[], current: string): Promise<string | null> {
   const v = await p.select({
-    message: question,
+    message: `${question}${keys("↑/↓ move", "Enter choose and go on")}`,
     options: [
       ...(current ? [{ value: KEEP, label: `Keep: ${current}` }] : []),
       ...options.map((o) => ({ value: o.value || SKIP, label: o.label, hint: o.hint })),
@@ -524,7 +532,7 @@ async function askOne(question: string, options: Choice[], current: string): Pro
   if (p.isCancel(v)) return null;
   if (v === KEEP || v === SKIP) return "";
   if (v === OWN) {
-    const t = await p.text({ message: question, placeholder: "Enter to skip" });
+    const t = await p.text({ message: `${question}${keys(TEXT_KEYS)}`, placeholder: "Enter to skip" });
     return p.isCancel(t) ? null : (t ?? "").trim();
   }
   return v as string;
@@ -537,7 +545,7 @@ async function askMany(question: string, options: Choice[], current: string, max
   const custom = parts.filter((x) => !known.includes(x)).join(", ");
   for (;;) {
     const v = await p.multiselect({
-      message: `${question} Select any, or press Enter to skip.`,
+      message: `${question}${keys("↑/↓ move", "Space select", "Enter go on (nothing selected skips)")}`,
       options: [
         ...(custom ? [{ value: KEEP, label: `Keep: ${custom}` }] : []),
         ...options.map((o) => ({ value: o.value, label: o.label, hint: o.hint })),
@@ -551,7 +559,7 @@ async function askMany(question: string, options: Choice[], current: string, max
     const values = picked.filter((x) => x !== KEEP && x !== OWN);
     if (picked.includes(KEEP)) values.push(custom);
     if (picked.includes(OWN)) {
-      const t = await p.text({ message: question, placeholder: "Enter to skip" });
+      const t = await p.text({ message: `${question}${keys(TEXT_KEYS)}`, placeholder: "Enter to skip" });
       if (p.isCancel(t)) return null;
       if (t?.trim()) values.push(t.trim());
     }
@@ -579,7 +587,7 @@ async function askContext(root: string): Promise<Record<string, string> | null> 
     if (v === null) return null;
     answers[f.label] = v;
     if (f.label === "Product" && v) {
-      const t = await p.text({ message: "In one sentence, what does it do?", placeholder: "Enter to skip" });
+      const t = await p.text({ message: `In one sentence, what does it do?${keys(TEXT_KEYS)}`, placeholder: "Enter to skip" });
       if (p.isCancel(t)) return null;
       if (t?.trim()) answers[f.label] = `${v}: ${t.trim()}`;
     }
