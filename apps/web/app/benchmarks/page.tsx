@@ -54,7 +54,7 @@ export default function Benchmarks() {
         <section aria-labelledby="bench-title" className={`${GUTTER} grid [&>*]:min-w-0 gap-12 py-16 lg:grid-cols-[1fr_480px] lg:gap-24 lg:py-24`}>
           <div className="flex flex-col gap-6">
             <Eyebrow>Benchmarks</Eyebrow>
-            <h1 id="bench-title" className="font-semibold tracking-[-0.03em] text-[56px] leading-[0.98] sm:text-[88px]">
+            <h1 id="bench-title" className="font-semibold tracking-[-0.03em] text-[min(56px,15.5vw)] leading-[0.98] sm:text-[88px]">
               Same prompt, same agent, one with RYUX
             </h1>
             <p className="max-w-[600px] text-[19px] leading-[1.5] text-ink-2">
@@ -75,7 +75,7 @@ export default function Benchmarks() {
           <div className={`${GUTTER} flex flex-col gap-10 py-20 lg:py-28`}>
             <div className="flex flex-col gap-4">
               <Eyebrow>01 · UX reasoning · a proof case</Eyebrow>
-              <h2 id="td-title" className="font-semibold tracking-[-0.03em] text-[44px] leading-[1.02] sm:text-[60px]">Transaction detail</h2>
+              <h2 id="td-title" className="font-semibold tracking-[-0.03em] text-[min(44px,11vw)] leading-[1.02] sm:text-[60px]">Transaction detail</h2>
             </div>
             <Block label="Prompt">
               <Prompt>“Design a transaction detail page for a fintech app, shown after the user pays. Make it in pen.dev.”</Prompt>
@@ -142,7 +142,7 @@ export default function Benchmarks() {
           <div className={`${GUTTER} flex flex-col gap-10 py-20 lg:py-28`}>
             <div className="flex flex-col gap-4">
               <Eyebrow>02 · Visual direction · not a proof case</Eyebrow>
-              <h2 id="wh-title" className="font-semibold tracking-[-0.03em] text-[44px] leading-[1.02] sm:text-[60px]">Wallet home</h2>
+              <h2 id="wh-title" className="font-semibold tracking-[-0.03em] text-[min(44px,11vw)] leading-[1.02] sm:text-[60px]">Wallet home</h2>
             </div>
             <Block label="Prompt">
               <Prompt>“Design the home screen of a digital wallet app in pen.dev, mobile 390 wide … The current design feels too utilitarian: give it a visual personality with illustration, UI ornament, and motion where they fit.”</Prompt>
@@ -186,7 +186,7 @@ export default function Benchmarks() {
         <section id="design-md" aria-labelledby="dm-title" className="bg-paper-2">
           <div className={`${GUTTER} flex flex-col gap-6 py-20 lg:py-24`}>
             <Eyebrow>03 · Project direction · coming next</Eyebrow>
-            <h2 id="dm-title" className="font-semibold tracking-[-0.03em] text-[44px] leading-[1.02] sm:text-[60px]">DESIGN.md</h2>
+            <h2 id="dm-title" className="font-semibold tracking-[-0.03em] text-[min(44px,11vw)] leading-[1.02] sm:text-[60px]">DESIGN.md</h2>
             <p className="max-w-[760px] text-[17px] leading-[1.55] text-ink-2">
               Without context versus RYUX with a filled DESIGN.md. One run so far, which is not enough to claim anything. It
               will be repeated before it is published here.
