@@ -9,30 +9,32 @@ import { Scoreboard } from "@/components/scoreboard";
 import { WaitlistForm } from "@/components/waitlist-form";
 import { Arrow, DOCS, Eyebrow, GUTTER, REPO, SiteFooter, SiteHeader } from "@/components/site";
 
-/* The hero shows the benchmark as people would see it, as two whole phones: the screen made without
-   RYUX (only the success state, with a rule and a button nobody asked for), then the screen made with
-   RYUX from the same prompt (the processing state and what it tells people). x and y are percentages
-   of each full image. */
+/* The hero shows a real run as people would see it, as two whole phones: an orders list for a store's
+   admin app, made without RYUX (one screen, with counts, deadlines and a pickup time nobody gave) and
+   with RYUX from the same prompt (the default list, one of nine screens). x and y are % of each image. */
 const WITHOUT = [
-  { x: 64, y: 69.4, ring: [79, 69.4, 24, 3.4], tag: "Missing", body: "Only the success screen. Nothing for a payment that is still processing or fails." },
-  { x: 5, y: 79.3, ring: [48, 79.3, 70, 3.6], tag: "Invented", body: "A 30-day reporting rule nobody decided." },
-  { x: 95, y: 84.6, ring: [75.5, 87.4, 44, 5.4], tag: "Invented", body: "A Save PDF button nobody asked for." },
+  { x: 4, y: 23.5, ring: [16.3, 23.5, 14, 3.4], tag: "Invented", body: "Order counts, 248, 12 and 3, for a store that does not exist." },
+  { x: 65, y: 27.9, ring: [83.4, 27.9, 30, 3], tag: "Invented", body: "Ship-by deadlines and an Overdue group: a rule nobody gave." },
+  { x: 58, y: 47.5, ring: [79.6, 47.5, 36, 3], tag: "Invented", body: "A 5 PM carrier pickup nobody mentioned." },
 ] as const;
 const WITH = [
-  { x: 69, y: 20.7, ring: [49, 20.7, 26, 3], tag: "Status", body: "Shows the payment is still processing." },
-  { x: 89, y: 35.5, tag: "Guidance", body: "Tells people not to pay again while they wait." },
+  { x: 3.5, y: 11.3, tag: "Find", body: "Search by order number or customer, and filter by status." },
+  { x: 52, y: 24.5, ring: [23, 24.5, 40, 3.2], tag: "Status", body: "Every order says in words whether it is paid and whether it has shipped." },
+  { x: 22, y: 96.8, ring: [50, 96.8, 46, 2.6], tag: "States", body: "Loading more, plus empty, no matches, couldn't load and offline screens." },
 ] as const;
+
 /* Measurements shown when a hero phone is inspected, in pt at 390 wide, measured from the exported PNGs
-   (pixel bounds divided by the export scale, rounded). left/top/width/height are % of the full image. */
-const INSPECT = {
+   (pixel bounds divided by the export scale, rounded): search field height, and the distance from one
+   order's name to the next. left/top/height are % of the full image. */
+type Measure = { label: string; left: number; top: number; width?: number; height?: number; vertical?: boolean };
+const INSPECT: Record<"with" | "without", Measure[]> = {
   without: [
-    { label: "20", left: 0, top: 93.8, width: 5.1 },
-    { label: "52", left: 97.6, top: 91.1, height: 5.3, vertical: true },
+    { label: "44", left: 3.2, top: 14.9, height: 4.9, vertical: true },
+    { label: "70", left: 98.6, top: 32.1, height: 7.7, vertical: true },
   ],
   with: [
-    { label: "22", left: 0, top: 38.5, width: 5.6 },
-    { label: "96", left: 97.6, top: 33.8, height: 9.4, vertical: true },
-    { label: "51", left: 97.6, top: 91.3, height: 5.0, vertical: true },
+    { label: "44", left: 2.3, top: 9.3, height: 4.0, vertical: true },
+    { label: "95", left: 98.4, top: 19.5, height: 8.6, vertical: true },
   ],
 };
 
@@ -118,7 +120,7 @@ function Hero() {
         </h1>
         <p className="max-w-[560px] text-[17px] leading-[1.55] text-ink-2 sm:text-[19px]">
           RYUX is a skill you add to your AI agent. It has the agent design the screens people actually go through, like a
-          payment that is still processing or a page that fails to load, and nothing nobody asked for.
+          list that is still loading, a search with no matches, or a page that fails to load, and nothing nobody asked for.
         </p>
         <div className="flex flex-wrap items-center gap-x-7 gap-y-3">
           <a href="#try" className="tactile inline-flex min-h-12 items-center gap-2.5 rounded-lg bg-accent px-6 text-[17px] font-semibold text-white">
@@ -139,22 +141,22 @@ function Hero() {
 function HeroProof() {
   const phones = [
     {
-      key: "without", label: "Without RYUX", count: "1 screen", src: "/proof/en-td-without.png", w: 780, h: 1926, tone: "mark" as const,
+      key: "without", label: "Without RYUX", count: "1 screen", src: "/cases/or-without.png", w: 780, h: 1812, tone: "mark" as const,
       marks: WITHOUT, start: 0,
-      caption: "Only the success screen, plus a 30-day rule and a Save PDF button nobody asked for.",
+      caption: "One screen, with order counts, deadlines and a 5 PM pickup nobody gave.",
     },
     {
-      key: "with", label: "With RYUX", count: "1 of 6 screens", src: "/proof/en-td-with.png", w: 789, h: 2050, tone: "accent" as const,
+      key: "with", label: "With RYUX", count: "1 of 9 screens", src: "/proof/orders-with.png", w: 340, h: 964, tone: "accent" as const,
       marks: WITH, start: SECOND,
-      caption: "Processing: says the payment is on its way and asks people not to pay again.",
+      caption: "Find an order fast, and see what is paid and what still needs to ship.",
     },
   ];
   return (
     <figure className="flex flex-col gap-4">
       <p className="sr-only">
-        The same prompt run twice. Without RYUX the agent designed only the success screen and added a 30-day reporting rule
-        and a Save PDF button nobody asked for. With RYUX it designed six screens, including a processing screen that tells
-        people not to pay again while they wait.
+        The same prompt run twice: the orders list of a store&apos;s admin app, on mobile. Without RYUX the agent designed one
+        screen with order counts, ship-by deadlines and a 5 PM pickup that nobody gave. With RYUX it designed nine screens; the
+        default list lets people search and filter, and says in words whether each order is paid and shipped.
       </p>
       <Tilt className="grid grid-cols-2 items-start gap-4 sm:gap-6 lg:w-[404px]">
         {phones.map((ph) => (
@@ -181,8 +183,8 @@ function HeroProof() {
                   <Dim
                     key={d.label}
                     label={d.label}
-                    vertical={"vertical" in d}
-                    style={"vertical" in d
+                    vertical={d.vertical}
+                    style={d.vertical
                       ? { left: `${d.left}%`, top: `${d.top}%`, height: `${d.height}%`, transform: "translateX(-50%)" }
                       : { left: `${d.left}%`, top: `${d.top}%`, width: `${d.width}%`, transform: "translateY(-50%)" }}
                   />
