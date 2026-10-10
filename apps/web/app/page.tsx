@@ -11,8 +11,8 @@ import { Arrow, DOCS, Eyebrow, GUTTER, REPO, SiteFooter, SiteHeader } from "@/co
 /* The hero replays the benchmark as people would see it: the screen made without RYUX (only the
    success state, with a rule and a button nobody asked for), then the screen made with RYUX from the
    same prompt (the processing state and what it tells people). x and y are percentages of each full
-   image; the stage shows the bottom of the first and the top of the second. */
-const WITHOUT_TOP = 54.3; // % of the first image hidden above the stage
+   image; the phone-shaped stage shows the lower part of the first and the top of the second. */
+const WITHOUT_TOP = 32; // % of the first image hidden above the stage
 const WITHOUT = [
   { x: 64, y: 69.4, ring: [79, 69.4, 24, 3.4], tag: "Missing", body: "Only the success screen. Nothing for a payment that is still processing or fails." },
   { x: 5, y: 79.3, ring: [48, 79.3, 70, 3.6], tag: "Invented", body: "A 30-day reporting rule nobody decided." },
@@ -131,7 +131,7 @@ function HeroProof() {
         and a Save PDF button nobody asked for. With RYUX it designed six screens, including a processing screen that tells
         people not to pay again while they wait.
       </p>
-      <div aria-hidden className="canvas-grid relative mx-auto w-full max-w-[400px] shrink-0 rounded-[24px] border border-hair p-4 pt-11 sm:p-5 sm:pt-12 lg:w-[360px] xl:mx-0">
+      <div aria-hidden className="canvas-grid relative mx-auto w-full max-w-[320px] shrink-0 rounded-[24px] border border-hair p-4 pt-11 pb-8 sm:p-5 sm:pt-12 sm:pb-9 lg:w-[300px] xl:mx-0">
         <div className="absolute top-4 right-5 left-5 flex items-center justify-between gap-3 font-mono text-[12px]">
           <span className="relative">
             <span className="swap-out font-semibold text-mark" style={{ animationDelay: `${SWAP}ms` }}>Without RYUX</span>
@@ -139,7 +139,7 @@ function HeroProof() {
           </span>
           <span className="text-muted">Real run, same prompt</span>
         </div>
-        <div className="relative aspect-[780/880] overflow-hidden rounded-[18px] border border-hair bg-[#f4f3ef] shadow-[0_30px_60px_-30px_rgba(11,22,43,0.35)]">
+        <div className="relative aspect-[780/1300] overflow-hidden rounded-[18px] border border-hair bg-[#f4f3ef] shadow-[0_30px_60px_-30px_rgba(11,22,43,0.35)]">
           <div className="swap-out absolute inset-x-0 top-0" style={{ animationDelay: `${SWAP}ms`, transform: `translateY(-${WITHOUT_TOP}%)` }}>
             <Image src="/proof/en-td-without.png" alt="" width={780} height={1926} priority className="w-full" />
             {WITHOUT.map((m, i) => (
@@ -161,7 +161,7 @@ function HeroProof() {
         </div>
         <Dim label="390" delay={SWAP + 700} className="bottom-0.5 left-4 right-4 sm:left-5 sm:right-5" />
       </div>
-      <div aria-hidden className="relative mx-auto w-full max-w-[400px] xl:mx-0 xl:w-[230px] xl:pt-14">
+      <div aria-hidden className="relative mx-auto w-full max-w-[320px] xl:mx-0 xl:w-[260px] xl:pt-14">
         <ol className="swap-out flex flex-col gap-4" style={{ animationDelay: `${SWAP}ms` }}>
           {WITHOUT.map((m, i) => (
             <li key={m.body} className="note-in flex gap-3" style={{ animationDelay: `${700 + i * 700}ms` }}>
