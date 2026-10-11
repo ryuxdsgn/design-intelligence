@@ -5,7 +5,8 @@
   --font-display: var(--font-anybody), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-fragment), ui-monospace, SFMono-Regular, monospace;
 
-  /* From the RYUX brand sheet: navy ink, indigo for actions only.
+  /* Brand: navy ink, teal from the RX logo (#188b83) for actions only. The accent is a darker
+     teal so white button text and small text pass 4.5:1; the logo keeps #188b83.
      Mark is the proof-correction red, used for annotations and nothing else. */
   --color-paper: #ffffff;
   --color-paper-2: #f4f5f7;
@@ -13,14 +14,14 @@
   --color-ink-2: #2e3a50;
   --color-muted: #566074;
   --color-hair: #e1e4ea;
-  --color-accent: #4f42f4;
+  --color-accent: #14756f;
   --color-mark: #c8321c;
   --color-night: #0b162b;
   --color-night-text: #f5f6f8;
   --color-night-sub: #a9b2c3;
   --color-night-hair: #24324d;
   --color-mark-night: #ff8a73;
-  --color-accent-night: #a9a2ff;
+  --color-accent-night: #8ad6ce;
 }
 
 html {
