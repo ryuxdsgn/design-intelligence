@@ -5,48 +5,6 @@ import { useEffect, useRef, useState } from "react";
 const query = (q: string) => typeof window !== "undefined" && window.matchMedia(q).matches;
 
 /**
- * Leans its children toward the pointer, at most 4 degrees. Only with a fine pointer and no reduced-motion
- * preference; otherwise it renders flat and never listens.
- */
-export function Tilt({ children, className = "" }: { children: React.ReactNode; className?: string }) {
-  const ref = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el || !query("(pointer: fine)") || query("(prefers-reduced-motion: reduce)")) return;
-    let frame = 0;
-    const move = (e: PointerEvent) => {
-      cancelAnimationFrame(frame);
-      frame = requestAnimationFrame(() => {
-        const r = el.getBoundingClientRect();
-        const x = (e.clientX - r.left) / r.width - 0.5;
-        const y = (e.clientY - r.top) / r.height - 0.5;
-        el.style.setProperty("--ry", `${(x * 8).toFixed(2)}deg`);
-        el.style.setProperty("--rx", `${(-y * 8).toFixed(2)}deg`);
-      });
-    };
-    const leave = () => {
-      cancelAnimationFrame(frame);
-      el.style.setProperty("--rx", "0deg");
-      el.style.setProperty("--ry", "0deg");
-    };
-    el.addEventListener("pointermove", move);
-    el.addEventListener("pointerleave", leave);
-    return () => {
-      cancelAnimationFrame(frame);
-      el.removeEventListener("pointermove", move);
-      el.removeEventListener("pointerleave", leave);
-    };
-  }, []);
-
-  return (
-    <div ref={ref} className={`tilt ${className}`}>
-      {children}
-    </div>
-  );
-}
-
-/**
  * Marks the main-nav link of the section being read (data-active), so the header shows where you are.
  * Renders nothing; it only reads the page's own sections and links.
  */
@@ -60,6 +18,31 @@ export function SectionSpy({ ids }: { ids: string[] }) {
         }
       },
       { rootMargin: "-45% 0px -50% 0px" },
+    );
+    for (const id of ids) {
+      const el = document.getElementById(id);
+      if (el) io.observe(el);
+    }
+    return () => io.disconnect();
+  }, [ids]);
+  return null;
+}
+
+/**
+ * Sets data-tone="night" on the site header while a dark section is under it, so the glass header
+ * turns dark instead of greying out over navy. Renders nothing.
+ */
+export function HeaderTone({ ids }: { ids: string[] }) {
+  useEffect(() => {
+    const header = document.querySelector<HTMLElement>(".site-header");
+    if (!header) return;
+    const under = new Set<string>();
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) e.isIntersecting ? under.add(e.target.id) : under.delete(e.target.id);
+        header.dataset.tone = under.size ? "night" : "day";
+      },
+      { rootMargin: "0px 0px -92% 0px" },
     );
     for (const id of ids) {
       const el = document.getElementById(id);
@@ -103,7 +86,7 @@ export function ScrubStrip({ children, steps }: { children: React.ReactNode; ste
       cancelAnimationFrame(frame);
       frame = requestAnimationFrame(() => {
         const r = o.getBoundingClientRect();
-        const span = o.offsetHeight - window.innerHeight * 0.8; // = 2 x distance: two pixels of scroll per pixel of travel
+        const span = o.offsetHeight - window.innerHeight * 0.8; // = distance: one pixel of scroll per pixel of travel
         const p = Math.min(1, Math.max(0, -r.top / Math.max(1, span)));
         t.style.transform = `translate3d(${-p * Math.max(0, t.scrollWidth - o.clientWidth)}px, 0, 0)`;
         setActive(Math.min(steps.length - 1, Math.round(p * (steps.length - 1))));
@@ -123,16 +106,21 @@ export function ScrubStrip({ children, steps }: { children: React.ReactNode; ste
     return <div className="-mx-5 overflow-x-auto px-5 pb-3 sm:-mx-10 sm:px-10 lg:mx-0 lg:px-0">{children}</div>;
   }
   return (
-    <div ref={outer} data-scrub="on" style={{ height: `calc(80vh + ${distance * 2}px)` }}>
+    <div ref={outer} data-scrub="on" style={{ height: `calc(80vh + ${distance}px)` }}>
       <div className="sticky top-[max(12vh,104px)] flex flex-col gap-5">
-        <div className="overflow-hidden [mask-image:linear-gradient(90deg,transparent,#000_40px,#000_calc(100%-40px),transparent)]">
-          <div ref={track} data-active={active} className="will-change-transform">
-            {children}
+        <div className="relative">
+          <div className="overflow-hidden [mask-image:linear-gradient(90deg,transparent,#000_40px,#000_calc(100%-40px),transparent)]">
+            <div ref={track} data-active={active} className="will-change-transform">
+              {children}
+            </div>
           </div>
+          <p aria-hidden className="glass-night glass-edge absolute top-3 left-3 z-10 rounded-full px-3.5 py-2 font-mono text-[13px] text-night-sub">
+            <span className="text-night-text">{active + 1} / {steps.length}</span> · {steps[active].name}
+          </p>
         </div>
         <p className="font-mono text-[13px] text-night-sub" aria-live="polite">
-          <span className="text-night-text">{active + 1} / {steps.length}</span> · {steps[active].name}
-          <span className="ml-3 font-sans text-[15px] text-night-sub">{steps[active].caption}</span>
+          <span className="sr-only">{active + 1} / {steps.length} · {steps[active].name}. </span>
+          <span className="font-sans text-[15px]">{steps[active].caption}</span>
         </p>
       </div>
     </div>

@@ -4,7 +4,7 @@ import { CopyCommand } from "@/components/copy-command";
 import { Reveal } from "@/components/reveal";
 import { Cases as CaseStudies } from "@/components/cases";
 import { Dim, Pin, PinAt, Ring, type Tone } from "@/components/markup";
-import { ScrubStrip, SectionSpy, Tilt } from "@/components/motion";
+import { HeaderTone, ScrubStrip, SectionSpy } from "@/components/motion";
 import { Scoreboard } from "@/components/scoreboard";
 import { WaitlistForm } from "@/components/waitlist-form";
 import { Arrow, DOCS, Eyebrow, GUTTER, REPO, SiteFooter, SiteHeader } from "@/components/site";
@@ -102,8 +102,8 @@ function Hero() {
       <div className="flex flex-col gap-5 lg:gap-6">
         <Eyebrow>Design intelligence for AI agents</Eyebrow>
         <h1 id="hero-title" className="text-[min(38px,11vw)] leading-[1.02] font-semibold tracking-[-0.03em] sm:text-[56px] lg:text-[48px] xl:text-[56px]">
-          {"Understand before you design.".split(" ").map((w, i) => (
-            <span key={w} className="word-in inline-block" style={{ animationDelay: `${i * 60}ms` }}>
+          {"Understand before you design.".split(" ").map((w) => (
+            <span key={w} className="inline-block">
               {w === "design." ? (
                 <span className="relative inline-block">
                   design
@@ -158,9 +158,9 @@ function HeroProof() {
         screen with order counts, ship-by deadlines and a 5 PM pickup that nobody gave. With RYUX it designed nine screens; the
         default list lets people search and filter, and says in words whether each order is paid and shipped.
       </p>
-      <Tilt className="grid grid-cols-2 items-start gap-4 sm:gap-6 lg:w-[404px]">
+      <div className="grid grid-cols-2 items-start gap-4 sm:gap-6 lg:w-[404px]">
         {phones.map((ph) => (
-          <div key={ph.key} className="phone-in flex min-w-0 flex-col gap-3" style={{ animationDelay: `${ph.start}ms` }}>
+          <div key={ph.key} className="flex min-w-0 flex-col gap-3">
             <p aria-hidden className="flex flex-col gap-0.5 font-mono text-[12px] sm:flex-row sm:items-baseline sm:justify-between sm:gap-2">
               <span className={ph.tone === "mark" ? "text-mark" : "text-accent"}>{ph.label}</span>
               <span className="text-muted">{ph.count}</span>
@@ -190,6 +190,7 @@ function HeroProof() {
                       : { left: `${d.left}%`, top: `${d.top}%`, width: `${d.width}%`, transform: "translateY(-50%)" }}
                   />
                 ))}
+                <p className="inspect-bar glass glass-edge">Measured in pt</p>
               </div>
               {ph.marks.map((m, i) => (
                 <div key={m.body} className="pin-hit group/pin absolute z-10 -translate-x-1/2 -translate-y-1/2" style={{ left: `calc(6px + (100% - 12px) * ${m.x / 100})`, top: `calc(6px + (100% - 12px) * ${m.y / 100})` }}>
@@ -213,7 +214,7 @@ function HeroProof() {
             <p className={`text-[13px] leading-[1.45] text-ink-2 ${ph.key === "without" ? "sm:pb-7" : ""}`}>{ph.caption}</p>
           </div>
         ))}
-      </Tilt>
+      </div>
       <p aria-hidden className="font-mono text-[12px] text-muted">
         <span className="hint-pointer">Hover a screen to inspect it</span>
         <span className="hint-touch">Tap a screen to inspect it</span>
@@ -264,7 +265,7 @@ function Proof() {
           </div>
         </div>
 
-        <div className="frames grid gap-12 [&>*]:min-w-0 xl:grid-cols-[260px_minmax(0,1fr)] xl:gap-14">
+        <div className="grid gap-12 [&>*]:min-w-0 xl:grid-cols-[260px_minmax(0,1fr)] xl:gap-14">
           {screens.map((sc) => (
             <figure key={sc.label} className="flex max-w-[260px] flex-col gap-4 sm:max-w-[300px]">
               <figcaption className="flex items-baseline justify-between gap-3 font-mono text-[13px]">
@@ -298,7 +299,7 @@ function Proof() {
               <span className="text-night-sub">6 screens</span>
             </figcaption>
             <ScrubStrip steps={STATES.map((st) => ({ name: st.name, caption: st.caption }))}>
-              <ol className="frames flex w-max items-start gap-4">
+              <ol className="flex w-max items-start gap-4">
                 {STATES.map((st, i) => (
                   <li
                     key={st.name}
@@ -359,7 +360,7 @@ function Proof() {
 
 function Cases() {
   return (
-    <section id="cases" aria-labelledby="cases-title" className="overflow-hidden bg-paper-2">
+    <section id="cases" aria-labelledby="cases-title" className="overflow-x-clip bg-paper-2">
       <Reveal className={`${GUTTER} flex flex-col gap-14 py-20 lg:py-28`}>
         <div className="flex max-w-[760px] flex-col gap-5">
           <Eyebrow>Two more runs</Eyebrow>
@@ -394,7 +395,7 @@ function HowItWorks() {
         </div>
       </div>
 
-      <ol className="stagger grid border-t border-ink [&>*]:min-w-0 sm:grid-cols-2 lg:grid-cols-5">
+      <ol className="grid border-t border-ink [&>*]:min-w-0 sm:grid-cols-2 lg:grid-cols-5">
         {CAPABILITIES.map((c, i) => (
           <li key={c.name} className={`flex flex-col gap-3 border-b border-hair pt-6 pb-8 lg:border-b-0 lg:pr-6 ${i ? "lg:border-l lg:pl-6" : ""}`}>
             <span className="font-mono text-[13px] text-muted">{i + 1}</span>
@@ -460,7 +461,7 @@ function RealProduct() {
           RYUX analyzed and critiqued Plausible&apos;s public demo dashboard at 1440 and 390 wide, designed fixes for what it
           found, and checked them in the browser. The original is strong, so the fixes are small and most of it stays.
         </p>
-        <dl className="frames border-t border-ink">
+        <dl className="border-t border-ink">
           {PLAUSIBLE_RESULTS.map((r, i) => (
             <div key={r.what} className="grid grid-cols-[1fr_auto] items-center gap-4 border-b border-hair py-3.5" style={{ ["--i" as string]: i } as React.CSSProperties}>
               <dt className="text-[15px] leading-[1.4] text-ink-2">{r.what}</dt>
@@ -479,7 +480,7 @@ function RealProduct() {
       </div>
 
       <figure className="flex flex-col gap-4">
-        <div className="frames grid gap-6 sm:grid-cols-2">
+        <div className="grid gap-6 sm:grid-cols-2">
           <div className="flex flex-col gap-3">
             <p className="font-mono text-[12px] text-muted">Before · live, 9 Oct 2026</p>
             <div className="relative">
@@ -590,6 +591,7 @@ export default function Home() {
     <>
       <SiteHeader />
       <SectionSpy ids={["proof", "how"]} />
+      <HeaderTone ids={["proof", "try"]} />
       <main>
         <Hero />
         <Proof />
