@@ -23,12 +23,13 @@ export function CopyCommand({ command, night = false, prompt = "$" }: { command:
     setTimeout(() => setStatus("idle"), 2000);
   }
 
-  const label = status === "copied" ? "Copied" : status === "failed" ? "Selected, press ⌘C" : "Copy";
+  const key = typeof navigator !== "undefined" && /Mac|iPhone|iPad/.test(navigator.userAgent) ? "⌘C" : "Ctrl+C";
+  const label = status === "copied" ? "Copied" : status === "failed" ? `Selected, press ${key}` : "Copy";
 
   return (
     <div
       data-status={status}
-      className={`copy-row flex max-w-full items-center gap-3 rounded-md py-2 pr-2 pl-4 font-mono text-[14px] ${
+      className={`copy-row flex max-w-full items-start gap-3 rounded-md py-2 pr-2 pl-4 font-mono text-[14px] ${
         night ? "bg-night-hair/60 text-night-text" : "bg-paper-2 text-ink"
       }`}
     >
@@ -37,13 +38,19 @@ export function CopyCommand({ command, night = false, prompt = "$" }: { command:
           {prompt}
         </span>
       )}
-      <code ref={codeRef} className="min-w-0 flex-1 overflow-x-auto whitespace-nowrap py-1">
-        {command}
+      <code ref={codeRef} className="min-w-0 flex-1 py-1 [overflow-wrap:anywhere]">
+        {/* Lines break only between words, so a package name never splits at its hyphen. */}
+        {command.split(" ").map((word, i) => (
+          <span key={i}>
+            {i > 0 && " "}
+            <span className="inline-block max-w-full">{word}</span>
+          </span>
+        ))}
       </code>
       <button
         type="button"
         onClick={copy}
-        className={`tactile inline-flex min-h-9 shrink-0 items-center gap-1.5 rounded px-3 text-[13px] ${
+        className={`tactile inline-flex min-h-9 min-w-9 shrink-0 items-center justify-center gap-1.5 rounded px-2 text-[13px] sm:px-3 ${
           night ? "text-night-sub hover:text-night-text" : "text-muted hover:text-ink"
         }`}
       >
@@ -57,7 +64,7 @@ export function CopyCommand({ command, night = false, prompt = "$" }: { command:
             <path d="M5 15V6a2 2 0 0 1 2-2h9" />
           </svg>
         )}
-        <span aria-live="polite">{label}</span>
+        <span aria-live="polite" className="sr-only sm:not-sr-only">{label}</span>
       </button>
     </div>
   );

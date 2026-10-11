@@ -145,7 +145,7 @@ export function Cases() {
         {pill && (
           <span
             aria-hidden
-            className="absolute inset-y-1 rounded-full bg-ink transition-[left,width] duration-[400ms] ease-[cubic-bezier(0.34,1.4,0.64,1)] motion-reduce:transition-none"
+            className="absolute inset-y-1 rounded-full bg-ink transition-[left,width] duration-[var(--dur-2)] ease-[cubic-bezier(0.34,1.4,0.64,1)] motion-reduce:transition-none"
             style={{ left: pill.left, width: pill.width }}
           />
         )}

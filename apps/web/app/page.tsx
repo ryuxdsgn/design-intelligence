@@ -39,7 +39,7 @@ const INSPECT: Record<"with" | "without", Measure[]> = {
 };
 
 /* The second phone arrives at this point (ms); its markup follows it. */
-const SECOND = 1900;
+const SECOND = 1000;
 
 /* The six screens RYUX designed in the same benchmark run, cut from its exported board. 320 is the
    narrow-width check the board names; the others are 390 wide. */
@@ -103,12 +103,12 @@ function Hero() {
         <Eyebrow>Design intelligence for AI agents</Eyebrow>
         <h1 id="hero-title" className="text-[min(38px,11vw)] leading-[1.02] font-semibold tracking-[-0.03em] sm:text-[56px] lg:text-[48px] xl:text-[56px]">
           {"Understand before you design.".split(" ").map((w, i) => (
-            <span key={w} className="word-in inline-block" style={{ animationDelay: `${i * 90}ms` }}>
+            <span key={w} className="word-in inline-block" style={{ animationDelay: `${i * 60}ms` }}>
               {w === "design." ? (
                 <span className="relative inline-block">
                   design
                   <svg aria-hidden className="absolute -bottom-[0.2em] left-0 h-[0.14em] w-full overflow-visible" viewBox="0 0 100 10" preserveAspectRatio="none">
-                    <path d="M1 7 C 25 2, 60 2, 99 5" pathLength={1} fill="none" strokeWidth="3" strokeLinecap="round" className="ring-draw stroke-mark" style={{ animationDelay: "700ms" }} />
+                    <path d="M1 7 C 25 2, 60 2, 99 5" pathLength={1} fill="none" strokeWidth="3" strokeLinecap="round" className="ring-draw stroke-mark" style={{ animationDelay: "500ms" }} />
                   </svg>
                 </span>
               ) : (
@@ -167,6 +167,7 @@ function HeroProof() {
             </p>
             <div
               tabIndex={0}
+              role="group"
               aria-label={`${ph.label}: inspect the measurements of this screen`}
               className="inspect rounded-[30px] bg-ink p-[6px] shadow-[0_30px_60px_-30px_rgba(11,22,43,0.45)]"
             >
@@ -174,7 +175,7 @@ function HeroProof() {
                 <Image src={ph.src} alt="" width={ph.w} height={ph.h} priority className="w-full" />
                 <div className="marks">
                   {ph.marks.map((m, i) => "ring" in m && (
-                    <Ring key={m.body} x={m.ring[0]} y={m.ring[1]} w={m.ring[2]} h={m.ring[3]} tone={ph.tone} delay={ph.start + 600 + i * 450} />
+                    <Ring key={m.body} x={m.ring[0]} y={m.ring[1]} w={m.ring[2]} h={m.ring[3]} tone={ph.tone} delay={ph.start + 400 + i * 280} />
                   ))}
                 </div>
               </div>
@@ -192,7 +193,7 @@ function HeroProof() {
               </div>
               {ph.marks.map((m, i) => (
                 <div key={m.body} className="pin-hit group/pin absolute z-10 -translate-x-1/2 -translate-y-1/2" style={{ left: `calc(6px + (100% - 12px) * ${m.x / 100})`, top: `calc(6px + (100% - 12px) * ${m.y / 100})` }}>
-                  <div className="pin-in" style={{ animationDelay: `${ph.start + 500 + i * 450}ms` }}>
+                  <div className="pin-in" style={{ animationDelay: `${ph.start + 350 + i * 280}ms` }}>
                     <Pin n={i + 1} tone={ph.tone} />
                   </div>
                   <span
@@ -206,7 +207,7 @@ function HeroProof() {
             </div>
             {ph.key === "with" && (
               <div aria-hidden className="relative h-4">
-                <Dim label="390" delay={SECOND + 1500} className="inset-x-0 top-0" />
+                <Dim label="390" delay={SECOND + 700} className="inset-x-0 top-0" />
               </div>
             )}
             <p className={`text-[13px] leading-[1.45] text-ink-2 ${ph.key === "without" ? "sm:pb-7" : ""}`}>{ph.caption}</p>
@@ -541,7 +542,7 @@ function Evidence() {
         <dl className="lg:pt-12">
           {MARKS.map((m) => (
             <div key={m.mark} className="grid gap-2 border-b border-hair py-6 first:border-t sm:grid-cols-[130px_1fr] sm:gap-x-8 lg:grid-cols-1 xl:grid-cols-[130px_1fr_260px]">
-              <dt className="text-[15px] font-semibold text-mark">{m.mark}</dt>
+              <dt className={`text-[15px] font-semibold ${m.mark === "Unknown" ? "text-mark" : "text-ink"}`}>{m.mark}</dt>
               <dd className="text-[18px] leading-[1.4]">{m.meaning}</dd>
               <dd className="font-mono text-[13px] leading-[1.55] text-ink-2 sm:col-start-2 lg:col-start-auto">{m.example}</dd>
             </div>
