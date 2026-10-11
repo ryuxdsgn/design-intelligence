@@ -4,8 +4,8 @@
 export type Tone = "mark" | "accent" | "mark-night" | "accent-night";
 
 const PIN_TONE: Record<Tone, string> = {
-  mark: "border-mark text-mark bg-white",
-  accent: "border-accent text-accent bg-white",
+  mark: "border-mark text-mark bg-paper",
+  accent: "border-accent text-accent bg-paper",
   "mark-night": "border-mark-night text-mark-night bg-night",
   "accent-night": "border-accent-night text-accent-night bg-night",
 };

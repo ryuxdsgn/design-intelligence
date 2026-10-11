@@ -62,7 +62,7 @@ export function WaitlistForm() {
           placeholder="you@company.com"
           aria-invalid={status === "error"}
           aria-describedby={status === "error" ? "wl-msg" : undefined}
-          className="min-h-12 flex-1 rounded-md border border-hair bg-white px-4 text-[15px] text-ink outline-none placeholder:text-muted focus:border-ink focus:ring-2 focus:ring-ink/20"
+          className="min-h-12 flex-1 rounded-md border border-hair bg-panel px-4 text-[15px] text-ink outline-none placeholder:text-muted focus:border-accent focus:ring-2 focus:ring-accent/30"
         />
         <button
           type="submit"

@@ -1,27 +1,29 @@
 @import "tailwindcss";
 
 @theme {
-  --font-sans: var(--font-mona), ui-sans-serif, system-ui, sans-serif;
-  --font-display: var(--font-anybody), ui-sans-serif, system-ui, sans-serif;
-  --font-mono: var(--font-fragment), ui-monospace, SFMono-Regular, monospace;
+  --font-sans: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, monospace;
 
-  /* Brand: navy ink, teal from the RX logo (#188b83) for actions only. The accent is a darker
-     teal so white button text and small text pass 4.5:1; the logo keeps #188b83.
-     Mark is the proof-correction red, used for annotations and nothing else. */
-  --color-paper: #ffffff;
-  --color-paper-2: #f4f5f7;
-  --color-ink: #0b162b;
-  --color-ink-2: #2e3a50;
-  --color-muted: #566074;
-  --color-hair: #e1e4ea;
-  --color-accent: #14756f;
-  --color-mark: #c8321c;
-  --color-night: #0b162b;
-  --color-night-text: #f5f6f8;
-  --color-night-sub: #a9b2c3;
-  --color-night-hair: #24324d;
+  /* Review canvas: the page is a design tool's board. Graphite surfaces, light text, the screens laid
+     out on it like frames. Teal (from the RX logo #188b83, lifted to #3cc4b7 so it reads on graphite)
+     is selection and action; red is the reviewer's mark and nothing else. Night tokens equal the day
+     ones: the whole page is one dark board. */
+  --color-paper: #0f1215;
+  --color-paper-2: #161a1f;
+  --color-panel: #1d2229;
+  --color-ink: #eef1f4;
+  --color-ink-2: #c3cad3;
+  --color-muted: #a7b0bb;
+  --color-hair: #2a313a;
+  --color-accent: #3cc4b7;
+  --color-mark: #ff8a73;
+  --color-night: #0f1215;
+  --color-night-text: #eef1f4;
+  --color-night-sub: #a7b0bb;
+  --color-night-hair: #2a313a;
   --color-mark-night: #ff8a73;
-  --color-accent-night: #8ad6ce;
+  --color-accent-night: #3cc4b7;
 }
 
 html {
@@ -38,12 +40,11 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* Headings use the wide display cut; reading text stays in the plain sans. */
+/* Headings: the same sans, tight and semibold, like a tool's own type. */
 h1, h2 {
   font-family: var(--font-display);
-  font-variation-settings: "wdth" 118;
-  font-weight: 700;
-  letter-spacing: -0.02em;
+  font-weight: 600;
+  letter-spacing: -0.035em;
 }
 
 /* Redlines: a dimension line with end ticks and a measurement label, drawn like a spec handoff.
@@ -58,7 +59,7 @@ h1, h2 {
 .dim-h .dim-line::before { left: 0; } .dim-h .dim-line::after { right: 0; }
 .dim-v .dim-line::before, .dim-v .dim-line::after { content: ""; position: absolute; left: -6px; height: 1px; width: 13px; background: var(--dc); }
 .dim-v .dim-line::before { top: 0; } .dim-v .dim-line::after { bottom: 0; }
-.dim-label { position: relative; font: 400 12px/1 var(--font-mono); white-space: nowrap; color: #fff; background: var(--dc); padding: 3px 6px; border-radius: 3px; animation: dim-label var(--dur-2) var(--ease-out) calc(var(--d, 0ms) + 500ms) both; }
+.dim-label { position: relative; font: 400 12px/1 var(--font-mono); white-space: nowrap; color: var(--color-paper); background: var(--dc); padding: 3px 6px; border-radius: 3px; animation: dim-label var(--dur-2) var(--ease-out) calc(var(--d, 0ms) + 500ms) both; }
 .dim.night { --dc: var(--color-mark-night); } .dim.night .dim-label { color: var(--color-night); }
 @keyframes dim-x { from { transform: scaleX(0); } to { transform: scaleX(1); } }
 @keyframes dim-y { from { transform: scaleY(0); } to { transform: scaleY(1); } }
@@ -92,7 +93,7 @@ h1, h2 {
    or when the reader asks for less transparency or more contrast, it is solid. */
 .glass { background: color-mix(in srgb, var(--color-paper) 85%, transparent); -webkit-backdrop-filter: blur(16px) saturate(140%); backdrop-filter: blur(16px) saturate(140%); }
 .glass-night { background: color-mix(in srgb, var(--color-night) 88%, transparent); -webkit-backdrop-filter: blur(16px) saturate(140%); backdrop-filter: blur(16px) saturate(140%); }
-.glass-edge { border: 1px solid rgb(255 255 255 / 0.55); box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.6), 0 8px 24px -12px rgb(11 22 43 / 0.25); }
+.glass-edge { border: 1px solid var(--color-hair); box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.05), 0 12px 30px -12px rgb(0 0 0 / 0.6); }
 .glass-night.glass-edge { border-color: rgb(245 246 248 / 0.14); box-shadow: inset 0 1px 0 rgb(245 246 248 / 0.08), 0 8px 24px -12px rgb(0 0 0 / 0.5); }
 @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
   .glass { background: var(--color-paper); } .glass-night { background: var(--color-night); }
@@ -105,11 +106,7 @@ h1, h2 {
 /* Header: sticks, and its hairline appears once the page has scrolled (scroll-driven where supported;
    elsewhere the line is simply always there). The current section is underlined in the nav. */
 .site-header { border-bottom: 1px solid var(--color-hair); transition: background-color var(--dur-2) var(--ease-ios), border-color var(--dur-2) var(--ease-ios); }
-/* Over a dark section the header glass turns dark too (set by HeaderTone), instead of greying over navy. */
-.site-header[data-tone="night"] { background: color-mix(in srgb, var(--color-night) 88%, transparent); border-bottom-color: var(--color-night-hair); --mark-ink: #f5f6f8; animation: none; }
-.site-header[data-tone="night"] .nav-link { color: var(--color-night-sub); }
-.site-header[data-tone="night"] .nav-link[data-active="true"], .site-header[data-tone="night"] .nav-link:hover { color: var(--color-night-text); }
-@media (prefers-reduced-transparency: reduce), (prefers-contrast: more) { .site-header[data-tone="night"] { background: var(--color-night); } }
+
 /* On phones the header has two rows (about 130px); keeping that pinned would cover a fifth of the screen. */
 @media (min-width: 1024px) { .site-header { position: sticky; top: 0; z-index: 40; } }
 @supports (animation-timeline: scroll()) {
@@ -144,54 +141,24 @@ a:hover .arrow[data-dir="down"] { transform: translateY(3px); }
 @keyframes draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
 .check-draw { stroke-dasharray: 1; animation: draw var(--dur-3) var(--ease-ios) 100ms both; }
 
-/* Pins that can be hovered grow a little; focus rings settle in instead of snapping. */
-.pin-hit .pin-in > span { transition: transform var(--dur-2) var(--ease-spring); }
-.pin-hit:hover .pin-in > span { transform: scale(1.15); }
+/* Focus rings settle in instead of snapping. */
 @keyframes ring-in { from { outline-offset: 7px; } to { outline-offset: 2px; } }
 :focus-visible { animation: ring-in var(--dur-1) var(--ease-ios); }
 
 @media (prefers-reduced-motion: reduce) {
   .site-header { animation: none; }
-  .nav-link::after, .arrow, .pin-hit .pin-in > span { transition: none; }
-  a:hover .arrow, a:hover .arrow[data-dir="down"], .pin-hit:hover .pin-in > span { transform: none; }
+  .nav-link::after, .arrow { transition: none; }
+  a:hover .arrow, a:hover .arrow[data-dir="down"] { transform: none; }
   .pop, .copy-row[data-status="copied"], .check-draw, :focus-visible { animation: none; }
   .strike::after, .after-in { transition: none; }
   .reveal[data-shown="false"] .strike::after { transform: none; }
   .reveal[data-shown="false"] .after-in { opacity: 1; transform: none; }
 }
 
-/* Inspect: hovering or focusing a phone redraws its measurements, like Alt-hover in a design tool.
-   The layer goes from display:none to block, so the redline animation plays again each time. */
-.inspect { position: relative; cursor: crosshair; outline: none; transition: transform var(--dur-2) var(--ease-ios), box-shadow var(--dur-2) var(--ease-ios); }
-/* A phone that can be inspected lifts a little under the pointer, so it reads as something to try. */
-@media (hover: hover) and (prefers-reduced-motion: no-preference) {
-  .inspect:hover { transform: translateY(-2px); box-shadow: 0 40px 70px -30px rgb(11 22 43 / 0.55); }
-}
-.inspect-bar { position: absolute; left: 10px; right: 10px; bottom: 10px; border-radius: 14px; padding: 8px 10px; font: 400 11px/1.3 var(--font-mono); color: var(--color-ink); }
-.inspect-layer { display: none; position: absolute; inset: 0; pointer-events: none; }
-.inspect:hover .inspect-layer, .inspect:focus-visible .inspect-layer { display: block; }
-.inspect .marks { transition: opacity var(--dur-2) var(--ease-ios); }
-.inspect:hover .marks, .inspect:focus-visible .marks { opacity: 0.25; }
-.inspect .pin-hit { transition: opacity var(--dur-2) var(--ease-ios); }
-.inspect:hover .pin-hit:not(:hover), .inspect:focus-visible .pin-hit { opacity: 0.25; }
-.inspect:focus-visible { box-shadow: 0 0 0 3px var(--color-accent); border-radius: 30px; }
-.hint-touch { display: none; }
-@media (hover: none) { .hint-touch { display: inline; } .hint-pointer { display: none; } }
 
-/* Six-screen strip: fixed widths when it scrolls sideways; sized to the viewport height when scrubbed. */
-.state-item { width: var(--w); }
-[data-scrub="on"] .state-item { width: calc(var(--ar) * 62vh); }
-[data-scrub="on"] .state-item { opacity: 0.45; transition: opacity var(--dur-2) var(--ease-ios); }
-[data-active="0"] .state-item:nth-child(1),
-[data-active="1"] .state-item:nth-child(2),
-[data-active="2"] .state-item:nth-child(3),
-[data-active="3"] .state-item:nth-child(4),
-[data-active="4"] .state-item:nth-child(5),
-[data-active="5"] .state-item:nth-child(6) { opacity: 1; }
 
 @media (prefers-reduced-motion: reduce) {
   .tactile, .tactile:active { transform: none; transition: none; }
-  .inspect { transition: none; }
 }
 
 /* Hero markup is drawn in reading order: pin, then its leader, then its note. */
@@ -226,11 +193,7 @@ code,
 /* The review canvas: a dot grid like a designer's proofing sheet. Decoration only, behind real screens. */
 .canvas-grid {
   background-color: var(--color-paper-2);
-  background-image: radial-gradient(circle at 1px 1px, rgba(11, 22, 43, 0.14) 1px, transparent 0);
-  background-size: 22px 22px;
-}
-.canvas-grid-night {
-  background-image: radial-gradient(circle at 1px 1px, rgba(245, 246, 248, 0.09) 1px, transparent 0);
+  background-image: radial-gradient(circle at 1px 1px, rgba(238, 241, 244, 0.07) 1px, transparent 0);
   background-size: 22px 22px;
 }
 
