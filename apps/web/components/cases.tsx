@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useLayoutEffect, useRef, useState } from "react";
+import { type ReactNode, useLayoutEffect, useRef, useState } from "react";
 import { Pin, PinAt, Ring, type Tone } from "@/components/markup";
 
 type Mark = { pin: [number, number]; ring: [number, number, number, number]; note: string };
@@ -9,6 +9,7 @@ type Side = { src: string; w: number; h: number; alt: string; marks: Mark[]; ext
 type Case = {
   id: string;
   tab: string;
+  short?: string;
   prompt: string;
   cols: string;
   without: Side;
@@ -52,6 +53,7 @@ const CASES: Case[] = [
   {
     id: "orders",
     tab: "Orders list",
+    short: "Orders",
     prompt: "Design the orders list for an online store’s admin app, on mobile.",
     cols: "lg:grid-cols-[minmax(0,320px)_minmax(0,1fr)]",
     without: {
@@ -112,12 +114,15 @@ function Screen({ side, tone, label }: { side: Side; tone: Tone; label: string }
   );
 }
 
-/** Two more runs, shown as a review: rings on what each side shows. Tabs switch between the cases. */
-export function Cases() {
+/** Runs, shown as a review: rings on what each side shows. Tabs switch between the runs; `first` puts the
+    main benchmark in front as its own tab and panel. */
+export function Cases({ first }: { first?: { id: string; tab: string; short?: string; panel: ReactNode } }) {
   const [active, setActive] = useState(0);
   const tabs = useRef<(HTMLButtonElement | null)[]>([]);
   const [pill, setPill] = useState<{ left: number; width: number } | null>(null);
-  const c = CASES[active];
+  const runs = [...(first ? [{ id: first.id, tab: first.tab, short: first.short }] : []), ...CASES.map((x) => ({ id: x.id, tab: x.tab, short: x.short }))];
+  const offset = first ? 1 : 0;
+  const c = active >= offset ? CASES[active - offset] : null;
 
   // The dark pill slides to the selected tab, so the change of tab is seen, not only read.
   useLayoutEffect(() => {
@@ -134,7 +139,7 @@ export function Cases() {
     const step = e.key === "ArrowRight" ? 1 : e.key === "ArrowLeft" ? -1 : 0;
     if (!step) return;
     e.preventDefault();
-    const next = (i + step + CASES.length) % CASES.length;
+    const next = (i + step + runs.length) % runs.length;
     setActive(next);
     tabs.current[next]?.focus();
   }
@@ -149,7 +154,7 @@ export function Cases() {
             style={{ left: pill.left, width: pill.width }}
           />
         )}
-        {CASES.map((x, i) => (
+        {runs.map((x, i) => (
           <button
             key={x.id}
             ref={(el) => {
@@ -162,28 +167,39 @@ export function Cases() {
             tabIndex={i === active ? 0 : -1}
             onClick={() => setActive(i)}
             onKeyDown={(e) => onKey(e, i)}
-            className={`tactile relative min-h-11 rounded-full px-5 text-[15px] font-medium transition-colors duration-300 ${
-              i === active ? (pill ? "text-white" : "bg-ink text-white") : "text-ink-2 hover:text-ink"
+            className={`tactile relative min-h-11 whitespace-nowrap rounded-full px-4 text-[15px] font-medium sm:px-5 transition-colors duration-300 ${
+              i === active ? (pill ? "text-paper" : "bg-ink text-paper") : "text-ink-2 hover:text-ink"
             }`}
           >
-            {x.tab}
+            {x.short ? (
+              <>
+                <span className="sm:hidden">{x.short}</span>
+                <span className="hidden sm:inline">{x.tab}</span>
+              </>
+            ) : x.tab}
           </button>
         ))}
       </div>
 
-      <div id="case-panel" role="tabpanel" aria-labelledby={`case-tab-${c.id}`} key={c.id} className="case-panel canvas-grid flex flex-col gap-10 rounded-[28px] border border-hair px-5 py-8 sm:px-10 lg:py-12">
-        <p className="max-w-[760px] border-l border-ink/20 pl-4 text-[17px] leading-[1.45] text-ink">
-          <span className="block text-[13px] text-muted">The prompt, identical for both</span>“{c.prompt} Make it in pen.dev.”
-        </p>
-        <div className={`grid gap-12 [&>*]:min-w-0 lg:gap-14 ${c.cols}`}>
-          <Screen side={c.without} tone="mark" label="Without RYUX" />
-          <Screen side={c.with} tone="accent" label="With RYUX" />
+      {first && active === 0 ? (
+        <div id="case-panel" role="tabpanel" aria-labelledby={`case-tab-${first.id}`} key={first.id} className="case-panel">
+          {first.panel}
         </div>
-        <p className="max-w-[760px] text-[15px] leading-[1.55] text-ink-2">
-          <span className="font-semibold text-mark">What RYUX got wrong: </span>
-          {c.wrong}
-        </p>
-      </div>
+      ) : c && (
+        <div id="case-panel" role="tabpanel" aria-labelledby={`case-tab-${c.id}`} key={c.id} className="case-panel canvas-grid flex flex-col gap-10 rounded-2xl border border-hair px-5 py-8 sm:px-10 lg:py-12">
+          <p className="max-w-[760px] border-l border-ink/20 pl-4 text-[17px] leading-[1.45] text-ink">
+            <span className="block text-[13px] text-muted">The prompt, identical for both</span>“{c.prompt} Make it in pen.dev.”
+          </p>
+          <div className={`grid gap-12 [&>*]:min-w-0 lg:gap-14 ${c.cols}`}>
+            <Screen side={c.without} tone="mark" label="Without RYUX" />
+            <Screen side={c.with} tone="accent" label="With RYUX" />
+          </div>
+          <p className="max-w-[760px] text-[15px] leading-[1.55] text-ink-2">
+            <span className="font-semibold text-mark">What RYUX got wrong: </span>
+            {c.wrong}
+          </p>
+        </div>
+      )}
     </div>
   );
 }

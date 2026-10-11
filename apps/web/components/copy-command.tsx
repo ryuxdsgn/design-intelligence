@@ -5,7 +5,8 @@ import { useRef, useState } from "react";
 type Status = "idle" | "copied" | "failed";
 
 /** A shell command with a copy button. If the clipboard is blocked, the text is selected instead. */
-export function CopyCommand({ command, night = false, prompt = "$" }: { command: string; night?: boolean; prompt?: string }) {
+/** `primary` marks the one command the page is for: a framed row and a filled Copy button. */
+export function CopyCommand({ command, night = false, prompt = "$", primary = false }: { command: string; night?: boolean; prompt?: string; primary?: boolean }) {
   const [status, setStatus] = useState<Status>("idle");
   const codeRef = useRef<HTMLElement>(null);
 
@@ -30,7 +31,7 @@ export function CopyCommand({ command, night = false, prompt = "$" }: { command:
     <div
       data-status={status}
       className={`copy-row flex max-w-full items-start gap-3 rounded-md py-2 pr-2 pl-4 font-mono text-[14px] ${
-        night ? "bg-night-hair/60 text-night-text" : "bg-paper-2 text-ink"
+        primary ? "border border-hair bg-panel text-ink" : night ? "bg-night-hair/60 text-night-text" : "bg-panel text-ink"
       }`}
     >
       {prompt && (
@@ -51,7 +52,7 @@ export function CopyCommand({ command, night = false, prompt = "$" }: { command:
         type="button"
         onClick={copy}
         className={`tactile inline-flex min-h-9 min-w-9 shrink-0 items-center justify-center gap-1.5 rounded px-2 text-[13px] sm:px-3 ${
-          night ? "text-night-sub hover:text-night-text" : "text-muted hover:text-ink"
+          primary ? "bg-accent font-semibold text-paper" : night ? "text-night-sub hover:text-night-text" : "text-muted hover:text-ink"
         }`}
       >
         {status === "copied" ? (

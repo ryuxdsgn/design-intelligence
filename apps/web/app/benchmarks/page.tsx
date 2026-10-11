@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { Eyebrow, GUTTER, REPO, SiteFooter, SiteHeader } from "@/components/site";
 import { Reveal } from "@/components/reveal";
+import { Dim, Ring } from "@/components/markup";
 import { Scoreboard } from "@/components/scoreboard";
 
 export const metadata: Metadata = {
@@ -9,6 +10,22 @@ export const metadata: Metadata = {
   description:
     "Same prompt, same agent, one with RYUX. What changed, what RYUX got wrong, and what we learned, from repeated paired runs.",
 };
+
+/* A review RYUX ran on a real product: Plausible's public demo dashboard, 9 Oct 2026. Before/after values
+   were measured in the browser (Playwright, DOM and accessibility tree). */
+const PLAUSIBLE_RESULTS = [
+  { what: "Tab height on a phone", before: "16px", after: "44px" },
+  { what: "Controls with no name for screen readers", before: "1", after: "0" },
+  { what: "Headings for the dashboard panels", before: "0", after: "6" },
+  { what: "Words split in the middle at 390", before: "2", after: "0" },
+];
+
+const MARKS = [
+  { mark: "Observed", meaning: "Seen in the design or read from its values.", example: "Body text is 16/24, read from the CSS." },
+  { mark: "Inferred", meaning: "A reasonable guess, labeled as one.", example: "Probably an 8px spacing scale." },
+  { mark: "Knowledge", meaning: "A known pattern or standard, cited.", example: "WCAG 1.4.3: text contrast at least 4.5:1." },
+  { mark: "Unknown", meaning: "Something nobody said. It stays visible.", example: "[CUR] 49.00, currency not decided" },
+];
 
 const METHOD = [
   "A fresh agent per run, the same model, pen.dev. RYUX 2.3.3 is the only difference.",
@@ -44,6 +61,101 @@ function Block({ label, children }: { label: string; children: React.ReactNode }
 
 function Prompt({ children }: { children: React.ReactNode }) {
   return <p className="border-l border-hair pl-5 text-[19px] leading-[1.45] text-ink">{children}</p>;
+}
+
+/* Analyze, Critique, Design and QA on a product that already exists. Values are measured, not estimated. */
+function RealProduct() {
+  return (
+    <div className="grid gap-12 [&>*]:min-w-0 lg:grid-cols-[minmax(0,1fr)_minmax(0,620px)] lg:gap-20">
+      <div className="flex flex-col gap-6">
+        <h3 className="text-[28px] leading-[1.15] font-semibold tracking-[-0.02em] sm:text-[34px]">
+          A review of a dashboard people already use.
+        </h3>
+        <p className="text-[17px] leading-[1.55] text-ink-2">
+          RYUX analyzed and critiqued Plausible&apos;s public demo dashboard at 1440 and 390 wide, designed fixes for what it
+          found, and checked them in the browser. The original is strong, so the fixes are small and most of it stays.
+        </p>
+        <dl className="border-t border-ink">
+          {PLAUSIBLE_RESULTS.map((r, i) => (
+            <div key={r.what} className="grid grid-cols-[1fr_auto] items-center gap-4 border-b border-hair py-3.5" style={{ ["--i" as string]: i } as React.CSSProperties}>
+              <dt className="text-[15px] leading-[1.4] text-ink-2">{r.what}</dt>
+              <dd className="flex items-center gap-2 font-mono text-[14px] tabular-nums">
+                <span className="strike text-muted">{r.before}</span>
+                <span aria-hidden className="text-muted">→</span>
+                <span className="sr-only">changed to</span>
+                <span className="after-in font-semibold text-ink">{r.after}</span>
+              </dd>
+            </div>
+          ))}
+        </dl>
+        <p className="text-[13px] leading-[1.55] text-muted">
+          Not affiliated with Plausible. Unsolicited study; the fixes are a prototype, not their product.
+        </p>
+      </div>
+
+      <figure className="flex flex-col gap-4">
+        <div className="grid gap-6 sm:grid-cols-2">
+          <div className="flex flex-col gap-3">
+            <p className="font-mono text-[12px] text-muted">Before · live, 9 Oct 2026</p>
+            <div className="relative">
+              <Image
+                src="/cases/plausible/before-390.png"
+                alt="Plausible's demo dashboard at 390 wide: the live visitor count shows only the number 202, with no label, and the key figures show percentage changes without saying what they compare with"
+                width={390}
+                height={338}
+                className="w-full rounded-[10px] border border-hair"
+              />
+              <Ring x={21} y={6.8} w={20} h={9} tone="mark" delay={300} />
+            </div>
+          </div>
+          <div className="flex flex-col gap-3" style={{ ["--i" as string]: 1 } as React.CSSProperties}>
+            <p className="font-mono text-[12px] text-accent">After · RYUX prototype</p>
+            <div className="relative">
+              <Image
+                src="/cases/plausible/after-390.png"
+                alt="The same dashboard redesigned at 390 wide: the live count reads 201 current visitors, and a line above the key figures says the changes are versus the previous 28 days"
+                width={390}
+                height={378}
+                className="w-full rounded-[10px] border border-hair"
+              />
+              <Ring x={79} y={5.6} w={40} h={8} tone="accent" delay={700} />
+              <Ring x={28} y={31.2} w={46} h={6} tone="accent" delay={900} />
+            </div>
+            <div className="relative h-4">
+              <Dim label="390" delay={1100} className="inset-x-0 top-0" />
+            </div>
+          </div>
+        </div>
+        <figcaption className="text-[14px] leading-[1.55] text-muted">
+          At 390 the live count lost its label, and the percentage changes never said what they compare with. Both are
+          back. The live counts differ because the two captures were taken at different times on the same day.
+        </figcaption>
+      </figure>
+    </div>
+  );
+}
+
+/* What each evidence label means, with an example of each. */
+function Evidence() {
+  return (
+    <section id="evidence" aria-labelledby="evidence-title">
+      <div className={`${GUTTER} grid gap-12 py-20 [&>*]:min-w-0 lg:grid-cols-[minmax(0,420px)_1fr] lg:gap-20 lg:py-24`}>
+        <div className="flex flex-col gap-5">
+          <Eyebrow>05 · How RYUX labels what it says</Eyebrow>
+          <h2 id="evidence-title" className="text-[min(44px,11vw)] leading-[1.02] sm:text-[52px]">Known, guessed, or unknown.</h2>
+        </div>
+        <dl>
+          {MARKS.map((m) => (
+            <div key={m.mark} className="grid gap-2 border-b border-hair py-5 first:border-t sm:grid-cols-[130px_1fr] sm:gap-x-8 xl:grid-cols-[130px_1fr_260px]">
+              <dt className={`text-[15px] font-semibold ${m.mark === "Unknown" ? "text-mark" : "text-ink"}`}>{m.mark}</dt>
+              <dd className="text-[17px] leading-[1.4]">{m.meaning}</dd>
+              <dd className="font-mono text-[13px] leading-[1.55] text-ink-2 sm:col-start-2 xl:col-start-auto">{m.example}</dd>
+            </div>
+          ))}
+        </dl>
+      </div>
+    </section>
+  );
 }
 
 export default function Benchmarks() {
@@ -182,6 +294,18 @@ export default function Benchmarks() {
             </Block>
           </div>
         </section>
+
+        <section id="real-product" aria-labelledby="rp-title" className="bg-paper-2">
+          <div className={`${GUTTER} flex flex-col gap-10 py-20 lg:py-24`}>
+            <Eyebrow>04 · On a real product</Eyebrow>
+            <h2 id="rp-title" className="sr-only">On a real product</h2>
+            <Reveal>
+              <RealProduct />
+            </Reveal>
+          </div>
+        </section>
+
+        <Evidence />
 
         <section id="design-md" aria-labelledby="dm-title" className="bg-paper-2">
           <div className={`${GUTTER} flex flex-col gap-6 py-20 lg:py-24`}>
