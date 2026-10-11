@@ -38,7 +38,7 @@ const MARK_ARM = "M276.48 230.4L378.88 128L409.6 158.72L307.2 261.12L276.48 230.
 export function Mark({ size = 24, night = false }: { size?: number; night?: boolean }) {
   return (
     <svg width={(size * 307.2) / 327.68} height={size} viewBox="102.4 92.16 307.2 327.68" aria-hidden>
-      <path d={MARK_RX} fillRule="evenodd" clipRule="evenodd" fill={night ? "#F5F6F8" : "var(--mark-ink, #242A33)"} />
+      <path d={MARK_RX} fillRule="evenodd" clipRule="evenodd" fill={night ? "#F5F6F8" : "#EEF1F4"} />
       <path d={MARK_ARM} fill="#188B83" />
     </svg>
   );
@@ -46,13 +46,13 @@ export function Mark({ size = 24, night = false }: { size?: number; night?: bool
 
 /** Small label that opens a section. Sentence case, set by the caller. */
 export function Eyebrow({ children, night = false }: { children: React.ReactNode; night?: boolean }) {
-  return <p className={`font-mono text-[13px] ${night ? "text-night-sub" : "text-muted"}`}>{children}</p>;
+  return <p className={`font-mono text-[13px] ${night ? "text-night-sub" : "text-accent"}`}>{children}</p>;
 }
 
 export function SiteHeader() {
   return (
     <header className="site-header glass">
-      <div className={`${GUTTER} flex items-center justify-between gap-6 py-5`}>
+      <div className={`${GUTTER} flex items-center justify-between gap-6 py-3`}>
         <Link href="/" className="flex items-center gap-2.5" aria-label="RYUX home">
           <Mark size={26} />
         </Link>
@@ -63,13 +63,18 @@ export function SiteHeader() {
             </a>
           ))}
         </nav>
-        <a
-          href={REPO}
-          className="tactile inline-flex min-h-11 items-center gap-2 rounded-lg border border-hair bg-white px-4 text-[15px] font-medium hover:border-ink"
-        >
-          <GitHubIcon />
-          GitHub
-        </a>
+        <div className="flex items-center gap-2">
+          <a
+            href={REPO}
+            className="tactile hidden min-h-11 items-center gap-2 rounded-lg px-3 text-[15px] font-medium text-ink-2 hover:text-ink sm:inline-flex"
+          >
+            <GitHubIcon />
+            GitHub
+          </a>
+          <a href="/#try" className="tactile inline-flex min-h-11 items-center rounded-lg bg-accent px-4 text-[15px] font-semibold text-paper">
+            Install
+          </a>
+        </div>
       </div>
       <nav aria-label="Sections" className={`${GUTTER} flex gap-6 overflow-x-auto pb-4 text-[15px] text-ink-2 lg:hidden`}>
         {NAV.map((n) => (
