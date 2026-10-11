@@ -38,7 +38,7 @@ const MARK_ARM = "M276.48 230.4L378.88 128L409.6 158.72L307.2 261.12L276.48 230.
 export function Mark({ size = 24, night = false }: { size?: number; night?: boolean }) {
   return (
     <svg width={(size * 307.2) / 327.68} height={size} viewBox="102.4 92.16 307.2 327.68" aria-hidden>
-      <path d={MARK_RX} fillRule="evenodd" clipRule="evenodd" fill={night ? "#F5F6F8" : "#242A33"} />
+      <path d={MARK_RX} fillRule="evenodd" clipRule="evenodd" fill={night ? "#F5F6F8" : "var(--mark-ink, #242A33)"} />
       <path d={MARK_ARM} fill="#188B83" />
     </svg>
   );
@@ -51,7 +51,7 @@ export function Eyebrow({ children, night = false }: { children: React.ReactNode
 
 export function SiteHeader() {
   return (
-    <header className="site-header">
+    <header className="site-header glass">
       <div className={`${GUTTER} flex items-center justify-between gap-6 py-5`}>
         <Link href="/" className="flex items-center gap-2.5" aria-label="RYUX home">
           <Mark size={26} />

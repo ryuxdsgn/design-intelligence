@@ -141,7 +141,7 @@ export function Cases() {
 
   return (
     <div className="flex flex-col gap-8">
-      <div role="tablist" aria-label="Runs" className="relative flex self-start rounded-full border border-hair bg-white p-1">
+      <div role="tablist" aria-label="Runs" className="glass glass-edge sticky top-3 z-20 flex self-start rounded-full p-1 lg:top-[96px]">
         {pill && (
           <span
             aria-hidden
