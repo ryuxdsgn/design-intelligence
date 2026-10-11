@@ -1,5 +1,5 @@
 /* Review markup drawn over real screens: numbered pins and pen rings, in the proof-correction red
-   (or indigo for what RYUX kept open). Positions are percentages of the image they sit on. */
+   (or teal for what RYUX kept open). Positions are percentages of the image they sit on. */
 
 export type Tone = "mark" | "accent" | "mark-night" | "accent-night";
 
