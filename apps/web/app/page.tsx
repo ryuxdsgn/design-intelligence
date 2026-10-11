@@ -13,14 +13,10 @@ import { Arrow, DOCS, Eyebrow, GUTTER, REPO, SiteFooter, SiteHeader } from "@/co
    benchmark, pair 2 (docs/benchmarks/en-td-2.3.3): a2/reasoning.md for the agent alone, b2/questions.md
    and b2/reasoning.md for the agent with RYUX. Quotes are shortened, not reworded. */
 
-const PROMPT = "Design a transaction detail page for a fintech app, shown after the user pays.";
+const PROMPT = "Design a transaction detail page for a fintech app.";
 
 /* b2/questions.md, shortened. */
-const QUESTIONS = [
-  "Which market and language? That decides the currency and the payment methods.",
-  "What did the person pay for: a transfer, a shop, a bill?",
-  "Which actions does the product really have after a payment? If you don't say, I'll leave placeholders rather than invent features.",
-];
+const QUESTIONS = ["Which market and language?", "What did the person pay for?", "Which actions does the product really have?"];
 
 /* The six screens RYUX designed in that run, cut from its exported board. 320 is the narrow-width check
    the board names; the others are 390 wide. */
@@ -72,15 +68,27 @@ const INSTALL = [
 
 const AGENTS = "Claude Code, Codex, Cursor, Gemini CLI, OpenCode, Cline, GitHub Copilot, Amp, Kimi Code, and Antigravity";
 
-function Bubble({ from, delay, children }: { from: "you" | "agent"; delay: number; children: React.ReactNode }) {
-  return (
+/** A chat message. An agent reply can be preceded by `typing` ms of "…", so it reads as an answer that
+    took a moment, not a block fading in. The bubble holds its space from the start, so nothing shifts. */
+function Bubble({ from, delay, typing, children }: { from: "you" | "agent"; delay: number; typing?: number; children: React.ReactNode }) {
+  const bubble = (
     <div
-      className={`note-in max-w-[92%] rounded-2xl px-3.5 py-2.5 text-[13px] leading-[1.5] sm:text-[14px] ${
-        from === "you" ? "self-end rounded-br-md border border-hair text-ink-2" : "self-start rounded-bl-md bg-panel text-ink"
+      className={`note-in rounded-2xl px-3.5 py-2.5 text-[13px] leading-[1.5] sm:text-[14px] ${
+        from === "you" ? "rounded-br-md border border-hair text-ink-2" : "rounded-bl-md bg-panel text-ink"
       }`}
       style={{ animationDelay: `${delay}ms` }}
     >
       {children}
+    </div>
+  );
+  return (
+    <div className={`relative max-w-[92%] ${from === "you" ? "self-end" : "self-start"}`}>
+      {typing && (
+        <span aria-hidden className="typing" style={{ ["--s" as string]: `${delay - typing}ms`, ["--e" as string]: `${delay}ms` } as React.CSSProperties}>
+          <i /><i /><i />
+        </span>
+      )}
+      {bubble}
     </div>
   );
 }
@@ -98,9 +106,9 @@ function Thread({ title, tone, children }: { title: string; tone: "mark" | "acce
 }
 
 /** A real screen, small. `crop` shows only its top at a fixed height, so rows and grids line up; the link opens the whole screen. */
-function Thumb({ src, w, h, label, className = "", crop }: { src: string; w: number; h: number; label: string; className?: string; crop?: string }) {
+function Thumb({ src, w, h, label, className = "", crop, delay }: { src: string; w: number; h: number; label: string; className?: string; crop?: string; delay?: number }) {
   return (
-    <a href={src} target="_blank" rel="noreferrer" aria-label={`Open the ${label} screen`} className={`block overflow-hidden rounded-[6px] ring-1 ring-hair transition-transform duration-[var(--dur-2)] hover:-translate-y-0.5 ${className}`}>
+    <a href={src} target="_blank" rel="noreferrer" aria-label={`Open the ${label} screen`} style={delay === undefined ? undefined : { animationDelay: `${delay}ms` }} className={`${delay === undefined ? "" : "note-in "}block overflow-hidden rounded-[6px] ring-1 ring-hair transition-transform duration-[var(--dur-2)] hover:-translate-y-0.5 ${className}`}>
       <Image src={src} alt="" width={w} height={h} className={crop ? `w-full object-cover object-top ${crop}` : "w-full"} />
     </a>
   );
@@ -109,27 +117,27 @@ function Thumb({ src, w, h, label, className = "", crop }: { src: string; w: num
 function Hero() {
   return (
     <section aria-labelledby="hero-title" className={`${GUTTER} grid items-start gap-10 py-10 [&>*]:min-w-0 lg:grid-cols-[minmax(0,1fr)_560px] lg:gap-14 lg:py-12 xl:grid-cols-[minmax(0,1fr)_640px]`}>
-      <div className="flex flex-col gap-6 lg:pt-10">
-        <Eyebrow>Design intelligence for AI agents</Eyebrow>
-        <h1 id="hero-title" className="text-[min(44px,12vw)] leading-[1.02] sm:text-[60px] xl:text-[68px]">
-          Understand before you{" "}
-          <span className="whitespace-nowrap">
+      <div className="flex flex-col gap-5 lg:gap-6 lg:pt-2">
+        <Eyebrow>RYUX · understand before you design</Eyebrow>
+        <h1 id="hero-title" className="text-[min(38px,10.5vw)] leading-[1.04] sm:text-[52px] lg:text-[48px] xl:text-[58px]">
+          Your AI agent designs{" "}
           <span className="relative inline-block">
-            design
+            every screen
             <svg aria-hidden className="absolute -bottom-[0.16em] left-0 h-[0.14em] w-full overflow-visible" viewBox="0 0 100 10" preserveAspectRatio="none">
               <path d="M1 7 C 25 2, 60 2, 99 5" pathLength={1} fill="none" strokeWidth="3" strokeLinecap="round" className="ring-draw stroke-mark" style={{ animationDelay: "400ms" }} />
             </svg>
           </span>
-          .
-          </span>
+          , not only the happy one.
         </h1>
         <p className="max-w-[500px] text-[17px] leading-[1.55] text-ink-2 sm:text-[18px]">
-          RYUX is a skill you add to your AI agent. It has the agent design the screens people actually go through, like a
-          list that is still loading or a page that fails to load, and nothing nobody asked for.
+          A free skill for your AI agent. It asks what it doesn&apos;t know, designs the loading and failed screens too, and
+          invents nothing.
         </p>
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-3">
+          <p className="text-[14px] text-muted">Install: paste this in your terminal</p>
           <CopyCommand command="npx skills add ryuxdsgn/design-intelligence" primary />
-          <a href="#proof" className="inline-flex min-h-11 items-center gap-1.5 self-start text-[16px] font-medium underline underline-offset-4">
+          <p className="font-mono text-[12px] text-muted">Free · MIT · works in Claude Code, Cursor, Codex and 7 more</p>
+          <a href="#proof" className="mt-1 inline-flex min-h-11 items-center gap-1.5 self-start text-[16px] font-medium underline underline-offset-4">
             See the benchmark <Arrow down />
           </a>
         </div>
@@ -146,31 +154,30 @@ function HeroBoard() {
     <figure aria-label="The same request sent to an AI agent alone and to an agent with RYUX" className="canvas-grid grid gap-6 rounded-2xl border border-hair p-4 sm:grid-cols-2 sm:p-6">
       <Thread title="Your agent alone" tone="mark">
         <Bubble from="you" delay={100}>{PROMPT}</Bubble>
-        <Bubble from="agent" delay={500}>
+        <Bubble from="agent" delay={700} typing={400}>
           Done. Here is your screen.
-          <Thumb src={WITHOUT_SCREEN.src} w={WITHOUT_SCREEN.w} h={WITHOUT_SCREEN.h} label="made without RYUX" className="mt-2.5 w-[72px]" />
+          <Thumb src={WITHOUT_SCREEN.src} w={WITHOUT_SCREEN.w} h={WITHOUT_SCREEN.h} label="made without RYUX" className="mt-2.5 w-[64px]" crop="h-[110px]" />
         </Bubble>
-        <p className="note-in border-l-2 border-mark pl-3 text-[13px] leading-[1.5] text-ink-2" style={{ animationDelay: "900ms" }}>
-          It guessed US dollars, a 30-day window to report problems, and a Save PDF button. Nobody asked for them.
+        <p className="note-in border-l-2 border-mark pl-3 text-[13px] leading-[1.5] text-ink-2" style={{ animationDelay: "1100ms" }}>
+          It guessed US dollars, a 30-day rule and a Save PDF button. Nobody asked.
         </p>
       </Thread>
       <Thread title="Your agent with RYUX" tone="accent">
-        <Bubble from="you" delay={300}>{PROMPT}</Bubble>
-        <Bubble from="agent" delay={800}>
-          Before I design, 3 questions:
-          <ol className="mt-1.5 list-decimal space-y-1 pl-4 text-ink-2">
+        <Bubble from="you" delay={250}>{PROMPT}</Bubble>
+        <Bubble from="agent" delay={1000} typing={550}>
+          First, 3 questions:
+          <ol className="mt-1 list-decimal pl-4 text-ink-2">
             {QUESTIONS.map((q) => <li key={q}>{q}</li>)}
           </ol>
         </Bubble>
-        <Bubble from="agent" delay={1300}>
-          Here are 6 screens, one for each moment:
-          <span className="mt-2.5 grid grid-cols-6 gap-1.5">
-            {STATES.map((st) => <Thumb key={st.name} src={st.src} w={st.w} h={st.h} label={st.name} crop="h-[88px]" />)}
+        <Bubble from="agent" delay={1800} typing={500}>
+          6 screens, one for each moment:
+          <span className="mt-2 grid grid-cols-6 gap-1.5">
+            {STATES.map((st, i) => <Thumb key={st.name} src={st.src} w={st.w} h={st.h} label={st.name} crop="h-[64px]" delay={1850 + i * 80} />)}
           </span>
-          <span className="mt-2 block text-[12px] text-muted">{STATES.map((st) => st.name).join(" · ")}</span>
         </Bubble>
-        <p className="note-in border-l-2 border-accent pl-3 text-[13px] leading-[1.5] text-ink-2" style={{ animationDelay: "1700ms" }}>
-          The currency was never decided, so it shows [CUR] instead of a guess.
+        <p className="note-in border-l-2 border-accent pl-3 text-[13px] leading-[1.5] text-ink-2" style={{ animationDelay: "2500ms" }}>
+          Currency never decided, so it shows [CUR], not a guess.
         </p>
       </Thread>
     </figure>
