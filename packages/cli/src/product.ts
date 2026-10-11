@@ -6,8 +6,6 @@ const pkg = createRequire(import.meta.url)("../package.json") as { version: stri
 /** The RYUX product version (npm package, skill, plugins, and rules share it). */
 export const VERSION: string = pkg.version;
 export const MCP_NAME = "ryux";
-export const MCP_URL = "https://mcp.ryux.design/mcp";
-export const MCP_ADD_CMD = `claude mcp add --transport http ${MCP_NAME} ${MCP_URL}`;
 /** Until the hosted MCP is live, every surface says so instead of printing a dead connect command. */
 export const MCP_LOCAL_ADD_CMD = `claude mcp add --transport http ${MCP_NAME} http://localhost:8787/mcp`;
 export const MCP_STATUS =
