@@ -52,13 +52,13 @@ h1, h2 {
 .dim-h { height: 14px; }
 .dim-v { width: 14px; flex-direction: column; }
 .dim-line { position: absolute; background: var(--dc); }
-.dim-h .dim-line { left: 0; right: 0; top: 50%; height: 1px; transform-origin: left center; animation: dim-x 700ms var(--ease-out) var(--d, 0ms) both; }
-.dim-v .dim-line { top: 0; bottom: 0; left: 50%; width: 1px; transform-origin: center top; animation: dim-y 700ms var(--ease-out) var(--d, 0ms) both; }
+.dim-h .dim-line { left: 0; right: 0; top: 50%; height: 1px; transform-origin: left center; animation: dim-x var(--dur-4) var(--ease-out) var(--d, 0ms) both; }
+.dim-v .dim-line { top: 0; bottom: 0; left: 50%; width: 1px; transform-origin: center top; animation: dim-y var(--dur-4) var(--ease-out) var(--d, 0ms) both; }
 .dim-h .dim-line::before, .dim-h .dim-line::after { content: ""; position: absolute; top: -6px; width: 1px; height: 13px; background: var(--dc); }
 .dim-h .dim-line::before { left: 0; } .dim-h .dim-line::after { right: 0; }
 .dim-v .dim-line::before, .dim-v .dim-line::after { content: ""; position: absolute; left: -6px; height: 1px; width: 13px; background: var(--dc); }
 .dim-v .dim-line::before { top: 0; } .dim-v .dim-line::after { bottom: 0; }
-.dim-label { position: relative; font: 400 12px/1 var(--font-mono); white-space: nowrap; color: #fff; background: var(--dc); padding: 3px 6px; border-radius: 3px; animation: dim-label 300ms var(--ease-out) calc(var(--d, 0ms) + 500ms) both; }
+.dim-label { position: relative; font: 400 12px/1 var(--font-mono); white-space: nowrap; color: #fff; background: var(--dc); padding: 3px 6px; border-radius: 3px; animation: dim-label var(--dur-2) var(--ease-out) calc(var(--d, 0ms) + 500ms) both; }
 .dim.night { --dc: var(--color-mark-night); } .dim.night .dim-label { color: var(--color-night); }
 @keyframes dim-x { from { transform: scaleX(0); } to { transform: scaleX(1); } }
 @keyframes dim-y { from { transform: scaleY(0); } to { transform: scaleY(1); } }
@@ -71,25 +71,30 @@ h1, h2 {
 
 /* Hero phones: each arrives once, from a short distance; delays are set inline. */
 @keyframes phone-in { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
-.phone-in { animation: phone-in 700ms var(--ease-out) both; }
+.phone-in { animation: phone-in var(--dur-4) var(--ease-out) both; }
 @media (prefers-reduced-motion: reduce) { .phone-in { animation: none; } }
 
 /* A row of frames that arrive one after another once their section is revealed. */
-.frames > * { transition: opacity 500ms var(--ease-out), transform 500ms var(--ease-out); transition-delay: calc(var(--i, 0) * 110ms); }
+.frames > * { transition: opacity var(--dur-3) var(--ease-out), transform var(--dur-3) var(--ease-out); transition-delay: calc(var(--i, 0) * 110ms); }
 .reveal[data-shown="false"] .frames > * { opacity: 0; transform: translateY(18px); }
 @media (prefers-reduced-motion: reduce) {
   .frames > *, .reveal[data-shown="false"] .frames > * { opacity: 1; transform: none; transition: none; }
 }
 
-/* Motion: calm and precise. One curve for movement, one spring for touch; transform and opacity only. */
+/* Motion: calm and precise. One curve for movement, one spring for touch; transform and opacity only.
+   Four durations, by level (RX-UI-11): 1 feedback, 2 component, 3 reveal, 4 story. Delays are multiples. */
 :root {
+  --dur-1: 150ms;
+  --dur-2: 250ms;
+  --dur-3: 400ms;
+  --dur-4: 650ms;
   --ease-ios: cubic-bezier(0.32, 0.72, 0, 1);
   --ease-out: var(--ease-ios);
   --ease-spring: cubic-bezier(0.34, 1.4, 0.64, 1);
 }
 
 /* Buttons that answer the pointer: a small press, with a spring back. */
-.tactile { transition: transform 350ms var(--ease-spring), background-color 300ms var(--ease-ios), opacity 300ms var(--ease-ios); }
+.tactile { transition: transform var(--dur-2) var(--ease-spring), background-color var(--dur-2) var(--ease-ios), opacity var(--dur-2) var(--ease-ios); }
 .tactile:hover { transform: scale(0.975); }
 .tactile:active { transform: scale(0.955); }
 
@@ -102,39 +107,39 @@ h1, h2 {
   .site-header { animation: header-line linear both; animation-timeline: scroll(); animation-range: 0 80px; }
 }
 @keyframes header-line { from { border-bottom-color: transparent; } to { border-bottom-color: var(--color-hair); } }
-.nav-link { position: relative; transition: color 200ms var(--ease-ios); }
-.nav-link::after { content: ""; position: absolute; left: 0; right: 0; bottom: -6px; height: 2px; background: var(--color-mark); transform: scaleX(0); transform-origin: left center; transition: transform 350ms var(--ease-ios); }
+.nav-link { position: relative; transition: color var(--dur-1) var(--ease-ios); }
+.nav-link::after { content: ""; position: absolute; left: 0; right: 0; bottom: -6px; height: 2px; background: var(--color-accent); transform: scaleX(0); transform-origin: left center; transition: transform var(--dur-2) var(--ease-ios); }
 .nav-link:hover::after { transform: scaleX(0.35); }
 .nav-link[data-active="true"] { color: var(--color-ink); }
 .nav-link[data-active="true"]::after { transform: scaleX(1); }
 
 /* Arrows point where a link goes, and lean that way on hover. */
-.arrow { transition: transform 300ms var(--ease-spring); }
+.arrow { transition: transform var(--dur-2) var(--ease-spring); }
 a:hover .arrow { transform: translateX(3px); }
 a:hover .arrow[data-dir="down"] { transform: translateY(3px); }
 
 /* Copy: the icon turns into a check with a small pop, and the command row flashes once. */
 @keyframes pop { 0% { transform: scale(0.4); opacity: 0; } 70% { transform: scale(1.15); opacity: 1; } 100% { transform: scale(1); } }
-.pop { animation: pop 380ms var(--ease-spring) both; }
+.pop { animation: pop var(--dur-3) var(--ease-spring) both; }
 @keyframes flash { from { box-shadow: 0 0 0 2px var(--color-accent); } to { box-shadow: 0 0 0 2px transparent; } }
-.copy-row[data-status="copied"] { animation: flash 900ms var(--ease-ios); }
+.copy-row[data-status="copied"] { animation: flash var(--dur-4) var(--ease-ios); }
 
 /* Before and after values: the old value is struck through with a drawn line, then the new one arrives. */
 .strike { position: relative; }
-.strike::after { content: ""; position: absolute; left: -2px; right: -2px; top: 52%; height: 1.5px; background: var(--color-mark); transform-origin: left center; transition: transform 500ms var(--ease-ios); transition-delay: calc(var(--i, 0) * 120ms + 300ms); }
-.after-in { display: inline-block; transition: opacity 400ms var(--ease-ios), transform 400ms var(--ease-spring); transition-delay: calc(var(--i, 0) * 120ms + 650ms); }
+.strike::after { content: ""; position: absolute; left: -2px; right: -2px; top: 52%; height: 1.5px; background: var(--color-mark); transform-origin: left center; transition: transform var(--dur-3) var(--ease-ios); transition-delay: calc(var(--i, 0) * 120ms + 300ms); }
+.after-in { display: inline-block; transition: opacity var(--dur-3) var(--ease-ios), transform var(--dur-3) var(--ease-spring); transition-delay: calc(var(--i, 0) * 120ms + 650ms); }
 .reveal[data-shown="false"] .strike::after { transform: scaleX(0); }
 .reveal[data-shown="false"] .after-in { opacity: 0; transform: translateY(4px) scale(0.9); }
 
 /* A drawn check for a finished action. */
 @keyframes draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
-.check-draw { stroke-dasharray: 1; animation: draw 450ms var(--ease-ios) 100ms both; }
+.check-draw { stroke-dasharray: 1; animation: draw var(--dur-3) var(--ease-ios) 100ms both; }
 
 /* Pins that can be hovered grow a little; focus rings settle in instead of snapping. */
-.pin-hit .pin-in > span { transition: transform 250ms var(--ease-spring); }
+.pin-hit .pin-in > span { transition: transform var(--dur-2) var(--ease-spring); }
 .pin-hit:hover .pin-in > span { transform: scale(1.15); }
 @keyframes ring-in { from { outline-offset: 7px; } to { outline-offset: 2px; } }
-:focus-visible { animation: ring-in 200ms var(--ease-ios); }
+:focus-visible { animation: ring-in var(--dur-1) var(--ease-ios); }
 
 @media (prefers-reduced-motion: reduce) {
   .site-header { animation: none; }
@@ -151,9 +156,9 @@ a:hover .arrow[data-dir="down"] { transform: translateY(3px); }
 .inspect { position: relative; cursor: crosshair; outline: none; }
 .inspect-layer { display: none; position: absolute; inset: 0; pointer-events: none; }
 .inspect:hover .inspect-layer, .inspect:focus-visible .inspect-layer { display: block; }
-.inspect .marks { transition: opacity 300ms var(--ease-ios); }
+.inspect .marks { transition: opacity var(--dur-2) var(--ease-ios); }
 .inspect:hover .marks, .inspect:focus-visible .marks { opacity: 0.25; }
-.inspect .pin-hit { transition: opacity 300ms var(--ease-ios); }
+.inspect .pin-hit { transition: opacity var(--dur-2) var(--ease-ios); }
 .inspect:hover .pin-hit:not(:hover), .inspect:focus-visible .pin-hit { opacity: 0.25; }
 .inspect:focus-visible { box-shadow: 0 0 0 3px var(--color-accent); border-radius: 30px; }
 .hint-touch { display: none; }
@@ -162,7 +167,7 @@ a:hover .arrow[data-dir="down"] { transform: translateY(3px); }
 /* Six-screen strip: fixed widths when it scrolls sideways; sized to the viewport height when scrubbed. */
 .state-item { width: var(--w); }
 [data-scrub="on"] .state-item { width: calc(var(--ar) * 62vh); }
-[data-scrub="on"] .state-item { opacity: 0.45; transition: opacity 300ms var(--ease-ios); }
+[data-scrub="on"] .state-item { opacity: 0.45; transition: opacity var(--dur-2) var(--ease-ios); }
 [data-active="0"] .state-item:nth-child(1),
 [data-active="1"] .state-item:nth-child(2),
 [data-active="2"] .state-item:nth-child(3),
@@ -171,7 +176,7 @@ a:hover .arrow[data-dir="down"] { transform: translateY(3px); }
 [data-active="5"] .state-item:nth-child(6) { opacity: 1; }
 
 /* Tilt: the hero phones lean toward the pointer (set by Tilt in components/motion.tsx). */
-.tilt { transform: perspective(1100px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)); transition: transform 600ms var(--ease-ios); transform-style: preserve-3d; }
+.tilt { transform: perspective(1100px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)); transition: transform var(--dur-3) var(--ease-ios); transform-style: preserve-3d; }
 
 @media (prefers-reduced-motion: reduce) {
   .tactile, .tactile:hover, .tactile:active { transform: none; transition: none; }
@@ -179,7 +184,7 @@ a:hover .arrow[data-dir="down"] { transform: translateY(3px); }
 }
 
 .reveal {
-  transition: opacity 600ms var(--ease-out), transform 600ms var(--ease-out);
+  transition: opacity var(--dur-3) var(--ease-out), transform var(--dur-3) var(--ease-out);
 }
 .reveal[data-shown="false"] {
   opacity: 0;
@@ -199,21 +204,21 @@ a:hover .arrow[data-dir="down"] { transform: translateY(3px); }
   from { opacity: 0; transform: translateY(6px); }
   to { opacity: 1; transform: none; }
 }
-.pin-in { animation: pin-in 320ms var(--ease-out) both; }
-.draw-x { transform-origin: left center; animation: draw-x 420ms var(--ease-out) both; }
-.note-in { animation: note-in 420ms var(--ease-out) both; }
+.pin-in { animation: pin-in var(--dur-2) var(--ease-out) both; }
+.draw-x { transform-origin: left center; animation: draw-x var(--dur-3) var(--ease-out) both; }
+.note-in { animation: note-in var(--dur-3) var(--ease-out) both; }
 
-.case-panel { animation: note-in 260ms var(--ease-out) both; }
+.case-panel { animation: note-in var(--dur-2) var(--ease-out) both; }
 
 @keyframes word-in {
   from { opacity: 0; transform: translateY(0.35em); }
   to { opacity: 1; transform: none; }
 }
-.word-in { animation: word-in 640ms var(--ease-out) both; }
+.word-in { animation: word-in var(--dur-4) var(--ease-out) both; }
 
 /* Children of a revealed block arrive one after another, in reading order. */
 .reveal[data-shown="false"] .stagger > * { opacity: 0; transform: translateY(12px); }
-.stagger > * { transition: opacity 500ms var(--ease-out), transform 500ms var(--ease-out); }
+.stagger > * { transition: opacity var(--dur-3) var(--ease-out), transform var(--dur-3) var(--ease-out); }
 .stagger > *:nth-child(2) { transition-delay: 90ms; }
 .stagger > *:nth-child(3) { transition-delay: 180ms; }
 .stagger > *:nth-child(4) { transition-delay: 270ms; }
@@ -247,11 +252,11 @@ code,
   from { stroke-dashoffset: 1; }
   to { stroke-dashoffset: 0; }
 }
-.ring-draw { stroke-dasharray: 1; animation: ring-draw 700ms var(--ease-out) both; }
+.ring-draw { stroke-dasharray: 1; animation: ring-draw var(--dur-4) var(--ease-out) both; }
 .reveal[data-shown="false"] .ring-draw { animation: none; stroke-dashoffset: 1; }
 
 /* Tally dots: one per run, filled when it happened. */
-.tally > * { transition: transform 400ms var(--ease-out), opacity 400ms var(--ease-out); }
+.tally > * { transition: transform var(--dur-3) var(--ease-out), opacity var(--dur-3) var(--ease-out); }
 .reveal[data-shown="false"] .tally > * { opacity: 0; transform: scale(0.4); }
 
 @media (prefers-reduced-motion: reduce) {
