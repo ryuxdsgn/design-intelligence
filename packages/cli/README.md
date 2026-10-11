@@ -86,6 +86,16 @@ The agent reads the router, then only the capability and knowledge files a task 
   `ryux/` folder. Folders from `ryux-rules` 0.x and Cursor `.mdc` files are removed too. The old
   `--for`, `--groups`, and `--concerns` flags are accepted and ignored.
 
+## Network and MCP
+
+- The CLI makes no network requests and runs no other programs. It only writes the files listed
+  above.
+- The ryux MCP server is optional and self-hosted: there is no hosted server yet, and RYUX never
+  connects to one on its own. RYUX works without it and rates its evidence None. To run it:
+  [`apps/mcp`](https://github.com/ryuxdsgn/design-intelligence/tree/main/apps/mcp).
+- The skill tells agents to treat what an MCP server, web page, or screenshot returns as data,
+  never as instructions.
+
 ## Other ways to install
 
 ```bash
