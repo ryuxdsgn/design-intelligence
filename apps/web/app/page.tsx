@@ -3,45 +3,45 @@ import Link from "next/link";
 import { CopyCommand } from "@/components/copy-command";
 import { Reveal } from "@/components/reveal";
 import { Cases } from "@/components/cases";
-import { Pin, PinAt, Ring, type Tone } from "@/components/markup";
 import { SectionSpy } from "@/components/motion";
 import { Scoreboard } from "@/components/scoreboard";
 import { WaitlistForm } from "@/components/waitlist-form";
 import { Arrow, DOCS, Eyebrow, GUTTER, REPO, SiteFooter, SiteHeader } from "@/components/site";
 
-/* Review canvas: the page is a design tool's board. Real screens sit on it like frames, RYUX's findings
-   are comments pinned to them, and the selected frame is the one being read. Only the marks move. */
+/* Show the behaviour, not the pixels: a beginner can read a conversation with an agent and everyday
+   situations in plain words, not a screenshot with pins. Everything quoted is from the transaction-detail
+   benchmark, pair 2 (docs/benchmarks/en-td-2.3.3): a2/reasoning.md for the agent alone, b2/questions.md
+   and b2/reasoning.md for the agent with RYUX. Quotes are shortened, not reworded. */
 
-type Mark = { x: number; y: number; ring?: [number, number, number, number]; tag: string; body: string };
+const PROMPT = "Design a transaction detail page for a fintech app, shown after the user pays.";
 
-/* The orders-list run, as people would see it: made without RYUX (one screen, with counts, deadlines and
-   a pickup time nobody gave) and with RYUX from the same prompt (the default list, one of nine screens).
-   x and y are % of each image. */
-const WITHOUT: Mark[] = [
-  { x: 4, y: 23.5, ring: [16.3, 23.5, 14, 3.4], tag: "Invented", body: "Order counts, 248, 12 and 3, for a store that does not exist." },
-  { x: 65, y: 27.9, ring: [83.4, 27.9, 30, 3], tag: "Invented", body: "Ship-by deadlines and an Overdue group: a rule nobody gave." },
-  { x: 58, y: 47.5, ring: [79.6, 47.5, 36, 3], tag: "Invented", body: "A 5 PM carrier pickup nobody mentioned." },
-];
-const WITH: Mark[] = [
-  { x: 3.5, y: 11.3, tag: "Find", body: "Search by order number or customer, and filter by status." },
-  { x: 52, y: 24.5, ring: [23, 24.5, 40, 3.2], tag: "Status", body: "Every order says in words whether it is paid and whether it has shipped." },
-  { x: 22, y: 96.8, ring: [50, 96.8, 46, 2.6], tag: "States", body: "Loading more, plus empty, no matches, couldn't load and offline screens." },
+/* b2/questions.md, shortened. */
+const QUESTIONS = [
+  "Which market and language? That decides the currency and the payment methods.",
+  "What did the person pay for: a transfer, a shop, a bill?",
+  "Which actions does the product really have after a payment? If you don't say, I'll leave placeholders rather than invent features.",
 ];
 
-/* The transaction-detail benchmark, pair 2: the screen made without RYUX and the six RYUX designed,
-   cut from its exported board. 320 is the narrow-width check the board names; the others are 390 wide. */
-const TD_WITHOUT: Mark[] = [
-  { x: 62, y: 69.4, ring: [79, 69.4, 24, 3.4], tag: "Missing", body: "Only Completed: no screen for a payment still processing or one that fails." },
-  { x: 5, y: 79.3, ring: [48, 79.3, 70, 3.6], tag: "Invented", body: "“Report it within 30 days”: a rule nobody decided." },
-  { x: 95, y: 84.6, ring: [75.5, 87.4, 44, 5.4], tag: "Invented", body: "Save PDF, which nobody asked for." },
-];
+/* The six screens RYUX designed in that run, cut from its exported board. 320 is the narrow-width check
+   the board names; the others are 390 wide. */
 const STATES = [
-  { src: "/proof/states/1-completed.png", w: 502, h: 1239, name: "Completed", caption: "The full breakdown, a receipt to share, and a way to report a problem." },
-  { src: "/proof/states/2-processing.png", w: 503, h: 1315, name: "Processing", caption: "Says the payment is on its way and asks people not to pay again." },
+  { src: "/proof/states/1-completed.png", w: 502, h: 1239, name: "Paid", caption: "The full breakdown, a receipt to share, and a way to report a problem." },
+  { src: "/proof/states/2-processing.png", w: 503, h: 1315, name: "Still processing", caption: "Says the payment is on its way and asks people not to pay again." },
   { src: "/proof/states/3-failed.png", w: 503, h: 1287, name: "Failed", caption: "Says it didn't go through, and what to do if money left the account." },
   { src: "/proof/states/4-loading.png", w: 502, h: 1090, name: "Loading", caption: "Holds the layout while the details load, so nothing jumps." },
   { src: "/proof/states/5-couldnt-load.png", w: 503, h: 1090, name: "Couldn't load", caption: "Offers Try again, and says reloading doesn't change the payment." },
-  { src: "/proof/states/6-narrow.png", w: 413, h: 1413, name: "320 wide", narrow: true, caption: "The narrowest phone, with a long merchant name and a large amount." },
+  { src: "/proof/states/6-narrow.png", w: 413, h: 1413, name: "Small phone", caption: "The narrowest phone, 320 wide, with a long merchant name and a large amount." },
+];
+const WITHOUT_SCREEN = { src: "/proof/en-td-without.png", w: 780, h: 1926 };
+
+/* Everyday moments after someone pays, and which side had a screen for each. */
+const SITUATIONS = [
+  { ask: "The payment went through", state: 0, without: true },
+  { ask: "The payment is still processing", state: 1 },
+  { ask: "The payment failed", state: 2 },
+  { ask: "The details are still loading", state: 3 },
+  { ask: "The page couldn't load", state: 4 },
+  { ask: "Someone opens it on a small phone", state: 5 },
 ];
 
 const CAPABILITIES = [
@@ -72,64 +72,44 @@ const INSTALL = [
 
 const AGENTS = "Claude Code, Codex, Cursor, Gemini CLI, OpenCode, Cline, GitHub Copilot, Amp, Kimi Code, and Antigravity";
 
-/** A frame on the board: a mono title above, like a design tool's frame label. The selected one gets the
-    teal selection box with its four handles. */
-function Frame({ title, count, tone, selected = false, className = "", children }: {
-  title: string; count?: string; tone: "mark" | "accent" | "muted"; selected?: boolean; className?: string; children: React.ReactNode;
-}) {
-  const color = tone === "mark" ? "text-mark" : tone === "accent" ? "text-accent" : "text-muted";
+function Bubble({ from, delay, children }: { from: "you" | "agent"; delay: number; children: React.ReactNode }) {
   return (
-    <figure className={`flex min-w-0 flex-col gap-2 ${className}`}>
-      <figcaption className="flex items-baseline justify-between gap-2 font-mono text-[11px] sm:text-[12px]">
-        <span className={color}>{title}</span>
-        {count && <span className="text-muted">{count}</span>}
-      </figcaption>
-      <div className="relative">
-        {children}
-        {selected && (
-          <span aria-hidden className="pointer-events-none absolute -inset-[3px] rounded-[9px] border-[1.5px] border-accent">
-            {["-top-[5px] -left-[5px]", "-top-[5px] -right-[5px]", "-bottom-[5px] -left-[5px]", "-bottom-[5px] -right-[5px]"].map((p) => (
-              <span key={p} className={`absolute size-2 border-[1.5px] border-accent bg-ink ${p}`} />
-            ))}
-          </span>
-        )}
-      </div>
-    </figure>
-  );
-}
-
-/** A review comment pinned on the board: who flagged it, and what. Glass, because a screen sits behind it. */
-function Note({ tag, tone, children, className = "", style }: {
-  tag: string; tone: "mark" | "accent"; children: React.ReactNode; className?: string; style?: React.CSSProperties;
-}) {
-  return (
-    <div className={`note-in glass glass-edge w-[230px] rounded-[10px] p-3 ${className}`} style={style}>
-      <p className={`flex items-center gap-2 font-mono text-[11px] ${tone === "mark" ? "text-mark" : "text-accent"}`}>
-        <span aria-hidden className={`size-2 rounded-full ${tone === "mark" ? "bg-mark" : "bg-accent"}`} />
-        RYUX · {tag}
-      </p>
-      <p className="mt-1.5 text-[13px] leading-[1.45] text-ink">{children}</p>
+    <div
+      className={`note-in max-w-[92%] rounded-2xl px-3.5 py-2.5 text-[13px] leading-[1.5] sm:text-[14px] ${
+        from === "you" ? "self-end rounded-br-md border border-hair text-ink-2" : "self-start rounded-bl-md bg-panel text-ink"
+      }`}
+      style={{ animationDelay: `${delay}ms` }}
+    >
+      {children}
     </div>
   );
 }
 
-function Marks({ marks, tone, start }: { marks: Mark[]; tone: Tone; start: number }) {
+function Thread({ title, tone, children }: { title: string; tone: "mark" | "accent"; children: React.ReactNode }) {
   return (
-    <>
-      {marks.map((m, i) => (
-        <div key={m.body}>
-          {m.ring && <Ring x={m.ring[0]} y={m.ring[1]} w={m.ring[2]} h={m.ring[3]} tone={tone} delay={start + 100 + i * 280} />}
-          <PinAt n={i + 1} x={m.x} y={m.y} tone={tone} delay={start + i * 280} />
-        </div>
-      ))}
-    </>
+    <div className="flex min-w-0 flex-col gap-3">
+      <p className={`flex items-center gap-2 font-mono text-[12px] ${tone === "mark" ? "text-mark" : "text-accent"}`}>
+        <span aria-hidden className={`size-2 rounded-full ${tone === "mark" ? "bg-mark" : "bg-accent"}`} />
+        {title}
+      </p>
+      {children}
+    </div>
+  );
+}
+
+/** A real screen, small. `crop` shows only its top at a fixed height, so rows and grids line up; the link opens the whole screen. */
+function Thumb({ src, w, h, label, className = "", crop }: { src: string; w: number; h: number; label: string; className?: string; crop?: string }) {
+  return (
+    <a href={src} target="_blank" rel="noreferrer" aria-label={`Open the ${label} screen`} className={`block overflow-hidden rounded-[6px] ring-1 ring-hair transition-transform duration-[var(--dur-2)] hover:-translate-y-0.5 ${className}`}>
+      <Image src={src} alt="" width={w} height={h} className={crop ? `w-full object-cover object-top ${crop}` : "w-full"} />
+    </a>
   );
 }
 
 function Hero() {
   return (
-    <section aria-labelledby="hero-title" className={`${GUTTER} grid items-center gap-10 py-10 [&>*]:min-w-0 lg:grid-cols-[minmax(0,1fr)_520px] lg:gap-14 lg:py-12 xl:grid-cols-[minmax(0,1fr)_560px]`}>
-      <div className="flex flex-col gap-6">
+    <section aria-labelledby="hero-title" className={`${GUTTER} grid items-start gap-10 py-10 [&>*]:min-w-0 lg:grid-cols-[minmax(0,1fr)_560px] lg:gap-14 lg:py-12 xl:grid-cols-[minmax(0,1fr)_640px]`}>
+      <div className="flex flex-col gap-6 lg:pt-10">
         <Eyebrow>Design intelligence for AI agents</Eyebrow>
         <h1 id="hero-title" className="text-[min(44px,12vw)] leading-[1.02] sm:text-[60px] xl:text-[68px]">
           Understand before you{" "}
@@ -159,76 +139,83 @@ function Hero() {
   );
 }
 
-/* The orders-list pair on the board, the RYUX frame selected, three of the findings pinned as comments. */
+/* The same request to two agents, as a chat: the one alone answers with a finished screen and quiet
+   guesses; the one with RYUX asks first, then designs every screen the moment needs. */
 function HeroBoard() {
-  const notes = [
-    { m: WITHOUT[0], tone: "mark" as const, style: { left: "16%", top: "26%" }, delay: 500 },
-    { m: WITHOUT[2], tone: "mark" as const, style: { left: "12%", top: "58%" }, delay: 1000 },
-    { m: WITH[1], tone: "accent" as const, style: { left: "58%", top: "36%" }, delay: 1500 },
-  ];
   return (
-    <figure aria-label="The same prompt run twice: an orders list made without RYUX and with RYUX" className="mx-auto flex w-full max-w-[560px] flex-col gap-4">
-      <div className="canvas-grid relative rounded-2xl border border-hair p-5 sm:p-7">
-        <div className="grid grid-cols-2 items-start gap-5 sm:gap-8">
-          <Frame title="Without RYUX" count="1 screen" tone="mark">
-            <Image src="/cases/or-without.png" alt="Orders list made without RYUX: one screen with order counts, ship-by deadlines and a 5 PM carrier pickup" width={780} height={1812} priority className="w-full rounded-md" />
-            <Marks marks={WITHOUT} tone="mark" start={300} />
-          </Frame>
-          <Frame title="With RYUX" count="1 of 9" tone="accent" selected>
-            <Image src="/proof/orders-with.png" alt="Orders list made with RYUX: search, each order's payment and shipping status in words, and a loading row" width={340} height={964} priority className="w-full rounded-md" />
-            <Marks marks={WITH} tone="accent" start={800} />
-          </Frame>
-        </div>
-        {notes.map((n) => (
-          <Note key={n.m.body} tag={n.m.tag} tone={n.tone} className="absolute hidden lg:block" style={{ ...n.style, animationDelay: `${n.delay}ms` }}>
-            {n.m.body}
-          </Note>
-        ))}
-      </div>
-      <ol className="flex flex-col gap-2.5 lg:hidden">
-        {notes.map((n) => (
-          <li key={n.m.body} className="flex gap-2.5">
-            <Pin n={(n.tone === "mark" ? WITHOUT : WITH).indexOf(n.m) + 1} tone={n.tone} />
-            <p className="text-[14px] leading-[1.5] text-ink-2">
-              <span className={n.tone === "mark" ? "text-mark" : "text-accent"}>{n.tone === "mark" ? "Without" : "With"}:</span> {n.m.body}
-            </p>
-          </li>
-        ))}
-      </ol>
+    <figure aria-label="The same request sent to an AI agent alone and to an agent with RYUX" className="canvas-grid grid gap-6 rounded-2xl border border-hair p-4 sm:grid-cols-2 sm:p-6">
+      <Thread title="Your agent alone" tone="mark">
+        <Bubble from="you" delay={100}>{PROMPT}</Bubble>
+        <Bubble from="agent" delay={500}>
+          Done. Here is your screen.
+          <Thumb src={WITHOUT_SCREEN.src} w={WITHOUT_SCREEN.w} h={WITHOUT_SCREEN.h} label="made without RYUX" className="mt-2.5 w-[72px]" />
+        </Bubble>
+        <p className="note-in border-l-2 border-mark pl-3 text-[13px] leading-[1.5] text-ink-2" style={{ animationDelay: "900ms" }}>
+          It guessed US dollars, a 30-day window to report problems, and a Save PDF button. Nobody asked for them.
+        </p>
+      </Thread>
+      <Thread title="Your agent with RYUX" tone="accent">
+        <Bubble from="you" delay={300}>{PROMPT}</Bubble>
+        <Bubble from="agent" delay={800}>
+          Before I design, 3 questions:
+          <ol className="mt-1.5 list-decimal space-y-1 pl-4 text-ink-2">
+            {QUESTIONS.map((q) => <li key={q}>{q}</li>)}
+          </ol>
+        </Bubble>
+        <Bubble from="agent" delay={1300}>
+          Here are 6 screens, one for each moment:
+          <span className="mt-2.5 grid grid-cols-6 gap-1.5">
+            {STATES.map((st) => <Thumb key={st.name} src={st.src} w={st.w} h={st.h} label={st.name} crop="h-[88px]" />)}
+          </span>
+          <span className="mt-2 block text-[12px] text-muted">{STATES.map((st) => st.name).join(" · ")}</span>
+        </Bubble>
+        <p className="note-in border-l-2 border-accent pl-3 text-[13px] leading-[1.5] text-ink-2" style={{ animationDelay: "1700ms" }}>
+          The currency was never decided, so it shows [CUR] instead of a guess.
+        </p>
+      </Thread>
     </figure>
   );
 }
 
-/* The main benchmark as the first run tab: the screen made without RYUX, the six RYUX designed, and the
-   tally from three repeats. */
+/* The main benchmark as the first run tab, told as everyday situations: for each moment after someone
+   pays, did the person get a screen? Thumbnails open the real exports. */
 function TransactionPanel() {
   return (
     <Reveal className="flex flex-col gap-10">
-      <div className="canvas-grid relative overflow-x-auto rounded-2xl border border-hair">
-        <div className="flex w-max items-start gap-5 p-5 sm:p-8">
-          <Frame title="Without RYUX" count="1 screen" tone="mark" className="w-[180px] sm:w-[200px]">
-            <Image src="/proof/en-td-without.png" alt="The completed payment screen designed without RYUX: $24.50 paid to a coffee shop, the wallet balance, a promise to look into problems reported within 30 days, and Save PDF and Share receipt buttons" width={780} height={1926} className="w-full rounded-md" />
-            <Marks marks={TD_WITHOUT} tone="mark" start={200} />
-          </Frame>
-          <span aria-hidden className="w-px self-stretch bg-hair" />
-          {STATES.map((st, i) => (
-            <Frame key={st.name} title={`With · ${i + 1} ${st.name}`} tone="accent" selected={st.name === "Failed"} className={st.narrow ? "w-[118px] sm:w-[124px]" : "w-[140px] sm:w-[148px]"}>
-              <Image src={st.src} alt={`Screen ${i + 1} of 6 designed with RYUX, ${st.name}: ${st.caption}`} width={st.w} height={st.h} className="w-full rounded-md" />
-            </Frame>
-          ))}
+      <div className="overflow-hidden rounded-2xl border border-hair">
+        <div className="hidden grid-cols-[minmax(0,1fr)_200px_minmax(0,1.2fr)] gap-6 border-b border-hair bg-paper-2 px-5 py-3 font-mono text-[12px] sm:grid">
+          <span className="text-muted">After someone pays…</span>
+          <span className="text-mark">Agent alone</span>
+          <span className="text-accent">With RYUX</span>
         </div>
+        <ol>
+          {SITUATIONS.map((sit) => {
+            const st = STATES[sit.state];
+            return (
+              <li key={sit.ask} className="grid grid-cols-2 gap-x-4 gap-y-3 border-b border-hair px-5 py-4 last:border-b-0 sm:grid-cols-[minmax(0,1fr)_200px_minmax(0,1.2fr)] sm:items-center sm:gap-6">
+                <p className="col-span-2 text-[16px] font-medium sm:col-span-1">{sit.ask}</p>
+                <div className="flex items-center gap-3">
+                  <span className="font-mono text-[11px] text-mark sm:hidden">Alone</span>
+                  {sit.without ? (
+                    <Thumb src={WITHOUT_SCREEN.src} w={WITHOUT_SCREEN.w} h={WITHOUT_SCREEN.h} label="made without RYUX" className="w-[48px]" crop="h-[64px]" />
+                  ) : (
+                    <span className="text-[14px] text-muted">— No screen</span>
+                  )}
+                </div>
+                <div className="flex items-center gap-3">
+                  <span className="font-mono text-[11px] text-accent sm:hidden">RYUX</span>
+                  <Thumb src={st.src} w={st.w} h={st.h} label={st.name} className="w-[48px] shrink-0" crop="h-[64px]" />
+                  <p className="hidden text-[14px] leading-[1.45] text-ink-2 sm:block">{st.caption}</p>
+                </div>
+                <p className="col-span-2 text-[13px] leading-[1.45] text-ink-2 sm:hidden">{st.caption}</p>
+              </li>
+            );
+          })}
+        </ol>
       </div>
-      <ol className="grid gap-x-10 gap-y-3 sm:grid-cols-2 lg:grid-cols-3">
-        {TD_WITHOUT.map((m, i) => (
-          <li key={m.body} className="flex gap-2.5">
-            <Pin n={i + 1} tone="mark" />
-            <p className="text-[14px] leading-[1.5] text-ink-2">{m.body}</p>
-          </li>
-        ))}
-      </ol>
       <div className="grid gap-10 [&>*]:min-w-0 lg:grid-cols-[minmax(0,1fr)_minmax(0,340px)] lg:gap-16">
         <div className="flex flex-col gap-6">
-          <p className="text-[19px] font-medium">Repeated three times. One dot per run.</p>
+          <p className="text-[19px] font-medium">We ran it three times. Every time, the agent alone made one screen; with RYUX it made six.</p>
           <Scoreboard night />
         </div>
         <div className="flex flex-col gap-4 rounded-xl border border-hair p-5 lg:mt-12">
@@ -243,8 +230,7 @@ function TransactionPanel() {
       </div>
       <p className="text-[13px] leading-[1.6] text-muted">
         How it was run: a fresh agent each time, the same model, no reference screens on either side, and sample data in
-        every screen. The screens are from the second pair, unedited; only the marks are ours. Three pairs is a small
-        benchmark, not a study.
+        every screen. The screens are from the second pair, unedited. Three pairs is a small benchmark, not a study.
       </p>
     </Reveal>
   );
@@ -259,8 +245,8 @@ function Proof() {
             <Eyebrow>Benchmark · same prompt, same agent, one with RYUX</Eyebrow>
             <h2 id="proof-title" className="text-[38px] leading-[1.05] sm:text-[52px]">One screen became six.</h2>
             <p className="max-w-[640px] text-[17px] leading-[1.55] text-ink-2">
-              Without RYUX the agent designed only the success screen, and added a rule and a button nobody asked for. With
-              RYUX it designed every screen a payment goes through, so people can tell what happened to their money.
+              Without RYUX the agent designed only the success screen. With RYUX it designed every screen a payment goes
+              through. Real people hit these moments, and a page that only covers success leaves them stuck.
             </p>
           </div>
           <div className="flex flex-col gap-2 border-l border-hair pl-5">
