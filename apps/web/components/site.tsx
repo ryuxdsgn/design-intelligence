@@ -29,17 +29,17 @@ export function Arrow({ down = false }: { down?: boolean }) {
   );
 }
 
-/* The RYUX mark: R and X sharing one stroke, the second arm of the X in indigo. */
+/* The RYUX mark: an R whose leg runs on as one arm of the X, the other arm in teal. */
 const MARK_RX =
-  "M163.27272 73.18182l-24.27274-25.72726-46.99999-47.45456-91.99999 0 0 162.36365 29.27272 0 0-69.09091 18.54547 0 61.81816 69.09091 40.63639 0-63.8182-69.09091 9.90911 0 22.90907-22.54546 23.45454 22.54546 0.72728 0 64.00002 69.09091 10.45453 0 0-30.7273-54.63637-58.45453z m-77.45453-6.09089l-56.54547 0 0-38.18184 50.72728 0 20 22.9091-14.18181 15.27274z";
-const MARK_ARM = "M46.9091 0l-46.9091 47.45456 24.27274 25.72726 54.54545-56 0-17.18182-31.90909 0z";
+  "M102.4 92.16L409.6 389.12L378.88 419.84L250.88 291.84L220.16 322.56L317.44 419.84H261.12L168.96 327.68H143.36V419.84H102.4V92.16ZM143.36 220.16H194.56L235.52 261.12L194.56 302.08H143.36V220.16Z";
+const MARK_ARM = "M276.48 230.4L378.88 128L409.6 158.72L307.2 261.12L276.48 230.4Z";
 
-/** `size` is the height in px; the mark is wider than tall. */
+/** `size` is the height in px; the mark is slightly taller than wide. */
 export function Mark({ size = 24, night = false }: { size?: number; night?: boolean }) {
   return (
-    <svg width={(size * 218) / 163} height={size} viewBox="0 0 218 163" aria-hidden>
-      <path d={MARK_RX} fill={night ? "#F5F6F8" : "#0B162B"} />
-      <path d={MARK_ARM} transform="translate(139 0)" fill="#4F42F4" />
+    <svg width={(size * 307.2) / 327.68} height={size} viewBox="102.4 92.16 307.2 327.68" aria-hidden>
+      <path d={MARK_RX} fillRule="evenodd" clipRule="evenodd" fill={night ? "#F5F6F8" : "#242A33"} />
+      <path d={MARK_ARM} fill="#188B83" />
     </svg>
   );
 }
