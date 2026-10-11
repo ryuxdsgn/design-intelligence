@@ -51,7 +51,7 @@ export function CopyCommand({ command, night = false, prompt = "$", primary = fa
       <button
         type="button"
         onClick={copy}
-        className={`tactile inline-flex min-h-9 min-w-9 shrink-0 items-center justify-center gap-1.5 rounded px-2 text-[13px] sm:px-3 ${
+        className={`tactile inline-flex min-h-9 min-w-9 shrink-0 items-center justify-center gap-1.5 rounded px-2 text-[13px] sm:min-w-[92px] sm:px-3 ${
           primary ? "bg-accent font-semibold text-paper" : night ? "text-night-sub hover:text-night-text" : "text-muted hover:text-ink"
         }`}
       >
