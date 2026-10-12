@@ -2,23 +2,14 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { Eyebrow, GUTTER, REPO, SiteFooter, SiteHeader } from "@/components/site";
 import { Reveal } from "@/components/reveal";
-import { Dim, Ring } from "@/components/markup";
+import { CompareHandle, Pipeline } from "@/components/pipeline";
 import { Scoreboard } from "@/components/scoreboard";
 
 export const metadata: Metadata = {
   title: "Benchmarks · RYUX",
   description:
-    "Same prompt, same agent, one with RYUX. What changed, what RYUX got wrong, and what we learned, from repeated paired runs.",
+    "One screen through RYUX's five steps in one session, then paired runs with and without RYUX: what changed, what RYUX got wrong, and what we learned.",
 };
-
-/* A review RYUX ran on a real product: Plausible's public demo dashboard, 9 Oct 2026. Before/after values
-   were measured in the browser (Playwright, DOM and accessibility tree). */
-const PLAUSIBLE_RESULTS = [
-  { what: "Tab height on a phone", before: "16px", after: "44px" },
-  { what: "Controls with no name for screen readers", before: "1", after: "0" },
-  { what: "Headings for the dashboard panels", before: "0", after: "6" },
-  { what: "Words split in the middle at 390", before: "2", after: "0" },
-];
 
 const MARKS = [
   { mark: "Observed", meaning: "Seen in the design or read from its values.", example: "Body text is 16/24, read from the CSS." },
@@ -28,7 +19,7 @@ const MARKS = [
 ];
 
 const METHOD = [
-  "A fresh agent per run, the same model, pen.dev. RYUX 2.3.3 is the only difference.",
+  "A fresh session per run, the same model, pen.dev. RYUX 2.3.3 is the only difference.",
   "No RYUX MCP, so no reference screens: every decision in every run is evidence None.",
   "Three pairs per task. Questions answered from one fixed fact sheet for both sides.",
   "Counts are ours, from the outputs. A small benchmark, not a study.",
@@ -52,7 +43,7 @@ const WALLET_ROWS = [
 
 function Block({ label, children }: { label: string; children: React.ReactNode }) {
   return (
-    <div className="grid [&>*]:min-w-0 gap-3 border-t border-hair pt-6 lg:grid-cols-[220px_1fr] lg:gap-10">
+    <div className="rise grid [&>*]:min-w-0 gap-3 border-t border-hair pt-6 lg:grid-cols-[220px_1fr] lg:gap-10">
       <h3 className="text-[15px] font-semibold text-mark">{label}</h3>
       <div className="flex max-w-[760px] flex-col gap-3 text-[17px] leading-[1.55] text-ink-2">{children}</div>
     </div>
@@ -63,90 +54,18 @@ function Prompt({ children }: { children: React.ReactNode }) {
   return <p className="border-l border-hair pl-5 text-[19px] leading-[1.45] text-ink">{children}</p>;
 }
 
-/* Analyze, Critique, Design and QA on a product that already exists. Values are measured, not estimated. */
-function RealProduct() {
-  return (
-    <div className="grid gap-12 [&>*]:min-w-0 lg:grid-cols-[minmax(0,1fr)_minmax(0,620px)] lg:gap-20">
-      <div className="flex flex-col gap-6">
-        <h3 className="text-[28px] leading-[1.15] font-semibold tracking-[-0.02em] sm:text-[34px]">
-          A review of a dashboard people already use.
-        </h3>
-        <p className="text-[17px] leading-[1.55] text-ink-2">
-          RYUX analyzed and critiqued Plausible&apos;s public demo dashboard at 1440 and 390 wide, designed fixes for what it
-          found, and checked them in the browser. The original is strong, so the fixes are small and most of it stays.
-        </p>
-        <dl className="border-t border-ink">
-          {PLAUSIBLE_RESULTS.map((r, i) => (
-            <div key={r.what} className="grid grid-cols-[1fr_auto] items-center gap-4 border-b border-hair py-3.5" style={{ ["--i" as string]: i } as React.CSSProperties}>
-              <dt className="text-[15px] leading-[1.4] text-ink-2">{r.what}</dt>
-              <dd className="flex items-center gap-2 font-mono text-[14px] tabular-nums">
-                <span className="strike text-muted">{r.before}</span>
-                <span aria-hidden className="text-muted">→</span>
-                <span className="sr-only">changed to</span>
-                <span className="after-in font-semibold text-ink">{r.after}</span>
-              </dd>
-            </div>
-          ))}
-        </dl>
-        <p className="text-[13px] leading-[1.55] text-muted">
-          Not affiliated with Plausible. Unsolicited study; the fixes are a prototype, not their product.
-        </p>
-      </div>
-
-      <figure className="flex flex-col gap-4">
-        <div className="grid gap-6 sm:grid-cols-2">
-          <div className="flex flex-col gap-3">
-            <p className="font-mono text-[12px] text-muted">Before · live, 9 Oct 2026</p>
-            <div className="relative">
-              <Image
-                src="/cases/plausible/before-390.png"
-                alt="Plausible's demo dashboard at 390 wide: the live visitor count shows only the number 202, with no label, and the key figures show percentage changes without saying what they compare with"
-                width={390}
-                height={338}
-                className="w-full rounded-[10px] border border-hair"
-              />
-              <Ring x={21} y={6.8} w={20} h={9} tone="mark" delay={300} />
-            </div>
-          </div>
-          <div className="flex flex-col gap-3" style={{ ["--i" as string]: 1 } as React.CSSProperties}>
-            <p className="font-mono text-[12px] text-accent">After · RYUX prototype</p>
-            <div className="relative">
-              <Image
-                src="/cases/plausible/after-390.png"
-                alt="The same dashboard redesigned at 390 wide: the live count reads 201 current visitors, and a line above the key figures says the changes are versus the previous 28 days"
-                width={390}
-                height={378}
-                className="w-full rounded-[10px] border border-hair"
-              />
-              <Ring x={79} y={5.6} w={40} h={8} tone="accent" delay={700} />
-              <Ring x={28} y={31.2} w={46} h={6} tone="accent" delay={900} />
-            </div>
-            <div className="relative h-4">
-              <Dim label="390" delay={1100} className="inset-x-0 top-0" />
-            </div>
-          </div>
-        </div>
-        <figcaption className="text-[14px] leading-[1.55] text-muted">
-          At 390 the live count lost its label, and the percentage changes never said what they compare with. Both are
-          back. The live counts differ because the two captures were taken at different times on the same day.
-        </figcaption>
-      </figure>
-    </div>
-  );
-}
-
 /* What each evidence label means, with an example of each. */
 function Evidence() {
   return (
-    <section id="evidence" aria-labelledby="evidence-title">
+    <section id="evidence" aria-labelledby="evidence-title" className="section-rule">
       <div className={`${GUTTER} grid gap-12 py-20 [&>*]:min-w-0 lg:grid-cols-[minmax(0,420px)_1fr] lg:gap-20 lg:py-24`}>
-        <div className="flex flex-col gap-5">
-          <Eyebrow>05 · How RYUX labels what it says</Eyebrow>
+        <div className="rise flex flex-col gap-5">
+          <Eyebrow>04 · How RYUX labels what it says</Eyebrow>
           <h2 id="evidence-title" className="text-[min(44px,11vw)] leading-[1.02] sm:text-[52px]">Known, guessed, or unknown.</h2>
         </div>
         <dl>
           {MARKS.map((m) => (
-            <div key={m.mark} className="grid gap-2 border-b border-hair py-5 first:border-t sm:grid-cols-[130px_1fr] sm:gap-x-8 xl:grid-cols-[130px_1fr_260px]">
+            <div key={m.mark} className="rise grid gap-2 border-b border-hair py-5 first:border-t sm:grid-cols-[130px_1fr] sm:gap-x-8 xl:grid-cols-[130px_1fr_260px]">
               <dt className={`text-[15px] font-semibold ${m.mark === "Unknown" ? "text-mark" : "text-ink"}`}>{m.mark}</dt>
               <dd className="text-[17px] leading-[1.4]">{m.meaning}</dd>
               <dd className="font-mono text-[13px] leading-[1.55] text-ink-2 sm:col-start-2 xl:col-start-auto">{m.example}</dd>
@@ -163,32 +82,61 @@ export default function Benchmarks() {
     <>
       <SiteHeader />
       <main>
-        <section aria-labelledby="bench-title" className={`${GUTTER} grid [&>*]:min-w-0 gap-12 py-16 lg:grid-cols-[1fr_480px] lg:gap-24 lg:py-24`}>
-          <div className="flex flex-col gap-6">
-            <Eyebrow>Benchmarks</Eyebrow>
-            <h1 id="bench-title" className="font-semibold tracking-[-0.03em] text-[min(56px,15.5vw)] leading-[0.98] sm:text-[88px]">
-              Same prompt, same agent, one with RYUX
-            </h1>
-            <p className="max-w-[600px] text-[19px] leading-[1.5] text-ink-2">
-              What changes when an AI agent designs with RYUX, measured on repeated runs and reported with what did not change.
-            </p>
-          </div>
-          <div className="lg:pt-12">
-            <h2 className="text-[15px] font-medium text-muted">How we ran it</h2>
-            <ul className="mt-3">
-              {METHOD.map((m) => (
-                <li key={m} className="border-b border-hair py-3.5 text-[16px] leading-[1.45] text-ink-2">{m}</li>
-              ))}
-            </ul>
+        <section aria-labelledby="bench-title" className={`${GUTTER} flex flex-col gap-6 pt-16 pb-10 lg:pt-24`}>
+          <Eyebrow>Benchmarks</Eyebrow>
+          <h1 id="bench-title" className="max-w-[1000px] font-semibold tracking-[-0.03em] text-[min(52px,13vw)] leading-[0.98] sm:text-[80px]">
+            One screen, all five steps.
+          </h1>
+          <p className="max-w-[660px] text-[19px] leading-[1.5] text-ink-2">
+            The transaction detail screen made without RYUX, taken through Analyze, Critique, Design, Build, and QA in one RYUX
+            session. Then paired runs, the same prompt with and without RYUX, with what did not change.
+          </p>
+          <p className="text-[13px] leading-[1.55] text-muted">
+            One run, 12 Oct 2026, RYUX 2.6.2. A case study, not a benchmark. Every turn is{" "}
+            <a href={`${REPO}/tree/main/docs/benchmarks/case-td-2.6`} className="underline underline-offset-2 hover:text-ink">public, raw</a>.
+          </p>
+        </section>
+
+        <section id="real-product" aria-labelledby="rp-title" className="section-rule">
+          <div className={`${GUTTER} flex flex-col pt-14 pb-20 lg:pb-28`}>
+            <div className="rise flex flex-col gap-3 pb-6 lg:pb-0">
+              <Eyebrow>01 · Case study · one session, five prompts</Eyebrow>
+              <h2 id="rp-title" className="text-[min(40px,10vw)] leading-[1.05] sm:text-[48px]">From “Done. Here is your screen.” to a reviewed fix</h2>
+            </div>
+            <Pipeline />
+            <div className="rise mt-16 grid gap-10 [&>*]:min-w-0 lg:grid-cols-[minmax(0,1fr)_300px] lg:items-center lg:gap-20">
+              <div className="flex flex-col gap-4">
+                <h3 className="text-[26px] leading-[1.15] font-semibold tracking-[-0.02em] sm:text-[30px]">Before and after, side by side.</h3>
+                <p className="text-[17px] leading-[1.55] text-ink-2">
+                  The same screen before and after its findings were fixed. Drag the handle, or focus it and use the arrow keys.
+                  This compares one screen with its own fixes, not RYUX against another tool.
+                </p>
+                <ul className="flex flex-col gap-2 text-[15px] leading-[1.5] text-ink-2">
+                  <li><span className="font-mono text-[12px] text-mark">What went wrong</span> It asked nothing, so the fact sheet never came; it kept the input&apos;s example data, wallet balance and dollars.</li>
+                  <li><span className="font-mono text-[12px] text-mark">What went wrong</span> The failed screen shows “Balance: $200.00”, a number it worked out, not one anyone gave.</li>
+                </ul>
+                <p className="text-[13px] leading-[1.55] text-muted">After: the final receipt.html, rendered by us in Chromium. The before screen&apos;s drawn status bar is cut off, so both start at their title and are the same height (390 × 901).</p>
+              </div>
+              <div className="mx-auto w-full max-w-[300px]">
+                <CompareHandle before="/cases/td-case/compare-before.png" after="/cases/td-case/compare-after.png" w={780} h={1802} label="Before and after: how much of the fixed screen shows" />
+              </div>
+            </div>
           </div>
         </section>
 
-        <section id="transaction-detail" aria-labelledby="td-title" className="bg-paper-2">
+        <section id="transaction-detail" aria-labelledby="td-title" className="section-rule bg-paper-2">
           <div className={`${GUTTER} flex flex-col gap-10 py-20 lg:py-28`}>
-            <div className="flex flex-col gap-4">
-              <Eyebrow>01 · UX reasoning · a proof case</Eyebrow>
+            <div className="rise flex flex-col gap-4">
+              <Eyebrow>02 · Paired runs · a proof case</Eyebrow>
               <h2 id="td-title" className="font-semibold tracking-[-0.03em] text-[min(44px,11vw)] leading-[1.02] sm:text-[60px]">Transaction detail</h2>
             </div>
+            <Block label="How we ran it">
+              <ul>
+                {METHOD.map((m) => (
+                  <li key={m} className="border-b border-hair py-2.5 last:border-b-0">{m}</li>
+                ))}
+              </ul>
+            </Block>
             <Block label="Prompt">
               <Prompt>“Design a transaction detail page for a fintech app, shown after the user pays. Make it in pen.dev.”</Prompt>
               <p>Answers available to both, for any question: a global product in English, market and currency not decided, card and bank transfer, statuses Completed, Processing, and Failed, the data fields, and three actions. The runs without RYUX asked nothing, so they never received these answers.</p>
@@ -238,7 +186,7 @@ export default function Benchmarks() {
               </div>
             </Block>
             <Block label="What changed">
-              <p>In 3 of 3 pairs, RYUX asked three questions first, designed six screens, left the currency open, added no feature that was not asked for, and wrote decision receipts. Without RYUX, the agent assumed dollars in 3 of 3, made up a business rule in 2 of 3, and added features nobody asked for in 3 of 3.</p>
+              <p>In 3 of 3 pairs, RYUX asked three questions first, designed six screens, left the currency open, added no feature that was not asked for, and wrote decision receipts. Without RYUX, the run assumed dollars in 3 of 3, made up a business rule in 2 of 3, and added features nobody asked for in 3 of 3.</p>
             </Block>
             <Block label="What RYUX got wrong">
               <p>All three runs with RYUX put “This page updates when the status changes” on the processing screen. Each flagged it as an assumption to confirm, but the sentence still ships on the screen.</p>
@@ -250,10 +198,10 @@ export default function Benchmarks() {
           </div>
         </section>
 
-        <section id="wallet-home" aria-labelledby="wh-title">
+        <section id="wallet-home" aria-labelledby="wh-title" className="section-rule">
           <div className={`${GUTTER} flex flex-col gap-10 py-20 lg:py-28`}>
-            <div className="flex flex-col gap-4">
-              <Eyebrow>02 · Visual direction · not a proof case</Eyebrow>
+            <div className="rise flex flex-col gap-4">
+              <Eyebrow>03 · Paired runs · visual direction · not a proof case</Eyebrow>
               <h2 id="wh-title" className="font-semibold tracking-[-0.03em] text-[min(44px,11vw)] leading-[1.02] sm:text-[60px]">Wallet home</h2>
             </div>
             <Block label="Prompt">
@@ -295,21 +243,11 @@ export default function Benchmarks() {
           </div>
         </section>
 
-        <section id="real-product" aria-labelledby="rp-title" className="bg-paper-2">
-          <div className={`${GUTTER} flex flex-col gap-10 py-20 lg:py-24`}>
-            <Eyebrow>04 · On a real product</Eyebrow>
-            <h2 id="rp-title" className="sr-only">On a real product</h2>
-            <Reveal>
-              <RealProduct />
-            </Reveal>
-          </div>
-        </section>
-
         <Evidence />
 
-        <section id="design-md" aria-labelledby="dm-title" className="bg-paper-2">
+        <section id="design-md" aria-labelledby="dm-title" className="section-rule bg-paper-2">
           <div className={`${GUTTER} flex flex-col gap-6 py-20 lg:py-24`}>
-            <Eyebrow>03 · Project direction · coming next</Eyebrow>
+            <Eyebrow>05 · Project direction · coming next</Eyebrow>
             <h2 id="dm-title" className="font-semibold tracking-[-0.03em] text-[min(44px,11vw)] leading-[1.02] sm:text-[60px]">DESIGN.md</h2>
             <p className="max-w-[760px] text-[17px] leading-[1.55] text-ink-2">
               Without context versus RYUX with a filled DESIGN.md. One run so far, which is not enough to claim anything. It

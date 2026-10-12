@@ -6,7 +6,6 @@ export const DOCS = `${REPO}/blob/main/GUIDE.md`;
 const NAV = [
   { label: "Proof", href: "/#proof" },
   { label: "How it works", href: "/#how" },
-  { label: "Benchmarks", href: "/benchmarks" },
   { label: "Docs", href: DOCS },
 ];
 
@@ -121,7 +120,7 @@ export function SiteFooter() {
         <div className="flex flex-col gap-4">
           <p><Mark size={22} /><span className="sr-only">RYUX</span></p>
           <p className="max-w-[300px] text-[15px] leading-[1.55] text-muted">
-            Design intelligence for AI agents and designers. Early access, free.
+            Design intelligence that asks before it guesses. Early access, free.
           </p>
         </div>
         {FOOTER.map((col) => (

@@ -21,8 +21,9 @@ export function Pin({ n, tone = "mark" }: { n: number; tone?: Tone }) {
 const RING_TONE: Record<Tone, string> = { mark: "stroke-mark", accent: "stroke-accent", "mark-night": "stroke-mark-night", "accent-night": "stroke-accent-night" };
 
 /** A pen ring drawn around a value on a real screen. x, y (centre), w, h are percentages of the image.
-    The stroke scales with the ring: pathLength with a non-scaling stroke drew only part of the ellipse. */
-export function Ring({ x, y, w, h, tone, delay = 0 }: { x: number; y: number; w: number; h: number; tone: Tone; delay?: number }) {
+    The stroke scales with the ring: pathLength with a non-scaling stroke drew only part of the ellipse.
+    `scrub` draws it by the CSS variable --ring (0 to 1) instead of on a timer, so scroll can drive it. */
+export function Ring({ x, y, w, h, tone, delay = 0, scrub = false }: { x: number; y: number; w: number; h: number; tone: Tone; delay?: number; scrub?: boolean }) {
   return (
     <svg
       aria-hidden
@@ -39,20 +40,21 @@ export function Ring({ x, y, w, h, tone, delay = 0 }: { x: number; y: number; w:
         pathLength={1}
         fill="none"
         strokeWidth="1.2"
-        className={`ring-draw ${RING_TONE[tone]}`}
-        style={{ animationDelay: `${delay}ms` }}
+        className={`${scrub ? "ring-scrub" : "ring-draw"} ${RING_TONE[tone]}`}
+        style={scrub ? undefined : { animationDelay: `${delay}ms` }}
       />
     </svg>
   );
 }
 
 /** A redline: a dimension line with end ticks and a measurement label. Place it with `className`/`style`
-    (absolute, inside a relative parent). Labels carry only real, measured or stated values. */
-export function Dim({ label, vertical = false, night = false, delay = 0, className = "", style }: {
-  label: string; vertical?: boolean; night?: boolean; delay?: number; className?: string; style?: React.CSSProperties;
+    (absolute, inside a relative parent). Labels carry only real, measured or stated values.
+    `scrub` draws it by the CSS variable --dim (0 to 1) instead of on a timer, so scroll can drive it. */
+export function Dim({ label, vertical = false, night = false, delay = 0, scrub = false, className = "", style }: {
+  label: string; vertical?: boolean; night?: boolean; delay?: number; scrub?: boolean; className?: string; style?: React.CSSProperties;
 }) {
   return (
-    <span aria-hidden className={`dim ${vertical ? "dim-v" : "dim-h"} ${night ? "night" : ""} ${className}`} style={{ ...style, ["--d" as string]: `${delay}ms` }}>
+    <span aria-hidden className={`dim ${vertical ? "dim-v" : "dim-h"} ${night ? "night" : ""} ${scrub ? "scrub" : ""} ${className}`} style={{ ...style, ["--d" as string]: `${delay}ms` }}>
       <span className="dim-line" />
       <span className="dim-label">{label}</span>
     </span>
