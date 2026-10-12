@@ -7,14 +7,14 @@ const sans = Geist({ subsets: ["latin"], variable: "--font-geist", display: "swa
 const mono = Geist_Mono({ subsets: ["latin"], variable: "--font-geist-mono", display: "swap" });
 
 const DESCRIPTION =
-  "RYUX is design intelligence for AI agents and designers. It makes AI reason before it designs: what it observed, what it inferred, and what it still doesn't know.";
+  "RYUX is design intelligence for designers and AI coding tools. It reasons before it designs: what it observed, what it inferred, and what it still doesn't know.";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://ryux.design"),
-  title: "RYUX: design intelligence for AI",
+  title: "RYUX: design intelligence",
   description: DESCRIPTION,
   openGraph: {
-    title: "RYUX: design intelligence for AI",
+    title: "RYUX: design intelligence",
     description: DESCRIPTION,
     url: "https://ryux.design",
     siteName: "RYUX",
