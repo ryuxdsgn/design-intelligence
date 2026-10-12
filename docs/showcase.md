@@ -211,6 +211,26 @@ first time a new user logs in."*
 - Inferred: the visible difference is fewer invented facts and more states, not polish.
 - Not tested: anything beyond one pair per case.
 
+### Case 03 · One screen through all five steps (RYUX 2.6.2)
+
+One session, five short prompts in order (analyze, critique, improve in pen.dev, build as HTML, QA),
+on the screen the agent designed **without** RYUX in Case 01 (run A2). Protocol written before the run,
+clean harness, ryux MCP off. One run: a case study, not a benchmark.
+[Every turn, raw](benchmarks/case-td-2.6/).
+
+- **Analyze:** labeled every point Observed or Inferred, listed what is unknown, judged nothing.
+- **Critique:** 11 findings, most severe first; the top one is that only the success version exists.
+  It flagged "within 30 days" as a rule with no source.
+- **Design:** success, pending, failed, and loading in pen.dev, each change tied to a finding.
+- **Build:** one HTML file with the four states and defined copy and share behaviour, rendered at
+  390, 375, and 320 wide.
+- **QA:** measured the build against the design, fixed 6 differences, re-checked to within 0 to 4 px,
+  and listed what it did not test (Safari, a real iPhone, dark mode, the largest text sizes).
+
+**What didn't:** it asked nothing, so it kept the input's example data instead of the fact sheet; it
+added "Try again" and "Your wallet wasn't charged" on its own (flagged, but on screen); and the
+failed screen shows a balance it worked out ($200.00), not one anyone gave.
+
 ## 04 · Designed with RYUX
 
 Single screens from the runs above, shown large. These are real outputs, cropped from each run's
@@ -271,8 +291,9 @@ Evidence: None.
    design skill.
 3. Give both the identical prompt. If an agent asks questions, answer only from the fact sheet, the
    same for both sides. An agent that asks nothing gets nothing.
-4. Each run adds one new frame to the shared pen.dev canvas, exports a PNG, and writes its reasoning.
-   Run them one after another.
+4. Give each experiment a fresh pen.dev canvas, and clear it between runs: a shared canvas let one
+   run see another's frames in the 2.4 rerun. Each run adds one frame, exports a PNG, and writes its
+   reasoning. Run them one after another.
 5. Decide before looking which pair you will show and how you will break ties. Count from the outputs,
    and publish every run, not only the pair you show.
 
@@ -625,19 +646,19 @@ _Without RYUX._ The same product pitched like generic AI slop: a buzzword headli
 
 <a href="../assets/compare/landing/landing-before.png"><img src="../assets/compare/landing/landing-before.png" alt="Generic AI landing for ryux: sparkle logo, headline Supercharge your AI agents with beautiful production-ready UI, all-in-one platform subhead, Get Started Free and Book a Demo buttons, fake five-star Trusted by 10,000+ developers worldwide, and an empty AS SEEN IN logo grid" width="100%"></a>
 
-_With `RYUX`._ Designed in pen.dev under its own rules: an editorial layout, one accent, a specific evidence-first headline, and a real `search_screens` result (screen_id, app, version, capture date, designer note) where the slop version put fake logos.
+_With `RYUX`._ Designed in pen.dev under its own rules: an editorial layout, one accent, a specific evidence-first headline, and a `search_screens` result (screen_id, app, version, capture date, designer note) where the slop version put fake logos. The result came from the local sample data, so the app in it, "Warung Kopi Contoh", is fictional.
 
 <a href="../assets/compare/landing/landing-after.png"><img src="../assets/compare/landing/landing-after.png" alt="RYUX landing designed with RYUX: warm paper background, an MCP + design rules for AI agents kicker, headline Every design decision backed by a real screen, an honest subhead, Join the waitlist and See the difference buttons, an honest early-access trust line, and a search_screens evidence card for Warung Kopi Contoh with screen_id scr_a3f091, version, capture date, and a designer note" width="100%"></a>
 
-Real evidence (`scr_a3f091`, app, version, date) in place of a fake logo wall (RX-AS-02): the "after" shows the product's whole point instead of borrowing credibility. Specific over buzzword (RX-CD-03), one accent over default-everything (RX-UI-04), an honest early-access line over an invented "10,000+" (RX-AS-01).
+The shape of real evidence (`scr_a3f091`, app, version, date) in place of a fake logo wall (RX-AS-02), shown with sample data, not a captured product: the "after" shows the product's whole point instead of borrowing credibility. Specific over buzzword (RX-CD-03), one accent over default-everything (RX-UI-04), an honest early-access line over an invented "10,000+" (RX-AS-01).
 
 **Design decisions**
 
 | Before | After |
 | --- | --- |
-| "Put QRIS at the top because it looks good." | "Put QRIS first, based on the observed reference `scr_demo_001` (evidence Thin: one screen)." |
+| "Put QRIS at the top because it looks good." | "Put QRIS first, based on the observed reference `scr_demo_001` (evidence Thin: one screen)." `scr_demo_001` is a seeded sample screen, not a captured app. |
 
-`RX-PR-04` rejects any decision that has no `screen_id` behind it, and `delivery_gate` enforces that.
+The ryux MCP's `delivery_gate` fails any decision that cites no `screen_id`. The skill's rules are softer today: RX-PR-04 also accepts a decision labeled as a judgment call with no reference, and RX-PR-10 asks for that label when evidence is missing.
 
 The UI checks that `audit_ui` and `heuristic_eval` run: touch targets of 44px or more (RX-A11Y-02),
 contrast of at least 4.5:1 (RX-A11Y-01), and the full set of states, loading, empty, and error
