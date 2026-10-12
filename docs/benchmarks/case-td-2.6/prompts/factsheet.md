@@ -1,0 +1,8 @@
+- Product: a digital wallet app that pays merchants by card and by bank transfer.
+- Users: adults aged 22–40 in large cities, on mobile.
+- Market: a global product in English. The market and the currency are not decided.
+- Platform: mobile, 390 wide.
+- Possible statuses: Completed, Processing, Failed.
+- Transaction data available: merchant name, amount, payment method, time, transaction ID, fee.
+- Actions: Share receipt, Report a problem, Back to home.
+- Brand, design system, which state to show, anything else: not decided.

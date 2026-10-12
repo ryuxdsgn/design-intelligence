@@ -1,0 +1,530 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Receipt</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  /* Tokens: the variables defined in bench.pen */
+  :root {
+    --bg: #F5F3EE;
+    --surface: #FFFFFF;
+    --text-primary: #14161A;
+    --text-secondary: #5F6672;
+    --divider: #E6E3DC;
+    --success: #0B7A4B;
+    --success-bg: #DDF0E5;
+    --success-text: #075C38;
+    --pending: #8A5300;
+    --pending-bg: #FBEFD5;
+    --danger: #B42318;
+    --danger-bg: #FBE4E1;
+    --font-body: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+    --radius-card: 16px;
+    --radius-button: 14px;
+    --gutter: 20px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    font-size: 15px;
+    line-height: 1.35;
+  }
+  button { font: inherit; color: inherit; }
+  svg { flex: none; }
+  .visually-hidden {
+    position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0;
+    overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+  }
+  :focus-visible { outline: 2px solid var(--text-primary); outline-offset: 2px; }
+
+  /* App column: full screen on phones, a centred phone-width column on larger screens */
+  .app {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    min-height: 100dvh;
+    max-width: 430px;
+    margin: 0 auto;
+    background: var(--bg);
+  }
+
+  .header {
+    display: grid;
+    place-items: center;
+    min-height: 52px;
+    padding-top: env(safe-area-inset-top);
+  }
+  .header h1 { margin: 0; font-size: 17px; font-weight: 600; }
+
+  .body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    padding: 8px var(--gutter) 20px;
+  }
+
+  /* Hero */
+  .hero {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding-top: 4px;
+    text-align: center;
+  }
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 14px 6px 8px;
+    border-radius: 999px;
+    font-weight: 600;
+  }
+  .pill__icon {
+    display: grid;
+    place-items: center;
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    color: #FFFFFF;
+  }
+  .pill--success { background: var(--success-bg); color: var(--success-text); }
+  .pill--success .pill__icon { background: var(--success); }
+  .pill--pending { background: var(--pending-bg); color: var(--pending); }
+  .pill--pending .pill__icon { background: var(--pending); }
+  .pill--failed { background: var(--danger-bg); color: var(--danger); }
+  .pill--failed .pill__icon { background: var(--danger); }
+
+  .amount {
+    margin: 0;
+    font-size: clamp(40px, 13.4vw, 52px);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.2;
+    font-variant-numeric: tabular-nums;
+    overflow-wrap: anywhere;
+  }
+  .merchant { margin: 0; font-size: 16px; color: var(--text-secondary); overflow-wrap: anywhere; }
+  .state-message { margin: 0; max-width: 300px; font-size: 14px; line-height: 1.4; color: var(--text-secondary); }
+
+  /* Details card */
+  .card {
+    margin: 0;
+    padding: 0 16px;
+    background: var(--surface);
+    border-radius: var(--radius-card);
+  }
+  .row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--divider);
+    line-height: 1.2;
+  }
+  .row:last-child { border-bottom: 0; }
+  .row dt { color: var(--text-secondary); flex: none; }
+  .row dd {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 3px;
+    min-width: 0;
+    text-align: right;
+  }
+  .row__value { font-weight: 500; overflow-wrap: anywhere; }
+  .row__value--strong { font-weight: 700; }
+  .row__sub { font-size: 13px; color: var(--text-secondary); }
+
+  /* The whole Transaction ID row is the copy target (44px+ tall) */
+  .row--copy { padding: 0; align-items: stretch; }
+  .row--copy dd { flex: 1; align-items: stretch; }
+  .copy-button {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    width: 100%;
+    min-height: 72px;
+    padding: 14px 0;
+    border: 0;
+    background: none;
+    cursor: pointer;
+    text-align: left;
+  }
+  .copy-button__label { color: var(--text-secondary); }
+  .copy-button__value {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-mono);
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  /* Help row */
+  .help {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    padding: 16px;
+    border: 0;
+    border-radius: var(--radius-card);
+    background: var(--surface);
+    cursor: pointer;
+    text-align: left;
+  }
+  .help__text { flex: 1; display: flex; flex-direction: column; gap: 2px; line-height: 1.2; }
+  .help__title { font-weight: 600; }
+  .help__sub { font-size: 13px; color: var(--text-secondary); }
+
+  /* Footer stays pinned while the body scrolls (critique C-07) */
+  .footer {
+    position: sticky;
+    bottom: 0;
+    display: flex;
+    gap: 12px;
+    padding: 12px var(--gutter) max(20px, env(safe-area-inset-bottom));
+    background: var(--bg);
+    border-top: 1px solid var(--divider);
+  }
+  .button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 52px;
+    padding: 0 18px;
+    border-radius: var(--radius-button);
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .button--primary { flex: 1; border: 0; background: var(--text-primary); color: #FFFFFF; }
+  .button--secondary { border: 1px solid var(--text-primary); background: transparent; }
+  .button:active, .help:active, .copy-button:active { opacity: 0.7; }
+  .button[aria-busy="true"] { cursor: progress; opacity: 0.7; }
+  .spinner {
+    width: 18px; height: 18px;
+    border: 2px solid currentColor;
+    border-right-color: transparent;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* Loading skeleton */
+  .bone { display: block; border-radius: 8px; background: var(--divider); }
+
+  /* Toast */
+  .toast {
+    position: fixed;
+    left: 50%;
+    bottom: calc(96px + env(safe-area-inset-bottom));
+    transform: translate(-50%, 8px);
+    max-width: calc(100% - 2 * var(--gutter));
+    padding: 12px 16px;
+    border-radius: 12px;
+    background: var(--text-primary);
+    color: #FFFFFF;
+    font-size: 14px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 160ms ease, transform 160ms ease;
+  }
+  .toast.is-visible { opacity: 1; transform: translate(-50%, 0); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .toast { transition: none; }
+    .spinner { animation-duration: 2.4s; }
+  }
+
+  /* Preview-only state switcher; not part of the product UI */
+  .preview {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 6px;
+    padding: 8px;
+    font-size: 13px;
+    background: #FFFFFF;
+    border-bottom: 1px dashed var(--divider);
+  }
+  .preview button {
+    padding: 6px 10px;
+    border: 1px solid var(--divider);
+    border-radius: 8px;
+    background: none;
+    cursor: pointer;
+  }
+  .preview button[aria-pressed="true"] { border-color: var(--text-primary); font-weight: 600; }
+  @media print { .preview, .footer, .help, .toast { display: none !important; } }
+</style>
+</head>
+<body>
+  <nav class="preview" aria-label="Preview state (prototype only)"></nav>
+
+  <div class="app">
+    <header class="header"><h1>Receipt</h1></header>
+    <main class="body" id="receipt"></main>
+    <footer class="footer" id="actions"></footer>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+/*
+ * Example data copied from the original screen. [REAL DATA] Replace with the
+ * transaction from the payments API; the field names here are not an API contract.
+ */
+const TRANSACTION = {
+  id: "TX-8F3K-29QD-7140",
+  merchant: "Blue Bottle Coffee",
+  merchantArea: "Hayes Valley",
+  amount: 24.50,
+  fee: 0,
+  currency: "USD",
+  method: "Wallet balance",
+  balanceAfter: 175.50,
+  balanceBefore: 200.00,
+  createdAt: "2026-10-06T09:41:00",
+};
+
+/*
+ * Copy that depends on unconfirmed business rules. Each line is an ASSUMPTION
+ * listed in the design notes; confirm before shipping.
+ */
+const COPY = {
+  pendingMessage: "We'll update this screen when it's confirmed. It's safe to close it.",
+  // ASSUMPTION: a failed wallet payment never charges or holds funds.
+  failedMessage: "Your payment didn't go through. Your wallet wasn't charged.",
+  // The dispute window was removed: "within 30 days" had no source (critique C-05).
+  helpSub: "Get help or report an issue",
+  helpSubFailed: "Contact support about this payment",
+};
+
+const ICONS = {
+  check: '<path d="M20 6 9 17l-5-5"/>',
+  hourglass: '<path d="M5 22h14"/><path d="M5 2h14"/><path d="M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414 4.414A2 2 0 0 0 7 17.828V22"/><path d="M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2"/>',
+  x: '<path d="M18 6 6 18"/><path d="m6 6 12 12"/>',
+  copy: '<rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/>',
+  share: '<path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" x2="12" y1="2" y2="15"/>',
+  lifeBuoy: '<circle cx="12" cy="12" r="10"/><path d="m4.93 4.93 4.24 4.24"/><path d="m14.83 9.17 4.24-4.24"/><path d="m14.83 14.83 4.24 4.24"/><path d="m9.17 14.83-4.24 4.24"/><circle cx="12" cy="12" r="4"/>',
+  chevronRight: '<path d="m9 18 6-6-6-6"/>',
+};
+const icon = (name, size = 18, stroke = 2) =>
+  `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="${stroke}" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONS[name]}</svg>`;
+
+/*
+ * Format in the user's regional variant of the UI language (en-US, en-GB, ...) so dates and
+ * numbers never mix conventions or languages with the labels (critique C-10).
+ */
+const UI_LANG = document.documentElement.lang;
+const LOCALE = (navigator.languages || [navigator.language]).find((l) => l.split("-")[0] === UI_LANG) || UI_LANG;
+const formatMoney = (value, currency) =>
+  new Intl.NumberFormat(LOCALE, { style: "currency", currency, currencyDisplay: "narrowSymbol" }).format(value);
+const formatDate = (iso) =>
+  new Intl.DateTimeFormat(LOCALE, { weekday: "short", day: "numeric", month: "short", year: "numeric" }).format(new Date(iso));
+const formatTime = (iso) =>
+  new Intl.DateTimeFormat(LOCALE, { hour: "numeric", minute: "2-digit" }).format(new Date(iso));
+const escapeHtml = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+
+const PILLS = {
+  success: { icon: "check", label: "Payment successful" },
+  pending: { icon: "hourglass", label: "Payment processing" },
+  failed: { icon: "x", label: "Payment failed" },
+};
+
+function row(label, value, { sub, strong } = {}) {
+  return `<div class="row"><dt>${label}</dt><dd>
+    <span class="row__value${strong ? " row__value--strong" : ""}">${escapeHtml(value)}</span>
+    ${sub ? `<span class="row__sub">${escapeHtml(sub)}</span>` : ""}
+  </dd></div>`;
+}
+
+function renderReceipt(state, tx) {
+  if (state === "loading") return renderLoading();
+  const money = (v) => formatMoney(v, tx.currency);
+  const pill = PILLS[state];
+  const message = state === "pending" ? COPY.pendingMessage : state === "failed" ? COPY.failedMessage : "";
+  const methodSub = {
+    success: `Balance after payment: ${money(tx.balanceAfter)}`,
+    pending: "",
+    failed: `Balance: ${money(tx.balanceBefore)}`,
+  }[state];
+  const feeSub = tx.fee === 0 ? "No fee" : `Includes ${money(tx.fee)} fee`;
+
+  return `
+    <section class="hero" aria-labelledby="amount">
+      <span class="pill pill--${state}" role="status">
+        <span class="pill__icon">${icon(pill.icon, 14, 2.5)}</span>${pill.label}
+      </span>
+      <p class="amount" id="amount">${money(tx.amount + tx.fee)}</p>
+      <p class="merchant">to ${escapeHtml(tx.merchant)} · ${escapeHtml(tx.merchantArea)}</p>
+      ${message ? `<p class="state-message">${message}</p>` : ""}
+    </section>
+
+    <dl class="card">
+      ${row("Paid with", tx.method, { sub: methodSub })}
+      ${state === "success"
+        ? row("Total paid", money(tx.amount + tx.fee), { sub: feeSub, strong: true })
+        : row("Amount", money(tx.amount + tx.fee), { sub: state === "pending" ? feeSub : "" })}
+      ${row("Date", formatDate(tx.createdAt), { sub: formatTime(tx.createdAt) })}
+      <div class="row row--copy">
+        <dt class="visually-hidden">Transaction ID</dt>
+        <dd><button type="button" class="copy-button" data-action="copy" aria-label="Copy transaction ID ${tx.id.split("").join(" ")}">
+          <span class="copy-button__label">Transaction ID</span>
+          <span class="copy-button__value">${escapeHtml(tx.id)}${icon("copy")}</span>
+        </button></dd>
+      </div>
+    </dl>
+
+    <button type="button" class="help" data-action="help">
+      ${icon("lifeBuoy", 22)}
+      <span class="help__text">
+        <span class="help__title">Problem with this payment?</span>
+        <span class="help__sub">${state === "failed" ? COPY.helpSubFailed : COPY.helpSub}</span>
+      </span>
+      ${icon("chevronRight", 20)}
+    </button>`;
+}
+
+function renderLoading() {
+  const bone = (w, h) => `<span class="bone" style="width:${w}px;height:${h}px"></span>`;
+  const rows = [120, 80, 110, 150]
+    .map((w) => `<div class="row" style="align-items:center">${bone(90, 14)}${bone(w, 14)}</div>`)
+    .join("");
+  return `
+    <p class="visually-hidden" role="status">Loading receipt</p>
+    <div class="hero" aria-hidden="true">${bone(170, 30)}${bone(180, 52)}${bone(220, 18)}</div>
+    <div class="card" aria-hidden="true">${rows}</div>
+    <button type="button" class="help" data-action="help">
+      ${icon("lifeBuoy", 22)}
+      <span class="help__text">
+        <span class="help__title">Problem with this payment?</span>
+        <span class="help__sub">${COPY.helpSub}</span>
+      </span>
+      ${icon("chevronRight", 20)}
+    </button>`;
+}
+
+function renderActions(state) {
+  const done = (variant) => `<button type="button" class="button button--${variant}" data-action="done">Done</button>`;
+  if (state === "success") {
+    return `<button type="button" class="button button--secondary" data-action="share">${icon("share")}<span>Share receipt</span></button>${done("primary")}`;
+  }
+  if (state === "failed") {
+    // ASSUMPTION: the product supports retrying a payment. If not, show only Done as primary.
+    return `${done("secondary")}<button type="button" class="button button--primary" data-action="retry">Try again</button>`;
+  }
+  return done("primary");
+}
+
+/* Toast */
+const toastEl = document.getElementById("toast");
+let toastTimer;
+function toast(text) {
+  clearTimeout(toastTimer);
+  toastEl.textContent = text;
+  toastEl.classList.add("is-visible");
+  toastTimer = setTimeout(() => toastEl.classList.remove("is-visible"), 2000);
+}
+
+/* Actions */
+async function copyId(tx) {
+  try {
+    await navigator.clipboard.writeText(tx.id);
+    navigator.vibrate?.(10);
+    toast("Transaction ID copied");
+  } catch {
+    toast("Couldn't copy. Press and hold the ID to copy it.");
+  }
+}
+
+async function shareReceipt(button, tx) {
+  if (button.getAttribute("aria-busy") === "true") return;
+  const label = button.innerHTML;
+  button.setAttribute("aria-busy", "true");
+  button.innerHTML = '<span class="spinner" aria-hidden="true"></span><span>Preparing…</span>';
+  try {
+    const text = `Paid ${formatMoney(tx.amount + tx.fee, tx.currency)} to ${tx.merchant} on ${formatDate(tx.createdAt)}, ${formatTime(tx.createdAt)}. Transaction ID ${tx.id}.`;
+    if (navigator.share) {
+      // A receipt PDF from the backend would be attached here; none exists in this prototype.
+      await navigator.share({ title: "Payment receipt", text });
+    } else {
+      // No share sheet (most desktop browsers): the print dialog offers "Save as PDF".
+      window.print();
+    }
+  } catch (err) {
+    if (err?.name !== "AbortError") toast("Couldn't create the receipt. Try again.");
+  } finally {
+    button.removeAttribute("aria-busy");
+    button.innerHTML = label;
+  }
+}
+
+/*
+ * Navigation belongs to the host app. These events are the integration points;
+ * the prototype only logs them.
+ */
+function emit(name) {
+  document.dispatchEvent(new CustomEvent(`receipt:${name}`, { detail: { id: TRANSACTION.id } }));
+}
+
+/* State */
+const STATES = ["success", "pending", "failed", "loading"];
+let current;
+
+function setState(state) {
+  if (!STATES.includes(state)) state = "success";
+  current = state;
+  const main = document.getElementById("receipt");
+  main.setAttribute("aria-busy", String(state === "loading"));
+  main.innerHTML = renderReceipt(state, TRANSACTION);
+  document.getElementById("actions").innerHTML = renderActions(state);
+  document.querySelectorAll(".preview button").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.state === state)));
+  const url = new URL(location.href);
+  url.searchParams.set("state", state);
+  history.replaceState(null, "", url);
+}
+
+document.addEventListener("click", (e) => {
+  const el = e.target.closest("[data-action]");
+  if (!el) return;
+  const action = el.dataset.action;
+  if (action === "copy") copyId(TRANSACTION);
+  else if (action === "share") shareReceipt(el, TRANSACTION);
+  else emit(action);
+});
+["done", "help", "retry"].forEach((n) => document.addEventListener(`receipt:${n}`, (e) => console.info(`receipt:${n}`, e.detail)));
+
+/* Preview switcher (prototype only) */
+document.querySelector(".preview").innerHTML = STATES
+  .map((s) => `<button type="button" data-state="${s}" aria-pressed="false">${s[0].toUpperCase() + s.slice(1)}</button>`)
+  .join("");
+document.querySelector(".preview").addEventListener("click", (e) => {
+  const b = e.target.closest("button[data-state]");
+  if (b) setState(b.dataset.state);
+});
+
+/* The host app can move a pending receipt to success or failed without a reload. */
+window.receipt = { setState };
+
+setState(new URLSearchParams(location.search).get("state") || "success");
+</script>
+</body>
+</html>
