@@ -70,10 +70,13 @@ h1, h2 {
   .reveal[data-shown="false"] .dim-line, .reveal[data-shown="false"] .dim-label { opacity: 1; }
 }
 
-/* Motion: only the review marks move. Content (text, screens, tables) renders still; pins, rings,
-   measurements, and strikes draw in, because they are the story. One curve for movement, one spring
-   for touch; transform and opacity only. Four durations, by level (RX-UI-11): 1 feedback,
-   2 component, 3 mark, 4 story. Delays are multiples. */
+/* Motion: one story, told by the screens. The benchmark's "one screen became six" is the page's single
+   storytelling moment (components/one-to-six.tsx). Around it, sections hand over to each other as you
+   scroll (a rule draws in, the block rises into place, the hero steps back), and review marks draw in.
+   Text is never held back by time: section motion is tied to scroll, so it is where your eye is, and
+   where scroll-driven animation is missing, or reduced motion is asked for, everything is simply there.
+   One curve for movement, one spring for touch; transform and opacity only. Four durations, by level
+   (RX-UI-11): 1 feedback, 2 component, 3 mark, 4 story. Delays are multiples. */
 :root {
   --dur-1: 150ms;
   --dur-2: 250ms;
@@ -231,3 +234,97 @@ code,
 @media (prefers-reduced-motion: reduce) {
   .reveal[data-shown="false"] .pin-in { opacity: 1; }
 }
+
+/* Section handover, driven by scroll (no JavaScript). Each section's top rule draws from the left as it
+   arrives; blocks marked .rise come up into place over the first part of their entry; the hero board
+   steps back as it leaves. The rule is always drawn where this is not supported. */
+.section-rule { position: relative; }
+.section-rule::before { content: ""; position: absolute; inset: 0 0 auto 0; height: 1px; background: var(--color-hair); transform-origin: left center; }
+
+/* Typing caret for a command being typed in. */
+.caret { position: relative; }
+.caret::before { content: ""; position: absolute; left: 0; top: 0.1em; bottom: 0.1em; width: 2px; background: var(--color-accent); }
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .section-rule::before { animation: rule-in linear both; animation-timeline: view(); animation-range: entry 0% entry 35%; }
+    .rise { animation: rise linear both; animation-timeline: view(); animation-range: entry 0% entry 55%; }
+    .hero-exit { animation: hero-out linear both; animation-timeline: view(); animation-range: exit 0% exit 90%; transform-origin: center top; }
+
+    /* How it works: the rail fills across the five steps and each number turns teal as it is reached. */
+    .steps { view-timeline-name: --steps; }
+    .steps-rail { transform-origin: left center; animation: rule-in linear both; animation-timeline: --steps; animation-range: cover 22% cover 48%; }
+    .step-num { animation: step-on linear both; animation-timeline: view(); animation-range: entry 40% entry 90%; }
+    .step { animation: rise linear both; animation-timeline: view(); animation-range: entry 0% entry 60%; }
+    @media (min-width: 1024px) {
+      .step-num { animation-timeline: --steps; animation-range: cover calc(22% + var(--i) * 5.2%) cover calc(24% + var(--i) * 5.2%); }
+      .step { animation-timeline: --steps; animation-range: entry calc(var(--i) * 8%) entry calc(60% + var(--i) * 8%); }
+    }
+  }
+}
+@keyframes rule-in { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+@keyframes rise {
+  from { opacity: 0; transform: translateY(40px); animation-timing-function: cubic-bezier(0.2, 0.7, 0.2, 1); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes hero-out { to { opacity: 0.25; transform: scale(0.94) translateY(-32px); } }
+@keyframes step-on { from { color: var(--color-muted); } to { color: var(--color-accent); } }
+
+/* Reasoning stage (components/reasoning-stage.tsx). Marks drawn by scroll through CSS variables that
+   Motion sets: --strike for the guessed value, --ring for the value kept open. */
+.strike-scrub { transform-origin: left center; transform: scaleX(var(--strike, 1)); }
+.ring-scrub { stroke-dasharray: 1; stroke-dashoffset: calc(1 - var(--ring, 1)); }
+/* On the white screens the board's light teal and coral fall near 2:1, so marks there use the brand's
+   darker pair (teal #14756f, the logo's annotation red #c8321c), both above 3:1 on the screen's paper. */
+.on-screen .ring-scrub { stroke: #14756f; stroke-width: 2; }
+.on-screen .strike-scrub { background: #c8321c; }
+
+/* A beat's words are swapped whole, never scrubbed: the one on screen is always complete. Lists inside
+   come in line by line, quickly. */
+/* Hidden beats are only transparent, not removed: a screen reader still reads all four, in order. */
+.beat { transition: opacity var(--dur-2) var(--ease-ios), transform var(--dur-3) var(--ease-ios); }
+.beat[data-on="false"] { opacity: 0; transform: translateY(10px); pointer-events: none; }
+.beat[data-on="true"] .beat-list > * { animation: note-in var(--dur-3) var(--ease-out) both; animation-delay: calc(var(--k, 0) * 90ms + 80ms); }
+@media (prefers-reduced-motion: reduce) {
+  .beat, .beat[data-on="false"] { transition: none; transform: none; }
+  .beat[data-on="true"] .beat-list > * { animation: none; }
+}
+
+/* Intelligence motion: a guessed value is struck out, then what was kept open takes its place. Plays
+   each time its beat comes in; with reduced motion both are simply shown, the guess struck. */
+.morph-old { position: relative; display: inline-block; }
+.morph-old::after { content: ""; position: absolute; left: -2px; right: -2px; top: 55%; height: 1.5px; background: var(--color-mark); transform-origin: left center; }
+.morph-new { display: inline-block; }
+.beat[data-on="true"] .morph-old::after { animation: draw-x var(--dur-3) var(--ease-out) 150ms both; }
+.beat[data-on="true"] .morph-new { animation: token-in var(--dur-3) var(--ease-spring) 450ms both; }
+@keyframes token-in { from { opacity: 0; transform: translateY(6px) scale(0.85); filter: blur(2px); } to { opacity: 1; transform: none; filter: none; } }
+@media (prefers-reduced-motion: reduce) {
+  .beat[data-on="true"] .morph-old::after, .beat[data-on="true"] .morph-new { animation: none; }
+}
+
+/* Micro-interaction: a step that can be jumped to shows a focus ring that hugs it. */
+.step-btn:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 4px; border-radius: 4px; }
+
+/* Before and after, between tabs: the new panel comes in from the side of the tab that was chosen. */
+@keyframes panel-from-right { from { opacity: 0; transform: translateX(24px); } to { opacity: 1; transform: none; } }
+@keyframes panel-from-left { from { opacity: 0; transform: translateX(-24px); } to { opacity: 1; transform: none; } }
+.case-panel[data-dir="next"] { animation: panel-from-right var(--dur-3) var(--ease-out) both; }
+.case-panel[data-dir="prev"] { animation: panel-from-left var(--dur-3) var(--ease-out) both; }
+@media (prefers-reduced-motion: reduce) { .case-panel[data-dir] { animation: none; } }
+
+/* Micro-interaction: the compare handle grows a little under the pointer and while dragged, and shows a
+   ring when focused from the keyboard. */
+.compare:active .compare-handle > span:last-child, .compare-handle:hover > span:last-child { transform: scale(1.12); }
+.compare-handle:focus-visible { outline: none; }
+.compare-handle:focus-visible > span:last-child { box-shadow: 0 0 0 3px var(--color-paper), 0 0 0 5px var(--color-accent); }
+@media (prefers-reduced-motion: reduce) { .compare-handle > span:last-child { transition: none; } }
+
+/* Analytical motion: a redline drawn by scroll. --dim (0 to 1) is set by Motion on a parent; the label
+   arrives once the line is most of the way. */
+.dim.scrub .dim-line, .dim.scrub .dim-label { animation: none; }
+.dim-h.scrub .dim-line { transform: scaleX(var(--dim, 1)); }
+.dim-v.scrub .dim-line { transform: scaleY(var(--dim, 1)); }
+.dim.scrub .dim-label { opacity: clamp(0, calc((var(--dim, 1) - 0.6) * 2.5), 1); }
+
+/* A screen in flight carries a shadow, so it reads as lifted off the board. */
+.dealt .on-screen { box-shadow: 0 18px 40px -18px rgb(0 0 0 / 0.7); }

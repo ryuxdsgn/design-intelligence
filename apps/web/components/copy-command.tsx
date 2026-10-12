@@ -1,14 +1,45 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 type Status = "idle" | "copied" | "failed";
 
 /** A shell command with a copy button. If the clipboard is blocked, the text is selected instead. */
 /** `primary` marks the one command the page is for: a framed row and a filled Copy button. */
-export function CopyCommand({ command, night = false, prompt = "$", primary = false }: { command: string; night?: boolean; prompt?: string; primary?: boolean }) {
+/** `typeIn` types the command out once, the first time it scrolls into view, like it is being entered.
+    Every character is always in the DOM (only its opacity changes), so the row never resizes, screen
+    readers and Copy get the whole command, and without JavaScript or with reduced motion it is just there. */
+export function CopyCommand({ command, night = false, prompt = "$", primary = false, typeIn = false }: { command: string; night?: boolean; prompt?: string; primary?: boolean; typeIn?: boolean }) {
   const [status, setStatus] = useState<Status>("idle");
   const codeRef = useRef<HTMLElement>(null);
+  const [typed, setTyped] = useState(command.length);
+
+  useEffect(() => {
+    const el = codeRef.current;
+    if (!typeIn || !el || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    // Only a command still below the fold is hidden for typing; one already on screen stays as it is.
+    if (el.getBoundingClientRect().top < window.innerHeight) return;
+    setTyped(0);
+    let timer: ReturnType<typeof setInterval> | undefined;
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+        io.disconnect();
+        timer = setInterval(() => {
+          setTyped((n) => {
+            if (n >= command.length) clearInterval(timer);
+            return Math.min(n + 1, command.length);
+          });
+        }, 28);
+      },
+      { rootMargin: "0px 0px -20% 0px" },
+    );
+    io.observe(el);
+    return () => {
+      io.disconnect();
+      clearInterval(timer);
+    };
+  }, [typeIn, command]);
 
   async function copy() {
     try {
@@ -41,12 +72,21 @@ export function CopyCommand({ command, night = false, prompt = "$", primary = fa
       )}
       <code ref={codeRef} className="min-w-0 flex-1 py-1 [overflow-wrap:anywhere]">
         {/* Lines break only between words, so a package name never splits at its hyphen. */}
-        {command.split(" ").map((word, i) => (
-          <span key={i}>
-            {i > 0 && " "}
-            <span className="inline-block max-w-full">{word}</span>
-          </span>
-        ))}
+        {command.split(" ").map((word, i, words) => {
+          const from = words.slice(0, i).join(" ").length + (i ? 1 : 0);
+          return (
+            <span key={i}>
+              {i > 0 && " "}
+              <span className="inline-block max-w-full">
+                {typed >= command.length
+                  ? word
+                  : [...word].map((ch, k) => (
+                      <span key={k} className={`${from + k < typed ? "" : "text-transparent"} ${from + k === typed ? "caret" : ""}`}>{ch}</span>
+                    ))}
+              </span>
+            </span>
+          );
+        })}
       </code>
       <button
         type="button"
