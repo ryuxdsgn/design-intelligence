@@ -46,9 +46,9 @@ facts from assumptions; prefer evidence over aesthetic preference; do not invent
 explain meaningful decisions with their trade-off; validate before claiming.`;
 
 export const CORE_WORKFLOW = `1. **Understand the request**: who, what task, which product and market (RX-PR-01). Read the
-   RYUX project context in DESIGN.md first when it exists; do not guess what it leaves blank. Ask
-   only when the answer would change a major decision (at most three, usually none), and assume
-   the rest visibly. DESIGN.md answers are direction, not evidence of what users need.
+   RYUX project context in DESIGN.md, then the product docs (Product docs paths, else PRD.md,
+   docs/prd*, docs/product*, README), and name what you read. Ask and record direction as in
+   capabilities/design.md, step 1; assume the rest visibly. DESIGN.md is direction, not evidence.
 2. **Pick the entry point** and read its file.
 3. **Select knowledge**: read the modules the task table lists, and no others.
 4. **Gather evidence**: reference screens through the ryux MCP when connected; otherwise say so.
@@ -68,11 +68,20 @@ export const DESIGN_BODY = `# RYUX Design
 
 1. **Context.** Who, what task, which product and market, and the design intent
    (knowledge/product.md). Take it from the prompt, then DESIGN.md, then knowledge and evidence.
-   Ask only when a missing answer materially affects the user flow, what the product can do, or
-   whether the content is correct: those questions alone, most consequential first, at most three,
-   in one message, before designing. Complete context means no questions. Never ask what the
-   prompt or DESIGN.md already answers. For the rest, make the smallest reasonable assumption,
-   write it down, and continue (RX-PR-01, RX-PR-02).
+   Read the product docs first (the router, step 1). Ask only when a missing answer materially
+   affects the user flow, what the product can do, or whether the content is correct, those
+   questions alone, most consequential first, at most three, in one message, before designing.
+   **Direction is the user's call:** when neither the prompt nor DESIGN.md sets the UI direction
+   (character, or brand colour and type) or the motion direction, ask for it in that message (it
+   counts toward the three) instead of choosing it yourself. Complete context means no questions. Never ask what the prompt, DESIGN.md, or the
+   product docs already answer. For the rest, make the smallest reasonable assumption, write it
+   down, and continue (RX-PR-01, RX-PR-02).
+   **Record direction answers.** When the user answers a UI or motion direction question, write the
+   answer into the UI direction or Motion direction field of the RYUX project context in DESIGN.md:
+   between \`<!-- ryux-context:start -->\` and \`<!-- ryux-context:end -->\`, one line per field
+   (\`- **UI direction**: Calm, trustworthy\`). If DESIGN.md or the block does not exist, create it
+   with those two fields. Change only those field lines; leave every other line as it is. Your own
+   assumptions do not go into DESIGN.md.
 2. **Understand what exists.** When there is a screen, product, or design system already, read its
    analysis or run Analyze first (capabilities/analyze.md). Understand before you design.
 3. **Decide with evidence.** For consequential choices, compare two or three patterns, using
@@ -92,7 +101,8 @@ export const DESIGN_BODY = `# RYUX Design
    gate. Never finish with an asset still pending.
 8. **Fact check, then the gate.** Check every product fact on the canvas (tool and command names,
    integrations, platforms, pages, numbers) against the brief or the repo (RX-PR-02), then close
-   with the Delivery Gate, saying what was not designed, such as other widths or states.
+   with the Delivery Gate, saying what was not designed, such as other widths or states. If you
+   wrote DESIGN.md, say so in the final message: which file and which fields.
 
 Do not edit frames you were not asked to change. Do not hand off a design as "final" with
 placeholder or invented content.

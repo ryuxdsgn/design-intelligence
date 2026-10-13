@@ -390,6 +390,7 @@ const CONTEXT_FIELDS: ContextField[] = [
     ] },
   },
   { label: "Brand and design system", hint: "" },
+  { label: "Product docs", hint: "paths RYUX reads for product facts, for example docs/prd.md:" },
   { label: "Evidence sources", hint: `RYUX MCP (hosted server not live yet; local: ${MCP_LOCAL_ADD_CMD}), Figma files, reference URLs:` },
   {
     label: "Constraints", hint: "platforms, accessibility target (for example WCAG 2.2 AA), what must not change:",
