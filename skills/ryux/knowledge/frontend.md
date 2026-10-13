@@ -28,7 +28,8 @@ Does not cover: visual decisions (see `knowledge/ui.md`) or component reuse deci
 The repo itself is the main evidence (stack, components, tokens); reference screens inform behavior, not code. Without the ryux MCP, say the evidence comes from the design and standards alone.
 
 > Hard Gates always apply, whichever skills are loaded: no invented numbers, people, urgency, business
-> rules, or terms; no placeholder shipped as final; no missing critical states. See `SKILL.md`.
+> rules, or terms; no placeholder shipped as final; no missing critical states. Labeled sample data is
+> not an invented number; an unconfirmed capability is never presented as confirmed. See `SKILL.md`.
 
 ## Rules
 

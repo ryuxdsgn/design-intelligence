@@ -98,7 +98,8 @@ run the purpose gate; keep it when the answer is real, as in the last column.
 Real screens show what real products do instead of invented numbers and urgency: `search_screens`; heuristic findings via `heuristic_eval`. Without the ryux MCP, say the evidence comes from the design and standards alone.
 
 > Hard Gates always apply, whichever skills are loaded: no invented numbers, people, urgency, business
-> rules, or terms; no placeholder shipped as final; no missing critical states. See `SKILL.md`.
+> rules, or terms; no placeholder shipped as final; no missing critical states. Labeled sample data is
+> not an invented number; an unconfirmed capability is never presented as confirmed. See `SKILL.md`.
 
 ## Rules
 
@@ -116,11 +117,11 @@ Real screens show what real products do instead of invented numbers and urgency:
 - Why: Fake people are fake endorsements. (ryux anti-slop principle)
 - Check: review
 
-### RX-AS-03 [Required] [Hard Gate] Placeholders look like placeholders
+### RX-AS-03 [Required] [Hard Gate] Sample data is realistic and labeled; placeholders only for what is missing
 
-- Do: Mark temporary content clearly: [REAL DATA], [LOGO], "Contoh data".
-- Do not: Ship placeholder copy or data disguised as final.
-- Why: Disguised placeholders ship by accident. (ryux anti-slop principle)
+- Do: Fill mockups with realistic sample content consistent with the brief (names, merchants, amounts in the brief's currency, dates) and list it as sample data in the output. Keep a visible placeholder only for an asset that does not exist yet, such as [LOGO].
+- Do not: Put [REAL DATA], XXX, or lorem text on the canvas where sample data would do, or ship sample data or placeholder copy as final. A sample-data label does not turn a fee, policy, or claim into a fact (RX-PR-02).
+- Why: Bracketed values read as unfinished and hide the layout's real behavior; unlabeled sample data ships by accident. (ryux anti-slop principle; ryux visual benchmark 2.5, 2026-10-09: [Brand] and XXX read as unfinished)
 - Check: audit_copy C-01
 
 ### RX-AS-04 [Required] [Hard Gate] No fake urgency

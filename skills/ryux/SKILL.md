@@ -112,8 +112,8 @@ No written exception; fix before delivery.
 
 - **Fake data or fake metrics.** Do not invent "48.000+ users", "4,8★", or "+12%". (RX-AS-01)
 - **Fake testimonials or people.** Do not make up testimonials, reviewers, or customer photos. (RX-AS-02)
-- **Invented business rules or product requirements.** Do not invent business rules, metrics, user data, permissions, pricing, requirements, or API behavior, or name a tool, command, integration, platform, or page the product does not have. (RX-PR-02, RX-FE-02)
-- **Placeholder copy shipped as final.** Do not ship placeholder copy or data disguised as final. (RX-AS-03)
+- **Invented business rules or product requirements.** Do not invent business rules, policies, guarantees, metrics, user data, permissions, pricing, requirements, or API behavior, or name a tool, command, integration, platform, or page the product does not have. Do not present an unconfirmed capability as a confirmed one. (RX-PR-02, RX-FE-02)
+- **Placeholder copy shipped as final.** Do not put [REAL DATA], XXX, or lorem text on the canvas where sample data would do, or ship sample data or placeholder copy as final. A sample-data label does not turn a fee, policy, or claim into a fact (RX-PR-02). (RX-AS-03)
 - **Fake urgency or scarcity.** Do not write "only 2 left", "offer ends tonight", or fake countdowns with nothing behind them. (RX-AS-04)
 - **Missing critical states.** Do not ship only the filled, happy-path screen. (RX-EC-01)
 - **Broken responsive behavior.** Do not design for one width only. (RX-RD-01)
