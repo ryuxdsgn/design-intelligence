@@ -26,28 +26,26 @@ With RYUX       context → evidence → reasoning → decision → interface �
 
 ## See the difference
 
-Same prompt, same agent, one with RYUX:
-*"Design a transaction detail page for a fintech app, shown after the user pays. Make it in pen.dev."*
+Same brief, same agent, one with RYUX: the transaction detail screen of a wallet called Lumo, shown
+after the user pays, with its currency, statuses, fee, and 30-day reporting window. Designed in pen.dev.
 
-<a href="apps/web/public/proof/en-td-pair-wide.png"><img src="apps/web/public/proof/en-td-pair-wide.png" alt="Without RYUX: one completed payment screen in dollars, with a 30-day reporting promise and a Save PDF button. With RYUX: six screens from the same prompt: completed, processing with a note not to pay again, failed with what to do next, loading, couldn't load with Try again, and the completed screen at 320 wide with long values" width="100%"></a>
+<a href="apps/web/public/proof/lumo-without.png"><img src="apps/web/public/proof/lumo-without.png" alt="Without RYUX: Completed, Processing and Failed screens for a Rp48.000 card payment, with Share and Save receipt buttons that the brief never mentioned" width="100%"></a>
 
-- **Every screen people go through.** Without RYUX, the agent designed only the success screen.
-  With RYUX, it also designed processing (with "Please don't pay again"), failed (with what to do
-  next), loading, couldn't load (with Try again), and the narrowest phone width.
-- **Nothing nobody asked for.** Without RYUX, the screen promised a 30-day reporting window and a
-  Save PDF button that nobody decided on, and they would ship looking as if someone had.
-- **Clear next steps.** With RYUX, each screen ends with one obvious way out, and "Report a problem"
-  is on every state where something could have gone wrong.
+<a href="apps/web/public/proof/lumo-with.png"><img src="apps/web/public/proof/lumo-with.png" alt="With RYUX: Completed, Processing and Failed screens, plus loading, a couldn't-load error, the report window after 30 days, a copied-ID message, and the screen at 320 wide; Share receipt is listed as unconfirmed" width="100%"></a>
 
-More screens is not the goal; a simple product may need one. The point is that the states a screen
-really has are covered, and nothing undecided is filled in.
+Three runs each, fresh agent per run, same model, no reference screens:
 
-Repeated three times, the pattern held: without RYUX, only the success state, features nobody
-asked for in 3 of 3 runs, a made-up business rule in 2 of 3, and dollars assumed in 3 of 3. With
-RYUX, the same five extra states each time and none of the rest. It also showed its own limits: every
-RYUX run stated that the page updates live, and flagged that as an assumption to confirm.
-Fresh agent per run, same model, no reference screens. A small benchmark, not a study.
-[Every run and the full method](https://ryux.design/benchmarks).
+| | Without RYUX | With RYUX 2.6.3 |
+| --- | --- | --- |
+| States designed | Completed, Processing, Failed, in 3 of 3 | Those three plus loading, couldn't load, report window closed, and 320 wide, in 3 of 3 |
+| Actions the brief didn't mention | Share or Save receipt added and presented as given, in 3 of 3 | Proposed and listed as unconfirmed, in 3 of 3 |
+| Promises the brief didn't make | "No money was taken" on a failed payment, in 2 of 3 | None, in 3 of 3 |
+| Placeholders on screen | None | None: realistic sample data, labeled as sample |
+
+Both sides put the fee on its own line, both flag what "Rp48.000 paid" means, and both look
+finished. The difference is what the screens cover and what they claim. RYUX proposed a receipt
+action in only 1 of 3 runs. The runs without RYUX are from the 2.6 visual benchmark; the RYUX runs
+used the same brief and harness three days later. A small benchmark, not a study.
 
 The goal isn't more UI. It's fewer decisions made silently.
 
@@ -61,7 +59,7 @@ result either way. [Visual benchmarks](https://ryux.design/benchmarks#wallet-hom
 ## Decisions come with a receipt
 
 For each major choice, RYUX writes down what it decided and how sure it is. This one is quoted from
-the run above:
+an earlier benchmark run:
 
 ```
 Decision     Amount + Fee = Total paid, shown in the card
@@ -76,13 +74,20 @@ design knows exactly what to confirm. The format is guidance RYUX follows, not a
 
 ## Know what you know
 
-RYUX keeps three kinds of information apart:
+RYUX sorts what it is working with before it designs:
 
-- **Known**: observed in the design or its values, or backed by a cited pattern or standard.
-- **Inferred**: a reasonable conclusion, stated as one.
-- **Unknown**: not available. It stays visible, like `[CUR]`, instead of being invented.
+- **Known**: stated in the prompt, DESIGN.md, or your product docs, or seen in the design itself.
+- **Design assumptions**: low-risk choices made from the context, such as grouping by date. RYUX
+  makes them and writes them down.
+- **Unconfirmed capabilities**: actions that products like yours usually have, such as sharing a
+  receipt, but that nobody confirmed for yours. RYUX may propose one, and lists it as unconfirmed,
+  not as a requirement.
+- **Facts, policies, and claims**: fees, refund times, guarantees, user counts. Never invented.
+  RYUX asks, or leaves them out.
 
-That is the whole idea: missing information should not turn into confident-looking UI.
+Mockups are filled with realistic sample data, labeled as sample, so a screen reads finished without
+pretending to be real. That is the whole idea: missing information should not turn into
+confident-looking UI.
 
 ## How it works
 
@@ -106,8 +111,16 @@ current work, audience, market, constraints, design intent, and UX, UI, and moti
 offers plain choices, your own answer, or Skip, and the answers go into a short block in DESIGN.md.
 RYUX reads it before it designs, follows it as direction (not evidence), and treats blanks as unknown.
 
+**Your product docs come next.** Point the Product docs field in DESIGN.md at your PRD, or let RYUX
+look for `PRD.md`, `docs/prd*`, `docs/product*`, or the README. It says which file it read, and what
+the docs state counts as known.
+
+**Direction is yours to set.** When neither the prompt nor DESIGN.md says how the product should look
+and move, RYUX asks instead of choosing, then writes your answer into DESIGN.md so it is not asked
+again.
+
 ```
-prompt → DESIGN.md → design knowledge → evidence → decisions
+prompt → DESIGN.md → product docs → design knowledge → evidence → decisions
 ```
 
 ## Using RYUX
@@ -118,9 +131,9 @@ You don't need a special prompt. Say what you are making, in your own words:
 Design a transaction detail page for our app.
 ```
 
-RYUX checks whether that is enough. It reads DESIGN.md and what the project already shows, and asks
-only the questions whose answers would change a major decision, at most three and often none. Then it
-designs.
+RYUX checks whether that is enough. It reads DESIGN.md, your product docs, and what the project
+already shows. It asks only what would change the flow, what the product can do, whether the content
+is correct, or the look and motion: at most three questions, often none. Then it designs.
 
 More context gives a better start. Good input answers some of these:
 
