@@ -13,10 +13,13 @@ Answer these before any layout exists. Write the answers down; they are the brie
 5. **Primary action**: the one thing this screen exists for.
 6. **Constraints**: platform, data that exists, technical or legal limits.
 7. **Success**: how would you know the screen works?
-8. **Assumptions**: everything you had to guess. Keep them visible.
+8. **Assumptions**: everything you had to guess, kept visible and sorted into design assumptions,
+   unconfirmed capabilities, and sample data.
 
-Unknown facts stay assumptions. Do not invent business rules, metrics, user data, permissions,
-pricing, requirements, or API behavior; mark them [REAL DATA] or ask.
+Unknown facts stay assumptions. Do not invent business rules, policies, metrics, user data,
+permissions, pricing, requirements, or API behavior; ask when one materially affects the flow or
+correctness, otherwise leave it out. Mockup content is realistic sample data, labeled (RX-PR-02,
+RX-AS-03).
 
 Find evidence with the ryux MCP (`search_screens`, `get_flow`, `get_local_pattern`) and cite the
 `screen_id`, or call the decision a judgment call.
@@ -47,22 +50,24 @@ Does not cover: layout or visual decisions (see `knowledge/ux.md` and `knowledge
 How comparable products frame the same task and offer: `search_screens` (category, flow) and `get_flow` for the full sequence. Without the ryux MCP, say the evidence comes from the design and standards alone.
 
 > Hard Gates always apply, whichever skills are loaded: no invented numbers, people, urgency, business
-> rules, or terms; no placeholder shipped as final; no missing critical states. See `SKILL.md`.
+> rules, or terms; no placeholder shipped as final; no missing critical states. Labeled sample data is
+> not an invented number; an unconfirmed capability is never presented as confirmed. See `SKILL.md`.
 
 ## Rules
 
 ### RX-PR-01 [Required] State the context first
 
-- Do: Before designing, write down the user, their task, the business goal, the design intent (what the user must understand, feel, and do), the information that matters, the primary action, the constraints, and what success looks like. Take what the prompt and DESIGN.md already give; ask only when a missing answer would change a major decision, at most three questions in one message (none when the context is complete), and write the rest as assumptions.
+- Do: Before designing, write down the user, their task, the business goal, the design intent (what the user must understand, feel, and do), the information that matters, the primary action, the constraints, and what success looks like. Take what the prompt and DESIGN.md already give; ask only when a missing answer materially affects the user flow, what the product can do, or whether the content is correct, at most three questions in one message, most consequential first (none when the context is complete). Otherwise make the smallest reasonable assumption, write it down, and continue.
 - Do not: Start from a generic template with no stated user or task, or ask questions the prompt or DESIGN.md already answers.
 - Why: Without a task, design and review drift into taste. (`capabilities/critique.md` playbook; NNGroup task-based evaluation)
 - Check: review
 
 ### RX-PR-02 [Required] [Hard Gate] Unknowns stay assumptions
 
-- Do: List what you do not know as assumptions, and mark the matching UI with [REAL DATA] or a question. Product facts (feature and tool names, commands, integrations, supported platforms, page names) come only from the brief, the repo, or the product's own docs.
-- Do not: Invent business rules, metrics, user data, permissions, pricing, requirements, or API behavior, or name a tool, command, integration, platform, or page the product does not have.
-- Why: Invented facts turn into promises and bugs that someone has to unwind. (ryux run 2026-10-02: an unconstrained agent invented a 30-day trial and user counts)
+- Do: Sort what the brief does not say into three kinds. Design assumptions (low-risk visual or structural choices such as a merchant category icon or grouping by date): decide them from the context. Unconfirmed capabilities (an action or feature the category usually has, such as sharing a receipt): convention is not proof, so ask when it materially changes the flow or scope; otherwise you may propose it, listed as unconfirmed, never as a requirement. Facts, claims, and policies: take them only from the brief, the repo, or the product's own docs (feature and tool names, commands, integrations, platforms, pages, fees, timings, guarantees).
+- Do not: Invent business rules, policies, guarantees, metrics, user data, permissions, pricing, requirements, or API behavior, or name a tool, command, integration, platform, or page the product does not have. Do not present an unconfirmed capability as a confirmed one.
+- Why: Invented facts turn into promises and bugs that someone has to unwind; a screen trimmed to the brief's literal words reads unfinished and hides what still needs confirming. (ryux run 2026-10-02: an unconstrained agent invented a 30-day trial and user counts; ryux visual benchmark 2.6 human rater, 2026-10-13: RYUX screens lost on a missing receipt action)
+- Not when: This rule is not a reason to drop content the brief implies or to leave a screen looking unfinished: sample content is RX-AS-03, design assumptions are yours to make.
 - Check: review
 
 ### RX-PR-03 [Required] [Hard Gate] One clear goal; one primary action when the task has one

@@ -68,9 +68,11 @@ export const DESIGN_BODY = `# RYUX Design
 
 1. **Context.** Who, what task, which product and market, and the design intent
    (knowledge/product.md). Take it from the prompt, then DESIGN.md, then knowledge and evidence.
-   Ask only when a missing answer would change a major decision: those questions alone, at most
-   three, in one message, before designing. Complete context means no questions. Never ask what
-   the prompt or DESIGN.md already answers; write the rest down as assumptions (RX-PR-01).
+   Ask only when a missing answer materially affects the user flow, what the product can do, or
+   whether the content is correct: those questions alone, most consequential first, at most three,
+   in one message, before designing. Complete context means no questions. Never ask what the
+   prompt or DESIGN.md already answers. For the rest, make the smallest reasonable assumption,
+   write it down, and continue (RX-PR-01, RX-PR-02).
 2. **Understand what exists.** When there is a screen, product, or design system already, read its
    analysis or run Analyze first (capabilities/analyze.md). Understand before you design.
 3. **Decide with evidence.** For consequential choices, compare two or three patterns, using
@@ -127,7 +129,11 @@ Asset direction per asset: purpose, source, style, composition, context, consist
                avoid, provenance (observed, sourced, illustrative, generated, inferred)
 Responsive     what changes, stays, disappears, or stacks at each width
 
-Assumptions    everything guessed, visible
+Assumptions    kept apart, all visible:
+               design assumptions (low-risk choices made from context);
+               unconfirmed capabilities (actions or features on the canvas the brief did not
+               confirm; proposed, not requirements); sample data (realistic mockup content,
+               never a fact, RX-AS-03)
 Decisions      one Decision Receipt per major decision (below)
 \`\`\`
 
@@ -236,10 +242,13 @@ export const GUIDES: Record<SkillId, string> = {
 5. **Primary action**: the one thing this screen exists for.
 6. **Constraints**: platform, data that exists, technical or legal limits.
 7. **Success**: how would you know the screen works?
-8. **Assumptions**: everything you had to guess. Keep them visible.
+8. **Assumptions**: everything you had to guess, kept visible and sorted into design assumptions,
+   unconfirmed capabilities, and sample data.
 
-Unknown facts stay assumptions. Do not invent business rules, metrics, user data, permissions,
-pricing, requirements, or API behavior; mark them [REAL DATA] or ask.
+Unknown facts stay assumptions. Do not invent business rules, policies, metrics, user data,
+permissions, pricing, requirements, or API behavior; ask when one materially affects the flow or
+correctness, otherwise leave it out. Mockup content is realistic sample data, labeled (RX-PR-02,
+RX-AS-03).
 
 Find evidence with the ryux MCP (\`search_screens\`, \`get_flow\`, \`get_local_pattern\`) and cite the
 \`screen_id\`, or call the decision a judgment call.

@@ -37,7 +37,8 @@ Does not cover: per-action behavior (see `knowledge/interaction.md`), forms (see
 How Indonesian apps sequence and structure this flow: `get_flow` for a reference flow, `compare_apps` to compare steps across apps. Without the ryux MCP, say the evidence comes from the design and standards alone.
 
 > Hard Gates always apply, whichever skills are loaded: no invented numbers, people, urgency, business
-> rules, or terms; no placeholder shipped as final; no missing critical states. See `SKILL.md`.
+> rules, or terms; no placeholder shipped as final; no missing critical states. Labeled sample data is
+> not an invented number; an unconfirmed capability is never presented as confirmed. See `SKILL.md`.
 
 ## Rules
 

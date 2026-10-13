@@ -32,7 +32,8 @@ Check the stated viewport and the smallest supported width. No horizontal page s
 How reference flows adapt across widths when captured: `get_flow`, `search_screens` for the mobile pattern. Without the ryux MCP, say the evidence comes from the design and standards alone.
 
 > Hard Gates always apply, whichever skills are loaded: no invented numbers, people, urgency, business
-> rules, or terms; no placeholder shipped as final; no missing critical states. See `SKILL.md`.
+> rules, or terms; no placeholder shipped as final; no missing critical states. Labeled sample data is
+> not an invented number; an unconfirmed capability is never presented as confirmed. See `SKILL.md`.
 
 ## Rules
 
