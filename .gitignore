@@ -20,3 +20,5 @@ CLAUDE.md
 
 # Local design working files (encrypted .pen and exports)
 /design/
+.vercel
+.env*
