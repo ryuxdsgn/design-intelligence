@@ -57,7 +57,7 @@ How comparable products frame the same task and offer: `search_screens` (categor
 
 ### RX-PR-01 [Required] State the context first
 
-- Do: Before designing, write down the user, their task, the business goal, the design intent (what the user must understand, feel, and do), the information that matters, the primary action, the constraints, and what success looks like. Take what the prompt and DESIGN.md already give; ask only when a missing answer materially affects the user flow, what the product can do, or whether the content is correct, at most three questions in one message, most consequential first (none when the context is complete). Otherwise make the smallest reasonable assumption, write it down, and continue.
+- Do: Before designing, write down the user, their task, the business goal, the design intent (what the user must understand, feel, and do), the information that matters, the primary action, the constraints, and what success looks like. Take what the prompt and DESIGN.md already give; ask only when a missing answer materially affects the user flow, what the product can do, or whether the content is correct, or when neither the prompt nor DESIGN.md sets the UI or motion direction, at most three questions in one message, most consequential first (none when the context is complete). Otherwise make the smallest reasonable assumption, write it down, and continue.
 - Do not: Start from a generic template with no stated user or task, or ask questions the prompt or DESIGN.md already answers.
 - Why: Without a task, design and review drift into taste. (`capabilities/critique.md` playbook; NNGroup task-based evaluation)
 - Check: review
