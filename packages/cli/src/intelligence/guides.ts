@@ -441,6 +441,9 @@ If not, the surface has no point of view yet. Stay honest while being bold: a st
 needs invented numbers, people, or logos.
 
 **3. Motion.** Start from purpose: what the motion communicates; with no purpose, no motion.
+Then ask how often someone will see it. The more often, the less of it they should notice: what
+people open many times a day (a command palette, a shortcut, core navigation) appears at once, and
+expression is kept for occasional or first-time moments. A purpose does not outweigh frequency.
 Every motion follows one lifecycle: before, trigger, transition, new state, feedback.
 The states themselves (waiting, result, recovery) are defined in ryux-interaction (RX-IX-01,
 RX-IX-02); motion only makes them visible, and it never compensates for weak UX. Decide the trigger,
