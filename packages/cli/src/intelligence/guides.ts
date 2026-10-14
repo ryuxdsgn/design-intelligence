@@ -73,7 +73,9 @@ export const DESIGN_BODY = `# RYUX Design
    questions alone, most consequential first, at most three, in one message, before designing.
    **Direction is the user's call:** when neither the prompt nor DESIGN.md sets the UI direction
    (character, or brand colour and type) or the motion direction, ask for it in that message (it
-   counts toward the three) instead of choosing it yourself. Complete context means no questions. Never ask what the prompt, DESIGN.md, or the
+   counts toward the three) instead of choosing it yourself. **No DESIGN.md and no product docs is the
+   case where these questions matter most, never a reason to skip them:** ask, then wait for the
+   answer before designing. Complete context means no questions. Never ask what the prompt, DESIGN.md, or the
    product docs already answer. For the rest, make the smallest reasonable assumption, write it
    down, and continue (RX-PR-01, RX-PR-02).
    **Record direction answers.** When the user answers a UI or motion direction question, write the
