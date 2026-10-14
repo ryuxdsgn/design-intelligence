@@ -185,7 +185,9 @@ export const BUILD_BODY = `# RYUX Build
    approved mockup; it is the spec. If there is none, run Design first (capabilities/design.md)
    instead of inventing one in code.
 3. **Read the modules the task needs** from the task table: for example accessibility, responsive,
-   and edge-cases for any UI, and forms and content for a form.
+   and edge-cases for any UI, and forms and content for a form. When the build adds motion or
+   transitions, read knowledge/ui.md (RX-UI-11) before writing any: how often the surface is seen
+   decides how much it moves.
 4. **Implement faithfully.** Use semantic elements, existing components, and real data paths.
    Build must not invent business rules, prices, or limits; API behavior or response shapes; or
    data presented as real (RX-FE-02, RX-PR-02). It must not silently change a design decision: a
