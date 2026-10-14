@@ -130,6 +130,7 @@ function skill(id: SkillId, rules: RuleInput[]): Rule[] {
 const RUN = "ryux run 2026-10-02";
 // Rules that cover a pattern another MIT ruleset also names; the text and numbering are RYUX's own.
 const AS = "anti-slop (MIT)";
+const EK = "emilkowalski/skills (MIT)";
 
 export const RULES: Rule[] = [
   ...skill("product", [
@@ -735,10 +736,10 @@ export const RULES: Rule[] = [
       title: "Motion earns its level",
       level: "contextual",
       when: "the design adds motion or transitions",
-      do: "Classify each motion: L1 state feedback, L2 component transition, L3 page transition, L4 storytelling, L5 decorative. The higher the level, the stronger the reason it needs. Take timing and easing from one motion personality, define them once as motion tokens, animate transform and opacity rather than layout properties, and honor reduced motion (RX-A11Y-08).",
-      dont: "Animate everything, use one generic duration and easing (transition: all 0.3s) everywhere, or let decorative motion delay content or input.",
+      do: "Classify each motion: L1 state feedback, L2 component transition, L3 page transition, L4 storytelling, L5 decorative. The higher the level, the stronger the reason it needs. Then weigh how often people see it: a surface opened many times a day (command palette, shortcut, core navigation, list selection) appears and closes without movement, at most a fade too short to notice; standard transitions belong to occasional surfaces (modal, drawer, toast), and expression to rare or first-time moments. Take timing and easing from one motion personality, define them once as motion tokens, animate transform and opacity rather than layout properties, and honor reduced motion (RX-A11Y-08).",
+      dont: "Animate everything, give a surface people open many times a day an entrance they must sit through, use one generic duration and easing (transition: all 0.3s) everywhere, or let decorative motion delay content or input.",
       why: "Motion directs attention; unearned motion steals it from the task and can make some people unwell.",
-      basis: "NNGroup animation and usability guidance; WCAG 2.3.3 animation from interactions",
+      basis: `NNGroup animation and usability guidance; WCAG 2.3.3 animation from interactions; frequency check: pattern also in ${EK} find-animation-opportunities, written for RYUX`,
       notWhen: "L1 feedback on standard controls that follows the platform defaults",
       tradeoff: "fewer flourishes on marketing pages",
       check: "review; reduced-motion test",
