@@ -33,4 +33,4 @@ pnpm sync:skills
 ```
 
 To install RYUX into your agent, run `npx skills add ryuxdsgn/design-intelligence` or
-`npx @ryuxdsgn/design-intelligence` (see the [README](../README.md#install)).
+`npx @ryuxdsgn/design-intelligence` (see the [README](../README.md#get-started)).

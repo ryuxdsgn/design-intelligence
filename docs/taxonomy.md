@@ -1,6 +1,12 @@
-# RYUX taxonomy (draft v0.2)
+# RYUX taxonomy (v0.3)
 
-The taxonomy has four layers of tags: app category, flow type, pattern, and component. Slugs use lowercase and hyphens, in English so agents can work with them easily; labels are shown in Indonesian.
+The vocabulary for tagging screens in the RYUX reference library, the data behind the RYUX MCP. You
+don't need it to use the RYUX skill; it is for people who capture and review reference screens, and
+for the MCP's search arguments.
+
+Four layers: app category, flow type, pattern, and component. Slugs and labels are in English,
+lowercase with hyphens for slugs. The capture pipeline (`packages/pipeline`) reads the pattern and
+component tables of this file directly, so keep their headings and table format.
 
 ## App category
 
@@ -107,7 +113,7 @@ an observed pattern, not a best practice.
 - Every screen must have exactly one category and one flow type (inherited from the flow), plus zero or more patterns and components
 - New slugs may only be added by an admin, and are recorded in the change log below
 - AI tags that do not match an existing slug are rejected, not created automatically
-- Review the taxonomy again after the pilot of 10 apps
+- Review the taxonomy again once the pilot library is larger; it is small today
 
 ## Change history
 
@@ -115,3 +121,4 @@ an observed pattern, not a best practice.
 | --- | --- |
 | v0.1 | Initial draft for the pilot |
 | v0.2 | Added `saas`, the Platform layer (`android`, `ios`, `web`), and General patterns; `gov` moved into the pilot, for web references |
+| v0.3 | Says who the file is for and that the pipeline reads it; labels are English; no slug changes |

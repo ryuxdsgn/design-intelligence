@@ -4,7 +4,9 @@
 > Written from scratch based on public standards and methods: **Nielsen's 10 usability heuristics
 > (Nielsen, 1994)** and **Nielsen Norman Group UX research** (nngroup.com), **WCAG 2.2**,
 > **Apple Human Interface Guidelines**, **Material Design**, and findings from ryux's own agent runs.
-> References to standards are factual; all explanations, examples, and numbering are written by us.
+> A few rules share an idea with another MIT-licensed ruleset; each says so in its source line, and its
+> text is written for RYUX. References to standards are factual; all explanations, examples, and
+> numbering are written by us.
 > **Not a derivative of any third-party licensed text** and not affiliated with NN/g or anyone else.
 >
 > **Version:** RYUX 2.7.0
@@ -12,9 +14,10 @@
 RYUX is design intelligence for AI agents and designers, packaged as one skill, `ryux`. It has five
 entry points: Analyze, Design, Build, Critique, and QA. The router (`SKILL.md`) picks the
 knowledge modules each task needs. Anti-slop prevents bad, generic output; RYUX also guides good
-design decisions. Three things make it distinctly RYUX: **evidence-based** (real product screens),
-a **global core with local market depth** (Indonesia is the first market), and **human judgment** for
-designer notes.
+design decisions. Three things make it distinctly RYUX: **evidence-based** decisions that say what
+was observed, inferred, or unknown; a **global core** that adapts to the product's own market; and
+**human judgment** for designer notes in the reference library (whose first screens come from
+Indonesian products).
 
 ## Principle and workflow
 
@@ -187,7 +190,7 @@ Every rule ends its Why line with the source it comes from: a public standard or
 industry practice, something observed in a RYUX agent run, or a RYUX principle or review. A rule can
 cite more than one. **Provenance describes where a rule comes from, not how authoritative or effective
 it is.** A standard gives authority; a RYUX run gives an observation; they are not equivalent evidence.
-The point is that all 84 rules can be traced, not that the counts score them. Read each rule's Why
+The point is that every rule can be traced, not that the counts score them. Read each rule's Why
 line below for its exact source.
 
 <!-- provenance:start -->
@@ -1007,9 +1010,8 @@ Gate area ANTI-SLOP. Covers hard gates, purpose gates, quality locks, honest cla
 npx @ryuxdsgn/design-intelligence install --agent claude          # or --agent all; see the README for every agent
 ```
 
-RYUX 2 installs one folder, `ryux/`. Installing or updating removes the per-skill folders of RYUX 1.x
-(`ryux-core`, `ryux-forms`, ...), and the old `--for`, `--groups`, and `--concerns` flags are no
-longer needed. The browsable skill lives in [`skills/ryux/`](../skills/ryux).
+RYUX installs one folder, `ryux/`. The browsable skill lives in [`skills/ryux/`](../skills/ryux).
+`update` also cleans up installs from RYUX 1.x.
 
 ## Mapping to code
 
@@ -1027,10 +1029,15 @@ Checks in `packages/core` (tool-local numbering `R-0x` and `C-0x`):
 | RX-EC-01 | `audit_ui` R-05 |
 | Nielsen heuristics 1-10 | `heuristic_eval` H-01..H-10 |
 
-## Retired in rules 1.3
+## History
 
-Rules 1.3 cut the rule set from 109 to 76. Retired IDs are not reused: each was merged into another
-rule or moved into its skill's guide as guidance, so nothing was lost.
+Rule IDs are never reused. These tables show where retired and RX-1.x IDs went.
+
+<details>
+<summary><b>Retired in rules 1.3</b></summary>
+
+Rules 1.3 cut the rule set from 109 to 76. Each retired ID was merged into another rule or moved into
+its skill's guide as guidance.
 
 <!-- retired:start -->
 | Retired ID | Now in |
@@ -1072,10 +1079,13 @@ rule or moved into its skill's guide as guidance, so nothing was lost.
 | RX-QA-07 | RX-QA-06 |
 <!-- retired:end -->
 
-## Migration from RX-1.x
+</details>
 
-The current rule set groups every rule by module. RX-1.x IDs map as follows; some old rules were merged, and some
-were split across skills.
+<details>
+<summary><b>Migration from RX-1.x</b></summary>
+
+The current rule set groups every rule by module. RX-1.x IDs map as follows; some old rules were
+merged, and some were split across skills.
 
 <!-- migration:start -->
 | RX-1.x ID | Current ID |
@@ -1133,6 +1143,8 @@ were split across skills.
 | RX-N-11 | RX-IX-04 |
 | RX-N-12 | RX-UX-02 |
 <!-- migration:end -->
+
+</details>
 
 ## License & ownership
 
