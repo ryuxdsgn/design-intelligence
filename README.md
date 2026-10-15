@@ -210,7 +210,7 @@ docs/             design rules, taxonomy, showcase
 
 ```bash
 pnpm install
-pnpm dev:mcp        # MCP server on http://localhost:8787/mcp
+pnpm dev:mcp        # MCP server, local (see apps/mcp/README.md)
 pnpm dev:web        # ryux.design on http://localhost:3000
 pnpm typecheck
 ```
