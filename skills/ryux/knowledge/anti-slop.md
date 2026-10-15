@@ -2,7 +2,7 @@
 
 Stops generic AI output before it ships: no invented numbers or people, decoration with a purpose, and honest claims.
 
-> Group Quality · Delivery Gate area ANTI-SLOP · RYUX 2.6.5. Levels are defined in `SKILL.md`.
+> Group Quality · Delivery Gate area ANTI-SLOP · RYUX 2.7.0. Levels are defined in `SKILL.md`.
 
 Anti-slop runs last, after design, build, critique, and QA; it is the final quality gate, never the
 starting point. Anti-slop is the floor, not the ceiling: a tidy, generic surface still fails on expressive
@@ -38,6 +38,11 @@ run the purpose gate; keep it when the answer is real, as in the last column.
 | Endless floating, looping, or scroll-triggered motion | decorative motion with no reason, competing with the task | a single L4 moment with a message, or none (RX-UI-11) | it shows state, continuity, or the product's idea once |
 | Glass, glow, and blur on every layer | decoration without a job that also lowers contrast | one surface treatment with a purpose (RX-AS-05, RX-A11Y-01) | one overlay needs to show what is behind it |
 | Stock teamwork or handshake photos | borrowed people implying endorsement | real people with consent, or no people (RX-AS-02, RX-UI-13) | never as evidence of customers |
+| Cards inside cards, surfaces on surfaces | every nesting level costs a border, a radius, and padding, and the grouping stops meaning anything | one container per real group; separate inside it with spacing or a divider (RX-UI-01) | the inner surface is a distinct object the user acts on, such as a selectable option |
+| One record split into a grid of cards | details that are read together (an order, a profile, a transaction) are scattered into equal boxes | one block with labeled rows or a table (RX-UI-05) | each card is a separate item the user compares or acts on |
+| A dashboard of KPI tiles and charts that answer no question | decoration in place of the decision the screen supports | lead with what needs attention and the next action; dense tables where people scan (RX-UI-01, RX-UX-01) | each tile drives a decision and links to its detail |
+| Display-size headings on task UI | a hero-sized title pushes the data and the action below the fold | a heading sized for its rank in the page (RX-UI-01, RX-UI-03) | it is the single message of a marketing or brand page |
+| A landing-page layout for a product screen | hero, feature rows, and a closing CTA on an app screen, a settings page, or a tool | the structure the task needs: list, detail, form, or workspace (RX-UI-05) | the surface really is marketing |
 
 ## Hard Gates
 
