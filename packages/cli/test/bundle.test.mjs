@@ -69,3 +69,22 @@ test("the README shows the current version", () => {
   assert.match(readme, new RegExp(`access%20v${minor.replace(".", "\\.")}-`));
   assert.match(readme, new RegExp(`^RYUX ${minor.replace(".", "\\.")}, early access`, "m"));
 });
+
+test("critique findings keep the fields that make them actionable", () => {
+  const critique = renderBundle()["capabilities/critique.md"];
+  for (const field of ["| Severity |", "| Evidence |", "| Status |", "| Impact |", "| Recommendation |", "| Confidence |", "| Verify by |"]) {
+    assert.ok(critique.includes(field), `critique schema lost ${field}`);
+  }
+  assert.match(critique, /4 critical .* 3 high .* 2 medium .* 1 low/);
+  assert.match(critique, /Walk the layers in the table's order, from purpose down to detail/);
+  assert.match(critique, /A preference is not a defect/);
+  assert.match(critique, /### 7\. Validate before reporting/);
+});
+
+test("the Delivery Gate separates verified from assumed", () => {
+  const router = renderBundle()["SKILL.md"];
+  assert.match(router, /NOT VERIFIED \(it applies, but the evidence was not available/);
+  assert.match(router, /FINAL is FAIL if any area fails/);
+  assert.match(router, /VISUAL QA without a render is NOT VERIFIED/);
+  assert.match(router, /or was validated with users/);
+});

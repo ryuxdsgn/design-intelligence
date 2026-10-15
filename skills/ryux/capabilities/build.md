@@ -21,6 +21,8 @@
    integration tests for critical flows such as checkout, payment, and form submit. Use the
    repo's runner; with none, propose one and ask before adding it (RX-FE-14).
 6. **Render and verify.** Run it and the tests, check every width and state, and fix deviations
-   from the design (capabilities/qa.md).
+   from the design (capabilities/qa.md). When changing an existing screen, also check that what
+   you did not mean to change still works: neighbouring screens, shared components, and the flow
+   around the change.
 7. **Close with the Delivery Gate.** CODE QUALITY and VISUAL QA need real checks (typecheck,
    tests, render), or say what was not run.
