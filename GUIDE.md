@@ -76,9 +76,10 @@ now, run the server yourself from this repo and connect to it:
 
 ```bash
 pnpm install
-pnpm dev:mcp        # http://localhost:8787/mcp
-claude mcp add --transport http ryux http://localhost:8787/mcp
+pnpm dev:mcp
 ```
+
+Then connect your agent to the local endpoint as described in [`apps/mcp/README.md`](./apps/mcp/README.md).
 
 Without Supabase env, the local server serves the bundled sample data, not the reference library.
 

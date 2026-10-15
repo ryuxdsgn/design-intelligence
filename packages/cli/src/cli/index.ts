@@ -13,7 +13,7 @@ import {
   type PointerFile,
 } from "../adapters.js";
 import { ALL_INSTALLABLE_IDS } from "../intelligence/content.js";
-import { CLI_CMD, CONTEXT_END, CONTEXT_FILE, CONTEXT_START, MARK_START, MCP_LOCAL_ADD_CMD, MCP_STATUS, VERSION } from "../product.js";
+import { CLI_CMD, CONTEXT_END, CONTEXT_FILE, CONTEXT_START, MARK_START, MCP_STATUS, VERSION } from "../product.js";
 import { validateBundle } from "../validate.js";
 import { renderAgentsBlock, renderBundle, renderPointerBlock, SKILL_NAME } from "../render.js";
 import { hasBlock, readIfExists, rel, removeBlock, removePath, upsertBlock, writeFileEnsured } from "./fsutil.js";
@@ -391,7 +391,7 @@ const CONTEXT_FIELDS: ContextField[] = [
   },
   { label: "Brand and design system", hint: "" },
   { label: "Product docs", hint: "paths RYUX reads for product facts, for example docs/prd.md:" },
-  { label: "Evidence sources", hint: `RYUX MCP (hosted server not live yet; local: ${MCP_LOCAL_ADD_CMD}), Figma files, reference URLs:` },
+  { label: "Evidence sources", hint: "RYUX MCP (not available yet), Figma files, reference URLs:" },
   {
     label: "Constraints", hint: "platforms, accessibility target (for example WCAG 2.2 AA), what must not change:",
     ask: { flag: "constraints", group: "Project", question: "What must RYUX keep or support?", multi: true, options: [
