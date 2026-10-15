@@ -1,6 +1,6 @@
 <p align="center">
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-2ea44f" alt="MIT License"></a>
-  <img src="https://img.shields.io/badge/version-early__access%20v2.6-1f6feb" alt="Version: early access v2.6">
+  <img src="https://img.shields.io/badge/version-early__access%20v2.7-1f6feb" alt="Version: early access v2.7">
 </p>
 
 # RYUX
@@ -226,7 +226,7 @@ pnpm typecheck
 
 ## Status
 
-RYUX 2.6, early access, free. Available now: the skill, the CLI, skills.sh, the Claude Code plugin,
+RYUX 2.7, early access, free. Available now: the skill, the CLI, skills.sh, the Claude Code plugin,
 and the MCP server run locally. Coming: the hosted MCP and a larger reference library.
 
 ## Contributing, security, license

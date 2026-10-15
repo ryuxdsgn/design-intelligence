@@ -39,6 +39,7 @@ findings
    not tested, and lower the confidence of anything inferred. Missing from the artifact is not
    missing from the product: a frame without a loading state shows the frame, not the build.
 5. **Concise and prioritized.** At most 12 findings; the ones that hurt users most come first.
+   At equal severity, the higher layer (step 5) comes first: a flow problem before a spacing one.
 6. **A preference is not a defect.** A taste (rounder corners, another typeface, more white space)
    becomes a finding only when the brief, evidence, a requirement, or a stated context reason makes
    it one; otherwise list it under "Optional ideas" or leave it out.
@@ -90,6 +91,12 @@ RX-PR-02 or RX-AS-01, even when it looks plausible, and even inside a sample or 
 Read the knowledge modules that apply and walk the design with their rules. [Required] rules are the
 gate, [Preferred] rules need a reason when broken, and [Contextual] rules count only when their
 situation is present. Use their "Not when" lines so a rule is not applied mechanically.
+
+Walk the layers in the table's order, from purpose down to detail: what the screen is for, then
+structure and flow, then interaction and usability, then hierarchy, then type, spacing, density,
+and color, then components and the design system, then accessibility and responsive behavior, then
+edge cases and feedback. A problem in a higher layer often explains the ones below it (a weak
+hierarchy is often an unclear goal); report the cause once, not each symptom.
 
 | Category | Skill | Look for |
 | --- | --- | --- |
@@ -149,13 +156,13 @@ Each finding uses this schema:
 | Field | Content |
 | --- | --- |
 | ID | C-01, C-02, ... |
-| Severity | 0 not a problem · 1 cosmetic · 2 minor · 3 major · 4 catastrophic |
+| Severity | 4 critical (blocks the task, loses money or data, excludes users) · 3 high (major) · 2 medium (minor) · 1 low (cosmetic) · 0 not a problem |
 | Category | one of the categories above |
 | Finding | where it is and what the problem is |
 | Evidence | what you saw: the capture, a measured value, a comparison screen |
 | Status | Confirmed (the source shows it) · Hypothesis (likely, not shown) · Not verifiable from this source |
 | Impact | who is affected and in which task; a predicted consequence is worded as one ("may") |
-| Recommendation | a concrete fix |
+| Recommendation | the smallest concrete change that removes the cause; name a larger redesign only when no small change can |
 | Confidence | High (seen directly), Medium (partly seen, such as one width), Low (inferred) |
 | Source | the RYUX rule ID, plus a screen_id, a standard (WCAG SC), or "this design" |
 | Verify by | how a revision would show it is fixed: re-render and check X, measure Y, test Z |
@@ -174,7 +181,7 @@ Design Read
   (all nine)
 
 Findings (most severe first, at most 12)
-  C-01 · severity 3 · Interaction · confidence Medium · Hypothesis
+  C-01 · severity 3 high · Interaction · confidence Medium · Hypothesis
     Finding:         The design shows no status while the payment verifies
     Evidence:        no loading or progress element in any frame provided (Observed in the
                      frames; the build was not tested)
@@ -205,5 +212,7 @@ Fix priorities
 - Don't mark an inferred issue High confidence, or call a Hypothesis Confirmed.
 - Don't claim a behavior was tested when you saw only a static image.
 - Don't report a preference as a defect (principle 6).
-- Don't paste generic advice ("modernize", "add white space") without a real problem.
+- Don't paste generic advice ("modernize", "cleaner", "improve the spacing", "more hierarchy"):
+  name the element, the problem, its impact, and the change.
+- Don't turn a finding into an unrelated redesign; fix what the finding names.
 - Don't call the result "fully accessible" or "UX optimized"; say what was checked.`;

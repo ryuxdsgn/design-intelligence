@@ -32,6 +32,9 @@
    their principles, and never copy their facts. Understand before you design.
 3. **Decide with evidence.** For consequential choices, compare two or three patterns, using
    reference screens when the ryux MCP is connected (RX-PR-09), and rate the evidence (RX-PR-10).
+   On a complex or ambiguous surface (a new flow, a dashboard, a multi-step form), name the primary
+   task, the one thing that must be seen first, and two or three UX approaches (structure and
+   interaction model) before any visual work, and choose by the task; a small change skips this.
 4. **Direction.** Write the Design Direction below. On an expressive surface (hero, landing,
    onboarding, empty state, brand moment), write three directions, choose one, and fill the Visual
    Direction (RX-UI-12, RX-UI-10). On task UI, follow conventions and the design system.
@@ -40,7 +43,8 @@
 6. **Design in the tool.** Use the Figma MCP or the pen.dev MCP. Design every state that matters
    (empty, loading, error) and every width you claim, and source assets on purpose (RX-UI-13).
 7. **Render and inspect.** Screenshot what you made, check it against the direction and the rules,
-   fix, and render again (capabilities/qa.md). Check the result against the Liveliness you set, and
+   fix, and render again (capabilities/qa.md). List where the render differs from the Design
+   Direction (hierarchy, states, widths) and fix or record each one. Check the result against the Liveliness you set, and
    put each prominent or decorative element through the purpose gate (RX-AS-05: purpose,
    contribution, necessity); on calm task UI, deliberate restraint is a valid answer. Then judge the main state as a
    reviewer would, not as a checklist: rate Clarity, Hierarchy, and Specificity from the Design Read

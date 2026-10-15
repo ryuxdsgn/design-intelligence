@@ -93,6 +93,9 @@ export const DESIGN_BODY = `# RYUX Design
    their principles, and never copy their facts. Understand before you design.
 3. **Decide with evidence.** For consequential choices, compare two or three patterns, using
    reference screens when the ryux MCP is connected (RX-PR-09), and rate the evidence (RX-PR-10).
+   On a complex or ambiguous surface (a new flow, a dashboard, a multi-step form), name the primary
+   task, the one thing that must be seen first, and two or three UX approaches (structure and
+   interaction model) before any visual work, and choose by the task; a small change skips this.
 4. **Direction.** Write the Design Direction below. On an expressive surface (hero, landing,
    onboarding, empty state, brand moment), write three directions, choose one, and fill the Visual
    Direction (RX-UI-12, RX-UI-10). On task UI, follow conventions and the design system.
@@ -101,7 +104,8 @@ export const DESIGN_BODY = `# RYUX Design
 6. **Design in the tool.** Use the Figma MCP or the pen.dev MCP. Design every state that matters
    (empty, loading, error) and every width you claim, and source assets on purpose (RX-UI-13).
 7. **Render and inspect.** Screenshot what you made, check it against the direction and the rules,
-   fix, and render again (capabilities/qa.md). Check the result against the Liveliness you set, and
+   fix, and render again (capabilities/qa.md). List where the render differs from the Design
+   Direction (hierarchy, states, widths) and fix or record each one. Check the result against the Liveliness you set, and
    put each prominent or decorative element through the purpose gate (RX-AS-05: purpose,
    contribution, necessity); on calm task UI, deliberate restraint is a valid answer. Then judge the main state as a
    reviewer would, not as a checklist: rate Clarity, Hierarchy, and Specificity from the Design Read
@@ -207,7 +211,9 @@ export const BUILD_BODY = `# RYUX Build
    integration tests for critical flows such as checkout, payment, and form submit. Use the
    repo's runner; with none, propose one and ask before adding it (RX-FE-14).
 6. **Render and verify.** Run it and the tests, check every width and state, and fix deviations
-   from the design (capabilities/qa.md).
+   from the design (capabilities/qa.md). When changing an existing screen, also check that what
+   you did not mean to change still works: neighbouring screens, shared components, and the flow
+   around the change.
 7. **Close with the Delivery Gate.** CODE QUALITY and VISUAL QA need real checks (typecheck,
    tests, render), or say what was not run.`;
 
@@ -247,12 +253,12 @@ export const CORE_DECISION_RECORD = `For consequential choices (RX-PR-09) and de
 **Trade-off**, and **Choice**. Evidence is Strong (2+ comparable screen_ids), Thin (one, or another context),
 or None (no screen_id: a judgment call). With None on a consequential choice, show options or ask (RX-PR-10).`;
 
-export const GATE_RULES = `- Each area is PASS, FAIL, NOT VERIFIED (it applies, but the evidence was not available: name what is missing), or N/A (it does not apply: say why).
+export const GATE_RULES = `- Each area is PASS, FAIL, NOT VERIFIED (it applies, but the evidence was not available: name what is missing), or N/A (it does not apply: say why). Scale the gate to the task: a copy fix or a one-component change marks the areas it cannot affect N/A, one line each.
 - An area FAILS when a [Required] rule in its skills fails without a written exception.
 - A Hard Gate failure cannot be excepted: fix it before declaring the work complete.
-- VISUAL QA without a render is NOT VERIFIED; say which render tool was used.
+- VISUAL QA without a render is NOT VERIFIED; a PASS names the render tool, the widths, and the states inspected.
 - CODE QUALITY is NOT VERIFIED while changed logic has no test run; say which checks ran (typecheck, tests).
-- FINAL is FAIL if any area fails, NOT VERIFIED if none fails but one is not verified, else PASS. PASS means the checked criteria were met, not that the design is good.`;
+- FINAL is FAIL if any area fails, NOT VERIFIED if none fails but one is not verified, else PASS. PASS means the checked criteria were met, not that the design is good or was validated with users ("not tested with users" unless it was).`;
 
 export const GUIDES: Record<SkillId, string> = {
   product: `Answer these before any layout exists. Write the answers down; they are the brief.
@@ -656,5 +662,10 @@ run the purpose gate; keep it when the answer is real, as in the last column.
 | A small badge above the headline that repeats it | a label that adds no information | cut it, or say something the headline does not | it carries real status: beta, new version, date |
 | Endless floating, looping, or scroll-triggered motion | decorative motion with no reason, competing with the task | a single L4 moment with a message, or none (RX-UI-11) | it shows state, continuity, or the product's idea once |
 | Glass, glow, and blur on every layer | decoration without a job that also lowers contrast | one surface treatment with a purpose (RX-AS-05, RX-A11Y-01) | one overlay needs to show what is behind it |
-| Stock teamwork or handshake photos | borrowed people implying endorsement | real people with consent, or no people (RX-AS-02, RX-UI-13) | never as evidence of customers |`,
+| Stock teamwork or handshake photos | borrowed people implying endorsement | real people with consent, or no people (RX-AS-02, RX-UI-13) | never as evidence of customers |
+| Cards inside cards, surfaces on surfaces | every nesting level costs a border, a radius, and padding, and the grouping stops meaning anything | one container per real group; separate inside it with spacing or a divider (RX-UI-01) | the inner surface is a distinct object the user acts on, such as a selectable option |
+| One record split into a grid of cards | details that are read together (an order, a profile, a transaction) are scattered into equal boxes | one block with labeled rows or a table (RX-UI-05) | each card is a separate item the user compares or acts on |
+| A dashboard of KPI tiles and charts that answer no question | decoration in place of the decision the screen supports | lead with what needs attention and the next action; dense tables where people scan (RX-UI-01, RX-UX-01) | each tile drives a decision and links to its detail |
+| Display-size headings on task UI | a hero-sized title pushes the data and the action below the fold | a heading sized for its rank in the page (RX-UI-01, RX-UI-03) | it is the single message of a marketing or brand page |
+| A landing-page layout for a product screen | hero, feature rows, and a closing CTA on an app screen, a settings page, or a tool | the structure the task needs: list, detail, form, or workspace (RX-UI-05) | the surface really is marketing |`,
 };

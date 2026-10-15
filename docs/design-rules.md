@@ -7,7 +7,7 @@
 > References to standards are factual; all explanations, examples, and numbering are written by us.
 > **Not a derivative of any third-party licensed text** and not affiliated with NN/g or anyone else.
 >
-> **Version:** RYUX 2.6.5
+> **Version:** RYUX 2.7.0
 
 RYUX is design intelligence for AI agents and designers, packaged as one skill, `ryux`. It has five
 entry points: Analyze, Design, Build, Critique, and QA. The router (`SKILL.md`) picks the
@@ -902,7 +902,7 @@ Gate area VISUAL QA. Covers did the build match the intended design: compare, li
 
 #### RX-QA-01 [Required] Render, inspect, fix, render again
 
-- Do: Render the result at the target viewport (browser, screenshot, or design-tool export), inspect the main state, one empty or error state, and the smallest supported width, rank issues by impact, fix from the top, and render again; if no render tool is available, say so in the report. Whether the design itself is right or intentional is Critique's call; QA reports what it can verify.
+- Do: Render the result at the target viewport (browser, screenshot, or design-tool export), inspect the main state, one empty or error state, and the smallest supported width, look for the defects source code hides (misaligned edges, type or spacing off the scale, density wrong for the task, overflow and clipping, a component that looks different from its siblings, a control that does nothing), rank issues by impact, fix from the top, and render again; name the widths and states you inspected, and if no render tool is available, say so in the report. Whether the design itself is right or intentional is Critique's call; QA reports what it can verify.
 - Do not: Claim visual quality for a layout you have only seen as code, or fix by guesswork without checking the result.
 - Why: Overlaps and clipping are invisible in source and obvious on screen; the loop turns a draft into a reviewed result. (ryux run 2026-10-02: two runs shipped overlaps they never saw)
 - Check: screenshot
