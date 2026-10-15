@@ -45,9 +45,9 @@ Standards are the main evidence (WCAG 2.2 success criteria); reference screens s
 
 ### RX-A11Y-03 [Required] [Hard Gate] Keyboard and visible focus
 
-- Do: Make actions operable from the keyboard (path-based input such as drawing excepted), show a visible focus indicator, and keep focus order the same as the visual order.
+- Do: Make actions operable from the keyboard (path-based input such as drawing excepted), show a visible focus indicator, and keep focus order the same as the visual order. When a dialog, menu, or popover closes, put focus back on the element that opened it, or on the nearest sensible element if that one is gone.
 - Do not: Build pointer-only actions, or remove focus outlines without an accessible replacement.
-- Why: Keyboard and switch users navigate and act by focus. (WCAG 2.2 SC 2.1.1, 2.4.3, and 2.4.7)
+- Why: Keyboard and switch users navigate and act by focus. (WCAG 2.2 SC 2.1.1, 2.4.3, and 2.4.7; WAI-ARIA APG dialog pattern)
 - Check: review
 
 ### RX-A11Y-04 [Required] [Hard Gate] Semantic structure, native controls, and names
