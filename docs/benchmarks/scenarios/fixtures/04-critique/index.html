@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Transfer</title>
+<style>
+  body { margin: 0; font-family: system-ui, sans-serif; background: linear-gradient(135deg, #6d5dfc, #b05dfc); min-height: 100vh; }
+  .wrap { max-width: 420px; margin: 0 auto; padding: 24px; }
+  h1 { font-size: 56px; line-height: 1; color: #fff; margin: 32px 0 8px; }
+  .sub { color: #e9e4ff; margin-bottom: 24px; }
+  .card { background: rgba(255,255,255,.85); border-radius: 24px; padding: 24px; box-shadow: 0 0 40px rgba(176,93,252,.6); }
+  .card .card { background: #fff; border-radius: 20px; padding: 20px; margin-top: 16px; box-shadow: 0 0 24px rgba(109,93,252,.4); }
+  .card .card .card { border-radius: 16px; padding: 16px; background: #f7f5ff; }
+  input { width: 100%; box-sizing: border-box; border: 1px solid #eee; border-radius: 12px; padding: 14px; font-size: 16px; margin-top: 12px; }
+  .hint { color: #c9c9c9; font-size: 12px; margin-top: 6px; }
+  .row { display: flex; justify-content: space-between; margin: 8px 0; font-size: 14px; }
+  .total { font-weight: 700; }
+  .actions { display: flex; gap: 12px; margin-top: 24px; }
+  .btn { flex: 1; border: 0; border-radius: 14px; padding: 16px; font-size: 16px; font-weight: 700; color: #fff; background: #6d5dfc; }
+  .badge { display: inline-block; background: #ffe066; color: #5c4400; border-radius: 99px; padding: 4px 10px; font-size: 12px; font-weight: 700; }
+  .icon { width: 18px; height: 18px; vertical-align: middle; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <span class="badge">✨ Powered by AI</span>
+  <h1>Send money instantly</h1>
+  <p class="sub">Trusted by 2M+ happy users · 4.9★ rating</p>
+
+  <div class="card">
+    <div class="card">
+      <input placeholder="Recipient account number">
+      <input placeholder="Amount">
+      <div class="hint">Transfers usually arrive fast.</div>
+    </div>
+    <div class="card">
+      <div class="card">
+        <div class="row"><span>Amount</span><span>$250.00</span></div>
+        <div class="row"><span>Total</span><span class="total">$250.00</span></div>
+      </div>
+      <div class="hint">Fees may apply.</div>
+    </div>
+
+    <div class="actions">
+      <button class="btn" onclick="alert('Sent!')">Send now</button>
+      <button class="btn" onclick="alert('Scheduled!')">Schedule</button>
+    </div>
+    <p class="hint">⏰ Offer ends tonight: zero-fee transfers for the next 2 hours!</p>
+  </div>
+</div>
+</body>
+</html>
