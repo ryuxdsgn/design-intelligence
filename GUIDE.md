@@ -1,20 +1,12 @@
-# RYUX Guide (from scratch)
+# RYUX Guide
 
-A short guide: what RYUX is, how to install its rules into your agent, and how to connect to
-the reference data over MCP. If you just want a quick overview, read the [README](./README.md).
+How to install RYUX, how to prompt it, and how it reasons. For the short version, read the
+[README](./README.md).
 
-## What RYUX is
+RYUX is one skill, `ryux`, for AI coding and design agents. It works on its own. A RYUX MCP server
+for reference screens exists, but it is optional and not hosted yet (see [MCP](#mcp-optional)).
 
-RYUX is two things that work together:
-
-1. **RYUX** (installed with `npx @ryuxdsgn/design-intelligence` or `npx skills add`): design skills that guide decisions and filter output so it doesn't
-   "smell like AI": evidence-backed, accessible, and fitted to the product's market. Doc: [`docs/design-rules.md`](./docs/design-rules.md).
-2. **MCP server**: gives your agent access to **reference screens from real products** (captured
-   screens, designer notes) plus audit tools. Nine tools; see [`apps/mcp/README.md`](./apps/mcp/README.md).
-
-Rules without data are just style; data without rules is just a pile of images. RYUX combines the two.
-
-## 1. Install RYUX into your agent
+## Install
 
 One command, then answer a few questions (which agents you use, and an optional project setup):
 
@@ -40,7 +32,18 @@ Build, Critique, QA), and the knowledge modules the router reads when a task nee
 Your files are never overwritten wholesale. Changes stay inside the block
 `<!-- ryux-rules:start -->` … `<!-- ryux-rules:end -->`.
 
-### Project setup
+Other ways to install:
+
+```bash
+npx @ryuxdsgn/design-intelligence install --agent claude,cursor,codex   # these agents, this project
+npx @ryuxdsgn/design-intelligence install --agent all --global         # every agent, home directory
+npx skills add ryuxdsgn/design-intelligence                            # skills.sh, any agent
+```
+
+As a Claude Code plugin, inside Claude Code: `/plugin marketplace add ryuxdsgn/design-intelligence`,
+then `/plugin install ryux@design-intelligence`.
+
+### Project setup (DESIGN.md)
 
 After the install, the CLI offers a short setup: product, what you are building right now,
 audience, market and locale, constraints, design intent, and UX, UI, and motion direction. You don't
@@ -48,31 +51,149 @@ need design vocabulary: each question offers plain choices, "Write my own", or "
 The answers go into a `<!-- ryux-context -->` block in `DESIGN.md`, which RYUX reads before every
 design task.
 
-The answers are your team's context and direction, not evidence: RYUX follows them and still backs
-its decisions with evidence. Blanks stay unknown; RYUX does not fill them in by guessing. A UI
-direction such as "trustworthy" describes character, not a color or font.
-
-Change the answers later, or set them without questions:
+The answers are your team's direction, not evidence. RYUX follows them, still backs its decisions
+with evidence, and treats blanks as unknown instead of guessing. A UI direction such as
+"trustworthy" describes character, not a color or font.
 
 ```bash
-npx @ryuxdsgn/design-intelligence setup
-npx @ryuxdsgn/design-intelligence setup --audience "small business owners" --market "Indonesia, id-ID, IDR"
-npx @ryuxdsgn/design-intelligence check     # shows how many setup fields are filled
+npx @ryuxdsgn/design-intelligence setup                                  # change the answers
+npx @ryuxdsgn/design-intelligence setup --audience "small business owners" --market "Global"
+npx @ryuxdsgn/design-intelligence check                                  # health check
 ```
 
-### Non-interactive
+### Update and remove
 
 ```bash
-npx @ryuxdsgn/design-intelligence install --agent claude,cursor,codex   # these agents, this project
-npx @ryuxdsgn/design-intelligence install --agent all --global         # every agent, home directory
-npx skills add ryuxdsgn/design-intelligence     # alternative: skills.sh, any agent
+npx @ryuxdsgn/design-intelligence update     # update the installed skill
+npx @ryuxdsgn/design-intelligence remove     # remove it and restore your files
 ```
 
-## 2. Connect to MCP (reference data)
+## Prompting RYUX
 
-The RYUX rules are at their strongest when your agent can pull real evidence. The hosted MCP
-(`mcp.ryux.design`) is not live yet. RYUX works without it and rates evidence None. To use the MCP
-now, run the server yourself from this repo and connect to it:
+There is no magic prompt. Talk to your agent as you would to a designer: say **what you are doing**,
+**what it is for**, and **where the work lives**. RYUX picks the step and the knowledge it needs.
+
+### What to include, and what to leave out
+
+Include what you know:
+
+- **What** you are making or reviewing: the screen, flow, or page.
+- **Who** it is for, and what they should get done.
+- **Where** it lives: a screenshot, a URL, a Figma link, a pen.dev file, or code in this repo.
+- **Facts** the design depends on: currency, fees, statuses, policies, limits, what the product
+  can and cannot do.
+
+Leave out:
+
+- **What you don't know.** RYUX asks when a missing answer would change the design (at most three
+  questions, often none), and otherwise keeps it open as an assumption. It never invents a fee, a
+  policy, or a number.
+- **Instructions about RYUX itself.** No need to write "check accessibility" or "avoid AI slop". The
+  checks run on every task.
+- **A style you haven't chosen.** If you have no visual direction yet, RYUX asks for one and saves
+  your answer in DESIGN.md.
+
+### One recipe per step
+
+**Analyze**: understand what exists, without judging it.
+
+```text
+Analyze this checkout screen (screenshot attached).
+Analyze https://example.com/pricing at desktop and mobile widths.
+```
+
+You get an inventory (layout, type, components, states, patterns), with every point labeled
+Measured, Observed, or Inferred, and a list of what can't be known from the source.
+
+**Design**: create or improve UI and UX, in a design tool or as a mockup.
+
+```text
+Design the transaction detail screen of our wallet app, shown after the user pays.
+Mobile, 390 wide, in pen.dev. Currency IDR (Rp48.000). Statuses: Completed, Processing, Failed.
+Card payments have a Rp1.000 fee; QRIS is free.
+```
+
+You get questions first if something material is missing, then the main screen plus the states it
+needs (loading, error, empty, narrow widths), decisions with their evidence and confidence, and a
+list of assumptions and unconfirmed actions.
+
+**Build**: implement a design in your codebase.
+
+```text
+Build the transaction detail screen from the pen.dev design, in our Next.js app.
+```
+
+You get code in your existing stack, with its tests, rendered at the widths that matter, and a
+report of what was and wasn't checked.
+
+**Critique**: find what should change first, and why.
+
+```text
+Critique our signup page (screenshot attached). The goal: more people finish signup on mobile.
+```
+
+You get findings ordered by severity, each with the evidence, its impact, a fix, a confidence
+level, and how to verify it. A preference is not reported as a defect. Critique does not redesign
+unless you ask.
+
+**QA**: check that a build matches its design.
+
+```text
+QA the checkout build at localhost:3000 against the Figma frame, at 390 and 320 wide.
+```
+
+You get every difference (expected, actual, severity, fix). RYUX fixes them, renders again, and
+lists what it could not test.
+
+Figma links need the Figma MCP connected in your agent; pen.dev files need the pen.dev (pencil) MCP.
+URLs and builds are rendered with Playwright when it is available. Otherwise RYUX says it worked
+from the source only.
+
+### A full session
+
+The steps work best in order, one prompt each, in the same session:
+
+```text
+1. Analyze the transaction detail screen in pen.dev (frame "Detail").
+2. Critique it. The goal: users should understand what happened after paying.
+3. Improve it in pen.dev, based on the critique.
+4. Build it as one HTML file.
+5. QA the build against the design at 390, 375, and 320 wide.
+```
+
+The [five-step case study](docs/benchmarks/case-td-2.6/) shows every turn of a real session like
+this one.
+
+### Naming the step
+
+You rarely need to. Name it when you want a step on its own: "Critique only, don't redesign" keeps
+RYUX from producing a new design, and "Analyze first" stops it from judging before it has looked.
+
+### Short or long prompts
+
+A short prompt works:
+
+```text
+Design a transaction detail page for our app.
+```
+
+RYUX checks whether that is enough. With no DESIGN.md and no product docs, it asks first (audience,
+what the screen must do, visual direction), then designs. A prompt with your facts, or a project with
+a filled DESIGN.md and a PRD, gets a design straight away:
+
+```text
+Here are three existing screens and our support-ticket findings. Design the new checkout flow
+from them.
+```
+
+## MCP (optional)
+
+The RYUX MCP serves reference screens from real products and review tools (`search_screens`,
+`compare_apps`, `get_local_pattern`, `heuristic_eval`, `delivery_gate`, and more; see
+[`apps/mcp/README.md`](./apps/mcp/README.md)). The hosted server is not live yet. RYUX works without
+it and rates its evidence None.
+
+To try it, run the server from this repo:
 
 ```bash
 pnpm install
@@ -80,107 +201,59 @@ pnpm dev:mcp
 ```
 
 Then connect your agent to the local endpoint as described in [`apps/mcp/README.md`](./apps/mcp/README.md).
+Without Supabase credentials, the local server serves bundled sample data, not the reference library.
+Prompts that need it name the tool: "Find reference screens for a QRIS payment picker", or
+"Review this screen with `heuristic_eval`".
 
-Without Supabase env, the local server serves the bundled sample data, not the reference library.
+## How RYUX reasons
 
-Connect through an MCP client (Claude Code, MCP Inspector), not a regular browser (the endpoint
-uses the Streamable HTTP transport).
+### Know what you know
 
-## 3. Try it
+Before it designs, RYUX sorts what it is working with:
 
-Talk to your agent as you would to a designer. There is no special RYUX prompt:
+- **Known**: stated in the prompt, DESIGN.md, or your product docs, or seen in the design itself.
+- **Design assumptions**: low-risk choices made from context. RYUX makes them and writes them down.
+- **Unconfirmed capabilities**: actions products like yours usually have, which nobody confirmed for
+  yours. RYUX may propose one, and lists it as unconfirmed.
+- **Facts, policies, and claims**: fees, refund times, guarantees, numbers. Never invented: RYUX
+  asks, or leaves them out.
 
-```text
-Design a transaction detail page for our app.
-```
+Mockups use realistic sample data, labeled as sample, so a screen reads finished without pretending
+to be real.
 
-RYUX reads DESIGN.md and the prompt, finds what is missing, and asks only the questions that would
-change a major decision (at most three, often none). Then it designs, critiques, and checks its
-work.
+### Design knowledge
 
-You can give it more up front. Good input answers what you are making, who it is for, what the user
-should accomplish, which constraints exist, and what evidence you have. Leave out what you don't
-know; RYUX asks when it matters.
+Each step reads only the knowledge it needs: product thinking, UX (structure, flows, navigation),
+UI (hierarchy, type, layout, color, and a point of view on expressive surfaces), interaction (what
+happens before, during, and after an action), motion (a purpose and a level for every motion, fitted
+to how often it is seen), forms, content, edge cases, accessibility (WCAG 2.2), responsive behavior,
+design systems, frontend, and anti-slop.
 
-```text
-Design a transaction detail page for our mobile banking app. Users are consumers in Indonesia.
-It shows after a successful payment, and it should help them understand what happened and what
-they can do next. Use the existing design system.
-```
+### Evidence
 
-```text
-Here are three existing screens and our support-ticket findings. Design the new checkout flow
-from them.
-```
+RYUX keeps three sources apart: what it observed, what it inferred, and what is a known pattern or
+standard. Reference screens from the MCP carry a `screen_id`, app, version, and capture date. Designer
+notes, the human judgment of why a flow works, are written by people, never generated. The first
+reference library is being built from Indonesian products (QRIS, virtual accounts, paylater, e-KYC),
+where global libraries are thinnest. It is in pilot and small.
 
-All three use the same RYUX. More examples:
-
-- "Find a reference for a payment method picker with QRIS via RYUX."
-- "Critique this checkout page." RYUX routes to Critique on its own.
-- "Analyze this screenshot, then design a better version in pen.dev."
-- "Review this screen with `heuristic_eval`, and include a comparison screen as evidence."
-
-## Update & Remove
-
-```bash
-npx @ryuxdsgn/design-intelligence update     # update the rules you've installed
-npx @ryuxdsgn/design-intelligence remove     # remove them (restores your files to their original state)
-```
-
-## How RYUX thinks
-
-The evidence RYUX can reason with, the knowledge it reads, and the gates every task ends with.
-
-### Design knowledge, not just design rules
-
-RYUX can work from curated references: real product screens, flows, local patterns, observations,
-and designer notes. This is RYUX Knowledge, the evidence layer. Each entry keeps what was seen
-apart from what it means:
+### Gates
 
 ```
-Interface (screen_id) → Observation (what it visibly does) → Why it works or not (designer note)
-  → Context (market, category, flow) → Pattern (observed in N screens across M apps) → Design implication
+Analyze → Design → Build → Critique → QA → Anti-Slop (final gate) → done
 ```
 
-- **References**: real product screens and flows, each with a `screen_id`, app, version, and capture date.
-- **Observations**: what a screen visibly does, drafted by AI and confirmed by a person.
-- **Patterns**: when a pattern is useful, its risk, and where it was observed. An observed pattern, never a "best practice".
-- **Designer notes**: why a flow works and where it falls short, written by people, never generated.
+- **Hard Gates** are never waived: no invented numbers or claims, no missing critical states, among
+  others.
+- **Anti-Slop** runs last. It catches generic, invented, unnecessary, or unsupported output. It does
+  not decide what good design is.
+- **The Delivery Gate** reports each area as PASS, FAIL, NOT VERIFIED, or N/A, and claims only what
+  was checked. An area that applies but was not checked is NOT VERIFIED, never PASS. PASS means the
+  checked criteria were met, not that the design is good or was tested with users.
 
-Agents reach it through the RYUX MCP (`search_screens`, `compare_apps`, `get_local_pattern`), and
-RYUX keeps three sources apart: "I observed this", "I inferred this", and "this is a known pattern".
+## More
 
-It is being built first with Indonesian products (fintech, e-commerce, government, telco, and SaaS),
-because that is where global libraries are thinnest: QRIS, virtual
-accounts, WhatsApp OTP, paylater, e-KYC, and Rupiah formats. Knowledge is in pilot: the capture and
-review pipeline works, the library is still small, and the hosted MCP is not live yet. Without it,
-RYUX says the evidence is "None" instead of inventing a reference.
-
-### Design intelligence
-
-The knowledge RYUX reasons with, read only when a task needs it:
-
-- **UX**: structure, flows, navigation, grouping, and disclosure.
-- **UI**: hierarchy, type, layout, density, and color, plus a point of view on expressive surfaces.
-- **Visual**: art direction, imagery, illustration, and composition, with a Visual Brief before anything is generated, and the source of every asset.
-- **Interaction**: what happens before, during, and after an action; confirmation, undo, and local payments.
-- **Motion**: a lifecycle and a level for every motion, one motion personality, and reduced motion.
-- **Accessibility**: semantics, keyboard, focus, contrast, and targets, checked against WCAG 2.2.
-- **Responsive**: what changes, stays, disappears, or stacks at each width.
-- Also: product thinking, forms, content, edge cases, design systems, and frontend.
-
-### Quality: a gate, not the design process
-
-```
-Analyze → Design → Build → Critique → QA → Anti-Slop → done
-```
-
-- **Critique** asks whether the design is right, after a fact check of every product claim.
-- **Visual QA** asks whether the build matches the design, at every width and state.
-- **Anti-Slop** runs last. RYUX does not use anti-slop rules to decide what good design is; it uses them to catch generic, invented, unnecessary, or unsupported output before delivery.
-- **The Delivery Gate** reports PASS, FAIL, or N/A for ten areas, and claims only what was checked.
-
-## What's next
-
-- Full rules: [`docs/design-rules.md`](./docs/design-rules.md)
-- Vocabulary (categories, flows, patterns): [`docs/taxonomy.md`](./docs/taxonomy.md)
+- [`docs/design-rules.md`](./docs/design-rules.md): every rule, level, and gate
+- [`docs/showcase.md`](./docs/showcase.md): what RYUX changes, and what it hasn't proven
+- [`docs/benchmarks/`](./docs/benchmarks/): raw runs, and how to run one yourself
+- [`docs/taxonomy.md`](./docs/taxonomy.md): tags for the reference library (for MCP contributors)

@@ -11,7 +11,7 @@ RYUX is a skill for AI coding and design agents. Before the agent designs, it wo
 knows, what it is guessing, and what nobody told it. Then it decides, and keeps the open questions
 visible instead of filling them in.
 
-**[Get started](#get-started)** · **[See the difference](#see-the-difference)** · **[ryux.design](https://ryux.design)**
+**[Get started](#get-started)** · **[See the difference](#see-the-difference)** · **[How to prompt](GUIDE.md#prompting-ryux)** · **[Showcase](docs/showcase.md)**
 
 ## The problem
 
@@ -46,15 +46,16 @@ Both sides put the fee on its own line, both flag what "Rp48.000 paid" means, an
 finished. The difference is what the screens cover and what they claim. RYUX proposed a receipt
 action in only 1 of 3 runs. The runs without RYUX are from the 2.6 visual benchmark; the RYUX runs
 used the same brief and harness three days later. A small benchmark, not a study.
+[Brief, method, and every run](docs/benchmarks/lumo-td-2.6/).
 
 The goal isn't more UI. It's fewer decisions made silently.
 
 ### What about visual quality?
 
-That's a separate question, and RYUX hasn't proven it yet. In blind tests of a wallet home screen,
-RYUX and the plain agent scored about the same, and both leaned on the same default fonts and
-colors. We're testing changes against those defaults with human designers and will publish the
-result either way. [Visual benchmarks](https://ryux.design/benchmarks#wallet-home).
+That's a separate question, and RYUX hasn't proven it. In a blind test of a wallet home screen,
+RYUX and the plain agent scored about the same. The two human designers who have rated later pairs
+mostly preferred the plain agent. RYUX makes no visual-quality claim.
+[What RYUX has not proven](docs/showcase.md#what-ryux-has-not-proven).
 
 ## Decisions come with a receipt
 
@@ -125,28 +126,23 @@ prompt → DESIGN.md → product docs → design knowledge → evidence → deci
 
 ## Using RYUX
 
-You don't need a special prompt. Say what you are making, in your own words:
+You don't need a special prompt. Say what you are doing, in your own words, and RYUX picks the step:
 
 ```text
-Design a transaction detail page for our app.
+Analyze this checkout screen (screenshot attached).                → Analyze
+Design the transaction detail screen for our wallet, in pen.dev.   → Design
+Build this design in our React app.                                → Build
+Critique our pricing page at https://example.com/pricing.          → Critique
+QA the build against the design at 390 and 320 wide.               → QA
 ```
 
-RYUX checks whether that is enough. It reads DESIGN.md, your product docs, and what the project
-already shows. It asks only what would change the flow, what the product can do, whether the content
-is correct, or the look and motion: at most three questions, often none. Then it designs.
+RYUX reads DESIGN.md and your product docs, and asks only what would change the design: at most
+three questions, often none. Facts it is not given, such as fees, policies, and numbers, stay open
+instead of being invented. So more context gives a better start: what you are making, who it is for,
+what the user should accomplish, and any constraints or evidence you have.
 
-More context gives a better start. Good input answers some of these:
-
-- What are we making?
-- Who is it for?
-- What should the user accomplish?
-- What constraints already exist?
-- What evidence do we have: screens, research, data?
-
-Don't know something? Leave it out. RYUX asks when it matters.
-
-A short request, a request with context, and a request with your own screens and research all use
-the same RYUX. RYUX doesn't just answer the prompt. It checks whether the prompt is enough.
+Recipes for each step, a full five-step session, and what to leave out:
+[Prompting RYUX](GUIDE.md#prompting-ryux).
 
 ## Get started
 
@@ -170,8 +166,8 @@ As a Claude Code plugin, inside Claude Code:
 /plugin install ryux@design-intelligence
 ```
 
-RYUX works on its own. Reference screens come from the RYUX MCP server, which you can run locally
-today (`pnpm dev:mcp`). The hosted server at `mcp.ryux.design` is not live yet.
+RYUX works on its own. The hosted RYUX MCP for reference screens is not live yet. You can run the
+server locally with sample data (see [`apps/mcp/README.md`](./apps/mcp/README.md)).
 
 The [guide](GUIDE.md) covers other agents, global installs, updates, and the MCP setup.
 
@@ -205,7 +201,7 @@ apps/web/         ryux.design (Next.js)
 packages/core/    shared tool logic
 packages/cli/     the ryux CLI (npx @ryuxdsgn/design-intelligence)
 skills/ryux/      the RYUX skill, generated from packages/cli/src
-docs/             design rules, taxonomy, showcase
+docs/             design rules, taxonomy, showcase, benchmarks
 ```
 
 ```bash
@@ -219,7 +215,8 @@ pnpm typecheck
 
 - [GUIDE.md](GUIDE.md): install, MCP, and how RYUX reasons
 - [docs/design-rules.md](docs/design-rules.md): every rule, level, and gate
-- [docs/showcase.md](docs/showcase.md): the proof, every raw run, and the history
+- [docs/showcase.md](docs/showcase.md): what RYUX changes, what it hasn't proven
+- [docs/benchmarks/](docs/benchmarks/): every raw run, and how to run one yourself
 - [DEPLOY.md](DEPLOY.md): run your own instance (database, MCP server, website)
 
 </details>
