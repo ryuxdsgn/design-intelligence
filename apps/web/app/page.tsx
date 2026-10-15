@@ -12,7 +12,7 @@ import { Arrow, DOCS, Eyebrow, GUTTER, REPO, SiteFooter, SiteHeader } from "@/co
 
 /* Show the behaviour, not the pixels: a beginner can read a conversation with an agent and everyday
    situations in plain words, not a screenshot with pins. Everything quoted is from the transaction-detail
-   benchmark, pair 2 (docs/benchmarks/en-td-2.3.3): a2/reasoning.md for the agent alone, b2/questions.md
+   benchmark, pair 2 (docs/benchmarks/en-td-2.3.3, archived at tag archive/docs-2.7.0): a2/reasoning.md for the agent alone, b2/questions.md
    and b2/reasoning.md for the agent with RYUX. Quotes are shortened, not reworded. */
 
 const PROMPT = "Design a transaction detail page for a fintech app.";
