@@ -1,0 +1,6 @@
+Answers to your questions (the same answers are given to every run):
+- Users: adults 20 to 45 in Indonesian cities, paying day to day.
+- A failed payment is not charged. If money did leave the account, it returns within 1x24 hours.
+- Processing usually resolves within a few minutes; the screen updates by itself.
+- Actions available on this screen: share receipt, report a problem, back to home. Nothing else exists.
+- Anything not covered here: decide and state it as an assumption.
