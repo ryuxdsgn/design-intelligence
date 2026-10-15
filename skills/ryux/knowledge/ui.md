@@ -59,7 +59,8 @@ The states themselves (waiting, result, recovery) are defined in `knowledge/inte
 RX-IX-02); motion only makes them visible, and it never compensates for weak UX. Decide the trigger,
 duration, easing, distance, opacity or scale, and how several elements are choreographed. Define
 duration and easing once as motion tokens, and animate transform and opacity rather than layout
-properties (width, height, top, margin), which cause jank.
+properties (width, height, top, margin), which cause jank. What opens and closes should be able to
+reverse halfway: use transitions, not an open-only keyframe animation.
 
 | Level | Examples | Needs |
 | --- | --- | --- |
@@ -201,9 +202,9 @@ A design direction from comparable screens: `extract_design_direction` (patterns
 ### RX-UI-11 [Contextual] Motion earns its level
 
 - When: the design adds motion or transitions
-- Do: Classify each motion: L1 state feedback, L2 component transition, L3 page transition, L4 storytelling, L5 decorative. The higher the level, the stronger the reason it needs. Then weigh how often people see it: a surface opened many times a day (command palette, shortcut, core navigation, list selection) appears and closes without movement, at most a fade too short to notice; standard transitions belong to occasional surfaces (modal, drawer, toast), and expression to rare or first-time moments. Take timing and easing from one motion personality, define them once as motion tokens, animate transform and opacity rather than layout properties, and honor reduced motion (RX-A11Y-08).
-- Do not: Animate everything, give a surface people open many times a day an entrance they must sit through, use one generic duration and easing (transition: all 0.3s) everywhere, or let decorative motion delay content or input.
-- Why: Motion directs attention; unearned motion steals it from the task and can make some people unwell. (NNGroup animation and usability guidance; WCAG 2.3.3 animation from interactions; frequency check: pattern also in emilkowalski/skills (MIT) find-animation-opportunities, written for RYUX)
+- Do: Classify each motion: L1 state feedback, L2 component transition, L3 page transition, L4 storytelling, L5 decorative. The higher the level, the stronger the reason it needs. Then weigh how often people see it: a surface opened many times a day (command palette, shortcut, core navigation, list selection) appears and closes without movement, at most a fade too short to notice; standard transitions belong to occasional surfaces (modal, drawer, toast), and expression to rare or first-time moments. Take timing and easing from one motion personality, define them once as motion tokens, animate transform and opacity rather than layout properties, and honor reduced motion (RX-A11Y-08). Anything that opens and closes (menu, popover, dialog, drawer) uses transitions that can reverse halfway, so a close or reopen mid-animation turns back from where it is, and it closes no slower than it opened.
+- Do not: Animate everything, give a surface people open many times a day an entrance they must sit through, play an open-only keyframe animation on something people can close or reopen at any moment, use one generic duration and easing (transition: all 0.3s) everywhere, or let decorative motion delay content or input.
+- Why: Motion directs attention; unearned motion steals it from the task and can make some people unwell. (NNGroup animation and usability guidance; WCAG 2.3.3 animation from interactions; frequency check: pattern also in emilkowalski/skills (MIT) find-animation-opportunities; reversible open and close: pattern also in emilkowalski/skills (MIT) animate; both written for RYUX)
 - Not when: L1 feedback on standard controls that follows the platform defaults
 - Trade-off: fewer flourishes on marketing pages
 - Check: review; reduced-motion test
