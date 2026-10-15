@@ -1,0 +1,10 @@
+Design the transaction detail screen of Lumo, a digital wallet, shown after the user pays. Mobile, 390 wide, in pen.dev.
+
+Context:
+- Currency: Indonesian Rupiah, written Rp48.000 (Rp, dot for thousands, no decimals).
+- Payment methods: QRIS, bank transfer, card.
+- Statuses: Completed, Processing, Failed.
+- Fee: Rp1.000 for card payments; QRIS and bank transfer are free. Show the fee on its own line.
+- Problems can be reported in the app up to 30 days after the payment.
+- Brand: Lumo. Primary color teal #0F766E. Typeface Plus Jakarta Sans. Tone: friendly and calm.
+- Sample transaction for the main screen: Rp48.000 paid at Kopi Kenangan Sudirman with a card ending 4821, 6 Oct 2026 14:32, transaction ID TX-8F3K29QD.

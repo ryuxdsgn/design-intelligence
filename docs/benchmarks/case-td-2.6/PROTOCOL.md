@@ -10,7 +10,7 @@ improve, build, and QA it?
 ## Input
 
 `input/screen.png`: the transaction detail screen designed **without** RYUX in EN-TD-2.3.3, run A2
-(`../en-td-2.3.3/a2/output.png`, unedited). It is the agent's own output, not a real product.
+([`en-td-2.3.3/a2/output.png`](https://github.com/ryuxdsgn/design-intelligence/tree/archive/docs-2.7.0/docs/benchmarks/en-td-2.3.3/a2), archived; copied unedited to `input/screen.png`). It is the agent's own output, not a real product.
 
 ## Setup
 
