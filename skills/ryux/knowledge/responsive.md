@@ -2,7 +2,7 @@
 
 Makes layouts hold up at every width: what to prioritize, simplify, reorganize, and stack.
 
-> Group UI · Delivery Gate area RESPONSIVE · RYUX 2.6.4. Levels are defined in `SKILL.md`.
+> Group UI · Delivery Gate area RESPONSIVE · RYUX 2.6.5. Levels are defined in `SKILL.md`.
 
 Responsive design is behavioral. When space decreases: **prioritize → simplify → reorganize**.
 Do not squeeze everything into a smaller viewport.
