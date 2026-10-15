@@ -3,6 +3,8 @@
 One session of RYUX 2.6.2, five turns, on the transaction detail screen that the agent designed
 **without** RYUX in EN-TD-2.3.3 (run A2). Protocol, written before the run: [PROTOCOL.md](PROTOCOL.md).
 This is one run, a case study, not a benchmark.
+One edit to the raw transcripts: the local MCP connect command quoted from the 2.6.2 skill text in
+`run/turn1.jsonl` is replaced with `[local MCP connect command]`.
 
 | Turn | Prompt | Output |
 | --- | --- | --- |
