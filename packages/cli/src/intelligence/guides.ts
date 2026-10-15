@@ -467,7 +467,8 @@ The states themselves (waiting, result, recovery) are defined in ryux-interactio
 RX-IX-02); motion only makes them visible, and it never compensates for weak UX. Decide the trigger,
 duration, easing, distance, opacity or scale, and how several elements are choreographed. Define
 duration and easing once as motion tokens, and animate transform and opacity rather than layout
-properties (width, height, top, margin), which cause jank.
+properties (width, height, top, margin), which cause jank. What opens and closes should be able to
+reverse halfway: use transitions, not an open-only keyframe animation.
 
 | Level | Examples | Needs |
 | --- | --- | --- |
