@@ -51,7 +51,7 @@
    fix, and render again (capabilities/qa.md). Count the values still literal (color, spacing,
    radius, type size) and turn each into a variable or name the exception. Run the four hierarchy
    checks from Critique (control beside its data, primary action apart from navigation, no fact
-   twice, grouped in the user's order), fix what fails, render again, and check each fix. List where
+   twice, grouped by what the user checks together), fix what fails, render again, and check each fix. List where
    the render differs from the Design Direction (hierarchy, states, widths) and fix or record each one. Check the result against the Liveliness you set, and
    put each prominent or decorative element through the purpose gate (RX-AS-05: purpose,
    contribution, necessity); on calm task UI, deliberate restraint is a valid answer. Then judge the main state as a

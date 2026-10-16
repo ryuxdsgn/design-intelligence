@@ -99,10 +99,15 @@ edge cases and feedback. A problem in a higher layer often explains the ones bel
 hierarchy is often an unclear goal); report the cause once, not each symptom.
 
 At the hierarchy layer, run four checks on every screen and report each failure as a finding:
-does every control sit next to the data it changes; is the primary action its own button, apart from
-the navigation; does any fact appear twice; are the things the user checks together grouped, in the
-order the user asks about them (RX-UI-01, RX-UX-01). Look for them even on a screen that is otherwise
-tidy: they are the defects a clean layout hides best.
+- Does every control sit next to the data it changes (a hide-balance toggle on the balance, not in the
+  header)?
+- Is the primary action its own button? If it is one of the tabs, styled as a tab, or pressed against
+  the tab bar, that is a finding even when it is clearly visible; do not recommend moving it into the
+  navigation.
+- Does any fact appear twice?
+- Are the things the user checks together grouped?
+(RX-UI-01, RX-UX-01.) Look for them even on a screen that is otherwise tidy: they are the defects a
+clean layout hides best.
 
 | Category | Skill | Look for |
 | --- | --- | --- |
