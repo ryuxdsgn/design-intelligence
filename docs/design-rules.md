@@ -648,12 +648,12 @@ Gate area UI. Covers the visual expression of a product: hierarchy, type, layout
 
 #### RX-UI-10 [Preferred] Visual language is chosen, not defaulted
 
-- Do: Derive the art direction from the brand, the audience, the product context, and reference screens, and write it as a Visual Brief (objective, concept, composition, color, material, lighting, motion, avoid) before designing an expressive surface or generating images, 3D, or motion.
-- Do not: Reach for the category cliché (coins, money rain, floating dashboards, or gradient blobs for fintech; generic 3D characters for any app), or write an image prompt without a brief (role, concept, composition).
-- Why: A default visual language makes the product interchangeable with its competitors. (art direction practice; RX-AS-05 purpose gate)
+- Do: Derive the art direction from the brand, the audience, the product context, and reference screens, and write it as a Visual Brief (objective, concept, composition, color, material, lighting, motion, avoid) before designing an expressive surface or generating images, 3D, or motion. Whenever you choose type, color, or layout yourself, on any surface, first write a default inventory: what you would reach for without thinking. Current model defaults include a quirky grotesque such as Bricolage Grotesque or Space Grotesk for display with Inter for text, a warm off-white background with one hot accent (orange, coral, lime), a dark balance or summary card, initials avatars, a spend chart, and the same sample content (a coffee shop as the latest payment, round demo balances, recurring demo names). Replace each item, or keep it with a reason from the brand, the product, or evidence; swapping a default for its neighbor is not a choice. List the inventory and what you did with each item in the Design Direction.
+- Do not: Reach for the category cliché (coins, money rain, floating dashboards, or gradient blobs for fintech; generic 3D characters for any app), ship the model's default type, palette, layout, or sample content unexamined, or write an image prompt without a brief (role, concept, composition).
+- Why: A default visual language makes the product interchangeable with its competitors; the same model makes the same choices on every run unless it names them first. (art direction practice; RX-AS-05 purpose gate; ryux four-problems baseline 2026-10-16: with RYUX 2.7.1, 3 of 3 wallet homes used Bricolage Grotesque and the same balance and demo names)
 - Not when: an existing brand system already defines the visual language; follow it
 - Trade-off: a brief takes time before any image exists
-- Check: the Visual Brief; review
+- Check: the Visual Brief and the default inventory; review
 
 #### RX-UI-11 [Contextual] Motion earns its level
 
