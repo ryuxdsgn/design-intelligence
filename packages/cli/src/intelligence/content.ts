@@ -221,10 +221,10 @@ export const RULES: Rule[] = [
       notWhen: "the product already has an established structure users rely on; change it only with evidence",
       tradeoff: "a less familiar layout can cost users a moment of learning",
       level: "required",
-      do: "Choose the information architecture and pattern from what users come to do and how they look for it. Order a screen by the question the user brings (on a receipt: what happened and to whom, then what it cost), and keep together what the user checks together: the facts of one event in one group, its cost lines in another, in that order.",
+      do: "Choose the information architecture and pattern from what users come to do and how they look for it. Keep together what the user checks together, and show each fact once.",
       dont: "Apply a stock SaaS layout (sidebar, KPI cards, table) because it is familiar, or show the same fact twice on one screen (the merchant or the amount in the summary and again in a row, the balance in the header and in a card).",
       why: "The right structure depends on the task; a template answers a different question. A repeated fact costs reading time and leaves the user to wonder which one is right.",
-      basis: "NNGroup information architecture research; ryux four-problems blind rating, rater 1 (product designer), 2026-10-16: repeated facts and payment lines above the transaction facts were reasons not to ship",
+      basis: "NNGroup information architecture research; ryux four-problems blind rating, rater 1 (product designer), 2026-10-16: repeated facts were a reason not to ship",
       check: "review",
     },
     {
