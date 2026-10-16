@@ -19,6 +19,8 @@ Scripts for the RYUX visual and decision benchmarks. Results live in `docs/bench
 | `turn2.sh <run_dir> <factsheet_file>` | Answers turn-1 questions from the fact sheet in the same session; writes `turn2.jsonl` |
 | `run-summary.py <turn1.jsonl> [chars]` | Skill path loaded, tools used, the final answer |
 | `genericness.py name=<turn1.jsonl> …` | Counts 11 model defaults (fonts, colors, layout tells) from the executed pen.dev code, plus font-set diversity |
+| `ds-measure.js` | pen.dev `execute` snippet, run on the run's canvas before it is cleared: variables, components and instances, and per kind (color, spacing, radius, type, font) how many values use a `$variable` vs a literal; prints JSON with `tokenShare`. Spacing counts only `gap` and `padding`, so absolutely positioned layouts show none |
+| `comprehension.sh <screen.png> <questions.txt> <out.json>` | A fresh agent sees only the screen and answers factual questions; score the answers by hand against keys from the run's own screen data. Measures legibility of facts, not preference |
 | `judge.sh <work_dir> <A1.png> <B1.png> …` | AI judge: pairwise in both orders, `REPS` times (default 3), plus VisAWI-S. The prompt in `judge-prompt.txt` holds the wallet-home brief; edit it per scenario |
 | `judge-summary.py <work_dir> [why]` | Totals per pair, VisAWI-S per screen |
 
