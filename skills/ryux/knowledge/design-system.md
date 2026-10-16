@@ -16,8 +16,9 @@ Prioritize the existing system. Before creating anything:
 **Quality Locks** to keep across the product: spacing, typography, color roles, terminology,
 components, interaction patterns and states, responsive behavior, and visual hierarchy.
 
-If the project has no system yet, define the smallest token set the screen needs and use it
-consistently: color roles, a spacing scale, a radius scale, and a type scale, not color alone. After
+Look for the existing system before defining one: DESIGN.md, a tokens or theme file in the repo, the
+design file's variables and components, or a linked library. If the project has no system yet, define
+the smallest token set the screen needs and use it consistently: color roles, a spacing scale, a radius scale, and a type scale, not color alone. After
 rendering, count the literal values left and convert them (RX-DS-03). Do not introduce a component library the project does not use.
 
 ## Evidence from RYUX Knowledge
@@ -46,7 +47,7 @@ How reference apps keep components consistent for this pattern: `search_screens`
 
 ### RX-DS-03 [Preferred] [Quality Lock] Tokens over one-off values
 
-- Do: Use tokens or variables for color, spacing, radius, elevation, and type. When the project has none, define them before the first frame: color roles, a spacing scale, a radius scale, and a type scale (sizes, and font families). In a design tool, create them as the tool's variables and reference them in every value, and make anything that repeats (a row, a button, a bar) a component. After rendering, count the values that are still literal, by kind, and turn each into a token or name why it is an exception.
+- Do: Use tokens or variables for color, spacing, radius, elevation, and type. First look for the ones that exist (DESIGN.md, a tokens or theme file in the repo, the design file's variables and components, a linked library) and use them. When the project has none, define them before the first frame: color roles, a spacing scale, a radius scale, and a type scale (sizes, and font families). In a design tool, create them as the tool's variables and reference them in every value, and make anything that repeats (a row, a button, a bar) a component. After rendering, count the values that are still literal, by kind, and turn each into a token or name why it is an exception.
 - Do not: Hard-code one-off values for things the system already defines, or define tokens for color only and leave spacing, radius, and type size literal.
 - Why: Tokens keep changes consistent and reviewable; values that are not tokens drift from frame to frame and state to state. (W3C Design Tokens Community Group; ryux four-problems baseline 2026-10-16: in all 12 runs, with or without RYUX, spacing, radius, and font size were 100% literal)
 - Check: count literal values after render; review
