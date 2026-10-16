@@ -157,9 +157,10 @@ async function runInstall(flags: Flags): Promise<void> {
       return;
     }
     p.intro(pc.bgCyan(pc.black(" RYUX ")));
+    p.log.message(KEY_LEGEND);
     const detected = agentsAt(scope, false);
     const a = await p.multiselect({
-      message: `Which agents do you use?${keys("↑/↓ move", "Space select", "a all", "Enter continue", "Ctrl+C cancel")}`,
+      message: "Which agents do you use? Pick any (a selects all).",
       options: [
         ...AGENT_TARGETS.map((x) => ({ value: x.id, label: x.label, hint: scope.global ? `~/${x.globalDir}` : x.dir })),
         { value: AGENTS_MD_INLINE.id, label: AGENTS_MD_INLINE.label, hint: "AGENTS.md" },
@@ -168,10 +169,8 @@ async function runInstall(flags: Flags): Promise<void> {
       required: true,
     });
     if (p.isCancel(a)) return cancel();
-    const m = await p.confirm({ message: `Show how to connect the ryux MCP?${keys(YES_NO, "Enter continue")}`, initialValue: false });
-    if (p.isCancel(m)) return cancel();
     agents = a as string[];
-    showMcp = Boolean(m);
+    showMcp = false;
   }
 
   if (scope.global && agents.includes(AGENTS_MD_INLINE.id)) {
@@ -190,7 +189,7 @@ async function runInstall(flags: Flags): Promise<void> {
   }
   if (nonInteractive) return;
   if (!scope.global) {
-    const s = await p.confirm({ message: `Set up project context now? Every question can be skipped.${keys(YES_NO, "Enter continue")}`, initialValue: true });
+    const s = await p.confirm({ message: "Set up project context now? Every question can be skipped.", initialValue: true });
     if (p.isCancel(s)) return cancel();
     if (s && !(await setupInteractive(scope.root))) return cancel();
     if (!s) p.log.info(`Set it up later with: ${CLI_CMD} setup`);
@@ -235,7 +234,7 @@ async function runRemove(flags: Flags): Promise<void> {
     return;
   }
   if (!flags.yes) {
-    const ok = await p.confirm({ message: `Remove RYUX from ${scope.global ? "your home directory" : "this project"}?${keys(YES_NO, "Enter confirm")}` });
+    const ok = await p.confirm({ message: `Remove RYUX from ${scope.global ? "your home directory" : "this project"}?` });
     if (p.isCancel(ok) || !ok) {
       console.log("Cancelled.");
       return;
@@ -342,10 +341,12 @@ interface ContextField {
     options: Choice[];
     multi?: boolean;
     max?: number;
+    /** A second question whose answer is added to the same field. */
+    then?: { question: string; options: Choice[]; multi?: boolean };
   };
 }
 
-/** A choice whose value is empty means "not decided": the field stays unknown. */
+/** Every question also offers "Write my own" and "Skip, leave unknown"; a skipped field stays unknown. */
 const CONTEXT_FIELDS: ContextField[] = [
   {
     label: "Product", hint: "(what it does, in one sentence:)",
@@ -367,7 +368,6 @@ const CONTEXT_FIELDS: ContextField[] = [
       { value: "A new screen", label: "A new screen" },
       { value: "An existing flow", label: "An existing flow", hint: "changing something that already exists" },
       { value: "A redesign", label: "A redesign" },
-      { value: "", label: "Not decided yet", hint: "stays unknown" },
     ] },
   },
   {
@@ -386,7 +386,6 @@ const CONTEXT_FIELDS: ContextField[] = [
       { value: "Global, several markets", label: "Global, several markets" },
       { value: "Indonesia (id-ID, IDR)", label: "Indonesia", hint: "id-ID, Rupiah" },
       { value: "United States (en-US, USD)", label: "United States", hint: "en-US, US dollar" },
-      { value: "", label: "Not decided yet", hint: "stays unknown" },
     ] },
   },
   { label: "Brand and design system", hint: "" },
@@ -394,15 +393,16 @@ const CONTEXT_FIELDS: ContextField[] = [
   { label: "Evidence sources", hint: "RYUX MCP (not available yet), Figma files, reference URLs:" },
   {
     label: "Constraints", hint: "platforms, accessibility target (for example WCAG 2.2 AA), what must not change:",
-    ask: { flag: "constraints", group: "Project", question: "What must RYUX keep or support?", multi: true, options: [
+    ask: { flag: "constraints", group: "Project", question: "Where does it run?", options: [
       { value: "Mobile app", label: "Mobile app" },
-      { value: "Web", label: "Web" },
-      { value: "Responsive web", label: "Responsive web", hint: "one site for phone and desktop" },
+      { value: "Responsive website", label: "Website", hint: "phone and desktop" },
+      { value: "Desktop website", label: "Desktop website" },
       { value: "Web and mobile app", label: "Web and mobile app" },
+    ], then: { question: "What must stay as it is? Pick any.", multi: true, options: [
       { value: "Existing design system", label: "Existing design system" },
       { value: "Existing brand identity", label: "Existing brand identity" },
-      { value: "Accessibility, WCAG 2.2 AA", label: "Accessibility", hint: "WCAG 2.2 AA" },
-    ] },
+      { value: "Accessibility (WCAG 2.2 AA)", label: "Accessibility", hint: "WCAG 2.2 AA" },
+    ] } },
   },
   {
     label: "Design intent", hint: "(what users should understand, feel, and do)",
@@ -506,13 +506,8 @@ async function writeContext(root: string, answers: Record<string, string>): Prom
   return body;
 }
 
-/** A dim second line under a prompt's question: which keys move, select, and what Enter does here. */
-function keys(...parts: string[]): string {
-  return `\n${pc.gray("│")}  ${pc.dim(parts.join(" · "))}`;
-}
-
-const YES_NO = "←/→ or y/n choose";
-const TEXT_KEYS = "Type, then Enter save (empty skips)";
+/** Shown once at the start, not under every question (it stayed on screen after each answer). */
+const KEY_LEGEND = pc.dim("↑/↓ move · Space select · Enter continue · Ctrl+C cancel");
 
 const OWN = "\u0000own";
 const KEEP = "\u0000keep";
@@ -521,7 +516,7 @@ const SKIP = "\u0000skip";
 /** One select: Keep (when set), the choices, Write my own, Skip. Returns "" for skip, null on cancel. */
 async function askOne(question: string, options: Choice[], current: string): Promise<string | null> {
   const v = await p.select({
-    message: `${question}${keys("↑/↓ move", "Enter choose and go on")}`,
+    message: question,
     options: [
       ...(current ? [{ value: KEEP, label: `Keep: ${current}` }] : []),
       ...options.map((o) => ({ value: o.value || SKIP, label: o.label, hint: o.hint })),
@@ -533,7 +528,7 @@ async function askOne(question: string, options: Choice[], current: string): Pro
   if (p.isCancel(v)) return null;
   if (v === KEEP || v === SKIP) return "";
   if (v === OWN) {
-    const t = await p.text({ message: `${question}${keys(TEXT_KEYS)}`, placeholder: "Enter to skip" });
+    const t = await p.text({ message: question, placeholder: "Type, then Enter (empty skips)" });
     return p.isCancel(t) ? null : (t ?? "").trim();
   }
   return v as string;
@@ -546,7 +541,7 @@ async function askMany(question: string, options: Choice[], current: string, max
   const custom = parts.filter((x) => !known.includes(x)).join(", ");
   for (;;) {
     const v = await p.multiselect({
-      message: `${question}${keys("↑/↓ move", "Space select", "Enter go on (nothing selected skips)")}`,
+      message: question,
       options: [
         ...(custom ? [{ value: KEEP, label: `Keep: ${custom}` }] : []),
         ...options.map((o) => ({ value: o.value, label: o.label, hint: o.hint })),
@@ -560,7 +555,7 @@ async function askMany(question: string, options: Choice[], current: string, max
     const values = picked.filter((x) => x !== KEEP && x !== OWN);
     if (picked.includes(KEEP)) values.push(custom);
     if (picked.includes(OWN)) {
-      const t = await p.text({ message: `${question}${keys(TEXT_KEYS)}`, placeholder: "Enter to skip" });
+      const t = await p.text({ message: question, placeholder: "Type, then Enter (empty skips)" });
       if (p.isCancel(t)) return null;
       if (t?.trim()) values.push(t.trim());
     }
@@ -584,11 +579,23 @@ async function askContext(root: string): Promise<Record<string, string> | null> 
       p.log.step(group === "Project" ? "Project setup" : "Design setup");
     }
     const current = fieldValue(body, f);
+    if (ask.then) {
+      // Two questions, one field: split what is stored between them, and keep a part that is skipped.
+      const parts = current.split(",").map((x) => x.trim()).filter(Boolean);
+      const first = parts.find((x) => ask.options.some((o) => o.value === x)) ?? "";
+      const rest = parts.filter((x) => x !== first).join(", ");
+      const a = await askOne(ask.question, ask.options, first);
+      if (a === null) return null;
+      const b = ask.then.multi ? await askMany(ask.then.question, ask.then.options, rest) : await askOne(ask.then.question, ask.then.options, rest);
+      if (b === null) return null;
+      answers[f.label] = [a || first, b || rest].filter(Boolean).join(", ");
+      continue;
+    }
     const v = ask.multi ? await askMany(ask.question, ask.options, current, ask.max) : await askOne(ask.question, ask.options, current);
     if (v === null) return null;
     answers[f.label] = v;
     if (f.label === "Product" && v) {
-      const t = await p.text({ message: `In one sentence, what does it do?${keys(TEXT_KEYS)}`, placeholder: "Enter to skip" });
+      const t = await p.text({ message: "In one sentence, what does it do?", placeholder: "Type, then Enter (empty skips)" });
       if (p.isCancel(t)) return null;
       if (t?.trim()) answers[f.label] = `${v}: ${t.trim()}`;
     }
@@ -630,6 +637,7 @@ async function runSetup(flags: Flags): Promise<void> {
     return;
   }
   p.intro(pc.bgCyan(pc.black(" RYUX setup ")));
+  p.log.message(KEY_LEGEND);
   if (!(await setupInteractive(root))) return cancel();
   p.outro(`RYUX is ready. Next: ${CLI_CMD} check`);
 }
