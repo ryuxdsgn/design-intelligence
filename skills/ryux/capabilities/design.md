@@ -35,9 +35,22 @@
    On a complex or ambiguous surface (a new flow, a dashboard, a multi-step form), name the primary
    task, the one thing that must be seen first, and two or three UX approaches (structure and
    interaction model) before any visual work, and choose by the task; a small change skips this.
-4. **Direction.** Write the Design Direction below. On an expressive surface (hero, landing,
-   onboarding, empty state, brand moment), write three directions, choose one, and fill the Visual
-   Direction (RX-UI-12, RX-UI-10). On task UI, follow conventions and the design system.
+4. **Direction.** Write the Design Direction below. On task UI, follow conventions and the design
+   system. On an expressive surface (hero, landing, onboarding, empty state, brand moment), or when
+   the brief asks for a new look or more personality, explore on the canvas before choosing (RX-UI-12):
+   - Render three directions as frames side by side: the main state only, the same content and
+     sample data in each, each labelled with a name and a one-line concept.
+   - Make them differ in structure, not paint: every two of them differ on at least two of
+     information order (what comes first), layout model, interaction model (where the main action
+     lives), type class, and colour temperature. The same layout in new colours is the same
+     direction; replace it.
+   - Judge them against the brief, not taste: take three to five criteria from the context (the
+     user's main task, what must be seen first, the brief's character words, conventions that must
+     hold), rate each direction Strong, Adequate, or Weak with one reason each, and recommend one
+     with a Decision Receipt. "It looks better" is not a reason.
+   - Then stop and let the user choose. Build only the chosen one into the full design (states,
+     widths, Visual Direction, RX-UI-10) and mark the others on the canvas as not chosen. When the
+     user has already said to pick for them, continue with the recommendation and say so.
 5. **Read the modules the task needs** from the task table, for example ux, interaction, forms, and
    content for a form, or ui and responsive for a layout.
 6. **Design in the tool.** Use the Figma MCP or the pen.dev MCP. System first: look for the design
