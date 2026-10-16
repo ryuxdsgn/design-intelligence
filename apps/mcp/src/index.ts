@@ -226,5 +226,5 @@ export class RyuxMCP extends McpAgent<SupabaseEnv> {
   }
 }
 
-// Endpoint Streamable HTTP: http://localhost:8787/mcp
+// Endpoint Streamable HTTP: /mcp
 export default RyuxMCP.serve("/mcp");
