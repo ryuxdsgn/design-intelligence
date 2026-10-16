@@ -102,10 +102,14 @@ export const DESIGN_BODY = `# RYUX Design
    make one decision that comes from this product, its users, or its data (RX-AS-09).
 5. **Read the modules the task needs** from the task table, for example ux, interaction, forms, and
    content for a form, or ui and responsive for a layout.
-6. **Design in the tool.** Use the Figma MCP or the pen.dev MCP. Design every state that matters
-   (empty, loading, error) and every width you claim, and source assets on purpose (RX-UI-13).
+6. **Design in the tool.** Use the Figma MCP or the pen.dev MCP. System first: read the file's
+   variables and components, or, when there are none, create variables for color roles, spacing,
+   radius, and type sizes and families before the first frame, and make repeated elements components
+   (RX-DS-03). Design every state that matters (empty, loading, error) and every width you claim, and
+   source assets on purpose (RX-UI-13).
 7. **Render and inspect.** Screenshot what you made, check it against the direction and the rules,
-   fix, and render again (capabilities/qa.md). List where the render differs from the Design
+   fix, and render again (capabilities/qa.md). Count the values still literal (color, spacing,
+   radius, type size) and turn each into a variable or name the exception. List where the render differs from the Design
    Direction (hierarchy, states, widths) and fix or record each one. Check the result against the Liveliness you set, and
    put each prominent or decorative element through the purpose gate (RX-AS-05: purpose,
    contribution, necessity); on calm task UI, deliberate restraint is a valid answer. Then judge the main state as a
@@ -553,7 +557,8 @@ Does not cover: component reuse and tokens (see ryux-design-system).`,
 components, interaction patterns and states, responsive behavior, and visual hierarchy.
 
 If the project has no system yet, define the smallest token set the screen needs and use it
-consistently. Do not introduce a component library the project does not use.`,
+consistently: color roles, a spacing scale, a radius scale, and a type scale, not color alone. After
+rendering, count the literal values left and convert them (RX-DS-03). Do not introduce a component library the project does not use.`,
 
   accessibility: `Accessibility is product quality, not an enhancement. Check:
 
