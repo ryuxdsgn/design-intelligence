@@ -44,13 +44,13 @@
    system that exists (DESIGN.md, a tokens or theme file in the repo, the design file's variables and
    components, a linked library) and build from it. Create only what is missing: variables for color
    roles, spacing, radius, and type sizes and families before the first frame, and components for
-   repeated elements (RX-DS-03). Building the system does not replace the states: design every state that matters
-   (empty, loading, error, including content that fails to load) and every width you claim, and
-   source assets on purpose (RX-UI-13).
+   repeated elements (RX-DS-03). Building the system does not replace the states: design every
+   state that matters (empty, loading, error, including content that fails to load) and every width
+   you claim, and source assets on purpose (RX-UI-13).
 7. **Render and inspect.** Screenshot what you made, check it against the direction and the rules,
    fix, and render again (capabilities/qa.md). Count the values still literal (color, spacing,
-   radius, type size) and turn each into a variable or name the exception. List where the render differs from the Design
-   Direction (hierarchy, states, widths) and fix or record each one. Check the result against the Liveliness you set, and
+   radius, type size) and turn each into a variable or name the exception. List where the render
+   differs from the Design Direction (hierarchy, states, widths) and fix or record each one. Check the result against the Liveliness you set, and
    put each prominent or decorative element through the purpose gate (RX-AS-05: purpose,
    contribution, necessity); on calm task UI, deliberate restraint is a valid answer. Then judge the main state as a
    reviewer would, not as a checklist: rate Clarity, Hierarchy, and Specificity from the Design Read

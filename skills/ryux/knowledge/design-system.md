@@ -2,7 +2,7 @@
 
 Keeps the interface consistent: reuse before create, tokens, component states, and consistency locks.
 
-> Group UI · Delivery Gate area DESIGN SYSTEM · RYUX 2.7.1. Levels are defined in `SKILL.md`.
+> Group UI · Delivery Gate area DESIGN SYSTEM · RYUX 2.8.0. Levels are defined in `SKILL.md`.
 
 Prioritize the existing system. Before creating anything:
 
@@ -18,8 +18,9 @@ components, interaction patterns and states, responsive behavior, and visual hie
 
 Look for the existing system before defining one: DESIGN.md, a tokens or theme file in the repo, the
 design file's variables and components, or a linked library. If the project has no system yet, define
-the smallest token set the screen needs and use it consistently: color roles, a spacing scale, a radius scale, and a type scale, not color alone. After
-rendering, count the literal values left and convert them (RX-DS-03). Do not introduce a component library the project does not use.
+the smallest token set the screen needs and use it consistently: color roles, a spacing scale, a
+radius scale, and a type scale, not color alone. After rendering, count the literal values left and
+convert them (RX-DS-03). Do not introduce a component library the project does not use.
 
 ## Evidence from RYUX Knowledge
 
