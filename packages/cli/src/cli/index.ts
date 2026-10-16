@@ -339,10 +339,12 @@ interface ContextField {
     question: string;
     /** Plain-language choices for people who are not designers; "Write my own" and "Skip" are always added. */
     options: Choice[];
+    /** Shown in the "Write my own" text box, so a typed answer has a model to follow. */
+    example: string;
     multi?: boolean;
     max?: number;
     /** A second question whose answer is added to the same field. */
-    then?: { question: string; options: Choice[]; multi?: boolean };
+    then?: { question: string; options: Choice[]; example: string; multi?: boolean };
   };
 }
 
@@ -350,7 +352,7 @@ interface ContextField {
 const CONTEXT_FIELDS: ContextField[] = [
   {
     label: "Product", hint: "(what it does, in one sentence:)",
-    ask: { flag: "product", group: "Project", question: "What kind of product is it?", options: [
+    ask: { flag: "product", group: "Project", question: "What kind of product is it?", example: "Ticketing for local events", options: [
       { value: "Online store", label: "Online store" },
       { value: "Payments or finance", label: "Payments or finance" },
       { value: "Marketplace", label: "Marketplace" },
@@ -362,7 +364,7 @@ const CONTEXT_FIELDS: ContextField[] = [
   },
   {
     label: "Current work", hint: "",
-    ask: { flag: "work", group: "Project", question: "What are you building right now?", options: [
+    ask: { flag: "work", group: "Project", question: "What are you building right now?", example: "The checkout flow", options: [
       { value: "A new product", label: "A new product" },
       { value: "A new feature", label: "A new feature" },
       { value: "A new screen", label: "A new screen" },
@@ -372,7 +374,7 @@ const CONTEXT_FIELDS: ContextField[] = [
   },
   {
     label: "Audience", hint: "",
-    ask: { flag: "audience", group: "Project", question: "Who is it for?", options: [
+    ask: { flag: "audience", group: "Project", question: "Who is it for?", example: "Freelancers who send invoices", options: [
       { value: "Consumers", label: "Consumers", hint: "people using it for themselves" },
       { value: "Small business owners", label: "Small business owners" },
       { value: "Professionals at work", label: "Professionals at work" },
@@ -382,7 +384,7 @@ const CONTEXT_FIELDS: ContextField[] = [
   },
   {
     label: "Market and locale", hint: "(for example Indonesia, id-ID, Rupiah; or global, en-US, USD)",
-    ask: { flag: "market", group: "Project", question: "Where is it used? This sets language and currency.", options: [
+    ask: { flag: "market", group: "Project", question: "Where is it used? This sets language and currency.", example: "Malaysia (ms-MY, MYR)", options: [
       { value: "Global, several markets", label: "Global, several markets" },
       { value: "Indonesia (id-ID, IDR)", label: "Indonesia", hint: "id-ID, Rupiah" },
       { value: "United States (en-US, USD)", label: "United States", hint: "en-US, US dollar" },
@@ -393,12 +395,12 @@ const CONTEXT_FIELDS: ContextField[] = [
   { label: "Evidence sources", hint: "RYUX MCP (not available yet), Figma files, reference URLs:" },
   {
     label: "Constraints", hint: "platforms, accessibility target (for example WCAG 2.2 AA), what must not change:",
-    ask: { flag: "constraints", group: "Project", question: "Where does it run?", options: [
+    ask: { flag: "constraints", group: "Project", question: "Where does it run?", example: "Tablet app for shop staff", options: [
       { value: "Mobile app", label: "Mobile app" },
       { value: "Responsive website", label: "Website", hint: "phone and desktop" },
       { value: "Desktop website", label: "Desktop website" },
       { value: "Web and mobile app", label: "Web and mobile app" },
-    ], then: { question: "What must stay as it is? Pick any.", multi: true, options: [
+    ], then: { question: "What must stay as it is? Pick any.", example: "Our current logo and colours", multi: true, options: [
       { value: "Existing design system", label: "Existing design system" },
       { value: "Existing brand identity", label: "Existing brand identity" },
       { value: "Accessibility (WCAG 2.2 AA)", label: "Accessibility", hint: "WCAG 2.2 AA" },
@@ -406,7 +408,7 @@ const CONTEXT_FIELDS: ContextField[] = [
   },
   {
     label: "Design intent", hint: "(what users should understand, feel, and do)",
-    ask: { flag: "intent", group: "Design", question: "What should people get from it?", options: [
+    ask: { flag: "intent", group: "Design", question: "What should people get from it?", example: "Know when their order arrives", options: [
       { value: "Understand their status at a glance", label: "Understand their status at a glance" },
       { value: "Finish a task quickly", label: "Finish a task quickly" },
       { value: "Feel safe and in control", label: "Feel safe and in control" },
@@ -415,7 +417,7 @@ const CONTEXT_FIELDS: ContextField[] = [
   },
   {
     label: "UX direction", hint: "",
-    ask: { flag: "ux", group: "Design", question: "How should the experience help users?", options: [
+    ask: { flag: "ux", group: "Design", question: "How should the experience help users?", example: "Works one-handed at a shop counter", options: [
       { value: "Fast for people who use it often", label: "Fast for people who use it often" },
       { value: "Clear for people using it for the first time", label: "Clear for people using it for the first time" },
       { value: "Easy to scan and understand", label: "Easy to scan and understand" },
@@ -424,7 +426,7 @@ const CONTEXT_FIELDS: ContextField[] = [
   },
   {
     label: "UI direction", hint: "(character, for example calm, trustworthy, restrained)",
-    ask: { flag: "ui", group: "Design", question: "What character should it have? A character, not colors or fonts. Pick up to 3.", multi: true, max: 3, options: [
+    ask: { flag: "ui", group: "Design", question: "What character should it have? A character, not colors or fonts. Pick up to 3.", example: "Warm, precise", multi: true, max: 3, options: [
       { value: "Calm", label: "Calm" },
       { value: "Trustworthy", label: "Trustworthy" },
       { value: "Friendly", label: "Friendly" },
@@ -437,7 +439,7 @@ const CONTEXT_FIELDS: ContextField[] = [
   },
   {
     label: "Motion direction", hint: "(feel, what motion communicates, what to avoid)",
-    ask: { flag: "motion", group: "Design", question: "How much motion?", options: [
+    ask: { flag: "motion", group: "Design", question: "How much motion?", example: "Only to confirm a payment went through", options: [
       { value: "No motion unless necessary", label: "No motion unless necessary" },
       { value: "Subtle, only to show change", label: "Subtle, only to show change" },
       { value: "Expressive, part of the brand", label: "Expressive, part of the brand" },
@@ -506,6 +508,9 @@ async function writeContext(root: string, answers: Record<string, string>): Prom
   return body;
 }
 
+/** The text box hint: an example answer, and that an empty Enter skips. */
+const typed = (example: string): string => `e.g. ${example} · empty Enter skips`;
+
 /** Shown once at the start, not under every question (it stayed on screen after each answer). */
 const KEY_LEGEND = pc.dim("↑/↓ move · Space select · Enter continue · Ctrl+C cancel");
 
@@ -514,7 +519,7 @@ const KEEP = "\u0000keep";
 const SKIP = "\u0000skip";
 
 /** One select: Keep (when set), the choices, Write my own, Skip. Returns "" for skip, null on cancel. */
-async function askOne(question: string, options: Choice[], current: string): Promise<string | null> {
+async function askOne(question: string, options: Choice[], current: string, example: string): Promise<string | null> {
   const v = await p.select({
     message: question,
     options: [
@@ -528,14 +533,14 @@ async function askOne(question: string, options: Choice[], current: string): Pro
   if (p.isCancel(v)) return null;
   if (v === KEEP || v === SKIP) return "";
   if (v === OWN) {
-    const t = await p.text({ message: question, placeholder: "Type, then Enter (empty skips)" });
+    const t = await p.text({ message: question, placeholder: typed(example) });
     return p.isCancel(t) ? null : (t ?? "").trim();
   }
   return v as string;
 }
 
 /** A multiselect: pick any, or none to skip. Returns "" for skip, null on cancel. */
-async function askMany(question: string, options: Choice[], current: string, max?: number): Promise<string | null> {
+async function askMany(question: string, options: Choice[], current: string, example: string, max?: number): Promise<string | null> {
   const parts = current ? current.split(",").map((x) => x.trim()).filter(Boolean) : [];
   const known = options.map((o) => o.value);
   const custom = parts.filter((x) => !known.includes(x)).join(", ");
@@ -555,7 +560,7 @@ async function askMany(question: string, options: Choice[], current: string, max
     const values = picked.filter((x) => x !== KEEP && x !== OWN);
     if (picked.includes(KEEP)) values.push(custom);
     if (picked.includes(OWN)) {
-      const t = await p.text({ message: question, placeholder: "Type, then Enter (empty skips)" });
+      const t = await p.text({ message: question, placeholder: typed(example) });
       if (p.isCancel(t)) return null;
       if (t?.trim()) values.push(t.trim());
     }
@@ -584,18 +589,18 @@ async function askContext(root: string): Promise<Record<string, string> | null> 
       const parts = current.split(",").map((x) => x.trim()).filter(Boolean);
       const first = parts.find((x) => ask.options.some((o) => o.value === x)) ?? "";
       const rest = parts.filter((x) => x !== first).join(", ");
-      const a = await askOne(ask.question, ask.options, first);
+      const a = await askOne(ask.question, ask.options, first, ask.example);
       if (a === null) return null;
-      const b = ask.then.multi ? await askMany(ask.then.question, ask.then.options, rest) : await askOne(ask.then.question, ask.then.options, rest);
+      const b = ask.then.multi ? await askMany(ask.then.question, ask.then.options, rest, ask.then.example) : await askOne(ask.then.question, ask.then.options, rest, ask.then.example);
       if (b === null) return null;
       answers[f.label] = [a || first, b || rest].filter(Boolean).join(", ");
       continue;
     }
-    const v = ask.multi ? await askMany(ask.question, ask.options, current, ask.max) : await askOne(ask.question, ask.options, current);
+    const v = ask.multi ? await askMany(ask.question, ask.options, current, ask.example, ask.max) : await askOne(ask.question, ask.options, current, ask.example);
     if (v === null) return null;
     answers[f.label] = v;
     if (f.label === "Product" && v) {
-      const t = await p.text({ message: "In one sentence, what does it do?", placeholder: "Type, then Enter (empty skips)" });
+      const t = await p.text({ message: "In one sentence, what does it do?", placeholder: typed("A wallet for paying at shops by QR and sending money to friends") });
       if (p.isCancel(t)) return null;
       if (t?.trim()) answers[f.label] = `${v}: ${t.trim()}`;
     }
