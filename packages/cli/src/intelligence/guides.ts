@@ -222,6 +222,7 @@ export const BUILD_BODY = `# RYUX Build
    from the design (capabilities/qa.md). When changing an existing screen, also check that what
    you did not mean to change still works: neighbouring screens, shared components, and the flow
    around the change.
+   When anything animates, run the motion passes in capabilities/qa.md as well.
 7. **Close with the Delivery Gate.** CODE QUALITY and VISUAL QA need real checks (typecheck,
    tests, render), or say what was not run.`;
 
@@ -637,6 +638,21 @@ Card radius | 16px                 | 8px            | half the radius | minor   
 **Render with what is available**, in this order: the project's own preview or test setup;
 \`npx playwright screenshot --viewport-size=1440,900 <url>\` (and 390 wide for mobile); a browser
 tool; a design-tool export such as pen.dev \`Export\`. If none is available, say so in the gate.
+
+**Motion** (when anything opens, closes, or switches with an animation): a screenshot cannot show it,
+so drive it in a real browser (the project's test setup or Playwright). For each animated element,
+run four passes: open it; close it about 60 ms into the opening; open and close it three times
+quickly; and all of it again with reduced motion (\`reducedMotion: 'reduce'\`). During each pass read
+\`document.getAnimations()\` and the computed transition and animation, or watch a recording, and
+check the motion rules already in force (RX-UI-11, RX-A11Y-08):
+- a close mid-way turns back from where it is, with no jump to fully open and no restart;
+- closing takes no longer than opening; entrances never use ease-in;
+- only transform and opacity move; a menu grows from its trigger, a drawer from its own edge;
+- what people open many times a day (menus, tabs) appears at once or with a short fade;
+- reduced motion leaves a fade or a cut, no movement;
+- after a dialog or drawer closes, focus is back on the control that opened it.
+Fix what fails and run the passes again. Report each animated element as Verified (passes run,
+widths) or NOT VERIFIED (why); motion read only from code is NOT VERIFIED.
 
 **Rank issues by impact**: blocks the task, misleads (wrong numbers, unclear action), adds friction,
 polish.`,
