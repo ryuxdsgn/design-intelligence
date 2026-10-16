@@ -19,7 +19,7 @@ The tool data and logic (`search_screens`, `get_flow`, `compare_apps`, `extract_
 
 ```bash
 npm install
-npm run dev          # server at http://localhost:8787/mcp
+npm run dev          # serves /mcp on the local address wrangler prints
 ```
 
 ## Trying it out
@@ -30,13 +30,14 @@ npm run dev          # server at http://localhost:8787/mcp
 npm run inspect
 ```
 
-Pick the *Streamable HTTP* transport, enter the URL `http://localhost:8787/mcp`, click Connect,
+Pick the *Streamable HTTP* transport, enter the address `npm run dev` printed followed by `/mcp`,
+click Connect,
 then open the Tools tab.
 
 **Via Claude Code:**
 
 ```bash
-claude mcp add --transport http ryux-local http://localhost:8787/mcp
+claude mcp add --transport http ryux-local <address from npm run dev>/mcp
 claude
 ```
 
