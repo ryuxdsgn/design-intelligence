@@ -76,9 +76,7 @@ export const DESIGN_BODY = `# RYUX Design
    this task; say so.
    **Direction is the user's call:** when neither the prompt nor DESIGN.md sets the UI direction
    (character, or brand colour and type) or the motion direction, ask for it in that message (it
-   counts toward the three) instead of choosing it yourself. If you offer direction options with that
-   question, run the default inventory (RX-UI-10) on them first: no option, and no suggested pick, is
-   a model default. **No DESIGN.md and no product docs is the
+   counts toward the three) instead of choosing it yourself. **No DESIGN.md and no product docs is the
    case where these questions matter most, never a reason to skip them:** ask, then wait for the
    answer before designing. Complete context means no questions. Never ask what the prompt, DESIGN.md, or the
    product docs already answer. For the rest, make the smallest reasonable assumption, write it
@@ -103,10 +101,11 @@ export const DESIGN_BODY = `# RYUX Design
    Direction (RX-UI-12, RX-UI-10). On task UI, follow conventions and the design system.
 5. **Read the modules the task needs** from the task table, for example ux, interaction, forms, and
    content for a form, or ui and responsive for a layout.
-6. **Design in the tool.** Use the Figma MCP or the pen.dev MCP. System first: read the file's
-   variables and components, or, when there are none, create variables for color roles, spacing,
-   radius, and type sizes and families before the first frame, and make repeated elements components
-   (RX-DS-03). Building the system does not replace the states: design every state that matters
+6. **Design in the tool.** Use the Figma MCP or the pen.dev MCP. System first: look for the design
+   system that exists (DESIGN.md, a tokens or theme file in the repo, the design file's variables and
+   components, a linked library) and build from it. Create only what is missing: variables for color
+   roles, spacing, radius, and type sizes and families before the first frame, and components for
+   repeated elements (RX-DS-03). Building the system does not replace the states: design every state that matters
    (empty, loading, error, including content that fails to load) and every width you claim, and
    source assets on purpose (RX-UI-13).
 7. **Render and inspect.** Screenshot what you made, check it against the direction and the rules,
@@ -551,8 +550,9 @@ Does not cover: component reuse and tokens (see ryux-design-system).`,
 **Quality Locks** to keep across the product: spacing, typography, color roles, terminology,
 components, interaction patterns and states, responsive behavior, and visual hierarchy.
 
-If the project has no system yet, define the smallest token set the screen needs and use it
-consistently: color roles, a spacing scale, a radius scale, and a type scale, not color alone. After
+Look for the existing system before defining one: DESIGN.md, a tokens or theme file in the repo, the
+design file's variables and components, or a linked library. If the project has no system yet, define
+the smallest token set the screen needs and use it consistently: color roles, a spacing scale, a radius scale, and a type scale, not color alone. After
 rendering, count the literal values left and convert them (RX-DS-03). Do not introduce a component library the project does not use.`,
 
   accessibility: `Accessibility is product quality, not an enhancement. Check:
