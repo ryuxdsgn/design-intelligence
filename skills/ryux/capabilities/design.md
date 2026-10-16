@@ -15,7 +15,9 @@
    this task; say so.
    **Direction is the user's call:** when neither the prompt nor DESIGN.md sets the UI direction
    (character, or brand colour and type) or the motion direction, ask for it in that message (it
-   counts toward the three) instead of choosing it yourself. **No DESIGN.md and no product docs is the
+   counts toward the three) instead of choosing it yourself. If you offer direction options with that
+   question, run the default inventory (RX-UI-10) on them first: no option, and no suggested pick, is
+   a model default. **No DESIGN.md and no product docs is the
    case where these questions matter most, never a reason to skip them:** ask, then wait for the
    answer before designing. Complete context means no questions. Never ask what the prompt, DESIGN.md, or the
    product docs already answer. For the rest, make the smallest reasonable assumption, write it
@@ -44,7 +46,8 @@
 6. **Design in the tool.** Use the Figma MCP or the pen.dev MCP. System first: read the file's
    variables and components, or, when there are none, create variables for color roles, spacing,
    radius, and type sizes and families before the first frame, and make repeated elements components
-   (RX-DS-03). Design every state that matters (empty, loading, error) and every width you claim, and
+   (RX-DS-03). Building the system does not replace the states: design every state that matters
+   (empty, loading, error, including content that fails to load) and every width you claim, and
    source assets on purpose (RX-UI-13).
 7. **Render and inspect.** Screenshot what you made, check it against the direction and the rules,
    fix, and render again (capabilities/qa.md). Count the values still literal (color, spacing,
