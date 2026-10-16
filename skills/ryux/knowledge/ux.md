@@ -44,9 +44,9 @@ How Indonesian apps sequence and structure this flow: `get_flow` for a reference
 
 ### RX-UX-01 [Required] Structure from the user's goal
 
-- Do: Choose the information architecture and pattern from what users come to do and how they look for it.
-- Do not: Apply a stock SaaS layout (sidebar, KPI cards, table) because it is familiar.
-- Why: The right structure depends on the task; a template answers a different question. (NNGroup information architecture research)
+- Do: Choose the information architecture and pattern from what users come to do and how they look for it. Order a screen by the question the user brings (on a receipt: what happened and to whom, then what it cost), and keep together what the user checks together: the facts of one event in one group, its cost lines in another, in that order.
+- Do not: Apply a stock SaaS layout (sidebar, KPI cards, table) because it is familiar, or show the same fact twice on one screen (the merchant or the amount in the summary and again in a row, the balance in the header and in a card).
+- Why: The right structure depends on the task; a template answers a different question. A repeated fact costs reading time and leaves the user to wonder which one is right. (NNGroup information architecture research; ryux four-problems blind rating, rater 1 (product designer), 2026-10-16: repeated facts and payment lines above the transaction facts were reasons not to ship)
 - Not when: the product already has an established structure users rely on; change it only with evidence
 - Trade-off: a less familiar layout can cost users a moment of learning
 - Check: review
