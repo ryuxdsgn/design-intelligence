@@ -145,8 +145,6 @@ UX direction   flow and steps; information hierarchy (first, second, third); int
                business rules given (never invented)
 UI direction   layout and grid; type scale; spacing and density; color roles; containers;
                components reused or added; the focal point
-Defaults       the default inventory (RX-UI-10): each default type, color, layout, or sample
-               choice, replaced or kept with its reason
 Design language personality, tone, interaction personality, density, formality; each with its
                reason from the product, the audience, or the existing system
 Visual direction for expressive surfaces: the Visual Brief (knowledge/ui.md, Visual production)
@@ -444,11 +442,6 @@ cannot say why 8 and not 12, the choice is not a decision yet.
 content (RX-UI-09), and the visual language is chosen, not defaulted (RX-UI-10). Name the visual
 language in a few words (editorial, product-centric, human, technical, playful, premium,
 institutional) and its form (shape language, geometric or organic, flat or with depth).
-
-**Default inventory.** Whenever you choose type, color, or layout yourself (no brand system covers
-it), write first what you would reach for without thinking: the type pair, background, accent, the
-summary card, avatars, charts, and the sample content. Replace each item or keep it with a reason
-from the product; a neighbor of the default is still the default (RX-UI-10).
 
 **Composition exploration.** For an expressive surface, sketch three compositions of the chosen
 direction (subject left, subject right, centered or full-bleed) as quick frames, then choose by
