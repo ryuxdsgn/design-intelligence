@@ -24,5 +24,6 @@
    from the design (capabilities/qa.md). When changing an existing screen, also check that what
    you did not mean to change still works: neighbouring screens, shared components, and the flow
    around the change.
+   When anything animates, run the motion passes in capabilities/qa.md as well.
 7. **Close with the Delivery Gate.** CODE QUALITY and VISUAL QA need real checks (typecheck,
    tests, render), or say what was not run.
