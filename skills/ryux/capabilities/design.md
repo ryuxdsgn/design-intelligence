@@ -39,8 +39,7 @@
    interaction model) before any visual work, and choose by the task; a small change skips this.
 4. **Direction.** Write the Design Direction below. On an expressive surface (hero, landing,
    onboarding, empty state, brand moment), write three directions, choose one, and fill the Visual
-   Direction (RX-UI-12, RX-UI-10). On task UI, follow conventions and the design system, and still
-   make one decision that comes from this product, its users, or its data (RX-AS-09).
+   Direction (RX-UI-12, RX-UI-10). On task UI, follow conventions and the design system.
 5. **Read the modules the task needs** from the task table, for example ux, interaction, forms, and
    content for a form, or ui and responsive for a layout.
 6. **Design in the tool.** Use the Figma MCP or the pen.dev MCP. System first: read the file's
