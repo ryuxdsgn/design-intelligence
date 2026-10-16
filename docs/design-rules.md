@@ -277,9 +277,9 @@ Gate area UX. Covers information architecture, navigation, flows, grouping, disc
 
 #### RX-UX-01 [Required] Structure from the user's goal
 
-- Do: Choose the information architecture and pattern from what users come to do and how they look for it.
-- Do not: Apply a stock SaaS layout (sidebar, KPI cards, table) because it is familiar.
-- Why: The right structure depends on the task; a template answers a different question. (NNGroup information architecture research)
+- Do: Choose the information architecture and pattern from what users come to do and how they look for it. Order a screen by the question the user brings (on a receipt: what happened and to whom, then what it cost), and keep together what the user checks together: the facts of one event in one group, its cost lines in another, in that order.
+- Do not: Apply a stock SaaS layout (sidebar, KPI cards, table) because it is familiar, or show the same fact twice on one screen (the merchant or the amount in the summary and again in a row, the balance in the header and in a card).
+- Why: The right structure depends on the task; a template answers a different question. A repeated fact costs reading time and leaves the user to wonder which one is right. (NNGroup information architecture research; ryux four-problems blind rating, rater 1 (product designer), 2026-10-16: repeated facts and payment lines above the transaction facts were reasons not to ship)
 - Not when: the product already has an established structure users rely on; change it only with evidence
 - Trade-off: a less familiar layout can cost users a moment of learning
 - Check: review
@@ -592,9 +592,9 @@ Gate area UI. Covers the visual expression of a product: hierarchy, type, layout
 
 #### RX-UI-01 [Required] [Quality Lock] Hierarchy follows priority
 
-- Do: Make the primary action and the key information the most prominent things in each area, with one clear focal point.
-- Do not: Give everything equal weight, or let decoration outrank content.
-- Why: Hierarchy is how users know what to read and do first. (NNGroup visual hierarchy)
+- Do: Make the primary action and the key information the most prominent things in each area, with one clear focal point. Place each control next to the data it changes (a hide-balance toggle beside the balance it hides, not in the header), and keep the primary action apart from navigation: its own button, never one of the tabs and never pressed against the tab bar.
+- Do not: Give everything equal weight, let decoration outrank content, park a control far from what it acts on, or merge the main action into the bottom navigation.
+- Why: Hierarchy is how users know what to read and do first; a control beside its data shows what it changes, and an action that looks like a tab reads as a place, not a task. (NNGroup visual hierarchy; Gestalt proximity; ryux four-problems blind rating, rater 1 (product designer), 2026-10-16: a hide toggle far from the balance and a CTA crowding the bottom nav were reasons not to ship)
 - Not when: screens with several equal peers, such as a dashboard of comparable items; use consistent hierarchy within each card instead
 - Trade-off: emphasizing one thing de-emphasizes the rest
 - Check: visual QA
