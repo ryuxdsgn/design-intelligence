@@ -99,6 +99,12 @@ and color, then components and the design system, then accessibility and respons
 edge cases and feedback. A problem in a higher layer often explains the ones below it (a weak
 hierarchy is often an unclear goal); report the cause once, not each symptom.
 
+At the hierarchy layer, run four checks on every screen and report each failure as a finding:
+does every control sit next to the data it changes; is the primary action its own button, apart from
+the navigation; does any fact appear twice; are the things the user checks together grouped, in the
+order the user asks about them (RX-UI-01, RX-UX-01). Look for them even on a screen that is otherwise
+tidy: they are the defects a clean layout hides best.
+
 | Category | Skill | Look for |
 | --- | --- | --- |
 | Product | `knowledge/product.md` | stated purpose, one primary action, invented facts |

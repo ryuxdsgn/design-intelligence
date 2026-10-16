@@ -136,9 +136,9 @@ A design direction from comparable screens: `extract_design_direction` (patterns
 
 ### RX-UI-01 [Required] [Quality Lock] Hierarchy follows priority
 
-- Do: Make the primary action and the key information the most prominent things in each area, with one clear focal point.
-- Do not: Give everything equal weight, or let decoration outrank content.
-- Why: Hierarchy is how users know what to read and do first. (NNGroup visual hierarchy)
+- Do: Make the primary action and the key information the most prominent things in each area, with one clear focal point. Place each control next to the data it changes (a hide-balance toggle beside the balance it hides, not in the header), and keep the primary action apart from navigation: its own button, never one of the tabs and never pressed against the tab bar.
+- Do not: Give everything equal weight, let decoration outrank content, park a control far from what it acts on, or merge the main action into the bottom navigation.
+- Why: Hierarchy is how users know what to read and do first; a control beside its data shows what it changes, and an action that looks like a tab reads as a place, not a task. (NNGroup visual hierarchy; Gestalt proximity; ryux four-problems blind rating, rater 1 (product designer), 2026-10-16: a hide toggle far from the balance and a CTA crowding the bottom nav were reasons not to ship)
 - Not when: screens with several equal peers, such as a dashboard of comparable items; use consistent hierarchy within each card instead
 - Trade-off: emphasizing one thing de-emphasizes the rest
 - Check: visual QA
