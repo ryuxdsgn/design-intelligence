@@ -77,6 +77,8 @@ UX direction   flow and steps; information hierarchy (first, second, third); int
                business rules given (never invented)
 UI direction   layout and grid; type scale; spacing and density; color roles; containers;
                components reused or added; the focal point
+Defaults       the default inventory (RX-UI-10): each default type, color, layout, or sample
+               choice, replaced or kept with its reason
 Design language personality, tone, interaction personality, density, formality; each with its
                reason from the product, the audience, or the existing system
 Visual direction for expressive surfaces: the Visual Brief (knowledge/ui.md, Visual production)
