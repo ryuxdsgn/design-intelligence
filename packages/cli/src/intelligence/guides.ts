@@ -98,7 +98,8 @@ export const DESIGN_BODY = `# RYUX Design
    interaction model) before any visual work, and choose by the task; a small change skips this.
 4. **Direction.** Write the Design Direction below. On an expressive surface (hero, landing,
    onboarding, empty state, brand moment), write three directions, choose one, and fill the Visual
-   Direction (RX-UI-12, RX-UI-10). On task UI, follow conventions and the design system.
+   Direction (RX-UI-12, RX-UI-10). On task UI, follow conventions and the design system, and still
+   make one decision that comes from this product, its users, or its data (RX-AS-09).
 5. **Read the modules the task needs** from the task table, for example ux, interaction, forms, and
    content for a form, or ui and responsive for a layout.
 6. **Design in the tool.** Use the Figma MCP or the pen.dev MCP. Design every state that matters
@@ -638,8 +639,8 @@ tool; a design-tool export such as pen.dev \`Export\`. If none is available, say
 polish.`,
 
   "anti-slop": `Anti-slop runs last, after design, build, critique, and QA; it is the final quality gate, never the
-starting point. Anti-slop is the floor, not the ceiling: a tidy, generic surface still fails on expressive
-surfaces (RX-AS-09), and the point of view comes from RX-UI-12. Anti-slop is not a list of banned
+starting point. Anti-slop is the floor, not the ceiling: a tidy, generic surface still fails the swap
+test (RX-AS-09), on task UI too, and the point of view comes from RX-UI-12. Anti-slop is not a list of banned
 styles. It has three parts.
 
 **Hard Gates**: reject or fix before delivery; no written exception. The list is generated below
