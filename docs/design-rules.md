@@ -995,13 +995,13 @@ Gate area ANTI-SLOP. Covers hard gates, purpose gates, quality locks, honest cla
 
 #### RX-AS-09 [Contextual] Clean is not the same as designed
 
-- When: the surface is expressive: a hero, landing page, onboarding, empty state, or brand moment
-- Do: Run the swap test honestly: replace the name and logo with a competitor's in the same category. If the layout, the visual, and the headline would still work for them, the surface has no point of view yet; give it one (RX-UI-12). Report the answer in the Delivery Gate.
-- Do not: Treat a tidy, generic layout as done because it passes every other gate; generic restraint is slop too.
-- Why: Removing slop is the floor, not the ceiling; interchangeable design makes the product forgettable. (ryux delivery principle; Critique Design Read: specificity)
-- Not when: task UI, where familiarity is the point
+- When: you design a new screen or surface, expressive or task UI
+- Do: Run the swap test honestly: replace the name and logo with a competitor's in the same category. If the layout, the visual, and the headline would still work for them, the surface has no point of view yet. On an expressive surface, give it one (RX-UI-12). On task UI, keep the conventions and make at least one decision that comes from this product, its users, or its data (what is shown first, a label in the product's own voice, a detail that only this product has, a type or color choice with a product reason), then check it is still plausible: a user of this category understands the screen in seconds. Report the answer and the decision in the Delivery Gate.
+- Do not: Treat a tidy, generic layout as done because it passes every other gate; generic restraint is slop too. Do not break a task convention (where the primary action sits, how status reads) to look different.
+- Why: Removing slop is the floor, not the ceiling; interchangeable design makes the product forgettable. Task UI can be specific without being unfamiliar. (ryux delivery principle; Critique Design Read: specificity; ryux four-problems baseline 2026-10-16: three runs of the same task UI brief produced one concept)
+- Not when: a fix inside an existing screen, where the product's established design already answers it
 - Trade-off: takes a design decision, not only removals
-- Check: swap test; review
+- Check: swap test, with the product-specific decision named; review
 <!-- rules:end -->
 
 ## Installation via CLI
