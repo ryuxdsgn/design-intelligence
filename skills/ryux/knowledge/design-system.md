@@ -17,7 +17,8 @@ Prioritize the existing system. Before creating anything:
 components, interaction patterns and states, responsive behavior, and visual hierarchy.
 
 If the project has no system yet, define the smallest token set the screen needs and use it
-consistently. Do not introduce a component library the project does not use.
+consistently: color roles, a spacing scale, a radius scale, and a type scale, not color alone. After
+rendering, count the literal values left and convert them (RX-DS-03). Do not introduce a component library the project does not use.
 
 ## Evidence from RYUX Knowledge
 
@@ -45,10 +46,10 @@ How reference apps keep components consistent for this pattern: `search_screens`
 
 ### RX-DS-03 [Preferred] [Quality Lock] Tokens over one-off values
 
-- Do: Use tokens or variables for color, spacing, radius, elevation, and type.
-- Do not: Hard-code one-off values for things the system already defines.
-- Why: Tokens keep changes consistent and reviewable. (W3C Design Tokens Community Group)
-- Check: review
+- Do: Use tokens or variables for color, spacing, radius, elevation, and type. When the project has none, define them before the first frame: color roles, a spacing scale, a radius scale, and a type scale (sizes, and font families). In a design tool, create them as the tool's variables and reference them in every value, and make anything that repeats (a row, a button, a bar) a component. After rendering, count the values that are still literal, by kind, and turn each into a token or name why it is an exception.
+- Do not: Hard-code one-off values for things the system already defines, or define tokens for color only and leave spacing, radius, and type size literal.
+- Why: Tokens keep changes consistent and reviewable; values that are not tokens drift from frame to frame and state to state. (W3C Design Tokens Community Group; ryux four-problems baseline 2026-10-16: in all 12 runs, with or without RYUX, spacing, radius, and font size were 100% literal)
+- Check: count literal values after render; review
 
 ### RX-DS-05 [Contextual] Every theme you ship works
 
