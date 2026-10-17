@@ -74,7 +74,7 @@ How comparable products frame the same task and offer: `search_screens` (categor
 
 - Do: Give each screen one clear, dominant goal. When the task has a clear next step (a form, checkout, a confirmation), give it one primary action and make secondary actions look secondary.
 - Do not: Put two equal-weight calls to action side by side, or leave the screen's goal unclear.
-- Why: A single clear path shortens the decision and the task. (Hick's law; NNGroup visual hierarchy)
+- Why: A single clear path shortens the decision and the task. (Hick's law (Hick 1952; Hyman 1953): more options, longer decisions; NNGroup visual hierarchy)
 - Not when: Monitoring and configuration screens (dashboards, settings) need a clear goal but not a single dominant action; do not invent one to satisfy this rule.
 - Check: review
 

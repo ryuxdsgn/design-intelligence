@@ -53,9 +53,9 @@ Real Indonesian forms for the same data (address, OTP, e-KYC): `search_screens`,
 
 ### RX-FM-05 [Preferred] The right keyboard and autofill
 
-- Do: Match the keyboard to the input (numeric for amounts, phone numbers, and OTP) and support autofill and paste.
+- Do: Match the keyboard to the input (numeric for amounts, phone numbers, and OTP) and support autofill and paste. Accept the formats people type or paste (spaces, dashes, a country code or a leading zero) and normalize them in the product.
 - Do not: Show a text keyboard for numbers or block pasting codes.
-- Why: The right keyboard removes taps and typos on phones. (HTML inputmode and autocomplete (one-time-code); platform input guidance)
+- Why: The right keyboard removes taps and typos on phones. (HTML inputmode and autocomplete (one-time-code); platform input guidance; robustness principle (Postel, RFC 761, 1980): be liberal in what you accept)
 - Not when: free-text fields where a restricted keyboard blocks valid input (names with punctuation)
 - Trade-off: inputmode varies across browsers; test on real devices
 - Check: review
