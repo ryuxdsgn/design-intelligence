@@ -57,6 +57,16 @@ RYUX and the plain agent scored about the same. The two human designers who have
 mostly preferred the plain agent. RYUX makes no visual-quality claim.
 [What RYUX has not proven](docs/showcase.md#what-ryux-has-not-proven).
 
+**Help judge.** The next results come from blind ratings, and more designers make them worth more.
+Each form shows AI-made work from different setups, shuffled, without saying which is which:
+
+- [Wallet home](https://tally.so/r/1WP6Zb): 3 pairs of finished screens, then 3 sets of early
+  directions. Pick what you would ship.
+- [Motion](https://tally.so/r/M1KMk8): 5 components (menu, dialog, toast, tabs, drawer), three
+  versions each. Pick the motion you would ship.
+
+Results go here once the ratings are in, with the number of raters.
+
 ## Decisions come with a receipt
 
 For each major choice, RYUX writes down what it decided and how sure it is. This one is quoted from
