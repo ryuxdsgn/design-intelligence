@@ -235,7 +235,7 @@ Gate area PRODUCT. Covers user, task, goal, primary action, constraints, assumpt
 
 - Do: Give each screen one clear, dominant goal. When the task has a clear next step (a form, checkout, a confirmation), give it one primary action and make secondary actions look secondary.
 - Do not: Put two equal-weight calls to action side by side, or leave the screen's goal unclear.
-- Why: A single clear path shortens the decision and the task. (Hick's law; NNGroup visual hierarchy)
+- Why: A single clear path shortens the decision and the task. (Hick's law (Hick 1952; Hyman 1953): more options, longer decisions; NNGroup visual hierarchy)
 - Not when: Monitoring and configuration screens (dashboards, settings) need a clear goal but not a single dominant action; do not invent one to satisfy this rule.
 - Check: review
 
@@ -279,16 +279,16 @@ Gate area UX. Covers information architecture, navigation, flows, grouping, disc
 
 - Do: Choose the information architecture and pattern from what users come to do and how they look for it. Keep together what the user checks together, and show each fact once.
 - Do not: Apply a stock SaaS layout (sidebar, KPI cards, table) because it is familiar, or show the same fact twice on one screen (the merchant or the amount in the summary and again in a row, the balance in the header and in a card).
-- Why: The right structure depends on the task; a template answers a different question. A repeated fact costs reading time and leaves the user to wonder which one is right. (NNGroup information architecture research; ryux four-problems blind rating, rater 1 (product designer), 2026-10-16: repeated facts were a reason not to ship)
+- Why: The right structure depends on the task; a template answers a different question. A repeated fact costs reading time and leaves the user to wonder which one is right. (NNGroup information architecture research; Gestalt proximity and common region (Palmer 1992): items close together or in one container read as one group; ryux four-problems blind rating, rater 1 (product designer), 2026-10-16: repeated facts were a reason not to ship)
 - Not when: the product already has an established structure users rely on; change it only with evidence
 - Trade-off: a less familiar layout can cost users a moment of learning
 - Check: review
 
 #### RX-UX-02 [Preferred] Where am I, what's left, how do I leave
 
-- Do: Give each screen a clear title and keep a back or cancel path visible; in multi-step flows show the current step ("Langkah 2 dari 3") and a summary the user can review before committing.
+- Do: Give each screen a clear title and keep a back or cancel path visible; in multi-step flows show the current step ("Langkah 2 dari 3") and a summary the user can review before committing. Show how close the goal is, and let an interrupted task resume where it stopped instead of starting over.
 - Do not: Leave screens without a title or a way out, or run a multi-step flow with no sense of progress or review.
-- Why: Orientation, progress, and an exit lower anxiety and abandonment. (NNGroup wayfinding and progress-indicator research; Nielsen heuristic 3)
+- Why: Orientation, progress, and an exit lower anxiety and abandonment. (NNGroup wayfinding and progress-indicator research; Nielsen heuristic 3; goal-gradient effect (Hull 1932; Kivetz, Urminsky and Zheng 2006): people speed up as the goal comes into view; Zeigarnik effect (Zeigarnik 1927): unfinished tasks stay on the mind, so a resumable task is less likely to be abandoned)
 - Not when: a focused full-screen step such as payment in progress, where leaving would lose state; say how to cancel instead
 - Trade-off: a persistent title and back path take vertical space on small screens
 - Check: heuristic_eval H-03
@@ -317,7 +317,7 @@ Gate area UX. Covers information architecture, navigation, flows, grouping, disc
 
 - Do: Show options and context (recent items, saved addresses, visible choices) instead of asking users to remember them.
 - Do not: Make users retype or recall information the app already has.
-- Why: Recognizing is easier and less error-prone than remembering. (Nielsen heuristic 6 (1994))
+- Why: Recognizing is easier and less error-prone than remembering. (Nielsen heuristic 6 (1994); limited working memory (Miller 1956; Cowan 2001))
 - Not when: a one-time task, where showing history or saved values adds clutter
 - Trade-off: higher visual density; more on screen to scan
 - Check: heuristic_eval H-06
@@ -330,9 +330,9 @@ Gate area UX. Covers before, during, result, recovery; feedback, confirmation, n
 
 #### RX-IX-01 [Required] [Hard Gate] Before, during, result, recovery
 
-- Do: For each meaningful action, decide what the user sees before acting, while it runs, when it finishes, and how they recover if it fails.
+- Do: For each meaningful action, decide what the user sees before acting, while it runs, when it finishes, and how they recover if it fails. Make the result the clearest moment of the flow: what happened, the detail the user will check, and the next step.
 - Do not: Ship an action whose in-progress, result, or failure behavior is undefined.
-- Why: Undefined behavior becomes inconsistent behavior once it is implemented. (Nielsen heuristics 1 and 9; ryux interaction model)
+- Why: Undefined behavior becomes inconsistent behavior once it is implemented. (Nielsen heuristics 1 and 9; peak-end rule (Kahneman et al. 1993): people judge an experience largely by its most intense moment and its end; ryux interaction model)
 - Not when: trivial actions with no wait and no failure mode (toggling a local view)
 - Trade-off: more states to design, build, and test
 - Check: review
@@ -341,7 +341,7 @@ Gate area UX. Covers before, during, result, recovery; feedback, confirmation, n
 
 - Do: Give an immediate pressed state; past about 1 second show a loading indicator; past about 10 seconds show progress with an estimate or let the user leave and come back. A loading skeleton has the shape of the layout it stands in for: the same blocks in the same places, so nothing jumps when the content arrives.
 - Do not: Let a payment or save run with no visible status.
-- Why: Silence during a wait reads as failure and invites double taps. (Nielsen response-time limits (0.1 / 1 / 10 s); Nielsen heuristic 1; skeleton shape: pattern also in appllama-app-design-skill (MIT); written for RYUX)
+- Why: Silence during a wait reads as failure and invites double taps. (Nielsen response-time limits (0.1 / 1 / 10 s); Nielsen heuristic 1; Doherty threshold (Doherty and Thadani 1982): responses under about 400 ms keep people engaged; skeleton shape: pattern also in appllama-app-design-skill (MIT); written for RYUX)
 - Not when: instant actions under about 0.1 s; a spinner that flashes is noise
 - Trade-off: progress indicators need real progress data; a fake bar misleads
 - Check: heuristic_eval H-01
@@ -467,9 +467,9 @@ Gate area UX. Covers labels, layout, validation, input preservation, autofill, s
 
 #### RX-FM-05 [Preferred] The right keyboard and autofill
 
-- Do: Match the keyboard to the input (numeric for amounts, phone numbers, and OTP) and support autofill and paste.
+- Do: Match the keyboard to the input (numeric for amounts, phone numbers, and OTP) and support autofill and paste. Accept the formats people type or paste (spaces, dashes, a country code or a leading zero) and normalize them in the product.
 - Do not: Show a text keyboard for numbers or block pasting codes.
-- Why: The right keyboard removes taps and typos on phones. (HTML inputmode and autocomplete (one-time-code); platform input guidance)
+- Why: The right keyboard removes taps and typos on phones. (HTML inputmode and autocomplete (one-time-code); platform input guidance; robustness principle (Postel, RFC 761, 1980): be liberal in what you accept)
 - Not when: free-text fields where a restricted keyboard blocks valid input (names with punctuation)
 - Trade-off: inputmode varies across browsers; test on real devices
 - Check: review
@@ -625,7 +625,7 @@ Gate area UI. Covers the visual expression of a product: hierarchy, type, layout
 
 - Do: Make the primary action and the key information the most prominent things in each area, with one clear focal point. Place each control next to the data it changes (a hide-balance toggle beside the balance it hides, not in the header), and keep the primary action apart from navigation: its own button, never one of the tabs and never pressed against the tab bar. Use one display size per screen, for its single most important number or heading.
 - Do not: Give everything equal weight, let decoration outrank content, park a control far from what it acts on, or merge the main action into the bottom navigation.
-- Why: Hierarchy is how users know what to read and do first; a control beside its data shows what it changes, and an action that looks like a tab reads as a place, not a task. (NNGroup visual hierarchy; Gestalt proximity; ryux four-problems blind rating, rater 1 (product designer), 2026-10-16: a hide toggle far from the balance and a CTA crowding the bottom nav were reasons not to ship)
+- Why: Hierarchy is how users know what to read and do first; a control beside its data shows what it changes, and an action that looks like a tab reads as a place, not a task. (NNGroup visual hierarchy; Gestalt proximity; Fitts's law (Fitts 1954) for the primary action's size and reach; ryux four-problems blind rating, rater 1 (product designer), 2026-10-16: a hide toggle far from the balance and a CTA crowding the bottom nav were reasons not to ship)
 - Not when: screens with several equal peers, such as a dashboard of comparable items; use consistent hierarchy within each card instead
 - Trade-off: emphasizing one thing de-emphasizes the rest
 - Check: visual QA
@@ -643,7 +643,7 @@ Gate area UI. Covers the visual expression of a product: hierarchy, type, layout
 
 - Do: Use a small set of colors with defined roles: surface, text, accent for the primary action, and status colors. Pick one grey family, warm or cool, for surfaces, borders, and secondary text.
 - Do not: Introduce new colors per component, or use the accent for decoration.
-- Why: When color has a role, the accent and status colors mean something. (ryux visual principle; one grey family: pattern also in appllama-app-design-skill (MIT); written for RYUX)
+- Why: When color has a role, the accent and status colors mean something. (ryux visual principle; isolation effect (von Restorff 1933): the one item that differs is the one remembered, so the accent marks only the primary action; one grey family: pattern also in appllama-app-design-skill (MIT); written for RYUX)
 - Not when: data visualization, which needs its own categorical or sequential palette
 - Trade-off: fewer colors means relying on type and space for emphasis
 - Check: count accent hues and grey families (RX-AS-10); review
@@ -733,7 +733,7 @@ Gate area DESIGN SYSTEM. Covers search before create, tokens, component states, 
 
 - Do: Follow platform conventions and the project's own patterns; the same component looks and behaves the same everywhere, with its states (default, hover, focus, pressed, disabled, loading, error) defined once.
 - Do not: Style or wire similar components differently from screen to screen.
-- Why: Consistency lets users transfer what they learned. (Nielsen heuristic 4; Apple HIG; Material Design)
+- Why: Consistency lets users transfer what they learned. (Nielsen heuristic 4; Jakob's law (Nielsen 2000): people spend most of their time in other products and expect yours to work the same way; Apple HIG; Material Design)
 - Check: heuristic_eval H-04
 
 #### RX-DS-03 [Preferred] [Quality Lock] Tokens over one-off values
@@ -768,7 +768,7 @@ Gate area ACCESSIBILITY. Covers semantics, keyboard, focus, contrast, targets, n
 
 - Do: Keep body text around 14 to 16px on mobile, and touch targets at least 24×24px, preferably 44×44px.
 - Do not: Shrink body text or crowd small targets together.
-- Why: Small text and targets cause misreads and mis-taps. (WCAG 2.2 SC 2.5.8 (24px minimum); Apple HIG 44pt; Material 48dp)
+- Why: Small text and targets cause misreads and mis-taps. (WCAG 2.2 SC 2.5.8 (24px minimum); Apple HIG 44pt; Material 48dp; Fitts's law (Fitts 1954): bigger and nearer targets are faster to hit)
 - Check: audit_ui
 
 #### RX-A11Y-03 [Required] [Hard Gate] Keyboard and visible focus
@@ -1005,9 +1005,9 @@ Gate area ANTI-SLOP. Covers hard gates, purpose gates, quality locks, honest cla
 
 #### RX-AS-06 [Required] [Hard Gate] Complexity with a reason
 
-- Do: Remove elements, options, states, code paths, abstractions, and dependencies that serve no stated need.
+- Do: Remove elements, options, states, code paths, abstractions, and dependencies that serve no stated need. Complexity that cannot be removed is carried by the product (defaults, formatting, calculation), not handed to the user.
 - Do not: Add settings, sections, abstractions, or packages "for later", or features because similar products have them.
-- Why: Unneeded complexity costs every user and every future change. (Nielsen heuristic 8; clean-code practice)
+- Why: Unneeded complexity costs every user and every future change. (Nielsen heuristic 8; Tesler's law of conserved complexity (Tesler, 1980s): some complexity cannot be removed, only moved; clean-code practice)
 - Check: review
 
 #### RX-AS-07 [Required] Claims match the evidence
@@ -1038,7 +1038,7 @@ Gate area ANTI-SLOP. Covers hard gates, purpose gates, quality locks, honest cla
 
 - Do: Before handing off, count on the render or in the design file's variables, and report the counts: accent hues 1 (status colors, and secondary colors the brand defines, are named and excluded); grey families 1; corner radii only from the scale, matching the shape lock; display sizes per screen 1; icon sets 1, in the chosen icon style; emoji in interface chrome 0; gradients without a brand reason 0; labels for the same intent 1. A count over its limit fails unless the brief or DESIGN.md gives the reason.
 - Do not: Judge consistency by eye only, or hand off a screen with five accent hues, mixed icon sets, or two labels for one action because it looks fine.
-- Why: Counts are harder to talk past than impressions; a design that passed a by-eye review still shipped five hues and the wrong tab icons. (pattern also in appllama-app-design-skill (MIT), anti-slop counts; written for RYUX; owner review 2026-10-17: withryux.pen passed RYUX with 5+ hues and wrong tab icons)
+- Why: Counts are harder to talk past than impressions; a design that passed a by-eye review still shipped five hues and the wrong tab icons. (isolation effect (von Restorff 1933): several accents cancel each other out; pattern also in appllama-app-design-skill (MIT), anti-slop counts; written for RYUX; owner review 2026-10-17: withryux.pen passed RYUX with 5+ hues and wrong tab icons)
 - Check: count on the render or the design file's variables; report in the Delivery Gate
 <!-- rules:end -->
 

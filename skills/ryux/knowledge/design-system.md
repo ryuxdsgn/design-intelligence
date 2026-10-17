@@ -43,7 +43,7 @@ How reference apps keep components consistent for this pattern: `search_screens`
 
 - Do: Follow platform conventions and the project's own patterns; the same component looks and behaves the same everywhere, with its states (default, hover, focus, pressed, disabled, loading, error) defined once.
 - Do not: Style or wire similar components differently from screen to screen.
-- Why: Consistency lets users transfer what they learned. (Nielsen heuristic 4; Apple HIG; Material Design)
+- Why: Consistency lets users transfer what they learned. (Nielsen heuristic 4; Jakob's law (Nielsen 2000): people spend most of their time in other products and expect yours to work the same way; Apple HIG; Material Design)
 - Check: heuristic_eval H-04
 
 ### RX-DS-03 [Preferred] [Quality Lock] Tokens over one-off values

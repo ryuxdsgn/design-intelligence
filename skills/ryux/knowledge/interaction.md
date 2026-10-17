@@ -53,9 +53,9 @@ How local apps handle the same action and its states, and local payment patterns
 
 ### RX-IX-01 [Required] [Hard Gate] Before, during, result, recovery
 
-- Do: For each meaningful action, decide what the user sees before acting, while it runs, when it finishes, and how they recover if it fails.
+- Do: For each meaningful action, decide what the user sees before acting, while it runs, when it finishes, and how they recover if it fails. Make the result the clearest moment of the flow: what happened, the detail the user will check, and the next step.
 - Do not: Ship an action whose in-progress, result, or failure behavior is undefined.
-- Why: Undefined behavior becomes inconsistent behavior once it is implemented. (Nielsen heuristics 1 and 9; ryux interaction model)
+- Why: Undefined behavior becomes inconsistent behavior once it is implemented. (Nielsen heuristics 1 and 9; peak-end rule (Kahneman et al. 1993): people judge an experience largely by its most intense moment and its end; ryux interaction model)
 - Not when: trivial actions with no wait and no failure mode (toggling a local view)
 - Trade-off: more states to design, build, and test
 - Check: review
@@ -64,7 +64,7 @@ How local apps handle the same action and its states, and local payment patterns
 
 - Do: Give an immediate pressed state; past about 1 second show a loading indicator; past about 10 seconds show progress with an estimate or let the user leave and come back. A loading skeleton has the shape of the layout it stands in for: the same blocks in the same places, so nothing jumps when the content arrives.
 - Do not: Let a payment or save run with no visible status.
-- Why: Silence during a wait reads as failure and invites double taps. (Nielsen response-time limits (0.1 / 1 / 10 s); Nielsen heuristic 1; skeleton shape: pattern also in appllama-app-design-skill (MIT); written for RYUX)
+- Why: Silence during a wait reads as failure and invites double taps. (Nielsen response-time limits (0.1 / 1 / 10 s); Nielsen heuristic 1; Doherty threshold (Doherty and Thadani 1982): responses under about 400 ms keep people engaged; skeleton shape: pattern also in appllama-app-design-skill (MIT); written for RYUX)
 - Not when: instant actions under about 0.1 s; a spinner that flashes is noise
 - Trade-off: progress indicators need real progress data; a fake bar misleads
 - Check: heuristic_eval H-01
