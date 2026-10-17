@@ -64,6 +64,8 @@ Each form shows AI-made work from different setups, shuffled, without saying whi
   directions. Pick what you would ship.
 - [Motion](https://tally.so/r/M1KMk8): 5 components (menu, dialog, toast, tabs, drawer), three
   versions each. Pick the motion you would ship.
+- [Typography](https://tally.so/r/Z95QWv): 3 pairs of the same billing page, desktop and mobile.
+  Pick the one you would ship.
 
 Results go here once the ratings are in, with the number of raters.
 
