@@ -17,8 +17,9 @@ On the transaction detail screen of a wallet called Lumo (three runs each, RYUX 
 - **Promises.** Without RYUX, 2 of 3 runs told users "No money was taken" on a failed payment, a
   promise the brief never made. With RYUX, none did.
 
-**What did not change:** how good the screens look. That is unproven (see
-[below](#what-ryux-has-not-proven)).
+**How it looks is rated by designers, blind.** In the latest round, a product designer shipped
+RYUX 2.9.2's typography in 2 of 3 pairs and found its three directions to be real choices in 2 of 3
+sets (see [below](#visual-quality-rated-by-designers)).
 
 **Don't judge the output first. Inspect how the decision was made.**
 
@@ -52,6 +53,24 @@ not a benchmark. [Every turn, raw](benchmarks/case-td-2.6/).
 "Your wallet wasn't charged" on its own (flagged, but on screen). The failed screen shows a balance
 it worked out ($200.00), not one anyone gave.
 
+### Three directions before one design (RYUX 2.9, 3 + 3 runs, pen.dev)
+
+<a href="benchmarks/explore-judge/three-directions.png"><img src="benchmarks/explore-judge/three-directions.png" alt="Three wallet home directions from one pen.dev run: Counter, Receipt, and Pass, and the Receipt direction built out" width="100%"></a>
+
+A wallet home with "more personality while it stays trustworthy". Every run rendered three
+directions that differed on 3 to 5 structural axes, rated them against the brief, and built one out;
+RYUX 2.8 built one concept straight away. The designer picked a different direction than RYUX
+recommended in all three sets, which is why the pick stays with the person.
+[Details](benchmarks/explore-judge/).
+
+### Typography and craft (RYUX 2.9.1 vs 2.9.2, 3 + 3 runs, measured)
+
+<a href="benchmarks/typo-craft/typography-measure.png"><img src="benchmarks/typo-craft/typography-measure.png" alt="The same help paragraph from two runs: RYUX 2.9.1 at 91 characters per line, RYUX 2.9.2 at 75" width="100%"></a>
+
+The same Billing page, scored by a script on nine typography and craft checks. 2.9.2 scored higher
+in 2 of 3 pairs and tied the third; every 2.9.1 run set paragraphs in `ch` units and ran to about 90
+characters per line. [Scorer, prompt, and all six pages](benchmarks/typo-craft/).
+
 ### Scenario suite (RYUX 2.7.0, one run per side)
 
 Six repeatable scenarios with a weighted rubric; two have been run
@@ -64,24 +83,31 @@ Six repeatable scenarios with a weighted rubric; two have been run
   the form showed 3 rules the brief never gave (a tax hint, USD as currency, a bank account length).
   With RYUX, none: it asked about them instead.
 
-## What RYUX has not proven
+## Visual quality, rated by designers
 
-**Visual quality.** Every test so far says RYUX does not make screens look better:
+Looks are judged by people, blind: sides shuffled, nothing labeled. Each round turns the designers'
+reasons into the next change.
 
-- Wallet home, three pairs scored blind by one person on eight areas: 3.67 without RYUX, 3.71 with
-  it. One pair dropped by 1.25; no area moved the same way in all three pairs.
-- An AI judge (18 blind comparisons) preferred the runs without RYUX in 17. Its reasons rewarded dense,
-  conventional layouts, including content the brief never gave. So an AI judge cannot be the target.
-- Two human designers rated later pairs. Both preferred the runs without RYUX in most pairs, and
-  judged the RYUX runs more AI-looking in most of them. Two raters is too few for a claim either way.
+- **Early rounds (RYUX 2.5–2.8).** Wallet home pairs scored about even (3.67 without RYUX, 3.71 with
+  it, on eight areas). The reasons given for not shipping were mostly hierarchy: a control far from its
+  data, an action crowding the navigation, a fact shown twice. Those became RYUX's hierarchy pass,
+  which now finds "control far from its data" in 4 of 6 planted cases, up from 0 of 6.
+- **An AI judge is not the target.** In 18 blind comparisons it preferred dense, conventional layouts,
+  including content the brief never gave, so ratings come from designers.
+- **Latest round (RYUX 2.9).** Typography: the 2.9.2 page shipped in 2 of 3 pairs. Three directions:
+  real choices in 2 of 3 sets; final wallet screens one each, and one pair neither.
+- **Next: motion.** Watching recorded menus, dialogs, toasts, tabs, and drawers, the designer
+  preferred the plain agent's motion in all five, for its easing and purpose. RYUX keeps frequent
+  menus and tabs almost still; the next change gives them a short, reversible transition, to be
+  re-rated before it ships.
 
-**Asking before designing.** RYUX is meant to ask when a missing answer would change the design. In
-the Lumo runs and the five-step case, it asked nothing and designed around the unknowns instead.
-2.6.4 changed this for prompts with no context at all (0 of 2 runs asked before, 2 of 2 after).
-More runs are needed.
+## Where RYUX is going next
 
-**Reasoning with reference screens.** The hosted ryux MCP is not live, so every run here rates its
-evidence None. None of these runs says anything about reasoning with real reference screens.
+- **Asking before designing.** RYUX asks when a missing answer would change the design. Since 2.6.4 it
+  asks on prompts with no context (2 of 2 runs, up from 0 of 2); on detailed briefs it designs around
+  what is open and lists it.
+- **Reasoning with reference screens.** The runs here rate their evidence None because the hosted
+  RYUX MCP is not live yet. It is the next layer: real reference screens behind each decision.
 
 ## Reproduce it
 

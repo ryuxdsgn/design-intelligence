@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Billing</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    /* One cool grey family (slate), one accent, two status colors. */
+    --bg: #f6f7f9;
+    --surface: #ffffff;
+    --border: #e2e5ea;
+    --border-strong: #cdd2da;
+    --text: #151a23;
+    --text-2: #4a5363;      /* 7.6:1 on white */
+    --text-3: #5d6676;      /* 5.9:1 on white, used for labels */
+    --accent: #2b55c9;      /* 6.4:1 on white */
+    --accent-soft: #e9eefb;
+    --ok: #146c35;    --ok-bg: #e7f4ec;
+    --bad: #b42318;   --bad-bg: #fdecea;
+
+    /* 4px spacing scale */
+    --s1: 4px; --s2: 8px; --s3: 12px; --s4: 16px; --s5: 20px;
+    --s6: 24px; --s8: 32px; --s10: 40px; --s12: 48px;
+
+    /* Shape lock: cards 12, buttons and inputs 8, badges pill */
+    --r-card: 12px; --r-btn: 8px; --r-pill: 999px;
+    --shadow: 0 1px 2px rgba(21, 26, 35, .05);
+
+    --ease: cubic-bezier(.2, .7, .3, 1);
+    --t-fast: 120ms;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font: 400 16px/1.5 "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+    font-feature-settings: "cv11", "ss01";
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .page {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: var(--s10) var(--s6) var(--s12);
+  }
+
+  /* Sample-data notice */
+  .sample {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--s2) var(--s4);
+    margin-bottom: var(--s8);
+    padding: var(--s3) var(--s4);
+    border: 1px dashed var(--border-strong);
+    border-radius: var(--r-btn);
+    font-size: 14px;
+    line-height: 1.45;
+    color: var(--text-2);
+  }
+  .sample strong { color: var(--text); font-weight: 600; }
+  .sample label { display: inline-flex; align-items: center; gap: var(--s2); margin-left: auto; white-space: nowrap; }
+  .sample select {
+    font: inherit;
+    color: var(--text);
+    padding: 6px var(--s2);
+    min-height: 36px;
+    border: 1px solid var(--border-strong);
+    border-radius: var(--r-btn);
+    background: var(--surface);
+  }
+
+  /* Header */
+  h1 {
+    margin: 0 0 var(--s3);
+    font-size: 32px;
+    line-height: 1.2;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+  .intro {
+    margin: 0;
+    max-width: 34em;
+    color: var(--text-2);
+    text-wrap: pretty;
+  }
+
+  /* Sections */
+  section { margin-top: var(--s10); }
+  .label {
+    margin: 0 0 var(--s3);
+    font-size: 12px;
+    line-height: 1.3;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-3);
+  }
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--r-card);
+    box-shadow: var(--shadow);
+  }
+
+  /* Plan summary */
+  .plan {
+    display: grid;
+    grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr) minmax(0, 1fr);
+  }
+  .plan > div { padding: var(--s6); }
+  .plan > div + div { border-left: 1px solid var(--border); }
+  .plan dt {
+    font-size: 14px;
+    line-height: 1.4;
+    color: var(--text-3);
+    margin-bottom: var(--s1);
+  }
+  .plan dd { margin: 0; }
+  .plan-name { font-size: 18px; line-height: 1.3; font-weight: 600; }
+  .price {
+    display: flex;
+    align-items: baseline;
+    gap: var(--s1);
+    margin-top: var(--s3);
+  }
+  .price b {
+    font-size: 40px;
+    line-height: 1.1;
+    font-weight: 600;
+    letter-spacing: -0.025em;
+    font-variant-numeric: tabular-nums;
+  }
+  .price span { color: var(--text-2); font-size: 15px; }
+  .price-note { margin-top: var(--s1); font-size: 14px; color: var(--text-2); font-variant-numeric: tabular-nums; }
+  .stat { font-size: 18px; line-height: 1.3; font-weight: 600; font-variant-numeric: tabular-nums; }
+  .stat-sub { margin-top: var(--s1); font-size: 14px; color: var(--text-2); }
+  .meter {
+    margin-top: var(--s3);
+    height: 6px;
+    border-radius: var(--r-pill);
+    background: var(--accent-soft);
+    overflow: hidden;
+  }
+  .meter > span { display: block; height: 100%; background: var(--accent); border-radius: inherit; }
+
+  /* Invoices table */
+  .table-wrap { overflow: hidden; }
+  table { width: 100%; border-collapse: collapse; font-size: 15px; }
+  caption { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  th {
+    text-align: left;
+    font-size: 12px;
+    line-height: 1.3;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-3);
+    padding: var(--s3) var(--s6);
+    background: #fafbfc;
+    border-bottom: 1px solid var(--border);
+  }
+  td {
+    padding: var(--s4) var(--s6);
+    border-bottom: 1px solid var(--border);
+    vertical-align: middle;
+    font-variant-numeric: tabular-nums;
+  }
+  tbody tr:last-child td { border-bottom: 0; }
+  .num { text-align: right; }
+  .inv-id { font-weight: 500; white-space: nowrap; }
+  .muted { color: var(--text-2); }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 2px 10px 2px 8px;
+    border-radius: var(--r-pill);
+    font-size: 13px;
+    line-height: 20px;
+    font-weight: 500;
+  }
+  .badge::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+  .badge.paid { color: var(--ok); background: var(--ok-bg); }
+  .badge.failed { color: var(--bad); background: var(--bad-bg); }
+
+  /* Table states */
+  .state {
+    padding: var(--s10) var(--s6);
+    text-align: center;
+  }
+  .state h3 { margin: 0 0 var(--s1); font-size: 16px; line-height: 1.4; font-weight: 600; }
+  .state p { margin: 0 auto; max-width: 30em; color: var(--text-2); font-size: 15px; }
+  .state .btn { margin-top: var(--s4); }
+  .skeleton td { padding-top: 18px; padding-bottom: 18px; }
+  .bone {
+    display: block;
+    height: 12px;
+    border-radius: 4px;
+    background: #eceef2;
+    animation: pulse 1.2s ease-in-out infinite;
+  }
+  .num .bone { margin-left: auto; }
+  @keyframes pulse { 50% { opacity: .5; } }
+
+  /* Payment method */
+  .pay {
+    display: flex;
+    align-items: center;
+    gap: var(--s4);
+    padding: var(--s5) var(--s6);
+  }
+  .card-mark {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 48px;
+    height: 32px;
+    border: 1px solid var(--border-strong);
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: var(--text-2);
+  }
+  .pay-text { flex: 1; min-width: 0; }
+  .pay-main { font-weight: 500; font-variant-numeric: tabular-nums; }
+  .pay-sub { font-size: 14px; color: var(--text-2); overflow-wrap: anywhere; }
+  .pay-note {
+    margin: 0;
+    padding: var(--s3) var(--s6);
+    border-top: 1px solid var(--border);
+    font-size: 14px;
+    color: var(--text-2);
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--s2);
+    min-height: 40px;
+    padding: 0 var(--s4);
+    border-radius: var(--r-btn);
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 1;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background-color var(--t-fast) var(--ease), border-color var(--t-fast) var(--ease);
+  }
+  .btn-secondary {
+    color: var(--text);
+    background: var(--surface);
+    border: 1px solid var(--border-strong);
+  }
+  .btn-secondary:hover { background: #f3f4f7; border-color: #b9bfca; }
+  .btn:focus-visible, select:focus-visible, a:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  /* Help */
+  .help-wrap {
+    margin-top: var(--s12);
+    padding-top: var(--s6);
+    border-top: 1px solid var(--border);
+  }
+  .help {
+    margin: 0;
+    max-width: 34em;
+    font-size: 15px;
+    color: var(--text-2);
+    text-wrap: pretty;
+  }
+  .help a { color: var(--accent); text-underline-offset: 2px; }
+
+  /* Tablet */
+  @media (max-width: 760px) {
+    .page { padding: var(--s8) var(--s4) var(--s10); }
+    h1 { font-size: 28px; }
+    .plan { grid-template-columns: 1fr 1fr; }
+    .plan > div:first-child { grid-column: 1 / -1; }
+    .plan > div + div { border-left: 0; border-top: 1px solid var(--border); }
+    .plan > div:nth-child(3) { border-left: 1px solid var(--border); }
+    .plan > div { padding: var(--s5); }
+  }
+
+  /* Phone: plan stacks, invoice rows become labeled blocks */
+  @media (max-width: 560px) {
+    .sample label { margin-left: 0; }
+    .plan { grid-template-columns: 1fr; }
+    .plan > div:nth-child(3) { border-left: 0; }
+    .price b { font-size: 36px; }
+
+    thead { display: none; }
+    table, tbody, tr, td { display: block; }
+    tbody tr {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: var(--s1) var(--s4);
+      padding: var(--s4) var(--s5);
+      border-bottom: 1px solid var(--border);
+    }
+    tbody tr:last-child { border-bottom: 0; }
+    td { padding: 0; border: 0; }
+    td[data-col="date"] { grid-column: 1; grid-row: 2; font-size: 14px; }
+    td[data-col="amount"] { grid-column: 2; grid-row: 1; font-weight: 500; }
+    td[data-col="status"] { grid-column: 2; grid-row: 2; text-align: right; }
+    tr.state-row td { grid-column: 1 / -1; grid-row: auto; }
+    .skeleton td { padding: 0; }
+    .skeleton td[data-col="status"] .bone { margin-left: auto; }
+    tr.state-row { display: block; padding: 0; }
+
+    .pay { flex-wrap: wrap; padding: var(--s5); }
+    .pay .btn { width: 100%; }
+    .pay-note { padding: var(--s3) var(--s5); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .bone { animation: none; }
+    .btn { transition: none; }
+  }
+</style>
+</head>
+<body>
+<main class="page">
+
+  <!-- Every value on this page is sample data; replace with the account's real billing data. -->
+  <div class="sample" role="note">
+    <span><strong>Sample data.</strong> Plan, invoices, card and contact details below are placeholders for illustration.</span>
+    <label>Preview invoices
+      <select id="state-select" aria-describedby="state-hint">
+        <option value="loaded">Loaded</option>
+        <option value="loading">Loading</option>
+        <option value="empty">No invoices yet</option>
+        <option value="error">Failed to load</option>
+      </select>
+    </label>
+    <span id="state-hint" hidden>Switches the invoices table between its states for review.</span>
+  </div>
+
+  <header>
+    <h1>Billing</h1>
+    <p class="intro">Review your team’s plan, seat usage and past invoices, and keep the payment method on file up to date so billing isn’t interrupted.</p>
+  </header>
+
+  <section aria-labelledby="plan-label">
+    <h2 class="label" id="plan-label">Current plan</h2>
+    <dl class="card plan">
+      <div>
+        <dt>Plan</dt>
+        <dd>
+          <div class="plan-name" id="plan-name"></div>
+          <div class="price"><b id="plan-price"></b><span>per month</span></div>
+          <div class="price-note" id="plan-rate"></div>
+        </dd>
+      </div>
+      <div>
+        <dt>Next billing date</dt>
+        <dd>
+          <div class="stat"><time id="next-date"></time></div>
+          <div class="stat-sub">Charged to the card on file</div>
+        </dd>
+      </div>
+      <div>
+        <dt>Seats used</dt>
+        <dd>
+          <div class="stat" id="seats-text"></div>
+          <div class="meter" role="meter" id="seats-meter" aria-labelledby="seats-text" aria-valuemin="0"><span id="seats-bar"></span></div>
+          <div class="stat-sub" id="seats-sub"></div>
+        </dd>
+      </div>
+    </dl>
+  </section>
+
+  <section aria-labelledby="inv-label">
+    <h2 class="label" id="inv-label">Invoices</h2>
+    <div class="card table-wrap">
+      <table>
+        <caption>Invoices, newest first</caption>
+        <thead>
+          <tr>
+            <th scope="col">Invoice</th>
+            <th scope="col">Date</th>
+            <th scope="col" class="num">Amount</th>
+            <th scope="col">Status</th>
+          </tr>
+        </thead>
+        <tbody id="inv-body" aria-live="polite"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section aria-labelledby="pay-label">
+    <h2 class="label" id="pay-label">Payment method</h2>
+    <div class="card">
+      <div class="pay">
+        <span class="card-mark" aria-hidden="true">VISA</span>
+        <div class="pay-text">
+          <div class="pay-main" id="card-main"></div>
+          <div class="pay-sub" id="card-sub"></div>
+        </div>
+        <button type="button" class="btn btn-secondary" id="update-card" aria-describedby="pay-note">Update card</button>
+      </div>
+      <p class="pay-note" id="pay-note" hidden role="status"></p>
+    </div>
+  </section>
+
+  <footer class="help-wrap">
+  <p class="help">
+    Invoices are emailed to the billing contact on the date they’re issued, and each one lists the plan, the number of seats and the amount charged. If a payment fails, check that the card details are current, then update the card above. For questions about a charge, a missing invoice or changing who receives billing emails, write to
+    <a href="mailto:billing@example.com">billing@example.com</a>
+    and include the invoice number so we can find it quickly. Before each billing date, check the seat count above.
+  </p>
+  </footer>
+</main>
+
+<script>
+  // SAMPLE DATA: illustrative values only, not real pricing or account data.
+  const SAMPLE = {
+    plan: { name: "Team", pricePerSeat: 12, seatsBilled: 12, seatsUsed: 11 },
+    nextBillingDate: "2026-11-01",
+    card: { brand: "Visa", last4: "4242", expMonth: 8, expYear: 2028, holder: "Northwind Studio" },
+    invoices: [
+      { id: "INV-2026-0106", date: "2026-10-01", amount: 144, status: "paid" },
+      { id: "INV-2026-0105", date: "2026-09-01", amount: 144, status: "paid" },
+      { id: "INV-2026-0104", date: "2026-08-01", amount: 144, status: "paid" },
+      { id: "INV-2026-0103", date: "2026-07-04", amount: 132, status: "paid" },
+      { id: "INV-2026-0102", date: "2026-07-01", amount: 132, status: "failed" },
+      { id: "INV-2026-0101", date: "2026-06-01", amount: 132, status: "paid" }
+    ]
+  };
+
+  const money = new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" });
+  const moneyWhole = new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 });
+  const dateFmt = new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", year: "numeric", timeZone: "UTC" });
+  const longDate = new Intl.DateTimeFormat("en-US", { month: "long", day: "numeric", year: "numeric", timeZone: "UTC" });
+  const STATUS_LABEL = { paid: "Paid", failed: "Payment failed" };
+
+  const $ = (id) => document.getElementById(id);
+  const fmtDate = (iso, f = dateFmt) => f.format(new Date(iso + "T00:00:00Z"));
+
+  function renderPlan({ plan, nextBillingDate }) {
+    const monthly = plan.pricePerSeat * plan.seatsBilled;
+    $("plan-name").textContent = plan.name;
+    $("plan-price").textContent = moneyWhole.format(monthly);
+    $("plan-rate").textContent = `${moneyWhole.format(plan.pricePerSeat)} per seat × ${plan.seatsBilled} seats`;
+    $("next-date").dateTime = nextBillingDate;
+    $("next-date").textContent = fmtDate(nextBillingDate, longDate);
+
+    const free = plan.seatsBilled - plan.seatsUsed;
+    $("seats-text").textContent = `${plan.seatsUsed} of ${plan.seatsBilled}`;
+    $("seats-bar").style.width = `${Math.min(100, (plan.seatsUsed / plan.seatsBilled) * 100)}%`;
+    $("seats-meter").setAttribute("aria-valuemax", plan.seatsBilled);
+    $("seats-meter").setAttribute("aria-valuenow", plan.seatsUsed);
+    $("seats-sub").textContent = free > 0 ? `${free} seat${free === 1 ? "" : "s"} available` : "All seats in use";
+  }
+
+  function renderCard({ card }) {
+    $("card-main").textContent = `${card.brand} ending in ${card.last4}`;
+    $("card-sub").textContent = `Expires ${String(card.expMonth).padStart(2, "0")}/${card.expYear} · ${card.holder}`;
+  }
+
+  const td = (col, html, cls = "") => `<td data-col="${col}"${cls ? ` class="${cls}"` : ""}>${html}</td>`;
+
+  function stateRow(title, body, action = "") {
+    return `<tr class="state-row"><td colspan="4"><div class="state"><h3>${title}</h3><p>${body}</p>${action}</div></td></tr>`;
+  }
+
+  function renderInvoices(state) {
+    const body = $("inv-body");
+    body.setAttribute("aria-busy", state === "loading");
+
+    if (state === "loading") {
+      const bone = (w) => `<span class="bone" style="width:${w}"></span>`;
+      body.innerHTML = Array.from({ length: 4 }, () =>
+        `<tr class="skeleton" aria-hidden="true">${td("id", bone("110px"))}${td("date", bone("84px"))}${td("amount", bone("60px"), "num")}${td("status", bone("56px"))}</tr>`
+      ).join("");
+      return;
+    }
+    if (state === "empty") {
+      body.innerHTML = stateRow("No invoices yet",
+        "Your first invoice will appear here after the first billing date.");
+      return;
+    }
+    if (state === "error") {
+      body.innerHTML = stateRow("Invoices couldn’t be loaded",
+        "We couldn’t reach the billing service. Your plan and payment method aren’t affected. Try again in a moment.",
+        `<button type="button" class="btn btn-secondary" id="retry">Try again</button>`);
+      $("retry").addEventListener("click", retry);
+      return;
+    }
+
+    body.innerHTML = SAMPLE.invoices.map((inv) =>
+      `<tr>${td("id", inv.id, "inv-id")}${td("date", `<time datetime="${inv.date}">${fmtDate(inv.date)}</time>`, "muted")}${td("amount", money.format(inv.amount), "num")}${td("status", `<span class="badge ${inv.status}">${STATUS_LABEL[inv.status]}</span>`)}</tr>`
+    ).join("");
+  }
+
+  function retry() {
+    renderInvoices("loading");
+    $("state-select").value = "loading";
+    setTimeout(() => {
+      renderInvoices("loaded");
+      $("state-select").value = "loaded";
+    }, 900);
+  }
+
+  // No card form is connected in this sample, so the button explains that instead of failing silently.
+  $("update-card").addEventListener("click", () => {
+    const note = $("pay-note");
+    note.hidden = false;
+    note.textContent = "Card updates aren’t connected in this sample.";
+  });
+
+  $("state-select").addEventListener("change", (e) => renderInvoices(e.target.value));
+
+  renderPlan(SAMPLE);
+  renderCard(SAMPLE);
+  renderInvoices("loaded");
+</script>
+</body>
+</html>
