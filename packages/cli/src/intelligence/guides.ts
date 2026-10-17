@@ -457,6 +457,20 @@ gates in ryux-anti-slop). It works in four layers.
 is a new topic." Tighter inside a group, looser between groups; density follows the task. If you
 cannot say why 8 and not 12, the choice is not a decision yet.
 
+**Set the type, don't only size it** (RX-UI-14). Body text reads best at 45 to 75 characters per line:
+give paragraphs a max width and check the rendered count (about 30 to 34em in most text faces; CSS
+\`ch\` is the width of a zero, so 65ch runs well past 75 characters). Line-height falls as size rises:
+about 1.5 for body, 1.2 to 1.3 for headings, close to 1.1 for display. Large display text tightens
+slightly; small uppercase labels open up (about 0.05em). Numbers people compare or watch change use
+tabular figures. Two families at most, three weights at most: hierarchy comes from size and weight
+steps, not from more faces. Headings do not end on one stranded word (\`text-wrap: balance\`, or
+rewrite).
+
+**Craft is the last 10 percent people notice first** (RX-UI-15). Icons sit on the optical center of
+their text, sized to its line-height, with a stroke that matches the type weight. Number columns align
+right or on the decimal. Borders, dividers, and shadows come from one small token set. Long text
+truncates on purpose, with the full value still reachable.
+
 **2. Art direction.** Each visual has a job (RX-UI-07), its composition leaves room for the
 content (RX-UI-09), and the visual language is chosen, not defaulted (RX-UI-10). Name the visual
 language in a few words (editorial, product-centric, human, technical, playful, premium,
