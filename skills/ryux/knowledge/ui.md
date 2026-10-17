@@ -23,6 +23,20 @@ gates in `knowledge/anti-slop.md`). It works in four layers.
 is a new topic." Tighter inside a group, looser between groups; density follows the task. If you
 cannot say why 8 and not 12, the choice is not a decision yet.
 
+**Set the type, don't only size it** (RX-UI-14). Body text reads best at 45 to 75 characters per line:
+give paragraphs a max width and check the rendered count (about 30 to 34em in most text faces; CSS
+`ch` is the width of a zero, so 65ch runs well past 75 characters). Line-height falls as size rises:
+about 1.5 for body, 1.2 to 1.3 for headings, close to 1.1 for display. Large display text tightens
+slightly; small uppercase labels open up (about 0.05em). Numbers people compare or watch change use
+tabular figures. Two families at most, three weights at most: hierarchy comes from size and weight
+steps, not from more faces. Headings do not end on one stranded word (`text-wrap: balance`, or
+rewrite).
+
+**Craft is the last 10 percent people notice first** (RX-UI-15). Icons sit on the optical center of
+their text, sized to its line-height, with a stroke that matches the type weight. Number columns align
+right or on the decimal. Borders, dividers, and shadows come from one small token set. Long text
+truncates on purpose, with the full value still reachable.
+
 **2. Art direction.** Each visual has a job (RX-UI-07), its composition leaves room for the
 content (RX-UI-09), and the visual language is chosen, not defaulted (RX-UI-10). Name the visual
 language in a few words (editorial, product-centric, human, technical, playful, premium,
@@ -232,3 +246,19 @@ A design direction from comparable screens: `extract_design_direction` (patterns
 - Not when: a wireframe or internal prototype where placeholders are expected
 - Trade-off: real or licensed assets take longer than a stock search
 - Check: asset list with sources; review
+
+### RX-UI-14 [Preferred] [Quality Lock] Type that is set, not only sized
+
+- Do: Keep body paragraphs at 45 to 75 characters per line, checked in the render; take line-height from size (about 1.5 for body, 1.2 to 1.3 for headings, about 1.1 for display); open small uppercase labels slightly (about 0.05em) and tighten large display text slightly; use tabular figures for numbers that are compared or that change (amounts, tables, timers); use at most two families and three weights; balance headings so none ends on one stranded word.
+- Do not: Let paragraphs run the full width of a desktop container, use one line-height for every size, set uppercase labels with no tracking, or let amounts in a column shift because digits differ in width.
+- Why: Line length and leading decide whether text is read or skimmed; aligned figures make numbers comparable at a glance. (Bringhurst, The Elements of Typographic Style (a measure of 45 to 75 characters; leading by size); WCAG 2.2 SC 1.4.12 text spacing; OpenType tnum; Apple HIG and Material type scales)
+- Not when: a single display line or a logo lockup, where the type is an image
+- Trade-off: narrower text columns leave more empty space on wide screens
+- Check: measure the render: characters per line, line-height, letter-spacing, font-variant-numeric, families and weights in use
+
+### RX-UI-15 [Preferred] [Quality Lock] Detail craft
+
+- Do: Center icons on the optical middle of the text beside them and size them to its line-height; match icon stroke to the type weight; right-align (or decimal-align) number columns; take borders, dividers, radii, and shadows from a small token set; truncate long text on purpose, with the full value still reachable (a tooltip, a detail view, or wrapping).
+- Do not: Let icons sit high or low against their labels, mix stroke weights, center amounts in a table, or invent a one-off shadow for one card.
+- Why: Each detail is small; together they are what makes a screen look made rather than generated. (Bringhurst (figures and alignment); Apple HIG and Material iconography (optical size and alignment); owner review 2026-10-17: wrong tab icons in withryux.pen)
+- Check: render inspection at 390 and 1280: icon center within 2 px of the text center; column alignment

@@ -196,13 +196,13 @@ line below for its exact source.
 <!-- provenance:start -->
 | Source cited | Rules citing it | Rules citing only this |
 | --- | --- | --- |
-| Public standard or research | 52 | 41 |
+| Public standard or research | 54 | 42 |
 | Industry practice | 12 | 6 |
 | Observed in a RYUX run | 12 | 8 |
 | Pattern also in another MIT ruleset (text written for RYUX) | 4 | 4 |
-| RYUX principle, taxonomy, or review | 27 | 20 |
+| RYUX principle, taxonomy, or review | 28 | 20 |
 
-All 93 rules cite a source; 14 cite more than one kind, so the "Rules citing it" column adds up to more than 93.
+All 95 rules cite a source; 15 cite more than one kind, so the "Rules citing it" column adds up to more than 95.
 <!-- provenance:end -->
 
 ## Rules
@@ -210,7 +210,7 @@ All 93 rules cite a source; 14 cite more than one kind, so the "Rules citing it"
 Generated from `packages/cli/src/content.ts` by `pnpm sync:skills`. Edit the rules there, not here.
 
 <!-- rules:start -->
-93 rules across 13 modules: 54 Required, 14 Preferred, 25 Contextual; 16 Hard Gates and 8 Quality Locks.
+95 rules across 13 modules: 54 Required, 16 Preferred, 25 Contextual; 16 Hard Gates and 10 Quality Locks.
 
 ### Product thinking (RX-PR) · `knowledge/product.md`
 
@@ -715,6 +715,22 @@ Gate area UI. Covers the visual expression of a product: hierarchy, type, layout
 - Not when: a wireframe or internal prototype where placeholders are expected
 - Trade-off: real or licensed assets take longer than a stock search
 - Check: asset list with sources; review
+
+#### RX-UI-14 [Preferred] [Quality Lock] Type that is set, not only sized
+
+- Do: Keep body paragraphs at 45 to 75 characters per line, checked in the render; take line-height from size (about 1.5 for body, 1.2 to 1.3 for headings, about 1.1 for display); open small uppercase labels slightly (about 0.05em) and tighten large display text slightly; use tabular figures for numbers that are compared or that change (amounts, tables, timers); use at most two families and three weights; balance headings so none ends on one stranded word.
+- Do not: Let paragraphs run the full width of a desktop container, use one line-height for every size, set uppercase labels with no tracking, or let amounts in a column shift because digits differ in width.
+- Why: Line length and leading decide whether text is read or skimmed; aligned figures make numbers comparable at a glance. (Bringhurst, The Elements of Typographic Style (a measure of 45 to 75 characters; leading by size); WCAG 2.2 SC 1.4.12 text spacing; OpenType tnum; Apple HIG and Material type scales)
+- Not when: a single display line or a logo lockup, where the type is an image
+- Trade-off: narrower text columns leave more empty space on wide screens
+- Check: measure the render: characters per line, line-height, letter-spacing, font-variant-numeric, families and weights in use
+
+#### RX-UI-15 [Preferred] [Quality Lock] Detail craft
+
+- Do: Center icons on the optical middle of the text beside them and size them to its line-height; match icon stroke to the type weight; right-align (or decimal-align) number columns; take borders, dividers, radii, and shadows from a small token set; truncate long text on purpose, with the full value still reachable (a tooltip, a detail view, or wrapping).
+- Do not: Let icons sit high or low against their labels, mix stroke weights, center amounts in a table, or invent a one-off shadow for one card.
+- Why: Each detail is small; together they are what makes a screen look made rather than generated. (Bringhurst (figures and alignment); Apple HIG and Material iconography (optical size and alignment); owner review 2026-10-17: wrong tab icons in withryux.pen)
+- Check: render inspection at 390 and 1280: icon center within 2 px of the text center; column alignment
 
 ---
 
