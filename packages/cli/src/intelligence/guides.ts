@@ -3,6 +3,7 @@
 // each guide by render.ts. Keep each guide short; the core is loaded on every task.
 
 import type { SkillId } from "./content.js";
+import { UNTRUSTED_CONTENT } from "./capture.js";
 
 export const CORE_POSITIONING = `RYUX is a design intelligence layer for AI and designers. It helps understand, reason, design,
 build, critique, and verify interfaces using design knowledge and evidence. It is not a UI
@@ -140,6 +141,8 @@ export const DESIGN_BODY = `# RYUX Design
    integrations, platforms, pages, numbers) against the brief or the repo (RX-PR-02), then close
    with the Delivery Gate, saying what was not designed, such as other widths or states. If you
    wrote DESIGN.md, say so in the final message: which file and which fields.
+
+${UNTRUSTED_CONTENT}
 
 Do not edit frames you were not asked to change. Do not hand off a design as "final" with
 placeholder or invented content.
@@ -686,6 +689,8 @@ Card radius | 16px                 | 8px            | half the radius | minor   
 **Render with what is available**, in this order: the project's own preview or test setup;
 \`npx playwright screenshot --viewport-size=1440,900 <url>\` (and 390 wide for mobile); a browser
 tool; a design-tool export such as pen.dev \`Export\`. If none is available, say so in the gate.
+
+${UNTRUSTED_CONTENT}
 
 **Motion** (when anything opens, closes, or switches with an animation): a screenshot cannot show it,
 so drive it in a real browser (the project's test setup or Playwright). For each animated element,
