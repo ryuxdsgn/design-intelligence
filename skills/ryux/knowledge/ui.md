@@ -64,8 +64,8 @@ reverse halfway: use transitions, not an open-only keyframe animation.
 
 | Level | Examples | Needs |
 | --- | --- | --- |
-| L1 State feedback | button press, checkbox, toggle | nothing beyond being fast (about 100 to 200 ms) |
-| L2 Component transition | dropdown, modal, drawer, tooltip | shows where something came from or went |
+| L1 State feedback | button press, checkbox, toggle | starts on touch and lasts 100 to 150 ms; buttons and cards press to about 0.97 scale, list rows change background only |
+| L2 Component transition | dropdown, modal, drawer, tooltip | shows where something came from or went: enters from about 0.95 scale with a fade (never from 0), exits faster along the same path, a menu grows from its trigger |
 | L3 Page transition | navigation, route change | keeps the user oriented between places |
 | L4 Storytelling | onboarding, product introduction, marketing | a message that is clearer moving than still |
 | L5 Decorative | background particles, floating elements | a brand reason, and never delaying content or input |
@@ -76,11 +76,15 @@ Pick one **motion personality** per product and derive timing and easing from it
 | --- | --- | --- |
 | Character | calm, precise | energetic, playful |
 | Speed | moderate | fast |
-| Easing | smooth ease-out | spring |
+| Easing | ease-out; default token `cubic-bezier(0.23, 1, 0.32, 1)` | spring |
 | Movement | short, controlled | larger, expressive |
 | Expression | subtle | high |
 
-With reduced motion requested, large movement becomes a fade or a cut (RX-A11Y-08).
+When neither the brief nor DESIGN.md sets the motion direction, start from Calm: the easing token
+above, interface transitions under 300 ms, and no ease-in on anything that enters. Replace these
+defaults as soon as the product sets its own. Data the user is reading (a balance, an amount, a
+table value) does not move for effect. With reduced motion requested, large movement becomes a fade
+or a cut (RX-A11Y-08).
 
 **4. Visual production.** Decide where each asset comes from before making anything (RX-UI-13):
 
@@ -89,7 +93,7 @@ With reduced motion requested, large movement becomes a fade or a cut (RX-A11Y-0
 | Product visuals | real screens, labeled sample data | a rebuilt screen labeled illustrative | a fake dashboard shown as real |
 | Photography | the brand's own shoot | a licensed library you can name | a stranger presented as a customer |
 | Illustration and 3D | the brand's system | custom or generated from the brief, labeled | a generic character or blob unrelated to the product |
-| Icons | the project's set | one open-source set (for example Lucide or Phosphor) | mixed sets or hand-drawn one-offs |
+| Icons | the project's set | one set that matches the chosen icon style (for example Tabler, Iconoir, Phosphor, or Material Symbols), or a custom set drawn to that style | mixed sets, or one-off icons outside the style |
 | Logos | official files from each owner | the name in plain text | a redrawn or imitated logo |
 | Video | real product footage | a screen recording of the real product | stock footage implying use |
 | Missing | a placeholder that looks like one (RX-AS-03) | | an invented stand-in |
@@ -136,7 +140,7 @@ A design direction from comparable screens: `extract_design_direction` (patterns
 
 ### RX-UI-01 [Required] [Quality Lock] Hierarchy follows priority
 
-- Do: Make the primary action and the key information the most prominent things in each area, with one clear focal point. Place each control next to the data it changes (a hide-balance toggle beside the balance it hides, not in the header), and keep the primary action apart from navigation: its own button, never one of the tabs and never pressed against the tab bar.
+- Do: Make the primary action and the key information the most prominent things in each area, with one clear focal point. Place each control next to the data it changes (a hide-balance toggle beside the balance it hides, not in the header), and keep the primary action apart from navigation: its own button, never one of the tabs and never pressed against the tab bar. Use one display size per screen, for its single most important number or heading.
 - Do not: Give everything equal weight, let decoration outrank content, park a control far from what it acts on, or merge the main action into the bottom navigation.
 - Why: Hierarchy is how users know what to read and do first; a control beside its data shows what it changes, and an action that looks like a tab reads as a place, not a task. (NNGroup visual hierarchy; Gestalt proximity; ryux four-problems blind rating, rater 1 (product designer), 2026-10-16: a hide toggle far from the balance and a CTA crowding the bottom nav were reasons not to ship)
 - Not when: screens with several equal peers, such as a dashboard of comparable items; use consistent hierarchy within each card instead
@@ -145,21 +149,21 @@ A design direction from comparable screens: `extract_design_direction` (patterns
 
 ### RX-UI-03 [Preferred] [Quality Lock] One spacing and type scale
 
-- Do: Use the project's spacing and type scale, or define one (for example multiples of 4 or 8) and align elements to a shared grid.
+- Do: Use the project's spacing and type scale, or define one (for example multiples of 4 or 8) and align elements to a shared grid. State the shape lock in one sentence, a radius per component role ("action buttons pill, cards 16, inputs 12, sheets 28"), and keep emphasis inside the type family (weight or size), not a second face dropped into one word.
 - Do not: Pick spacing and sizes one element at a time.
-- Why: A scale produces rhythm and makes hierarchy legible. (Material Design 8dp grid)
+- Why: A scale produces rhythm and makes hierarchy legible. (Material Design 8dp grid; shape lock and in-family emphasis: pattern also in appllama-app-design-skill (MIT); written for RYUX)
 - Not when: a one-off marketing piece outside the product
 - Trade-off: a scale limits choices; occasional exceptions need a written reason
-- Check: review
+- Check: count radii and type faces (RX-AS-10); review
 
 ### RX-UI-04 [Preferred] [Quality Lock] A palette with roles
 
-- Do: Use a small set of colors with defined roles: surface, text, accent for the primary action, and status colors.
+- Do: Use a small set of colors with defined roles: surface, text, accent for the primary action, and status colors. Pick one grey family, warm or cool, for surfaces, borders, and secondary text.
 - Do not: Introduce new colors per component, or use the accent for decoration.
-- Why: When color has a role, the accent and status colors mean something. (ryux visual principle)
+- Why: When color has a role, the accent and status colors mean something. (ryux visual principle; one grey family: pattern also in appllama-app-design-skill (MIT); written for RYUX)
 - Not when: data visualization, which needs its own categorical or sequential palette
 - Trade-off: fewer colors means relying on type and space for emphasis
-- Check: review
+- Check: count accent hues and grey families (RX-AS-10); review
 
 ### RX-UI-05 [Preferred] Layout from content, not a template
 
@@ -203,8 +207,8 @@ A design direction from comparable screens: `extract_design_direction` (patterns
 
 - When: the design adds motion or transitions
 - Do: Classify each motion: L1 state feedback, L2 component transition, L3 page transition, L4 storytelling, L5 decorative. The higher the level, the stronger the reason it needs. Then weigh how often people see it: a surface opened many times a day (command palette, shortcut, core navigation, list selection) appears and closes without movement, at most a fade too short to notice; standard transitions belong to occasional surfaces (modal, drawer, toast), and expression to rare or first-time moments. Take timing and easing from one motion personality, define them once as motion tokens, animate transform and opacity rather than layout properties, and honor reduced motion (RX-A11Y-08). Anything that opens and closes (menu, popover, dialog, drawer) uses transitions that can reverse halfway, so a close or reopen mid-animation turns back from where it is, and it closes no slower than it opened.
-- Do not: Animate everything, give a surface people open many times a day an entrance they must sit through, play an open-only keyframe animation on something people can close or reopen at any moment, use one generic duration and easing (transition: all 0.3s) everywhere, or let decorative motion delay content or input.
-- Why: Motion directs attention; unearned motion steals it from the task and can make some people unwell. (NNGroup animation and usability guidance; WCAG 2.3.3 animation from interactions; frequency check: pattern also in emilkowalski/skills (MIT) find-animation-opportunities; reversible open and close: pattern also in emilkowalski/skills (MIT) animate; both written for RYUX)
+- Do not: Animate everything, give a surface people open many times a day an entrance they must sit through, play an open-only keyframe animation on something people can close or reopen at any moment, use one generic duration and easing (transition: all 0.3s) everywhere, let decorative motion delay content or input, or move data the user is reading (a balance, an amount, a table value) for effect.
+- Why: Motion directs attention; unearned motion steals it from the task and can make some people unwell. (NNGroup animation and usability guidance; WCAG 2.3.3 animation from interactions; frequency check: pattern also in emilkowalski/skills (MIT) find-animation-opportunities; reversible open and close: pattern also in emilkowalski/skills (MIT) animate; default timing, press state, and still data: pattern also in appllama-app-design-skill (MIT); all written for RYUX)
 - Not when: L1 feedback on standard controls that follows the platform defaults
 - Trade-off: fewer flourishes on marketing pages
 - Check: review; reduced-motion test

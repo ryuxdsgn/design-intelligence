@@ -110,7 +110,9 @@ export const DESIGN_BODY = `# RYUX Design
    you claim, and source assets on purpose (RX-UI-13).
 7. **Render and inspect.** Screenshot what you made, check it against the direction and the rules,
    fix, and render again (capabilities/qa.md). Count the values still literal (color, spacing,
-   radius, type size) and turn each into a variable or name the exception. Run the four hierarchy
+   radius, type size) and turn each into a variable or name the exception, then run the counts of
+   RX-AS-10 (accent hues, grey families, radii, display sizes, icon sets, emoji, gradients, labels
+   per intent) and report them in the gate. Run the four hierarchy
    checks from Critique (control beside its data, primary action apart from navigation, no fact
    twice, grouped by what the user checks together), fix what fails, render again, and check each fix. List where
    the render differs from the Design Direction (hierarchy, states, widths) and fix or record each one. Check the result against the Liveliness you set, and
@@ -145,7 +147,8 @@ UX direction   flow and steps; information hierarchy (first, second, third); int
                states (empty, loading, error, success, permission); edge cases; constraints and
                business rules given (never invented)
 UI direction   layout and grid; type scale; spacing and density; color roles; containers;
-               components reused or added; the focal point
+               components reused or added; the focal point; the shape lock (radius per role);
+               the icon style (outline or filled, stroke weight, corners)
 Design language personality, tone, interaction personality, density, formality; each with its
                reason from the product, the audience, or the existing system
 Visual direction for expressive surfaces: the Visual Brief (knowledge/ui.md, Visual production)
@@ -222,7 +225,8 @@ export const BUILD_BODY = `# RYUX Build
    from the design (capabilities/qa.md). When changing an existing screen, also check that what
    you did not mean to change still works: neighbouring screens, shared components, and the flow
    around the change.
-   When anything animates, run the motion passes in capabilities/qa.md as well.
+   When anything animates, run the motion passes in capabilities/qa.md as well. Run the counts of
+   RX-AS-10 on the render and report them in the gate.
 7. **Close with the Delivery Gate.** CODE QUALITY and VISUAL QA need real checks (typecheck,
    tests, render), or say what was not run.`;
 
@@ -361,6 +365,19 @@ disabled (with a reason, or keep it enabled and explain on use), loading, succes
 every action is reachable; Enter submits; Escape closes. For repeat or expert use, add shortcuts
 (recent items, quick amounts) without crowding the novice path.
 
+**Navigation.** How a screen arrives tells people where back goes (RX-IX-13, RX-IX-14):
+
+| Transition | Means | Back |
+| --- | --- | --- |
+| Push | one level deeper in the same task | returns to the screen before |
+| Replace | a new stage; the old one is finished | does not return to the finished stage |
+| Modal | a self-contained task, finished or cancelled | closes the task |
+| Sheet | a short interruption over the current screen | dismisses the sheet |
+
+After a completed payment, submission, or onboarding, the result replaces the flow (a one-way door).
+Back is blocked only while a request is in flight or work is unsaved, and the screen says why.
+Follow the platform's back gesture and button; on the web, the browser's back follows the same map.
+
 Does not cover: form-specific behavior (see ryux-forms).`,
 
   forms: `A form is a conversation. Design it field by field, then as a whole.
@@ -481,8 +498,8 @@ reverse halfway: use transitions, not an open-only keyframe animation.
 
 | Level | Examples | Needs |
 | --- | --- | --- |
-| L1 State feedback | button press, checkbox, toggle | nothing beyond being fast (about 100 to 200 ms) |
-| L2 Component transition | dropdown, modal, drawer, tooltip | shows where something came from or went |
+| L1 State feedback | button press, checkbox, toggle | starts on touch and lasts 100 to 150 ms; buttons and cards press to about 0.97 scale, list rows change background only |
+| L2 Component transition | dropdown, modal, drawer, tooltip | shows where something came from or went: enters from about 0.95 scale with a fade (never from 0), exits faster along the same path, a menu grows from its trigger |
 | L3 Page transition | navigation, route change | keeps the user oriented between places |
 | L4 Storytelling | onboarding, product introduction, marketing | a message that is clearer moving than still |
 | L5 Decorative | background particles, floating elements | a brand reason, and never delaying content or input |
@@ -493,11 +510,15 @@ Pick one **motion personality** per product and derive timing and easing from it
 | --- | --- | --- |
 | Character | calm, precise | energetic, playful |
 | Speed | moderate | fast |
-| Easing | smooth ease-out | spring |
+| Easing | ease-out; default token \`cubic-bezier(0.23, 1, 0.32, 1)\` | spring |
 | Movement | short, controlled | larger, expressive |
 | Expression | subtle | high |
 
-With reduced motion requested, large movement becomes a fade or a cut (RX-A11Y-08).
+When neither the brief nor DESIGN.md sets the motion direction, start from Calm: the easing token
+above, interface transitions under 300 ms, and no ease-in on anything that enters. Replace these
+defaults as soon as the product sets its own. Data the user is reading (a balance, an amount, a
+table value) does not move for effect. With reduced motion requested, large movement becomes a fade
+or a cut (RX-A11Y-08).
 
 **4. Visual production.** Decide where each asset comes from before making anything (RX-UI-13):
 
@@ -506,7 +527,7 @@ With reduced motion requested, large movement becomes a fade or a cut (RX-A11Y-0
 | Product visuals | real screens, labeled sample data | a rebuilt screen labeled illustrative | a fake dashboard shown as real |
 | Photography | the brand's own shoot | a licensed library you can name | a stranger presented as a customer |
 | Illustration and 3D | the brand's system | custom or generated from the brief, labeled | a generic character or blob unrelated to the product |
-| Icons | the project's set | one open-source set (for example Lucide or Phosphor) | mixed sets or hand-drawn one-offs |
+| Icons | the project's set | one set that matches the chosen icon style (for example Tabler, Iconoir, Phosphor, or Material Symbols), or a custom set drawn to that style | mixed sets, or one-off icons outside the style |
 | Logos | official files from each owner | the name in plain text | a redrawn or imitated logo |
 | Video | real product footage | a screen recording of the real product | stock footage implying use |
 | Missing | a placeholder that looks like one (RX-AS-03) | | an invented stand-in |
@@ -651,7 +672,10 @@ check the motion rules already in force (RX-UI-11, RX-A11Y-08):
 - what people open many times a day (menus, tabs) appears at once or with a short fade;
 - reduced motion leaves a fade or a cut, no movement;
 - after a dialog or drawer closes, focus is back on the control that opened it.
-Fix what fails and run the passes again. Report each animated element as Verified (passes run,
+Then record the interaction and step through it frame by frame: look for broken or skipped frames,
+a flash of the wrong theme, and layout that jumps; aim for 60 frames per second and count dropped
+frames in a performance trace or the recording. For gestures (RX-IX-15), record a drag that is
+caught mid-animation. Fix what fails and run the passes again. Report each animated element as Verified (passes run,
 widths) or NOT VERIFIED (why); motion read only from code is NOT VERIFIED.
 
 **Rank issues by impact**: blocks the task, misleads (wrong numbers, unclear action), adds friction,

@@ -39,7 +39,10 @@ check the motion rules already in force (RX-UI-11, RX-A11Y-08):
 - what people open many times a day (menus, tabs) appears at once or with a short fade;
 - reduced motion leaves a fade or a cut, no movement;
 - after a dialog or drawer closes, focus is back on the control that opened it.
-Fix what fails and run the passes again. Report each animated element as Verified (passes run,
+Then record the interaction and step through it frame by frame: look for broken or skipped frames,
+a flash of the wrong theme, and layout that jumps; aim for 60 frames per second and count dropped
+frames in a performance trace or the recording. For gestures (RX-IX-15), record a drag that is
+caught mid-animation. Fix what fails and run the passes again. Report each animated element as Verified (passes run,
 widths) or NOT VERIFIED (why); motion read only from code is NOT VERIFIED.
 
 **Rank issues by impact**: blocks the task, misleads (wrong numbers, unclear action), adds friction,
