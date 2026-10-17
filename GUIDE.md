@@ -254,6 +254,6 @@ Analyze → Design → Build → Critique → QA → Anti-Slop (final gate) → 
 ## More
 
 - [`docs/design-rules.md`](./docs/design-rules.md): every rule, level, and gate
-- [`docs/showcase.md`](./docs/showcase.md): what RYUX changes, and what it hasn't proven
+- [`docs/showcase.md`](./docs/showcase.md): every case, and how designers rated it
 - [`docs/benchmarks/`](./docs/benchmarks/): raw runs, and how to run one yourself
 - [`docs/taxonomy.md`](./docs/taxonomy.md): tags for the reference library (for MCP contributors)

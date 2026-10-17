@@ -30,6 +30,6 @@ RYUX proposed a receipt action in 1 of 3 runs (c2).
 - The runs without RYUX come from the 2.6 visual benchmark (2026-10-10). The RYUX runs used the same
   brief and harness on 2026-10-13, with the build that became 2.6.3.
 - Three runs per side: a small benchmark, not a study. It shows what the screens cover and claim,
-  not that they look better. Visual quality is a separate, unproven question (see the
-  [showcase](../../showcase.md#what-ryux-has-not-proven)).
+  not how they look. Visual quality is rated blind by designers (see the
+  [showcase](../../showcase.md#visual-quality-rated-by-designers)).
 - Edits to the raw output: the local path of the pen.dev file is replaced with `[local path]`.
