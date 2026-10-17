@@ -65,7 +65,7 @@
    radius, type size) and turn each into a variable or name the exception, then run the counts of
    RX-AS-10 (accent hues, grey families, radii, display sizes, icon sets, emoji, gradients, labels
    per intent) and report them in the gate. Run the four hierarchy
-   checks from Critique (control beside its data, primary action apart from navigation, no fact
+   checks from Critique (control beside its data, primary action that reads as an action, not a tab, no fact
    twice, grouped by what the user checks together), fix what fails, render again, and check each fix. List where
    the render differs from the Design Direction (hierarchy, states, widths) and fix or record each one. Check the result against the Liveliness you set, and
    put each prominent or decorative element through the purpose gate (RX-AS-05: purpose,

@@ -109,9 +109,9 @@ hierarchy is often an unclear goal); report the cause once, not each symptom.
 At the hierarchy layer, run four checks on every screen and report each failure as a finding:
 - Does every control sit next to the data it changes (a hide-balance toggle on the balance, not in the
   header)?
-- Is the primary action its own button? If it is one of the tabs, styled as a tab, or pressed against
-  the tab bar, that is a finding even when it is clearly visible; do not recommend moving it into the
-  navigation.
+- Does the primary action read as an action, not a place? If it is styled like a tab or crammed
+  between tabs, that is a finding even when it is visible. A centered action button in the bottom bar
+  is fine when its shape, color, size, and label set it clearly apart from the tabs.
 - Does any fact appear twice?
 - Are the things the user checks together grouped?
 (RX-UI-01, RX-UX-01.) Look for them even on a screen that is otherwise tidy: they are the defects a
