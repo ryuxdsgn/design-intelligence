@@ -43,7 +43,7 @@ framework (questions, decision trees, templates) followed by its rules.
 | `capabilities/critique.md` | Critique: Design Read and evidence-backed findings | |
 | `knowledge/product.md` | Product thinking: user, task, goal, primary action, constraints, assumptions, and decisions backed by evidence | RX-PR |
 | `knowledge/ux.md` | UX architecture: information architecture, navigation, flows, grouping, disclosure, search and filters | RX-UX |
-| `knowledge/interaction.md` | Interaction design: before, during, result, recovery; feedback, control, confirmation, states, keyboard, local payments | RX-IX |
+| `knowledge/interaction.md` | Interaction design: before, during, result, recovery; feedback, confirmation, navigation, gestures, states, keyboard, local payments | RX-IX |
 | `knowledge/forms.md` | Forms: labels, layout, validation, input preservation, autofill, submission, unsaved work, OTP, address, e-KYC | RX-FM |
 | `knowledge/edge-cases.md` | Edge cases: data, form, network, permission, and system states beyond the happy path | RX-EC |
 | `knowledge/content.md` | Content design: specific copy, action labels, error messages, terminology, and locale (money, dates, natural Indonesian when the copy is Indonesian) | RX-CD |
@@ -196,13 +196,13 @@ line below for its exact source.
 <!-- provenance:start -->
 | Source cited | Rules citing it | Rules citing only this |
 | --- | --- | --- |
-| Public standard or research | 48 | 37 |
+| Public standard or research | 52 | 41 |
 | Industry practice | 12 | 6 |
 | Observed in a RYUX run | 12 | 8 |
 | Pattern also in another MIT ruleset (text written for RYUX) | 4 | 4 |
-| RYUX principle, taxonomy, or review | 26 | 19 |
+| RYUX principle, taxonomy, or review | 27 | 20 |
 
-All 88 rules cite a source; 14 cite more than one kind, so the "Rules citing it" column adds up to more than 88.
+All 93 rules cite a source; 14 cite more than one kind, so the "Rules citing it" column adds up to more than 93.
 <!-- provenance:end -->
 
 ## Rules
@@ -210,7 +210,7 @@ All 88 rules cite a source; 14 cite more than one kind, so the "Rules citing it"
 Generated from `packages/cli/src/content.ts` by `pnpm sync:skills`. Edit the rules there, not here.
 
 <!-- rules:start -->
-88 rules across 13 modules: 51 Required, 14 Preferred, 23 Contextual; 16 Hard Gates and 7 Quality Locks.
+93 rules across 13 modules: 54 Required, 14 Preferred, 25 Contextual; 16 Hard Gates and 8 Quality Locks.
 
 ### Product thinking (RX-PR) · `knowledge/product.md`
 
@@ -326,7 +326,7 @@ Gate area UX. Covers information architecture, navigation, flows, grouping, disc
 
 ### Interaction design (RX-IX) · `knowledge/interaction.md`
 
-Gate area UX. Covers before, during, result, recovery; feedback, control, confirmation, states, keyboard, local payments. Read when adding or changing anything the user can act on.
+Gate area UX. Covers before, during, result, recovery; feedback, confirmation, navigation, gestures, states, keyboard, local payments. Read when adding or changing anything the user can act on.
 
 #### RX-IX-01 [Required] [Hard Gate] Before, during, result, recovery
 
@@ -339,16 +339,16 @@ Gate area UX. Covers before, during, result, recovery; feedback, control, confir
 
 #### RX-IX-02 [Required] Feedback that matches the wait
 
-- Do: Give an immediate pressed state; past about 1 second show a loading indicator; past about 10 seconds show progress with an estimate or let the user leave and come back.
+- Do: Give an immediate pressed state; past about 1 second show a loading indicator; past about 10 seconds show progress with an estimate or let the user leave and come back. A loading skeleton has the shape of the layout it stands in for: the same blocks in the same places, so nothing jumps when the content arrives.
 - Do not: Let a payment or save run with no visible status.
-- Why: Silence during a wait reads as failure and invites double taps. (Nielsen response-time limits (0.1 / 1 / 10 s); Nielsen heuristic 1)
+- Why: Silence during a wait reads as failure and invites double taps. (Nielsen response-time limits (0.1 / 1 / 10 s); Nielsen heuristic 1; skeleton shape: pattern also in appllama-app-design-skill (MIT); written for RYUX)
 - Not when: instant actions under about 0.1 s; a spinner that flashes is noise
 - Trade-off: progress indicators need real progress data; a fake bar misleads
 - Check: heuristic_eval H-01
 
 #### RX-IX-03 [Required] Cancel, back, and undo
 
-- Do: Let users cancel, go back, or undo without losing their work; where a step is genuinely irreversible, say so before it.
+- Do: Let users cancel, go back, or undo without losing their work; where a step is genuinely irreversible, say so before it. A finished flow is the exception: back leaves it instead of reopening it (RX-IX-14).
 - Do not: Trap users in a flow with no exit.
 - Why: Freedom to back out makes people willing to explore. (Nielsen heuristic 3 (1994))
 - Not when: the step is genuinely irreversible once confirmed (a sent transfer); say so up front instead
@@ -409,6 +409,37 @@ Gate area UX. Covers before, during, result, recovery; feedback, control, confir
 - Do not: Ship navigation to sections that do not exist, buttons that do nothing, or forms that pretend to submit.
 - Why: A dead control breaks trust the moment someone tries it, and it hides what the product really does. (pattern also in anti-slop (MIT) R-24, R-26; written for RYUX)
 - Check: click every control in the render; review
+
+#### RX-IX-13 [Required] Each transition means one thing
+
+- Do: Choose how a screen arrives by what it means, and keep that meaning across the product: push to go one level deeper (back returns), replace to move to a new stage (back does not return to the old one), a modal for a self-contained task the user finishes or cancels, a sheet for a short interruption that keeps the screen behind it in view. Follow the platform's back gesture and button.
+- Do not: Open the same kind of screen as a push in one place and a modal in another, push a step the user can never usefully go back to, or put a long multi-step task in a sheet.
+- Why: People predict where back goes from how a screen arrived; a mixed model makes every exit a guess. (Apple HIG and Material navigation; pattern also in appllama-app-design-skill (MIT), navigation semantics; written for RYUX)
+- Check: review the flow map; click back on every screen in the render
+
+#### RX-IX-14 [Required] One-way doors
+
+- Do: Once a payment, submission, or onboarding is complete, the result screen replaces the flow: back goes to where the user started, never into the finished steps. Block back only in two cases, while a request is in flight and while there is unsaved work, and say why on the screen ("Processing payment, please wait", or a discard confirmation).
+- Do not: Let back reopen a paid checkout or a submitted form, or block back for any other reason.
+- Why: Going back into a finished payment invites a double charge or a confused resubmission; blocking back without a reason feels like a trap. (Nielsen heuristic 3; pattern also in appllama-app-design-skill (MIT), one-way doors; written for RYUX)
+- Not when: a draft the user can reopen and edit on purpose
+- Check: walk the flow and press back on each step, including after completion
+
+#### RX-IX-15 [Contextual] Gestures follow the finger
+
+- When: the design uses direct manipulation: drag, swipe, pull to refresh, a draggable sheet or card
+- Do: Track the finger from where the element is, keep the release velocity when the user lets go, let the user catch it again mid-animation, resist with a rubber band at the edges, and use one set of spring values across the product.
+- Do not: Jump to a fixed start point when the gesture begins, ignore how fast the user flicked, or lock the element until its animation ends.
+- Why: A gesture that keeps up with the hand feels like moving a real object; one that lags or snaps feels broken. (Apple HIG gestures; pattern also in appllama-app-design-skill (MIT), gestures; written for RYUX)
+- Check: record the gesture and step through the frames (capabilities/qa.md)
+
+#### RX-IX-16 [Contextual] Haptics as punctuation
+
+- When: the product runs as a native mobile app with haptic feedback
+- Do: Use at most one haptic per action, at the same moment as its visual change, for meaningful moments (a payment confirmed, a toggle set, an error), and follow the system setting.
+- Do not: Make haptics the only feedback, fire them while scrolling or on repeated events, or stack several for one action.
+- Why: Haptics confirm what the eye already sees; used constantly they become noise and drain attention. (Apple HIG playing haptics; pattern also in appllama-app-design-skill (MIT); written for RYUX)
+- Check: review the interaction spec
 
 ---
 
@@ -563,7 +594,7 @@ Gate area UX. Covers specific copy, action labels, error messages, terminology, 
 
 #### RX-CD-05 [Required] [Quality Lock] One name per thing
 
-- Do: Use one term for each concept across screens, buttons, and messages. Write product and brand names exactly as the brief or brand guide gives them, including the wordmark; when an older design in the file disagrees with the brief, follow the brief and say so.
+- Do: Use one term for each concept across screens, buttons, and messages. Use one label for each intent too: the same action is "Start" everywhere, not "Start" here and "Let's start" there. Write product and brand names exactly as the brief or brand guide gives them, including the wordmark; when an older design in the file disagrees with the brief, follow the brief and say so.
 - Do not: Call the same thing "pesanan", "order", and "transaksi" on different screens, or restyle a brand name (RYUX as "ryux") because an older frame did.
 - Why: Changing terms make users wonder whether it is a different thing; a misspelled brand name looks careless or fake. (Nielsen heuristic 4 (1994); ryux run 2026-10-02: pen.dev hero wordmark)
 - Check: review
@@ -592,7 +623,7 @@ Gate area UI. Covers the visual expression of a product: hierarchy, type, layout
 
 #### RX-UI-01 [Required] [Quality Lock] Hierarchy follows priority
 
-- Do: Make the primary action and the key information the most prominent things in each area, with one clear focal point. Place each control next to the data it changes (a hide-balance toggle beside the balance it hides, not in the header), and keep the primary action apart from navigation: its own button, never one of the tabs and never pressed against the tab bar.
+- Do: Make the primary action and the key information the most prominent things in each area, with one clear focal point. Place each control next to the data it changes (a hide-balance toggle beside the balance it hides, not in the header), and keep the primary action apart from navigation: its own button, never one of the tabs and never pressed against the tab bar. Use one display size per screen, for its single most important number or heading.
 - Do not: Give everything equal weight, let decoration outrank content, park a control far from what it acts on, or merge the main action into the bottom navigation.
 - Why: Hierarchy is how users know what to read and do first; a control beside its data shows what it changes, and an action that looks like a tab reads as a place, not a task. (NNGroup visual hierarchy; Gestalt proximity; ryux four-problems blind rating, rater 1 (product designer), 2026-10-16: a hide toggle far from the balance and a CTA crowding the bottom nav were reasons not to ship)
 - Not when: screens with several equal peers, such as a dashboard of comparable items; use consistent hierarchy within each card instead
@@ -601,21 +632,21 @@ Gate area UI. Covers the visual expression of a product: hierarchy, type, layout
 
 #### RX-UI-03 [Preferred] [Quality Lock] One spacing and type scale
 
-- Do: Use the project's spacing and type scale, or define one (for example multiples of 4 or 8) and align elements to a shared grid.
+- Do: Use the project's spacing and type scale, or define one (for example multiples of 4 or 8) and align elements to a shared grid. State the shape lock in one sentence, a radius per component role ("action buttons pill, cards 16, inputs 12, sheets 28"), and keep emphasis inside the type family (weight or size), not a second face dropped into one word.
 - Do not: Pick spacing and sizes one element at a time.
-- Why: A scale produces rhythm and makes hierarchy legible. (Material Design 8dp grid)
+- Why: A scale produces rhythm and makes hierarchy legible. (Material Design 8dp grid; shape lock and in-family emphasis: pattern also in appllama-app-design-skill (MIT); written for RYUX)
 - Not when: a one-off marketing piece outside the product
 - Trade-off: a scale limits choices; occasional exceptions need a written reason
-- Check: review
+- Check: count radii and type faces (RX-AS-10); review
 
 #### RX-UI-04 [Preferred] [Quality Lock] A palette with roles
 
-- Do: Use a small set of colors with defined roles: surface, text, accent for the primary action, and status colors.
+- Do: Use a small set of colors with defined roles: surface, text, accent for the primary action, and status colors. Pick one grey family, warm or cool, for surfaces, borders, and secondary text.
 - Do not: Introduce new colors per component, or use the accent for decoration.
-- Why: When color has a role, the accent and status colors mean something. (ryux visual principle)
+- Why: When color has a role, the accent and status colors mean something. (ryux visual principle; one grey family: pattern also in appllama-app-design-skill (MIT); written for RYUX)
 - Not when: data visualization, which needs its own categorical or sequential palette
 - Trade-off: fewer colors means relying on type and space for emphasis
-- Check: review
+- Check: count accent hues and grey families (RX-AS-10); review
 
 #### RX-UI-05 [Preferred] Layout from content, not a template
 
@@ -659,8 +690,8 @@ Gate area UI. Covers the visual expression of a product: hierarchy, type, layout
 
 - When: the design adds motion or transitions
 - Do: Classify each motion: L1 state feedback, L2 component transition, L3 page transition, L4 storytelling, L5 decorative. The higher the level, the stronger the reason it needs. Then weigh how often people see it: a surface opened many times a day (command palette, shortcut, core navigation, list selection) appears and closes without movement, at most a fade too short to notice; standard transitions belong to occasional surfaces (modal, drawer, toast), and expression to rare or first-time moments. Take timing and easing from one motion personality, define them once as motion tokens, animate transform and opacity rather than layout properties, and honor reduced motion (RX-A11Y-08). Anything that opens and closes (menu, popover, dialog, drawer) uses transitions that can reverse halfway, so a close or reopen mid-animation turns back from where it is, and it closes no slower than it opened.
-- Do not: Animate everything, give a surface people open many times a day an entrance they must sit through, play an open-only keyframe animation on something people can close or reopen at any moment, use one generic duration and easing (transition: all 0.3s) everywhere, or let decorative motion delay content or input.
-- Why: Motion directs attention; unearned motion steals it from the task and can make some people unwell. (NNGroup animation and usability guidance; WCAG 2.3.3 animation from interactions; frequency check: pattern also in emilkowalski/skills (MIT) find-animation-opportunities; reversible open and close: pattern also in emilkowalski/skills (MIT) animate; both written for RYUX)
+- Do not: Animate everything, give a surface people open many times a day an entrance they must sit through, play an open-only keyframe animation on something people can close or reopen at any moment, use one generic duration and easing (transition: all 0.3s) everywhere, let decorative motion delay content or input, or move data the user is reading (a balance, an amount, a table value) for effect.
+- Why: Motion directs attention; unearned motion steals it from the task and can make some people unwell. (NNGroup animation and usability guidance; WCAG 2.3.3 animation from interactions; frequency check: pattern also in emilkowalski/skills (MIT) find-animation-opportunities; reversible open and close: pattern also in emilkowalski/skills (MIT) animate; default timing, press state, and still data: pattern also in appllama-app-design-skill (MIT); all written for RYUX)
 - Not when: L1 feedback on standard controls that follows the platform defaults
 - Trade-off: fewer flourishes on marketing pages
 - Check: review; reduced-motion test
@@ -707,7 +738,7 @@ Gate area DESIGN SYSTEM. Covers search before create, tokens, component states, 
 
 #### RX-DS-03 [Preferred] [Quality Lock] Tokens over one-off values
 
-- Do: Use tokens or variables for color, spacing, radius, elevation, and type. First look for the ones that exist (DESIGN.md, a tokens or theme file in the repo, the design file's variables and components, a linked library) and use them. When the project has none, define them before the first frame: color roles, a spacing scale, a radius scale, and a type scale (sizes, and font families). In a design tool, create them as the tool's variables and reference them in every value, and make anything that repeats (a row, a button, a bar) a component. After rendering, count the values that are still literal, by kind, and turn each into a token or name why it is an exception.
+- Do: Use tokens or variables for color, spacing, radius, elevation, and type. First look for the ones that exist (DESIGN.md, a tokens or theme file in the repo, the design file's variables and components, a linked library) and use them. When the project has none, define them before the first frame: color roles, a spacing scale, a radius scale, and a type scale (sizes, and font families). Name color tokens by role (surface, text, accent, status), not by value, so a second theme is a swap of values, not a rename. In a design tool, create them as the tool's variables and reference them in every value, and make anything that repeats (a row, a button, a bar) a component. After rendering, count the values that are still literal, by kind, and turn each into a token or name why it is an exception.
 - Do not: Hard-code one-off values for things the system already defines, or define tokens for color only and leave spacing, radius, and type size literal.
 - Why: Tokens keep changes consistent and reviewable; values that are not tokens drift from frame to frame and state to state. (W3C Design Tokens Community Group; ryux four-problems baseline 2026-10-16: in all 12 runs, with or without RYUX, spacing, radius, and font size were 100% literal)
 - Check: count literal values after render; review
@@ -1002,6 +1033,13 @@ Gate area ANTI-SLOP. Covers hard gates, purpose gates, quality locks, honest cla
 - Not when: task UI, where familiarity is the point
 - Trade-off: takes a design decision, not only removals
 - Check: swap test; review
+
+#### RX-AS-10 [Required] [Quality Lock] Count before handoff
+
+- Do: Before handing off, count on the render or in the design file's variables, and report the counts: accent hues 1 (status colors, and secondary colors the brand defines, are named and excluded); grey families 1; corner radii only from the scale, matching the shape lock; display sizes per screen 1; icon sets 1, in the chosen icon style; emoji in interface chrome 0; gradients without a brand reason 0; labels for the same intent 1. A count over its limit fails unless the brief or DESIGN.md gives the reason.
+- Do not: Judge consistency by eye only, or hand off a screen with five accent hues, mixed icon sets, or two labels for one action because it looks fine.
+- Why: Counts are harder to talk past than impressions; a design that passed a by-eye review still shipped five hues and the wrong tab icons. (pattern also in appllama-app-design-skill (MIT), anti-slop counts; written for RYUX; owner review 2026-10-17: withryux.pen passed RYUX with 5+ hues and wrong tab icons)
+- Check: count on the render or the design file's variables; report in the Delivery Gate
 <!-- rules:end -->
 
 ## Installation via CLI

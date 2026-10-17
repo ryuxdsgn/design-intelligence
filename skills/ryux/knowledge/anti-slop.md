@@ -173,3 +173,10 @@ Real screens show what real products do instead of invented numbers and urgency:
 - Not when: task UI, where familiarity is the point
 - Trade-off: takes a design decision, not only removals
 - Check: swap test; review
+
+### RX-AS-10 [Required] [Quality Lock] Count before handoff
+
+- Do: Before handing off, count on the render or in the design file's variables, and report the counts: accent hues 1 (status colors, and secondary colors the brand defines, are named and excluded); grey families 1; corner radii only from the scale, matching the shape lock; display sizes per screen 1; icon sets 1, in the chosen icon style; emoji in interface chrome 0; gradients without a brand reason 0; labels for the same intent 1. A count over its limit fails unless the brief or DESIGN.md gives the reason.
+- Do not: Judge consistency by eye only, or hand off a screen with five accent hues, mixed icon sets, or two labels for one action because it looks fine.
+- Why: Counts are harder to talk past than impressions; a design that passed a by-eye review still shipped five hues and the wrong tab icons. (pattern also in appllama-app-design-skill (MIT), anti-slop counts; written for RYUX; owner review 2026-10-17: withryux.pen passed RYUX with 5+ hues and wrong tab icons)
+- Check: count on the render or the design file's variables; report in the Delivery Gate
