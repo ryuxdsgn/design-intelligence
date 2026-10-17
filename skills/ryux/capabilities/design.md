@@ -49,7 +49,9 @@
    you claim, and source assets on purpose (RX-UI-13).
 7. **Render and inspect.** Screenshot what you made, check it against the direction and the rules,
    fix, and render again (capabilities/qa.md). Count the values still literal (color, spacing,
-   radius, type size) and turn each into a variable or name the exception. Run the four hierarchy
+   radius, type size) and turn each into a variable or name the exception, then run the counts of
+   RX-AS-10 (accent hues, grey families, radii, display sizes, icon sets, emoji, gradients, labels
+   per intent) and report them in the gate. Run the four hierarchy
    checks from Critique (control beside its data, primary action apart from navigation, no fact
    twice, grouped by what the user checks together), fix what fails, render again, and check each fix. List where
    the render differs from the Design Direction (hierarchy, states, widths) and fix or record each one. Check the result against the Liveliness you set, and
@@ -84,7 +86,8 @@ UX direction   flow and steps; information hierarchy (first, second, third); int
                states (empty, loading, error, success, permission); edge cases; constraints and
                business rules given (never invented)
 UI direction   layout and grid; type scale; spacing and density; color roles; containers;
-               components reused or added; the focal point
+               components reused or added; the focal point; the shape lock (radius per role);
+               the icon style (outline or filled, stroke weight, corners)
 Design language personality, tone, interaction personality, density, formality; each with its
                reason from the product, the audience, or the existing system
 Visual direction for expressive surfaces: the Visual Brief (knowledge/ui.md, Visual production)

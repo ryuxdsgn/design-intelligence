@@ -1,6 +1,6 @@
 # Interaction design
 
-Designs what happens when people act: feedback, confirmation, undo, states, and local payments such as QRIS and virtual accounts.
+Designs what happens when people act: feedback, confirmation, undo, navigation, gestures, states, and local payments such as QRIS and virtual accounts.
 
 > Group UX · Delivery Gate area UX · RYUX 2.8.1. Levels are defined in `SKILL.md`.
 
@@ -26,6 +26,19 @@ disabled (with a reason, or keep it enabled and explain on use), loading, succes
 every action is reachable; Enter submits; Escape closes. For repeat or expert use, add shortcuts
 (recent items, quick amounts) without crowding the novice path.
 
+**Navigation.** How a screen arrives tells people where back goes (RX-IX-13, RX-IX-14):
+
+| Transition | Means | Back |
+| --- | --- | --- |
+| Push | one level deeper in the same task | returns to the screen before |
+| Replace | a new stage; the old one is finished | does not return to the finished stage |
+| Modal | a self-contained task, finished or cancelled | closes the task |
+| Sheet | a short interruption over the current screen | dismisses the sheet |
+
+After a completed payment, submission, or onboarding, the result replaces the flow (a one-way door).
+Back is blocked only while a request is in flight or work is unsaved, and the screen says why.
+Follow the platform's back gesture and button; on the web, the browser's back follows the same map.
+
 Does not cover: form-specific behavior (see `knowledge/forms.md`).
 
 ## Evidence from RYUX Knowledge
@@ -49,16 +62,16 @@ How local apps handle the same action and its states, and local payment patterns
 
 ### RX-IX-02 [Required] Feedback that matches the wait
 
-- Do: Give an immediate pressed state; past about 1 second show a loading indicator; past about 10 seconds show progress with an estimate or let the user leave and come back.
+- Do: Give an immediate pressed state; past about 1 second show a loading indicator; past about 10 seconds show progress with an estimate or let the user leave and come back. A loading skeleton has the shape of the layout it stands in for: the same blocks in the same places, so nothing jumps when the content arrives.
 - Do not: Let a payment or save run with no visible status.
-- Why: Silence during a wait reads as failure and invites double taps. (Nielsen response-time limits (0.1 / 1 / 10 s); Nielsen heuristic 1)
+- Why: Silence during a wait reads as failure and invites double taps. (Nielsen response-time limits (0.1 / 1 / 10 s); Nielsen heuristic 1; skeleton shape: pattern also in appllama-app-design-skill (MIT); written for RYUX)
 - Not when: instant actions under about 0.1 s; a spinner that flashes is noise
 - Trade-off: progress indicators need real progress data; a fake bar misleads
 - Check: heuristic_eval H-01
 
 ### RX-IX-03 [Required] Cancel, back, and undo
 
-- Do: Let users cancel, go back, or undo without losing their work; where a step is genuinely irreversible, say so before it.
+- Do: Let users cancel, go back, or undo without losing their work; where a step is genuinely irreversible, say so before it. A finished flow is the exception: back leaves it instead of reopening it (RX-IX-14).
 - Do not: Trap users in a flow with no exit.
 - Why: Freedom to back out makes people willing to explore. (Nielsen heuristic 3 (1994))
 - Not when: the step is genuinely irreversible once confirmed (a sent transfer); say so up front instead
@@ -119,3 +132,34 @@ How local apps handle the same action and its states, and local payment patterns
 - Do not: Ship navigation to sections that do not exist, buttons that do nothing, or forms that pretend to submit.
 - Why: A dead control breaks trust the moment someone tries it, and it hides what the product really does. (pattern also in anti-slop (MIT) R-24, R-26; written for RYUX)
 - Check: click every control in the render; review
+
+### RX-IX-13 [Required] Each transition means one thing
+
+- Do: Choose how a screen arrives by what it means, and keep that meaning across the product: push to go one level deeper (back returns), replace to move to a new stage (back does not return to the old one), a modal for a self-contained task the user finishes or cancels, a sheet for a short interruption that keeps the screen behind it in view. Follow the platform's back gesture and button.
+- Do not: Open the same kind of screen as a push in one place and a modal in another, push a step the user can never usefully go back to, or put a long multi-step task in a sheet.
+- Why: People predict where back goes from how a screen arrived; a mixed model makes every exit a guess. (Apple HIG and Material navigation; pattern also in appllama-app-design-skill (MIT), navigation semantics; written for RYUX)
+- Check: review the flow map; click back on every screen in the render
+
+### RX-IX-14 [Required] One-way doors
+
+- Do: Once a payment, submission, or onboarding is complete, the result screen replaces the flow: back goes to where the user started, never into the finished steps. Block back only in two cases, while a request is in flight and while there is unsaved work, and say why on the screen ("Processing payment, please wait", or a discard confirmation).
+- Do not: Let back reopen a paid checkout or a submitted form, or block back for any other reason.
+- Why: Going back into a finished payment invites a double charge or a confused resubmission; blocking back without a reason feels like a trap. (Nielsen heuristic 3; pattern also in appllama-app-design-skill (MIT), one-way doors; written for RYUX)
+- Not when: a draft the user can reopen and edit on purpose
+- Check: walk the flow and press back on each step, including after completion
+
+### RX-IX-15 [Contextual] Gestures follow the finger
+
+- When: the design uses direct manipulation: drag, swipe, pull to refresh, a draggable sheet or card
+- Do: Track the finger from where the element is, keep the release velocity when the user lets go, let the user catch it again mid-animation, resist with a rubber band at the edges, and use one set of spring values across the product.
+- Do not: Jump to a fixed start point when the gesture begins, ignore how fast the user flicked, or lock the element until its animation ends.
+- Why: A gesture that keeps up with the hand feels like moving a real object; one that lags or snaps feels broken. (Apple HIG gestures; pattern also in appllama-app-design-skill (MIT), gestures; written for RYUX)
+- Check: record the gesture and step through the frames (capabilities/qa.md)
+
+### RX-IX-16 [Contextual] Haptics as punctuation
+
+- When: the product runs as a native mobile app with haptic feedback
+- Do: Use at most one haptic per action, at the same moment as its visual change, for meaningful moments (a payment confirmed, a toggle set, an error), and follow the system setting.
+- Do not: Make haptics the only feedback, fire them while scrolling or on repeated events, or stack several for one action.
+- Why: Haptics confirm what the eye already sees; used constantly they become noise and drain attention. (Apple HIG playing haptics; pattern also in appllama-app-design-skill (MIT); written for RYUX)
+- Check: review the interaction spec
