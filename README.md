@@ -6,77 +6,61 @@
 
 # RYUX
 
-**Understand before you design.**
+### Understand before you design.
 
-An open-source design intelligence layer for AI agents. See what changes when AI has better design
-context.
+AI can generate UI in seconds. But does it understand what it's designing?
 
-```bash
-npx @ryuxdsgn/design-intelligence
-```
+RYUX helps AI agents make better-informed design decisions. It gives them a structured way to
+understand product context, separate facts from assumptions, decide, and verify the result.
 
-**[See the difference](#see-the-difference)** · **[Latest designs](#latest-designs)** · **[Get started](#get-started)** · **[Benchmarks](docs/benchmarks/)**
+**The goal isn't more UI. It's fewer decisions made silently.**
 
-## The problem
-
-AI can generate an interface in seconds. The hard part is everything around it: what the screen
-should contain, which states it needs, which rules are real, and which details were never decided.
-A fast answer fills those gaps silently, so the result looks finished and is partly made up.
-
-RYUX works out what the agent knows, what it is guessing, and what nobody told it. Then it decides,
-and keeps the open questions visible instead of filling them in.
+**[Get started](#get-started)** · **[See the benchmark](#see-the-difference)** · **[Documentation](GUIDE.md)**
 
 ## See the difference
 
-Same brief, same agent, one with RYUX: the transaction detail screen of a wallet called Lumo, shown
-after the user pays, with its currency, statuses, fee, and 30-day reporting window. Designed in pen.dev.
+Same brief, same model, a fresh agent per run: the transaction detail screen a wallet shows after the
+user pays, with its currency, statuses, fee, and 30-day reporting window. Designed in pen.dev.
 
 <a href="apps/web/public/proof/lumo-without.png"><img src="apps/web/public/proof/lumo-without.png" alt="Without RYUX: Completed, Processing and Failed screens for a Rp48.000 card payment, with Share and Save receipt buttons that the brief never mentioned" width="100%"></a>
 
 <a href="apps/web/public/proof/lumo-with.png"><img src="apps/web/public/proof/lumo-with.png" alt="With RYUX: Completed, Processing and Failed screens, plus loading, a couldn't-load error, the report window after 30 days, a copied-ID message, and the screen at 320 wide; Share receipt is listed as unconfirmed" width="100%"></a>
 
-Three runs each, a fresh agent per run, same model:
+Both sides look finished. The decisions differ:
 
-| | Without RYUX | With RYUX |
-| --- | --- | --- |
-| States designed | Completed, Processing, Failed | Those three plus loading, couldn't load, report window closed, and 320 wide, in 3 of 3 |
-| Actions the brief didn't mention | Added and presented as given, in 3 of 3 | Proposed and listed as unconfirmed, in 3 of 3 |
-| Promises the brief didn't make | "No money was taken" on a failed payment, in 2 of 3 | None, in 3 of 3 |
+- **States.** Without RYUX: Completed, Processing, Failed. With RYUX, also loading, couldn't load,
+  the report window after 30 days, and the 320-wide screen, in 3 of 3 runs.
+- **Actions.** Without RYUX, Share or Save receipt was added as if the brief asked for it (3 of 3).
+  With RYUX, an added action is listed as unconfirmed, for the team to keep or cut.
+- **Promises.** Without RYUX, 2 of 3 runs told users "No money was taken" on a failed payment, which
+  the brief never said. With RYUX, none did.
 
-The difference is what the screens cover and what they claim.
-[Brief, method, and every run](docs/benchmarks/lumo-td-2.6/).
+Three runs per side, RYUX 2.6.3, same brief and harness; the runs without RYUX are from three days
+earlier. [Brief, method, and every run](docs/benchmarks/lumo-td-2.6/).
 
-## Latest designs
+## Who it's for
 
-Rated blind by a product designer with nine years of experience: sides shuffled, nothing labeled.
+- **Product designers** using AI to explore and produce screens, who want the UX decisions to stay
+  visible and checkable.
+- **Developers with AI coding agents** who want fewer product and design decisions made on guesses.
+- **Design engineers** connecting design direction, implementation, critique, and visual QA.
 
-**Three directions before one design.** On an expressive surface, RYUX renders three structurally
-different directions, rates them against the brief, and lets you pick. In the rating, the options
-were real choices in 2 of 3 sets.
+## The problem and the approach
 
-<a href="docs/benchmarks/explore-judge/three-directions.png"><img src="docs/benchmarks/explore-judge/three-directions.png" alt="Three wallet home directions from one pen.dev run: Counter, Receipt, and Pass, and the Receipt direction built out" width="100%"></a>
+- AI can generate an interface without the product context behind it.
+- Missing information quietly turns into assumptions on screen: an invented fee, a feature nobody
+  confirmed, a promise the product never made.
+- A screen that looks complete is not necessarily correct.
 
-**Type that is set, not only sized.** RYUX 2.9.2 keeps paragraphs at 45 to 75 characters per line,
-takes line-height from size, and limits weights and families. On the same Billing page, the
-designer shipped the 2.9.2 version in 2 of 3 pairs.
-
-<a href="docs/benchmarks/typo-craft/typography-measure.png"><img src="docs/benchmarks/typo-craft/typography-measure.png" alt="The same help paragraph from two runs: RYUX 2.9.1 at 91 characters per line, RYUX 2.9.2 at 75" width="100%"></a>
-
-Details, the next change (motion), and every image: [explore, judge, critique](docs/benchmarks/explore-judge/)
-and [typography](docs/benchmarks/typo-craft/).
-
-## What makes it different
-
-**It knows what it knows.** Before it designs, RYUX sorts what it is working with:
+RYUX sorts what the agent is working with before it designs:
 
 - **Known**: stated in the prompt, DESIGN.md, or your product docs, or seen in the design itself.
 - **Design assumptions**: low-risk choices made from the context, written down.
-- **Unconfirmed capabilities**: actions products like yours usually have, such as sharing a
-  receipt. RYUX may propose one, and lists it as unconfirmed.
+- **Unconfirmed capabilities**: actions products like yours usually have, proposed and labeled
+  unconfirmed.
 - **Facts, policies, and claims**: fees, refund times, guarantees. Never invented.
 
-**Decisions come with a receipt.** For each major choice, RYUX writes down what it decided, on what
-evidence, and how sure it is. This one is quoted from a benchmark run:
+Each major choice comes with a receipt. This one is quoted from a benchmark run:
 
 ```
 Decision     Amount + Fee = Total paid, shown in the card
@@ -86,14 +70,17 @@ Assumption   [CONFIRM] The fee is charged on top of the amount.
              If the fee is taken out of the amount instead, the rows change.
 ```
 
-**It checks what it made.** It renders the result, counts what can be counted (accent colors, type
-weights, radii, labels for the same action), checks hierarchy, and closes with a report of what was
-verified and what was not.
-
 ## How it works
 
-Tell the agent what you are doing, in your own words. RYUX picks the step and reads only the design
-knowledge that step needs.
+Say what you are doing, in your own words. RYUX picks the step and reads only the knowledge it needs.
+
+| Capability | What it does |
+| --- | --- |
+| **Analyze** | Understands an existing interface: what is there, what is measured, what is inferred |
+| **Design** | Turns context into UX, UI, and motion direction, in Figma, pen.dev, or a mockup |
+| **Build** | Implements the decisions in your stack without inventing rules, data, or API behavior |
+| **Critique** | Finds what to change first, with severity, evidence, and a fix |
+| **QA** | Checks the build against the design at each width and state |
 
 ```text
 Analyze this checkout screen (screenshot attached).                → Analyze
@@ -103,8 +90,7 @@ Critique our pricing page at https://example.com/pricing.          → Critique
 QA the build against the design at 390 and 320 wide.               → QA
 ```
 
-RYUX reads DESIGN.md and your product docs first, and asks only what would change the design: at
-most three questions, often none. Recipes and a full five-step session: [Prompting RYUX](GUIDE.md#prompting-ryux).
+Every task ends with a report of what was verified and what was not. More in [Prompting RYUX](GUIDE.md#prompting-ryux).
 
 ## Get started
 
@@ -112,42 +98,40 @@ most three questions, often none. Recipes and a full five-step session: [Prompti
 npx @ryuxdsgn/design-intelligence
 ```
 
-It asks which agents you use, installs RYUX, then offers a short project setup that writes
-DESIGN.md. Run `npx @ryuxdsgn/design-intelligence setup` again any time to change the answers.
+It asks which agents you use, installs RYUX, and offers a short setup that writes DESIGN.md, your
+project's direction. Run `npx @ryuxdsgn/design-intelligence setup` any time to change it.
 
-Any agent, through [skills.sh](https://skills.sh):
-
-```bash
-npx skills add ryuxdsgn/design-intelligence
-```
-
-As a Claude Code plugin, inside Claude Code:
-
-```text
-/plugin marketplace add ryuxdsgn/design-intelligence
-/plugin install ryux@design-intelligence
-```
-
-RYUX works on its own. The hosted RYUX MCP for reference screens is coming; you can run the server
-locally with sample data ([`apps/mcp/README.md`](./apps/mcp/README.md)). The [guide](GUIDE.md)
-covers other agents, global installs, updates, and the MCP.
+Also available through [skills.sh](https://skills.sh) (`npx skills add ryuxdsgn/design-intelligence`)
+and as a Claude Code plugin (`/plugin marketplace add ryuxdsgn/design-intelligence`, then
+`/plugin install ryux@design-intelligence`). The [guide](GUIDE.md) covers other agents, global
+installs, updates, and the MCP.
 
 ## Benchmarks
 
-Every claim above comes from a run you can read in full. Each benchmark fixes its criteria before the
-first run, uses a fresh agent per run, and keeps the raw outputs.
+Each benchmark fixes its criteria before the first run, uses a fresh agent per run, and publishes the
+raw outputs. What each one shows, and its scope:
 
-| Benchmark | What it shows | Runs |
-| --- | --- | --- |
-| [Lumo transaction detail](docs/benchmarks/lumo-td-2.6/) | More states covered, no invented actions or promises | 3 + 3 |
-| [Typography](docs/benchmarks/typo-craft/) | Line length and type restraint, measured in the render; scorer included | 3 + 3 |
-| [Explore, judge, critique](docs/benchmarks/explore-judge/) | Three directions, a hierarchy pass, recorded motion | 3–6 per condition |
-| [Five steps on one screen](docs/benchmarks/case-td-2.6/) | Analyze → Critique → Design → Build → QA in one session | 1 |
-| [Scenarios](docs/benchmarks/scenarios/) | Repeatable tasks with a weighted rubric | 1 + 1 each |
+- **States and invented facts** (Lumo, above): more states covered and nothing added as fact that the
+  brief did not give. 3 + 3 runs.
+- **Typography**: on one Billing page, RYUX 2.9.2 brought paragraph lines down to 75–77 characters
+  in 2 of 3 runs (2.9.1: about 90 in all three) and scored higher on nine checks in 2 of 3 pairs; a product designer shipped the 2.9.2 page
+  in 2 of 3 blind pairs. 3 + 3 runs, one rater.
+- **Three directions**: on an expressive brief, every run rendered three structurally different
+  directions before building one; the designer found them real choices in 2 of 3 sets. 3 runs, one
+  rater.
+- **Hierarchy in Critique**: on screens with planted defects, "control far from its data" was found
+  in 4 of 6 cases, up from 0 of 6, with no false findings. 3 runs per condition.
 
-The typography benchmark runs end to end with one command and a scorer:
-[run it yourself](docs/benchmarks/typo-craft/#run-it-yourself). Results are counts from a few runs on
-one model; the [showcase](docs/showcase.md) reads them in context.
+| Benchmark | Runs |
+| --- | --- |
+| [Lumo transaction detail](docs/benchmarks/lumo-td-2.6/) | 3 + 3 |
+| [Typography](docs/benchmarks/typo-craft/) (scorer included, [run it yourself](docs/benchmarks/typo-craft/#run-it-yourself)) | 3 + 3 |
+| [Explore, judge, critique](docs/benchmarks/explore-judge/) | 3–6 per condition |
+| [Five steps on one screen](docs/benchmarks/case-td-2.6/) | 1 |
+| [Scenarios](docs/benchmarks/scenarios/) | 1 + 1 each |
+
+Counts come from a few runs on one model. The [showcase](docs/showcase.md) reads them in context,
+including what designers picked and what is being improved next.
 
 <details>
 <summary><b>Technical details</b></summary>
@@ -161,8 +145,9 @@ Browse them in [`skills/ryux/`](./skills/ryux) and [`docs/design-rules.md`](./do
 
 ### MCP tools
 
-Nine tools: research (`search_screens`, `get_flow`, `get_local_pattern`, `compare_apps`,
-`extract_design_direction`) and review (`audit_ui`, `audit_copy`, `heuristic_eval`,
+RYUX works on its own. The hosted RYUX MCP for reference screens is coming; the server runs locally
+with sample data. Nine tools: research (`search_screens`, `get_flow`, `get_local_pattern`,
+`compare_apps`, `extract_design_direction`) and review (`audit_ui`, `audit_copy`, `heuristic_eval`,
 `delivery_gate`). See [`apps/mcp/README.md`](./apps/mcp/README.md).
 
 ### Reference data
