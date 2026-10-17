@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Billing · Settings</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+  /*
+    Tokens. Spacing is a 4px scale; type steps 12 / 14 / 16 / 20 / 32.
+    Shape lock: cards 12, buttons and inputs 8, status badges pill.
+    One cool grey family (slate), one accent (teal) for the primary action,
+    status colors named separately.
+  */
+  :root {
+    --space-1: 4px;
+    --space-2: 8px;
+    --space-3: 12px;
+    --space-4: 16px;
+    --space-6: 24px;
+    --space-8: 32px;
+    --space-12: 48px;
+
+    --text-label: 12px;
+    --text-small: 14px;
+    --text-body: 16px;
+    --text-value: 20px;
+    --text-display: 32px;
+
+    --grey-900: #0f172a;
+    --grey-700: #334155;
+    --grey-600: #475569;
+    --grey-300: #cbd5e1;
+    --grey-200: #e2e8f0;
+    --grey-100: #f1f5f9;
+    --grey-50: #f8fafc;
+    --white: #ffffff;
+
+    --accent: #0b5f59;
+    --accent-hover: #084a45;
+    --accent-soft: #e6f2f1;
+
+    --status-paid-text: #166534;
+    --status-paid-bg: #dcfce7;
+    --status-error-text: #991b1b;
+    --status-error-bg: #fef2f2;
+    --status-error-border: #fecaca;
+    --sample-bg: #fffbeb;
+    --sample-border: #fde68a;
+    --sample-text: #78350f;
+
+    --radius-card: 12px;
+    --radius-control: 8px;
+    --radius-pill: 999px;
+    --border: 1px solid var(--grey-200);
+    --shadow-card: 0 1px 2px rgba(15, 23, 42, 0.04), 0 1px 3px rgba(15, 23, 42, 0.06);
+
+    --ease-out: cubic-bezier(0.2, 0, 0, 1);
+    --dur-fast: 120ms;
+    --dur-base: 180ms;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+
+  html { -webkit-text-size-adjust: 100%; }
+
+  body {
+    margin: 0;
+    font-family: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    font-size: var(--text-body);
+    line-height: 1.5;
+    color: var(--grey-900);
+    background: var(--grey-50);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .visually-hidden {
+    position: absolute !important;
+    width: 1px; height: 1px;
+    padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0 0 0 0);
+    white-space: nowrap; border: 0;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  /* Sample-data notice: not part of the product UI, it labels the page as a demo */
+  .sample-bar {
+    background: var(--sample-bg);
+    border-bottom: 1px solid var(--sample-border);
+    color: var(--sample-text);
+    font-size: var(--text-small);
+  }
+  .sample-bar__inner {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: var(--space-3) var(--space-4);
+    padding-left: max(var(--space-4), env(safe-area-inset-left));
+    padding-right: max(var(--space-4), env(safe-area-inset-right));
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-2) var(--space-4);
+  }
+  .sample-bar p { margin: 0; flex: 1 1 280px; }
+  .sample-bar fieldset {
+    border: 0; margin: 0; padding: 0;
+    display: flex; align-items: center; gap: var(--space-2);
+    flex-wrap: wrap;
+  }
+  .sample-bar legend {
+    float: left;
+    margin-right: var(--space-1);
+    font-weight: 500;
+  }
+  .segmented {
+    display: inline-flex;
+    background: var(--white);
+    border: 1px solid var(--sample-border);
+    border-radius: var(--radius-control);
+    padding: 2px;
+  }
+  .segmented label {
+    position: relative;
+    cursor: pointer;
+  }
+  .segmented input {
+    position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer;
+  }
+  .segmented span {
+    display: block;
+    padding: var(--space-1) var(--space-3);
+    min-height: 32px;
+    line-height: 24px;
+    border-radius: 6px;
+    color: var(--sample-text);
+  }
+  .segmented input:checked + span {
+    background: var(--sample-text);
+    color: var(--white);
+  }
+  .segmented input:focus-visible + span {
+    outline: 2px solid var(--sample-text);
+    outline-offset: 1px;
+  }
+
+  /* Page */
+  main {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: var(--space-8) var(--space-4) var(--space-12);
+    padding-left: max(var(--space-4), env(safe-area-inset-left));
+    padding-right: max(var(--space-4), env(safe-area-inset-right));
+  }
+
+  .page-header { margin-bottom: var(--space-8); }
+  .page-header h1 {
+    margin: 0 0 var(--space-2);
+    font-size: var(--text-display);
+    line-height: 1.2;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+  .page-header p {
+    margin: 0;
+    max-width: 34em;
+    color: var(--grey-600);
+    text-wrap: pretty;
+  }
+
+  section + section { margin-top: var(--space-8); }
+
+  .section-label {
+    margin: 0 0 var(--space-3);
+    font-size: var(--text-label);
+    line-height: 1.33;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--grey-600);
+  }
+
+  .card {
+    background: var(--white);
+    border: var(--border);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-card);
+  }
+
+  /* Buttons */
+  .btn {
+    appearance: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    min-height: 40px;
+    padding: var(--space-2) var(--space-4);
+    font: inherit;
+    font-size: var(--text-small);
+    font-weight: 500;
+    line-height: 1.43;
+    border-radius: var(--radius-control);
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: background-color var(--dur-fast) var(--ease-out),
+                border-color var(--dur-fast) var(--ease-out);
+    white-space: nowrap;
+  }
+  .btn--primary { background: var(--accent); color: var(--white); }
+  .btn--primary:hover { background: var(--accent-hover); }
+  .btn--secondary {
+    background: var(--white);
+    color: var(--grey-900);
+    border-color: var(--grey-300);
+  }
+  .btn--secondary:hover { background: var(--grey-100); }
+
+  /* Plan summary */
+  .plan {
+    padding: var(--space-6);
+  }
+  .plan__top {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--space-4);
+    padding-bottom: var(--space-6);
+    border-bottom: var(--border);
+  }
+  .plan__name {
+    margin: 0 0 var(--space-1);
+    font-size: var(--text-value);
+    line-height: 1.3;
+    font-weight: 600;
+  }
+  .plan__price {
+    margin: 0;
+    color: var(--grey-600);
+    font-variant-numeric: tabular-nums;
+  }
+  .plan__price strong {
+    color: var(--grey-900);
+    font-weight: 600;
+  }
+  .plan__facts {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-6);
+    margin: var(--space-6) 0 0;
+  }
+  .plan__facts dt {
+    font-size: var(--text-small);
+    color: var(--grey-600);
+    margin-bottom: var(--space-1);
+  }
+  .plan__facts dd {
+    margin: 0;
+    font-size: var(--text-body);
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+  }
+  .meter {
+    margin-top: var(--space-2);
+    height: 6px;
+    max-width: 240px;
+    background: var(--grey-100);
+    border-radius: var(--radius-pill);
+    overflow: hidden;
+  }
+  .meter__fill {
+    height: 100%;
+    background: var(--accent);
+    border-radius: inherit;
+  }
+
+  /* Invoices */
+  .invoices { overflow: hidden; }
+  .invoices table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--text-small);
+    font-variant-numeric: tabular-nums;
+  }
+  .invoices th,
+  .invoices td {
+    padding: var(--space-3) var(--space-6);
+    text-align: left;
+    vertical-align: middle;
+  }
+  .invoices thead th {
+    font-size: var(--text-label);
+    font-weight: 500;
+    color: var(--grey-600);
+    background: var(--grey-50);
+    border-bottom: var(--border);
+    padding-top: var(--space-2);
+    padding-bottom: var(--space-2);
+  }
+  .invoices tbody tr + tr td { border-top: var(--border); }
+  .invoices .num { text-align: right; }
+  .invoices .inv-id { font-weight: 500; color: var(--grey-900); }
+  .invoices td { color: var(--grey-700); }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 2px 10px;
+    border-radius: var(--radius-pill);
+    font-size: var(--text-label);
+    font-weight: 500;
+    line-height: 1.67;
+  }
+  .badge::before {
+    content: "";
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+  }
+  .badge--paid { color: var(--status-paid-text); background: var(--status-paid-bg); }
+
+  /* Invoice states */
+  .state {
+    padding: var(--space-8) var(--space-6);
+    text-align: center;
+  }
+  .state h3 {
+    margin: 0 0 var(--space-1);
+    font-size: var(--text-body);
+    font-weight: 600;
+  }
+  .state p {
+    margin: 0 auto;
+    max-width: 30em;
+    color: var(--grey-600);
+    font-size: var(--text-small);
+    text-wrap: balance;
+  }
+  .state .btn { margin-top: var(--space-4); }
+  .state--error {
+    background: var(--status-error-bg);
+    border-top: 1px solid var(--status-error-border);
+  }
+  .state--error h3 { color: var(--status-error-text); }
+  .state--error p { color: var(--grey-700); }
+
+  .skeleton {
+    display: block;
+    height: 12px;
+    border-radius: var(--radius-pill);
+    min-width: 56px;
+    background: var(--grey-200);
+    animation: pulse 1.4s ease-in-out infinite;
+  }
+  @keyframes pulse { 50% { opacity: 0.45; } }
+
+  /* Payment method */
+  .payment {
+    padding: var(--space-6);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-4);
+  }
+  .card-brand {
+    flex: none;
+    width: 52px; height: 36px;
+    display: grid; place-items: center;
+    border: var(--border);
+    border-radius: 6px;
+    background: var(--grey-50);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    color: var(--grey-700);
+  }
+  .payment__details { flex: 1 1 200px; min-width: 0; }
+  .payment__details p { margin: 0; }
+  .payment__number {
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+  }
+  .payment__meta {
+    font-size: var(--text-small);
+    color: var(--grey-600);
+    font-variant-numeric: tabular-nums;
+    overflow-wrap: anywhere;
+  }
+
+  /* Help */
+  .help p {
+    margin: 0;
+    max-width: 34em;
+    color: var(--grey-700);
+    text-wrap: pretty;
+  }
+  .help a {
+    color: var(--accent);
+    text-underline-offset: 2px;
+  }
+
+  /* Toast: confirms that sample-only actions are not connected */
+  .toast {
+    position: fixed;
+    left: 50%;
+    bottom: max(var(--space-6), env(safe-area-inset-bottom));
+    transform: translateX(-50%);
+    width: max-content;
+    max-width: calc(100vw - 2 * var(--space-4));
+    padding: var(--space-3) var(--space-4);
+    background: var(--grey-900);
+    color: var(--white);
+    font-size: var(--text-small);
+    border-radius: var(--radius-control);
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.2);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--dur-base) var(--ease-out);
+  }
+  .toast.is-visible { opacity: 1; }
+
+  /* Phones: the invoice table becomes stacked rows (number + amount, then date + status) */
+  @media (max-width: 599px) {
+    main { padding-top: var(--space-6); }
+    .page-header { margin-bottom: var(--space-6); }
+    .page-header h1 { font-size: 28px; }
+    .plan, .payment { padding: var(--space-4); }
+    .plan__top { padding-bottom: var(--space-4); }
+    .plan__top .btn { width: 100%; }
+    .plan__facts { margin-top: var(--space-4); gap: var(--space-4); }
+    .payment .btn { width: 100%; }
+
+    .invoices thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+    .invoices tbody tr {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      grid-template-areas: "id amount" "date status";
+      gap: var(--space-1) var(--space-3);
+      padding: var(--space-3) var(--space-4);
+    }
+    .invoices tbody tr + tr { border-top: var(--border); }
+    .invoices tbody tr + tr td { border-top: 0; }
+    .invoices td { padding: 0; display: block; }
+    .invoices td:nth-child(1) { grid-area: id; }
+    .invoices td:nth-child(2) { grid-area: date; color: var(--grey-600); }
+    .invoices td:nth-child(3) { grid-area: amount; font-weight: 500; color: var(--grey-900); }
+    .invoices td:nth-child(4) { grid-area: status; text-align: right; }
+    .state { padding: var(--space-6) var(--space-4); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .skeleton { animation: none; }
+    .btn, .toast { transition: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="sample-bar" role="region" aria-label="Sample data notice">
+  <div class="sample-bar__inner">
+    <p><strong>Sample data.</strong> The workspace, plan, prices, dates, invoices and card on this page are illustrative, not real account data.</p>
+    <fieldset>
+      <legend>Invoice view:</legend>
+      <div class="segmented" id="state-switch">
+        <label><input type="radio" name="inv-state" value="ready" checked><span>Filled</span></label>
+        <label><input type="radio" name="inv-state" value="loading"><span>Loading</span></label>
+        <label><input type="radio" name="inv-state" value="empty"><span>Empty</span></label>
+        <label><input type="radio" name="inv-state" value="error"><span>Error</span></label>
+      </div>
+    </fieldset>
+  </div>
+</div>
+
+<main>
+  <header class="page-header">
+    <h1>Billing</h1>
+    <p>Your plan, invoices and payment method for the <strong id="workspace-name"></strong> workspace.</p>
+  </header>
+
+  <section aria-labelledby="label-plan">
+    <h2 class="section-label" id="label-plan">Current plan</h2>
+    <div class="card plan">
+      <div class="plan__top">
+        <div>
+          <p class="plan__name" id="plan-name"></p>
+          <p class="plan__price"><strong id="plan-price"></strong> per month</p>
+        </div>
+        <button type="button" class="btn btn--primary" data-sample-action="Changing plans">Change plan</button>
+      </div>
+      <dl class="plan__facts">
+        <div>
+          <dt>Next billing date</dt>
+          <dd><time id="next-billing"></time></dd>
+        </div>
+        <div>
+          <dt>Seats used</dt>
+          <dd>
+            <span id="seats-text"></span>
+            <div class="meter" id="seats-meter" role="meter" aria-label="Seats used" aria-valuemin="0">
+              <div class="meter__fill" id="seats-fill"></div>
+            </div>
+          </dd>
+        </div>
+      </dl>
+    </div>
+  </section>
+
+  <section aria-labelledby="label-invoices">
+    <h2 class="section-label" id="label-invoices">Invoices</h2>
+    <div class="card invoices" id="invoices" aria-live="polite"></div>
+  </section>
+
+  <section aria-labelledby="label-payment">
+    <h2 class="section-label" id="label-payment">Payment method</h2>
+    <div class="card payment">
+      <div class="card-brand" id="card-brand" aria-hidden="true"></div>
+      <div class="payment__details">
+        <p class="payment__number" id="card-number"></p>
+        <p class="payment__meta" id="card-meta"></p>
+      </div>
+      <button type="button" class="btn btn--secondary" data-sample-action="Updating the card">Update card</button>
+    </div>
+  </section>
+
+  <section class="help" aria-labelledby="label-help">
+    <h2 class="section-label" id="label-help">Help</h2>
+    <p>This page shows your current plan, the card we charge and every invoice for this workspace. If a charge looks wrong, find it in the invoices table and note its invoice number and date. To switch plans, use Change plan at the top of the page; to replace the card, use Update card. For questions about a specific charge or a refund, email <a id="billing-email"></a> with the invoice number and your workspace name, and our billing team will reply by email.</p>
+  </section>
+</main>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+  // SAMPLE DATA: every value below is illustrative. In the product these come from the billing API.
+  const SAMPLE = {
+    workspace: "Northwind Studio",
+    billingEmail: "billing@example.com",
+    currency: "USD",
+    plan: {
+      name: "Team plan",
+      priceCents: 14400,
+      nextBillingDate: "2026-11-03",
+      seatsUsed: 12,
+      seatsIncluded: 15
+    },
+    // Newest first, one per monthly billing date. Amounts match the plan price so the page agrees with itself.
+    invoices: [
+      { id: "INV-2026-0610", date: "2026-10-03", amountCents: 14400, status: "paid" },
+      { id: "INV-2026-0509", date: "2026-09-03", amountCents: 14400, status: "paid" },
+      { id: "INV-2026-0418", date: "2026-08-03", amountCents: 14400, status: "paid" },
+      { id: "INV-2026-0327", date: "2026-07-03", amountCents: 14400, status: "paid" },
+      { id: "INV-2026-0233", date: "2026-06-03", amountCents: 14400, status: "paid" },
+      { id: "INV-2026-0141", date: "2026-05-03", amountCents: 14400, status: "paid" }
+    ],
+    card: { brand: "Visa", last4: "4242", expMonth: 8, expYear: 2028, holder: "Northwind Studio LLC" }
+  };
+
+  const STATUS_LABELS = { paid: "Paid" };
+
+  const moneyFormat = new Intl.NumberFormat("en-US", { style: "currency", currency: SAMPLE.currency });
+  const dateFormat = new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", year: "numeric", timeZone: "UTC" });
+
+  function formatMoney(cents) {
+    return moneyFormat.format(cents / 100);
+  }
+
+  // Dates are calendar dates, not instants: parse as UTC so no time zone shifts them a day.
+  function formatDate(iso) {
+    return dateFormat.format(new Date(iso + "T00:00:00Z"));
+  }
+
+  function el(tag, attrs, children) {
+    const node = document.createElement(tag);
+    Object.entries(attrs || {}).forEach(([key, value]) => {
+      if (key === "text") node.textContent = value;
+      else node.setAttribute(key, value);
+    });
+    (children || []).forEach(child => node.append(child));
+    return node;
+  }
+
+  function renderSummary() {
+    const { plan, card } = SAMPLE;
+    document.getElementById("workspace-name").textContent = SAMPLE.workspace;
+    document.getElementById("plan-name").textContent = plan.name;
+    document.getElementById("plan-price").textContent = formatMoney(plan.priceCents);
+
+    const next = document.getElementById("next-billing");
+    next.dateTime = plan.nextBillingDate;
+    next.textContent = formatDate(plan.nextBillingDate);
+
+    document.getElementById("seats-text").textContent = `${plan.seatsUsed} of ${plan.seatsIncluded}`;
+    const meter = document.getElementById("seats-meter");
+    meter.setAttribute("aria-valuemax", plan.seatsIncluded);
+    meter.setAttribute("aria-valuenow", plan.seatsUsed);
+    meter.setAttribute("aria-valuetext", `${plan.seatsUsed} of ${plan.seatsIncluded} seats`);
+    const ratio = Math.min(plan.seatsUsed / plan.seatsIncluded, 1);
+    document.getElementById("seats-fill").style.width = `${ratio * 100}%`;
+
+    document.getElementById("card-brand").textContent = card.brand.toUpperCase();
+    document.getElementById("card-number").textContent = `${card.brand} ending in ${card.last4}`;
+    const exp = `${String(card.expMonth).padStart(2, "0")}/${card.expYear}`;
+    document.getElementById("card-meta").textContent = `Expires ${exp} · ${card.holder}`;
+
+    const email = document.getElementById("billing-email");
+    email.href = `mailto:${SAMPLE.billingEmail}`;
+    email.textContent = SAMPLE.billingEmail;
+  }
+
+  function invoiceTable(rows) {
+    const head = el("thead", {}, [el("tr", {}, [
+      el("th", { scope: "col", text: "Invoice" }),
+      el("th", { scope: "col", text: "Date" }),
+      el("th", { scope: "col", class: "num", text: "Amount" }),
+      el("th", { scope: "col", text: "Status" })
+    ])]);
+    const body = el("tbody", {}, rows);
+    // Explicit roles keep table semantics when the phone layout switches rows to display:grid.
+    const table = el("table", { role: "table" }, [
+      el("caption", { class: "visually-hidden", text: "Invoices, newest first" }), head, body
+    ]);
+    table.querySelectorAll("thead, tbody").forEach(n => n.setAttribute("role", "rowgroup"));
+    table.querySelectorAll("tr").forEach(n => n.setAttribute("role", "row"));
+    table.querySelectorAll("th").forEach(n => n.setAttribute("role", "columnheader"));
+    table.querySelectorAll("td").forEach(n => n.setAttribute("role", "cell"));
+    return table;
+  }
+
+  function renderInvoices(state) {
+    const host = document.getElementById("invoices");
+    host.replaceChildren();
+    host.removeAttribute("aria-busy");
+
+    if (state === "loading") {
+      host.setAttribute("aria-busy", "true");
+      const widths = [["70%", "60%", "50%", "40%"], ["60%", "55%", "50%", "40%"], ["65%", "60%", "50%", "40%"]];
+      const rows = widths.map(w => el("tr", {}, w.map((width, i) => {
+        const bar = el("span", { class: "skeleton" });
+        bar.style.width = width;
+        if (i === 2) bar.style.marginLeft = "auto";
+        return el("td", {}, [bar]);
+      })));
+      host.append(invoiceTable(rows), el("p", { class: "visually-hidden", text: "Loading invoices" }));
+      return;
+    }
+
+    if (state === "empty") {
+      host.append(el("div", { class: "state" }, [
+        el("h3", { text: "No invoices yet" }),
+        el("p", { text: `Your first invoice will appear here after the first billing date, ${formatDate(SAMPLE.plan.nextBillingDate)}.` })
+      ]));
+      return;
+    }
+
+    if (state === "error") {
+      const retry = el("button", { type: "button", class: "btn btn--secondary", text: "Try again" });
+      retry.addEventListener("click", () => setState("ready"));
+      host.append(el("div", { class: "state state--error", role: "alert" }, [
+        el("h3", { text: "Invoices didn't load" }),
+        el("p", { text: "We couldn't reach the billing service. Your plan and card are unchanged. Check your connection, then try again." }),
+        retry
+      ]));
+      return;
+    }
+
+    const rows = SAMPLE.invoices.map(inv => el("tr", {}, [
+      el("td", { class: "inv-id", text: inv.id }),
+      el("td", {}, [el("time", { datetime: inv.date, text: formatDate(inv.date) })]),
+      el("td", { class: "num", text: formatMoney(inv.amountCents) }),
+      el("td", {}, [el("span", { class: `badge badge--${inv.status}`, text: STATUS_LABELS[inv.status] })])
+    ]));
+    host.append(invoiceTable(rows));
+  }
+
+  function setState(state) {
+    document.querySelector(`input[name="inv-state"][value="${state}"]`).checked = true;
+    renderInvoices(state);
+  }
+
+  document.getElementById("state-switch").addEventListener("change", e => renderInvoices(e.target.value));
+
+  // Plan and card changes need the billing backend; on this sample page the buttons say so instead of doing nothing.
+  let toastTimer;
+  document.querySelectorAll("[data-sample-action]").forEach(button => {
+    button.addEventListener("click", () => {
+      const toast = document.getElementById("toast");
+      toast.textContent = `${button.dataset.sampleAction} isn't connected on this sample page.`;
+      toast.classList.add("is-visible");
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => toast.classList.remove("is-visible"), 3200);
+    });
+  });
+
+  renderSummary();
+  renderInvoices("ready");
+</script>
+</body>
+</html>
