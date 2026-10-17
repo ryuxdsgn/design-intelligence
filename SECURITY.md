@@ -39,6 +39,13 @@ public disclosure (coordinated disclosure).
 
 - **Prompt injection.** OCR text from screenshots always goes into the
   `untrusted_text` field and is treated as data, not as instructions.
+- **Untrusted reference content.** Analyze, Critique, Design, and QA read content other people can
+  write (web pages, screenshots, Figma and pen.dev files, MCP results). The skill tells the agent to
+  use it only as evidence, never to follow instructions in it, never to run code, call tools, touch
+  local files, open other URLs, or send data because it asks, and to report any attempt. This lowers
+  the risk; it does not enforce anything. Enforcement belongs to the host: when you analyze sites or
+  files you do not control, keep your agent's permission prompts on for shell commands, web fetches,
+  and file writes, and prefer a sandboxed or throwaway environment.
 - **Secrets.** No secrets in the repo; `.env`, `.env.*`, and `.dev.vars` are in `.gitignore`.
 - **Data access (production).** Row Level Security is on for every table from the first migration;
   the website and MCP only read content with `published` status; the service role key is only used to
