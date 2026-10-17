@@ -40,7 +40,7 @@ Standards are the main evidence (WCAG 2.2 success criteria); reference screens s
 
 - Do: Keep body text around 14 to 16px on mobile, and touch targets at least 24×24px, preferably 44×44px.
 - Do not: Shrink body text or crowd small targets together.
-- Why: Small text and targets cause misreads and mis-taps. (WCAG 2.2 SC 2.5.8 (24px minimum); Apple HIG 44pt; Material 48dp)
+- Why: Small text and targets cause misreads and mis-taps. (WCAG 2.2 SC 2.5.8 (24px minimum); Apple HIG 44pt; Material 48dp; Fitts's law (Fitts 1954): bigger and nearer targets are faster to hit)
 - Check: audit_ui
 
 ### RX-A11Y-03 [Required] [Hard Gate] Keyboard and visible focus

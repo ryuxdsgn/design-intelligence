@@ -142,7 +142,7 @@ A design direction from comparable screens: `extract_design_direction` (patterns
 
 - Do: Make the primary action and the key information the most prominent things in each area, with one clear focal point. Place each control next to the data it changes (a hide-balance toggle beside the balance it hides, not in the header), and keep the primary action apart from navigation: its own button, never one of the tabs and never pressed against the tab bar. Use one display size per screen, for its single most important number or heading.
 - Do not: Give everything equal weight, let decoration outrank content, park a control far from what it acts on, or merge the main action into the bottom navigation.
-- Why: Hierarchy is how users know what to read and do first; a control beside its data shows what it changes, and an action that looks like a tab reads as a place, not a task. (NNGroup visual hierarchy; Gestalt proximity; ryux four-problems blind rating, rater 1 (product designer), 2026-10-16: a hide toggle far from the balance and a CTA crowding the bottom nav were reasons not to ship)
+- Why: Hierarchy is how users know what to read and do first; a control beside its data shows what it changes, and an action that looks like a tab reads as a place, not a task. (NNGroup visual hierarchy; Gestalt proximity; Fitts's law (Fitts 1954) for the primary action's size and reach; ryux four-problems blind rating, rater 1 (product designer), 2026-10-16: a hide toggle far from the balance and a CTA crowding the bottom nav were reasons not to ship)
 - Not when: screens with several equal peers, such as a dashboard of comparable items; use consistent hierarchy within each card instead
 - Trade-off: emphasizing one thing de-emphasizes the rest
 - Check: visual QA
@@ -160,7 +160,7 @@ A design direction from comparable screens: `extract_design_direction` (patterns
 
 - Do: Use a small set of colors with defined roles: surface, text, accent for the primary action, and status colors. Pick one grey family, warm or cool, for surfaces, borders, and secondary text.
 - Do not: Introduce new colors per component, or use the accent for decoration.
-- Why: When color has a role, the accent and status colors mean something. (ryux visual principle; one grey family: pattern also in appllama-app-design-skill (MIT); written for RYUX)
+- Why: When color has a role, the accent and status colors mean something. (ryux visual principle; isolation effect (von Restorff 1933): the one item that differs is the one remembered, so the accent marks only the primary action; one grey family: pattern also in appllama-app-design-skill (MIT); written for RYUX)
 - Not when: data visualization, which needs its own categorical or sequential palette
 - Trade-off: fewer colors means relying on type and space for emphasis
 - Check: count accent hues and grey families (RX-AS-10); review

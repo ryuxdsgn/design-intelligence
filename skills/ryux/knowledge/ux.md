@@ -46,16 +46,16 @@ How Indonesian apps sequence and structure this flow: `get_flow` for a reference
 
 - Do: Choose the information architecture and pattern from what users come to do and how they look for it. Keep together what the user checks together, and show each fact once.
 - Do not: Apply a stock SaaS layout (sidebar, KPI cards, table) because it is familiar, or show the same fact twice on one screen (the merchant or the amount in the summary and again in a row, the balance in the header and in a card).
-- Why: The right structure depends on the task; a template answers a different question. A repeated fact costs reading time and leaves the user to wonder which one is right. (NNGroup information architecture research; ryux four-problems blind rating, rater 1 (product designer), 2026-10-16: repeated facts were a reason not to ship)
+- Why: The right structure depends on the task; a template answers a different question. A repeated fact costs reading time and leaves the user to wonder which one is right. (NNGroup information architecture research; Gestalt proximity and common region (Palmer 1992): items close together or in one container read as one group; ryux four-problems blind rating, rater 1 (product designer), 2026-10-16: repeated facts were a reason not to ship)
 - Not when: the product already has an established structure users rely on; change it only with evidence
 - Trade-off: a less familiar layout can cost users a moment of learning
 - Check: review
 
 ### RX-UX-02 [Preferred] Where am I, what's left, how do I leave
 
-- Do: Give each screen a clear title and keep a back or cancel path visible; in multi-step flows show the current step ("Langkah 2 dari 3") and a summary the user can review before committing.
+- Do: Give each screen a clear title and keep a back or cancel path visible; in multi-step flows show the current step ("Langkah 2 dari 3") and a summary the user can review before committing. Show how close the goal is, and let an interrupted task resume where it stopped instead of starting over.
 - Do not: Leave screens without a title or a way out, or run a multi-step flow with no sense of progress or review.
-- Why: Orientation, progress, and an exit lower anxiety and abandonment. (NNGroup wayfinding and progress-indicator research; Nielsen heuristic 3)
+- Why: Orientation, progress, and an exit lower anxiety and abandonment. (NNGroup wayfinding and progress-indicator research; Nielsen heuristic 3; goal-gradient effect (Hull 1932; Kivetz, Urminsky and Zheng 2006): people speed up as the goal comes into view; Zeigarnik effect (Zeigarnik 1927): unfinished tasks stay on the mind, so a resumable task is less likely to be abandoned)
 - Not when: a focused full-screen step such as payment in progress, where leaving would lose state; say how to cancel instead
 - Trade-off: a persistent title and back path take vertical space on small screens
 - Check: heuristic_eval H-03
@@ -84,7 +84,7 @@ How Indonesian apps sequence and structure this flow: `get_flow` for a reference
 
 - Do: Show options and context (recent items, saved addresses, visible choices) instead of asking users to remember them.
 - Do not: Make users retype or recall information the app already has.
-- Why: Recognizing is easier and less error-prone than remembering. (Nielsen heuristic 6 (1994))
+- Why: Recognizing is easier and less error-prone than remembering. (Nielsen heuristic 6 (1994); limited working memory (Miller 1956; Cowan 2001))
 - Not when: a one-time task, where showing history or saved values adds clutter
 - Trade-off: higher visual density; more on screen to scan
 - Check: heuristic_eval H-06
