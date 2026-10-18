@@ -113,14 +113,14 @@ Real screens show what real products do instead of invented numbers and urgency:
 - Do: Show counts, ratings, growth, and statistics only with a real source; otherwise leave them out or mark [REAL DATA].
 - Do not: Invent "48.000+ users", "4,8★", or "+12%".
 - Why: Invented numbers are false claims, however polished the page. (ryux run 2026-10-02: pen.dev landing without ryux)
-- Check: review
+- Check: list every number on the screen with its source (brief, docs, data, or a sample label); fails on any number without one
 
 ### RX-AS-02 [Required] [Hard Gate] No invented people
 
 - Do: Use testimonials, names, and faces only when they are real and consented.
 - Do not: Make up testimonials, reviewers, or customer photos.
 - Why: Fake people are fake endorsements. (ryux anti-slop principle)
-- Check: review
+- Check: list every person, quote, review, and customer logo on the screen with its source or its sample label; fails on any shown as real without a source
 
 ### RX-AS-03 [Required] [Hard Gate] Sample data is realistic and labeled; placeholders only for what is missing
 
@@ -134,7 +134,7 @@ Real screens show what real products do instead of invented numbers and urgency:
 - Do: State a deadline or a quota only when it is real, as a plain fact.
 - Do not: Write "only 2 left", "offer ends tonight", or fake countdowns with nothing behind them.
 - Why: Manufactured pressure erodes trust once users notice. (NNGroup credibility research; ryux run 2026-10-02: WhatsApp promo)
-- Check: review
+- Check: find every timer, deadline, stock count, and 'only N left'; each comes from the brief or real data; fails on any without a source
 
 ### RX-AS-05 [Required] Decoration passes a purpose gate
 
@@ -148,7 +148,7 @@ Real screens show what real products do instead of invented numbers and urgency:
 - Do: Remove elements, options, states, code paths, abstractions, and dependencies that serve no stated need. Complexity that cannot be removed is carried by the product (defaults, formatting, calculation), not handed to the user.
 - Do not: Add settings, sections, abstractions, or packages "for later", or features because similar products have them.
 - Why: Unneeded complexity costs every user and every future change. (Nielsen heuristic 8; Tesler's law of conserved complexity (Tesler, 1980s): some complexity cannot be removed, only moved; clean-code practice)
-- Check: review
+- Check: list each element, option, state, and dependency the work added and the need it serves; fails on any without one
 
 ### RX-AS-07 [Required] Claims match the evidence
 
@@ -187,4 +187,4 @@ Real screens show what real products do instead of invented numbers and urgency:
 - Do: Use the brand's own file wherever the product's mark appears: look in the repo (public/, assets/, the app icon and favicon), DESIGN.md, the design file's components, and what the user attached, and name the file you used. With no file, set the product name in plain text in the brand's type, or leave a visible [LOGO] placeholder, and list the mark as missing in the handoff.
 - Do not: Stand in for the mark with initials in a circle, an emoji, a generic shape, an invented SVG, a letter cut into a tile, or the name typeset to look like a logo; generate a favicon or app icon the user did not ask for; or redraw the brand's mark instead of using its file. Designing a mark is its own task, done only when the user asks for it.
 - Why: An invented mark looks finished and is the first thing a team has to throw away; it also passes for a decision nobody made. (pattern also in superdesign-skill (MIT), logo invariant; RX-UI-13 asset provenance; ryux owner review 2026-10-18 (the logo and favicon are the owner's to make); written for RYUX)
-- Check: list every mark slot and the file it uses, or the placeholder; review
+- Check: list every mark slot and the file it uses, or the placeholder; fails on a slot filled by an invented mark

@@ -58,7 +58,7 @@ How local apps handle the same action and its states, and local payment patterns
 - Why: Undefined behavior becomes inconsistent behavior once it is implemented. (Nielsen heuristics 1 and 9; peak-end rule (Kahneman et al. 1993): people judge an experience largely by its most intense moment and its end; ryux interaction model)
 - Not when: trivial actions with no wait and no failure mode (toggling a local view)
 - Trade-off: more states to design, build, and test
-- Check: review
+- Check: for each async action, point to its before, during, result, and recovery states in the render or the design file; fails on any that is missing
 
 ### RX-IX-02 [Required] Feedback that matches the wait
 

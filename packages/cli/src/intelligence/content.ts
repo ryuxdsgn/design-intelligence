@@ -155,7 +155,7 @@ export const RULES: Rule[] = [
       notWhen: "This rule is not a reason to drop content the brief implies or to leave a screen looking unfinished: sample content is RX-AS-03, design assumptions are yours to make.",
       why: "Invented facts turn into promises and bugs that someone has to unwind; a screen trimmed to the brief's literal words reads unfinished and hides what still needs confirming.",
       basis: `${RUN}: an unconstrained agent invented a 30-day trial and user counts; ryux visual benchmark 2.6 human rater, 2026-10-13: RYUX screens lost on a missing receipt action`,
-      check: "review",
+      check: "compare every product fact on the screen (features, prices, fees, policies, names, integrations) with the brief, DESIGN.md, docs, or repo; each is sourced or labelled as an assumption; fails on one shown as fact without a source",
     },
     {
       num: 3,
@@ -167,7 +167,7 @@ export const RULES: Rule[] = [
       notWhen: "Monitoring and configuration screens (dashboards, settings) need a clear goal but not a single dominant action; do not invent one to satisfy this rule.",
       why: "A single clear path shortens the decision and the task.",
       basis: "Hick's law (Hick 1952; Hyman 1953): more options, longer decisions; NNGroup visual hierarchy",
-      check: "review",
+      check: "name the screen's goal and its primary action, then count the controls styled as primary in the main state; fails when two compete at the same weight",
     },
     {
       num: 4,
@@ -295,7 +295,7 @@ export const RULES: Rule[] = [
       dont: "Ship an action whose in-progress, result, or failure behavior is undefined.",
       why: "Undefined behavior becomes inconsistent behavior once it is implemented.",
       basis: "Nielsen heuristics 1 and 9; peak-end rule (Kahneman et al. 1993): people judge an experience largely by its most intense moment and its end; ryux interaction model",
-      check: "review",
+      check: "for each async action, point to its before, during, result, and recovery states in the render or the design file; fails on any that is missing",
     },
     {
       num: 2,
@@ -850,7 +850,7 @@ export const RULES: Rule[] = [
       dont: "Create a near-duplicate component or pattern for one screen.",
       why: "Duplicates drift apart, multiply maintenance, and break consistency.",
       basis: "Design-system practice",
-      check: "review",
+      check: "for each new component or token, name the existing ones searched and why none fits; fails on a new one that duplicates an existing one",
     },
     {
       num: 2,
@@ -922,7 +922,7 @@ export const RULES: Rule[] = [
       dont: "Build pointer-only actions, or remove focus outlines without an accessible replacement.",
       why: "Keyboard and switch users navigate and act by focus.",
       basis: "WCAG 2.2 SC 2.1.1, 2.4.3, and 2.4.7; WAI-ARIA APG dialog pattern",
-      check: "review",
+      check: "tab through the render from the top: every control is reached in reading order and shows a visible focus indicator (3:1 against its background); fails on a skipped control, a focus trap, or an invisible focus",
       formerly: ["RX-H-13"],
     },
     {
@@ -934,7 +934,7 @@ export const RULES: Rule[] = [
       dont: "Build structure or controls from styled divs, or ship unlabeled icon buttons.",
       why: "Assistive technology navigates by semantics and announces unlabeled buttons as just \"button\"; native controls bring keyboard and platform behavior for free.",
       basis: "WCAG 2.2 SC 1.1.1, 1.3.1, and 4.1.2",
-      check: "review",
+      check: "read the accessibility tree (a Playwright accessibility snapshot, or the design file's layer types): every control is a native element or has a role, and every one has a name; headings are in order; fails on an unnamed control or a div acting as a button",
     },
     {
       num: 6,
@@ -1056,7 +1056,7 @@ export const RULES: Rule[] = [
       dont: "Hard-code business rules or API behavior nobody specified.",
       why: "Invented logic ships as real behavior.",
       basis: "ryux product principle (see RX-PR-02)",
-      check: "review",
+      check: "list each rule the UI code computes (fees, limits, eligibility, rounding, dates) and its source (API, spec, brief); fails on any computed from a guess",
     },
     {
       num: 5,
@@ -1188,7 +1188,7 @@ export const RULES: Rule[] = [
       dont: "Invent \"48.000+ users\", \"4,8★\", or \"+12%\".",
       why: "Invented numbers are false claims, however polished the page.",
       basis: `${RUN}: pen.dev landing without ryux`,
-      check: "review",
+      check: "list every number on the screen with its source (brief, docs, data, or a sample label); fails on any number without one",
       formerly: ["RX-C-03"],
     },
     {
@@ -1200,7 +1200,7 @@ export const RULES: Rule[] = [
       dont: "Make up testimonials, reviewers, or customer photos.",
       why: "Fake people are fake endorsements.",
       basis: "ryux anti-slop principle",
-      check: "review",
+      check: "list every person, quote, review, and customer logo on the screen with its source or its sample label; fails on any shown as real without a source",
       formerly: ["RX-C-04"],
     },
     {
@@ -1224,7 +1224,7 @@ export const RULES: Rule[] = [
       dont: "Write \"only 2 left\", \"offer ends tonight\", or fake countdowns with nothing behind them.",
       why: "Manufactured pressure erodes trust once users notice.",
       basis: `NNGroup credibility research; ${RUN}: WhatsApp promo`,
-      check: "review",
+      check: "find every timer, deadline, stock count, and 'only N left'; each comes from the brief or real data; fails on any without a source",
       formerly: ["RX-N-09", "RX-C-10"],
     },
     {
@@ -1247,7 +1247,7 @@ export const RULES: Rule[] = [
       dont: "Add settings, sections, abstractions, or packages \"for later\", or features because similar products have them.",
       why: "Unneeded complexity costs every user and every future change.",
       basis: "Nielsen heuristic 8; Tesler's law of conserved complexity (Tesler, 1980s): some complexity cannot be removed, only moved; clean-code practice",
-      check: "review",
+      check: "list each element, option, state, and dependency the work added and the need it serves; fails on any without one",
       formerly: ["RX-K-05"],
     },
     {
@@ -1305,7 +1305,7 @@ export const RULES: Rule[] = [
       dont: "Stand in for the mark with initials in a circle, an emoji, a generic shape, an invented SVG, a letter cut into a tile, or the name typeset to look like a logo; generate a favicon or app icon the user did not ask for; or redraw the brand's mark instead of using its file. Designing a mark is its own task, done only when the user asks for it.",
       why: "An invented mark looks finished and is the first thing a team has to throw away; it also passes for a decision nobody made.",
       basis: `pattern also in superdesign-skill (MIT), logo invariant; RX-UI-13 asset provenance; ryux owner review 2026-10-18 (the logo and favicon are the owner's to make); written for RYUX`,
-      check: "list every mark slot and the file it uses, or the placeholder; review",
+      check: "list every mark slot and the file it uses, or the placeholder; fails on a slot filled by an invented mark",
     },
   ]),
 ];

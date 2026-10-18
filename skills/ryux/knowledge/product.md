@@ -68,7 +68,7 @@ How comparable products frame the same task and offer: `search_screens` (categor
 - Do not: Invent business rules, policies, guarantees, metrics, user data, permissions, pricing, requirements, or API behavior, or name a tool, command, integration, platform, or page the product does not have. Do not present an unconfirmed capability as a confirmed one.
 - Why: Invented facts turn into promises and bugs that someone has to unwind; a screen trimmed to the brief's literal words reads unfinished and hides what still needs confirming. (ryux run 2026-10-02: an unconstrained agent invented a 30-day trial and user counts; ryux visual benchmark 2.6 human rater, 2026-10-13: RYUX screens lost on a missing receipt action)
 - Not when: This rule is not a reason to drop content the brief implies or to leave a screen looking unfinished: sample content is RX-AS-03, design assumptions are yours to make.
-- Check: review
+- Check: compare every product fact on the screen (features, prices, fees, policies, names, integrations) with the brief, DESIGN.md, docs, or repo; each is sourced or labelled as an assumption; fails on one shown as fact without a source
 
 ### RX-PR-03 [Required] [Hard Gate] One clear goal; one primary action when the task has one
 
@@ -76,7 +76,7 @@ How comparable products frame the same task and offer: `search_screens` (categor
 - Do not: Put two equal-weight calls to action side by side, or leave the screen's goal unclear.
 - Why: A single clear path shortens the decision and the task. (Hick's law (Hick 1952; Hyman 1953): more options, longer decisions; NNGroup visual hierarchy)
 - Not when: Monitoring and configuration screens (dashboards, settings) need a clear goal but not a single dominant action; do not invent one to satisfy this rule.
-- Check: review
+- Check: name the screen's goal and its primary action, then count the controls styled as primary in the main state; fails when two compete at the same weight
 
 ### RX-PR-04 [Required] Back decisions with real screens
 

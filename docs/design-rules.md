@@ -229,7 +229,7 @@ Gate area PRODUCT. Covers user, task, goal, primary action, constraints, assumpt
 - Do not: Invent business rules, policies, guarantees, metrics, user data, permissions, pricing, requirements, or API behavior, or name a tool, command, integration, platform, or page the product does not have. Do not present an unconfirmed capability as a confirmed one.
 - Why: Invented facts turn into promises and bugs that someone has to unwind; a screen trimmed to the brief's literal words reads unfinished and hides what still needs confirming. (ryux run 2026-10-02: an unconstrained agent invented a 30-day trial and user counts; ryux visual benchmark 2.6 human rater, 2026-10-13: RYUX screens lost on a missing receipt action)
 - Not when: This rule is not a reason to drop content the brief implies or to leave a screen looking unfinished: sample content is RX-AS-03, design assumptions are yours to make.
-- Check: review
+- Check: compare every product fact on the screen (features, prices, fees, policies, names, integrations) with the brief, DESIGN.md, docs, or repo; each is sourced or labelled as an assumption; fails on one shown as fact without a source
 
 #### RX-PR-03 [Required] [Hard Gate] One clear goal; one primary action when the task has one
 
@@ -237,7 +237,7 @@ Gate area PRODUCT. Covers user, task, goal, primary action, constraints, assumpt
 - Do not: Put two equal-weight calls to action side by side, or leave the screen's goal unclear.
 - Why: A single clear path shortens the decision and the task. (Hick's law (Hick 1952; Hyman 1953): more options, longer decisions; NNGroup visual hierarchy)
 - Not when: Monitoring and configuration screens (dashboards, settings) need a clear goal but not a single dominant action; do not invent one to satisfy this rule.
-- Check: review
+- Check: name the screen's goal and its primary action, then count the controls styled as primary in the main state; fails when two compete at the same weight
 
 #### RX-PR-04 [Required] Back decisions with real screens
 
@@ -335,7 +335,7 @@ Gate area UX. Covers before, during, result, recovery; feedback, confirmation, n
 - Why: Undefined behavior becomes inconsistent behavior once it is implemented. (Nielsen heuristics 1 and 9; peak-end rule (Kahneman et al. 1993): people judge an experience largely by its most intense moment and its end; ryux interaction model)
 - Not when: trivial actions with no wait and no failure mode (toggling a local view)
 - Trade-off: more states to design, build, and test
-- Check: review
+- Check: for each async action, point to its before, during, result, and recovery states in the render or the design file; fails on any that is missing
 
 #### RX-IX-02 [Required] Feedback that matches the wait
 
@@ -743,7 +743,7 @@ Gate area DESIGN SYSTEM. Covers search before create, tokens, component states, 
 - Do: Before adding a component, search existing components, tokens, and patterns; reuse, then extend with a variant, and create new only for a real semantic or behavioral difference.
 - Do not: Create a near-duplicate component or pattern for one screen.
 - Why: Duplicates drift apart, multiply maintenance, and break consistency. (Design-system practice)
-- Check: review
+- Check: for each new component or token, name the existing ones searched and why none fits; fails on a new one that duplicates an existing one
 
 #### RX-DS-02 [Required] [Quality Lock] Consistency, conventions, and states
 
@@ -792,14 +792,14 @@ Gate area ACCESSIBILITY. Covers semantics, keyboard, focus, contrast, targets, n
 - Do: Make actions operable from the keyboard (path-based input such as drawing excepted), show a visible focus indicator, and keep focus order the same as the visual order. When a dialog, menu, or popover closes, put focus back on the element that opened it, or on the nearest sensible element if that one is gone.
 - Do not: Build pointer-only actions, or remove focus outlines without an accessible replacement.
 - Why: Keyboard and switch users navigate and act by focus. (WCAG 2.2 SC 2.1.1, 2.4.3, and 2.4.7; WAI-ARIA APG dialog pattern)
-- Check: review
+- Check: tab through the render from the top: every control is reached in reading order and shows a visible focus indicator (3:1 against its background); fails on a skipped control, a focus trap, or an invisible focus
 
 #### RX-A11Y-04 [Required] [Hard Gate] Semantic structure, native controls, and names
 
 - Do: Use real headings, landmarks, lists, buttons, links, and the right input types before custom elements, and give icon-only buttons and meaningful images an accessible name or alt text.
 - Do not: Build structure or controls from styled divs, or ship unlabeled icon buttons.
 - Why: Assistive technology navigates by semantics and announces unlabeled buttons as just "button"; native controls bring keyboard and platform behavior for free. (WCAG 2.2 SC 1.1.1, 1.3.1, and 4.1.2)
-- Check: review
+- Check: read the accessibility tree (a Playwright accessibility snapshot, or the design file's layer types): every control is a native element or has a role, and every one has a name; headings are in order; fails on an unnamed control or a div acting as a button
 
 #### RX-A11Y-06 [Required] Not color alone
 
@@ -892,7 +892,7 @@ Gate area CODE QUALITY. Covers the repo's own stack, semantic elements, one home
 - Do: Take prices, limits, permissions, and rules from data, config, or the API; mark unknown ones as assumptions.
 - Do not: Hard-code business rules or API behavior nobody specified.
 - Why: Invented logic ships as real behavior. (ryux product principle (see RX-PR-02))
-- Check: review
+- Check: list each rule the UI code computes (fees, limits, eligibility, rounding, dates) and its source (API, spec, brief); fails on any computed from a guess
 
 #### RX-FE-05 [Required] Actionable errors
 
@@ -989,14 +989,14 @@ Gate area ANTI-SLOP. Covers hard gates, purpose gates, quality locks, honest cla
 - Do: Show counts, ratings, growth, and statistics only with a real source; otherwise leave them out or mark [REAL DATA].
 - Do not: Invent "48.000+ users", "4,8★", or "+12%".
 - Why: Invented numbers are false claims, however polished the page. (ryux run 2026-10-02: pen.dev landing without ryux)
-- Check: review
+- Check: list every number on the screen with its source (brief, docs, data, or a sample label); fails on any number without one
 
 #### RX-AS-02 [Required] [Hard Gate] No invented people
 
 - Do: Use testimonials, names, and faces only when they are real and consented.
 - Do not: Make up testimonials, reviewers, or customer photos.
 - Why: Fake people are fake endorsements. (ryux anti-slop principle)
-- Check: review
+- Check: list every person, quote, review, and customer logo on the screen with its source or its sample label; fails on any shown as real without a source
 
 #### RX-AS-03 [Required] [Hard Gate] Sample data is realistic and labeled; placeholders only for what is missing
 
@@ -1010,7 +1010,7 @@ Gate area ANTI-SLOP. Covers hard gates, purpose gates, quality locks, honest cla
 - Do: State a deadline or a quota only when it is real, as a plain fact.
 - Do not: Write "only 2 left", "offer ends tonight", or fake countdowns with nothing behind them.
 - Why: Manufactured pressure erodes trust once users notice. (NNGroup credibility research; ryux run 2026-10-02: WhatsApp promo)
-- Check: review
+- Check: find every timer, deadline, stock count, and 'only N left'; each comes from the brief or real data; fails on any without a source
 
 #### RX-AS-05 [Required] Decoration passes a purpose gate
 
@@ -1024,7 +1024,7 @@ Gate area ANTI-SLOP. Covers hard gates, purpose gates, quality locks, honest cla
 - Do: Remove elements, options, states, code paths, abstractions, and dependencies that serve no stated need. Complexity that cannot be removed is carried by the product (defaults, formatting, calculation), not handed to the user.
 - Do not: Add settings, sections, abstractions, or packages "for later", or features because similar products have them.
 - Why: Unneeded complexity costs every user and every future change. (Nielsen heuristic 8; Tesler's law of conserved complexity (Tesler, 1980s): some complexity cannot be removed, only moved; clean-code practice)
-- Check: review
+- Check: list each element, option, state, and dependency the work added and the need it serves; fails on any without one
 
 #### RX-AS-07 [Required] Claims match the evidence
 
@@ -1063,7 +1063,7 @@ Gate area ANTI-SLOP. Covers hard gates, purpose gates, quality locks, honest cla
 - Do: Use the brand's own file wherever the product's mark appears: look in the repo (public/, assets/, the app icon and favicon), DESIGN.md, the design file's components, and what the user attached, and name the file you used. With no file, set the product name in plain text in the brand's type, or leave a visible [LOGO] placeholder, and list the mark as missing in the handoff.
 - Do not: Stand in for the mark with initials in a circle, an emoji, a generic shape, an invented SVG, a letter cut into a tile, or the name typeset to look like a logo; generate a favicon or app icon the user did not ask for; or redraw the brand's mark instead of using its file. Designing a mark is its own task, done only when the user asks for it.
 - Why: An invented mark looks finished and is the first thing a team has to throw away; it also passes for a decision nobody made. (pattern also in superdesign-skill (MIT), logo invariant; RX-UI-13 asset provenance; ryux owner review 2026-10-18 (the logo and favicon are the owner's to make); written for RYUX)
-- Check: list every mark slot and the file it uses, or the placeholder; review
+- Check: list every mark slot and the file it uses, or the placeholder; fails on a slot filled by an invented mark
 <!-- rules:end -->
 
 ## Installation via CLI
