@@ -11,5 +11,5 @@ export function middleware(req: NextRequest) {
   return NextResponse.rewrite(new URL("/maintenance", req.url));
 }
 
-/* Pages only: Next's own files, the icon, and the API are left alone. */
-export const config = { matcher: ["/((?!_next/|api/|icon.png|favicon.ico).*)"] };
+/* Pages only: Next's own files, favicon requests, and the API are left alone. */
+export const config = { matcher: ["/((?!_next/|api/|favicon.ico).*)"] };
