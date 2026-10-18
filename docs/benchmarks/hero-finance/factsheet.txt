@@ -1,0 +1,8 @@
+Answers to your questions (the same answers are given to every run):
+- Product: a digital wallet with an account balance. Pay shops by QR, pay bills, transfer to people, top up by card or bank transfer.
+- Users: adults 22 to 45 in large cities, on mobile, often paying at a counter.
+- Market and currency: not decided; a global product in English. Use USD as sample data.
+- Brand, design system, name: not decided. Propose what you need and label it.
+- Direction: polished, trustworthy, and friendly.
+- Width: 390.
+- Anything else: not decided; decide and state it as an assumption.

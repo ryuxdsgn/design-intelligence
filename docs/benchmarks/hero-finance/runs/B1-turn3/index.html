@@ -1,0 +1,779 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1F4FD8">
+<title>Wallet prototype</title>
+<!--
+  Wallet prototype: dashboard → confirm QR payment → processing → success.
+  Open a screen directly: ?screen=dashboard|payment|processing|success
+  Extra states kept from the design: ?screen=low-balance|declined, ?state=loading|empty|offline (dashboard)
+
+  Everything shown is SAMPLE DATA in USD (names, merchants, amounts, dates, references).
+  Assumptions, not decided product rules (confirm before building for real):
+  - Counter payments use a merchant QR with the amount set by the merchant.
+  - Payments are taken from the wallet balance only; cards and bank transfer are for top ups.
+  - The $0.00 fee is sample data; the fee policy is not decided.
+  - Payment is confirmed with Face ID or PIN through the system prompt (not drawn here).
+  - A declined payment means no money moved. A timeout with an unknown result is not designed.
+  - The bill reminder needs saved billers (unconfirmed capability).
+  - Brand colour, typeface, icons (Lucide), and tab names are proposals. No product name is decided.
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --accent: #1F4FD8;
+    --accent-strong: #183FB0;
+    --accent-soft: #E8EEFC;
+    --on-accent: #FFFFFF;
+    --on-accent-muted: #CFDAFB;
+    --overlay-on-accent: rgba(255, 255, 255, 0.16);
+    --bg: #F4F6FA;
+    --surface: #FFFFFF;
+    --text: #0F1729;
+    --muted: #5B6478;
+    --border: #E2E6EE;
+    --skeleton: #E6E9F0;
+    --positive: #0F7B4B;
+    --positive-soft: #E6F4EC;
+    --danger: #C2312B;
+    --danger-soft: #FCEBEA;
+    --scrim: rgba(15, 23, 41, 0.4);
+
+    --sp-4: 4px; --sp-8: 8px; --sp-12: 12px; --sp-16: 16px; --sp-20: 20px;
+    --sp-24: 24px; --sp-32: 32px; --sp-40: 40px; --sp-48: 48px;
+
+    --r-tile: 16px; --r-sheet: 28px; --r-pill: 999px;
+
+    --fs-caption: 13px; --fs-small: 14px; --fs-body: 15px; --fs-label: 16px;
+    --fs-heading: 18px; --fs-title: 24px; --fs-display: 56px;
+
+    /* One calm motion personality; the success moment alone uses --ease-pop. */
+    --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+    --ease-pop: cubic-bezier(0.34, 1.56, 0.64, 1);
+    --dur-press: 120ms;
+    --dur-enter: 320ms;
+    --dur-exit: 220ms;
+    --dur-fade: 200ms;
+
+    --app-w: 390px;
+    --tabbar-h: 84px;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: "Figtree", system-ui, -apple-system, sans-serif;
+    font-size: var(--fs-body);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+  button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; }
+  h1, h2, h3, p { margin: 0; }
+  svg.i { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+  [hidden] { display: none !important; }
+  .num { font-variant-numeric: tabular-nums; }
+  .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  :focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; border-radius: 8px; }
+  .on-accent :focus-visible, .on-accent:focus-visible { outline-color: var(--on-accent); }
+
+  /* Press feedback (L1): starts on touch, 120 ms. */
+  .press { transition: transform var(--dur-press) var(--ease-out), background-color var(--dur-press) var(--ease-out); }
+  .press:active:not(:disabled):not([aria-disabled="true"]) { transform: scale(0.97); }
+
+  .app {
+    position: relative;
+    width: 100%;
+    max-width: var(--app-w);
+    min-height: 100dvh;
+    margin: 0 auto;
+    background: var(--surface);
+    overflow-x: hidden;
+  }
+
+  /* ---------- Dashboard ---------- */
+  .hero {
+    background: var(--accent);
+    color: var(--on-accent);
+    padding: calc(var(--sp-16) + env(safe-area-inset-top)) var(--sp-24) var(--sp-48);
+  }
+  .greet { display: flex; align-items: center; gap: var(--sp-12); min-height: 44px; }
+  .avatar-me {
+    width: 40px; height: 40px; border-radius: var(--r-pill);
+    background: var(--overlay-on-accent);
+    display: grid; place-items: center;
+    font-size: var(--fs-caption); font-weight: 700;
+  }
+  .greet h1 { font-size: var(--fs-label); font-weight: 600; }
+
+  .balance { margin-top: var(--sp-32); }
+  .balance-label { display: flex; align-items: center; gap: var(--sp-4); color: var(--on-accent-muted); }
+  .eye { width: 44px; height: 44px; display: grid; place-items: center; margin-left: -8px; border-radius: var(--r-pill); color: var(--on-accent-muted); }
+  .eye svg { width: 20px; height: 20px; }
+  .balance-amount {
+    font-size: var(--fs-display); font-weight: 800; line-height: 1.05;
+    letter-spacing: -0.03em; margin-top: var(--sp-4);
+  }
+
+  .actions { display: flex; gap: var(--sp-24); margin-top: var(--sp-32); }
+  .action { display: flex; flex-direction: column; align-items: center; gap: var(--sp-8); min-width: 64px; font-size: var(--fs-caption); font-weight: 600; }
+  .action-icon { width: 56px; height: 56px; border-radius: var(--r-pill); background: var(--overlay-on-accent); display: grid; place-items: center; }
+
+  .body {
+    position: relative;
+    margin-top: calc(-1 * var(--sp-24));
+    background: var(--surface);
+    border-radius: var(--r-sheet) var(--r-sheet) 0 0;
+    padding: var(--sp-32) var(--sp-24) calc(var(--tabbar-h) + var(--sp-32));
+    display: flex; flex-direction: column; gap: var(--sp-40);
+  }
+
+  .banner {
+    display: flex; align-items: center; gap: var(--sp-12);
+    background: var(--danger-soft); color: var(--danger);
+    border-radius: var(--r-tile); padding: var(--sp-12) var(--sp-8) var(--sp-12) var(--sp-16);
+  }
+  .banner p { color: var(--text); font-size: var(--fs-caption); }
+  .banner strong { display: block; color: var(--danger); font-size: var(--fs-body); }
+  .banner .grow { flex: 1; }
+  .text-btn { min-height: 44px; padding: 0 var(--sp-12); font-weight: 700; border-radius: var(--r-pill); }
+
+  .bill { display: flex; align-items: center; gap: var(--sp-16); }
+  .tile { width: 48px; height: 48px; border-radius: var(--r-tile); background: var(--accent-soft); color: var(--accent); display: grid; place-items: center; flex: none; }
+  .grow { flex: 1; min-width: 0; }
+  .row-title { font-weight: 600; font-size: var(--fs-label); }
+  .row-sub { color: var(--muted); font-size: var(--fs-caption); }
+  .pill-btn {
+    min-height: 44px; padding: 0 var(--sp-16); border-radius: var(--r-pill);
+    background: var(--accent-soft); color: var(--accent); font-weight: 700; font-size: var(--fs-small);
+  }
+
+  .section-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--sp-16); }
+  .section-head h2 { font-size: var(--fs-heading); font-weight: 700; }
+  .link { color: var(--accent); font-weight: 700; font-size: var(--fs-small); min-height: 44px; padding: 0 var(--sp-4); }
+
+  .people { display: flex; justify-content: space-between; }
+  .person { display: flex; flex-direction: column; align-items: center; gap: var(--sp-8); width: 60px; font-size: var(--fs-caption); }
+  .person .face {
+    width: 56px; height: 56px; border-radius: var(--r-pill);
+    background: var(--accent-soft); color: var(--accent);
+    display: grid; place-items: center; font-weight: 700; font-size: var(--fs-body);
+  }
+  .person .face.new { background: var(--surface); color: var(--muted); box-shadow: inset 0 0 0 1.5px var(--border); }
+
+  .tx-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--sp-20); }
+  .tx { display: flex; align-items: center; gap: var(--sp-16); }
+  .tx .mark { width: 44px; height: 44px; border-radius: var(--r-pill); background: var(--bg); color: var(--muted); display: grid; place-items: center; flex: none; }
+  .tx .mark svg { width: 20px; height: 20px; }
+  .tx.in .mark { background: var(--positive-soft); color: var(--positive); }
+  .tx .amt { font-weight: 700; font-size: var(--fs-label); white-space: nowrap; }
+  .tx.in .amt { color: var(--positive); }
+
+  .empty { text-align: center; display: flex; flex-direction: column; align-items: center; gap: var(--sp-16); padding: var(--sp-24) var(--sp-8) 0; }
+  .empty .tile { width: 64px; height: 64px; border-radius: var(--r-pill); }
+  .empty h3 { font-size: var(--fs-heading); font-weight: 700; }
+  .empty p { color: var(--muted); max-width: 32ch; }
+
+  .sk { background: var(--skeleton); border-radius: 8px; }
+  .hero .sk { background: var(--overlay-on-accent); }
+
+  /* Tab bar: Scan to pay is the action, styled apart from the tabs. */
+  .tabbar {
+    position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
+    width: 100%; max-width: var(--app-w);
+    background: var(--surface); border-top: 1px solid var(--border);
+    display: flex; justify-content: space-between; align-items: flex-end;
+    padding: var(--sp-8) var(--sp-12) calc(var(--sp-16) + env(safe-area-inset-bottom));
+    z-index: 10;
+  }
+  .tab { display: flex; flex-direction: column; align-items: center; gap: 2px; width: 64px; min-height: 48px; justify-content: center; color: var(--muted); font-size: 11px; font-weight: 500; }
+  .tab svg { width: 22px; height: 22px; }
+  .tab[aria-current="page"] { color: var(--accent); font-weight: 700; }
+  .scan { display: flex; flex-direction: column; align-items: center; gap: var(--sp-4); width: 76px; font-size: 11px; font-weight: 700; color: var(--text); margin-top: -28px; }
+  .scan-circle {
+    width: 64px; height: 64px; border-radius: var(--r-pill); background: var(--accent); color: var(--on-accent);
+    display: grid; place-items: center; box-shadow: 0 6px 16px rgba(31, 79, 216, 0.32), 0 0 0 5px var(--surface);
+  }
+  .scan svg { width: 28px; height: 28px; }
+
+  /* ---------- Overlays (payment sheet, success) ---------- */
+  .layer {
+    position: fixed; top: 0; bottom: 0; left: 50%;
+    width: 100%; max-width: var(--app-w);
+    background: var(--surface); z-index: 20;
+    display: flex; flex-direction: column;
+  }
+  /* Payment is a self-contained task, so it arrives as a modal from the bottom edge.
+     Transitions (not keyframes) so a close mid-way reverses from where it is. */
+  .sheet {
+    transform: translate(-50%, 100%);
+    visibility: hidden;
+    transition: transform var(--dur-exit) var(--ease-out), visibility 0s linear var(--dur-exit);
+  }
+  .sheet.open {
+    transform: translate(-50%, 0);
+    visibility: visible;
+    transition: transform var(--dur-enter) var(--ease-out), visibility 0s;
+  }
+  .topbar { display: grid; grid-template-columns: 44px 1fr 44px; align-items: center; padding: calc(var(--sp-8) + env(safe-area-inset-top)) var(--sp-12) 0; min-height: 60px; }
+  .topbar h2 { text-align: center; font-size: var(--fs-label); font-weight: 700; }
+  .icon-btn { width: 44px; height: 44px; display: grid; place-items: center; border-radius: var(--r-pill); }
+  .icon-btn[aria-disabled="true"] { opacity: 0.35; cursor: not-allowed; }
+
+  .pay-main { flex: 1; overflow-y: auto; padding: var(--sp-24) var(--sp-24) var(--sp-16); display: flex; flex-direction: column; }
+  .merchant { display: flex; flex-direction: column; align-items: center; text-align: center; gap: var(--sp-12); }
+  .merchant-mark { width: 64px; height: 64px; border-radius: var(--r-pill); box-shadow: inset 0 0 0 1px var(--border); display: grid; place-items: center; }
+  .merchant-mark svg { width: 28px; height: 28px; }
+  .merchant h3 { font-size: var(--fs-title); font-weight: 700; line-height: 1.2; }
+  .merchant p { color: var(--muted); font-size: var(--fs-caption); }
+  .amount { text-align: center; margin-top: var(--sp-32); }
+  .amount-value { font-size: var(--fs-display); font-weight: 800; letter-spacing: -0.03em; line-height: 1.05; }
+  .amount p:not(.amount-value) { color: var(--muted); font-size: var(--fs-caption); margin-top: var(--sp-8); }
+
+  .rows { margin-top: var(--sp-40); }
+  .rows .r { display: flex; justify-content: space-between; align-items: center; gap: var(--sp-16); padding: var(--sp-12) 0; }
+  .rows .r dt { color: var(--muted); }
+  .rows .r dd { margin: 0; font-weight: 600; text-align: right; }
+  .rows .r.total { border-top: 1px solid var(--border); margin-top: var(--sp-4); padding-top: var(--sp-16); }
+  .rows .r.total dt, .rows .r.total dd { color: var(--text); font-weight: 700; font-size: var(--fs-label); }
+  .from { display: flex; align-items: center; gap: var(--sp-12); padding-bottom: var(--sp-16); border-bottom: 1px solid var(--border); margin-bottom: var(--sp-4); }
+  .from .tile { width: 44px; height: 44px; }
+  .from .tile svg { width: 20px; height: 20px; }
+  .from .lbl { color: var(--muted); font-size: var(--fs-caption); }
+  .from .val { font-weight: 600; }
+  .low .from .tile { background: var(--danger-soft); color: var(--danger); }
+  .alert { display: flex; gap: var(--sp-8); background: var(--danger-soft); color: var(--danger); border-radius: var(--r-tile); padding: var(--sp-12); font-size: var(--fs-small); line-height: 1.4; margin: var(--sp-4) 0 var(--sp-8); }
+  .alert svg { width: 18px; height: 18px; margin-top: 1px; }
+
+  .footer { padding: var(--sp-16) var(--sp-24) calc(var(--sp-24) + env(safe-area-inset-bottom)); display: flex; flex-direction: column; align-items: center; gap: var(--sp-12); }
+  .hint { display: flex; align-items: center; gap: var(--sp-8); color: var(--muted); font-size: var(--fs-caption); }
+  .hint svg { width: 14px; height: 14px; }
+  .btn {
+    width: 100%; min-height: 56px; border-radius: var(--r-pill);
+    background: var(--accent); color: var(--on-accent);
+    font-size: var(--fs-label); font-weight: 700;
+    display: flex; align-items: center; justify-content: center; gap: var(--sp-12);
+  }
+  .btn:disabled { background: var(--accent-strong); cursor: progress; }
+  .btn-text { width: 100%; min-height: 48px; color: var(--accent); font-weight: 700; font-size: var(--fs-label); border-radius: var(--r-pill); }
+  .spinner { width: 20px; height: 20px; border-radius: 50%; border: 2.5px solid rgba(255, 255, 255, 0.35); border-top-color: var(--on-accent); animation: spin 800ms linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* Declined: a short interruption, so a bottom sheet over the payment. */
+  .scrim { position: absolute; inset: 0; background: var(--scrim); opacity: 0; transition: opacity var(--dur-exit) var(--ease-out); pointer-events: none; }
+  .declined .scrim { opacity: 1; pointer-events: auto; transition-duration: var(--dur-enter); }
+  .mini {
+    position: absolute; left: 0; right: 0; bottom: 0;
+    background: var(--surface); border-radius: var(--r-sheet) var(--r-sheet) 0 0;
+    padding: var(--sp-12) var(--sp-24) calc(var(--sp-24) + env(safe-area-inset-bottom));
+    display: flex; flex-direction: column; align-items: center; text-align: center; gap: var(--sp-20);
+    transform: translateY(100%); visibility: hidden;
+    transition: transform var(--dur-exit) var(--ease-out), visibility 0s linear var(--dur-exit);
+  }
+  .declined .mini { transform: translateY(0); visibility: visible; transition: transform var(--dur-enter) var(--ease-out), visibility 0s; }
+  .grabber { width: 36px; height: 5px; border-radius: 3px; background: var(--border); }
+  .mini .tile { width: 56px; height: 56px; border-radius: var(--r-pill); background: var(--danger-soft); color: var(--danger); }
+  .mini h3 { font-size: var(--fs-title); font-weight: 700; }
+  .mini p { color: var(--muted); margin-top: var(--sp-8); }
+  .mini .stack { width: 100%; display: flex; flex-direction: column; gap: var(--sp-4); }
+
+  /* Success replaces the flow: a fade, not a push. */
+  .success {
+    transform: translateX(-50%);
+    opacity: 0; visibility: hidden;
+    transition: opacity var(--dur-fade) var(--ease-out), visibility 0s linear var(--dur-fade);
+  }
+  .success.open { opacity: 1; visibility: visible; transition: opacity var(--dur-fade) var(--ease-out), visibility 0s; }
+  .success-main { flex: 1; overflow-y: auto; padding: calc(var(--sp-48) + env(safe-area-inset-top)) var(--sp-24) var(--sp-16); display: flex; flex-direction: column; align-items: center; text-align: center; }
+
+  .burst { position: relative; width: 120px; height: 120px; display: grid; place-items: center; }
+  .ring { position: absolute; inset: 16px; border-radius: 50%; background: var(--positive-soft); }
+  .check { position: relative; width: 72px; height: 72px; border-radius: 50%; background: var(--positive); display: grid; place-items: center; }
+  .check svg { width: 36px; height: 36px; stroke: var(--on-accent); stroke-width: 3; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+  .check path { stroke-dasharray: 24; stroke-dashoffset: 0; }
+  #dots { position: absolute; inset: 0; }
+  .dot { position: absolute; left: 50%; top: 50%; width: 8px; height: 8px; margin: -4px; border-radius: 50%; opacity: 0; }
+
+  .success h1 { font-size: 32px; font-weight: 800; letter-spacing: -0.02em; line-height: 1.15; margin-top: var(--sp-24); }
+  .success .to { color: var(--muted); font-size: var(--fs-label); margin-top: var(--sp-8); }
+  .success .amount-value { margin-top: var(--sp-24); }
+  .receipt { width: 100%; margin-top: var(--sp-32); text-align: left; border-top: 1px solid var(--border); padding-top: var(--sp-8); }
+
+  /* The celebration: plays once when the result arrives (L4, rare moment).
+     Amounts are not moved for effect: they only fade in. */
+  .celebrate .check { animation: pop 520ms var(--ease-pop) both; }
+  .celebrate .check path { animation: draw 320ms var(--ease-out) 220ms both; }
+  .celebrate .ring { animation: ring 700ms var(--ease-out) 120ms both; }
+  .celebrate .dot { animation: fly 760ms var(--ease-out) 200ms both; }
+  .celebrate .rise { animation: rise 360ms var(--ease-out) both; }
+  .celebrate .fade { animation: fade 360ms var(--ease-out) both; }
+  @keyframes pop { from { transform: scale(0.5); opacity: 0; } 60% { opacity: 1; } to { transform: scale(1); opacity: 1; } }
+  @keyframes draw { from { stroke-dashoffset: 24; } to { stroke-dashoffset: 0; } }
+  @keyframes ring { from { transform: scale(0.6); opacity: 0; } 40% { opacity: 1; } to { transform: scale(1); opacity: 1; } }
+  @keyframes fly {
+    0% { transform: translate(0, 0) scale(0.4); opacity: 0; }
+    20% { opacity: 1; }
+    100% { transform: translate(var(--x), var(--y)) scale(1); opacity: 0; }
+  }
+  @keyframes rise { from { transform: translateY(8px); opacity: 0; } to { transform: none; opacity: 1; } }
+  @keyframes fade { from { opacity: 0; } to { opacity: 1; } }
+
+  .toast {
+    position: fixed; left: 50%; bottom: calc(var(--tabbar-h) + var(--sp-16));
+    transform: translate(-50%, 8px); opacity: 0;
+    background: var(--text); color: var(--on-accent);
+    padding: var(--sp-12) var(--sp-16); border-radius: var(--r-tile);
+    font-size: var(--fs-small); font-weight: 600; width: max-content; max-width: calc(min(100vw, var(--app-w)) - 48px);
+    z-index: 40; pointer-events: none;
+    transition: opacity var(--dur-exit) var(--ease-out), transform var(--dur-exit) var(--ease-out);
+  }
+  .toast.show { opacity: 1; transform: translate(-50%, 0); transition-duration: var(--dur-fade); }
+
+  /* Reduced motion: movement becomes a fade or a cut; no particles, no pop. */
+  @media (prefers-reduced-motion: reduce) {
+    .press:active:not(:disabled) { transform: none; }
+    .sheet, .sheet.open { transform: translate(-50%, 0); opacity: 0; transition: opacity var(--dur-fade) linear, visibility 0s linear var(--dur-fade); }
+    .sheet.open { opacity: 1; transition: opacity var(--dur-fade) linear, visibility 0s; }
+    .mini, .declined .mini { transform: none; opacity: 0; transition: opacity var(--dur-fade) linear, visibility 0s linear var(--dur-fade); }
+    .declined .mini { opacity: 1; transition: opacity var(--dur-fade) linear, visibility 0s; }
+    .toast, .toast.show { transform: translate(-50%, 0); }
+    .celebrate .check, .celebrate .ring, .celebrate .rise { animation: fade var(--dur-fade) linear both; }
+    .celebrate .check path { animation: none; }
+    .celebrate .dot { animation: none; display: none; }
+    .spinner { animation-duration: 1600ms; }
+  }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-house" viewBox="0 0 24 24"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></symbol>
+    <symbol id="i-receipt-text" viewBox="0 0 24 24"><path d="M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1Z"/><path d="M14 8H8"/><path d="M16 12H8"/><path d="M13 16H8"/></symbol>
+    <symbol id="i-scan" viewBox="0 0 24 24"><path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/><path d="M7 12h10"/></symbol>
+    <symbol id="i-users" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
+    <symbol id="i-user" viewBox="0 0 24 24"><path d="M18 20a6 6 0 0 0-12 0"/><circle cx="12" cy="10" r="4"/><circle cx="12" cy="12" r="10"/></symbol>
+    <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></symbol>
+    <symbol id="i-eye-off" viewBox="0 0 24 24"><path d="M10.733 5.076a10.744 10.744 0 0 1 11.205 6.575 1 1 0 0 1 0 .696 10.747 10.747 0 0 1-1.444 2.49"/><path d="M14.084 14.158a3 3 0 0 1-4.242-4.242"/><path d="M17.479 17.499a10.75 10.75 0 0 1-15.417-5.151 1 1 0 0 1 0-.696 10.75 10.75 0 0 1 4.446-5.143"/><path d="m2 2 20 20"/></symbol>
+    <symbol id="i-arrow-up-right" viewBox="0 0 24 24"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M12 5v14"/></symbol>
+    <symbol id="i-receipt" viewBox="0 0 24 24"><path d="M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1Z"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/><path d="M12 17.5v-11"/></symbol>
+    <symbol id="i-zap" viewBox="0 0 24 24"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></symbol>
+    <symbol id="i-coffee" viewBox="0 0 24 24"><path d="M10 2v2"/><path d="M14 2v2"/><path d="M16 8a1 1 0 0 1 1 1v8a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V9a1 1 0 0 1 1-1h14a4 4 0 1 1 0 8h-1"/><path d="M6 2v2"/></symbol>
+    <symbol id="i-arrow-down-left" viewBox="0 0 24 24"><path d="M17 7 7 17"/><path d="M17 17H7V7"/></symbol>
+    <symbol id="i-train" viewBox="0 0 24 24"><path d="M8 3.1V7a4 4 0 0 0 8 0V3.1"/><path d="m9 15-1-1"/><path d="m15 15 1-1"/><path d="M9 19c-2.8 0-5-2.2-5-5v-4a8 8 0 0 1 16 0v4c0 2.8-2.2 5-5 5Z"/><path d="m8 19-2 3"/><path d="m16 19 2 3"/></symbol>
+    <symbol id="i-card" viewBox="0 0 24 24"><rect width="20" height="14" x="2" y="5" rx="2"/><path d="M2 10h20"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></symbol>
+    <symbol id="i-store" viewBox="0 0 24 24"><path d="m2 7 4.41-4.41A2 2 0 0 1 7.83 2h8.34a2 2 0 0 1 1.42.59L22 7"/><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><path d="M15 22v-4a2 2 0 0 0-2-2h-2a2 2 0 0 0-2 2v4"/><path d="M2 7h20"/><path d="M22 7v3a2 2 0 0 1-2 2 2.7 2.7 0 0 1-2-1 2.7 2.7 0 0 1-4 0 2.7 2.7 0 0 1-4 0 2.7 2.7 0 0 1-4 0 2.7 2.7 0 0 1-2 1 2 2 0 0 1-2-2V7"/></symbol>
+    <symbol id="i-wallet" viewBox="0 0 24 24"><path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"/><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"/></symbol>
+    <symbol id="i-lock" viewBox="0 0 24 24"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></symbol>
+    <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></symbol>
+    <symbol id="i-alert" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4"/><path d="M12 16h.01"/></symbol>
+    <symbol id="i-circle-x" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></symbol>
+    <symbol id="i-wifi-off" viewBox="0 0 24 24"><path d="M12 20h.01"/><path d="M8.5 16.429a5 5 0 0 1 7 0"/><path d="M5 12.859a10 10 0 0 1 5.17-2.69"/><path d="M19 12.859a10 10 0 0 0-2.007-1.523"/><path d="M2 8.82a15 15 0 0 1 4.177-2.643"/><path d="M22 8.82a15 15 0 0 0-11.288-3.764"/><path d="m2 2 20 20"/></symbol>
+  </defs>
+</svg>
+
+<div class="app">
+  <!-- ========== Dashboard ========== -->
+  <main id="dashboard" aria-labelledby="dash-title">
+    <section class="hero on-accent">
+      <div class="greet">
+        <div class="avatar-me" aria-hidden="true">MR</div>
+        <h1 id="dash-title">Hi, Maya</h1>
+      </div>
+
+      <div class="balance">
+        <div class="balance-label">
+          <span id="bal-label">Wallet balance</span>
+          <button class="eye press" id="toggle-balance" aria-pressed="false" aria-label="Hide balance">
+            <svg class="i"><use href="#i-eye"/></svg>
+          </button>
+        </div>
+        <p class="balance-amount num" id="balance" aria-describedby="bal-label">$1,248.60</p>
+      </div>
+
+      <div class="actions">
+        <button class="action press" data-soon="Transfer"><span class="action-icon"><svg class="i"><use href="#i-arrow-up-right"/></svg></span>Transfer</button>
+        <button class="action press" data-soon="Top up"><span class="action-icon"><svg class="i"><use href="#i-plus"/></svg></span>Top up</button>
+        <button class="action press" data-soon="Pay bills"><span class="action-icon"><svg class="i"><use href="#i-receipt"/></svg></span>Pay bills</button>
+      </div>
+    </section>
+
+    <div class="body" id="dash-body"></div>
+  </main>
+
+  <nav class="tabbar" aria-label="Main">
+    <button class="tab" aria-current="page"><svg class="i"><use href="#i-house"/></svg>Home</button>
+    <button class="tab" data-soon="Activity"><svg class="i"><use href="#i-receipt-text"/></svg>Activity</button>
+    <button class="scan press" id="scan-btn"><span class="scan-circle"><svg class="i"><use href="#i-scan"/></svg></span>Scan to pay</button>
+    <button class="tab" data-soon="Contacts"><svg class="i"><use href="#i-users"/></svg>Contacts</button>
+    <button class="tab" data-soon="Account"><svg class="i"><use href="#i-user"/></svg>Account</button>
+  </nav>
+
+  <!-- ========== Payment (modal) ========== -->
+  <section class="layer sheet" id="payment" role="dialog" aria-modal="true" aria-labelledby="pay-title" inert>
+    <header class="topbar">
+      <button class="icon-btn press" id="pay-close" aria-label="Close payment"><svg class="i"><use href="#i-x"/></svg></button>
+      <h2 id="pay-title" tabindex="-1">Confirm payment</h2>
+      <span></span>
+    </header>
+
+    <div class="pay-main">
+      <div class="merchant">
+        <div class="merchant-mark" aria-hidden="true"><svg class="i"><use href="#i-store"/></svg></div>
+        <div>
+          <h3>Bluebird Coffee</h3>
+          <p>482 Market St · from scanned QR</p>
+        </div>
+      </div>
+
+      <div class="amount">
+        <p class="amount-value num" id="pay-amount"></p>
+        <p>Amount set by the merchant</p>
+      </div>
+
+      <div class="rows">
+        <div class="from">
+          <span class="tile" aria-hidden="true"><svg class="i"><use href="#i-wallet"/></svg></span>
+          <div>
+            <div class="lbl">Pay from</div>
+            <div class="val num" id="pay-from"></div>
+          </div>
+        </div>
+        <div class="alert" id="low-alert" role="alert" hidden>
+          <svg class="i"><use href="#i-alert"/></svg>
+          <span id="low-text"></span>
+        </div>
+        <dl style="margin:0">
+          <div class="r"><dt>Fee</dt><dd class="num" id="pay-fee"></dd></div>
+          <div class="r total"><dt>Total</dt><dd class="num" id="pay-total"></dd></div>
+        </dl>
+      </div>
+    </div>
+
+    <footer class="footer">
+      <p class="hint" id="pay-hint" aria-live="polite"><svg class="i" id="pay-hint-icon"><use href="#i-lock"/></svg><span id="pay-hint-text"></span></p>
+      <button class="btn press" id="pay-btn"></button>
+    </footer>
+
+    <div class="scrim" aria-hidden="true"></div>
+    <div class="mini" role="alertdialog" aria-modal="true" aria-labelledby="decl-title" aria-describedby="decl-text" id="declined" inert>
+      <div class="grabber" aria-hidden="true"></div>
+      <span class="tile" aria-hidden="true"><svg class="i" style="width:28px;height:28px"><use href="#i-circle-x"/></svg></span>
+      <div>
+        <h3 id="decl-title" tabindex="-1">Payment didn't go through</h3>
+        <p id="decl-text">The payment was declined, so Bluebird Coffee hasn't been paid and your balance hasn't changed.</p>
+      </div>
+      <div class="stack">
+        <button class="btn press" id="retry-btn">Try again</button>
+        <button class="btn-text press" id="cancel-btn">Cancel payment</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== Success (replaces the flow) ========== -->
+  <section class="layer success" id="success" role="dialog" aria-modal="true" aria-labelledby="ok-title" inert>
+    <div class="success-main">
+      <div class="burst" aria-hidden="true">
+        <span class="ring"></span>
+        <span id="dots"></span>
+        <span class="check"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span>
+      </div>
+      <h1 id="ok-title" class="rise" tabindex="-1" style="animation-delay:260ms">Thanks, Maya!</h1>
+      <p class="to rise" style="animation-delay:300ms">Paid to Bluebird Coffee</p>
+      <p class="amount-value num fade" id="ok-amount" style="animation-delay:340ms"></p>
+      <dl class="receipt rows fade" style="animation-delay:420ms; margin-bottom:0">
+        <div class="r"><dt>Date and time</dt><dd>Oct 18, 2026 · 8:31 AM</dd></div>
+        <div class="r"><dt>Paid from</dt><dd>Wallet balance</dd></div>
+        <div class="r"><dt>Fee</dt><dd class="num" id="ok-fee"></dd></div>
+        <div class="r"><dt>Reference</dt><dd class="num">TX4821 0937</dd></div>
+        <div class="r"><dt>Balance after</dt><dd class="num" id="ok-after"></dd></div>
+      </dl>
+    </div>
+    <footer class="footer">
+      <button class="btn press" id="done-btn">Done</button>
+      <button class="btn-text press" data-soon="Activity">View in Activity</button>
+    </footer>
+  </section>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+</div>
+
+<script>
+  // ---------- Sample data (USD). Not real; see the header comment. ----------
+  const SAMPLE = {
+    balance: 1248.60,
+    lowBalance: 12.30,               // used only by ?screen=low-balance
+    payment: { merchant: "Bluebird Coffee", amount: 18.40, fee: 0.00, time: "Today, 8:31 AM" },
+    bill: { biller: "City Power", amount: 64.20, due: "Oct 24" },
+    people: [["AK", "Alex"], ["PS", "Priya"], ["SO", "Sam"], ["JL", "Jordan"]],
+    activity: [
+      { icon: "coffee", title: "Bluebird Coffee", sub: "QR payment · Today, 8:12 AM", amount: -6.75 },
+      { icon: "arrow-down-left", title: "From Priya Shah", sub: "Transfer · Yesterday", amount: 40.00 },
+      { icon: "train", title: "Metro Transit", sub: "QR payment · Oct 16", amount: -2.90 },
+      { icon: "card", title: "Visa ··4417", sub: "Top up · Oct 15", amount: 200.00 },
+    ],
+  };
+
+  // ---------- Pure helpers ----------
+  const usd = new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" });
+  const money = n => usd.format(n);
+  // Signed amounts use a real minus sign so screen readers and the eye read them the same.
+  const signed = n => (n < 0 ? "−" : "+") + usd.format(Math.abs(n));
+  const total = p => Math.round((p.amount + p.fee) * 100) / 100;
+  const shortfall = (balance, p) => Math.max(0, Math.round((total(p) - balance) * 100) / 100);
+  window.walletLogic = { money, signed, total, shortfall };
+
+  // ---------- State ----------
+  const params = new URLSearchParams(location.search);
+  const state = {
+    balance: params.get("screen") === "low-balance" ? SAMPLE.lowBalance : SAMPLE.balance,
+    activity: SAMPLE.activity.slice(),
+    hidden: false,
+    dash: params.get("state") || "ready",   // ready | loading | empty | offline
+    busy: false,
+  };
+  if (state.dash === "empty") { state.balance = 0; state.activity = []; }
+
+  const $ = id => document.getElementById(id);
+  const icon = name => `<svg class="i"><use href="#i-${name}"/></svg>`;
+  const reduced = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  // ---------- Dashboard ----------
+  function renderDashboard() {
+    $("balance").textContent = state.hidden ? "••••••" : money(state.balance);
+    $("toggle-balance").setAttribute("aria-pressed", String(state.hidden));
+    $("toggle-balance").setAttribute("aria-label", state.hidden ? "Show balance" : "Hide balance");
+    $("toggle-balance").innerHTML = icon(state.hidden ? "eye-off" : "eye");
+
+    const body = $("dash-body");
+    $("toggle-balance").hidden = state.dash === "loading";
+    if (state.dash === "loading") {
+      $("balance").innerHTML = '<span class="sk" style="display:inline-block;width:220px;height:52px;vertical-align:middle"></span><span class="sr-only">Loading balance</span>';
+      body.setAttribute("aria-busy", "true");
+      const line = (w, h = 14) => `<span class="sk" style="display:block;width:${w}px;height:${h}px"></span>`;
+      const row = () => `<div class="tx"><span class="sk" style="width:44px;height:44px;border-radius:999px;flex:none"></span><div class="grow" style="display:grid;gap:8px">${line(140)}${line(180, 12)}</div>${line(56)}</div>`;
+      body.innerHTML = `
+        <div class="bill"><span class="sk" style="width:48px;height:48px;border-radius:16px;flex:none"></span><div class="grow" style="display:grid;gap:8px">${line(160)}${line(110, 12)}</div></div>
+        <div><div class="section-head"><h2>Send again</h2></div><div class="people">${'<span class="sk" style="width:56px;height:56px;border-radius:999px"></span>'.repeat(5)}</div></div>
+        <div><div class="section-head"><h2>Recent activity</h2></div><div class="tx-list">${row()}${row()}${row()}${row()}</div></div>`;
+      return;
+    }
+    body.removeAttribute("aria-busy");
+
+    const banner = state.dash === "offline" ? `
+      <div class="banner" role="status">
+        ${icon("wifi-off")}
+        <div class="grow"><strong>You're offline</strong><p>Balance and activity as of 8:02 AM</p></div>
+        <button class="text-btn press" id="retry-offline" style="color:var(--danger)">Retry</button>
+      </div>` : "";
+
+    if (state.dash === "empty") {
+      body.innerHTML = `
+        <div>
+          <div class="section-head"><h2>Recent activity</h2></div>
+          <div class="empty">
+            <span class="tile">${icon("wallet")}</span>
+            <h3>No activity yet</h3>
+            <p>Add money by card or bank transfer, then pay shops by QR, pay bills, or send money to people.</p>
+            <button class="btn press" data-soon="Top up">Top up</button>
+          </div>
+        </div>`;
+      return;
+    }
+
+    const b = SAMPLE.bill;
+    body.innerHTML = `${banner}
+      <div class="bill">
+        <span class="tile" aria-hidden="true">${icon("zap")}</span>
+        <div class="grow">
+          <div class="row-title num">${b.biller} · ${money(b.amount)}</div>
+          <div class="row-sub">Electricity bill due ${b.due}</div>
+        </div>
+        <button class="pill-btn press" data-soon="Pay bill">Pay bill</button>
+      </div>
+
+      <section aria-labelledby="send-h">
+        <div class="section-head"><h2 id="send-h">Send again</h2></div>
+        <div class="people">
+          ${SAMPLE.people.map(([i, n]) => `<button class="person press" data-soon="Transfer to ${n}"><span class="face" aria-hidden="true">${i}</span>${n}</button>`).join("")}
+          <button class="person press" data-soon="New transfer"><span class="face new" aria-hidden="true">${icon("plus")}</span>New</button>
+        </div>
+      </section>
+
+      <section aria-labelledby="act-h">
+        <div class="section-head"><h2 id="act-h">Recent activity</h2><button class="link press" data-soon="Activity">See all</button></div>
+        <ul class="tx-list">
+          ${state.activity.map(t => `
+            <li class="tx ${t.amount > 0 ? "in" : ""}">
+              <span class="mark" aria-hidden="true">${icon(t.icon)}</span>
+              <div class="grow"><div class="row-title">${t.title}</div><div class="row-sub">${t.sub}</div></div>
+              <span class="amt num">${signed(t.amount)}</span>
+            </li>`).join("")}
+        </ul>
+      </section>`;
+    const r = $("retry-offline");
+    if (r) r.addEventListener("click", () => toast("Still offline. Showing balance and activity as of 8:02 AM."));
+  }
+
+  // ---------- Payment ----------
+  function renderPayment(mode) {
+    const p = SAMPLE.payment;
+    const need = shortfall(state.balance, p);
+    const low = need > 0;
+    $("payment").classList.toggle("low", low);
+    $("pay-amount").textContent = money(p.amount);
+    $("pay-from").textContent = `Wallet balance · ${money(state.balance)}`;
+    $("pay-fee").textContent = money(p.fee);
+    $("pay-total").textContent = money(total(p));
+    $("low-alert").hidden = !low;
+    $("low-text").textContent = `You need ${money(need)} more to pay this. Top up by card or bank transfer, then come back to this payment.`;
+
+    const btn = $("pay-btn"), close = $("pay-close");
+    const processing = mode === "processing";
+    state.busy = processing;
+    btn.disabled = processing;
+    btn.setAttribute("aria-busy", String(processing));
+    close.setAttribute("aria-disabled", String(processing));
+    close.setAttribute("aria-label", processing ? "Close payment (unavailable while processing)" : "Close payment");
+
+    let hintIcon = "lock", hint = "You'll confirm with Face ID or your PIN";
+    if (processing) { hintIcon = "info"; hint = "Please keep the app open until this finishes"; btn.innerHTML = '<span class="spinner" aria-hidden="true"></span>Processing payment'; }
+    else if (low) { hintIcon = "info"; hint = "This payment stays open while you top up"; btn.textContent = `Top up ${money(need)}`; }
+    else btn.textContent = `Pay ${money(total(p))}`;
+    $("pay-hint-icon").innerHTML = `<use href="#i-${hintIcon}"/>`;
+    $("pay-hint-text").textContent = hint;
+  }
+
+  // ---------- Success ----------
+  function renderSuccess() {
+    const p = SAMPLE.payment;
+    $("ok-amount").textContent = money(p.amount);
+    $("ok-fee").textContent = money(p.fee);
+    $("ok-after").textContent = money(SAMPLE.balance - total(p));
+    const dots = $("dots");
+    if (!dots.childElementCount) {
+      // 12 dots on a circle; brand accent and the success green only.
+      for (let k = 0; k < 12; k++) {
+        const a = (k / 12) * Math.PI * 2, d = k % 2 ? 54 : 64;
+        const s = document.createElement("span");
+        s.className = "dot";
+        s.style.setProperty("--x", `${Math.cos(a) * d}px`);
+        s.style.setProperty("--y", `${Math.sin(a) * d}px`);
+        s.style.background = k % 3 === 0 ? "var(--positive)" : "var(--accent)";
+        if (k % 4 === 1) { s.style.width = s.style.height = "6px"; s.style.margin = "-3px"; }
+        dots.appendChild(s);
+      }
+    }
+  }
+
+  // ---------- Navigation ----------
+  // screen: dashboard | payment | processing | low-balance | declined | success
+  let current = "dashboard", timer = null, opener = null;
+
+  function setLayer(el, open) {
+    el.classList.toggle("open", open);
+    el.inert = !open;
+  }
+
+  function show(screen, { focus = true } = {}) {
+    clearTimeout(timer);
+    const pay = $("payment"), ok = $("success"), dash = $("dashboard"), nav = document.querySelector(".tabbar");
+    const inPayment = ["payment", "processing", "low-balance", "declined"].includes(screen);
+
+    if (inPayment) renderPayment(screen === "processing" ? "processing" : "idle");
+    pay.classList.toggle("declined", screen === "declined");
+    $("declined").inert = screen !== "declined";
+
+    if (screen === "success") {
+      renderSuccess();
+      // Replace, don't stack: the paid sheet goes away without sliding back down.
+      pay.style.transition = "none"; setLayer(pay, false); void pay.offsetWidth; pay.style.transition = "";
+      ok.classList.remove("celebrate"); void ok.offsetWidth; ok.classList.add("celebrate");
+      setLayer(ok, true);
+      if (navigator.vibrate) navigator.vibrate(15);   // one haptic, with the visual change
+    } else {
+      setLayer(ok, false);
+      setLayer(pay, inPayment);
+    }
+
+    const overlay = screen !== "dashboard";
+    dash.inert = overlay; nav.inert = overlay;
+    current = screen;
+
+    if (screen === "processing") {
+      // Sample timing for the prototype; the real result comes from the payment service.
+      timer = setTimeout(() => show("success"), 1800);
+    }
+    if (!focus) return;
+    const target = { dashboard: opener || $("scan-btn"), payment: $("pay-title"), "low-balance": $("pay-title"),
+      processing: $("pay-btn"), declined: $("decl-title"), success: $("ok-title") }[screen];
+    if (target) requestAnimationFrame(() => target.focus({ preventScroll: true }));
+  }
+
+  function closePayment() {
+    if (state.busy) return;       // back is blocked only while the request is in flight
+    show("dashboard");
+  }
+
+  function finishPayment() {
+    // After a real payment the wallet reflects it: lower balance, newest row first.
+    const p = SAMPLE.payment;
+    if (state.balance === SAMPLE.balance && state.dash !== "empty") {
+      state.balance = Math.round((SAMPLE.balance - total(p)) * 100) / 100;
+      state.activity.unshift({ icon: "coffee", title: p.merchant, sub: `QR payment · ${p.time}`, amount: -total(p) });
+    }
+    renderDashboard();
+    opener = $("scan-btn");
+    show("dashboard");
+  }
+
+  // ---------- Toast for controls outside this prototype ----------
+  let toastTimer;
+  function toast(msg) {
+    const t = $("toast");
+    t.textContent = msg;
+    t.classList.add("show");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => t.classList.remove("show"), 2400);
+  }
+
+  // ---------- Events ----------
+  document.addEventListener("click", e => {
+    const soon = e.target.closest("[data-soon]");
+    if (soon) toast(`${soon.dataset.soon} isn't part of this prototype.`);
+  });
+  $("toggle-balance").addEventListener("click", () => { state.hidden = !state.hidden; renderDashboard(); });
+  $("scan-btn").addEventListener("click", () => {
+    // The camera step is not designed; the prototype goes straight to the scanned merchant.
+    opener = $("scan-btn");
+    show("payment");
+  });
+  $("pay-close").addEventListener("click", closePayment);
+  $("pay-btn").addEventListener("click", () => {
+    if (state.busy) return;       // no double submission
+    if ($("payment").classList.contains("low")) { toast("Top up isn't part of this prototype."); return; }
+    show("processing");
+  });
+  $("retry-btn").addEventListener("click", () => show("processing"));
+  $("cancel-btn").addEventListener("click", () => show("dashboard"));
+  $("done-btn").addEventListener("click", finishPayment);
+  document.addEventListener("keydown", e => {
+    if (e.key !== "Escape") return;
+    if (current === "declined") show("payment");
+    else if (["payment", "low-balance"].includes(current)) closePayment();
+  });
+
+  // ---------- Start ----------
+  renderDashboard();
+  const start = params.get("screen");
+  const allowed = ["dashboard", "payment", "processing", "success", "low-balance", "declined"];
+  show(allowed.includes(start) ? start : "dashboard", { focus: false });
+</script>
+</body>
+</html>
