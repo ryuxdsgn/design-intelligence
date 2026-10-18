@@ -14,9 +14,9 @@ export default function Maintenance() {
     <main className={`${GUTTER} grid min-h-svh content-center items-center gap-12 overflow-x-clip py-16 lg:grid-cols-[minmax(0,5fr)_minmax(0,6fr)] lg:gap-20`}>
       <div className="flex flex-col gap-8">
         <div className="flex max-w-[560px] flex-col gap-4">
-          <h1 className="rise text-[min(40px,10vw)] leading-[1.05] sm:text-[48px]">We&apos;re reworking this site.</h1>
-          <p className="rise text-[17px] leading-[1.55] text-ink-2 [--d:120ms]">
-            ryux.design is offline while its design and content are redone. RYUX itself is open source and still works.
+          <h1 className="rise text-balance text-[min(40px,10vw)] leading-[1.05] sm:text-[48px]">A new home for RYUX is in the works.</h1>
+          <p className="rise text-pretty text-[17px] leading-[1.55] text-ink-2 [--d:120ms]">
+            ryux.design is currently being built as we refine the design and content. In the meantime, RYUX remains open source and ready to use.
           </p>
         </div>
         <a href={REPO} className="rise inline-flex min-h-11 items-center gap-2 self-start text-[16px] font-medium underline underline-offset-4 [--d:240ms]">
