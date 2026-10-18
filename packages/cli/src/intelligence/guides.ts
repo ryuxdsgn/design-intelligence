@@ -125,7 +125,7 @@ export const DESIGN_BODY = `# RYUX Design
 7. **Render and inspect.** Screenshot what you made, check it against the direction and the rules,
    fix, and render again (capabilities/qa.md). Count the values still literal (color, spacing,
    radius, type size) and turn each into a variable or name the exception, then run the counts of
-   RX-AS-10 (accent hues, grey families, radii, display sizes, icon sets, emoji, gradients, labels
+   RX-AS-10 (accent hues, grey families, radii, display sizes, icon sets, emoji, invented marks, gradients, labels
    per intent) and report them in the gate. Run the four hierarchy
    checks from Critique (control beside its data, primary action that reads as an action, not a tab, no fact
    twice, grouped by what the user checks together), fix what fails, render again, and check each fix. List where
@@ -558,7 +558,7 @@ or a cut (RX-A11Y-08).
 | Photography | the brand's own shoot | a licensed library you can name | a stranger presented as a customer |
 | Illustration and 3D | the brand's system | custom or generated from the brief, labeled | a generic character or blob unrelated to the product |
 | Icons | the project's set | one set that matches the chosen icon style (for example Tabler, Iconoir, Phosphor, or Material Symbols), or a custom set drawn to that style | mixed sets, or one-off icons outside the style |
-| Logos | official files from each owner | the name in plain text | a redrawn or imitated logo |
+| Logos | official files from each owner; the product's own file (RX-AS-11) | the name in plain text, or [LOGO] | a redrawn, imitated, or invented logo; initials or an emoji as a mark; a generated favicon or app icon |
 | Video | real product footage | a screen recording of the real product | stock footage implying use |
 | Missing | a placeholder that looks like one (RX-AS-03) | | an invented stand-in |
 

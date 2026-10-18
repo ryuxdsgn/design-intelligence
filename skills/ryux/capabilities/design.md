@@ -63,7 +63,7 @@
 7. **Render and inspect.** Screenshot what you made, check it against the direction and the rules,
    fix, and render again (capabilities/qa.md). Count the values still literal (color, spacing,
    radius, type size) and turn each into a variable or name the exception, then run the counts of
-   RX-AS-10 (accent hues, grey families, radii, display sizes, icon sets, emoji, gradients, labels
+   RX-AS-10 (accent hues, grey families, radii, display sizes, icon sets, emoji, invented marks, gradients, labels
    per intent) and report them in the gate. Run the four hierarchy
    checks from Critique (control beside its data, primary action that reads as an action, not a tab, no fact
    twice, grouped by what the user checks together), fix what fails, render again, and check each fix. List where
