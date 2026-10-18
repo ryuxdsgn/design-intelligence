@@ -37,7 +37,7 @@ How reference apps keep components consistent for this pattern: `search_screens`
 - Do: Before adding a component, search existing components, tokens, and patterns; reuse, then extend with a variant, and create new only for a real semantic or behavioral difference.
 - Do not: Create a near-duplicate component or pattern for one screen.
 - Why: Duplicates drift apart, multiply maintenance, and break consistency. (Design-system practice)
-- Check: review
+- Check: for each new component or token, name the existing ones searched and why none fits; fails on a new one that duplicates an existing one
 
 ### RX-DS-02 [Required] [Quality Lock] Consistency, conventions, and states
 

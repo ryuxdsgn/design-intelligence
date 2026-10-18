@@ -45,7 +45,7 @@ The repo itself is the main evidence (stack, components, tokens); reference scre
 - Do: Take prices, limits, permissions, and rules from data, config, or the API; mark unknown ones as assumptions.
 - Do not: Hard-code business rules or API behavior nobody specified.
 - Why: Invented logic ships as real behavior. (ryux product principle (see RX-PR-02))
-- Check: review
+- Check: list each rule the UI code computes (fees, limits, eligibility, rounding, dates) and its source (API, spec, brief); fails on any computed from a guess
 
 ### RX-FE-05 [Required] Actionable errors
 
