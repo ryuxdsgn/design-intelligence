@@ -19,24 +19,26 @@ understand product context, separate facts from assumptions, decide, and verify 
 
 ## See the difference
 
-Same brief, same model, a fresh agent per run: the transaction detail screen a wallet shows after the
-user pays, with its currency, statuses, fee, and 30-day reporting window. Designed in pen.dev.
+Same brief, same model, a fresh agent per run: a personal finance app with a dashboard, a payment,
+and the payment success screen, designed in pen.dev. Run 1 of each side, chosen before the runs.
 
-<a href="apps/web/public/proof/lumo-without.png"><img src="apps/web/public/proof/lumo-without.png" alt="Without RYUX: Completed, Processing and Failed screens for a Rp48.000 card payment, with Share and Save receipt buttons that the brief never mentioned" width="100%"></a>
+<a href="docs/benchmarks/hero-finance/"><img src="docs/benchmarks/hero-finance/see-the-difference.gif" alt="Animation: the same brief; with no skill the agent draws right away, with RYUX it asks three questions first; then both sets of screens; close-ups with seven invented facts circled on the left and labeled assumptions on the right; seven states drawn on the right and none on the left; then the totals across three runs, and a follow-up turn on the RYUX side with its recorded success animation" width="100%"></a>
 
-<a href="apps/web/public/proof/lumo-with.png"><img src="apps/web/public/proof/lumo-with.png" alt="With RYUX: Completed, Processing and Failed screens, plus loading, a couldn't-load error, the report window after 30 days, a copied-ID message, and the screen at 320 wide; Share receipt is listed as unconfirmed" width="100%"></a>
+Both sides look finished, and a fresh reader understood both dashboards (3 of 3 questions). The
+decisions differ:
 
-Both sides look finished. The decisions differ:
+- **Asking.** With no skill, the agent drew right away and picked a market and currency itself. With
+  RYUX, it asked three questions first, in 3 of 3 runs.
+- **Facts.** With no skill, 7 to 9 kinds of things the brief never gave were shown as real: points,
+  promos, a PayLater limit with "0% fee", vouchers, ride and travel services. With RYUX, none; the fee
+  and how a payment is confirmed were listed as assumptions.
+- **States.** With no skill, the three screens only. With RYUX, 6 to 7 more: loading, empty, offline,
+  processing, not enough balance, declined, and a narrow width.
 
-- **States.** Without RYUX: Completed, Processing, Failed. With RYUX, also loading, couldn't load,
-  the report window after 30 days, and the 320-wide screen, in 3 of 3 runs.
-- **Actions.** Without RYUX, Share or Save receipt was added as if the brief asked for it (3 of 3).
-  With RYUX, an added action is listed as unconfirmed, for the team to keep or cut.
-- **Promises.** Without RYUX, 2 of 3 runs told users "No money was taken" on a failed payment, which
-  the brief never said. With RYUX, none did.
-
-Three runs per side, RYUX 2.6.3, same brief and harness; the runs without RYUX are from three days
-earlier. [Brief, method, and every run](docs/benchmarks/lumo-td-2.6/).
+Three runs per side, RYUX 2.9.3. The end of the clip is a follow-up turn on the RYUX side only
+("more modern, simpler, a success that feels like a thank-you"), recorded from the build it made.
+Real brand names in the no-skill screens are blurred.
+[Brief, method, and every run](docs/benchmarks/hero-finance/).
 
 ## Who it's for
 
@@ -111,8 +113,10 @@ installs, updates, and the MCP.
 Each benchmark fixes its criteria before the first run, uses a fresh agent per run, and publishes the
 raw outputs. What each one shows, and its scope:
 
-- **States and invented facts** (Lumo, above): more states covered and nothing added as fact that the
-  brief did not give. 3 + 3 runs.
+- **Asking, invented facts, and states** (personal finance, above): asked first in 3 of 3 runs, no
+  fact shown that the brief did not give, 6 to 7 more states. 3 + 3 runs, counts only.
+- **States and promises** (Lumo transaction detail): more states covered, and no added action or
+  promise shown as fact. 3 + 3 runs.
 - **Typography**: on one Billing page, RYUX 2.9.2 brought paragraph lines down to 75–77 characters
   in 2 of 3 runs (2.9.1: about 90 in all three) and scored higher on nine checks in 2 of 3 pairs; a product designer shipped the 2.9.2 page
   in 2 of 3 blind pairs. 3 + 3 runs, one rater.
@@ -124,6 +128,7 @@ raw outputs. What each one shows, and its scope:
 
 | Benchmark | Runs |
 | --- | --- |
+| [Personal finance app](docs/benchmarks/hero-finance/) | 3 + 3 |
 | [Lumo transaction detail](docs/benchmarks/lumo-td-2.6/) | 3 + 3 |
 | [Typography](docs/benchmarks/typo-craft/) (scorer included, [run it yourself](docs/benchmarks/typo-craft/#run-it-yourself)) | 3 + 3 |
 | [Explore, judge, critique](docs/benchmarks/explore-judge/) | 3–6 per condition |
