@@ -48,14 +48,14 @@ Standards are the main evidence (WCAG 2.2 success criteria); reference screens s
 - Do: Make actions operable from the keyboard (path-based input such as drawing excepted), show a visible focus indicator, and keep focus order the same as the visual order. When a dialog, menu, or popover closes, put focus back on the element that opened it, or on the nearest sensible element if that one is gone.
 - Do not: Build pointer-only actions, or remove focus outlines without an accessible replacement.
 - Why: Keyboard and switch users navigate and act by focus. (WCAG 2.2 SC 2.1.1, 2.4.3, and 2.4.7; WAI-ARIA APG dialog pattern)
-- Check: review
+- Check: tab through the render from the top: every control is reached in reading order and shows a visible focus indicator (3:1 against its background); fails on a skipped control, a focus trap, or an invisible focus
 
 ### RX-A11Y-04 [Required] [Hard Gate] Semantic structure, native controls, and names
 
 - Do: Use real headings, landmarks, lists, buttons, links, and the right input types before custom elements, and give icon-only buttons and meaningful images an accessible name or alt text.
 - Do not: Build structure or controls from styled divs, or ship unlabeled icon buttons.
 - Why: Assistive technology navigates by semantics and announces unlabeled buttons as just "button"; native controls bring keyboard and platform behavior for free. (WCAG 2.2 SC 1.1.1, 1.3.1, and 4.1.2)
-- Check: review
+- Check: read the accessibility tree (a Playwright accessibility snapshot, or the design file's layer types): every control is a native element or has a role, and every one has a name; headings are in order; fails on an unnamed control or a div acting as a button
 
 ### RX-A11Y-06 [Required] Not color alone
 
