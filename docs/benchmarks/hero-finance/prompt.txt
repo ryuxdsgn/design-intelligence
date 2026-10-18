@@ -1,0 +1,1 @@
+Design a personal finance app in pen.dev: the dashboard, a payment, and the payment success screen. Mobile. Flow inspiration: digital banks and e-wallets. Visual inspiration: super-apps for payments, rides, and travel.

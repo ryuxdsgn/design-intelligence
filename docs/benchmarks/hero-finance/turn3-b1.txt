@@ -1,0 +1,6 @@
+Answer to your question 3, plus a new direction from me:
+
+- Make the UI more modern, simpler, and bolder: fewer elements, a stronger hierarchy, more space. Keep every fact, sample value, and assumption you already have; do not add new features or promises.
+- Motion: the payment success moment should feel engaging, like a small celebration or a thank-you. Keep the rest of the motion calm, and respect reduced motion.
+
+Save this direction to DESIGN.md. The pen.dev canvas has been cleared, so do not use pen.dev: build the dashboard, the payment, and the payment success screen from your design in this session as one self-contained file, index.html (390 wide, mobile; Google Fonts allowed, no other external files). Make the flow clickable: dashboard, then Scan to pay opens the payment, Pay shows processing, then success, Done returns to the dashboard. Add ?screen=dashboard|payment|processing|success to open a screen directly. Then run QA on it, including the motion pass.
