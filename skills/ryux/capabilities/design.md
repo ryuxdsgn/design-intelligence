@@ -45,15 +45,15 @@
      information order (what comes first), layout model, interaction model (where the main action
      lives), type class, and colour temperature. The same layout in new colours is the same
      direction; replace it.
-   - Judge them on fit and craft, each rated Strong, Adequate, or Weak with one reason. Fit, from
-     the context: the user's main task, what must be seen first, the brief's character words, the
-     conventions that must hold. Craft, from the render: hierarchy at a glance (squint: does the one
-     thing win?), distinctiveness (the swap test, RX-AS-09: would it pass for any competitor?), type
-     and spacing quality, and whether the design system can carry it. On task UI fit decides; on an
-     expressive surface craft and distinctiveness weigh as much as fit. Compare in pairs ("A beats
-     B on hierarchy because …"), recommend one with a Decision Receipt, name the runner-up and what
-     would make it win, and say "close call" when it is one. When the user gave a reference or a
-     taste anchor, the direction closest to it wins a tie. "It looks better" is not a reason.
+   - Judge them by fit first: rate each Strong, Adequate, or Weak, with one reason, on the user's
+     main task (can it be done fast, where the hand is), what must be seen first, how much space the
+     layout spends on what matters, and the conventions that must hold. Fit decides. Craft
+     (hierarchy at a glance, type and spacing, distinctiveness by the swap test, RX-AS-09) only
+     breaks a tie between directions equally strong on fit; a more distinctive direction never wins
+     over one that is easier to use or wastes less space. Compare in pairs ("A beats B on reach
+     because …"), recommend one with a Decision Receipt, name the runner-up and what would make it
+     win, and say "close call" when it is one. When the user gave a reference or a taste anchor, the
+     direction closest to it wins a tie. "It looks better" is not a reason.
    - Then stop and let the user choose. Build only the chosen one into the full design (states,
      widths, Visual Direction, RX-UI-10) and mark the others on the canvas as not chosen. When the
      user has already said to pick for them, continue with the recommendation and say so.
