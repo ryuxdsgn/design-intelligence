@@ -30,12 +30,16 @@
    analysis or run Analyze first (capabilities/analyze.md). Existing screens, components, and any
    screenshot or reference provided are your examples: read them before choosing patterns, take
    their principles, and never copy their facts. Understand before you design.
-3. **Decide with evidence.** For consequential choices, compare two or three patterns, using
+3. **Read the modules the task needs** from the task table before deciding anything, for example ux,
+   interaction, forms, and content for a form, or ui and responsive for a layout; for any surface
+   with a visual direction, ui and anti-slop as well. The rules shape the first idea, not only the
+   review of it.
+4. **Decide with evidence.** For consequential choices, compare two or three patterns, using
    reference screens when the ryux MCP is connected (RX-PR-09), and rate the evidence (RX-PR-10).
    On a complex or ambiguous surface (a new flow, a dashboard, a multi-step form), name the primary
    task, the one thing that must be seen first, and two or three UX approaches (structure and
    interaction model) before any visual work, and choose by the task; a small change skips this.
-4. **Direction.** Write the Design Direction below. On task UI, follow conventions and the design
+5. **Direction.** Write the Design Direction below. On task UI, follow conventions and the design
    system. On an expressive surface (hero, landing, onboarding, empty state, brand moment), or when
    the brief asks for a new look or more personality, explore on the canvas before choosing (RX-UI-12):
    - Render three directions as frames side by side: the main state only, the same content and
@@ -51,8 +55,6 @@
    - Then stop and let the user choose. Build only the chosen one into the full design (states,
      widths, Visual Direction, RX-UI-10) and mark the others on the canvas as not chosen. When the
      user has already said to pick for them, continue with the recommendation and say so.
-5. **Read the modules the task needs** from the task table, for example ux, interaction, forms, and
-   content for a form, or ui and responsive for a layout.
 6. **Design in the tool.** Use the Figma MCP or the pen.dev MCP. System first: look for the design
    system that exists (DESIGN.md, a tokens or theme file in the repo, the design file's variables and
    components, a linked library) and build from it. Create only what is missing: variables for color
