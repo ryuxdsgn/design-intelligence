@@ -176,7 +176,15 @@ Real screens show what real products do instead of invented numbers and urgency:
 
 ### RX-AS-10 [Required] [Quality Lock] Count before handoff
 
-- Do: Before handing off, count on the render or in the design file's variables, and report the counts: accent hues 1 (status colors, and secondary colors the brand defines, are named and excluded); grey families 1; corner radii only from the scale, matching the shape lock; display sizes per screen 1; icon sets 1, in the chosen icon style; emoji in interface chrome 0; gradients without a brand reason 0; labels for the same intent 1. A count over its limit fails unless the brief or DESIGN.md gives the reason.
+- Do: Before handing off, count on the render or in the design file's variables, and report the counts: accent hues 1 (status colors, and secondary colors the brand defines, are named and excluded); grey families 1; corner radii only from the scale, matching the shape lock; display sizes per screen 1; icon sets 1, in the chosen icon style; emoji in interface chrome 0; invented logos or app icons 0 (RX-AS-11); gradients without a brand reason 0; labels for the same intent 1. A count over its limit fails unless the brief or DESIGN.md gives the reason.
 - Do not: Judge consistency by eye only, or hand off a screen with five accent hues, mixed icon sets, or two labels for one action because it looks fine.
 - Why: Counts are harder to talk past than impressions; a design that passed a by-eye review still shipped five hues and the wrong tab icons. (isolation effect (von Restorff 1933): several accents cancel each other out; pattern also in appllama-app-design-skill (MIT), anti-slop counts; written for RYUX; owner review 2026-10-17: withryux.pen passed RYUX with 5+ hues and wrong tab icons)
 - Check: count on the render or the design file's variables; report in the Delivery Gate
+
+### RX-AS-11 [Required] [Hard Gate] The product's own mark
+
+- When: the design has a logo, wordmark, app icon, or favicon
+- Do: Use the brand's own file wherever the product's mark appears: look in the repo (public/, assets/, the app icon and favicon), DESIGN.md, the design file's components, and what the user attached, and name the file you used. With no file, set the product name in plain text in the brand's type, or leave a visible [LOGO] placeholder, and list the mark as missing in the handoff.
+- Do not: Stand in for the mark with initials in a circle, an emoji, a generic shape, an invented SVG, a letter cut into a tile, or the name typeset to look like a logo; generate a favicon or app icon the user did not ask for; or redraw the brand's mark instead of using its file. Designing a mark is its own task, done only when the user asks for it.
+- Why: An invented mark looks finished and is the first thing a team has to throw away; it also passes for a decision nobody made. (pattern also in superdesign-skill (MIT), logo invariant; RX-UI-13 asset provenance; ryux owner review 2026-10-18 (the logo and favicon are the owner's to make); written for RYUX)
+- Check: list every mark slot and the file it uses, or the placeholder; review
