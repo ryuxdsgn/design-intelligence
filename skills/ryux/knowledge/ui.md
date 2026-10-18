@@ -108,7 +108,7 @@ or a cut (RX-A11Y-08).
 | Photography | the brand's own shoot | a licensed library you can name | a stranger presented as a customer |
 | Illustration and 3D | the brand's system | custom or generated from the brief, labeled | a generic character or blob unrelated to the product |
 | Icons | the project's set | one set that matches the chosen icon style (for example Tabler, Iconoir, Phosphor, or Material Symbols), or a custom set drawn to that style | mixed sets, or one-off icons outside the style |
-| Logos | official files from each owner | the name in plain text | a redrawn or imitated logo |
+| Logos | official files from each owner; the product's own file (RX-AS-11) | the name in plain text, or [LOGO] | a redrawn, imitated, or invented logo; initials or an emoji as a mark; a generated favicon or app icon |
 | Video | real product footage | a screen recording of the real product | stock footage implying use |
 | Missing | a placeholder that looks like one (RX-AS-03) | | an invented stand-in |
 
@@ -241,7 +241,7 @@ A design direction from comparable screens: `extract_design_direction` (patterns
 
 - When: the design needs photos, illustration, 3D, icons, logos, or video
 - Do: Pick each asset's source in this order: real product screens or the brand's own assets; a licensed library (one icon set, photos whose license you can name); a custom or generated asset made from the Visual Brief and labeled illustrative; otherwise a placeholder that looks like one (RX-AS-03). Record where each asset came from.
-- Do not: Draw or imitate another company's logo, mix icon sets, use a photo you cannot license, or fill a gap with a generic stock scene.
+- Do not: Draw or imitate another company's logo, invent the product's own mark (RX-AS-11), mix icon sets, use a photo you cannot license, or fill a gap with a generic stock scene.
 - Why: Assets carry claims about the product and its users; an unsourced or borrowed asset is a claim nobody can back. (licensing and trademark practice; RX-UI-07; RX-AS-02)
 - Not when: a wireframe or internal prototype where placeholders are expected
 - Trade-off: real or licensed assets take longer than a stock search
