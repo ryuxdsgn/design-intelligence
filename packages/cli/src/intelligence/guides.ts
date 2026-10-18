@@ -517,8 +517,12 @@ needs invented numbers, people, or logos.
 **3. Motion.** Start from purpose: what the motion communicates; with no purpose, no motion.
 Then ask how often someone will see it. The more often, the shorter and quieter it is, not absent:
 what people open many times a day (a menu, a dropdown, tabs, list selection) gets a short transition
-they can interrupt, about 150 to 200 ms of opacity with a small scale or a few pixels of movement
+they can interrupt, about 150 to 250 ms of opacity with a small scale or a few pixels of movement
 from its trigger; only a command palette or shortcut opened from the keyboard appears at once.
+When a control changes what is shown (tabs, a segmented control, a filter), move the content with
+it, not only the control: the indicator slides by transform, the old panel fades out while the new
+one fades in and travels a few pixels in the same direction, together, in one easing. A tab whose
+indicator moves while the panel snaps feels unfinished.
 Expression is kept for occasional or first-time moments, and a rare moment such as a completed
 payment may celebrate once: brief, never repeated, never moving the amount, a fade under reduced motion.
 Every motion follows one lifecycle: before, trigger, transition, new state, feedback.
@@ -704,8 +708,10 @@ check the motion rules already in force (RX-UI-11, RX-A11Y-08):
 - a close mid-way turns back from where it is, with no jump to fully open and no restart;
 - closing takes no longer than opening; entrances never use ease-in;
 - only transform and opacity move; a menu grows from its trigger, a drawer from its own edge;
-- what people open many times a day (menus, tabs) uses a short transition, 200 ms or less, that a
+- what people open many times a day (menus, tabs) uses a short transition, 250 ms or less, that a
   click can interrupt; a command palette opened from the keyboard appears at once;
+- when tabs or a segmented control switch, the panel content moves with the indicator, not only
+  the indicator;
 - reduced motion leaves a fade or a cut, no movement;
 - after a dialog or drawer closes, focus is back on the control that opened it.
 Then record the interaction and step through it frame by frame: look for broken or skipped frames,
