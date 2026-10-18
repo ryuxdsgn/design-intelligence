@@ -15,7 +15,8 @@
    this task; say so.
    **Direction is the user's call:** when neither the prompt nor DESIGN.md sets the UI direction
    (character, or brand colour and type) or the motion direction, ask for it in that message (it
-   counts toward the three) instead of choosing it yourself. **No DESIGN.md and no product docs is the
+   counts toward the three) instead of choosing it yourself; on an expressive surface, ask in the
+   same question for one product or site whose look they like, as a taste anchor. **No DESIGN.md and no product docs is the
    case where these questions matter most, never a reason to skip them:** ask, then wait for the
    answer before designing. Complete context means no questions. Never ask what the prompt, DESIGN.md, or the
    product docs already answer. For the rest, make the smallest reasonable assumption, write it
@@ -44,10 +45,15 @@
      information order (what comes first), layout model, interaction model (where the main action
      lives), type class, and colour temperature. The same layout in new colours is the same
      direction; replace it.
-   - Judge them against the brief, not taste: take three to five criteria from the context (the
-     user's main task, what must be seen first, the brief's character words, conventions that must
-     hold), rate each direction Strong, Adequate, or Weak with one reason each, and recommend one
-     with a Decision Receipt. "It looks better" is not a reason.
+   - Judge them on fit and craft, each rated Strong, Adequate, or Weak with one reason. Fit, from
+     the context: the user's main task, what must be seen first, the brief's character words, the
+     conventions that must hold. Craft, from the render: hierarchy at a glance (squint: does the one
+     thing win?), distinctiveness (the swap test, RX-AS-09: would it pass for any competitor?), type
+     and spacing quality, and whether the design system can carry it. On task UI fit decides; on an
+     expressive surface craft and distinctiveness weigh as much as fit. Compare in pairs ("A beats
+     B on hierarchy because …"), recommend one with a Decision Receipt, name the runner-up and what
+     would make it win, and say "close call" when it is one. When the user gave a reference or a
+     taste anchor, the direction closest to it wins a tie. "It looks better" is not a reason.
    - Then stop and let the user choose. Build only the chosen one into the full design (states,
      widths, Visual Direction, RX-UI-10) and mark the others on the canvas as not chosen. When the
      user has already said to pick for them, continue with the recommendation and say so.
