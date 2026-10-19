@@ -40,8 +40,19 @@ npx @ryuxdsgn/design-intelligence install --agent all --global         # every a
 npx skills add ryuxdsgn/design-intelligence                            # skills.sh, any agent
 ```
 
-As a Claude Code plugin, inside Claude Code: `/plugin marketplace add ryuxdsgn/design-intelligence`,
-then `/plugin install ryux@design-intelligence`.
+As a plugin or extension, with each agent's own installer:
+
+| Agent | Install |
+| --- | --- |
+| Claude Code | `/plugin marketplace add ryuxdsgn/design-intelligence`, then `/plugin install ryux@design-intelligence` |
+| Codex | `codex plugin marketplace add ryuxdsgn/design-intelligence`, then install `ryux` from `/plugins` |
+| GitHub Copilot CLI | `copilot plugin marketplace add ryuxdsgn/design-intelligence`, then `copilot plugin install ryux@design-intelligence` |
+| VS Code (agent plugins) | Command Palette → Chat: Install Plugin From Source → `https://github.com/ryuxdsgn/design-intelligence` |
+| Gemini CLI | `gemini extensions install https://github.com/ryuxdsgn/design-intelligence` |
+
+The plugin is the same skill in every agent: `plugins/ryux/` follows the open Agent Plugins format
+(`plugin.json` and `skills/`) plus Claude Code's own manifest, and the Gemini extension reads
+`skills/` at the repo root.
 
 ### Project setup (DESIGN.md)
 

@@ -104,9 +104,9 @@ It asks which agents you use, installs RYUX, and offers a short setup that write
 project's direction. Run `npx @ryuxdsgn/design-intelligence setup` any time to change it.
 
 Also available through [skills.sh](https://skills.sh) (`npx skills add ryuxdsgn/design-intelligence`)
-and as a Claude Code plugin (`/plugin marketplace add ryuxdsgn/design-intelligence`, then
-`/plugin install ryux@design-intelligence`). The [guide](GUIDE.md) covers other agents, global
-installs, updates, and the MCP.
+and as a plugin for Claude Code (`/plugin marketplace add ryuxdsgn/design-intelligence`, then
+`/plugin install ryux@design-intelligence`), Codex, GitHub Copilot, VS Code, and Gemini CLI. The
+[guide](GUIDE.md) covers each agent's install, global installs, updates, and the MCP.
 
 ## Benchmarks
 
