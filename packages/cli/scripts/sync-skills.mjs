@@ -1,4 +1,4 @@
-// Regenerate the browsable skill (skills/ryux/) and the generated sections of docs/design-rules.md
+// Regenerate the browsable skill (skills/ryux/), its copy in the plugin (plugins/ryux/skills/ryux/), and the generated sections of docs/design-rules.md
 // from the CLI's render functions, sync the version into the plugin manifests, then install RYUX
 // into this repo (dogfooding). Run: pnpm sync:skills (builds the CLI first).
 //
@@ -29,6 +29,9 @@ import { VERSION } from "../dist/product.js";
 const here = dirname(fileURLToPath(import.meta.url));
 const root = join(here, "..", "..", "..");
 const skillsDir = join(root, "skills");
+// The Claude Code plugin ships its own copy, so installing it copies only the skill, not the repo.
+const pluginSkillDir = join(root, "plugins", "ryux", "skills", SKILL_NAME);
+const bundleDirs = [join(skillsDir, SKILL_NAME), pluginSkillDir];
 const check = process.argv.includes("--check");
 const problems = [];
 
@@ -84,17 +87,19 @@ doc = versioned["docs/design-rules.md"];
 if (check) {
   const readme = await readFile(join(root, "README.md"), "utf8");
   if (readme !== versioned["README.md"]) problems.push(`README.md version mentions differ from ${VERSION}`);
-  const committed = {};
-  const dir = join(skillsDir, SKILL_NAME);
-  if (existsSync(dir)) {
-    for (const e of await readdir(dir, { recursive: true, withFileTypes: true })) {
-      if (e.isFile()) committed[join(e.parentPath, e.name).slice(dir.length + 1)] = await readFile(join(e.parentPath, e.name), "utf8");
+  for (const dir of bundleDirs) {
+    const label = dir.slice(root.length + 1);
+    const committed = {};
+    if (existsSync(dir)) {
+      for (const e of await readdir(dir, { recursive: true, withFileTypes: true })) {
+        if (e.isFile()) committed[join(e.parentPath, e.name).slice(dir.length + 1)] = await readFile(join(e.parentPath, e.name), "utf8");
+      }
     }
+    for (const [path, content] of Object.entries(files)) {
+      if (committed[path] !== content) problems.push(`${label}/${path} is out of date`);
+    }
+    for (const path of Object.keys(committed)) if (!(path in files)) problems.push(`${label}/${path} should not exist`);
   }
-  for (const [path, content] of Object.entries(files)) {
-    if (committed[path] !== content) problems.push(`skills/${SKILL_NAME}/${path} is out of date`);
-  }
-  for (const path of Object.keys(committed)) if (!(path in files)) problems.push(`skills/${SKILL_NAME}/${path} should not exist`);
   if (doc !== currentDoc) problems.push("docs/design-rules.md generated sections are out of date");
   try {
     execFileSync("node", [join(here, "version.mjs"), "--check"], { stdio: "inherit" });
@@ -105,7 +110,7 @@ if (check) {
     console.error(`sync check failed:\n- ${problems.join("\n- ")}\nRun: pnpm sync:skills`);
     process.exit(1);
   }
-  console.log(`sync check passed: skills/${SKILL_NAME}/ (${Object.keys(files).length} files), docs, and versions match the sources`);
+  console.log(`sync check passed: skills/${SKILL_NAME}/ and the plugin copy (${Object.keys(files).length} files each), docs, and versions match the sources`);
   process.exit(0);
 }
 
@@ -120,10 +125,13 @@ for (const entry of await readdir(skillsDir, { withFileTypes: true })) {
     await rm(join(skillsDir, entry.name), { recursive: true, force: true });
   }
 }
-for (const [path, content] of Object.entries(files)) {
-  const target = join(skillsDir, SKILL_NAME, path);
-  await mkdir(dirname(target), { recursive: true });
-  await writeFile(target, content, "utf8");
+await rm(pluginSkillDir, { recursive: true, force: true });
+for (const dir of bundleDirs) {
+  for (const [path, content] of Object.entries(files)) {
+    const target = join(dir, path);
+    await mkdir(dirname(target), { recursive: true });
+    await writeFile(target, content, "utf8");
+  }
 }
 await writeFile(docPath, doc, "utf8");
 await writeFile(join(root, "README.md"), versioned["README.md"], "utf8");
@@ -133,4 +141,4 @@ execFileSync("node", [join(here, "version.mjs")], { stdio: "inherit" });
 // is gitignored.
 execFileSync("node", [join(here, "..", "dist", "cli", "index.js"), "install", "--agent", "claude"], { cwd: root, stdio: "ignore" });
 
-console.log(`done: skills/${SKILL_NAME}/ (${Object.keys(files).length} files) synced, docs regenerated, versions synced, dogfood install updated`);
+console.log(`done: skills/${SKILL_NAME}/ and plugins/ryux/skills/${SKILL_NAME}/ (${Object.keys(files).length} files each) synced, docs regenerated, versions synced, dogfood install updated`);
