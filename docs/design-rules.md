@@ -163,7 +163,7 @@ UI, UX, copy, and frontend work ends with this report:
 ```
 PRODUCT        PASS | FAIL | NOT VERIFIED | N/A  · one-line reason · evidence Strong | Thin | None
 UX             PASS | FAIL | NOT VERIFIED | N/A  · one-line reason
-UI             PASS | FAIL | NOT VERIFIED | N/A  · one-line reason · point of view: <concept> | task UI
+UI             PASS | FAIL | NOT VERIFIED | N/A  · one-line reason · point of view: <concept> | task UI, signature: <signature>
 DESIGN SYSTEM  PASS | FAIL | NOT VERIFIED | N/A  · one-line reason
 ACCESSIBILITY  PASS | FAIL | NOT VERIFIED | N/A  · one-line reason
 RESPONSIVE     PASS | FAIL | NOT VERIFIED | N/A  · one-line reason
@@ -196,13 +196,13 @@ line below for its exact source.
 <!-- provenance:start -->
 | Source cited | Rules citing it | Rules citing only this |
 | --- | --- | --- |
-| Public standard or research | 54 | 42 |
+| Public standard or research | 55 | 42 |
 | Industry practice | 12 | 6 |
-| Observed in a RYUX run | 13 | 8 |
+| Observed in a RYUX run | 15 | 9 |
 | Pattern also in another MIT ruleset (text written for RYUX) | 4 | 4 |
 | RYUX principle, taxonomy, or review | 30 | 21 |
 
-All 97 rules cite a source; 16 cite more than one kind, so the "Rules citing it" column adds up to more than 97.
+All 99 rules cite a source; 17 cite more than one kind, so the "Rules citing it" column adds up to more than 99.
 <!-- provenance:end -->
 
 ## Rules
@@ -210,7 +210,7 @@ All 97 rules cite a source; 16 cite more than one kind, so the "Rules citing it"
 Generated from `packages/cli/src/content.ts` by `pnpm sync:skills`. Edit the rules there, not here.
 
 <!-- rules:start -->
-97 rules across 13 modules: 56 Required, 16 Preferred, 25 Contextual; 17 Hard Gates and 10 Quality Locks.
+99 rules across 13 modules: 56 Required, 18 Preferred, 25 Contextual; 17 Hard Gates and 11 Quality Locks.
 
 ### Product thinking (RX-PR) · `knowledge/product.md`
 
@@ -248,7 +248,7 @@ Gate area PRODUCT. Covers user, task, goal, primary action, constraints, assumpt
 
 #### RX-PR-05 [Required] The product's market first
 
-- Do: Start from how users in the product's own market pay, sign in, write addresses, and read money and dates; check a pattern from another market before reusing it. Take the market from the brief or the codebase, and ask when it is unclear.
+- Do: Start from how users in the product's own market pay, sign in, write addresses, and read money and dates; check a pattern from another market before reusing it. Take the market from the brief or the codebase, and ask when it is unclear. When the brief does not name payment methods (or another market-standard capability), show the market's standard set as unconfirmed capabilities, labeled as proposed in Assumptions, rather than leaving them out: a market's table stakes are not "for later" (RX-AS-06). Ask when the set would change the flow.
 - Do not: Import one market's checkout, currency, language, or tax rules into a product built for another market.
 - Why: Payment, address, and trust habits differ by market (local payment rails, address formats, messaging channels). (ryux taxonomy of local patterns)
 - Check: search_screens
@@ -450,6 +450,16 @@ Gate area UX. Covers before, during, result, recovery; feedback, confirmation, n
 - Why: Haptics confirm what the eye already sees; used constantly they become noise and drain attention. (Apple HIG playing haptics; pattern also in appllama-app-design-skill (MIT); written for RYUX)
 - Check: review the interaction spec
 
+#### RX-IX-17 [Preferred] Choices that change the price sit with the price
+
+- When: a screen shows a total that the user's choices change: payment method, insurance, delivery or service tier, add-ons
+- Do: Show each price-changing choice with its current value and its cost inline on the screen that shows the total, so the user sees what they pay for before they confirm.
+- Do not: Hide a choice that changes the price behind a list row or a later screen, or show the total without the choices that make it up.
+- Why: People check a total against the choices behind it; a cost they cannot see next to the total reads as a surprise fee. (ryux run: blind review of a delivery checkout 2026-10-20; NNGroup visual hierarchy; written for RYUX)
+- Not when: a single fixed price with no choices on the screen
+- Trade-off: a longer checkout screen; group the choices so the total stays visible
+- Check: review the checkout render: every price-changing choice visible next to the total
+
 ---
 
 ### Forms (RX-FM) · `knowledge/forms.md`
@@ -533,7 +543,7 @@ Gate area EDGE CASES. Covers data, form, network, permission, and system states 
 - Do: Design the loading, empty, error, and success states of each data view and action that can be slow, empty, or fail.
 - Do not: Ship only the filled, happy-path screen.
 - Why: Users meet the other states often, and they are where trust is lost. (Nielsen heuristics 1 and 9)
-- Check: audit_ui
+- Check: write a matrix in the Delivery Gate: each data view or action × loading / empty / error / success → frame name, or "cannot happen: reason"; a blank cell is a FAIL; audit_ui when the ryux MCP is connected
 
 #### RX-EC-02 [Required] Errors with a way forward
 
@@ -711,7 +721,7 @@ Gate area UI. Covers the visual expression of a product: hierarchy, type, layout
 - Do: Before designing, make three directions, each with a name, a concept taken from the product's own idea (for a tool about evidence: receipts, citations, marks of proof), and a signature element (type, composition, imagery, or motion). Render them as frames of the main state with the same content, different on at least two structural axes (information order, layout model, interaction model, type class, colour temperature), rate each against criteria taken from the brief, recommend one (RX-PR-09), and let the user choose; then make the rest of the design serve the chosen signature and put its concept in the Visual Brief. When the brief names reference products, read each one before it shapes the direction: the principle you borrow, what stays theirs (colours, mascot, signature features), and where you use it.
 - Do not: Show three directions that differ only in colour or copy, choose for the user without showing them, or let the signature be the category's default (for developer tools a terminal or agent-session panel; for SaaS a dashboard screenshot; copy on the left and product on the right), or relabel that default as a concept. A product screen can support the signature, not be it. Turn a named reference into adjectives ("calm, white, soft") or copy what belongs to its brand.
 - Why: Users remember a product by its idea; a correct but generic surface is forgotten and could belong to any competitor. (brand and art direction practice; RX-UI-05 layout from content; rendered variants on named axes, compared side by side, chosen by the user: pattern also in emilkowalski/skills (MIT) prototype; written for RYUX)
-- Not when: task UI such as forms, tables, settings, and checkout, where restraint and convention win: skip the three directions and keep structure and interaction conventional. A new product's brand layer may still carry one signature from the product's own domain (a mark, the type voice, or one brand moment in the flow), never a layout change and never decoration without a job (RX-AS-05)
+- Not when: task UI such as forms, tables, settings, and checkout, where restraint and convention win: skip the three directions and keep structure and interaction conventional. A new product's brand layer must carry one signature from the product's own domain (a mark, the type voice, a colour temperature, or one brand moment in the flow), never a layout change and never decoration without a job (RX-AS-05). Record it in the Delivery Gate UI line
 - Trade-off: a strong idea takes a decision someone may disagree with; keep it honest and on brand
 - Check: the swap test (RX-AS-09); review
 
@@ -775,6 +785,15 @@ Gate area DESIGN SYSTEM. Covers search before create, tokens, component states, 
 - Do not: Pick dark mode because the product is technical, or ship a toggle whose second theme was never rendered.
 - Why: A theme that was never checked fails for everyone who picks it, often in contrast and states first. (pattern also in anti-slop (MIT) R-21, R-34; written for RYUX)
 - Check: render each theme; contrast check
+
+#### RX-DS-06 [Preferred] [Quality Lock] The component sheet is a spec
+
+- Do: Lay out each component as a labeled grid: one row per property, one column per state (default, pressed, disabled, loading, error), each cell labeled with its variant name, and one line of usage under each component; no overlapping or clipped variants. Render and inspect the sheet like a screen.
+- Do not: Leave variants scattered, unlabeled, or cut off at the frame edge.
+- Why: Developers build from the component sheet; a variant they cannot find or read gets rebuilt or guessed. (ryux run: blind review of a delivery flow 2026-10-20; design-system practice; written for RYUX)
+- Not when: a single screen with no shared components
+- Trade-off: takes time to lay out; pays back at handoff
+- Check: render the sheet; every variant visible and labeled
 
 ---
 
@@ -1055,7 +1074,7 @@ Gate area ANTI-SLOP. Covers hard gates, purpose gates, quality locks, honest cla
 - Do: Run the swap test honestly: replace the name and logo with a competitor's in the same category. If the layout, the visual, and the headline would still work for them, the surface has no point of view yet; give it one (RX-UI-12). Report the answer in the Delivery Gate.
 - Do not: Treat a tidy, generic layout as done because it passes every other gate; generic restraint is slop too.
 - Why: Removing slop is the floor, not the ceiling; interchangeable design makes the product forgettable. (ryux delivery principle; Critique Design Read: specificity)
-- Not when: task UI, where familiarity is the point: the structure stays familiar; on a new product, ask the swap question of the brand layer only (RX-UI-12)
+- Not when: task UI, where familiarity is the point: keep the structure familiar, but run the swap test on the brand layer (palette, type, surfaces, iconography, map styling) and report the answer. On a new product, "only the logo would change" is a FAIL (RX-UI-12)
 - Trade-off: takes a design decision, not only removals
 - Check: swap test; review
 

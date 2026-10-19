@@ -39,6 +39,9 @@ run the purpose gate; keep it when the answer is real, as in the last column.
 | Glass, glow, and blur on every layer | decoration without a job that also lowers contrast | one surface treatment with a purpose (RX-AS-05, RX-A11Y-01) | one overlay needs to show what is behind it |
 | Stock teamwork or handshake photos | borrowed people implying endorsement | real people with consent, or no people (RX-AS-02, RX-UI-13) | never as evidence of customers |
 | Cards inside cards, surfaces on surfaces | every nesting level costs a border, a radius, and padding, and the grouping stops meaning anything | one container per real group; separate inside it with spacing or a divider (RX-UI-01) | the inner surface is a distinct object the user acts on, such as a selectable option |
+| Every group boxed in the same white bordered card | the stack of equal boxes flattens priority and reads as a template | one container for the decision the user makes; other groups flat, with a heading and a divider (RX-UI-01) | each box is a selectable option the user compares |
+| One "safe" accent on white with neutral grey everything | the default palette of generated UI; nothing in it is the brand's | colour temperature and surface tone chosen from the product's character (RX-UI-10) | the brand already defines it |
+| A placeholder-grey illustrated map | reads as unfinished, and the map is the product's core visual | a styled map with streets, labels, and the route rendered in the brand palette | wireframe stage, labeled as such |
 | One record split into a grid of cards | details that are read together (an order, a profile, a transaction) are scattered into equal boxes | one block with labeled rows or a table (RX-UI-05) | each card is a separate item the user compares or acts on |
 | A dashboard of KPI tiles and charts that answer no question | decoration in place of the decision the screen supports | lead with what needs attention and the next action; dense tables where people scan (RX-UI-01, RX-UX-01) | each tile drives a decision and links to its detail |
 | Display-size headings on task UI | a hero-sized title pushes the data and the action below the fold | a heading sized for its rank in the page (RX-UI-01, RX-UI-03) | it is the single message of a marketing or brand page |
@@ -170,7 +173,7 @@ Real screens show what real products do instead of invented numbers and urgency:
 - Do: Run the swap test honestly: replace the name and logo with a competitor's in the same category. If the layout, the visual, and the headline would still work for them, the surface has no point of view yet; give it one (RX-UI-12). Report the answer in the Delivery Gate.
 - Do not: Treat a tidy, generic layout as done because it passes every other gate; generic restraint is slop too.
 - Why: Removing slop is the floor, not the ceiling; interchangeable design makes the product forgettable. (ryux delivery principle; Critique Design Read: specificity)
-- Not when: task UI, where familiarity is the point: the structure stays familiar; on a new product, ask the swap question of the brand layer only (RX-UI-12)
+- Not when: task UI, where familiarity is the point: keep the structure familiar, but run the swap test on the brand layer (palette, type, surfaces, iconography, map styling) and report the answer. On a new product, "only the logo would change" is a FAIL (RX-UI-12)
 - Trade-off: takes a design decision, not only removals
 - Check: swap test; review
 
