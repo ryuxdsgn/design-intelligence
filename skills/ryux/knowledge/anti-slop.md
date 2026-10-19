@@ -170,7 +170,7 @@ Real screens show what real products do instead of invented numbers and urgency:
 - Do: Run the swap test honestly: replace the name and logo with a competitor's in the same category. If the layout, the visual, and the headline would still work for them, the surface has no point of view yet; give it one (RX-UI-12). Report the answer in the Delivery Gate.
 - Do not: Treat a tidy, generic layout as done because it passes every other gate; generic restraint is slop too.
 - Why: Removing slop is the floor, not the ceiling; interchangeable design makes the product forgettable. (ryux delivery principle; Critique Design Read: specificity)
-- Not when: task UI, where familiarity is the point
+- Not when: task UI, where familiarity is the point: the structure stays familiar; on a new product, ask the swap question of the brand layer only (RX-UI-12)
 - Trade-off: takes a design decision, not only removals
 - Check: swap test; review
 

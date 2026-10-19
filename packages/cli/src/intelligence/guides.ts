@@ -74,7 +74,8 @@ export const DESIGN_BODY = `# RYUX Design
    questions alone, most consequential first, at most three, in one message, before designing.
    A product rule that changes which states or actions the screen has (refunds, fees, what happens
    on failure) is a major decision. When the prompt and DESIGN.md disagree, the prompt wins for
-   this task; say so.
+   this task; say so. A DESIGN.md written for a different product (another name, domain, or
+   audience than this brief) sets no direction for this task: say so, and treat direction as unset.
    **Direction is the user's call:** when neither the prompt nor DESIGN.md sets the UI direction
    (character, or brand colour and type) or the motion direction, ask for it in that message (it
    counts toward the three) instead of choosing it yourself. **No DESIGN.md and no product docs is the
@@ -102,7 +103,8 @@ export const DESIGN_BODY = `# RYUX Design
    task, the one thing that must be seen first, and two or three UX approaches (structure and
    interaction model) before any visual work, and choose by the task; a small change skips this.
 5. **Direction.** Write the Design Direction below. On task UI, follow conventions and the design
-   system. On an expressive surface (hero, landing, onboarding, empty state, brand moment), or when
+   system; a new product's brand layer may carry one signature from its own domain, never a layout
+   change (RX-UI-12, Not when). On an expressive surface (hero, landing, onboarding, empty state, brand moment), or when
    the brief asks for a new look or more personality, explore on the canvas before choosing (RX-UI-12):
    - Render three directions as frames side by side: the main state only, the same content and
      sample data in each, each labelled with a name and a one-line concept.
