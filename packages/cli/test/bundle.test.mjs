@@ -50,8 +50,10 @@ test("old skill names map to module paths", () => {
 test("one version: package, plugin manifests, and router agree", () => {
   const pkg = JSON.parse(readFileSync(join(root, "packages/cli/package.json"), "utf8")).version;
   assert.equal(VERSION, pkg);
-  assert.match(readFileSync(join(root, "plugins/ryux/.claude-plugin/plugin.json"), "utf8"), new RegExp(`"version": "${pkg.replace(/\./g, "\\.")}"`));
-  for (const f of ["plugins/ryux/.claude-plugin/plugin.json", ".claude-plugin/marketplace.json"]) {
+  for (const f of ["plugins/ryux/.claude-plugin/plugin.json", "plugins/ryux/plugin.json", "gemini-extension.json"]) {
+    assert.match(readFileSync(join(root, f), "utf8"), new RegExp(`"version": "${pkg.replace(/\./g, "\\.")}"`), f);
+  }
+  for (const f of ["plugins/ryux/.claude-plugin/plugin.json", "plugins/ryux/plugin.json", "gemini-extension.json", ".claude-plugin/marketplace.json"]) {
     for (const m of readFileSync(join(root, f), "utf8").matchAll(/"version": "([^"]+)"/g)) assert.equal(m[1], pkg, f);
   }
   assert.match(renderBundle()["SKILL.md"], new RegExp(`RYUX ${pkg.replace(/\./g, "\\.")}`));
