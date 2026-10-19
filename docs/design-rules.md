@@ -198,11 +198,11 @@ line below for its exact source.
 | --- | --- | --- |
 | Public standard or research | 54 | 42 |
 | Industry practice | 12 | 6 |
-| Observed in a RYUX run | 12 | 8 |
+| Observed in a RYUX run | 13 | 8 |
 | Pattern also in another MIT ruleset (text written for RYUX) | 4 | 4 |
-| RYUX principle, taxonomy, or review | 29 | 21 |
+| RYUX principle, taxonomy, or review | 30 | 21 |
 
-All 96 rules cite a source; 15 cite more than one kind, so the "Rules citing it" column adds up to more than 96.
+All 97 rules cite a source; 16 cite more than one kind, so the "Rules citing it" column adds up to more than 97.
 <!-- provenance:end -->
 
 ## Rules
@@ -210,7 +210,7 @@ All 96 rules cite a source; 15 cite more than one kind, so the "Rules citing it"
 Generated from `packages/cli/src/content.ts` by `pnpm sync:skills`. Edit the rules there, not here.
 
 <!-- rules:start -->
-96 rules across 13 modules: 55 Required, 16 Preferred, 25 Contextual; 17 Hard Gates and 10 Quality Locks.
+97 rules across 13 modules: 56 Required, 16 Preferred, 25 Contextual; 17 Hard Gates and 10 Quality Locks.
 
 ### Product thinking (RX-PR) · `knowledge/product.md`
 
@@ -321,6 +321,15 @@ Gate area UX. Covers information architecture, navigation, flows, grouping, disc
 - Not when: a one-time task, where showing history or saved values adds clutter
 - Trade-off: higher visual density; more on screen to scan
 - Check: heuristic_eval H-06
+
+#### RX-UX-10 [Required] Change what is broken, keep what works
+
+- Do: Before changing an existing screen or flow, list what works today (from Analyze, the user, or analytics) and keep it. Every significant change names the problem it fixes and its evidence (a Critique finding, a user report, a metric); a pattern with no named problem stays as it is. Report what was kept as well as what changed.
+- Do not: Replace a working layout, component, or interaction for novelty; restyle parts the brief did not ask to change; or treat "more modern" as a problem by itself.
+- Why: A redesign that throws away what people already know costs them relearning and can make the product worse while looking newer. (ryux design principle (owner, 2026-10-19); Jakob's law (people expect a product to work like the ones they already know); ryux run: judge and motion benchmarks 2026-10-18; written for RYUX)
+- Not when: a new product or screen with nothing to keep, or a brief that asks to replace the whole design
+- Trade-off: a redesign can look less new; the gain is in fewer regressions and less relearning
+- Check: the change list, each with its problem and evidence; the kept list; review
 
 ---
 

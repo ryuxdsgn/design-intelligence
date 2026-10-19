@@ -281,6 +281,18 @@ export const RULES: Rule[] = [
       check: "heuristic_eval H-06",
       formerly: ["RX-H-06"],
     },
+    {
+      num: 10,
+      title: "Change what is broken, keep what works",
+      notWhen: "a new product or screen with nothing to keep, or a brief that asks to replace the whole design",
+      tradeoff: "a redesign can look less new; the gain is in fewer regressions and less relearning",
+      level: "required",
+      do: "Before changing an existing screen or flow, list what works today (from Analyze, the user, or analytics) and keep it. Every significant change names the problem it fixes and its evidence (a Critique finding, a user report, a metric); a pattern with no named problem stays as it is. Report what was kept as well as what changed.",
+      dont: "Replace a working layout, component, or interaction for novelty; restyle parts the brief did not ask to change; or treat \"more modern\" as a problem by itself.",
+      why: "A redesign that throws away what people already know costs them relearning and can make the product worse while looking newer.",
+      basis: "ryux design principle (owner, 2026-10-19); Jakob's law (people expect a product to work like the ones they already know); ryux run: judge and motion benchmarks 2026-10-18; written for RYUX",
+      check: "the change list, each with its problem and evidence; the kept list; review",
+    },
   ]),
 
   ...skill("interaction", [
