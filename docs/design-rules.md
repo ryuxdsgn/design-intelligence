@@ -699,10 +699,10 @@ Gate area UI. Covers the visual expression of a product: hierarchy, type, layout
 #### RX-UI-12 [Contextual] A point of view on expressive surfaces
 
 - When: the surface is expressive: a hero, landing page, onboarding, empty state, or brand moment, or the brief asks for a new look or more personality
-- Do: Before designing, make three directions, each with a name, a concept taken from the product's own idea (for a tool about evidence: receipts, citations, marks of proof), and a signature element (type, composition, imagery, or motion). Render them as frames of the main state with the same content, different on at least two structural axes (information order, layout model, interaction model, type class, colour temperature), rate each against criteria taken from the brief, recommend one (RX-PR-09), and let the user choose; then make the rest of the design serve the chosen signature and put its concept in the Visual Brief.
-- Do not: Show three directions that differ only in colour or copy, choose for the user without showing them, or let the signature be the category's default (for developer tools a terminal or agent-session panel; for SaaS a dashboard screenshot; copy on the left and product on the right), or relabel that default as a concept. A product screen can support the signature, not be it.
+- Do: Before designing, make three directions, each with a name, a concept taken from the product's own idea (for a tool about evidence: receipts, citations, marks of proof), and a signature element (type, composition, imagery, or motion). Render them as frames of the main state with the same content, different on at least two structural axes (information order, layout model, interaction model, type class, colour temperature), rate each against criteria taken from the brief, recommend one (RX-PR-09), and let the user choose; then make the rest of the design serve the chosen signature and put its concept in the Visual Brief. When the brief names reference products, read each one before it shapes the direction: the principle you borrow, what stays theirs (colours, mascot, signature features), and where you use it.
+- Do not: Show three directions that differ only in colour or copy, choose for the user without showing them, or let the signature be the category's default (for developer tools a terminal or agent-session panel; for SaaS a dashboard screenshot; copy on the left and product on the right), or relabel that default as a concept. A product screen can support the signature, not be it. Turn a named reference into adjectives ("calm, white, soft") or copy what belongs to its brand.
 - Why: Users remember a product by its idea; a correct but generic surface is forgotten and could belong to any competitor. (brand and art direction practice; RX-UI-05 layout from content; rendered variants on named axes, compared side by side, chosen by the user: pattern also in emilkowalski/skills (MIT) prototype; written for RYUX)
-- Not when: task UI such as forms, tables, settings, and checkout, where restraint and convention win
+- Not when: task UI such as forms, tables, settings, and checkout, where restraint and convention win: skip the three directions and keep structure and interaction conventional. A new product's brand layer may still carry one signature from the product's own domain (a mark, the type voice, or one brand moment in the flow), never a layout change and never decoration without a job (RX-AS-05)
 - Trade-off: a strong idea takes a decision someone may disagree with; keep it honest and on brand
 - Check: the swap test (RX-AS-09); review
 
@@ -1046,7 +1046,7 @@ Gate area ANTI-SLOP. Covers hard gates, purpose gates, quality locks, honest cla
 - Do: Run the swap test honestly: replace the name and logo with a competitor's in the same category. If the layout, the visual, and the headline would still work for them, the surface has no point of view yet; give it one (RX-UI-12). Report the answer in the Delivery Gate.
 - Do not: Treat a tidy, generic layout as done because it passes every other gate; generic restraint is slop too.
 - Why: Removing slop is the floor, not the ceiling; interchangeable design makes the product forgettable. (ryux delivery principle; Critique Design Read: specificity)
-- Not when: task UI, where familiarity is the point
+- Not when: task UI, where familiarity is the point: the structure stays familiar; on a new product, ask the swap question of the brand layer only (RX-UI-12)
 - Trade-off: takes a design decision, not only removals
 - Check: swap test; review
 
