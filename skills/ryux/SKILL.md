@@ -63,7 +63,7 @@ Skip steps that do not apply, but never go from "generate" straight to "done".
 
 ## Principle
 
-Do not optimize for visual novelty. Optimize for clarity, usability, consistency, product fit,
+Novelty is not a goal; a recognisable brand layer is: familiar structure, distinct surface. Optimize for clarity, usability, consistency, product fit,
 accessibility, and intentional decisions. Understand the context before deciding; separate observed
 facts from assumptions; prefer evidence over aesthetic preference; do not invent requirements;
 explain meaningful decisions with their trade-off; validate before claiming.
@@ -144,7 +144,7 @@ End UI, UX, copy, or frontend work with this report:
 ```
 PRODUCT        PASS | FAIL | NOT VERIFIED | N/A  · one-line reason · evidence Strong | Thin | None
 UX             PASS | FAIL | NOT VERIFIED | N/A  · one-line reason
-UI             PASS | FAIL | NOT VERIFIED | N/A  · one-line reason · point of view: <concept> | task UI
+UI             PASS | FAIL | NOT VERIFIED | N/A  · one-line reason · point of view: <concept> | task UI, signature: <signature>
 DESIGN SYSTEM  PASS | FAIL | NOT VERIFIED | N/A  · one-line reason
 ACCESSIBILITY  PASS | FAIL | NOT VERIFIED | N/A  · one-line reason
 RESPONSIVE     PASS | FAIL | NOT VERIFIED | N/A  · one-line reason
@@ -166,7 +166,7 @@ FINAL          PASS | FAIL | NOT VERIFIED
 
 Report what was checked, how, and what was not available. Do not claim "pixel perfect",
 "fully accessible", "production ready", "senior-level", or "UX optimized" without evidence. Say
-"Keyboard and focus checked by hand; no automated accessibility test was available" instead.
+"Keyboard and focus checked by hand; no automated accessibility test was available" instead. Rule IDs and gate results belong in your report, never on the design itself.
 
 ## Design Decision Record
 

@@ -41,7 +41,7 @@ Keep the capabilities apart; do not collapse them into one generic "design" answ
 | Critique | Is this decision right? | "24px leaves the table too sparse at 1440 for daily use." |
 | QA | Does the build match the intent? | "The build uses 16px where the design says 24px." |`;
 
-export const CORE_PRINCIPLE = `Do not optimize for visual novelty. Optimize for clarity, usability, consistency, product fit,
+export const CORE_PRINCIPLE = `Novelty is not a goal; a recognisable brand layer is: familiar structure, distinct surface. Optimize for clarity, usability, consistency, product fit,
 accessibility, and intentional decisions. Understand the context before deciding; separate observed
 facts from assumptions; prefer evidence over aesthetic preference; do not invent requirements;
 explain meaningful decisions with their trade-off; validate before claiming.`;
@@ -134,7 +134,13 @@ export const DESIGN_BODY = `# RYUX Design
    RX-AS-10 (accent hues, grey families, radii, display sizes, icon sets, emoji, invented marks, gradients, labels
    per intent) and report them in the gate. Run the four hierarchy
    checks from Critique (control beside its data, primary action that reads as an action, not a tab, no fact
-   twice, grouped by what the user checks together), fix what fails, render again, and check each fix. List where
+   twice, grouped by what the user checks together), fix what fails, render again, and check each fix.
+   Weight ranking: list the screen's blocks in order of visual weight (size × contrast × surface) and
+   compare it with the priority order from step 4. If two blocks of different priority render with the
+   same heading style and container, change one. On a checkout or order screen, the choice that sets
+   the price and the total rank first and second. A width check is a test, not a deliverable: list
+   what broke at each width (wrap, truncation, overflow), fix it or record why it is acceptable, and
+   render again; RESPONSIVE PASS names the findings and their fixes. List where
    the render differs from the Design Direction (hierarchy, states, widths) and fix or record each one. Check the result against the Liveliness you set, and
    put each prominent or decorative element through the purpose gate (RX-AS-05: purpose,
    contribution, necessity); on calm task UI, deliberate restraint is a valid answer. Then judge the main state as a
@@ -144,8 +150,11 @@ export const DESIGN_BODY = `# RYUX Design
    asynchronously: wait until each one has landed and render again before exporting or closing the
    gate. Never finish with an asset still pending.
 8. **Fact check, then the gate.** Check every product fact on the canvas (tool and command names,
-   integrations, platforms, pages, numbers) against the brief or the repo (RX-PR-02), then close
-   with the Delivery Gate, saying what was not designed, such as other widths or states. If you
+   integrations, platforms, pages, numbers) against the brief or the repo (RX-PR-02). Canvas copy is
+   for the team, not for RYUX: annotations, state captions, and labels on the canvas use plain
+   language ("Shown while prices load; button disabled"); rule IDs, gate results, and Decision
+   Receipts go in the Design Direction or the final message, never in frames meant for review or
+   handoff. Then close with the Delivery Gate, saying what was not designed, such as other widths or states. If you
    wrote DESIGN.md, say so in the final message: which file and which fields.
 
 ${UNTRUSTED_CONTENT}
@@ -282,7 +291,7 @@ evidence when connected; none is required.`;
 
 export const CORE_HONESTY = `Report what was checked, how, and what was not available. Do not claim "pixel perfect",
 "fully accessible", "production ready", "senior-level", or "UX optimized" without evidence. Say
-"Keyboard and focus checked by hand; no automated accessibility test was available" instead.`;
+"Keyboard and focus checked by hand; no automated accessibility test was available" instead. Rule IDs and gate results belong in your report, never on the design itself.`;
 
 export const CORE_DECISION_RECORD = `For consequential choices (RX-PR-09) and deviations, write **Decision**, **Options** compared, **Evidence**,
 **Trade-off**, and **Choice**. Evidence is Strong (2+ comparable screen_ids), Thin (one, or another context),
@@ -754,6 +763,9 @@ run the purpose gate; keep it when the answer is real, as in the last column.
 | Glass, glow, and blur on every layer | decoration without a job that also lowers contrast | one surface treatment with a purpose (RX-AS-05, RX-A11Y-01) | one overlay needs to show what is behind it |
 | Stock teamwork or handshake photos | borrowed people implying endorsement | real people with consent, or no people (RX-AS-02, RX-UI-13) | never as evidence of customers |
 | Cards inside cards, surfaces on surfaces | every nesting level costs a border, a radius, and padding, and the grouping stops meaning anything | one container per real group; separate inside it with spacing or a divider (RX-UI-01) | the inner surface is a distinct object the user acts on, such as a selectable option |
+| Every group boxed in the same white bordered card | the stack of equal boxes flattens priority and reads as a template | one container for the decision the user makes; other groups flat, with a heading and a divider (RX-UI-01) | each box is a selectable option the user compares |
+| One "safe" accent on white with neutral grey everything | the default palette of generated UI; nothing in it is the brand's | colour temperature and surface tone chosen from the product's character (RX-UI-10) | the brand already defines it |
+| A placeholder-grey illustrated map | reads as unfinished, and the map is the product's core visual | a styled map with streets, labels, and the route rendered in the brand palette | wireframe stage, labeled as such |
 | One record split into a grid of cards | details that are read together (an order, a profile, a transaction) are scattered into equal boxes | one block with labeled rows or a table (RX-UI-05) | each card is a separate item the user compares or acts on |
 | A dashboard of KPI tiles and charts that answer no question | decoration in place of the decision the screen supports | lead with what needs attention and the next action; dense tables where people scan (RX-UI-01, RX-UX-01) | each tile drives a decision and links to its detail |
 | Display-size headings on task UI | a hero-sized title pushes the data and the action below the fold | a heading sized for its rank in the page (RX-UI-01, RX-UI-03) | it is the single message of a marketing or brand page |

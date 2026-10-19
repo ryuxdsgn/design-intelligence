@@ -163,3 +163,13 @@ How local apps handle the same action and its states, and local payment patterns
 - Do not: Make haptics the only feedback, fire them while scrolling or on repeated events, or stack several for one action.
 - Why: Haptics confirm what the eye already sees; used constantly they become noise and drain attention. (Apple HIG playing haptics; pattern also in appllama-app-design-skill (MIT); written for RYUX)
 - Check: review the interaction spec
+
+### RX-IX-17 [Preferred] Choices that change the price sit with the price
+
+- When: a screen shows a total that the user's choices change: payment method, insurance, delivery or service tier, add-ons
+- Do: Show each price-changing choice with its current value and its cost inline on the screen that shows the total, so the user sees what they pay for before they confirm.
+- Do not: Hide a choice that changes the price behind a list row or a later screen, or show the total without the choices that make it up.
+- Why: People check a total against the choices behind it; a cost they cannot see next to the total reads as a surprise fee. (ryux run: blind review of a delivery checkout 2026-10-20; NNGroup visual hierarchy; written for RYUX)
+- Not when: a single fixed price with no choices on the screen
+- Trade-off: a longer checkout screen; group the choices so the total stays visible
+- Check: review the checkout render: every price-changing choice visible next to the total
