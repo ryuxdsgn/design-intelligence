@@ -60,3 +60,12 @@ How reference apps keep components consistent for this pattern: `search_screens`
 - Do not: Pick dark mode because the product is technical, or ship a toggle whose second theme was never rendered.
 - Why: A theme that was never checked fails for everyone who picks it, often in contrast and states first. (pattern also in anti-slop (MIT) R-21, R-34; written for RYUX)
 - Check: render each theme; contrast check
+
+### RX-DS-06 [Preferred] [Quality Lock] The component sheet is a spec
+
+- Do: Lay out each component as a labeled grid: one row per property, one column per state (default, pressed, disabled, loading, error), each cell labeled with its variant name, and one line of usage under each component; no overlapping or clipped variants. Render and inspect the sheet like a screen.
+- Do not: Leave variants scattered, unlabeled, or cut off at the frame edge.
+- Why: Developers build from the component sheet; a variant they cannot find or read gets rebuilt or guessed. (ryux run: blind review of a delivery flow 2026-10-20; design-system practice; written for RYUX)
+- Not when: a single screen with no shared components
+- Trade-off: takes time to lay out; pays back at handoff
+- Check: render the sheet; every variant visible and labeled

@@ -35,7 +35,7 @@ How reference apps show empty, error, offline, and loading states for this flow:
 - Do: Design the loading, empty, error, and success states of each data view and action that can be slow, empty, or fail.
 - Do not: Ship only the filled, happy-path screen.
 - Why: Users meet the other states often, and they are where trust is lost. (Nielsen heuristics 1 and 9)
-- Check: audit_ui
+- Check: write a matrix in the Delivery Gate: each data view or action × loading / empty / error / success → frame name, or "cannot happen: reason"; a blank cell is a FAIL; audit_ui when the ryux MCP is connected
 
 ### RX-EC-02 [Required] Errors with a way forward
 
