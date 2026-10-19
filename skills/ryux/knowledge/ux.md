@@ -88,3 +88,12 @@ How Indonesian apps sequence and structure this flow: `get_flow` for a reference
 - Not when: a one-time task, where showing history or saved values adds clutter
 - Trade-off: higher visual density; more on screen to scan
 - Check: heuristic_eval H-06
+
+### RX-UX-10 [Required] Change what is broken, keep what works
+
+- Do: Before changing an existing screen or flow, list what works today (from Analyze, the user, or analytics) and keep it. Every significant change names the problem it fixes and its evidence (a Critique finding, a user report, a metric); a pattern with no named problem stays as it is. Report what was kept as well as what changed.
+- Do not: Replace a working layout, component, or interaction for novelty; restyle parts the brief did not ask to change; or treat "more modern" as a problem by itself.
+- Why: A redesign that throws away what people already know costs them relearning and can make the product worse while looking newer. (ryux design principle (owner, 2026-10-19); Jakob's law (people expect a product to work like the ones they already know); ryux run: judge and motion benchmarks 2026-10-18; written for RYUX)
+- Not when: a new product or screen with nothing to keep, or a brief that asks to replace the whole design
+- Trade-off: a redesign can look less new; the gain is in fewer regressions and less relearning
+- Check: the change list, each with its problem and evidence; the kept list; review
