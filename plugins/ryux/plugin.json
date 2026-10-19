@@ -1,0 +1,13 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "ryux",
+  "version": "2.11.0",
+  "description": "RYUX, design intelligence for AI agents and designers: one skill with five entry points. Analyze an existing interface, Design without code, Build in your stack, Critique a Figma link, pen.dev design, website URL, or screenshot, and QA the result. RYUX reads only the knowledge each task needs.",
+  "author": {
+    "name": "ryux.design"
+  },
+  "homepage": "https://github.com/ryuxdsgn/design-intelligence#readme",
+  "repository": "https://github.com/ryuxdsgn/design-intelligence",
+  "license": "MIT",
+  "keywords": ["design", "ux", "design-critique", "agent-skills", "accessibility", "anti-slop"]
+}
