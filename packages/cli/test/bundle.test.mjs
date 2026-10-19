@@ -50,7 +50,8 @@ test("old skill names map to module paths", () => {
 test("one version: package, plugin manifests, and router agree", () => {
   const pkg = JSON.parse(readFileSync(join(root, "packages/cli/package.json"), "utf8")).version;
   assert.equal(VERSION, pkg);
-  for (const f of [".claude-plugin/plugin.json", ".claude-plugin/marketplace.json"]) {
+  assert.match(readFileSync(join(root, "plugins/ryux/.claude-plugin/plugin.json"), "utf8"), new RegExp(`"version": "${pkg.replace(/\./g, "\\.")}"`));
+  for (const f of ["plugins/ryux/.claude-plugin/plugin.json", ".claude-plugin/marketplace.json"]) {
     for (const m of readFileSync(join(root, f), "utf8").matchAll(/"version": "([^"]+)"/g)) assert.equal(m[1], pkg, f);
   }
   assert.match(renderBundle()["SKILL.md"], new RegExp(`RYUX ${pkg.replace(/\./g, "\\.")}`));
@@ -58,9 +59,11 @@ test("one version: package, plugin manifests, and router agree", () => {
 
 test("every bundle file is tracked by git, so skills.sh and the plugin ship it", async () => {
   const { spawnSync } = await import("node:child_process");
-  const tracked = new Set(spawnSync("git", ["ls-files", "skills/ryux"], { cwd: root, encoding: "utf8" }).stdout.split("\n"));
-  const missing = expectedFiles().filter((f) => !tracked.has(`skills/ryux/${f}`));
-  assert.deepEqual(missing, [], "not tracked (check .gitignore)");
+  for (const dir of ["skills/ryux", "plugins/ryux/skills/ryux"]) {
+    const tracked = new Set(spawnSync("git", ["ls-files", dir], { cwd: root, encoding: "utf8" }).stdout.split("\n"));
+    const missing = expectedFiles().filter((f) => !tracked.has(`${dir}/${f}`));
+    assert.deepEqual(missing, [], `${dir}: not tracked (check .gitignore)`);
+  }
 });
 
 test("the README shows the current version", () => {

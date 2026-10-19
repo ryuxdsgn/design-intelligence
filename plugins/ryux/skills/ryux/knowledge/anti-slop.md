@@ -1,0 +1,190 @@
+# Anti-slop
+
+Stops generic AI output before it ships: no invented numbers or people, decoration with a purpose, and honest claims.
+
+> Group Quality · Delivery Gate area ANTI-SLOP · RYUX 2.11.0. Levels are defined in `SKILL.md`.
+
+Anti-slop runs last, after design, build, critique, and QA; it is the final quality gate, never the
+starting point. Anti-slop is the floor, not the ceiling: a tidy, generic surface still fails on expressive
+surfaces (RX-AS-09), and the point of view comes from RX-UI-12. Anti-slop is not a list of banned
+styles. It has three parts.
+
+**Hard Gates**: reject or fix before delivery; no written exception. The list is generated below
+from the rules.
+
+**Purpose Gates**: these patterns are allowed when they have a purpose. For each one in the
+result, ask three questions: **purpose** (what does it do?), **contribution** (what does it add to
+understanding, interaction, or character?), and **necessity** (would something simpler do the
+same?). "It looks more interesting" answers none of them; remove what fails.
+
+**Quality Locks**: consistency that must hold across the product (listed below).
+
+**Visual tells.** These are signals that a reason is missing, not banned styles. When you see one,
+run the purpose gate; keep it when the answer is real, as in the last column.
+
+| Tell | Why it hurts | Fix | Fine when |
+| --- | --- | --- | --- |
+| A blue-to-purple gradient wash behind everything | carries no meaning and appears on every AI page | color from the brand and its roles (RX-UI-10), or a plain surface | the gradient is the brand, or it encodes a value |
+| A fake app, terminal, or agent window as the hero | the category default, often with invented output | a signature from the product's own idea; product UI only when real or labeled (RX-UI-12, RX-UI-07) | it is the real product with labeled sample data |
+| Generic illustration: people with laptops, abstract blobs | unrelated to the product, so it steals attention and says nothing | a contextual illustration made from the brief, or no visual (RX-UI-07) | it explains a concept or an empty state words cannot |
+| Floating devices and dashboard mockups | fake screens imply features and data | real screens with labeled sample data (RX-UI-07, RX-AS-01) | the screens are real and labeled |
+| The template section order (hero, three cards, three-column pricing, four-column footer) | the page follows a template instead of what this content needs | order and form sections by what the reader needs next (RX-UI-05) | the content really has that shape |
+| Identical feature cards in a row | equal boxes flatten priorities that are not equal | give the main point more weight; a list or one strong block (RX-UI-01) | the items are equal and compared side by side |
+| A bento grid | a fashionable frame that hides which item matters | a layout from the content and its priority (RX-UI-05) | the items are independent and similar in weight |
+| A typeface picked because it is in fashion | the same few faces on every generated page | a face chosen for the product's voice and legibility (RX-UI-10) | the brand already uses it |
+| Monospace to look technical | mood instead of meaning; harder to read in prose | monospace only for code, IDs, and aligned numbers | it shows code, commands, or tabular figures |
+| A sparkle or robot icon on every AI feature | says "AI" instead of what the feature does | an icon for the action, or none | the product's own AI mark, used once |
+| A small badge above the headline that repeats it | a label that adds no information | cut it, or say something the headline does not | it carries real status: beta, new version, date |
+| Endless floating, looping, or scroll-triggered motion | decorative motion with no reason, competing with the task | a single L4 moment with a message, or none (RX-UI-11) | it shows state, continuity, or the product's idea once |
+| Glass, glow, and blur on every layer | decoration without a job that also lowers contrast | one surface treatment with a purpose (RX-AS-05, RX-A11Y-01) | one overlay needs to show what is behind it |
+| Stock teamwork or handshake photos | borrowed people implying endorsement | real people with consent, or no people (RX-AS-02, RX-UI-13) | never as evidence of customers |
+| Cards inside cards, surfaces on surfaces | every nesting level costs a border, a radius, and padding, and the grouping stops meaning anything | one container per real group; separate inside it with spacing or a divider (RX-UI-01) | the inner surface is a distinct object the user acts on, such as a selectable option |
+| One record split into a grid of cards | details that are read together (an order, a profile, a transaction) are scattered into equal boxes | one block with labeled rows or a table (RX-UI-05) | each card is a separate item the user compares or acts on |
+| A dashboard of KPI tiles and charts that answer no question | decoration in place of the decision the screen supports | lead with what needs attention and the next action; dense tables where people scan (RX-UI-01, RX-UX-01) | each tile drives a decision and links to its detail |
+| Display-size headings on task UI | a hero-sized title pushes the data and the action below the fold | a heading sized for its rank in the page (RX-UI-01, RX-UI-03) | it is the single message of a marketing or brand page |
+| A landing-page layout for a product screen | hero, feature rows, and a closing CTA on an app screen, a settings page, or a tool | the structure the task needs: list, detail, form, or workspace (RX-UI-05) | the surface really is marketing |
+
+## Hard Gates
+
+| Hard Gate | Rules |
+| --- | --- |
+| Fake data or fake metrics | RX-AS-01 |
+| Fake testimonials or people | RX-AS-02 |
+| Invented business rules or product requirements | RX-PR-02, RX-FE-02 |
+| Placeholder copy shipped as final | RX-AS-03 |
+| Fake urgency or scarcity | RX-AS-04 |
+| Missing critical states | RX-EC-01 |
+| Broken responsive behavior | RX-RD-01 |
+| Accessibility failures | RX-A11Y-01, RX-A11Y-02, RX-A11Y-03, RX-A11Y-04 |
+| Unclear goal or competing actions | RX-PR-03 |
+| Unexplained interaction behavior | RX-IX-01, RX-IX-12 |
+| Duplicate components | RX-DS-01 |
+| Unnecessary complexity | RX-AS-06 |
+
+## Purpose Gates
+
+| Pattern | Acceptable when |
+| --- | --- |
+| Cards | they group related content or separate items the user compares or acts on individually |
+| Gradients | they carry the brand, show emphasis, or encode a value (a scale or progress) |
+| Illustrations | they explain a concept, an empty state, or a step that words alone do not |
+| Decorative icons | they speed recognition of a repeated item or action, next to a text label |
+| Pills | they show a filter, a selectable option, or a short status |
+| Badges | they show a count or status the user acts on |
+| Shadows | they show elevation that matters: an overlay, a draggable or floating element |
+| Large display type | it carries the single most important message of a page |
+| Animation | it communicates state, continuity, feedback, or spatial relationships |
+| Unusual layouts | the content or task genuinely differs from standard patterns |
+| Generous whitespace | it separates groups or slows a high-stakes decision, not when it hides thin content |
+| Borders | they separate regions that spacing alone cannot |
+| Typeface choice | it is chosen for the product's character and legibility, not because it is the model's usual pick |
+| Background patterns (grid, dots, noise) | they carry the identity or support the content, such as a canvas for a design tool |
+| Arrows on buttons | the action moves the user somewhere (next step, another page), not on every button |
+| Glass and blur | one surface needs to show what is behind it (an overlay over content), and text on it keeps its contrast |
+| Glow | it marks the one element that needs attention, not every card, button, and icon |
+| Rounded containers | the rounding follows the system radius and the container groups something |
+
+## Quality Locks
+
+| Quality Lock | Rules |
+| --- | --- |
+| Spacing | RX-UI-03, RX-DS-03 |
+| Typography | RX-UI-03, RX-DS-03 |
+| Color roles | RX-UI-04 |
+| Terminology | RX-CD-05 |
+| Components | RX-DS-02 |
+| Interaction patterns and states | RX-DS-02 |
+| Responsive behavior | RX-RD-06 |
+| Visual hierarchy | RX-UI-01 |
+| Radius | RX-UI-03, RX-DS-03 |
+
+## Evidence from RYUX Knowledge
+
+Real screens show what real products do instead of invented numbers and urgency: `search_screens`; heuristic findings via `heuristic_eval`. Without the ryux MCP, say the evidence comes from the design and standards alone.
+
+> Hard Gates always apply, whichever skills are loaded: no invented numbers, people, urgency, business
+> rules, or terms; no placeholder shipped as final; no missing critical states. Labeled sample data is
+> not an invented number; an unconfirmed capability is never presented as confirmed. See `SKILL.md`.
+
+## Rules
+
+### RX-AS-01 [Required] [Hard Gate] Only real numbers
+
+- Do: Show counts, ratings, growth, and statistics only with a real source; otherwise leave them out or mark [REAL DATA].
+- Do not: Invent "48.000+ users", "4,8★", or "+12%".
+- Why: Invented numbers are false claims, however polished the page. (ryux run 2026-10-02: pen.dev landing without ryux)
+- Check: list every number on the screen with its source (brief, docs, data, or a sample label); fails on any number without one
+
+### RX-AS-02 [Required] [Hard Gate] No invented people
+
+- Do: Use testimonials, names, and faces only when they are real and consented.
+- Do not: Make up testimonials, reviewers, or customer photos.
+- Why: Fake people are fake endorsements. (ryux anti-slop principle)
+- Check: list every person, quote, review, and customer logo on the screen with its source or its sample label; fails on any shown as real without a source
+
+### RX-AS-03 [Required] [Hard Gate] Sample data is realistic and labeled; placeholders only for what is missing
+
+- Do: Fill mockups with realistic sample content consistent with the brief (names, merchants, amounts in the brief's currency, dates) and list it as sample data in the output. Keep a visible placeholder only for an asset that does not exist yet, such as [LOGO].
+- Do not: Put [REAL DATA], XXX, or lorem text on the canvas where sample data would do, or ship sample data or placeholder copy as final. A sample-data label does not turn a fee, policy, or claim into a fact (RX-PR-02).
+- Why: Bracketed values read as unfinished and hide the layout's real behavior; unlabeled sample data ships by accident. (ryux anti-slop principle; ryux visual benchmark 2.5, 2026-10-09: [Brand] and XXX read as unfinished)
+- Check: audit_copy C-01
+
+### RX-AS-04 [Required] [Hard Gate] No fake urgency
+
+- Do: State a deadline or a quota only when it is real, as a plain fact.
+- Do not: Write "only 2 left", "offer ends tonight", or fake countdowns with nothing behind them.
+- Why: Manufactured pressure erodes trust once users notice. (NNGroup credibility research; ryux run 2026-10-02: WhatsApp promo)
+- Check: find every timer, deadline, stock count, and 'only N left'; each comes from the brief or real data; fails on any without a source
+
+### RX-AS-05 [Required] Decoration passes a purpose gate
+
+- Do: For each potentially decorative pattern, answer three questions: purpose (what does it do?), contribution (what does it add to understanding, interaction, or the product's character?), and necessity (would something simpler do the same?). Keep it only when all three have a real answer. Three feature cards pass when the features are equal and compared; when one matters more, give it more weight instead.
+- Do not: Keep cards, gradients, badges, shadows, or animation that have no reason, or accept "it looks more interesting" as one.
+- Why: Unjustified decoration is what makes AI-generated UI look the same. (ryux anti-slop principle)
+- Check: review
+
+### RX-AS-06 [Required] [Hard Gate] Complexity with a reason
+
+- Do: Remove elements, options, states, code paths, abstractions, and dependencies that serve no stated need. Complexity that cannot be removed is carried by the product (defaults, formatting, calculation), not handed to the user.
+- Do not: Add settings, sections, abstractions, or packages "for later", or features because similar products have them.
+- Why: Unneeded complexity costs every user and every future change. (Nielsen heuristic 8; Tesler's law of conserved complexity (Tesler, 1980s): some complexity cannot be removed, only moved; clean-code practice)
+- Check: list each element, option, state, and dependency the work added and the need it serves; fails on any without one
+
+### RX-AS-07 [Required] Claims match the evidence
+
+- Do: Describe what was checked and how ("keyboard and focus checked; no automated accessibility test was available"). Call a reference an observed pattern, with where it was observed ("seen in 4 screens across 3 apps").
+- Do not: Claim "pixel perfect", "fully accessible", "production ready", "senior-level", or "UX optimized" without evidence, or call a pattern "best practice" because real apps use it.
+- Why: False confidence hides the work that is still needed. (ryux delivery principle)
+- Check: review
+
+### RX-AS-08 [Required] Human designer notes
+
+- Do: Have a person write the "why it works / weaknesses" judgment; an agent may summarize it.
+- Do not: Let an agent author designer notes.
+- Why: The human judgment is the point of the notes. (ryux data principle)
+- Check: review
+
+### RX-AS-09 [Contextual] Clean is not the same as designed
+
+- When: the surface is expressive: a hero, landing page, onboarding, empty state, or brand moment, or the brief asks for a new look or more personality
+- Do: Run the swap test honestly: replace the name and logo with a competitor's in the same category. If the layout, the visual, and the headline would still work for them, the surface has no point of view yet; give it one (RX-UI-12). Report the answer in the Delivery Gate.
+- Do not: Treat a tidy, generic layout as done because it passes every other gate; generic restraint is slop too.
+- Why: Removing slop is the floor, not the ceiling; interchangeable design makes the product forgettable. (ryux delivery principle; Critique Design Read: specificity)
+- Not when: task UI, where familiarity is the point: the structure stays familiar; on a new product, ask the swap question of the brand layer only (RX-UI-12)
+- Trade-off: takes a design decision, not only removals
+- Check: swap test; review
+
+### RX-AS-10 [Required] [Quality Lock] Count before handoff
+
+- Do: Before handing off, count on the render or in the design file's variables, and report the counts: accent hues 1 (status colors, and secondary colors the brand defines, are named and excluded); grey families 1; corner radii only from the scale, matching the shape lock; display sizes per screen 1; icon sets 1, in the chosen icon style; emoji in interface chrome 0; invented logos or app icons 0 (RX-AS-11); gradients without a brand reason 0; labels for the same intent 1. A count over its limit fails unless the brief or DESIGN.md gives the reason.
+- Do not: Judge consistency by eye only, or hand off a screen with five accent hues, mixed icon sets, or two labels for one action because it looks fine.
+- Why: Counts are harder to talk past than impressions; a design that passed a by-eye review still shipped five hues and the wrong tab icons. (isolation effect (von Restorff 1933): several accents cancel each other out; pattern also in appllama-app-design-skill (MIT), anti-slop counts; written for RYUX; owner review 2026-10-17: withryux.pen passed RYUX with 5+ hues and wrong tab icons)
+- Check: count on the render or the design file's variables; report in the Delivery Gate
+
+### RX-AS-11 [Required] [Hard Gate] The product's own mark
+
+- When: the design has a logo, wordmark, app icon, or favicon
+- Do: Use the brand's own file wherever the product's mark appears: look in the repo (public/, assets/, the app icon and favicon), DESIGN.md, the design file's components, and what the user attached, and name the file you used. With no file, set the product name in plain text in the brand's type, or leave a visible [LOGO] placeholder, and list the mark as missing in the handoff.
+- Do not: Stand in for the mark with initials in a circle, an emoji, a generic shape, an invented SVG, a letter cut into a tile, or the name typeset to look like a logo; generate a favicon or app icon the user did not ask for; or redraw the brand's mark instead of using its file. Designing a mark is its own task, done only when the user asks for it.
+- Why: An invented mark looks finished and is the first thing a team has to throw away; it also passes for a decision nobody made. (pattern also in superdesign-skill (MIT), logo invariant; RX-UI-13 asset provenance; ryux owner review 2026-10-18 (the logo and favicon are the owner's to make); written for RYUX)
+- Check: list every mark slot and the file it uses, or the placeholder; fails on a slot filled by an invented mark

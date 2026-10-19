@@ -9,7 +9,7 @@ const { version } = JSON.parse(await readFile(join(root, "packages/cli/package.j
 const check = process.argv.includes("--check");
 let drift = 0;
 
-for (const file of [".claude-plugin/plugin.json", ".claude-plugin/marketplace.json"]) {
+for (const file of ["plugins/ryux/.claude-plugin/plugin.json", ".claude-plugin/marketplace.json"]) {
   const path = join(root, file);
   const text = await readFile(path, "utf8");
   const next = text.replace(/"version": "[^"]+"/g, `"version": "${version}"`);
