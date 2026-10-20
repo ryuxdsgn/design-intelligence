@@ -200,13 +200,13 @@ line below for its exact source.
 <!-- provenance:start -->
 | Source cited | Rules citing it | Rules citing only this |
 | --- | --- | --- |
-| Public standard or research | 61 | 45 |
+| Public standard or research | 64 | 48 |
 | Industry practice | 12 | 5 |
 | Observed in a RYUX run | 15 | 9 |
 | Pattern also in another MIT ruleset (text written for RYUX) | 4 | 4 |
 | RYUX principle, taxonomy, or review | 32 | 19 |
 
-All 103 rules cite a source; 21 cite more than one kind, so the "Rules citing it" column adds up to more than 103.
+All 106 rules cite a source; 21 cite more than one kind, so the "Rules citing it" column adds up to more than 106.
 <!-- provenance:end -->
 
 ## Rules
@@ -214,7 +214,7 @@ All 103 rules cite a source; 21 cite more than one kind, so the "Rules citing it
 Generated from `packages/cli/src/content.ts` by `pnpm sync:skills`. Edit the rules there, not here.
 
 <!-- rules:start -->
-103 rules across 13 modules: 58 Required, 19 Preferred, 26 Contextual; 17 Hard Gates and 11 Quality Locks.
+106 rules across 13 modules: 59 Required, 19 Preferred, 28 Contextual; 17 Hard Gates and 11 Quality Locks.
 
 ### Product thinking (RX-PR) · `knowledge/product.md`
 
@@ -342,6 +342,17 @@ Gate area UX. Covers information architecture, navigation, flows, grouping, disc
 - Not when: a new product or screen with nothing to keep, or a brief that asks to replace the whole design
 - Trade-off: a redesign can look less new; the gain is in fewer regressions and less relearning
 - Check: the change list, each with its problem and evidence; the kept list; review
+
+#### RX-UX-11 [Contextual] Accelerators for frequent users
+
+- When: people use the product often (daily payments, ordering, messaging, work tools)
+- Do: Give frequent users faster paths that novices can ignore: recent and saved items, repeat order or transfer, defaults from the last choice, search that jumps to an action, and keyboard shortcuts or gestures where the platform has them.
+  - Keep every accelerator a second path: the visible, standard path still works and stays the one a new user sees.
+- Do not: Make a gesture or shortcut the only way to an action, or fill a first-time screen with power-user controls.
+- Why: The same product serves first-time and daily users; accelerators save the daily user time without costing the newcomer clarity. (Nielsen heuristic 7 (flexibility and efficiency of use); NNGroup 10 usability heuristics)
+- Not when: a one-off or rarely used flow (a sign-up, a yearly tax form)
+- Trade-off: each accelerator is one more thing to design, test, and keep consistent
+- Check: heuristic_eval H-07
 
 ---
 
@@ -697,6 +708,27 @@ Gate area CONTENT. Covers specific copy, action labels, error messages, terminol
 - Not when: the operating system or a regulation sets the wording
 - Trade-off: fewer notifications means fewer re-engagement chances
 - Check: review
+
+#### RX-CD-15 [Required] The user's words and order
+
+- Do: Use the words, phrases, and concepts your users use, taken from the brief, support tickets, research, or the market's own apps, not the team's internal or system terms ("Saldo", not "Wallet balance ledger"; "Pesanan", not "Order entity").
+  - Put information in the order people expect from the real world: an Indonesian address from street to province, a receipt from items to total, a schedule from date to place.
+  - Explain a term that cannot be avoided where it first appears, in one line.
+- Do not: Show database field names, status codes, internal feature names, or a translation of the team's English jargon ("Disbursement pending", "Status: PROCESSING_2").
+- Why: Users should understand a screen without looking up a word; a term from the system's model makes them translate before they can act. (Nielsen heuristic 2 (match between the system and the real world); NNGroup 10 usability heuristics)
+- Not when: an expert tool whose users share the domain's technical terms; use their terms
+- Trade-off: the user's word may differ from the term the code and the team use, so the two need a written mapping
+- Check: heuristic_eval H-02
+
+#### RX-CD-16 [Contextual] Help where the question comes up
+
+- When: a task has a step users may not understand on their own (a fee, a verification, a setting with consequences)
+- Do: First make the step clear enough to need no help; when it still needs some, put it in context at that step (a line of helper text, a tooltip, an info sheet), not only in a help centre.
+  - Write help as concrete steps for the user's task, and make longer help searchable by the words users type.
+- Do not: Send users to a generic FAQ or a help centre home for a question about one field, or explain the interface instead of the task.
+- Why: Help is read only at the moment of doubt; help elsewhere is help nobody finds. (Nielsen heuristic 10 (help and documentation); NNGroup 10 usability heuristics)
+- Trade-off: help in context adds text to the screen; keep it to the steps that need it
+- Check: heuristic_eval H-10
 
 ---
 

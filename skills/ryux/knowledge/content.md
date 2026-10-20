@@ -134,3 +134,24 @@ Real labels, errors, and how money, dates, and times are written in the product'
 - Not when: the operating system or a regulation sets the wording
 - Trade-off: fewer notifications means fewer re-engagement chances
 - Check: review
+
+### RX-CD-15 [Required] The user's words and order
+
+- Do: Use the words, phrases, and concepts your users use, taken from the brief, support tickets, research, or the market's own apps, not the team's internal or system terms ("Saldo", not "Wallet balance ledger"; "Pesanan", not "Order entity").
+  - Put information in the order people expect from the real world: an Indonesian address from street to province, a receipt from items to total, a schedule from date to place.
+  - Explain a term that cannot be avoided where it first appears, in one line.
+- Do not: Show database field names, status codes, internal feature names, or a translation of the team's English jargon ("Disbursement pending", "Status: PROCESSING_2").
+- Why: Users should understand a screen without looking up a word; a term from the system's model makes them translate before they can act. (Nielsen heuristic 2 (match between the system and the real world); NNGroup 10 usability heuristics)
+- Not when: an expert tool whose users share the domain's technical terms; use their terms
+- Trade-off: the user's word may differ from the term the code and the team use, so the two need a written mapping
+- Check: heuristic_eval H-02
+
+### RX-CD-16 [Contextual] Help where the question comes up
+
+- When: a task has a step users may not understand on their own (a fee, a verification, a setting with consequences)
+- Do: First make the step clear enough to need no help; when it still needs some, put it in context at that step (a line of helper text, a tooltip, an info sheet), not only in a help centre.
+  - Write help as concrete steps for the user's task, and make longer help searchable by the words users type.
+- Do not: Send users to a generic FAQ or a help centre home for a question about one field, or explain the interface instead of the task.
+- Why: Help is read only at the moment of doubt; help elsewhere is help nobody finds. (Nielsen heuristic 10 (help and documentation); NNGroup 10 usability heuristics)
+- Trade-off: help in context adds text to the screen; keep it to the steps that need it
+- Check: heuristic_eval H-10

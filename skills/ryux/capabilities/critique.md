@@ -232,6 +232,39 @@ Fix priorities
   1. C-01 ...
 ```
 
+## Heuristic evaluation mode
+
+Run this mode when the request asks for a heuristic evaluation ("heuristic evaluation", "HE",
+"evaluasi heuristik"). It follows NN/g's method against Nielsen's 10 heuristics, and AI agents
+carry out every role: evaluators, consolidation, and severity rating. Steps 1, 2, 6,
+and 7 above still apply; the mode replaces steps 3 to 5 and changes the report.
+
+1. **Scope.** One task or flow, one user group, one device. Write the scope and the task steps
+   before evaluating; without a task, take the screen's primary task and say so.
+2. **Three independent evaluators.** When the agent can start subagents, start three with the same
+   scope, captures, and heuristics. None sees another's findings until all three are done. When
+   it cannot, run one evaluator and say in the report that coverage is lower: NN/g found that one
+   evaluator finds about 35% of the problems; three to five find most of them.
+3. **Two passes per evaluator.** Pass one walks the task to learn it, judging nothing. Pass two
+   walks it again, element by element, against each heuristic H-01 to H-10. Each finding records
+   the screen and element, the heuristic, the problem, what in the capture shows it, and
+   confidence. A heuristic violation is not automatically a problem: a deliberate trade-off the
+   brief explains is noted, not reported.
+4. **Consolidate.** Merge findings that describe the same problem and record how many evaluators
+   found each one (1/3, 2/3, 3/3).
+5. **Rate severity after consolidation.** Each evaluator rates every consolidated problem on its
+   own, 0 to 4 (the scale in step 8), weighing frequency, impact, and persistence, plus the effect
+   on the business goal. Report the average; drop a problem most evaluators rate 0.
+6. **Accuracy guardrails.** Report only what the capture can show (step 7). Give findings about
+   conventions and problems that span several screens Medium confidence at most: they are where
+   AI evaluators are weakest. Prefer fewer, true findings; a false positive costs the team a fix
+   nobody needed.
+7. **Report.** Per finding, the step 8 schema plus Heuristic (H-xx) and Found by (n/3). Then:
+   - a table of the 10 heuristics with the number of findings and the highest severity for each
+   - the debrief: where evaluators agreed and disagreed, which problems hurt the experience most,
+     which threaten the business goal, and which need a usability test to settle
+   - the limit, in one line: "AI heuristic evaluation by n evaluators; not user research"
+
 ## Don'ts
 
 - Don't review a design you have not captured when it is reachable.
