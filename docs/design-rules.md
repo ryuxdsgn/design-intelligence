@@ -698,7 +698,7 @@ Gate area UI. Covers the visual expression of a product: hierarchy, type, layout
 
 #### RX-UI-10 [Preferred] Visual language is chosen, not defaulted
 
-- Do: Derive the art direction from the brand, the audience, the product context, and reference screens, and write it as a Visual Brief (objective, concept, composition, color, material, lighting, motion, avoid) before designing an expressive surface or generating images, 3D, or motion.
+- Do: Derive the art direction from the brand, the audience, the product context, and reference screens, and write it as a Visual Brief (objective, concept, composition, color, material, lighting, motion, avoid) before designing an expressive surface or generating images, 3D, or motion. For a new product, decide the brand direction before the tokens, task UI included: palette, type, and shape follow from the product's character (fast, warm, trusted, and so on), not from the one accent that passes contrast.
 - Do not: Reach for the category cliché (coins, money rain, floating dashboards, or gradient blobs for fintech; generic 3D characters for any app), or write an image prompt without a brief (role, concept, composition).
 - Why: A default visual language makes the product interchangeable with its competitors. (art direction practice; RX-AS-05 purpose gate)
 - Not when: an existing brand system already defines the visual language; follow it
@@ -788,7 +788,7 @@ Gate area DESIGN SYSTEM. Covers search before create, tokens, component states, 
 
 #### RX-DS-06 [Preferred] [Quality Lock] The component sheet is a spec
 
-- Do: Lay out each component as a labeled grid: one row per property, one column per state (default, pressed, disabled, loading, error), each cell labeled with its variant name, and one line of usage under each component; no overlapping or clipped variants. Render and inspect the sheet like a screen.
+- Do: Lay out each component as a labeled grid: one row per property, one column per state (default, hover on web, pressed, disabled, loading, error), each cell labeled with its variant name, and one line of usage under each component; no overlapping or clipped variants. Render and inspect the sheet like a screen.
 - Do not: Leave variants scattered, unlabeled, or cut off at the frame edge.
 - Why: Developers build from the component sheet; a variant they cannot find or read gets rebuilt or guessed. (ryux run: blind review of a delivery flow 2026-10-20; design-system practice; written for RYUX)
 - Not when: a single screen with no shared components
