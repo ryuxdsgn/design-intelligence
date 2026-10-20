@@ -1,6 +1,6 @@
 ---
 name: ryux
-description: "RYUX - design intelligence for AI agents and designers. Tell it what you are doing and it routes to Analyze (understand an existing interface), Design (create or improve UI and UX in Figma, pen.dev, or mockups), Build (implement in code), Critique (find what to change first, with evidence), or QA (verify a build against the design), reads only the knowledge the task needs (product, UX, UI, interaction, forms, content, accessibility, responsive, design system, frontend, anti-slop), and closes with quality gates. Use for any UI, UX, copy, frontend, design review, or design analysis task."
+description: "RYUX - design intelligence for AI agents and designers. Tell it what you are doing and it routes to Analyze (understand an existing interface), Design (create or improve UI and UX in Figma, pen.dev, or mockups), Build (implement in code), Critique (find what to change first, with evidence, or run a heuristic evaluation), or QA (verify a build against the design), reads only the knowledge the task needs (product, UX, UI, interaction, forms, content, accessibility, responsive, design system, frontend, anti-slop), and closes with quality gates. Use for any UI, UX, copy, frontend, design review, or design analysis task."
 ---
 
 # RYUX
@@ -27,7 +27,7 @@ file, then only the knowledge modules the task needs (task table below); paths a
 | **Analyze** | understand a screen, product, or flow that exists | `capabilities/analyze.md` |
 | **Design** | create or improve UI and UX without code: Figma, pen.dev, mockups, copy | `capabilities/design.md` |
 | **Build** | implement or change the interface in code | `capabilities/build.md` |
-| **Critique** | find what should change first, and why | `capabilities/critique.md` |
+| **Critique** | find what should change first, and why; a heuristic evaluation | `capabilities/critique.md` |
 | **QA** | verify a build against the intended design | `capabilities/qa.md` |
 
 Knowledge modules (`knowledge/`): product, ux, interaction, forms, edge-cases, content, ui,

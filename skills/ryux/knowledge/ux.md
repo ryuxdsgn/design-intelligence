@@ -97,3 +97,14 @@ How Indonesian apps sequence and structure this flow: `get_flow` for a reference
 - Not when: a new product or screen with nothing to keep, or a brief that asks to replace the whole design
 - Trade-off: a redesign can look less new; the gain is in fewer regressions and less relearning
 - Check: the change list, each with its problem and evidence; the kept list; review
+
+### RX-UX-11 [Contextual] Accelerators for frequent users
+
+- When: people use the product often (daily payments, ordering, messaging, work tools)
+- Do: Give frequent users faster paths that novices can ignore: recent and saved items, repeat order or transfer, defaults from the last choice, search that jumps to an action, and keyboard shortcuts or gestures where the platform has them.
+  - Keep every accelerator a second path: the visible, standard path still works and stays the one a new user sees.
+- Do not: Make a gesture or shortcut the only way to an action, or fill a first-time screen with power-user controls.
+- Why: The same product serves first-time and daily users; accelerators save the daily user time without costing the newcomer clarity. (Nielsen heuristic 7 (flexibility and efficiency of use); NNGroup 10 usability heuristics)
+- Not when: a one-off or rarely used flow (a sign-up, a yearly tax form)
+- Trade-off: each accelerator is one more thing to design, test, and keep consistent
+- Check: heuristic_eval H-07
