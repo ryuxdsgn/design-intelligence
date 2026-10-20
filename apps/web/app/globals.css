@@ -251,15 +251,9 @@ code,
     .rise { animation: rise linear both; animation-timeline: view(); animation-range: entry 0% entry 55%; }
     .hero-exit { animation: hero-out linear both; animation-timeline: view(); animation-range: exit 0% exit 90%; transform-origin: center top; }
 
-    /* How it works: the rail fills across the five steps and each number turns teal as it is reached. */
-    .steps { view-timeline-name: --steps; }
-    .steps-rail { transform-origin: left center; animation: rule-in linear both; animation-timeline: --steps; animation-range: cover 22% cover 48%; }
+    /* How it works, narrow (components/stages.tsx): each number turns teal as its stage comes in. */
     .step-num { animation: step-on linear both; animation-timeline: view(); animation-range: entry 40% entry 90%; }
     .step { animation: rise linear both; animation-timeline: view(); animation-range: entry 0% entry 60%; }
-    @media (min-width: 1024px) {
-      .step-num { animation-timeline: --steps; animation-range: cover calc(22% + var(--i) * 5.2%) cover calc(24% + var(--i) * 5.2%); }
-      .step { animation-timeline: --steps; animation-range: entry calc(var(--i) * 8%) entry calc(60% + var(--i) * 8%); }
-    }
   }
 }
 @keyframes rule-in { from { transform: scaleX(0); } to { transform: scaleX(1); } }
