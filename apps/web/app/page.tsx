@@ -7,6 +7,7 @@ import { Cases } from "@/components/cases";
 import { SectionSpy } from "@/components/motion";
 import { ReasoningStage } from "@/components/reasoning-stage";
 import { Scoreboard } from "@/components/scoreboard";
+import { Stages } from "@/components/stages";
 import { WaitlistForm } from "@/components/waitlist-form";
 import { Arrow, DOCS, Eyebrow, GUTTER, REPO, SiteFooter, SiteHeader } from "@/components/site";
 
@@ -40,14 +41,6 @@ const SITUATIONS = [
   { ask: "The details are still loading", state: 3 },
   { ask: "The page couldn't load", state: 4 },
   { ask: "Someone opens it on a small phone", state: 5 },
-];
-
-const CAPABILITIES = [
-  { name: "Analyze", body: "Reads the screen you already have and separates what it sees from what it is guessing." },
-  { name: "Design", body: "Proposes the screen and writes down why: the options it compared and how sure it is." },
-  { name: "Build", body: "Implements it in your stack without making up prices, limits, or API behavior." },
-  { name: "Critique", body: "Lists what to change first, worst first, each with the reason and a fix." },
-  { name: "QA", body: "Checks the build against the design at each width and state, and says what it could not check." },
 ];
 
 /* Quoted from a real run (English transaction detail benchmark, pair 2). */
@@ -282,21 +275,12 @@ function HowItWorks() {
           <Eyebrow>How it works</Eyebrow>
           <h2 id="how-title" className="text-[38px] leading-[1.05] sm:text-[52px]">Looks first, then decides.</h2>
           <p className="text-[17px] leading-[1.55] text-ink-2">
-            Say what you are doing. RYUX picks the step, reads only the design knowledge that step needs, and
-            before it calls the work done, lists what it checked and what it could not.
+            Say what you are doing: analyze, design, build, critique, or QA. RYUX runs the stages that work needs,
+            reads only the design knowledge it needs, and before it calls the work done, lists what it checked and
+            what it could not.
           </p>
         </div>
-        {/* The five steps light up in their order as the row scrolls through, along a rail that fills. */}
-        <ol className="steps relative grid border-t border-hair [&>*]:min-w-0 sm:grid-cols-2 lg:grid-cols-5">
-          <span aria-hidden className="steps-rail absolute -top-px left-0 hidden h-[2px] w-full bg-accent lg:block" />
-          {CAPABILITIES.map((c, i) => (
-            <li key={c.name} style={{ ["--i" as string]: i } as React.CSSProperties} className={`step flex flex-col gap-2 border-b border-hair pt-5 pb-6 lg:border-b-0 lg:pr-6 ${i ? "lg:border-l lg:pl-6" : ""}`}>
-              <span className="step-num font-mono text-[12px] text-muted">{i + 1}</span>
-              <h3 className="text-[22px] font-semibold tracking-[-0.02em]">{c.name}</h3>
-              <p className="text-[15px] leading-[1.5] text-ink-2">{c.body}</p>
-            </li>
-          ))}
-        </ol>
+        <Stages />
         <div className="grid gap-10 [&>*]:min-w-0 lg:grid-cols-[1fr_540px] lg:items-start lg:gap-16">
           <div className="flex flex-col gap-4">
             <h3 className="text-[26px] leading-[1.15] font-semibold tracking-[-0.02em]">Every big decision is written down.</h3>
