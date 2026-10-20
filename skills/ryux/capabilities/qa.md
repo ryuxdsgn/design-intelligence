@@ -2,7 +2,7 @@
 
 Verifies the build against the intended design: render it, list every deviation, fix, and render again.
 
-> Group Quality · Delivery Gate area VISUAL QA · RYUX 2.13.2. Levels are defined in `SKILL.md`.
+> Group Quality · Delivery Gate area VISUAL QA · RYUX 2.13.3. Levels are defined in `SKILL.md`.
 
 As an entry point, Visual QA is the Verify and deliver stage of the core workflow (SKILL.md)
 for a build; Design and Build also use its loop in Build and critique. It asks one question: **did the implementation match the intended design?** Whether the
