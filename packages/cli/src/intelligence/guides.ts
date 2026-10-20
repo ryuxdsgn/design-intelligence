@@ -150,7 +150,7 @@ The six stages of the core workflow (SKILL.md), as Design runs them.
      choice that sets the price and the total rank first and second.
    - Widths: a width check is a test, not a deliverable. List what broke at each width (wrap,
      truncation, overflow), fix it or record why it is acceptable, and render again; RESPONSIVE
-     PASS names the findings and their fixes.
+     PASS names the width used, the findings, and their fixes.
    - Direction: list where the render differs from the Design Direction (hierarchy, states,
      widths) and fix or record each one, and check the result against the Liveliness you set.
    - Purpose: put each prominent or decorative element through the purpose gate (RX-AS-05); on
@@ -686,7 +686,8 @@ Example: a data table on desktop → on tablet, scroll horizontally inside the t
 priority columns → on mobile, a different information architecture: a list of rows as summary cards
 that open a detail view.
 
-Check the stated viewport and the smallest supported width. No horizontal page scroll.`,
+Check the stated viewport and the smallest supported width (RX-RD-01 says how to pick it), and on
+native the largest text size. No horizontal page scroll.`,
 
   frontend: `Connect design decisions to the code that ships them.
 
