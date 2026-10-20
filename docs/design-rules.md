@@ -200,13 +200,13 @@ line below for its exact source.
 <!-- provenance:start -->
 | Source cited | Rules citing it | Rules citing only this |
 | --- | --- | --- |
-| Public standard or research | 64 | 48 |
+| Public standard or research | 66 | 49 |
 | Industry practice | 12 | 5 |
-| Observed in a RYUX run | 15 | 9 |
+| Observed in a RYUX run | 15 | 8 |
 | Pattern also in another MIT ruleset (text written for RYUX) | 4 | 4 |
 | RYUX principle, taxonomy, or review | 32 | 19 |
 
-All 106 rules cite a source; 21 cite more than one kind, so the "Rules citing it" column adds up to more than 106.
+All 107 rules cite a source; 22 cite more than one kind, so the "Rules citing it" column adds up to more than 107.
 <!-- provenance:end -->
 
 ## Rules
@@ -214,7 +214,7 @@ All 106 rules cite a source; 21 cite more than one kind, so the "Rules citing it
 Generated from `packages/cli/src/content.ts` by `pnpm sync:skills`. Edit the rules there, not here.
 
 <!-- rules:start -->
-106 rules across 13 modules: 59 Required, 19 Preferred, 28 Contextual; 17 Hard Gates and 11 Quality Locks.
+107 rules across 13 modules: 59 Required, 19 Preferred, 29 Contextual; 17 Hard Gates and 11 Quality Locks.
 
 ### Product thinking (RX-PR) · `knowledge/product.md`
 
@@ -235,9 +235,10 @@ Gate area PRODUCT. Covers user, task, goal, primary action, constraints, assumpt
 - Do: Sort what the brief does not say into three kinds:
   - Design assumptions (low-risk visual or structural choices such as a merchant category icon or grouping by date): decide them from the context.
   - Unconfirmed capabilities (an action or feature the category usually has, such as sharing a receipt): convention is not proof, so ask when it materially changes the flow or scope; otherwise you may propose it, listed as unconfirmed, never as a requirement.
+  - Users: without research data, describe them as a proto-persona labelled as assumptions, with the questions to ask real users; answers from an AI-simulated user are hypotheses, never research findings.
   - Facts, claims, and policies: take them only from the brief, the repo, or the product's own docs (feature and tool names, commands, integrations, platforms, pages, fees, timings, guarantees).
 - Do not: Invent business rules, policies, guarantees, metrics, user data, permissions, pricing, requirements, or API behavior, or name a tool, command, integration, platform, or page the product does not have. Do not present an unconfirmed capability as a confirmed one.
-- Why: Invented facts turn into promises and bugs that someone has to unwind; a screen trimmed to the brief's literal words reads unfinished and hides what still needs confirming. (ryux run 2026-10-02: an unconstrained agent invented a 30-day trial and user counts; ryux visual benchmark 2.6 human rater, 2026-10-13: RYUX screens lost on a missing receipt action)
+- Why: Invented facts turn into promises and bugs that someone has to unwind; a screen trimmed to the brief's literal words reads unfinished and hides what still needs confirming. (ryux run 2026-10-02: an unconstrained agent invented a 30-day trial and user counts; ryux visual benchmark 2.6 human rater, 2026-10-13: RYUX screens lost on a missing receipt action; NNGroup proto-personas and synthetic users (AI output is hypotheses, not research))
 - Not when: This rule is not a reason to drop content the brief implies or to leave a screen looking unfinished: sample content is RX-AS-03, design assumptions are yours to make.
 - Check: compare every product fact on the screen (features, prices, fees, policies, names, integrations) with the brief, DESIGN.md, docs, or repo; each is sourced or labelled as an assumption; fails on one shown as fact without a source
 
@@ -353,6 +354,22 @@ Gate area UX. Covers information architecture, navigation, flows, grouping, disc
 - Not when: a one-off or rarely used flow (a sign-up, a yearly tax form)
 - Trade-off: each accelerator is one more thing to design, test, and keep consistent
 - Check: heuristic_eval H-07
+
+#### RX-UX-12 [Contextual] A test plan travels with the design
+
+- When: the work is a new flow or a consequential change (payment, sign-up, navigation, a core task)
+- Do: Close the design or build with a usability test plan a person can run; RYUX prepares it, people run it:
+  - research questions: the open unknowns, the Frame success criteria, and the heuristic evaluation findings marked as needing a test
+  - three to five task scenarios that are realistic, ask the participant to do something rather than describe it, and use none of the interface's labels or steps ("Kamu ingin membayar pesanan makan siang dengan saldo e-wallet", not "Ketuk Bayar lalu pilih GoPay")
+  - participants: five per user group for a qualitative test; at least twenty when the goal is a number
+  - a success measure per task, taken from the Frame criteria
+  - after launch: the metrics to watch (task success, time on task, errors, completion, support tickets) and the baseline to measure before release
+  - Plan at least two rounds of test and fix; a result that changes the context or the criteria sends the work back to Understand or Frame.
+- Do not: Claim the design was tested with users, present AI-simulated users as participants, or write tasks that name the buttons to tap.
+- Why: Rules and heuristics find likely problems; only people using the design show which ones are real, and a baseline is what makes the after-launch number mean something. (NNGroup usability testing 101; NNGroup how many test users (5 per group, 20 for quantitative); NNGroup task scenarios; NNGroup iterative design (at least three versions); NNGroup establishing baselines; NNGroup design thinking (test and implement))
+- Not when: a small change (a colour, one label, spacing) or when the user says no test plan
+- Trade-off: a plan nobody runs is only a list; say who should run it and when
+- Check: review
 
 ---
 
