@@ -199,13 +199,13 @@ line below for its exact source.
 <!-- provenance:start -->
 | Source cited | Rules citing it | Rules citing only this |
 | --- | --- | --- |
-| Public standard or research | 55 | 42 |
+| Public standard or research | 57 | 42 |
 | Industry practice | 12 | 6 |
 | Observed in a RYUX run | 15 | 9 |
 | Pattern also in another MIT ruleset (text written for RYUX) | 4 | 4 |
-| RYUX principle, taxonomy, or review | 30 | 21 |
+| RYUX principle, taxonomy, or review | 30 | 19 |
 
-All 99 rules cite a source; 17 cite more than one kind, so the "Rules citing it" column adds up to more than 99.
+All 99 rules cite a source; 19 cite more than one kind, so the "Rules citing it" column adds up to more than 99.
 <!-- provenance:end -->
 
 ## Rules
@@ -654,27 +654,27 @@ Gate area UI. Covers the visual expression of a product: hierarchy, type, layout
 
 #### RX-UI-03 [Preferred] [Quality Lock] One spacing and type scale
 
-- Do: Use the project's spacing and type scale, or define one (for example multiples of 4 or 8) and align elements to a shared grid. State the shape lock in one sentence, a radius per component role ("action buttons pill, cards 16, inputs 12, sheets 28"), and keep emphasis inside the type family (weight or size), not a second face dropped into one word.
+- Do: Use the project's spacing and type scale, or define one (for example multiples of 4 or 8) and align elements to a shared grid. Keep a screen's main content to two or three text sizes, the most important the largest, and count them on the render (RX-AS-10). State the shape lock in one sentence, a radius per component role ("action buttons pill, cards 16, inputs 12, sheets 28"), and keep emphasis inside the type family (weight or size), not a second face dropped into one word.
 - Do not: Pick spacing and sizes one element at a time.
-- Why: A scale produces rhythm and makes hierarchy legible. (Material Design 8dp grid; shape lock and in-family emphasis: pattern also in appllama-app-design-skill (MIT); written for RYUX)
+- Why: A scale produces rhythm and makes hierarchy legible. (Material Design 8dp grid; NNGroup principles of visual design (scale: two or three sizes); shape lock and in-family emphasis: pattern also in appllama-app-design-skill (MIT); written for RYUX)
 - Not when: a one-off marketing piece outside the product
 - Trade-off: a scale limits choices; occasional exceptions need a written reason
 - Check: count radii and type faces (RX-AS-10); review
 
 #### RX-UI-04 [Preferred] [Quality Lock] A palette with roles
 
-- Do: Use a small set of colors with defined roles: surface, text, accent for the primary action, and status colors. Pick one grey family, warm or cool, for surfaces, borders, and secondary text.
+- Do: Use a small set of colors with defined roles: surface, text, accent for the primary action, and status colors. Pick one grey family, warm or cool, for surfaces, borders, and secondary text. Elements that behave the same look the same, and elements that behave differently look different: a destructive action has its own color role, not the primary accent. Lower importance with size, weight, or position, never by lowering text contrast.
 - Do not: Introduce new colors per component, or use the accent for decoration.
-- Why: When color has a role, the accent and status colors mean something. (ryux visual principle; isolation effect (von Restorff 1933): the one item that differs is the one remembered, so the accent marks only the primary action; one grey family: pattern also in appllama-app-design-skill (MIT); written for RYUX)
+- Why: When color has a role, the accent and status colors mean something. (ryux visual principle; NNGroup principles of visual design (contrast signals a different function; similarity); isolation effect (von Restorff 1933): the one item that differs is the one remembered, so the accent marks only the primary action; one grey family: pattern also in appllama-app-design-skill (MIT); written for RYUX)
 - Not when: data visualization, which needs its own categorical or sequential palette
 - Trade-off: fewer colors means relying on type and space for emphasis
 - Check: count accent hues and grey families (RX-AS-10); review
 
 #### RX-UI-05 [Preferred] Layout from content, not a template
 
-- Do: Choose the layout from the content, the task, and the reference screens.
+- Do: Choose the layout from the content, the task, and the reference screens. Set the balance on purpose: symmetric for calm, focused screens, asymmetric for dynamic ones. On the render, check that visual weight is distributed, counting element size and not only the number of elements, with no side left empty or heavy without a reason.
 - Do not: Default to hero, three feature cards, and a logo wall.
-- Why: Template layouts look interchangeable and hide what is specific to the product. (ryux anti-slop principle)
+- Why: Template layouts look interchangeable and hide what is specific to the product. (ryux anti-slop principle; NNGroup principles of visual design (balance))
 - Not when: a standard pattern users expect fits the content (a settings list, a table); familiarity is the right choice
 - Trade-off: custom layouts cost design and build time
 - Check: review
@@ -1083,7 +1083,7 @@ Gate area ANTI-SLOP. Covers hard gates, purpose gates, quality locks, honest cla
 
 #### RX-AS-10 [Required] [Quality Lock] Count before handoff
 
-- Do: Before handing off, count on the render or in the design file's variables, and report the counts: accent hues 1 (status colors, and secondary colors the brand defines, are named and excluded); grey families 1; corner radii only from the scale, matching the shape lock; display sizes per screen 1; icon sets 1, in the chosen icon style; emoji in interface chrome 0; invented logos or app icons 0 (RX-AS-11); gradients without a brand reason 0; labels for the same intent 1. A count over its limit fails unless the brief or DESIGN.md gives the reason.
+- Do: Before handing off, count on the render or in the design file's variables, and report the counts: accent hues 1 (status colors, and secondary colors the brand defines, are named and excluded); grey families 1; corner radii only from the scale, matching the shape lock; display sizes per screen 1; text sizes in a screen's main content 3 at most; icon sets 1, in the chosen icon style; emoji in interface chrome 0; invented logos or app icons 0 (RX-AS-11); gradients without a brand reason 0; labels for the same intent 1. A count over its limit fails unless the brief or DESIGN.md gives the reason.
 - Do not: Judge consistency by eye only, or hand off a screen with five accent hues, mixed icon sets, or two labels for one action because it looks fine.
 - Why: Counts are harder to talk past than impressions; a design that passed a by-eye review still shipped five hues and the wrong tab icons. (isolation effect (von Restorff 1933): several accents cancel each other out; pattern also in appllama-app-design-skill (MIT), anti-slop counts; written for RYUX; owner review 2026-10-17: withryux.pen passed RYUX with 5+ hues and wrong tab icons)
 - Check: count on the render or the design file's variables; report in the Delivery Gate
