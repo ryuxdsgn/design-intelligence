@@ -218,6 +218,20 @@ Prompts that need it name the tool: "Find reference screens for a QRIS payment p
 
 ## How RYUX reasons
 
+### One workflow
+
+Every capability runs the same six stages, or the part of them it needs:
+
+1. **Understand**: the brief, the product, what exists; facts kept apart from assumptions.
+2. **Frame**: the user's task, what must be seen first, and three to five success criteria, written
+   before any design exists.
+3. **Explore**: two or three alternatives that differ in hypothesis and structure, not only colour.
+   Small changes skip it.
+4. **Evaluate and select**: each alternative rated against the Frame criteria; you pick.
+5. **Build and critique**: the chosen one designed or built, rendered, inspected, and fixed. If a
+   finding shows the choice was wrong, RYUX goes back to an alternative and says why.
+6. **Verify and deliver**: the Hard Gates and a report of what passed, failed, or was not verified.
+
 ### Know what you know
 
 Before it designs, RYUX sorts what it is working with:
@@ -251,7 +265,7 @@ where global libraries are thinnest. It is in pilot and small.
 ### Gates
 
 ```
-Analyze → Design → Build → Critique → QA → Anti-Slop (final gate) → done
+Understand → Frame → Explore → Evaluate and select → Build and critique → Verify and deliver → done
 ```
 
 - **Hard Gates** are never waived: no invented numbers or claims, no missing critical states, among

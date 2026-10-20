@@ -4,7 +4,7 @@ Stops generic AI output before it ships: no invented numbers or people, decorati
 
 > Group Quality · Delivery Gate area ANTI-SLOP · RYUX 2.12.0. Levels are defined in `SKILL.md`.
 
-Anti-slop runs last, after design, build, critique, and QA; it is the final quality gate, never the
+Anti-slop runs in Verify and deliver, after design, build, critique, and QA; it is the final quality gate, never the
 starting point. Anti-slop is the floor, not the ceiling: a tidy, generic surface still fails on expressive
 surfaces (RX-AS-09), and the point of view comes from RX-UI-12. Anti-slop is not a list of banned
 styles. It has three parts.
