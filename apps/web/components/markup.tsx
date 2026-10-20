@@ -72,3 +72,16 @@ export function PinAt({ n, x, y, tone, delay = 0 }: { n: number; x: number; y: n
   );
 }
 
+
+/** The RYUX pencil (the logo's implied pencil: a cut angle and a teal graphite point), pointing down and
+    to the left. Its point sits at the top-left of the element it is placed in. */
+export function PencilShape() {
+  return (
+    <svg aria-hidden width="66" height="16" viewBox="0 0 66 16" className="absolute -top-2 left-0 origin-[0_8px] -rotate-[38deg] drop-shadow-[0_6px_10px_rgb(0_0_0/0.5)]">
+      <path d="M0 8l7-2.6v5.2z" className="fill-accent" />
+      <path d="M7 5.4L15 2v12l-8-3.4z" className="fill-ink-2" />
+      <path d="M15 2h49l-4 12H15z" className="fill-ink" />
+      <path d="M15 8h47" className="stroke-paper-2" strokeOpacity={0.25} />
+    </svg>
+  );
+}
