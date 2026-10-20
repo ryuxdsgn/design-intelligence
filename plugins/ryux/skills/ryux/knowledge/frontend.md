@@ -85,7 +85,10 @@ The repo itself is the main evidence (stack, components, tokens); reference scre
 
 ### RX-FE-14 [Required] Test logic and critical flows
 
-- Do: Write unit tests for every new or changed pure function (calculations, formatting, validation, state transitions), including edge cases such as zero, empty, maximum, and invalid input, and integration tests for critical flows (checkout, payment, form submit, sign-in) covering the success and failure paths. Use the repo's test runner and conventions; with none, propose one as an assumption and ask before adding the dependency. Run the tests.
+- Do: Write the tests, then run them:
+  - unit tests for every new or changed pure function (calculations, formatting, validation, state transitions), including edge cases such as zero, empty, maximum, and invalid input
+  - integration tests for critical flows (checkout, payment, form submit, sign-in), covering the success and failure paths
+  - the repo's test runner and conventions; with none, propose one as an assumption and ask before adding the dependency
 - Do not: Ship changed logic without tests, write snapshot-only tests or tests that mock the code under test, or claim tested without running the tests.
 - Why: Tests catch the regressions review misses, before users find them in production. (Testing practice; owner review 2026-10-06)
 - Check: run the project's tests

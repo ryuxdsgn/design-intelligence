@@ -57,14 +57,20 @@ How comparable products frame the same task and offer: `search_screens` (categor
 
 ### RX-PR-01 [Required] State the context first
 
-- Do: Before designing, write down the user, their task, the business goal, the design intent (what the user must understand, feel, and do), the information that matters, the primary action, the constraints, and what success looks like. Take what the prompt and DESIGN.md already give; ask only when a missing answer materially affects the user flow, what the product can do, or whether the content is correct, or when neither the prompt nor DESIGN.md sets the UI or motion direction, at most three questions in one message, most consequential first (none when the context is complete). Otherwise make the smallest reasonable assumption, write it down, and continue.
+- Do: Before designing, write down the user, their task, the business goal, the design intent (what the user must understand, feel, and do), the information that matters, the primary action, the constraints, and what success looks like.
+  - Take what the prompt and DESIGN.md already give.
+  - Ask only when a missing answer materially affects the user flow, what the product can do, or whether the content is correct, or when neither the prompt nor DESIGN.md sets the UI or motion direction: at most three questions in one message, most consequential first, none when the context is complete.
+  - Otherwise make the smallest reasonable assumption, write it down, and continue.
 - Do not: Start from a generic template with no stated user or task, or ask questions the prompt or DESIGN.md already answers.
 - Why: Without a task, design and review drift into taste. (`capabilities/critique.md` playbook; NNGroup task-based evaluation)
 - Check: review
 
 ### RX-PR-02 [Required] [Hard Gate] Unknowns stay assumptions
 
-- Do: Sort what the brief does not say into three kinds. Design assumptions (low-risk visual or structural choices such as a merchant category icon or grouping by date): decide them from the context. Unconfirmed capabilities (an action or feature the category usually has, such as sharing a receipt): convention is not proof, so ask when it materially changes the flow or scope; otherwise you may propose it, listed as unconfirmed, never as a requirement. Facts, claims, and policies: take them only from the brief, the repo, or the product's own docs (feature and tool names, commands, integrations, platforms, pages, fees, timings, guarantees).
+- Do: Sort what the brief does not say into three kinds:
+  - Design assumptions (low-risk visual or structural choices such as a merchant category icon or grouping by date): decide them from the context.
+  - Unconfirmed capabilities (an action or feature the category usually has, such as sharing a receipt): convention is not proof, so ask when it materially changes the flow or scope; otherwise you may propose it, listed as unconfirmed, never as a requirement.
+  - Facts, claims, and policies: take them only from the brief, the repo, or the product's own docs (feature and tool names, commands, integrations, platforms, pages, fees, timings, guarantees).
 - Do not: Invent business rules, policies, guarantees, metrics, user data, permissions, pricing, requirements, or API behavior, or name a tool, command, integration, platform, or page the product does not have. Do not present an unconfirmed capability as a confirmed one.
 - Why: Invented facts turn into promises and bugs that someone has to unwind; a screen trimmed to the brief's literal words reads unfinished and hides what still needs confirming. (ryux run 2026-10-02: an unconstrained agent invented a 30-day trial and user counts; ryux visual benchmark 2.6 human rater, 2026-10-13: RYUX screens lost on a missing receipt action)
 - Not when: This rule is not a reason to drop content the brief implies or to leave a screen looking unfinished: sample content is RX-AS-03, design assumptions are yours to make.
@@ -87,7 +93,9 @@ How comparable products frame the same task and offer: `search_screens` (categor
 
 ### RX-PR-05 [Required] The product's market first
 
-- Do: Start from how users in the product's own market pay, sign in, write addresses, and read money and dates; check a pattern from another market before reusing it. Take the market from the brief or the codebase, and ask when it is unclear. When the brief does not name payment methods (or another market-standard capability), show the market's standard set as unconfirmed capabilities, labeled as proposed in Assumptions, rather than leaving them out: a market's table stakes are not "for later" (RX-AS-06). Ask when the set would change the flow.
+- Do: Start from how users in the product's own market pay, sign in, write addresses, and read money and dates; check a pattern from another market before reusing it.
+  - Take the market from the brief or the codebase, and ask when it is unclear.
+  - When the brief does not name payment methods (or another market-standard capability), show the market's standard set as unconfirmed capabilities, labeled as proposed in Assumptions, rather than leaving them out: a market's table stakes are not "for later" (RX-AS-06). Ask when the set would change the flow.
 - Do not: Import one market's checkout, currency, language, or tax rules into a product built for another market.
 - Why: Payment, address, and trust habits differ by market (local payment rails, address formats, messaging channels). (ryux taxonomy of local patterns)
 - Check: search_screens

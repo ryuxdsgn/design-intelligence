@@ -49,7 +49,7 @@ focal point, hierarchy, negative space, relation to the copy, and balance (RX-UI
 **Expressive surfaces** (hero, landing, onboarding, empty states, brand moments). Restraint keeps
 task UI usable; on expressive surfaces it is only the floor. Work concept, then signature, then
 system:
-1. **Concept**: write two or three directions first (name, concept, signature), then choose one. The idea
+1. **Concept**: explore two or three alternatives first (name, concept, signature; capabilities/design.md, stage 3), then choose one. The idea
    comes from the product itself, not from the category: a tool about evidence might use receipts,
    citations, and marks of proof; a calm finance app might use the ledger. The category default
    (a terminal panel for developer tools, a dashboard screenshot for SaaS) is never the signature.
@@ -154,7 +154,10 @@ A design direction from comparable screens: `extract_design_direction` (patterns
 
 ### RX-UI-01 [Required] [Quality Lock] Hierarchy follows priority
 
-- Do: Make the primary action and the key information the most prominent things in each area, with one clear focal point. Place each control next to the data it changes (a hide-balance toggle beside the balance it hides, not in the header), and make the primary action read as an action, not a place: its own button with an action label. It may sit in the center of a bottom bar when it is clearly different from the tabs (its own shape, color, and size, with room around it), but it is never styled as one of the tabs and never crammed between them. Use one display size per screen, for its single most important number or heading.
+- Do: Make the primary action and the key information the most prominent things in each area, with one clear focal point.
+  - Place each control next to the data it changes (a hide-balance toggle beside the balance it hides, not in the header).
+  - Make the primary action read as an action, not a place: its own button with an action label. It may sit in the center of a bottom bar when it is clearly different from the tabs (its own shape, color, and size, with room around it), but it is never styled as one of the tabs and never crammed between them.
+  - Use one display size per screen, for its single most important number or heading.
 - Do not: Give everything equal weight, let decoration outrank content, park a control far from what it acts on, or make the main action look like one more tab.
 - Why: Hierarchy is how users know what to read and do first; a control beside its data shows what it changes, and an action that looks like a tab reads as a place, not a task. (NNGroup visual hierarchy; Gestalt proximity; Fitts's law (Fitts 1954) for the primary action's size and reach; ryux four-problems blind rating, rater 1 (product designer), 2026-10-16: a hide toggle far from the balance and a CTA crowding the bottom nav were reasons not to ship; explore-judge blind rating 2026-10-18: the same rater shipped a screen with a distinct centered pay button in the bottom bar)
 - Not when: screens with several equal peers, such as a dashboard of comparable items; use consistent hierarchy within each card instead
@@ -163,7 +166,10 @@ A design direction from comparable screens: `extract_design_direction` (patterns
 
 ### RX-UI-03 [Preferred] [Quality Lock] One spacing and type scale
 
-- Do: Use the project's spacing and type scale, or define one (for example multiples of 4 or 8) and align elements to a shared grid. Keep a screen's main content to two or three text sizes, the most important the largest, and count them on the render (RX-AS-10). State the shape lock in one sentence, a radius per component role ("action buttons pill, cards 16, inputs 12, sheets 28"), and keep emphasis inside the type family (weight or size), not a second face dropped into one word.
+- Do: Use the project's spacing and type scale, or define one (for example multiples of 4 or 8), and align elements to a shared grid.
+  - Keep a screen's main content to two or three text sizes, the most important the largest, and count them on the render (RX-AS-10).
+  - State the shape lock in one sentence, a radius per component role ("action buttons pill, cards 16, inputs 12, sheets 28").
+  - Keep emphasis inside the type family (weight or size), not a second face dropped into one word.
 - Do not: Pick spacing and sizes one element at a time.
 - Why: A scale produces rhythm and makes hierarchy legible. (Material Design 8dp grid; NNGroup principles of visual design (scale: two or three sizes); shape lock and in-family emphasis: pattern also in appllama-app-design-skill (MIT); written for RYUX)
 - Not when: a one-off marketing piece outside the product
@@ -172,7 +178,10 @@ A design direction from comparable screens: `extract_design_direction` (patterns
 
 ### RX-UI-04 [Preferred] [Quality Lock] A palette with roles
 
-- Do: Use a small set of colors with defined roles: surface, text, accent for the primary action, and status colors. Pick one grey family, warm or cool, for surfaces, borders, and secondary text. Elements that behave the same look the same, and elements that behave differently look different: a destructive action has its own color role, not the primary accent. Lower importance with size, weight, or position, never by lowering text contrast.
+- Do: Use a small set of colors with defined roles: surface, text, accent for the primary action, and status colors.
+  - Pick one grey family, warm or cool, for surfaces, borders, and secondary text.
+  - Elements that behave the same look the same, and elements that behave differently look different: a destructive action has its own color role, not the primary accent.
+  - Lower importance with size, weight, or position, never by lowering text contrast.
 - Do not: Introduce new colors per component, or use the accent for decoration.
 - Why: When color has a role, the accent and status colors mean something. (ryux visual principle; NNGroup principles of visual design (contrast signals a different function; similarity); isolation effect (von Restorff 1933): the one item that differs is the one remembered, so the accent marks only the primary action; one grey family: pattern also in appllama-app-design-skill (MIT); written for RYUX)
 - Not when: data visualization, which needs its own categorical or sequential palette
@@ -210,7 +219,8 @@ A design direction from comparable screens: `extract_design_direction` (patterns
 
 ### RX-UI-10 [Preferred] Visual language is chosen, not defaulted
 
-- Do: Derive the art direction from the brand, the audience, the product context, and reference screens, and write it as a Visual Brief (objective, concept, composition, color, material, lighting, motion, avoid) before designing an expressive surface or generating images, 3D, or motion. For a new product, decide the brand direction before the tokens, task UI included: palette, type, and shape follow from the product's character (fast, warm, trusted, and so on), not from the one accent that passes contrast.
+- Do: Derive the art direction from the brand, the audience, the product context, and reference screens, and write it as a Visual Brief (objective, concept, composition, color, material, lighting, motion, avoid) before designing an expressive surface or generating images, 3D, or motion.
+  - For a new product, decide the brand direction before the tokens, task UI included: palette, type, and shape follow from the product's character (fast, warm, trusted, and so on), not from the one accent that passes contrast.
 - Do not: Reach for the category cliché (coins, money rain, floating dashboards, or gradient blobs for fintech; generic 3D characters for any app), or write an image prompt without a brief (role, concept, composition).
 - Why: A default visual language makes the product interchangeable with its competitors. (art direction practice; RX-AS-05 purpose gate)
 - Not when: an existing brand system already defines the visual language; follow it
@@ -220,7 +230,10 @@ A design direction from comparable screens: `extract_design_direction` (patterns
 ### RX-UI-11 [Contextual] Motion earns its level
 
 - When: the design adds motion or transitions
-- Do: Classify each motion: L1 state feedback, L2 component transition, L3 page transition, L4 storytelling, L5 decorative. The higher the level, the stronger the reason it needs. Then weigh how often people see it: a surface opened many times a day (command palette, shortcut, core navigation, list selection) appears and closes without movement, at most a fade too short to notice; standard transitions belong to occasional surfaces (modal, drawer, toast), and expression to rare or first-time moments. Take timing and easing from one motion personality, define them once as motion tokens, animate transform and opacity rather than layout properties, and honor reduced motion (RX-A11Y-08). Anything that opens and closes (menu, popover, dialog, drawer) uses transitions that can reverse halfway, so a close or reopen mid-animation turns back from where it is, and it closes no slower than it opened.
+- Do: Classify each motion: L1 state feedback, L2 component transition, L3 page transition, L4 storytelling, L5 decorative; the higher the level, the stronger the reason it needs.
+  - Weigh how often people see it: a surface opened many times a day (command palette, shortcut, core navigation, list selection) appears and closes without movement, at most a fade too short to notice; standard transitions belong to occasional surfaces (modal, drawer, toast), and expression to rare or first-time moments.
+  - Take timing and easing from one motion personality, define them once as motion tokens, animate transform and opacity rather than layout properties, and honor reduced motion (RX-A11Y-08).
+  - Anything that opens and closes (menu, popover, dialog, drawer) uses transitions that can reverse halfway, so a close or reopen mid-animation turns back from where it is, and it closes no slower than it opened.
 - Do not: Animate everything, give a surface people open many times a day an entrance they must sit through, play an open-only keyframe animation on something people can close or reopen at any moment, use one generic duration and easing (transition: all 0.3s) everywhere, let decorative motion delay content or input, or move data the user is reading (a balance, an amount, a table value) for effect.
 - Why: Motion directs attention; unearned motion steals it from the task and can make some people unwell. (NNGroup animation and usability guidance; WCAG 2.3.3 animation from interactions; frequency check: pattern also in emilkowalski/skills (MIT) find-animation-opportunities; reversible open and close: pattern also in emilkowalski/skills (MIT) animate; default timing, press state, and still data: pattern also in appllama-app-design-skill (MIT); all written for RYUX)
 - Not when: L1 feedback on standard controls that follows the platform defaults
@@ -229,11 +242,13 @@ A design direction from comparable screens: `extract_design_direction` (patterns
 
 ### RX-UI-12 [Contextual] A point of view on expressive surfaces
 
-- When: the surface is expressive: a hero, landing page, onboarding, empty state, or brand moment, or the brief asks for a new look or more personality; on a new product's task UI, the brand layer only (see Not when)
-- Do: Before designing, make two or three directions, each with a name, a concept taken from the product's own idea (for a tool about evidence: receipts, citations, marks of proof), and a signature element (type, composition, imagery, or motion). Render them as frames of the main state with the same content, different on at least two structural axes (information order, layout model, interaction model, type class, colour temperature), rate each against criteria taken from the brief, recommend one (RX-PR-09), and let the user choose; then make the rest of the design serve the chosen signature and put its concept in the Visual Brief. When the brief names reference products, read each one before it shapes the direction: the principle you borrow, what stays theirs (colours, mascot, signature features), and where you use it.
-- Do not: Show directions that differ only in colour or copy, choose for the user without showing them, or let the signature be the category's default (for developer tools a terminal or agent-session panel; for SaaS a dashboard screenshot; copy on the left and product on the right), or relabel that default as a concept. A product screen can support the signature, not be it. Turn a named reference into adjectives ("calm, white, soft") or copy what belongs to its brand.
+- When: the surface is expressive: a hero, landing page, onboarding, empty state, or brand moment, or the brief asks for a new look or more personality; on a new product's task UI, the brand layer only (see Do)
+- Do: Run Explore (capabilities/design.md, stage 3) with alternatives that each carry a name, a concept taken from the product's own idea (for a tool about evidence: receipts, citations, marks of proof), and a signature element (type, composition, imagery, or motion); then make the rest of the design serve the chosen signature and put its concept in the Visual Brief.
+  - On task UI: the alternatives are structure hypotheses and the conventions that must hold stay fixed. A new product's brand layer must carry one signature from its own domain (a mark, the type voice, a colour temperature, or one brand moment in the flow), never a layout change and never decoration without a job (RX-AS-05). Record it in the Delivery Gate UI line.
+  - When the brief names reference products, read each one before it shapes the alternatives: the principle you borrow, what stays theirs (colours, mascot, signature features), and where you use it.
+- Do not: Show alternatives that differ only in colour or copy, choose for the user without showing them, or let the signature be the category's default (for developer tools a terminal or agent-session panel; for SaaS a dashboard screenshot; copy on the left and product on the right), or relabel that default as a concept. A product screen can support the signature, not be it. Turn a named reference into adjectives ("calm, white, soft") or copy what belongs to its brand.
 - Why: Users remember a product by its idea; a correct but generic surface is forgotten and could belong to any competitor. (brand and art direction practice; RX-UI-05 layout from content; rendered variants on named axes, compared side by side, chosen by the user: pattern also in emilkowalski/skills (MIT) prototype; written for RYUX)
-- Not when: task UI such as forms, tables, settings, and checkout, where restraint and convention win: the alternatives come from Explore (capabilities/design.md, step 3) as structure hypotheses, and the conventions that must hold stay fixed. A new product's brand layer must carry one signature from the product's own domain (a mark, the type voice, a colour temperature, or one brand moment in the flow), never a layout change and never decoration without a job (RX-AS-05). Record it in the Delivery Gate UI line
+- Not when: an existing product whose brand system already sets the brand layer, or a small change inside a fixed design system; follow it
 - Trade-off: a strong idea takes a decision someone may disagree with; keep it honest and on brand
 - Check: the swap test (RX-AS-09); review
 
@@ -249,7 +264,13 @@ A design direction from comparable screens: `extract_design_direction` (patterns
 
 ### RX-UI-14 [Preferred] [Quality Lock] Type that is set, not only sized
 
-- Do: Keep body paragraphs at 45 to 75 characters per line, checked in the render; take line-height from size (about 1.5 for body, 1.2 to 1.3 for headings, about 1.1 for display); open small uppercase labels slightly (about 0.05em) and tighten large display text slightly; use tabular figures for numbers that are compared or that change (amounts, tables, timers); use at most two families and three weights; balance headings so none ends on one stranded word.
+- Do: Set the type, not only its size:
+  - body paragraphs at 45 to 75 characters per line, checked in the render
+  - line-height from size: about 1.5 for body, 1.2 to 1.3 for headings, about 1.1 for display
+  - small uppercase labels opened slightly (about 0.05em), large display text tightened slightly
+  - tabular figures for numbers that are compared or that change (amounts, tables, timers)
+  - at most two families and three weights
+  - headings balanced so none ends on one stranded word
 - Do not: Let paragraphs run the full width of a desktop container, use one line-height for every size, set uppercase labels with no tracking, or let amounts in a column shift because digits differ in width.
 - Why: Line length and leading decide whether text is read or skimmed; aligned figures make numbers comparable at a glance. (Bringhurst, The Elements of Typographic Style (a measure of 45 to 75 characters; leading by size); WCAG 2.2 SC 1.4.12 text spacing; OpenType tnum; Apple HIG and Material type scales)
 - Not when: a single display line or a logo lockup, where the type is an image

@@ -36,8 +36,7 @@ design-system, accessibility, responsive, frontend, and anti-slop. Evidence come
 project, product data, standards, and the ryux MCP when connected; none is required. Every entry point ends at the quality gates: the Hard
 Gates below and the Delivery Gate, with anti-slop as the last check, never the starting point.
 
-Keep the capabilities apart, never one generic "design" answer: Analyze says what exists, Design what
-to do and why, Critique whether a decision is right, QA whether the build matches the intent.
+Keep them apart: Analyze says what exists, Design what to do, Critique if it is right, QA if it matches.
 
 ## How RYUX works
 
@@ -46,7 +45,7 @@ One workflow, six stages; each entry point runs the stages it needs.
 1. **Understand**: who, what task, which product and market (RX-PR-01). Read the RYUX project
    context in DESIGN.md, then the product docs (Product docs paths, else PRD.md, docs/prd*,
    docs/product*, README), and name what you read. Separate facts, assumptions, and unknowns
-   (RX-PR-02); ask and record direction as in capabilities/design.md, step 1. DESIGN.md is
+   (RX-PR-02); ask and record direction as in capabilities/design.md, stage 1. DESIGN.md is
    direction, not evidence. Read the entry point's file and only the modules the task table lists.
 2. **Frame**: the user's task, the flow, what must be seen first, the primary action, and three to
    five success criteria from the brief, written before any alternative exists.
@@ -63,10 +62,10 @@ Critique runs 1 and the critique half of 5. QA runs 6. Never go from "generate" 
 
 ## Principle
 
-Novelty is not a goal; a recognisable brand layer is: familiar structure, distinct surface. Optimize for clarity, usability, consistency, product fit,
-accessibility, and intentional decisions. Understand the context before deciding; separate observed
-facts from assumptions; prefer evidence over aesthetic preference; do not invent requirements;
-explain meaningful decisions with their trade-off; validate before claiming.
+Novelty is not a goal; a recognisable brand layer is: familiar structure, distinct surface.
+Optimize for clarity, usability, consistency, product fit, accessibility, and intentional decisions.
+Understand the context first; keep observed facts apart from assumptions; prefer evidence over
+taste; invent no requirements; give each meaningful decision its trade-off; validate before claiming.
 
 ## Evidence model
 
@@ -166,7 +165,8 @@ FINAL          PASS | FAIL | NOT VERIFIED
 
 Report what was checked, how, and what was not available. Do not claim "pixel perfect",
 "fully accessible", "production ready", "senior-level", or "UX optimized" without evidence. Say
-"Keyboard and focus checked by hand; no automated accessibility test was available" instead. Rule IDs and gate results belong in your report, never on the design itself.
+"Keyboard and focus checked by hand; no automated accessibility test was available" instead.
+Rule IDs and gate results belong in your report, never on the design itself.
 
 ## Design Decision Record
 
