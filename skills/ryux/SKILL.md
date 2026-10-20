@@ -14,7 +14,7 @@ generator, an anti-slop framework, a design system, or a prompt library.
 **Understand before you design. Don't design from imagination when evidence is available.**
 
 ```
-Analyze → Design → Build → Critique → QA → Anti-Slop (final gate) → done
+Understand → Frame → Explore → Evaluate and select → Build and critique → Verify and deliver → done
 ```
 
 ## Start with what you are doing
@@ -36,30 +36,30 @@ design-system, accessibility, responsive, frontend, and anti-slop. Evidence come
 project, product data, standards, and the ryux MCP when connected; none is required. Every entry point ends at the quality gates: the Hard
 Gates below and the Delivery Gate, with anti-slop as the last check, never the starting point.
 
-Keep the capabilities apart; do not collapse them into one generic "design" answer:
-
-| Capability | Answers | Example |
-| --- | --- | --- |
-| Analyze | What exists? | "The screen uses a 24px horizontal container." (observed) |
-| Design | What should we do, and why? | "Keep 24px: it matches the existing layout system." |
-| Critique | Is this decision right? | "24px leaves the table too sparse at 1440 for daily use." |
-| QA | Does the build match the intent? | "The build uses 16px where the design says 24px." |
+Keep the capabilities apart, never one generic "design" answer: Analyze says what exists, Design what
+to do and why, Critique whether a decision is right, QA whether the build matches the intent.
 
 ## How RYUX works
 
-1. **Understand the request**: who, what task, which product and market (RX-PR-01). Read the
-   RYUX project context in DESIGN.md, then the product docs (Product docs paths, else PRD.md,
-   docs/prd*, docs/product*, README), and name what you read. Ask and record direction as in
-   capabilities/design.md, step 1; assume the rest visibly. DESIGN.md is direction, not evidence.
-2. **Pick the entry point** and read its file.
-3. **Select knowledge**: read the modules the task table lists, and no others.
-4. **Gather evidence**: reference screens through the ryux MCP when connected; otherwise say so.
-5. **Reason**: decide with evidence (RX-PR-09, RX-PR-10); on expressive surfaces, set a point of
-   view first (RX-UI-12).
-6. **Produce**, then render and inspect what you made.
-7. **Run the gates**: Hard Gates and the Delivery Gate, with honest claims.
+One workflow, six stages; each entry point runs the stages it needs.
 
-Skip steps that do not apply, but never go from "generate" straight to "done".
+1. **Understand**: who, what task, which product and market (RX-PR-01). Read the RYUX project
+   context in DESIGN.md, then the product docs (Product docs paths, else PRD.md, docs/prd*,
+   docs/product*, README), and name what you read. Separate facts, assumptions, and unknowns
+   (RX-PR-02); ask and record direction as in capabilities/design.md, step 1. DESIGN.md is
+   direction, not evidence. Read the entry point's file and only the modules the task table lists.
+2. **Frame**: the user's task, the flow, what must be seen first, the primary action, and three to
+   five success criteria from the brief, written before any alternative exists.
+3. **Explore**: on a new or complex surface, two or three alternatives that differ in hypothesis and
+   structure, not paint; reference screens through the ryux MCP when connected. A small change skips it.
+4. **Evaluate and select**: rate the alternatives against the Frame criteria with evidence
+   (RX-PR-09, RX-PR-10); the user picks; write the Decision Receipt.
+5. **Build and critique**: design or implement the choice, render, inspect, and fix; Reconsider an
+   unchosen alternative when a finding contradicts the choice, and say why.
+6. **Verify and deliver**: Hard Gates and the Delivery Gate, with honest claims.
+
+Analyze runs 1. Design runs 1-6. Build runs 1, 5, and 6 (2-4 through Design when no design exists).
+Critique runs 1 and the critique half of 5. QA runs 6. Never go from "generate" straight to "done".
 
 ## Principle
 

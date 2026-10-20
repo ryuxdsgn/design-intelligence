@@ -75,6 +75,8 @@ Assumption   [CONFIRM] The fee is charged on top of the amount.
 ## How it works
 
 Say what you are doing, in your own words. RYUX picks the step and reads only the knowledge it needs.
+Behind every capability runs one workflow: understand, frame the problem, explore two or three
+alternatives, evaluate them against the brief (you pick), build and critique, then verify.
 
 | Capability | What it does |
 | --- | --- |

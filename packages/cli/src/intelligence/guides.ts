@@ -12,7 +12,7 @@ generator, an anti-slop framework, a design system, or a prompt library.
 **Understand before you design. Don't design from imagination when evidence is available.**
 
 \`\`\`
-Analyze → Design → Build → Critique → QA → Anti-Slop (final gate) → done
+Understand → Frame → Explore → Evaluate and select → Build and critique → Verify and deliver → done
 \`\`\``;
 
 export const CORE_CAPABILITIES = `Tell RYUX what you are doing; RYUX decides what it needs to know. Pick the entry point, read its
@@ -32,33 +32,33 @@ design-system, accessibility, responsive, frontend, and anti-slop. Evidence come
 project, product data, standards, and the ryux MCP when connected; none is required. Every entry point ends at the quality gates: the Hard
 Gates below and the Delivery Gate, with anti-slop as the last check, never the starting point.
 
-Keep the capabilities apart; do not collapse them into one generic "design" answer:
-
-| Capability | Answers | Example |
-| --- | --- | --- |
-| Analyze | What exists? | "The screen uses a 24px horizontal container." (observed) |
-| Design | What should we do, and why? | "Keep 24px: it matches the existing layout system." |
-| Critique | Is this decision right? | "24px leaves the table too sparse at 1440 for daily use." |
-| QA | Does the build match the intent? | "The build uses 16px where the design says 24px." |`;
+Keep the capabilities apart, never one generic "design" answer: Analyze says what exists, Design what
+to do and why, Critique whether a decision is right, QA whether the build matches the intent.`;
 
 export const CORE_PRINCIPLE = `Novelty is not a goal; a recognisable brand layer is: familiar structure, distinct surface. Optimize for clarity, usability, consistency, product fit,
 accessibility, and intentional decisions. Understand the context before deciding; separate observed
 facts from assumptions; prefer evidence over aesthetic preference; do not invent requirements;
 explain meaningful decisions with their trade-off; validate before claiming.`;
 
-export const CORE_WORKFLOW = `1. **Understand the request**: who, what task, which product and market (RX-PR-01). Read the
-   RYUX project context in DESIGN.md, then the product docs (Product docs paths, else PRD.md,
-   docs/prd*, docs/product*, README), and name what you read. Ask and record direction as in
-   capabilities/design.md, step 1; assume the rest visibly. DESIGN.md is direction, not evidence.
-2. **Pick the entry point** and read its file.
-3. **Select knowledge**: read the modules the task table lists, and no others.
-4. **Gather evidence**: reference screens through the ryux MCP when connected; otherwise say so.
-5. **Reason**: decide with evidence (RX-PR-09, RX-PR-10); on expressive surfaces, set a point of
-   view first (RX-UI-12).
-6. **Produce**, then render and inspect what you made.
-7. **Run the gates**: Hard Gates and the Delivery Gate, with honest claims.
+export const CORE_WORKFLOW = `One workflow, six stages; each entry point runs the stages it needs.
 
-Skip steps that do not apply, but never go from "generate" straight to "done".`;
+1. **Understand**: who, what task, which product and market (RX-PR-01). Read the RYUX project
+   context in DESIGN.md, then the product docs (Product docs paths, else PRD.md, docs/prd*,
+   docs/product*, README), and name what you read. Separate facts, assumptions, and unknowns
+   (RX-PR-02); ask and record direction as in capabilities/design.md, step 1. DESIGN.md is
+   direction, not evidence. Read the entry point's file and only the modules the task table lists.
+2. **Frame**: the user's task, the flow, what must be seen first, the primary action, and three to
+   five success criteria from the brief, written before any alternative exists.
+3. **Explore**: on a new or complex surface, two or three alternatives that differ in hypothesis and
+   structure, not paint; reference screens through the ryux MCP when connected. A small change skips it.
+4. **Evaluate and select**: rate the alternatives against the Frame criteria with evidence
+   (RX-PR-09, RX-PR-10); the user picks; write the Decision Receipt.
+5. **Build and critique**: design or implement the choice, render, inspect, and fix; Reconsider an
+   unchosen alternative when a finding contradicts the choice, and say why.
+6. **Verify and deliver**: Hard Gates and the Delivery Gate, with honest claims.
+
+Analyze runs 1. Design runs 1-6. Build runs 1, 5, and 6 (2-4 through Design when no design exists).
+Critique runs 1 and the critique half of 5. QA runs 6. Never go from "generate" straight to "done".`;
 
 export const DESIGN_BODY = `# RYUX Design
 
@@ -67,7 +67,9 @@ export const DESIGN_BODY = `# RYUX Design
 
 ## Workflow
 
-1. **Context.** Who, what task, which product and market, and the design intent
+The six stages of the core workflow (SKILL.md), as Design runs them.
+
+1. **Understand.** Who, what task, which product and market, and the design intent
    (knowledge/product.md). Take it from the prompt, then DESIGN.md, then knowledge and evidence.
    Read the product docs first (the router, step 1). Ask only when a missing answer materially
    affects the user flow, what the product can do, or whether the content is correct, those
@@ -89,46 +91,54 @@ export const DESIGN_BODY = `# RYUX Design
    (\`- **UI direction**: Calm, trustworthy\`). If DESIGN.md or the block does not exist, create it
    with those two fields. Change only those field lines; leave every other line as it is. Your own
    assumptions do not go into DESIGN.md.
-2. **Understand what exists.** When there is a screen, product, or design system already, read its
+   **What exists.** When there is a screen, product, or design system already, read its
    analysis or run Analyze first (capabilities/analyze.md). Existing screens, components, and any
    screenshot or reference provided are your examples: read them before choosing patterns, take
    their principles, and never copy their facts. Understand before you design. When the task
    redesigns or improves what exists, list what works and keep it; change only what has a named
    problem (RX-UX-10).
-3. **Read the modules the task needs** from the task table before deciding anything, for example ux,
+   **Modules.** Read the modules the task needs from the task table before deciding anything, for example ux,
    interaction, forms, and content for a form, or ui and responsive for a layout; for any surface
    with a visual direction, ui and anti-slop as well. The rules shape the first idea, not only the
    review of it.
-4. **Decide with evidence.** For consequential choices, compare two or three patterns, using
-   reference screens when the ryux MCP is connected (RX-PR-09), and rate the evidence (RX-PR-10).
-   On a complex or ambiguous surface (a new flow, a dashboard, a multi-step form), name the primary
-   task, the one thing that must be seen first, and two or three UX approaches (structure and
-   interaction model) before any visual work, and choose by the task; a small change skips this.
-5. **Direction.** Write the Design Direction below. On task UI, follow conventions and the design
-   system; a new product's brand layer may carry one signature from its own domain, never a layout
-   change (RX-UI-12, Not when). On an expressive surface (hero, landing, onboarding, empty state, brand moment), or when
-   the brief asks for a new look or more personality, explore on the canvas before choosing (RX-UI-12):
-   - Render three directions as frames side by side: the main state only, the same content and
-     sample data in each, each labelled with a name and a one-line concept.
+2. **Frame.** Name the primary task, the flow, the one thing that must be seen first, and the
+   primary action. Write three to five success criteria from the brief (the user's main task, what
+   must be seen first, the brief's character words, conventions that must hold) before any
+   alternative exists; Explore and Evaluate use these, and they do not change after you see the
+   alternatives. For consequential choices, list the two or three patterns to compare, using
+   reference screens when the ryux MCP is connected (RX-PR-09).
+3. **Explore.** On a new screen or flow, a complex or ambiguous surface, or a brief that asks for a
+   new look, render two or three alternatives as frames side by side: the main state only, the same
+   content and sample data in each, each labelled with a name and a one-line hypothesis.
+   - Each alternative is a hypothesis about what this user needs, not a style: on task UI, for
+     example, task-first (status and the next action lead), editorial (type and composition carry
+     the hierarchy), or expressive-brand (the brand layer leads without slowing the task). Choose
+     hypotheses that fit this product; never force three.
    - Make them differ in structure, not paint: every two of them differ on at least two of
-     information order (what comes first), layout model, interaction model (where the main action
-     lives), type class, and colour temperature. The same layout in new colours is the same
-     direction; replace it.
-   - Judge them against the brief, not taste: take three to five criteria from the context (the
-     user's main task, what must be seen first, the brief's character words, conventions that must
-     hold), rate each direction Strong, Adequate, or Weak with one reason each, and recommend one
-     with a Decision Receipt. "It looks better" is not a reason.
-   - Then stop and let the user choose. Build only the chosen one into the full design (states,
-     widths, Visual Direction, RX-UI-10) and mark the others on the canvas as not chosen. When the
-     user has already said to pick for them, continue with the recommendation and say so.
-6. **Design in the tool.** Use the Figma MCP or the pen.dev MCP. System first: look for the design
+     hierarchy, information order, composition or layout model, navigation or interaction model
+     (where the main action lives), and brand expression (type class, colour temperature). The same
+     layout in new colours is the same alternative; replace it. Conventions that must hold stay fixed
+     in all of them (RX-UX-08).
+   - On task UI the brand layer carries one signature from the product's own domain, never a layout
+     change for its own sake (RX-UI-12); on an expressive surface the signature can lead.
+   - A small change, or a screen inside a fixed design system, skips Explore: say so and continue.
+4. **Evaluate and select.** Rate each alternative against the Frame criteria, Strong, Adequate, or
+   Weak with one reason each, rate the evidence (RX-PR-10), and recommend one with a Decision Receipt.
+   "It looks better" is not a reason. Then stop and let the user choose. Build only the chosen one
+   into the full design (states, widths, Visual Direction, RX-UI-10), write the Design Direction
+   below, and mark the others on the canvas as not chosen. When the user has already said to pick for
+   them, continue with the recommendation and say so.
+   **Modes after the choice.** Refine improves the chosen alternative without losing its hypothesis.
+   Reconsider returns to an unchosen alternative when a later finding or new evidence contradicts the
+   choice: name the finding, show the alternative again, and let the user decide.
+5. **Design in the tool, then critique it.** Use the Figma MCP or the pen.dev MCP. System first: look for the design
    system that exists (DESIGN.md, a tokens or theme file in the repo, the design file's variables and
    components, a linked library) and build from it. Create only what is missing: variables for color
    roles, spacing, radius, and type sizes and families before the first frame, and components for
    repeated elements (RX-DS-03). Building the system does not replace the states: design every
    state that matters (empty, loading, error, including content that fails to load) and every width
    you claim, and source assets on purpose (RX-UI-13).
-7. **Render and inspect.** Screenshot what you made, check it against the direction and the rules,
+   **Render and inspect.** Screenshot what you made, check it against the direction and the rules,
    fix, and render again (capabilities/qa.md). Count the values still literal (color, spacing,
    radius, type size) and turn each into a variable or name the exception, then run the counts of
    RX-AS-10 (accent hues, grey families, radii, display sizes, icon sets, emoji, invented marks, gradients, labels
@@ -136,7 +146,7 @@ export const DESIGN_BODY = `# RYUX Design
    checks from Critique (control beside its data, primary action that reads as an action, not a tab, no fact
    twice, grouped by what the user checks together), fix what fails, render again, and check each fix.
    Weight ranking: list the screen's blocks in order of visual weight (size × contrast × surface) and
-   compare it with the priority order from step 4. If two blocks of different priority render with the
+   compare it with the priority order from Frame (step 2). If two blocks of different priority render with the
    same heading style and container, change one. On a checkout or order screen, the choice that sets
    the price and the total rank first and second. A width check is a test, not a deliverable: list
    what broke at each width (wrap, truncation, overflow), fix it or record why it is acceptable, and
@@ -153,7 +163,7 @@ export const DESIGN_BODY = `# RYUX Design
    weaker for the task, and say so when no reference was available. Generated images and illustrations arrive
    asynchronously: wait until each one has landed and render again before exporting or closing the
    gate. Never finish with an asset still pending.
-8. **Fact check, then the gate.** Check every product fact on the canvas (tool and command names,
+6. **Verify and deliver.** Check every product fact on the canvas (tool and command names,
    integrations, platforms, pages, numbers) against the brief or the repo (RX-PR-02). Canvas copy is
    for the team, not for RYUX: annotations, state captions, and labels on the canvas use plain
    language ("Shown while prices load; button disabled"); rule IDs, gate results, and Decision
@@ -239,12 +249,15 @@ export const BUILD_BODY = `# RYUX Build
 
 > Implement or change the interface in code, faithfully and in the repo's own stack.
 
+Build runs Understand (steps 1-3), Build and critique (4-6), and Verify and deliver (7) of the core
+workflow (SKILL.md); Frame, Explore, and Evaluate happen in Design.
+
 1. **Read the repo first**: the stack, components, tokens, conventions, the architecture already
    used (where components, state, pure logic, and data access live), and the test runner
    (knowledge/frontend.md, knowledge/design-system.md). Reuse before creating.
 2. **Find the design source**: the Design Direction, a Figma or pen.dev design, a DESIGN.md, or an
-   approved mockup; it is the spec. If there is none, run Design first (capabilities/design.md)
-   instead of inventing one in code.
+   approved mockup; it is the spec. If there is none, run Design's Frame, Explore, and Evaluate
+   first (capabilities/design.md, steps 2-4) instead of inventing one in code.
 3. **Read the modules the task needs** from the task table: for example accessibility, responsive,
    and edge-cases for any UI, and forms and content for a form. When the build adds motion or
    transitions, read knowledge/ui.md (RX-UI-11) before writing any: how often the surface is seen
@@ -252,7 +265,8 @@ export const BUILD_BODY = `# RYUX Build
 4. **Implement faithfully.** Use semantic elements, existing components, and real data paths.
    Build must not invent business rules, prices, or limits; API behavior or response shapes; or
    data presented as real (RX-FE-02, RX-PR-02). It must not silently change a design decision: a
-   change goes back to Design as a new Decision Receipt. Mark every assumption in the code. Give
+   change goes back to Design as a new Decision Receipt, and when the code shows the chosen design
+   cannot work (data, platform, performance), say so and send it back to Reconsider. Mark every assumption in the code. Give
    each piece of logic one home in the repo's existing layers, never a copy (RX-FE-13).
 5. **Test what can break.** Unit tests for new or changed pure logic, edge cases included;
    integration tests for critical flows such as checkout, payment, and form submit. Use the
@@ -687,7 +701,7 @@ Check the stated viewport and the smallest supported width. No horizontal page s
 
 Does not cover: visual decisions (see ryux-ui) or component reuse decisions (see ryux-design-system).`,
 
-  "visual-qa": `Visual QA asks one question: **did the implementation match the intended design?** Whether the
+  "visual-qa": `Visual QA is the Verify and deliver stage of the core workflow (SKILL.md) for a build. It asks one question: **did the implementation match the intended design?** Whether the
 design itself is good is Critique's question (ryux-critique).
 
 **With a reference** (a Figma or pen.dev frame, DESIGN.md, or an approved screenshot):
@@ -733,7 +747,7 @@ widths) or NOT VERIFIED (why); motion read only from code is NOT VERIFIED.
 **Rank issues by impact**: blocks the task, misleads (wrong numbers, unclear action), adds friction,
 polish.`,
 
-  "anti-slop": `Anti-slop runs last, after design, build, critique, and QA; it is the final quality gate, never the
+  "anti-slop": `Anti-slop runs in Verify and deliver, after design, build, critique, and QA; it is the final quality gate, never the
 starting point. Anti-slop is the floor, not the ceiling: a tidy, generic surface still fails on expressive
 surfaces (RX-AS-09), and the point of view comes from RX-UI-12. Anti-slop is not a list of banned
 styles. It has three parts.

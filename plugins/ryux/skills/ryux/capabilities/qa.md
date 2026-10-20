@@ -4,7 +4,7 @@ Verifies the build against the intended design: render it, list every deviation,
 
 > Group Quality · Delivery Gate area VISUAL QA · RYUX 2.12.0. Levels are defined in `SKILL.md`.
 
-Visual QA asks one question: **did the implementation match the intended design?** Whether the
+Visual QA is the Verify and deliver stage of the core workflow (SKILL.md) for a build. It asks one question: **did the implementation match the intended design?** Whether the
 design itself is good is Critique's question (`capabilities/critique.md`).
 
 **With a reference** (a Figma or pen.dev frame, DESIGN.md, or an approved screenshot):

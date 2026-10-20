@@ -11,7 +11,8 @@ export const ANALYZE_BODY = `# RYUX Analyze
 > What is actually in this interface?
 
 Analyze answers "what exists?" and nothing more: it describes an existing design so that the next
-decision (design, build, or critique) starts from facts. It is not screenshot-to-code, and it does not judge quality; that is
+decision (design, build, or critique) starts from facts; it is the Understand stage of the core
+workflow (SKILL.md) on its own. It is not screenshot-to-code, and it does not judge quality; that is
 \`ryux-critique\`. When the ryux MCP is connected, comparable Indonesian screens back the patterns
 you name (\`search_screens\`, \`get_local_pattern\`).
 
