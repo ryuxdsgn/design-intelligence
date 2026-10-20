@@ -200,13 +200,13 @@ line below for its exact source.
 <!-- provenance:start -->
 | Source cited | Rules citing it | Rules citing only this |
 | --- | --- | --- |
-| Public standard or research | 66 | 49 |
+| Public standard or research | 67 | 50 |
 | Industry practice | 12 | 5 |
 | Observed in a RYUX run | 15 | 8 |
 | Pattern also in another MIT ruleset (text written for RYUX) | 4 | 4 |
 | RYUX principle, taxonomy, or review | 32 | 19 |
 
-All 107 rules cite a source; 22 cite more than one kind, so the "Rules citing it" column adds up to more than 107.
+All 108 rules cite a source; 22 cite more than one kind, so the "Rules citing it" column adds up to more than 108.
 <!-- provenance:end -->
 
 ## Rules
@@ -214,7 +214,7 @@ All 107 rules cite a source; 22 cite more than one kind, so the "Rules citing it
 Generated from `packages/cli/src/content.ts` by `pnpm sync:skills`. Edit the rules there, not here.
 
 <!-- rules:start -->
-107 rules across 13 modules: 59 Required, 19 Preferred, 29 Contextual; 17 Hard Gates and 11 Quality Locks.
+108 rules across 13 modules: 59 Required, 19 Preferred, 30 Contextual; 17 Hard Gates and 11 Quality Locks.
 
 ### Product thinking (RX-PR) · `knowledge/product.md`
 
@@ -326,11 +326,13 @@ Gate area UX. Covers information architecture, navigation, flows, grouping, disc
 - Trade-off: late sign-in can lose a cart or draft if it is not carried over
 - Check: review
 
-#### RX-UX-08 [Preferred] Recognition over recall
+#### RX-UX-08 [Preferred] Recognition over recall; the product carries the load
 
 - Do: Show options and context (recent items, saved addresses, visible choices) instead of asking users to remember them.
-- Do not: Make users retype or recall information the app already has.
-- Why: Recognizing is easier and less error-prone than remembering. (Nielsen heuristic 6 (1994); limited working memory (Miller 1956; Cowan 2001))
+  - Take over what users would otherwise read, remember, or decide: a smart default from the last choice, information they entered shown again where they need it, a picture where it is faster than text, and familiar patterns that need no learning.
+  - Cut extraneous load (decoration, redundant links, meaningless type flourishes, a new pattern for a solved problem) and keep the intrinsic load, the content and decisions that are the task itself.
+- Do not: Make users retype or recall information the app already has, or cut content the task needs to make the screen look lighter.
+- Why: Working memory is small; every task the product takes over leaves more of it for the decisions that matter. (Nielsen heuristic 6 (1994); limited working memory (Miller 1956; Cowan 2001); NNGroup minimize cognitive load (intrinsic and extraneous load; avoid clutter, build on mental models, offload tasks))
 - Not when: a one-time task, where showing history or saved values adds clutter
 - Trade-off: higher visual density; more on screen to scan
 - Check: heuristic_eval H-06
@@ -884,6 +886,20 @@ Gate area UI. Covers the visual expression of a product: hierarchy, type, layout
 - Do not: Let icons sit high or low against their labels, mix stroke weights, center amounts in a table, or invent a one-off shadow for one card.
 - Why: Each detail is small; together they are what makes a screen look made rather than generated. (Bringhurst (figures and alignment); Apple HIG and Material iconography (optical size and alignment); owner review 2026-10-17: wrong tab icons in withryux.pen)
 - Check: render inspection at 390 and 1280: icon center within 2 px of the text center; column alignment
+
+#### RX-UI-16 [Contextual] Delight stands on three legs
+
+- When: the brief asks for delight, personality, or a memorable experience, or the design adds a moment meant to please (an animation, an illustration, a reward)
+- Do: Build delight on all three of Norman's levels, in this order of dependence:
+  - behavioral: the task is easier than the user expected; no delight covers a usability problem
+  - visceral: the first impression comes from the brand layer (RX-UI-12), not from decoration without a job
+  - reflective: the product speaks to the user's values and aims, not only the task ("membangun kebiasaan membaca", not only "target 8 halaman")
+  - Read the user's state before adding joy: none in a payment failure, an error, a loss, or a long wait; there the delight is a fast, calm way out.
+- Do not: Add confetti, mascots, or jokes to a flow that is still hard to use, or celebrate in a moment of failure or worry.
+- Why: Delight on one leg is superficial and people remember the bad more than the good; forced joy at the wrong moment annoys. (NNGroup three pillars of user delight (visceral, behavioral, reflective; Norman, Emotional Design); NNGroup delightful UX video)
+- Not when: a utility or internal tool whose brief asks for none; ease of use is its delight
+- Trade-off: the reflective layer needs knowledge of what users value, which may need research
+- Check: review; Critique Design Read
 
 ---
 

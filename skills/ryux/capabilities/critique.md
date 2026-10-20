@@ -123,7 +123,8 @@ At the hierarchy layer, run four checks on every screen and report each failure 
 - Does any fact appear twice?
 - Are the things the user checks together grouped?
 (RX-UI-01, RX-UX-01.) Look for them even on a screen that is otherwise tidy: they are the defects a
-clean layout hides best.
+clean layout hides best. Then ask what the user must read, remember, or decide that the product
+could carry (RX-UX-08); report extraneous load, never the content the task needs.
 
 | Category | Skill | Look for |
 | --- | --- | --- |
@@ -251,10 +252,12 @@ and 7 above still apply; the mode replaces steps 3 to 5 and changes the report.
    confidence. A heuristic violation is not automatically a problem: a deliberate trade-off the
    brief explains is noted, not reported.
 4. **Consolidate.** Merge findings that describe the same problem and record how many evaluators
-   found each one (1/3, 2/3, 3/3).
+   found each one (1/3, 2/3, 3/3). Agreement measures coverage, not truth: a problem only one
+   evaluator found is judged on its evidence like any other, never dropped for being unique.
 5. **Rate severity after consolidation.** Each evaluator rates every consolidated problem on its
    own, 0 to 4 (the scale in step 8), weighing frequency, impact, and persistence, plus the effect
-   on the business goal. Report the average; drop a problem most evaluators rate 0.
+   on the business goal. Report the average and the spread ("2.7, from 2 to 4"); a wide spread is a
+   disagreement for the debrief, not something to average away. Drop a problem most evaluators rate 0.
 6. **Accuracy guardrails.** Report only what the capture can show (step 7). Give findings about
    conventions and problems that span several screens Medium confidence at most: they are where
    AI evaluators are weakest. Prefer fewer, true findings; a false positive costs the team a fix

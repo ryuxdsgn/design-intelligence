@@ -175,7 +175,8 @@ The six stages of the core workflow (SKILL.md), as Design runs them.
    - Handoff: a handoff frame annotates, in plain language, the interaction behaviour, the
      truncation rule for each text that can overflow, and each component's code name.
    - Test plan: for a new flow or a consequential change, write the usability test plan (RX-UX-12);
-     skip it for a small change or when the user says so.
+     skip it for a small change or when the user says so. Suggest that the team watch the sessions,
+     so what users show becomes shared knowledge rather than one person's report.
    - Close with the Delivery Gate, saying what was not designed, such as other widths or states. If
      you wrote DESIGN.md, say so in the final message: which file and which fields.
 
@@ -244,6 +245,7 @@ Confidence   High | Medium | Low
 Why          one line, from the evidence or the stated goal
 Trade-off    what it costs
 Assumption   what must be true for it to hold
+Dissent      evidence only one source holds, or the case for an option not chosen | none
 \`\`\`
 
 Evidence names its count and never generalizes past it. "Evidence None, Confidence Low, Why:
