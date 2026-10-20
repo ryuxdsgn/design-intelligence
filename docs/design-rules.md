@@ -166,6 +166,7 @@ UI, UX, copy, and frontend work ends with this report:
 ```
 PRODUCT        PASS | FAIL | NOT VERIFIED | N/A  · one-line reason · evidence Strong | Thin | None
 UX             PASS | FAIL | NOT VERIFIED | N/A  · one-line reason
+CONTENT        PASS | FAIL | NOT VERIFIED | N/A  · one-line reason
 UI             PASS | FAIL | NOT VERIFIED | N/A  · one-line reason · point of view: <concept> | task UI, signature: <signature>
 DESIGN SYSTEM  PASS | FAIL | NOT VERIFIED | N/A  · one-line reason
 ACCESSIBILITY  PASS | FAIL | NOT VERIFIED | N/A  · one-line reason
@@ -597,7 +598,7 @@ Gate area EDGE CASES. Covers data, form, network, permission, and system states 
 
 ### Content design (RX-CD) · `knowledge/content.md`
 
-Gate area UX. Covers specific copy, action labels, error messages, terminology, and locale (money, dates, natural Indonesian when the copy is Indonesian). Read when writing or reviewing any user-facing text.
+Gate area CONTENT. Covers specific copy, action labels, error messages, terminology, and locale (money, dates, natural Indonesian when the copy is Indonesian). Read when writing or reviewing any user-facing text.
 
 #### RX-CD-01 [Contextual] Natural Bahasa Indonesia
 

@@ -20,8 +20,7 @@ Understand → Frame → Explore → Evaluate and select → Build and critique 
 ## Start with what you are doing
 
 Tell RYUX what you are doing; RYUX decides what it needs to know. Pick the entry point, read its
-file, then read only the knowledge modules the task needs (task table below). Paths are relative
-to this skill's folder.
+file, then only the knowledge modules the task needs (task table below); paths are relative to this skill's folder.
 
 | Entry point | When | Read |
 | --- | --- | --- |
@@ -143,6 +142,7 @@ End UI, UX, copy, or frontend work with this report:
 ```
 PRODUCT        PASS | FAIL | NOT VERIFIED | N/A  · one-line reason · evidence Strong | Thin | None
 UX             PASS | FAIL | NOT VERIFIED | N/A  · one-line reason
+CONTENT        PASS | FAIL | NOT VERIFIED | N/A  · one-line reason
 UI             PASS | FAIL | NOT VERIFIED | N/A  · one-line reason · point of view: <concept> | task UI, signature: <signature>
 DESIGN SYSTEM  PASS | FAIL | NOT VERIFIED | N/A  · one-line reason
 ACCESSIBILITY  PASS | FAIL | NOT VERIFIED | N/A  · one-line reason
