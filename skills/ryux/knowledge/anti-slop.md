@@ -170,7 +170,7 @@ Real screens show what real products do instead of invented numbers and urgency:
 
 ### RX-AS-09 [Contextual] Clean is not the same as designed
 
-- When: the surface is expressive: a hero, landing page, onboarding, empty state, or brand moment, or the brief asks for a new look or more personality
+- When: the surface is expressive: a hero, landing page, onboarding, empty state, or brand moment, or the brief asks for a new look or more personality; on a new product's task UI, the brand layer only (see Not when)
 - Do: Run the swap test honestly: replace the name and logo with a competitor's in the same category. If the layout, the visual, and the headline would still work for them, the surface has no point of view yet; give it one (RX-UI-12). Report the answer in the Delivery Gate.
 - Do not: Treat a tidy, generic layout as done because it passes every other gate; generic restraint is slop too.
 - Why: Removing slop is the floor, not the ceiling; interchangeable design makes the product forgettable. (ryux delivery principle; Critique Design Read: specificity)

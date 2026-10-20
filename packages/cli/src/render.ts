@@ -68,6 +68,8 @@ export function deliveryGateTemplate(): string {
         ? `${a.padEnd(width)}PASS | FAIL | NOT VERIFIED | N/A  · one-line reason · point of view: <concept> | task UI, signature: <signature>`
         : a === "PRODUCT"
         ? `${a.padEnd(width)}PASS | FAIL | NOT VERIFIED | N/A  · one-line reason · evidence Strong | Thin | None`
+        : a === "EDGE CASES"
+        ? `${a.padEnd(width)}PASS | FAIL | NOT VERIFIED | N/A  · one-line reason · then the view × state matrix (RX-EC-01)`
         : `${a.padEnd(width)}PASS | FAIL | NOT VERIFIED | N/A  · one-line reason`,
   );
   return `\`\`\`\n${lines.join("\n")}\n\`\`\``;

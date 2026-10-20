@@ -148,7 +148,7 @@ UI             PASS | FAIL | NOT VERIFIED | N/A  · one-line reason · point of 
 DESIGN SYSTEM  PASS | FAIL | NOT VERIFIED | N/A  · one-line reason
 ACCESSIBILITY  PASS | FAIL | NOT VERIFIED | N/A  · one-line reason
 RESPONSIVE     PASS | FAIL | NOT VERIFIED | N/A  · one-line reason
-EDGE CASES     PASS | FAIL | NOT VERIFIED | N/A  · one-line reason
+EDGE CASES     PASS | FAIL | NOT VERIFIED | N/A  · one-line reason · then the view × state matrix (RX-EC-01)
 CODE QUALITY   PASS | FAIL | NOT VERIFIED | N/A  · one-line reason
 VISUAL QA      PASS | FAIL | NOT VERIFIED | N/A  · one-line reason
 ANTI-SLOP      PASS | FAIL | NOT VERIFIED | N/A  · one-line reason
