@@ -23,7 +23,7 @@ file, then only the knowledge modules the task needs (task table below); paths a
 | **Analyze** | understand a screen, product, or flow that exists | \`capabilities/analyze.md\` |
 | **Design** | create or improve UI and UX without code: Figma, pen.dev, mockups, copy | \`capabilities/design.md\` |
 | **Build** | implement or change the interface in code | \`capabilities/build.md\` |
-| **Critique** | find what should change first, and why | \`capabilities/critique.md\` |
+| **Critique** | find what should change first, and why; a heuristic evaluation | \`capabilities/critique.md\` |
 | **QA** | verify a build against the intended design | \`capabilities/qa.md\` |
 
 Knowledge modules (\`knowledge/\`): product, ux, interaction, forms, edge-cases, content, ui,
