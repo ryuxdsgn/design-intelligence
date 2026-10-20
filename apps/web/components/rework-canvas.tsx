@@ -365,7 +365,7 @@ export function ReworkCanvas() {
       </motion.div>
 
       {/* the six stages, one per beat */}
-      <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2 font-mono text-[11px] tracking-[0.06em] uppercase">
+      <div className="mt-4 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 font-mono text-[11px] tracking-[0.06em] uppercase">
         {STAGES.map((name, k) => (
           <span key={name} className={`relative flex items-center gap-1.5 transition-colors duration-300 ${k === beat && !still ? "text-ink" : "text-muted/70"}`}>
             <span className={`size-[6px] rounded-full transition-colors duration-300 ${still || k < beat ? "bg-accent/40" : k === beat ? "bg-accent" : "bg-hair"}`} />
