@@ -533,7 +533,7 @@ focal point, hierarchy, negative space, relation to the copy, and balance (RX-UI
 **Expressive surfaces** (hero, landing, onboarding, empty states, brand moments). Restraint keeps
 task UI usable; on expressive surfaces it is only the floor. Work concept, then signature, then
 system:
-1. **Concept**: write three directions first (name, concept, signature), then choose one. The idea
+1. **Concept**: write two or three directions first (name, concept, signature), then choose one. The idea
    comes from the product itself, not from the category: a tool about evidence might use receipts,
    citations, and marks of proof; a calm finance app might use the ledger. The category default
    (a terminal panel for developer tools, a dashboard screenshot for SaaS) is never the signature.
@@ -701,7 +701,7 @@ Check the stated viewport and the smallest supported width. No horizontal page s
 
 Does not cover: visual decisions (see ryux-ui) or component reuse decisions (see ryux-design-system).`,
 
-  "visual-qa": `Visual QA is the Verify and deliver stage of the core workflow (SKILL.md) for a build. It asks one question: **did the implementation match the intended design?** Whether the
+  "visual-qa": `As an entry point, Visual QA is the Verify and deliver stage of the core workflow (SKILL.md) for a build; Design and Build also use its loop in Build and critique. It asks one question: **did the implementation match the intended design?** Whether the
 design itself is good is Critique's question (ryux-critique).
 
 **With a reference** (a Figma or pen.dev frame, DESIGN.md, or an approved screenshot):
