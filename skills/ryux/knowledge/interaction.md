@@ -135,7 +135,12 @@ How local apps handle the same action and its states, and local payment patterns
 
 ### RX-IX-13 [Required] Each transition means one thing
 
-- Do: Choose how a screen arrives by what it means, and keep that meaning across the product: push to go one level deeper (back returns), replace to move to a new stage (back does not return to the old one), a modal for a self-contained task the user finishes or cancels, a sheet for a short interruption that keeps the screen behind it in view. Follow the platform's back gesture and button.
+- Do: Choose how a screen arrives by what it means, and keep that meaning across the product:
+  - push to go one level deeper (back returns)
+  - replace to move to a new stage (back does not return to the old one)
+  - a modal for a self-contained task the user finishes or cancels
+  - a sheet for a short interruption that keeps the screen behind it in view
+  - Follow the platform's back gesture and button.
 - Do not: Open the same kind of screen as a push in one place and a modal in another, push a step the user can never usefully go back to, or put a long multi-step task in a sheet.
 - Why: People predict where back goes from how a screen arrived; a mixed model makes every exit a guess. (Apple HIG and Material navigation; pattern also in appllama-app-design-skill (MIT), navigation semantics; written for RYUX)
 - Check: review the flow map; click back on every screen in the render

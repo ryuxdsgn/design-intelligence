@@ -32,20 +32,19 @@ design-system, accessibility, responsive, frontend, and anti-slop. Evidence come
 project, product data, standards, and the ryux MCP when connected; none is required. Every entry point ends at the quality gates: the Hard
 Gates below and the Delivery Gate, with anti-slop as the last check, never the starting point.
 
-Keep the capabilities apart, never one generic "design" answer: Analyze says what exists, Design what
-to do and why, Critique whether a decision is right, QA whether the build matches the intent.`;
+Keep them apart: Analyze says what exists, Design what to do, Critique if it is right, QA if it matches.`;
 
-export const CORE_PRINCIPLE = `Novelty is not a goal; a recognisable brand layer is: familiar structure, distinct surface. Optimize for clarity, usability, consistency, product fit,
-accessibility, and intentional decisions. Understand the context before deciding; separate observed
-facts from assumptions; prefer evidence over aesthetic preference; do not invent requirements;
-explain meaningful decisions with their trade-off; validate before claiming.`;
+export const CORE_PRINCIPLE = `Novelty is not a goal; a recognisable brand layer is: familiar structure, distinct surface.
+Optimize for clarity, usability, consistency, product fit, accessibility, and intentional decisions.
+Understand the context first; keep observed facts apart from assumptions; prefer evidence over
+taste; invent no requirements; give each meaningful decision its trade-off; validate before claiming.`;
 
 export const CORE_WORKFLOW = `One workflow, six stages; each entry point runs the stages it needs.
 
 1. **Understand**: who, what task, which product and market (RX-PR-01). Read the RYUX project
    context in DESIGN.md, then the product docs (Product docs paths, else PRD.md, docs/prd*,
    docs/product*, README), and name what you read. Separate facts, assumptions, and unknowns
-   (RX-PR-02); ask and record direction as in capabilities/design.md, step 1. DESIGN.md is
+   (RX-PR-02); ask and record direction as in capabilities/design.md, stage 1. DESIGN.md is
    direction, not evidence. Read the entry point's file and only the modules the task table lists.
 2. **Frame**: the user's task, the flow, what must be seen first, the primary action, and three to
    five success criteria from the brief, written before any alternative exists.
@@ -71,7 +70,7 @@ The six stages of the core workflow (SKILL.md), as Design runs them.
 
 1. **Understand.** Who, what task, which product and market, and the design intent
    (knowledge/product.md). Take it from the prompt, then DESIGN.md, then knowledge and evidence.
-   Read the product docs first (the router, step 1). Ask only when a missing answer materially
+   Read the product docs first (the router, stage 1). Ask only when a missing answer materially
    affects the user flow, what the product can do, or whether the content is correct, those
    questions alone, most consequential first, at most three, in one message, before designing.
    A product rule that changes which states or actions the screen has (refunds, fees, what happens
@@ -125,52 +124,57 @@ The six stages of the core workflow (SKILL.md), as Design runs them.
 4. **Evaluate and select.** Rate each alternative against the Frame criteria, Strong, Adequate, or
    Weak with one reason each, rate the evidence (RX-PR-10), and recommend one with a Decision Receipt.
    "It looks better" is not a reason. Then stop and let the user choose. Build only the chosen one
-   into the full design (states, widths, Visual Direction, RX-UI-10), write the Design Direction
+   into the full design (states, widths, Visual Brief, RX-UI-10), write the Design Direction
    below, and mark the others on the canvas as not chosen. When the user has already said to pick for
    them, continue with the recommendation and say so.
    **Modes after the choice.** Refine improves the chosen alternative without losing its hypothesis.
    Reconsider returns to an unchosen alternative when a later finding or new evidence contradicts the
    choice: name the finding, show the alternative again, and let the user decide.
-5. **Design in the tool, then critique it.** Use the Figma MCP or the pen.dev MCP. System first: look for the design
-   system that exists (DESIGN.md, a tokens or theme file in the repo, the design file's variables and
+5. **Design in the tool, then critique it.** Use the Figma MCP or the pen.dev MCP. System first:
+   look for the design system that exists (DESIGN.md, a tokens or theme file in the repo, the design file's variables and
    components, a linked library) and build from it. Create only what is missing: variables for color
    roles, spacing, radius, and type sizes and families before the first frame, and components for
    repeated elements (RX-DS-03). Building the system does not replace the states: design every
    state that matters (empty, loading, error, including content that fails to load) and every width
    you claim, and source assets on purpose (RX-UI-13).
    **Render and inspect.** Screenshot what you made, check it against the direction and the rules,
-   fix, and render again (capabilities/qa.md). Count the values still literal (color, spacing,
-   radius, type size) and turn each into a variable or name the exception, then run the counts of
-   RX-AS-10 (accent hues, grey families, radii, display and text sizes, icon sets, emoji, invented marks, gradients, labels
-   per intent) and report them in the gate. Run the four hierarchy
-   checks from Critique (control beside its data, primary action that reads as an action, not a tab, no fact
-   twice, grouped by what the user checks together), fix what fails, render again, and check each fix.
-   Weight ranking: list the screen's blocks in order of visual weight (size × contrast × surface) and
-   compare it with the priority order from Frame (step 2). If two blocks of different priority render with the
-   same heading style and container, change one. On a checkout or order screen, the choice that sets
-   the price and the total rank first and second. A width check is a test, not a deliverable: list
-   what broke at each width (wrap, truncation, overflow), fix it or record why it is acceptable, and
-   render again; RESPONSIVE PASS names the findings and their fixes. List where
-   the render differs from the Design Direction (hierarchy, states, widths) and fix or record each one. Check the result against the Liveliness you set, and
-   put each prominent or decorative element through the purpose gate (RX-AS-05: purpose,
-   contribution, necessity); on calm task UI, deliberate restraint is a valid answer. Then judge the main state as a
-   reviewer would, not as a checklist: rate Clarity, Hierarchy, and Specificity from the Design Read
-   (capabilities/critique.md), plus Craft (type steps, spacing rhythm, alignment, detail), Strong,
-   Adequate, or Weak with one reason each, and fix anything Weak before the gate. Reference check:
-   put the main state beside two or three reference apps (named in the brief, from the Reference Read,
-   or comparable screens from the ryux MCP) and write, per reference, what holds up and what reads
-   weaker or more generic in yours (surface, hierarchy, brand layer, assets); no score. Fix what reads
-   weaker for the task, and say so when no reference was available. Generated images and illustrations arrive
-   asynchronously: wait until each one has landed and render again before exporting or closing the
-   gate. Never finish with an asset still pending.
-6. **Verify and deliver.** Check every product fact on the canvas (tool and command names,
-   integrations, platforms, pages, numbers) against the brief or the repo (RX-PR-02). Canvas copy is
-   for the team, not for RYUX: annotations, state captions, and labels on the canvas use plain
-   language ("Shown while prices load; button disabled"); rule IDs, gate results, and Decision
-   Receipts go in the Design Direction or the final message, never in frames meant for review or
-   handoff. A handoff frame annotates, in plain language, the interaction behaviour, the truncation
-   rule for each text that can overflow, and each component's code name. Then close with the Delivery Gate, saying what was not designed, such as other widths or states. If you
-   wrote DESIGN.md, say so in the final message: which file and which fields.
+   fix, and render again (capabilities/qa.md). Then, on the render:
+   - Literal values: turn each into a variable or name the exception (RX-DS-03).
+   - Counts: run the RX-AS-10 counts and report them in the gate.
+   - Hierarchy: run the four hierarchy checks from Critique (control beside its data, a primary
+     action that reads as an action, not a tab, no fact twice, grouped by what the user checks
+     together); fix what fails and check each fix.
+   - Weight ranking: list the screen's blocks in order of visual weight (size × contrast × surface)
+     and compare it with the priority order from Frame (stage 2). If two blocks of different
+     priority share a heading style and container, change one. On a checkout or order screen, the
+     choice that sets the price and the total rank first and second.
+   - Widths: a width check is a test, not a deliverable. List what broke at each width (wrap,
+     truncation, overflow), fix it or record why it is acceptable, and render again; RESPONSIVE
+     PASS names the findings and their fixes.
+   - Direction: list where the render differs from the Design Direction (hierarchy, states,
+     widths) and fix or record each one, and check the result against the Liveliness you set.
+   - Purpose: put each prominent or decorative element through the purpose gate (RX-AS-05); on
+     calm task UI, deliberate restraint is a valid answer.
+   - Reviewer's read: rate Clarity, Hierarchy, and Specificity from the Design Read
+     (capabilities/critique.md), plus Craft (type steps, spacing rhythm, alignment, detail), Strong,
+     Adequate, or Weak with one reason each; fix anything Weak before the gate.
+   - Reference check: put the main state beside two or three reference apps (named in the brief,
+     from the Reference Read, or comparable screens from the ryux MCP) and write, per reference,
+     what holds up and what reads weaker or more generic in yours (surface, hierarchy, brand layer,
+     assets); no score. Fix what reads weaker for the task; say so when no reference was available.
+   - Assets: generated images and illustrations arrive asynchronously. Wait until each one has
+     landed and render again before exporting or closing the gate; never finish with one pending.
+6. **Verify and deliver.**
+   - Facts: check every product fact on the canvas (tool and command names, integrations,
+     platforms, pages, numbers) against the brief or the repo (RX-PR-02).
+   - Canvas copy is for the team, not for RYUX: annotations, state captions, and labels use plain
+     language ("Shown while prices load; button disabled"). Rule IDs, gate results, and Decision
+     Receipts go in the Design Direction or the final message, never in frames meant for review or
+     handoff.
+   - Handoff: a handoff frame annotates, in plain language, the interaction behaviour, the
+     truncation rule for each text that can overflow, and each component's code name.
+   - Close with the Delivery Gate, saying what was not designed, such as other widths or states. If
+     you wrote DESIGN.md, say so in the final message: which file and which fields.
 
 ${UNTRUSTED_CONTENT}
 
@@ -257,7 +261,7 @@ workflow (SKILL.md); Frame, Explore, and Evaluate happen in Design.
    (knowledge/frontend.md, knowledge/design-system.md). Reuse before creating.
 2. **Find the design source**: the Design Direction, a Figma or pen.dev design, a DESIGN.md, or an
    approved mockup; it is the spec. If there is none, run Design's Frame, Explore, and Evaluate
-   first (capabilities/design.md, steps 2-4) instead of inventing one in code.
+   first (capabilities/design.md, stages 2-4) instead of inventing one in code.
 3. **Read the modules the task needs** from the task table: for example accessibility, responsive,
    and edge-cases for any UI, and forms and content for a form. When the build adds motion or
    transitions, read knowledge/ui.md (RX-UI-11) before writing any: how often the surface is seen
@@ -266,8 +270,9 @@ workflow (SKILL.md); Frame, Explore, and Evaluate happen in Design.
    Build must not invent business rules, prices, or limits; API behavior or response shapes; or
    data presented as real (RX-FE-02, RX-PR-02). It must not silently change a design decision: a
    change goes back to Design as a new Decision Receipt, and when the code shows the chosen design
-   cannot work (data, platform, performance), say so and send it back to Reconsider. Mark every assumption in the code. Give
-   each piece of logic one home in the repo's existing layers, never a copy (RX-FE-13).
+   cannot work (data, platform, performance), say so and send it back to Reconsider. Mark every
+   assumption in the code. Give each piece of logic one home in the repo's existing layers, never a
+   copy (RX-FE-13).
 5. **Test what can break.** Unit tests for new or changed pure logic, edge cases included;
    integration tests for critical flows such as checkout, payment, and form submit. Use the
    repo's runner; with none, propose one and ask before adding it (RX-FE-14).
@@ -310,7 +315,8 @@ evidence when connected; none is required.`;
 
 export const CORE_HONESTY = `Report what was checked, how, and what was not available. Do not claim "pixel perfect",
 "fully accessible", "production ready", "senior-level", or "UX optimized" without evidence. Say
-"Keyboard and focus checked by hand; no automated accessibility test was available" instead. Rule IDs and gate results belong in your report, never on the design itself.`;
+"Keyboard and focus checked by hand; no automated accessibility test was available" instead.
+Rule IDs and gate results belong in your report, never on the design itself.`;
 
 export const CORE_DECISION_RECORD = `For consequential choices (RX-PR-09) and deviations, write **Decision**, **Options** compared, **Evidence**,
 **Trade-off**, and **Choice**. Evidence is Strong (2+ comparable screen_ids), Thin (one, or another context),
@@ -533,7 +539,7 @@ focal point, hierarchy, negative space, relation to the copy, and balance (RX-UI
 **Expressive surfaces** (hero, landing, onboarding, empty states, brand moments). Restraint keeps
 task UI usable; on expressive surfaces it is only the floor. Work concept, then signature, then
 system:
-1. **Concept**: write two or three directions first (name, concept, signature), then choose one. The idea
+1. **Concept**: explore two or three alternatives first (name, concept, signature; capabilities/design.md, stage 3), then choose one. The idea
    comes from the product itself, not from the category: a tool about evidence might use receipts,
    citations, and marks of proof; a calm finance app might use the ledger. The category default
    (a terminal panel for developer tools, a dashboard screenshot for SaaS) is never the signature.
@@ -701,7 +707,8 @@ Check the stated viewport and the smallest supported width. No horizontal page s
 
 Does not cover: visual decisions (see ryux-ui) or component reuse decisions (see ryux-design-system).`,
 
-  "visual-qa": `As an entry point, Visual QA is the Verify and deliver stage of the core workflow (SKILL.md) for a build; Design and Build also use its loop in Build and critique. It asks one question: **did the implementation match the intended design?** Whether the
+  "visual-qa": `As an entry point, Visual QA is the Verify and deliver stage of the core workflow (SKILL.md)
+for a build; Design and Build also use its loop in Build and critique. It asks one question: **did the implementation match the intended design?** Whether the
 design itself is good is Critique's question (ryux-critique).
 
 **With a reference** (a Figma or pen.dev frame, DESIGN.md, or an approved screenshot):
@@ -747,7 +754,8 @@ widths) or NOT VERIFIED (why); motion read only from code is NOT VERIFIED.
 **Rank issues by impact**: blocks the task, misleads (wrong numbers, unclear action), adds friction,
 polish.`,
 
-  "anti-slop": `Anti-slop runs in Verify and deliver, after design, build, critique, and QA; it is the final quality gate, never the
+  "anti-slop": `Anti-slop runs in Verify and deliver, after design, build, critique, and QA; it is the final
+quality gate, never the
 starting point. Anti-slop is the floor, not the ceiling: a tidy, generic surface still fails on expressive
 surfaces (RX-AS-09), and the point of view comes from RX-UI-12. Anti-slop is not a list of banned
 styles. It has three parts.

@@ -4,7 +4,8 @@ Stops generic AI output before it ships: no invented numbers or people, decorati
 
 > Group Quality · Delivery Gate area ANTI-SLOP · RYUX 2.13.1. Levels are defined in `SKILL.md`.
 
-Anti-slop runs in Verify and deliver, after design, build, critique, and QA; it is the final quality gate, never the
+Anti-slop runs in Verify and deliver, after design, build, critique, and QA; it is the final
+quality gate, never the
 starting point. Anti-slop is the floor, not the ceiling: a tidy, generic surface still fails on expressive
 surfaces (RX-AS-09), and the point of view comes from RX-UI-12. Anti-slop is not a list of banned
 styles. It has three parts.
@@ -142,7 +143,11 @@ Real screens show what real products do instead of invented numbers and urgency:
 
 ### RX-AS-05 [Required] Decoration passes a purpose gate
 
-- Do: For each potentially decorative pattern, answer three questions: purpose (what does it do?), contribution (what does it add to understanding, interaction, or the product's character?), and necessity (would something simpler do the same?). Keep it only when all three have a real answer. Three feature cards pass when the features are equal and compared; when one matters more, give it more weight instead.
+- Do: For each potentially decorative pattern, answer three questions, and keep it only when all three have a real answer:
+  - purpose: what does it do?
+  - contribution: what does it add to understanding, interaction, or the product's character?
+  - necessity: would something simpler do the same?
+  - Three feature cards pass when the features are equal and compared; when one matters more, give it more weight instead.
 - Do not: Keep cards, gradients, badges, shadows, or animation that have no reason, or accept "it looks more interesting" as one.
 - Why: Unjustified decoration is what makes AI-generated UI look the same. (ryux anti-slop principle)
 - Check: review
@@ -170,17 +175,26 @@ Real screens show what real products do instead of invented numbers and urgency:
 
 ### RX-AS-09 [Contextual] Clean is not the same as designed
 
-- When: the surface is expressive: a hero, landing page, onboarding, empty state, or brand moment, or the brief asks for a new look or more personality; on a new product's task UI, the brand layer only (see Not when)
+- When: the surface is expressive: a hero, landing page, onboarding, empty state, or brand moment, or the brief asks for a new look or more personality; on a new product's task UI, the brand layer only (see Do)
 - Do: Run the swap test honestly: replace the name and logo with a competitor's in the same category. If the layout, the visual, and the headline would still work for them, the surface has no point of view yet; give it one (RX-UI-12). Report the answer in the Delivery Gate.
+  - On task UI: keep the structure familiar and run the test on the brand layer only (palette, type, surfaces, iconography, map styling). On a new product, "only the logo would change" is a FAIL.
 - Do not: Treat a tidy, generic layout as done because it passes every other gate; generic restraint is slop too.
 - Why: Removing slop is the floor, not the ceiling; interchangeable design makes the product forgettable. (ryux delivery principle; Critique Design Read: specificity)
-- Not when: task UI, where familiarity is the point: keep the structure familiar, but run the swap test on the brand layer (palette, type, surfaces, iconography, map styling) and report the answer. On a new product, "only the logo would change" is a FAIL (RX-UI-12)
+- Not when: an existing product whose brand system already defines the surface; follow it
 - Trade-off: takes a design decision, not only removals
 - Check: swap test; review
 
 ### RX-AS-10 [Required] [Quality Lock] Count before handoff
 
-- Do: Before handing off, count on the render or in the design file's variables, and report the counts: accent hues 1 (status colors, and secondary colors the brand defines, are named and excluded); grey families 1; corner radii only from the scale, matching the shape lock; display sizes per screen 1; text sizes in a screen's main content 3 at most; icon sets 1, in the chosen icon style; emoji in interface chrome 0; invented logos or app icons 0 (RX-AS-11); gradients without a brand reason 0; labels for the same intent 1. A count over its limit fails unless the brief or DESIGN.md gives the reason.
+- Do: Before handing off, count on the render or in the design file's variables, and report the counts against these limits:
+  - accent hues 1 (status colors, and secondary colors the brand defines, are named and excluded)
+  - grey families 1
+  - corner radii only from the scale, matching the shape lock
+  - display sizes per screen 1; text sizes in a screen's main content 3 at most
+  - icon sets 1, in the chosen icon style
+  - emoji in interface chrome 0; invented logos or app icons 0 (RX-AS-11); gradients without a brand reason 0
+  - labels for the same intent 1
+  - A count over its limit fails unless the brief or DESIGN.md gives the reason.
 - Do not: Judge consistency by eye only, or hand off a screen with five accent hues, mixed icon sets, or two labels for one action because it looks fine.
 - Why: Counts are harder to talk past than impressions; a design that passed a by-eye review still shipped five hues and the wrong tab icons. (isolation effect (von Restorff 1933): several accents cancel each other out; pattern also in appllama-app-design-skill (MIT), anti-slop counts; written for RYUX; owner review 2026-10-17: withryux.pen passed RYUX with 5+ hues and wrong tab icons)
 - Check: count on the render or the design file's variables; report in the Delivery Gate
@@ -188,7 +202,9 @@ Real screens show what real products do instead of invented numbers and urgency:
 ### RX-AS-11 [Required] [Hard Gate] The product's own mark
 
 - When: the design has a logo, wordmark, app icon, or favicon
-- Do: Use the brand's own file wherever the product's mark appears: look in the repo (public/, assets/, the app icon and favicon), DESIGN.md, the design file's components, and what the user attached, and name the file you used. With no file, set the product name in plain text in the brand's type, or leave a visible [LOGO] placeholder, and list the mark as missing in the handoff.
+- Do: Use the brand's own file wherever the product's mark appears.
+  - Look in the repo (public/, assets/, the app icon and favicon), DESIGN.md, the design file's components, and what the user attached, and name the file you used.
+  - With no file, set the product name in plain text in the brand's type, or leave a visible [LOGO] placeholder, and list the mark as missing in the handoff.
 - Do not: Stand in for the mark with initials in a circle, an emoji, a generic shape, an invented SVG, a letter cut into a tile, or the name typeset to look like a logo; generate a favicon or app icon the user did not ask for; or redraw the brand's mark instead of using its file. Designing a mark is its own task, done only when the user asks for it.
 - Why: An invented mark looks finished and is the first thing a team has to throw away; it also passes for a decision nobody made. (pattern also in superdesign-skill (MIT), logo invariant; RX-UI-13 asset provenance; ryux owner review 2026-10-18 (the logo and favicon are the owner's to make); written for RYUX)
 - Check: list every mark slot and the file it uses, or the placeholder; fails on a slot filled by an invented mark

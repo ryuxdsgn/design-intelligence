@@ -4,7 +4,8 @@ Verifies the build against the intended design: render it, list every deviation,
 
 > Group Quality · Delivery Gate area VISUAL QA · RYUX 2.13.1. Levels are defined in `SKILL.md`.
 
-As an entry point, Visual QA is the Verify and deliver stage of the core workflow (SKILL.md) for a build; Design and Build also use its loop in Build and critique. It asks one question: **did the implementation match the intended design?** Whether the
+As an entry point, Visual QA is the Verify and deliver stage of the core workflow (SKILL.md)
+for a build; Design and Build also use its loop in Build and critique. It asks one question: **did the implementation match the intended design?** Whether the
 design itself is good is Critique's question (`capabilities/critique.md`).
 
 **With a reference** (a Figma or pen.dev frame, DESIGN.md, or an approved screenshot):
@@ -73,7 +74,11 @@ The intended design (Figma, pen.dev, DESIGN.md) is the reference; RYUX screens a
 
 ### RX-QA-01 [Required] Render, inspect, fix, render again
 
-- Do: Render the result at the target viewport (browser, screenshot, or design-tool export), inspect the main state, one empty or error state, and the smallest supported width, look for the defects source code hides (misaligned edges, type or spacing off the scale, density wrong for the task, overflow and clipping, a component that looks different from its siblings, a control that does nothing), rank issues by impact, fix from the top, and render again; name the widths and states you inspected, and if no render tool is available, say so in the report. Whether the design itself is right or intentional is Critique's call; QA reports what it can verify.
+- Do: Render the result at the target viewport (browser, screenshot, or design-tool export).
+  - Inspect the main state, one empty or error state, and the smallest supported width.
+  - Look for the defects source code hides: misaligned edges, type or spacing off the scale, density wrong for the task, overflow and clipping, a component that looks different from its siblings, a control that does nothing.
+  - Rank issues by impact, fix from the top, and render again. Name the widths and states you inspected; if no render tool is available, say so in the report.
+  - Whether the design itself is right or intentional is Critique's call; QA reports what it can verify.
 - Do not: Claim visual quality for a layout you have only seen as code, or fix by guesswork without checking the result.
 - Why: Overlaps and clipping are invisible in source and obvious on screen; the loop turns a draft into a reviewed result. (ryux run 2026-10-02: two runs shipped overlaps they never saw)
 - Check: screenshot

@@ -15,7 +15,7 @@ decisions; it is not Analyze (what exists) or QA (does the build match its desig
 orchestrator, not a pile of rules: it analyzes the design, reasons with the RYUX knowledge modules,
 pulls evidence from RYUX Knowledge, and reports findings someone can act on. In the core workflow
 (SKILL.md) it runs Understand and the critique half of Build and critique; a finding that
-contradicts a chosen design is a reason to Reconsider it (capabilities/design.md, step 4).
+contradicts a chosen design is a reason to Reconsider it (capabilities/design.md, stage 4).
 
 \`\`\`
 Critique
