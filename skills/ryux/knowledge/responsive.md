@@ -25,7 +25,8 @@ Example: a data table on desktop → on tablet, scroll horizontally inside the t
 priority columns → on mobile, a different information architecture: a list of rows as summary cards
 that open a detail view.
 
-Check the stated viewport and the smallest supported width. No horizontal page scroll.
+Check the stated viewport and the smallest supported width (RX-RD-01 says how to pick it), and on
+native the largest text size. No horizontal page scroll.
 
 ## Evidence from RYUX Knowledge
 
@@ -40,8 +41,11 @@ How reference flows adapt across widths when captured: `get_flow`, `search_scree
 ### RX-RD-01 [Required] [Hard Gate] Stated viewport plus the smallest
 
 - Do: Check the stated viewport and the smallest supported width, with no horizontal page scroll at either.
-- Do not: Design for one width only.
-- Why: Users meet the layout at many widths, including small Android phones. (WCAG 2.2 SC 1.4.10 (reflow at 320 CSS px))
+  - Take the smallest width from the brief, then DESIGN.md or the code, then the platform default: web 320 CSS px, iOS 375 pt, Android 360 dp. Write the width you used in Assumptions; ask only when the platform itself is unclear (a product that may be desktop-only).
+  - On a native app, also check the largest system text size (Dynamic Type, Android font scale): it breaks layouts more often than width does.
+  - The check is a test, not a deliverable: fix what broke in the main frames and report it in the Delivery Gate. Add frames for another width only when asked, or when the structure changes there (a table becomes cards).
+- Do not: Design for one width only, test a native iOS app at 320, or hand off a set of frames that only prove the layout did not break.
+- Why: Users meet the layout at many widths and text sizes; a test at a width the platform does not have finds nothing, and proof frames bury the design. (WCAG 2.2 SC 1.4.10 (reflow at 320 CSS px); Apple Human Interface Guidelines (Dynamic Type); Android font-scale guidance; owner review of the Ujicoba run (2026-10-21): four 320 frames on a native iOS design)
 - Not when: a desktop-only internal tool with a documented minimum width
 - Trade-off: more widths to design and test
 - Check: visual QA

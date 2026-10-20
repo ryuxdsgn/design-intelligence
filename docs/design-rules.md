@@ -199,13 +199,13 @@ line below for its exact source.
 <!-- provenance:start -->
 | Source cited | Rules citing it | Rules citing only this |
 | --- | --- | --- |
-| Public standard or research | 61 | 46 |
+| Public standard or research | 61 | 45 |
 | Industry practice | 12 | 5 |
 | Observed in a RYUX run | 15 | 9 |
 | Pattern also in another MIT ruleset (text written for RYUX) | 4 | 4 |
-| RYUX principle, taxonomy, or review | 31 | 19 |
+| RYUX principle, taxonomy, or review | 32 | 19 |
 
-All 103 rules cite a source; 20 cite more than one kind, so the "Rules citing it" column adds up to more than 103.
+All 103 rules cite a source; 21 cite more than one kind, so the "Rules citing it" column adds up to more than 103.
 <!-- provenance:end -->
 
 ## Rules
@@ -948,8 +948,11 @@ Gate area RESPONSIVE. Covers prioritize, simplify, reorganize; tables, overlays,
 #### RX-RD-01 [Required] [Hard Gate] Stated viewport plus the smallest
 
 - Do: Check the stated viewport and the smallest supported width, with no horizontal page scroll at either.
-- Do not: Design for one width only.
-- Why: Users meet the layout at many widths, including small Android phones. (WCAG 2.2 SC 1.4.10 (reflow at 320 CSS px))
+  - Take the smallest width from the brief, then DESIGN.md or the code, then the platform default: web 320 CSS px, iOS 375 pt, Android 360 dp. Write the width you used in Assumptions; ask only when the platform itself is unclear (a product that may be desktop-only).
+  - On a native app, also check the largest system text size (Dynamic Type, Android font scale): it breaks layouts more often than width does.
+  - The check is a test, not a deliverable: fix what broke in the main frames and report it in the Delivery Gate. Add frames for another width only when asked, or when the structure changes there (a table becomes cards).
+- Do not: Design for one width only, test a native iOS app at 320, or hand off a set of frames that only prove the layout did not break.
+- Why: Users meet the layout at many widths and text sizes; a test at a width the platform does not have finds nothing, and proof frames bury the design. (WCAG 2.2 SC 1.4.10 (reflow at 320 CSS px); Apple Human Interface Guidelines (Dynamic Type); Android font-scale guidance; owner review of the Ujicoba run (2026-10-21): four 320 frames on a native iOS design)
 - Not when: a desktop-only internal tool with a documented minimum width
 - Trade-off: more widths to design and test
 - Check: visual QA
@@ -1073,7 +1076,7 @@ Gate area VISUAL QA. Covers did the build match the intended design: compare, li
 #### RX-QA-01 [Required] Render, inspect, fix, render again
 
 - Do: Render the result at the target viewport (browser, screenshot, or design-tool export).
-  - Inspect the main state, one empty or error state, and the smallest supported width.
+  - Inspect the main state, one empty or error state, and the smallest supported width (RX-RD-01), plus the largest text size on native.
   - Look for the defects source code hides: misaligned edges, type or spacing off the scale, density wrong for the task, overflow and clipping, a component that looks different from its siblings, a control that does nothing.
   - Rank issues by impact, fix from the top, and render again. Name the widths and states you inspected; if no render tool is available, say so in the report.
   - Whether the design itself is right or intentional is Critique's call; QA reports what it can verify.
