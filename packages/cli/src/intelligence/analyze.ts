@@ -130,7 +130,7 @@ Each item above carries its label and source; RYUX Knowledge screen_ids where us
 - Whether the amounts are real data or examples
 \`\`\`
 
-### 6. Optional: a visual direction, not a copy
+### 6. Optional: a Visual Brief, not a copy
 
 When asked to make something "with the same visual language", extract the direction (traits, art
 direction, composition habits, motion personality) and write it as a Visual Brief for the new

@@ -221,14 +221,20 @@ Gate area PRODUCT. Covers user, task, goal, primary action, constraints, assumpt
 
 #### RX-PR-01 [Required] State the context first
 
-- Do: Before designing, write down the user, their task, the business goal, the design intent (what the user must understand, feel, and do), the information that matters, the primary action, the constraints, and what success looks like. Take what the prompt and DESIGN.md already give; ask only when a missing answer materially affects the user flow, what the product can do, or whether the content is correct, or when neither the prompt nor DESIGN.md sets the UI or motion direction, at most three questions in one message, most consequential first (none when the context is complete). Otherwise make the smallest reasonable assumption, write it down, and continue.
+- Do: Before designing, write down the user, their task, the business goal, the design intent (what the user must understand, feel, and do), the information that matters, the primary action, the constraints, and what success looks like.
+  - Take what the prompt and DESIGN.md already give.
+  - Ask only when a missing answer materially affects the user flow, what the product can do, or whether the content is correct, or when neither the prompt nor DESIGN.md sets the UI or motion direction: at most three questions in one message, most consequential first, none when the context is complete.
+  - Otherwise make the smallest reasonable assumption, write it down, and continue.
 - Do not: Start from a generic template with no stated user or task, or ask questions the prompt or DESIGN.md already answers.
 - Why: Without a task, design and review drift into taste. (`capabilities/critique.md` playbook; NNGroup task-based evaluation)
 - Check: review
 
 #### RX-PR-02 [Required] [Hard Gate] Unknowns stay assumptions
 
-- Do: Sort what the brief does not say into three kinds. Design assumptions (low-risk visual or structural choices such as a merchant category icon or grouping by date): decide them from the context. Unconfirmed capabilities (an action or feature the category usually has, such as sharing a receipt): convention is not proof, so ask when it materially changes the flow or scope; otherwise you may propose it, listed as unconfirmed, never as a requirement. Facts, claims, and policies: take them only from the brief, the repo, or the product's own docs (feature and tool names, commands, integrations, platforms, pages, fees, timings, guarantees).
+- Do: Sort what the brief does not say into three kinds:
+  - Design assumptions (low-risk visual or structural choices such as a merchant category icon or grouping by date): decide them from the context.
+  - Unconfirmed capabilities (an action or feature the category usually has, such as sharing a receipt): convention is not proof, so ask when it materially changes the flow or scope; otherwise you may propose it, listed as unconfirmed, never as a requirement.
+  - Facts, claims, and policies: take them only from the brief, the repo, or the product's own docs (feature and tool names, commands, integrations, platforms, pages, fees, timings, guarantees).
 - Do not: Invent business rules, policies, guarantees, metrics, user data, permissions, pricing, requirements, or API behavior, or name a tool, command, integration, platform, or page the product does not have. Do not present an unconfirmed capability as a confirmed one.
 - Why: Invented facts turn into promises and bugs that someone has to unwind; a screen trimmed to the brief's literal words reads unfinished and hides what still needs confirming. (ryux run 2026-10-02: an unconstrained agent invented a 30-day trial and user counts; ryux visual benchmark 2.6 human rater, 2026-10-13: RYUX screens lost on a missing receipt action)
 - Not when: This rule is not a reason to drop content the brief implies or to leave a screen looking unfinished: sample content is RX-AS-03, design assumptions are yours to make.
@@ -251,7 +257,9 @@ Gate area PRODUCT. Covers user, task, goal, primary action, constraints, assumpt
 
 #### RX-PR-05 [Required] The product's market first
 
-- Do: Start from how users in the product's own market pay, sign in, write addresses, and read money and dates; check a pattern from another market before reusing it. Take the market from the brief or the codebase, and ask when it is unclear. When the brief does not name payment methods (or another market-standard capability), show the market's standard set as unconfirmed capabilities, labeled as proposed in Assumptions, rather than leaving them out: a market's table stakes are not "for later" (RX-AS-06). Ask when the set would change the flow.
+- Do: Start from how users in the product's own market pay, sign in, write addresses, and read money and dates; check a pattern from another market before reusing it.
+  - Take the market from the brief or the codebase, and ask when it is unclear.
+  - When the brief does not name payment methods (or another market-standard capability), show the market's standard set as unconfirmed capabilities, labeled as proposed in Assumptions, rather than leaving them out: a market's table stakes are not "for later" (RX-AS-06). Ask when the set would change the flow.
 - Do not: Import one market's checkout, currency, language, or tax rules into a product built for another market.
 - Why: Payment, address, and trust habits differ by market (local payment rails, address formats, messaging channels). (ryux taxonomy of local patterns)
 - Check: search_screens
@@ -424,7 +432,12 @@ Gate area UX. Covers before, during, result, recovery; feedback, confirmation, n
 
 #### RX-IX-13 [Required] Each transition means one thing
 
-- Do: Choose how a screen arrives by what it means, and keep that meaning across the product: push to go one level deeper (back returns), replace to move to a new stage (back does not return to the old one), a modal for a self-contained task the user finishes or cancels, a sheet for a short interruption that keeps the screen behind it in view. Follow the platform's back gesture and button.
+- Do: Choose how a screen arrives by what it means, and keep that meaning across the product:
+  - push to go one level deeper (back returns)
+  - replace to move to a new stage (back does not return to the old one)
+  - a modal for a self-contained task the user finishes or cancels
+  - a sheet for a short interruption that keeps the screen behind it in view
+  - Follow the platform's back gesture and button.
 - Do not: Open the same kind of screen as a push in one place and a modal in another, push a step the user can never usefully go back to, or put a long multi-step task in a sheet.
 - Why: People predict where back goes from how a screen arrived; a mixed model makes every exit a guess. (Apple HIG and Material navigation; pattern also in appllama-app-design-skill (MIT), navigation semantics; written for RYUX)
 - Check: review the flow map; click back on every screen in the render
@@ -616,7 +629,9 @@ Gate area UX. Covers specific copy, action labels, error messages, terminology, 
 
 #### RX-CD-05 [Required] [Quality Lock] One name per thing
 
-- Do: Use one term for each concept across screens, buttons, and messages. Use one label for each intent too: the same action is "Start" everywhere, not "Start" here and "Let's start" there. Write product and brand names exactly as the brief or brand guide gives them, including the wordmark; when an older design in the file disagrees with the brief, follow the brief and say so.
+- Do: Use one term for each concept across screens, buttons, and messages.
+  - Use one label for each intent too: the same action is "Start" everywhere, not "Start" here and "Let's start" there.
+  - Write product and brand names exactly as the brief or brand guide gives them, including the wordmark; when an older design in the file disagrees with the brief, follow the brief and say so.
 - Do not: Call the same thing "pesanan", "order", and "transaksi" on different screens, or restyle a brand name (RYUX as "ryux") because an older frame did.
 - Why: Changing terms make users wonder whether it is a different thing; a misspelled brand name looks careless or fake. (Nielsen heuristic 4 (1994); ryux run 2026-10-02: pen.dev hero wordmark)
 - Check: review
@@ -645,7 +660,10 @@ Gate area UI. Covers the visual expression of a product: hierarchy, type, layout
 
 #### RX-UI-01 [Required] [Quality Lock] Hierarchy follows priority
 
-- Do: Make the primary action and the key information the most prominent things in each area, with one clear focal point. Place each control next to the data it changes (a hide-balance toggle beside the balance it hides, not in the header), and make the primary action read as an action, not a place: its own button with an action label. It may sit in the center of a bottom bar when it is clearly different from the tabs (its own shape, color, and size, with room around it), but it is never styled as one of the tabs and never crammed between them. Use one display size per screen, for its single most important number or heading.
+- Do: Make the primary action and the key information the most prominent things in each area, with one clear focal point.
+  - Place each control next to the data it changes (a hide-balance toggle beside the balance it hides, not in the header).
+  - Make the primary action read as an action, not a place: its own button with an action label. It may sit in the center of a bottom bar when it is clearly different from the tabs (its own shape, color, and size, with room around it), but it is never styled as one of the tabs and never crammed between them.
+  - Use one display size per screen, for its single most important number or heading.
 - Do not: Give everything equal weight, let decoration outrank content, park a control far from what it acts on, or make the main action look like one more tab.
 - Why: Hierarchy is how users know what to read and do first; a control beside its data shows what it changes, and an action that looks like a tab reads as a place, not a task. (NNGroup visual hierarchy; Gestalt proximity; Fitts's law (Fitts 1954) for the primary action's size and reach; ryux four-problems blind rating, rater 1 (product designer), 2026-10-16: a hide toggle far from the balance and a CTA crowding the bottom nav were reasons not to ship; explore-judge blind rating 2026-10-18: the same rater shipped a screen with a distinct centered pay button in the bottom bar)
 - Not when: screens with several equal peers, such as a dashboard of comparable items; use consistent hierarchy within each card instead
@@ -654,7 +672,10 @@ Gate area UI. Covers the visual expression of a product: hierarchy, type, layout
 
 #### RX-UI-03 [Preferred] [Quality Lock] One spacing and type scale
 
-- Do: Use the project's spacing and type scale, or define one (for example multiples of 4 or 8) and align elements to a shared grid. Keep a screen's main content to two or three text sizes, the most important the largest, and count them on the render (RX-AS-10). State the shape lock in one sentence, a radius per component role ("action buttons pill, cards 16, inputs 12, sheets 28"), and keep emphasis inside the type family (weight or size), not a second face dropped into one word.
+- Do: Use the project's spacing and type scale, or define one (for example multiples of 4 or 8), and align elements to a shared grid.
+  - Keep a screen's main content to two or three text sizes, the most important the largest, and count them on the render (RX-AS-10).
+  - State the shape lock in one sentence, a radius per component role ("action buttons pill, cards 16, inputs 12, sheets 28").
+  - Keep emphasis inside the type family (weight or size), not a second face dropped into one word.
 - Do not: Pick spacing and sizes one element at a time.
 - Why: A scale produces rhythm and makes hierarchy legible. (Material Design 8dp grid; NNGroup principles of visual design (scale: two or three sizes); shape lock and in-family emphasis: pattern also in appllama-app-design-skill (MIT); written for RYUX)
 - Not when: a one-off marketing piece outside the product
@@ -663,7 +684,10 @@ Gate area UI. Covers the visual expression of a product: hierarchy, type, layout
 
 #### RX-UI-04 [Preferred] [Quality Lock] A palette with roles
 
-- Do: Use a small set of colors with defined roles: surface, text, accent for the primary action, and status colors. Pick one grey family, warm or cool, for surfaces, borders, and secondary text. Elements that behave the same look the same, and elements that behave differently look different: a destructive action has its own color role, not the primary accent. Lower importance with size, weight, or position, never by lowering text contrast.
+- Do: Use a small set of colors with defined roles: surface, text, accent for the primary action, and status colors.
+  - Pick one grey family, warm or cool, for surfaces, borders, and secondary text.
+  - Elements that behave the same look the same, and elements that behave differently look different: a destructive action has its own color role, not the primary accent.
+  - Lower importance with size, weight, or position, never by lowering text contrast.
 - Do not: Introduce new colors per component, or use the accent for decoration.
 - Why: When color has a role, the accent and status colors mean something. (ryux visual principle; NNGroup principles of visual design (contrast signals a different function; similarity); isolation effect (von Restorff 1933): the one item that differs is the one remembered, so the accent marks only the primary action; one grey family: pattern also in appllama-app-design-skill (MIT); written for RYUX)
 - Not when: data visualization, which needs its own categorical or sequential palette
@@ -701,7 +725,8 @@ Gate area UI. Covers the visual expression of a product: hierarchy, type, layout
 
 #### RX-UI-10 [Preferred] Visual language is chosen, not defaulted
 
-- Do: Derive the art direction from the brand, the audience, the product context, and reference screens, and write it as a Visual Brief (objective, concept, composition, color, material, lighting, motion, avoid) before designing an expressive surface or generating images, 3D, or motion. For a new product, decide the brand direction before the tokens, task UI included: palette, type, and shape follow from the product's character (fast, warm, trusted, and so on), not from the one accent that passes contrast.
+- Do: Derive the art direction from the brand, the audience, the product context, and reference screens, and write it as a Visual Brief (objective, concept, composition, color, material, lighting, motion, avoid) before designing an expressive surface or generating images, 3D, or motion.
+  - For a new product, decide the brand direction before the tokens, task UI included: palette, type, and shape follow from the product's character (fast, warm, trusted, and so on), not from the one accent that passes contrast.
 - Do not: Reach for the category cliché (coins, money rain, floating dashboards, or gradient blobs for fintech; generic 3D characters for any app), or write an image prompt without a brief (role, concept, composition).
 - Why: A default visual language makes the product interchangeable with its competitors. (art direction practice; RX-AS-05 purpose gate)
 - Not when: an existing brand system already defines the visual language; follow it
@@ -711,7 +736,10 @@ Gate area UI. Covers the visual expression of a product: hierarchy, type, layout
 #### RX-UI-11 [Contextual] Motion earns its level
 
 - When: the design adds motion or transitions
-- Do: Classify each motion: L1 state feedback, L2 component transition, L3 page transition, L4 storytelling, L5 decorative. The higher the level, the stronger the reason it needs. Then weigh how often people see it: a surface opened many times a day (command palette, shortcut, core navigation, list selection) appears and closes without movement, at most a fade too short to notice; standard transitions belong to occasional surfaces (modal, drawer, toast), and expression to rare or first-time moments. Take timing and easing from one motion personality, define them once as motion tokens, animate transform and opacity rather than layout properties, and honor reduced motion (RX-A11Y-08). Anything that opens and closes (menu, popover, dialog, drawer) uses transitions that can reverse halfway, so a close or reopen mid-animation turns back from where it is, and it closes no slower than it opened.
+- Do: Classify each motion: L1 state feedback, L2 component transition, L3 page transition, L4 storytelling, L5 decorative; the higher the level, the stronger the reason it needs.
+  - Weigh how often people see it: a surface opened many times a day (command palette, shortcut, core navigation, list selection) appears and closes without movement, at most a fade too short to notice; standard transitions belong to occasional surfaces (modal, drawer, toast), and expression to rare or first-time moments.
+  - Take timing and easing from one motion personality, define them once as motion tokens, animate transform and opacity rather than layout properties, and honor reduced motion (RX-A11Y-08).
+  - Anything that opens and closes (menu, popover, dialog, drawer) uses transitions that can reverse halfway, so a close or reopen mid-animation turns back from where it is, and it closes no slower than it opened.
 - Do not: Animate everything, give a surface people open many times a day an entrance they must sit through, play an open-only keyframe animation on something people can close or reopen at any moment, use one generic duration and easing (transition: all 0.3s) everywhere, let decorative motion delay content or input, or move data the user is reading (a balance, an amount, a table value) for effect.
 - Why: Motion directs attention; unearned motion steals it from the task and can make some people unwell. (NNGroup animation and usability guidance; WCAG 2.3.3 animation from interactions; frequency check: pattern also in emilkowalski/skills (MIT) find-animation-opportunities; reversible open and close: pattern also in emilkowalski/skills (MIT) animate; default timing, press state, and still data: pattern also in appllama-app-design-skill (MIT); all written for RYUX)
 - Not when: L1 feedback on standard controls that follows the platform defaults
@@ -720,11 +748,13 @@ Gate area UI. Covers the visual expression of a product: hierarchy, type, layout
 
 #### RX-UI-12 [Contextual] A point of view on expressive surfaces
 
-- When: the surface is expressive: a hero, landing page, onboarding, empty state, or brand moment, or the brief asks for a new look or more personality; on a new product's task UI, the brand layer only (see Not when)
-- Do: Before designing, make two or three directions, each with a name, a concept taken from the product's own idea (for a tool about evidence: receipts, citations, marks of proof), and a signature element (type, composition, imagery, or motion). Render them as frames of the main state with the same content, different on at least two structural axes (information order, layout model, interaction model, type class, colour temperature), rate each against criteria taken from the brief, recommend one (RX-PR-09), and let the user choose; then make the rest of the design serve the chosen signature and put its concept in the Visual Brief. When the brief names reference products, read each one before it shapes the direction: the principle you borrow, what stays theirs (colours, mascot, signature features), and where you use it.
-- Do not: Show directions that differ only in colour or copy, choose for the user without showing them, or let the signature be the category's default (for developer tools a terminal or agent-session panel; for SaaS a dashboard screenshot; copy on the left and product on the right), or relabel that default as a concept. A product screen can support the signature, not be it. Turn a named reference into adjectives ("calm, white, soft") or copy what belongs to its brand.
+- When: the surface is expressive: a hero, landing page, onboarding, empty state, or brand moment, or the brief asks for a new look or more personality; on a new product's task UI, the brand layer only (see Do)
+- Do: Run Explore (capabilities/design.md, stage 3) with alternatives that each carry a name, a concept taken from the product's own idea (for a tool about evidence: receipts, citations, marks of proof), and a signature element (type, composition, imagery, or motion); then make the rest of the design serve the chosen signature and put its concept in the Visual Brief.
+  - On task UI: the alternatives are structure hypotheses and the conventions that must hold stay fixed. A new product's brand layer must carry one signature from its own domain (a mark, the type voice, a colour temperature, or one brand moment in the flow), never a layout change and never decoration without a job (RX-AS-05). Record it in the Delivery Gate UI line.
+  - When the brief names reference products, read each one before it shapes the alternatives: the principle you borrow, what stays theirs (colours, mascot, signature features), and where you use it.
+- Do not: Show alternatives that differ only in colour or copy, choose for the user without showing them, or let the signature be the category's default (for developer tools a terminal or agent-session panel; for SaaS a dashboard screenshot; copy on the left and product on the right), or relabel that default as a concept. A product screen can support the signature, not be it. Turn a named reference into adjectives ("calm, white, soft") or copy what belongs to its brand.
 - Why: Users remember a product by its idea; a correct but generic surface is forgotten and could belong to any competitor. (brand and art direction practice; RX-UI-05 layout from content; rendered variants on named axes, compared side by side, chosen by the user: pattern also in emilkowalski/skills (MIT) prototype; written for RYUX)
-- Not when: task UI such as forms, tables, settings, and checkout, where restraint and convention win: the alternatives come from Explore (capabilities/design.md, step 3) as structure hypotheses, and the conventions that must hold stay fixed. A new product's brand layer must carry one signature from the product's own domain (a mark, the type voice, a colour temperature, or one brand moment in the flow), never a layout change and never decoration without a job (RX-AS-05). Record it in the Delivery Gate UI line
+- Not when: an existing product whose brand system already sets the brand layer, or a small change inside a fixed design system; follow it
 - Trade-off: a strong idea takes a decision someone may disagree with; keep it honest and on brand
 - Check: the swap test (RX-AS-09); review
 
@@ -740,7 +770,13 @@ Gate area UI. Covers the visual expression of a product: hierarchy, type, layout
 
 #### RX-UI-14 [Preferred] [Quality Lock] Type that is set, not only sized
 
-- Do: Keep body paragraphs at 45 to 75 characters per line, checked in the render; take line-height from size (about 1.5 for body, 1.2 to 1.3 for headings, about 1.1 for display); open small uppercase labels slightly (about 0.05em) and tighten large display text slightly; use tabular figures for numbers that are compared or that change (amounts, tables, timers); use at most two families and three weights; balance headings so none ends on one stranded word.
+- Do: Set the type, not only its size:
+  - body paragraphs at 45 to 75 characters per line, checked in the render
+  - line-height from size: about 1.5 for body, 1.2 to 1.3 for headings, about 1.1 for display
+  - small uppercase labels opened slightly (about 0.05em), large display text tightened slightly
+  - tabular figures for numbers that are compared or that change (amounts, tables, timers)
+  - at most two families and three weights
+  - headings balanced so none ends on one stranded word
 - Do not: Let paragraphs run the full width of a desktop container, use one line-height for every size, set uppercase labels with no tracking, or let amounts in a column shift because digits differ in width.
 - Why: Line length and leading decide whether text is read or skimmed; aligned figures make numbers comparable at a glance. (Bringhurst, The Elements of Typographic Style (a measure of 45 to 75 characters; leading by size); WCAG 2.2 SC 1.4.12 text spacing; OpenType tnum; Apple HIG and Material type scales)
 - Not when: a single display line or a logo lockup, where the type is an image
@@ -776,7 +812,12 @@ Gate area DESIGN SYSTEM. Covers search before create, tokens, component states, 
 
 #### RX-DS-03 [Preferred] [Quality Lock] Tokens over one-off values
 
-- Do: Use tokens or variables for color, spacing, radius, elevation, and type. First look for the ones that exist (DESIGN.md, a tokens or theme file in the repo, the design file's variables and components, a linked library) and use them. When the project has none, define them before the first frame: color roles, a spacing scale, a radius scale, and a type scale (sizes, and font families). Name color tokens by role (surface, text, accent, status), not by value, so a second theme is a swap of values, not a rename. In a design tool, create them as the tool's variables and reference them in every value, and make anything that repeats (a row, a button, a bar) a component. After rendering, count the values that are still literal, by kind, and turn each into a token or name why it is an exception.
+- Do: Use tokens or variables for color, spacing, radius, elevation, and type.
+  - First look for the ones that exist (DESIGN.md, a tokens or theme file in the repo, the design file's variables and components, a linked library) and use them.
+  - When the project has none, define them before the first frame: color roles, a spacing scale, a radius scale, and a type scale (sizes and font families).
+  - Name color tokens by role (surface, text, accent, status), not by value, so a second theme is a swap of values, not a rename.
+  - In a design tool, create them as the tool's variables, reference them in every value, and make anything that repeats (a row, a button, a bar) a component.
+  - After rendering, count the values that are still literal, by kind, and turn each into a token or name why it is an exception.
 - Do not: Hard-code one-off values for things the system already defines, or define tokens for color only and leave spacing, radius, and type size literal.
 - Why: Tokens keep changes consistent and reviewable; values that are not tokens drift from frame to frame and state to state. (W3C Design Tokens Community Group; ryux four-problems baseline 2026-10-16: in all 12 runs, with or without RYUX, spacing, radius, and font size were 100% literal)
 - Check: count literal values after render; review
@@ -963,7 +1004,10 @@ Gate area CODE QUALITY. Covers the repo's own stack, semantic elements, one home
 
 #### RX-FE-14 [Required] Test logic and critical flows
 
-- Do: Write unit tests for every new or changed pure function (calculations, formatting, validation, state transitions), including edge cases such as zero, empty, maximum, and invalid input, and integration tests for critical flows (checkout, payment, form submit, sign-in) covering the success and failure paths. Use the repo's test runner and conventions; with none, propose one as an assumption and ask before adding the dependency. Run the tests.
+- Do: Write the tests, then run them:
+  - unit tests for every new or changed pure function (calculations, formatting, validation, state transitions), including edge cases such as zero, empty, maximum, and invalid input
+  - integration tests for critical flows (checkout, payment, form submit, sign-in), covering the success and failure paths
+  - the repo's test runner and conventions; with none, propose one as an assumption and ask before adding the dependency
 - Do not: Ship changed logic without tests, write snapshot-only tests or tests that mock the code under test, or claim tested without running the tests.
 - Why: Tests catch the regressions review misses, before users find them in production. (Testing practice; owner review 2026-10-06)
 - Check: run the project's tests
@@ -983,7 +1027,11 @@ Gate area VISUAL QA. Covers did the build match the intended design: compare, li
 
 #### RX-QA-01 [Required] Render, inspect, fix, render again
 
-- Do: Render the result at the target viewport (browser, screenshot, or design-tool export), inspect the main state, one empty or error state, and the smallest supported width, look for the defects source code hides (misaligned edges, type or spacing off the scale, density wrong for the task, overflow and clipping, a component that looks different from its siblings, a control that does nothing), rank issues by impact, fix from the top, and render again; name the widths and states you inspected, and if no render tool is available, say so in the report. Whether the design itself is right or intentional is Critique's call; QA reports what it can verify.
+- Do: Render the result at the target viewport (browser, screenshot, or design-tool export).
+  - Inspect the main state, one empty or error state, and the smallest supported width.
+  - Look for the defects source code hides: misaligned edges, type or spacing off the scale, density wrong for the task, overflow and clipping, a component that looks different from its siblings, a control that does nothing.
+  - Rank issues by impact, fix from the top, and render again. Name the widths and states you inspected; if no render tool is available, say so in the report.
+  - Whether the design itself is right or intentional is Critique's call; QA reports what it can verify.
 - Do not: Claim visual quality for a layout you have only seen as code, or fix by guesswork without checking the result.
 - Why: Overlaps and clipping are invisible in source and obvious on screen; the loop turns a draft into a reviewed result. (ryux run 2026-10-02: two runs shipped overlaps they never saw)
 - Check: screenshot
@@ -1045,7 +1093,11 @@ Gate area ANTI-SLOP. Covers hard gates, purpose gates, quality locks, honest cla
 
 #### RX-AS-05 [Required] Decoration passes a purpose gate
 
-- Do: For each potentially decorative pattern, answer three questions: purpose (what does it do?), contribution (what does it add to understanding, interaction, or the product's character?), and necessity (would something simpler do the same?). Keep it only when all three have a real answer. Three feature cards pass when the features are equal and compared; when one matters more, give it more weight instead.
+- Do: For each potentially decorative pattern, answer three questions, and keep it only when all three have a real answer:
+  - purpose: what does it do?
+  - contribution: what does it add to understanding, interaction, or the product's character?
+  - necessity: would something simpler do the same?
+  - Three feature cards pass when the features are equal and compared; when one matters more, give it more weight instead.
 - Do not: Keep cards, gradients, badges, shadows, or animation that have no reason, or accept "it looks more interesting" as one.
 - Why: Unjustified decoration is what makes AI-generated UI look the same. (ryux anti-slop principle)
 - Check: review
@@ -1073,17 +1125,26 @@ Gate area ANTI-SLOP. Covers hard gates, purpose gates, quality locks, honest cla
 
 #### RX-AS-09 [Contextual] Clean is not the same as designed
 
-- When: the surface is expressive: a hero, landing page, onboarding, empty state, or brand moment, or the brief asks for a new look or more personality; on a new product's task UI, the brand layer only (see Not when)
+- When: the surface is expressive: a hero, landing page, onboarding, empty state, or brand moment, or the brief asks for a new look or more personality; on a new product's task UI, the brand layer only (see Do)
 - Do: Run the swap test honestly: replace the name and logo with a competitor's in the same category. If the layout, the visual, and the headline would still work for them, the surface has no point of view yet; give it one (RX-UI-12). Report the answer in the Delivery Gate.
+  - On task UI: keep the structure familiar and run the test on the brand layer only (palette, type, surfaces, iconography, map styling). On a new product, "only the logo would change" is a FAIL.
 - Do not: Treat a tidy, generic layout as done because it passes every other gate; generic restraint is slop too.
 - Why: Removing slop is the floor, not the ceiling; interchangeable design makes the product forgettable. (ryux delivery principle; Critique Design Read: specificity)
-- Not when: task UI, where familiarity is the point: keep the structure familiar, but run the swap test on the brand layer (palette, type, surfaces, iconography, map styling) and report the answer. On a new product, "only the logo would change" is a FAIL (RX-UI-12)
+- Not when: an existing product whose brand system already defines the surface; follow it
 - Trade-off: takes a design decision, not only removals
 - Check: swap test; review
 
 #### RX-AS-10 [Required] [Quality Lock] Count before handoff
 
-- Do: Before handing off, count on the render or in the design file's variables, and report the counts: accent hues 1 (status colors, and secondary colors the brand defines, are named and excluded); grey families 1; corner radii only from the scale, matching the shape lock; display sizes per screen 1; text sizes in a screen's main content 3 at most; icon sets 1, in the chosen icon style; emoji in interface chrome 0; invented logos or app icons 0 (RX-AS-11); gradients without a brand reason 0; labels for the same intent 1. A count over its limit fails unless the brief or DESIGN.md gives the reason.
+- Do: Before handing off, count on the render or in the design file's variables, and report the counts against these limits:
+  - accent hues 1 (status colors, and secondary colors the brand defines, are named and excluded)
+  - grey families 1
+  - corner radii only from the scale, matching the shape lock
+  - display sizes per screen 1; text sizes in a screen's main content 3 at most
+  - icon sets 1, in the chosen icon style
+  - emoji in interface chrome 0; invented logos or app icons 0 (RX-AS-11); gradients without a brand reason 0
+  - labels for the same intent 1
+  - A count over its limit fails unless the brief or DESIGN.md gives the reason.
 - Do not: Judge consistency by eye only, or hand off a screen with five accent hues, mixed icon sets, or two labels for one action because it looks fine.
 - Why: Counts are harder to talk past than impressions; a design that passed a by-eye review still shipped five hues and the wrong tab icons. (isolation effect (von Restorff 1933): several accents cancel each other out; pattern also in appllama-app-design-skill (MIT), anti-slop counts; written for RYUX; owner review 2026-10-17: withryux.pen passed RYUX with 5+ hues and wrong tab icons)
 - Check: count on the render or the design file's variables; report in the Delivery Gate
@@ -1091,7 +1152,9 @@ Gate area ANTI-SLOP. Covers hard gates, purpose gates, quality locks, honest cla
 #### RX-AS-11 [Required] [Hard Gate] The product's own mark
 
 - When: the design has a logo, wordmark, app icon, or favicon
-- Do: Use the brand's own file wherever the product's mark appears: look in the repo (public/, assets/, the app icon and favicon), DESIGN.md, the design file's components, and what the user attached, and name the file you used. With no file, set the product name in plain text in the brand's type, or leave a visible [LOGO] placeholder, and list the mark as missing in the handoff.
+- Do: Use the brand's own file wherever the product's mark appears.
+  - Look in the repo (public/, assets/, the app icon and favicon), DESIGN.md, the design file's components, and what the user attached, and name the file you used.
+  - With no file, set the product name in plain text in the brand's type, or leave a visible [LOGO] placeholder, and list the mark as missing in the handoff.
 - Do not: Stand in for the mark with initials in a circle, an emoji, a generic shape, an invented SVG, a letter cut into a tile, or the name typeset to look like a logo; generate a favicon or app icon the user did not ask for; or redraw the brand's mark instead of using its file. Designing a mark is its own task, done only when the user asks for it.
 - Why: An invented mark looks finished and is the first thing a team has to throw away; it also passes for a decision nobody made. (pattern also in superdesign-skill (MIT), logo invariant; RX-UI-13 asset provenance; ryux owner review 2026-10-18 (the logo and favicon are the owner's to make); written for RYUX)
 - Check: list every mark slot and the file it uses, or the placeholder; fails on a slot filled by an invented mark
