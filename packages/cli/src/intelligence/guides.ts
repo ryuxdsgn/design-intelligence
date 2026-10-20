@@ -16,8 +16,7 @@ Understand → Frame → Explore → Evaluate and select → Build and critique 
 \`\`\``;
 
 export const CORE_CAPABILITIES = `Tell RYUX what you are doing; RYUX decides what it needs to know. Pick the entry point, read its
-file, then read only the knowledge modules the task needs (task table below). Paths are relative
-to this skill's folder.
+file, then only the knowledge modules the task needs (task table below); paths are relative to this skill's folder.
 
 | Entry point | When | Read |
 | --- | --- | --- |
