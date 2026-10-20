@@ -199,13 +199,13 @@ line below for its exact source.
 <!-- provenance:start -->
 | Source cited | Rules citing it | Rules citing only this |
 | --- | --- | --- |
-| Public standard or research | 57 | 42 |
+| Public standard or research | 61 | 46 |
 | Industry practice | 12 | 5 |
 | Observed in a RYUX run | 15 | 9 |
 | Pattern also in another MIT ruleset (text written for RYUX) | 4 | 4 |
 | RYUX principle, taxonomy, or review | 31 | 19 |
 
-All 99 rules cite a source; 20 cite more than one kind, so the "Rules citing it" column adds up to more than 99.
+All 103 rules cite a source; 20 cite more than one kind, so the "Rules citing it" column adds up to more than 103.
 <!-- provenance:end -->
 
 ## Rules
@@ -213,7 +213,7 @@ All 99 rules cite a source; 20 cite more than one kind, so the "Rules citing it"
 Generated from `packages/cli/src/content.ts` by `pnpm sync:skills`. Edit the rules there, not here.
 
 <!-- rules:start -->
-99 rules across 13 modules: 56 Required, 18 Preferred, 25 Contextual; 17 Hard Gates and 11 Quality Locks.
+103 rules across 13 modules: 58 Required, 19 Preferred, 26 Contextual; 17 Hard Gates and 11 Quality Locks.
 
 ### Product thinking (RX-PR) · `knowledge/product.md`
 
@@ -378,6 +378,8 @@ Gate area UX. Covers before, during, result, recovery; feedback, confirmation, n
 #### RX-IX-04 [Required] Protect high-impact actions by reasoning
 
 - Do: Weigh each destructive or costly action: is it reversible, how big is the impact, how easy is recovery? Prefer undo for reversible actions; confirm with the specifics (amount, recipient, item) when it is irreversible and costly; skip confirmation when it only adds friction.
+  - A confirmation restates the request and its effect ("Hapus 3 foto dari album Liburan? Foto tidak bisa dikembalikan."), and its buttons name the outcomes ("Hapus foto" and "Batal"), never Ya/Tidak or OK.
+  - Give a destructive confirmation no default button; ask for typing a word only for the rarest, most dangerous actions.
 - Do not: Confirm every action by reflex, or use a bare "Are you sure?" before a payment.
 - Why: Confirmation that appears everywhere gets dismissed by habit; specifics and undo catch real mistakes. (Nielsen heuristic 5; NNGroup confirmation-dialog guidance)
 - Not when: reversible, low-impact actions where undo is enough
@@ -615,9 +617,9 @@ Gate area UX. Covers specific copy, action labels, error messages, terminology, 
 
 #### RX-CD-03 [Preferred] Specific, plain copy
 
-- Do: Name the action and what it gets the user ("Bayar Rp45.000", "Simpan alamat"); use sentence case and plain lists, with at most one emoji where the channel expects it.
+- Do: Lead with the point and cut words that add length without meaning; write labels as RX-CD-12 says; use sentence case and plain lists, with at most one emoji where the channel expects it.
 - Do not: Use vague labels ("Submit", "Learn more", "Get started" when a specific action exists), hype words ("unlock", "elevate", "seamlessly", "revolutionary", "next-generation"), emoji bullets, ALL CAPS, or stacked exclamation marks.
-- Why: Specific, plain copy tells users what happens next; decoration on every line buries it and reads as generated. (NNGroup button and link-label guidance; ryux run 2026-10-02: unconstrained WhatsApp copy)
+- Why: Specific, plain copy tells users what happens next; decoration on every line buries it and reads as generated. (NNGroup 3 C's of informational microcopy (clarity, concision, character); NNGroup button and link-label guidance; ryux run 2026-10-02: unconstrained WhatsApp copy)
 - Check: audit_copy
 
 #### RX-CD-04 [Required] Errors: what, why, how to recover
@@ -650,6 +652,49 @@ Gate area UX. Covers specific copy, action labels, error messages, terminology, 
 - Do: Take the questions from support data, sales calls, the brief, or the product's docs, and answer them with the product's real policies; mark an answer that nobody has confirmed as [CONFIRM].
 - Do not: Fill a FAQ with template questions ("Is it secure?", "Can I cancel anytime?") or answer with policies nobody decided.
 - Why: A template FAQ answers nothing, and an invented answer becomes a promise someone has to keep. (pattern also in anti-slop (MIT) R-28; written for RYUX)
+- Check: review
+
+#### RX-CD-11 [Preferred] Tone fits the moment, voice stays
+
+- Do: Set a tone profile once, from the brand and the users, on four scales: formal to casual, serious to funny, respectful to irreverent, matter-of-fact to enthusiastic; add a few tone words and the anti-tone words to avoid ("hangat, tidak sok akrab").
+  - Keep the voice the same everywhere and shift the tone with the user's state: matter-of-fact and serious for errors, money, and waiting; brief for success, where a check mark already says it worked ("Alamat disimpan", without "berhasil" unless the voice wants the warmth); warmer only in onboarding and empty moments.
+  - Add personality only where it costs no clarity or length: clarity first, concision second, character third.
+- Do not: Joke in an error or a payment failure, cheer on a routine save, or switch between "kamu" and "Anda" across screens.
+- Why: The same words feel caring in one moment and careless in another; tone measurably changes how users judge a product. (NNGroup tone-of-voice dimensions (four dimensions; tested tone profiles); NNGroup 3 C's of informational microcopy)
+- Not when: the brand guide already defines the tone; follow it
+- Trade-off: a sober tone in serious moments gives up some brand flavour
+- Check: review
+
+#### RX-CD-12 [Required] Labels say what happens
+
+- Do: Start a button with a verb and name the result ("Bayar Rp45.000", "Simpan alamat", "Lanjut ke pembayaran"), in about four words or fewer.
+  - Make a link meaningful on its own, as if it is the only thing read: specific ("Lihat syarat promo", not "Selengkapnya"), front-loaded, and sincere: the screen it opens is the one it promised.
+  - Keep a label and the title of the screen or dialog it opens the same words (RX-CD-05).
+- Do not: Use "Submit", "OK", "Klik di sini", "Selengkapnya", or "Get started" when a specific action exists, or a label that promises one thing and opens another ("Lihat detail & pesan" that opens a contact form).
+- Why: Users read the label, not the text around it; a label that breaks its promise costs trust on the next tap. (NNGroup better link labels (4Ss: specific, sincere, substantial, succinct); NNGroup UI copy guidance on command names; NNGroup button and link-label guidance)
+- Check: audit_copy
+
+#### RX-CD-13 [Required] Empty states teach and lead
+
+- When: a list, search, inbox, or dashboard can be empty
+- Do: Show an empty state only after loading has finished, and say plainly that nothing is here yet.
+  - Tell the user what will appear here and how to fill it, in brief, explicit steps ("Simpan tempat favorit dengan ikon hati, nanti muncul di sini").
+  - Give one direct action that starts that task, and keep a no-results state apart from a first-use state: name the active filters and offer to clear them.
+- Do not: Leave the area blank, show "Belum ada data" alone, flash an empty state while data is still loading, or describe what to do without how.
+- Why: An empty area is the moment users learn what a feature is for; a premature or bare message reads as broken. (NNGroup designing empty states in complex applications (system status, learning cues, direct pathways))
+- Trade-off: each empty state needs its own copy and action
+- Check: review; the view × state matrix (RX-EC-01)
+
+#### RX-CD-14 [Contextual] Notifications and permission requests earn their place
+
+- When: the product sends push notifications or asks for a device permission
+- Do: Make each notification self-sufficient: what happened, what the user needs to do, and when ("Paketmu tiba besok, 10.00–12.00"), understandable without opening the app.
+  - Combine bursts into one notification and send only what the user would want, with notification settings inside the app.
+  - Ask for a permission in context, after the user has seen the value, and say what they get in plain words ("Izinkan lokasi untuk melihat tempat baca terdekat").
+- Do not: Ask for notifications on first launch, promise "pengalaman yang lebih baik", send several alerts at once, or truncate the one fact that matters.
+- Why: Notifications compete with everything on the phone; an irrelevant or unclear one gets the whole channel turned off. (NNGroup mobile push-notification mistakes; NNGroup permission-request design considerations)
+- Not when: the operating system or a regulation sets the wording
+- Trade-off: fewer notifications means fewer re-engagement chances
 - Check: review
 
 ---
