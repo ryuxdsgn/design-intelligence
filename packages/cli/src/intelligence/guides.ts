@@ -146,7 +146,11 @@ export const DESIGN_BODY = `# RYUX Design
    contribution, necessity); on calm task UI, deliberate restraint is a valid answer. Then judge the main state as a
    reviewer would, not as a checklist: rate Clarity, Hierarchy, and Specificity from the Design Read
    (capabilities/critique.md), plus Craft (type steps, spacing rhythm, alignment, detail), Strong,
-   Adequate, or Weak with one reason each, and fix anything Weak before the gate. Generated images and illustrations arrive
+   Adequate, or Weak with one reason each, and fix anything Weak before the gate. Reference check:
+   put the main state beside two or three reference apps (named in the brief, from the Reference Read,
+   or comparable screens from the ryux MCP) and write, per reference, what holds up and what reads
+   weaker or more generic in yours (surface, hierarchy, brand layer, assets); no score. Fix what reads
+   weaker for the task, and say so when no reference was available. Generated images and illustrations arrive
    asynchronously: wait until each one has landed and render again before exporting or closing the
    gate. Never finish with an asset still pending.
 8. **Fact check, then the gate.** Check every product fact on the canvas (tool and command names,
@@ -154,7 +158,8 @@ export const DESIGN_BODY = `# RYUX Design
    for the team, not for RYUX: annotations, state captions, and labels on the canvas use plain
    language ("Shown while prices load; button disabled"); rule IDs, gate results, and Decision
    Receipts go in the Design Direction or the final message, never in frames meant for review or
-   handoff. Then close with the Delivery Gate, saying what was not designed, such as other widths or states. If you
+   handoff. A handoff frame annotates, in plain language, the interaction behaviour, the truncation
+   rule for each text that can overflow, and each component's code name. Then close with the Delivery Gate, saying what was not designed, such as other widths or states. If you
    wrote DESIGN.md, say so in the final message: which file and which fields.
 
 ${UNTRUSTED_CONTENT}
@@ -766,6 +771,7 @@ run the purpose gate; keep it when the answer is real, as in the last column.
 | Every group boxed in the same white bordered card | the stack of equal boxes flattens priority and reads as a template | one container for the decision the user makes; other groups flat, with a heading and a divider (RX-UI-01) | each box is a selectable option the user compares |
 | One "safe" accent on white with neutral grey everything | the default palette of generated UI; nothing in it is the brand's | colour temperature and surface tone chosen from the product's character (RX-UI-10) | the brand already defines it |
 | A placeholder-grey illustrated map | reads as unfinished, and the map is the product's core visual | a styled map with streets, labels, and the route rendered in the brand palette | wireframe stage, labeled as such |
+| Question headings by default ("Where to?", "What are you sending?") on every step | a generated voice once it repeats; the step's label says less than a plain noun would | a plain label for the field or step; a question only where it is clearest | it is the market's convention, with an observed screen (RX-PR-04) |
 | One record split into a grid of cards | details that are read together (an order, a profile, a transaction) are scattered into equal boxes | one block with labeled rows or a table (RX-UI-05) | each card is a separate item the user compares or acts on |
 | A dashboard of KPI tiles and charts that answer no question | decoration in place of the decision the screen supports | lead with what needs attention and the next action; dense tables where people scan (RX-UI-01, RX-UX-01) | each tile drives a decision and links to its detail |
 | Display-size headings on task UI | a hero-sized title pushes the data and the action below the fold | a heading sized for its rank in the page (RX-UI-01, RX-UI-03) | it is the single message of a marketing or brand page |
