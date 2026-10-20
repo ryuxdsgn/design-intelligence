@@ -53,7 +53,7 @@ export const CORE_WORKFLOW = `One workflow, six stages; each entry point runs th
    (RX-PR-09, RX-PR-10); the user picks; write the Decision Receipt.
 5. **Build and critique**: design or implement the choice, render, inspect, and fix; Reconsider an
    unchosen alternative when a finding contradicts the choice, and say why.
-6. **Verify and deliver**: Hard Gates and the Delivery Gate, with honest claims.
+6. **Verify and deliver**: Hard Gates, the Delivery Gate, honest claims, and a user test plan (RX-UX-12).
 
 Analyze runs 1. Design runs 1-6. Build runs 1, 5, and 6 (2-4 through Design when no design exists).
 Critique runs 1 and the critique half of 5. QA runs 6. Never go from "generate" straight to "done".`;
@@ -128,7 +128,9 @@ The six stages of the core workflow (SKILL.md), as Design runs them.
    them, continue with the recommendation and say so.
    **Modes after the choice.** Refine improves the chosen alternative without losing its hypothesis.
    Reconsider returns to an unchosen alternative when a later finding or new evidence contradicts the
-   choice: name the finding, show the alternative again, and let the user decide.
+   choice: name the finding, show the alternative again, and let the user decide. Results from a
+   usability test or production data can send the work further back, to Understand or Frame: restate
+   the context or criteria they change, then explore again.
 5. **Design in the tool, then critique it.** Use the Figma MCP or the pen.dev MCP. System first:
    look for the design system that exists (DESIGN.md, a tokens or theme file in the repo, the design file's variables and
    components, a linked library) and build from it. Create only what is missing: variables for color
@@ -172,6 +174,8 @@ The six stages of the core workflow (SKILL.md), as Design runs them.
      handoff.
    - Handoff: a handoff frame annotates, in plain language, the interaction behaviour, the
      truncation rule for each text that can overflow, and each component's code name.
+   - Test plan: for a new flow or a consequential change, write the usability test plan (RX-UX-12);
+     skip it for a small change or when the user says so.
    - Close with the Delivery Gate, saying what was not designed, such as other widths or states. If
      you wrote DESIGN.md, say so in the final message: which file and which fields.
 
@@ -282,7 +286,8 @@ workflow (SKILL.md); Frame, Explore, and Evaluate happen in Design.
    When anything animates, run the motion passes in capabilities/qa.md as well. Run the counts of
    RX-AS-10 on the render and report them in the gate.
 7. **Close with the Delivery Gate.** CODE QUALITY and VISUAL QA need real checks (typecheck,
-   tests, render), or say what was not run.`;
+   tests, render), or say what was not run. For a new flow or a consequential change, add the
+   usability test plan (RX-UX-12) unless the design already has one.`;
 
 export const CORE_EVIDENCE = `Say where every claim comes from:
 

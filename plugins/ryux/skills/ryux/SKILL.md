@@ -54,7 +54,7 @@ One workflow, six stages; each entry point runs the stages it needs.
    (RX-PR-09, RX-PR-10); the user picks; write the Decision Receipt.
 5. **Build and critique**: design or implement the choice, render, inspect, and fix; Reconsider an
    unchosen alternative when a finding contradicts the choice, and say why.
-6. **Verify and deliver**: Hard Gates and the Delivery Gate, with honest claims.
+6. **Verify and deliver**: Hard Gates, the Delivery Gate, honest claims, and a user test plan (RX-UX-12).
 
 Analyze runs 1. Design runs 1-6. Build runs 1, 5, and 6 (2-4 through Design when no design exists).
 Critique runs 1 and the critique half of 5. QA runs 6. Never go from "generate" straight to "done".

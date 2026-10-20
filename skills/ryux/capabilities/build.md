@@ -32,4 +32,5 @@ workflow (SKILL.md); Frame, Explore, and Evaluate happen in Design.
    When anything animates, run the motion passes in capabilities/qa.md as well. Run the counts of
    RX-AS-10 on the render and report them in the gate.
 7. **Close with the Delivery Gate.** CODE QUALITY and VISUAL QA need real checks (typecheck,
-   tests, render), or say what was not run.
+   tests, render), or say what was not run. For a new flow or a consequential change, add the
+   usability test plan (RX-UX-12) unless the design already has one.
