@@ -2,6 +2,7 @@
 
 import { motion, useMotionValue, useMotionValueEvent, useScroll, useTransform, type MotionValue } from "motion/react";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { PencilShape } from "@/components/markup";
 import { usePinned } from "@/components/reasoning-stage";
 
 /* How it works: RYUX's six stages, drawn by its pencil (the logo's implied pencil: a cut angle and a teal
@@ -138,16 +139,11 @@ function RowCell({ k, p, register }: { k: number; p: MotionValue<number>; regist
   );
 }
 
-/** The pencil, pointing down and to the left: its graphite point sits at the div's origin. */
+/** The pencil, its graphite point on (x, y). */
 function Pencil({ x, y, o }: { x: MotionValue<number>; y: MotionValue<number>; o: MotionValue<number> }) {
   return (
     <motion.div aria-hidden style={{ x, y, opacity: o }} className="pointer-events-none absolute top-0 left-0 z-10">
-      <svg width="66" height="16" viewBox="0 0 66 16" className="absolute -top-2 left-0 origin-[0_8px] -rotate-[38deg] drop-shadow-[0_6px_10px_rgb(0_0_0/0.5)]">
-        <path d="M0 8l7-2.6v5.2z" className="fill-accent" />
-        <path d="M7 5.4L15 2v12l-8-3.4z" className="fill-ink-2" />
-        <path d="M15 2h49l-4 12H15z" className="fill-ink" />
-        <path d="M15 8h47" className="stroke-paper-2" strokeOpacity={0.25} />
-      </svg>
+      <PencilShape />
     </motion.div>
   );
 }
