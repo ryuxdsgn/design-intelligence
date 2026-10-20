@@ -283,3 +283,17 @@ A design direction from comparable screens: `extract_design_direction` (patterns
 - Do not: Let icons sit high or low against their labels, mix stroke weights, center amounts in a table, or invent a one-off shadow for one card.
 - Why: Each detail is small; together they are what makes a screen look made rather than generated. (Bringhurst (figures and alignment); Apple HIG and Material iconography (optical size and alignment); owner review 2026-10-17: wrong tab icons in withryux.pen)
 - Check: render inspection at 390 and 1280: icon center within 2 px of the text center; column alignment
+
+### RX-UI-16 [Contextual] Delight stands on three legs
+
+- When: the brief asks for delight, personality, or a memorable experience, or the design adds a moment meant to please (an animation, an illustration, a reward)
+- Do: Build delight on all three of Norman's levels, in this order of dependence:
+  - behavioral: the task is easier than the user expected; no delight covers a usability problem
+  - visceral: the first impression comes from the brand layer (RX-UI-12), not from decoration without a job
+  - reflective: the product speaks to the user's values and aims, not only the task ("membangun kebiasaan membaca", not only "target 8 halaman")
+  - Read the user's state before adding joy: none in a payment failure, an error, a loss, or a long wait; there the delight is a fast, calm way out.
+- Do not: Add confetti, mascots, or jokes to a flow that is still hard to use, or celebrate in a moment of failure or worry.
+- Why: Delight on one leg is superficial and people remember the bad more than the good; forced joy at the wrong moment annoys. (NNGroup three pillars of user delight (visceral, behavioral, reflective; Norman, Emotional Design); NNGroup delightful UX video)
+- Not when: a utility or internal tool whose brief asks for none; ease of use is its delight
+- Trade-off: the reflective layer needs knowledge of what users value, which may need research
+- Check: review; Critique Design Read

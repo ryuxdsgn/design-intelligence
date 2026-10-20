@@ -80,11 +80,13 @@ How Indonesian apps sequence and structure this flow: `get_flow` for a reference
 - Trade-off: late sign-in can lose a cart or draft if it is not carried over
 - Check: review
 
-### RX-UX-08 [Preferred] Recognition over recall
+### RX-UX-08 [Preferred] Recognition over recall; the product carries the load
 
 - Do: Show options and context (recent items, saved addresses, visible choices) instead of asking users to remember them.
-- Do not: Make users retype or recall information the app already has.
-- Why: Recognizing is easier and less error-prone than remembering. (Nielsen heuristic 6 (1994); limited working memory (Miller 1956; Cowan 2001))
+  - Take over what users would otherwise read, remember, or decide: a smart default from the last choice, information they entered shown again where they need it, a picture where it is faster than text, and familiar patterns that need no learning.
+  - Cut extraneous load (decoration, redundant links, meaningless type flourishes, a new pattern for a solved problem) and keep the intrinsic load, the content and decisions that are the task itself.
+- Do not: Make users retype or recall information the app already has, or cut content the task needs to make the screen look lighter.
+- Why: Working memory is small; every task the product takes over leaves more of it for the decisions that matter. (Nielsen heuristic 6 (1994); limited working memory (Miller 1956; Cowan 2001); NNGroup minimize cognitive load (intrinsic and extraneous load; avoid clutter, build on mental models, offload tasks))
 - Not when: a one-time task, where showing history or saved values adds clutter
 - Trade-off: higher visual density; more on screen to scan
 - Check: heuristic_eval H-06
