@@ -115,7 +115,7 @@ No written exception; fix before delivery.
 - **Placeholder copy shipped as final.** Do not put [REAL DATA], XXX, or lorem text on the canvas where sample data would do, or ship sample data or placeholder copy as final. A sample-data label does not turn a fee, policy, or claim into a fact (RX-PR-02). (RX-AS-03)
 - **Fake urgency or scarcity.** Do not write "only 2 left", "offer ends tonight", or fake countdowns with nothing behind them. (RX-AS-04)
 - **Missing critical states.** Do not ship only the filled, happy-path screen. (RX-EC-01)
-- **Broken responsive behavior.** Do not design for one width only. (RX-RD-01)
+- **Broken responsive behavior.** Do not design for one width only, test a native iOS app at 320, or hand off a set of frames that only prove the layout did not break. (RX-RD-01)
 - **Accessibility failures.** Do not put light grey text on white or white text on a pale accent. (RX-A11Y-01, RX-A11Y-02, RX-A11Y-03, RX-A11Y-04)
 - **Unclear goal or competing actions.** Do not put two equal-weight calls to action side by side, or leave the screen's goal unclear. (RX-PR-03)
 - **Unexplained interaction behavior.** Do not ship an action whose in-progress, result, or failure behavior is undefined. (RX-IX-01, RX-IX-12)
