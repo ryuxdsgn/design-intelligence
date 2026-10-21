@@ -644,7 +644,8 @@ A generated image is illustrative art; never present it as a real customer or a 
 screen (RX-UI-07).
 
 **Illustration.** With no brand system to follow, write the style in five lines before the first
-drawing (RX-UI-17), make a set together and compare it side by side (RX-UI-18), and ship it as SVG
+drawing, plus a character system when it has people or a mascot, and record it as a Decision
+Receipt (RX-UI-17); make a set together and compare it side by side (RX-UI-18), and ship it as SVG
 coloured from tokens, with no text inside and alt text that says the meaning (RX-UI-19).
 
 Does not cover: component reuse and tokens (see ryux-design-system).`,
@@ -742,6 +743,11 @@ Card radius | 16px                 | 8px            | half the radius | minor   
 \`\`\`
 
 **Without a reference**, check the build against its own intent and the rules below.
+
+**Illustration** (when the build has any): it matches the written style (RX-UI-17), a set reads as one
+family side by side (RX-UI-18), it reads at its real displayed size including the smallest width, it
+works in every theme, and nothing the user needs exists only in the image (RX-UI-19). Without a
+render, report these as NOT VERIFIED.
 
 **Loop**: implement → render → compare → fix → render again.
 
