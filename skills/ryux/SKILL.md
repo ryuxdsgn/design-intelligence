@@ -51,7 +51,7 @@ One workflow, six stages; each entry point runs the stages it needs.
 3. **Explore**: on a new or complex surface, two or three alternatives that differ in hypothesis and
    structure, not paint; reference screens through the ryux MCP when connected. A small change skips it.
 4. **Evaluate and select**: rate the alternatives against the Frame criteria with evidence
-   (RX-PR-09, RX-PR-10); the user picks; write the Decision Receipt.
+   (RX-PR-09, RX-PR-10); the user picks from options (capabilities/design.md); write the Decision Receipt.
 5. **Build and critique**: design or implement the choice, render, inspect, and fix; Reconsider an
    unchosen alternative when a finding contradicts the choice, and say why.
 6. **Verify and deliver**: Hard Gates, the Delivery Gate, honest claims, and a user test plan (RX-UX-12).
