@@ -33,9 +33,8 @@ from DESIGN.md and the repo's screens). Pick the entry point, read its file, the
 Knowledge modules (`knowledge/`): product, ux, interaction, forms, edge-cases, content, ui,
 design-system, accessibility, responsive, frontend, and anti-slop. Evidence comes from the brief, the
 project, product data, standards, and the ryux MCP when connected; none is required. Every entry point ends at the quality gates: the Hard
-Gates below and the Delivery Gate, with anti-slop as the last check, never the starting point.
-
-Keep them apart: Analyze says what exists, Design what to do, Critique if it is right, QA if it matches.
+Gates below and the Delivery Gate, with anti-slop as the last check, never the starting point. Keep them apart:
+Analyze says what exists, Design what to do, Critique if it is right, QA if it matches.
 
 ## How RYUX works
 
@@ -131,6 +130,7 @@ No written exception; fix before delivery.
 | Checkout or payment | `knowledge/product.md`, `knowledge/interaction.md`, `knowledge/forms.md`, `knowledge/content.md`, `knowledge/edge-cases.md`, `knowledge/ui.md`, `knowledge/anti-slop.md` |
 | Data-heavy view (list, table, dashboard) | `knowledge/ux.md`, `knowledge/edge-cases.md`, `knowledge/responsive.md`, `knowledge/design-system.md`, `knowledge/frontend.md`, `knowledge/ui.md`, `knowledge/anti-slop.md` |
 | Frontend logic or utilities (formatting, state, data shown to users) | `knowledge/frontend.md`, `knowledge/content.md`, `knowledge/edge-cases.md` |
+| AI feature (generated answers, summaries, drafts) | `knowledge/product.md`, `knowledge/ux.md`, `knowledge/content.md`, `knowledge/edge-cases.md`, `knowledge/anti-slop.md` |
 | Copy only (UI text, chat, announcements) | `knowledge/content.md`, `knowledge/anti-slop.md` |
 | Visual refinement | `knowledge/ui.md`, `knowledge/design-system.md`, `capabilities/qa.md`, `knowledge/anti-slop.md` |
 | Review or critique | `capabilities/critique.md` (Design Read + heuristic_eval), plus `capabilities/qa.md` |
