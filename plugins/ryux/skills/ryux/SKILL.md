@@ -19,8 +19,8 @@ Understand → Frame → Explore → Evaluate and select → Build and critique 
 
 ## Start with what you are doing
 
-Tell RYUX what you are doing; RYUX decides what it needs to know. Pick the entry point, read its
-file, then only the knowledge modules the task needs (task table below); paths are relative to this skill's folder.
+Tell RYUX what you are doing; RYUX decides what it needs to know (no task named: offer three concrete tasks for this project as choices,
+from DESIGN.md and the repo's screens). Pick the entry point, read its file, then only the knowledge modules the task needs (task table below); paths are relative to this skill's folder.
 
 | Entry point | When | Read |
 | --- | --- | --- |
