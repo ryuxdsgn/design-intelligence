@@ -29,9 +29,8 @@ from DESIGN.md and the repo's screens). Pick the entry point, read its file, the
 Knowledge modules (\`knowledge/\`): product, ux, interaction, forms, edge-cases, content, ui,
 design-system, accessibility, responsive, frontend, and anti-slop. Evidence comes from the brief, the
 project, product data, standards, and the ryux MCP when connected; none is required. Every entry point ends at the quality gates: the Hard
-Gates below and the Delivery Gate, with anti-slop as the last check, never the starting point.
-
-Keep them apart: Analyze says what exists, Design what to do, Critique if it is right, QA if it matches.`;
+Gates below and the Delivery Gate, with anti-slop as the last check, never the starting point. Keep them apart:
+Analyze says what exists, Design what to do, Critique if it is right, QA if it matches.`;
 
 export const CORE_PRINCIPLE = `Novelty is not a goal; a recognisable brand layer is: familiar structure, distinct surface.
 Optimize for clarity, usability, consistency, product fit, accessibility, and intentional decisions.
