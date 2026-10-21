@@ -83,7 +83,7 @@ alternatives, evaluate them against the brief (you pick), build and critique, th
 | **Analyze** | Understands an existing interface: what is there, what is measured, what is inferred |
 | **Design** | Turns context into UX, UI, and motion direction, in Figma, pen.dev, or a mockup |
 | **Build** | Implements the decisions in your stack without inventing rules, data, or API behavior |
-| **Critique** | Finds what to change first, with severity, evidence, and a fix |
+| **Critique** | Finds what to change first, with severity, evidence, and a fix, or runs a heuristic evaluation |
 | **QA** | Checks the build against the design at each width and state |
 
 ```text
