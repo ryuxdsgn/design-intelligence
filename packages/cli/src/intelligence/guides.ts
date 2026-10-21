@@ -50,7 +50,7 @@ export const CORE_WORKFLOW = `One workflow, six stages; each entry point runs th
 3. **Explore**: on a new or complex surface, two or three alternatives that differ in hypothesis and
    structure, not paint; reference screens through the ryux MCP when connected. A small change skips it.
 4. **Evaluate and select**: rate the alternatives against the Frame criteria with evidence
-   (RX-PR-09, RX-PR-10); the user picks; write the Decision Receipt.
+   (RX-PR-09, RX-PR-10); the user picks from options (capabilities/design.md); write the Decision Receipt.
 5. **Build and critique**: design or implement the choice, render, inspect, and fix; Reconsider an
    unchosen alternative when a finding contradicts the choice, and say why.
 6. **Verify and deliver**: Hard Gates, the Delivery Gate, honest claims, and a user test plan (RX-UX-12).
@@ -80,7 +80,11 @@ The six stages of the core workflow (SKILL.md), as Design runs them.
    (character, or brand colour and type) or the motion direction, ask for it in that message (it
    counts toward the three) instead of choosing it yourself. **No DESIGN.md and no product docs is the
    case where these questions matter most, never a reason to skip them:** ask, then wait for the
-   answer before designing. Complete context means no questions. Never ask what the prompt, DESIGN.md, or the
+   answer before designing. Complete context means no questions.
+   **Ask as choices.** When you ask, or the user picks (stage 4, Reconsider), use the agent's
+   question or choice tool if it has one: two to four options per question, the recommended one
+   first and labeled, and room for the user's own answer. Without such a tool, write numbered
+   options with the recommendation first, so the user can answer with a number. Never ask what the prompt, DESIGN.md, or the
    product docs already answer. For the rest, make the smallest reasonable assumption, write it
    down, and continue (RX-PR-01, RX-PR-02).
    **Record direction answers.** When the user answers a UI or motion direction question, write the
@@ -123,7 +127,8 @@ The six stages of the core workflow (SKILL.md), as Design runs them.
    - A small change, or a screen inside a fixed design system, skips Explore: say so and continue.
 4. **Evaluate and select.** Rate each alternative against the Frame criteria, Strong, Adequate, or
    Weak with one reason each, rate the evidence (RX-PR-10), and recommend one with a Decision Receipt.
-   "It looks better" is not a reason. Then stop and let the user choose. Build only the chosen one
+   "It looks better" is not a reason. Then stop and let the user choose, with the alternatives as
+   options and your recommendation first (stage 1, "Ask as choices"). Build only the chosen one
    into the full design (states, widths, Visual Brief, RX-UI-10), write the Design Direction
    below, and mark the others on the canvas as not chosen. When the user has already said to pick for
    them, continue with the recommendation and say so.
