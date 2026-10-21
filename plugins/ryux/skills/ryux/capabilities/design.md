@@ -77,7 +77,8 @@ The six stages of the core workflow (SKILL.md), as Design runs them.
    roles, spacing, radius, and type sizes and families before the first frame, and components for
    repeated elements (RX-DS-03). Building the system does not replace the states: design every
    state that matters (empty, loading, error, including content that fails to load) and every width
-   you claim, and source assets on purpose (RX-UI-13).
+   you claim, and source assets on purpose (RX-UI-13); illustration follows a written style and is
+   made as one set (RX-UI-17, RX-UI-18).
    **Render and inspect.** Screenshot what you made, check it against the direction and the rules,
    fix, and render again (capabilities/qa.md). Then, on the render:
    - Literal values: turn each into a variable or name the exception (RX-DS-03).
@@ -202,5 +203,5 @@ Dissent      evidence only one source holds, or the case for an option not chose
 Evidence names its count and never generalizes past it. "Evidence None, Confidence Low, Why:
 business priority was not provided" is a valid receipt; keep it visible instead of upgrading it.
 
-Visual, motion, and asset rules and tables live in knowledge/ui.md (RX-UI-07 to RX-UI-13); this
+Visual, motion, and asset rules and tables live in knowledge/ui.md (RX-UI-07 to RX-UI-19); this
 direction only records the choices made with them.

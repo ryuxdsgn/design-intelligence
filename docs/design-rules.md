@@ -200,13 +200,13 @@ line below for its exact source.
 <!-- provenance:start -->
 | Source cited | Rules citing it | Rules citing only this |
 | --- | --- | --- |
-| Public standard or research | 67 | 50 |
-| Industry practice | 12 | 5 |
+| Public standard or research | 68 | 50 |
+| Industry practice | 14 | 5 |
 | Observed in a RYUX run | 15 | 8 |
 | Pattern also in another MIT ruleset (text written for RYUX) | 4 | 4 |
-| RYUX principle, taxonomy, or review | 32 | 19 |
+| RYUX principle, taxonomy, or review | 35 | 19 |
 
-All 108 rules cite a source; 22 cite more than one kind, so the "Rules citing it" column adds up to more than 108.
+All 111 rules cite a source; 25 cite more than one kind, so the "Rules citing it" column adds up to more than 111.
 <!-- provenance:end -->
 
 ## Rules
@@ -214,7 +214,7 @@ All 108 rules cite a source; 22 cite more than one kind, so the "Rules citing it
 Generated from `packages/cli/src/content.ts` by `pnpm sync:skills`. Edit the rules there, not here.
 
 <!-- rules:start -->
-108 rules across 13 modules: 59 Required, 19 Preferred, 30 Contextual; 17 Hard Gates and 11 Quality Locks.
+111 rules across 13 modules: 59 Required, 19 Preferred, 33 Contextual; 17 Hard Gates and 11 Quality Locks.
 
 ### Product thinking (RX-PR) · `knowledge/product.md`
 
@@ -900,6 +900,46 @@ Gate area UI. Covers the visual expression of a product: hierarchy, type, layout
 - Not when: a utility or internal tool whose brief asks for none; ease of use is its delight
 - Trade-off: the reflective layer needs knowledge of what users value, which may need research
 - Check: review; Critique Design Read
+
+#### RX-UI-17 [Contextual] Illustration follows a written style
+
+- When: the design adds or makes illustration (spot, empty state, onboarding, hero) and the brand has no illustration system
+- Do: Before the first drawing, write the style in five lines in DESIGN.md or the Assumptions:
+  - line: stroke weight and cap, or no stroke
+  - shape: geometric or hand-drawn, and the corner radius
+  - colour: 2 to 4 tokens from the palette, one accent
+  - depth and detail: flat, one shadow tone, or 3D; how much detail
+  - subject: objects from the product, people, or abstract
+  - Derive each line from the visual language (RX-UI-10): the stroke from the icon set, the radius from the components, the colour from the tokens.
+- Do not: Draw in the generator's default style (flat people with oversized limbs, gradient blobs, isometric 3D), or mix line and filled illustration in one product.
+- Why: Without a written style, illustration drifts toward the generator's default and away from the UI around it. (Art direction practice (a written illustration style); RX-UI-10 chosen visual language; anti-slop tell (generic illustration); owner review 2026-10-22: request for illustration guidance)
+- Not when: the brand already has an illustration system; follow it (RX-UI-13)
+- Trade-off: one more step before the first drawing, and less variety
+- Check: review
+
+#### RX-UI-18 [Contextual] A set reads as one family
+
+- When: the product uses more than one illustration (empty states, onboarding steps, errors)
+- Do: Make the set together: same canvas and framing, same stroke and palette, same subject scale, viewpoint, and level of detail.
+  - Tie each subject to the screen's job: an empty state shows what will appear there, not a mascot shrugging.
+  - Put the set side by side before handoff and fix the one that stands out.
+- Do not: Make each illustration in a separate prompt and hand them off without comparing them, or give one more detail or colour than the rest.
+- Why: Users read a mismatched set as a mistake or a different product, and a generator drifts in style from prompt to prompt. (Design-system practice (one illustration family); RX-DS-02 consistency; owner review 2026-10-22: request for illustration guidance)
+- Not when: a single illustration
+- Trade-off: the whole set is redone when the style changes
+- Check: render, side by side
+
+#### RX-UI-19 [Contextual] Illustration ships as a themed, accessible asset
+
+- When: illustration goes into a build, or into a design file that will be built
+- Do: Flat and line art as SVG: colours from tokens (currentColor or CSS variables) so dark mode follows (RX-DS-05), a viewBox with no fixed size, no embedded raster, no text inside the art; text stays in the HTML so it can be translated and scaled.
+  - Raster art (generated or 3D) at 2x the displayed size, compressed, with width and height set so the layout does not jump.
+  - Decorative art gets aria-hidden or an empty alt; art that carries meaning gets alt text that says the meaning, not the drawing (RX-A11Y-04).
+- Do not: Hard-code colours that vanish on dark, bake words into the image, ship an export with editor metadata, or write alt text that describes the picture ("a woman holding a box") instead of what it means.
+- Why: Art that ignores tokens breaks in other themes, text inside an image cannot be read, translated, or zoomed, and alt text that only describes the drawing says nothing. (WCAG 2.2 SC 1.1.1 (non-text content); RX-DS-03; RX-DS-05; RX-A11Y-04; owner review 2026-10-22: request for illustration guidance)
+- Not when: a concept frame that will not be built
+- Trade-off: SVG built from tokens takes longer than one export
+- Check: render in every theme; read the SVG source
 
 ---
 
