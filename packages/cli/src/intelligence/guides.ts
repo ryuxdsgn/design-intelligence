@@ -137,7 +137,8 @@ The six stages of the core workflow (SKILL.md), as Design runs them.
    roles, spacing, radius, and type sizes and families before the first frame, and components for
    repeated elements (RX-DS-03). Building the system does not replace the states: design every
    state that matters (empty, loading, error, including content that fails to load) and every width
-   you claim, and source assets on purpose (RX-UI-13).
+   you claim, and source assets on purpose (RX-UI-13); illustration follows a written style and is
+   made as one set (RX-UI-17, RX-UI-18).
    **Render and inspect.** Screenshot what you made, check it against the direction and the rules,
    fix, and render again (capabilities/qa.md). Then, on the render:
    - Literal values: turn each into a variable or name the exception (RX-DS-03).
@@ -251,7 +252,7 @@ Dissent      evidence only one source holds, or the case for an option not chose
 Evidence names its count and never generalizes past it. "Evidence None, Confidence Low, Why:
 business priority was not provided" is a valid receipt; keep it visible instead of upgrading it.
 
-Visual, motion, and asset rules and tables live in knowledge/ui.md (RX-UI-07 to RX-UI-13); this
+Visual, motion, and asset rules and tables live in knowledge/ui.md (RX-UI-07 to RX-UI-19); this
 direction only records the choices made with them.`;
 
 export const BUILD_BODY = `# RYUX Build
@@ -270,7 +271,8 @@ workflow (SKILL.md); Frame, Explore, and Evaluate happen in Design.
 3. **Read the modules the task needs** from the task table: for example accessibility, responsive,
    and edge-cases for any UI, and forms and content for a form. When the build adds motion or
    transitions, read knowledge/ui.md (RX-UI-11) before writing any: how often the surface is seen
-   decides how much it moves.
+   decides how much it moves. When it adds illustration, read RX-UI-19: SVG coloured from tokens,
+   no text inside, alt text that says the meaning.
 4. **Implement faithfully.** Use semantic elements, existing components, and real data paths.
    Build must not invent business rules, prices, or limits; API behavior or response shapes; or
    data presented as real (RX-FE-02, RX-PR-02). It must not silently change a design decision: a
@@ -635,6 +637,10 @@ Sources:        reference screen_ids or the analysis it came from
 
 A generated image is illustrative art; never present it as a real customer or a real product
 screen (RX-UI-07).
+
+**Illustration.** With no brand system to follow, write the style in five lines before the first
+drawing (RX-UI-17), make a set together and compare it side by side (RX-UI-18), and ship it as SVG
+coloured from tokens, with no text inside and alt text that says the meaning (RX-UI-19).
 
 Does not cover: component reuse and tokens (see ryux-design-system).`,
 
