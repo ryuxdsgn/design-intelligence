@@ -141,7 +141,8 @@ A generated image is illustrative art; never present it as a real customer or a 
 screen (RX-UI-07).
 
 **Illustration.** With no brand system to follow, write the style in five lines before the first
-drawing (RX-UI-17), make a set together and compare it side by side (RX-UI-18), and ship it as SVG
+drawing, plus a character system when it has people or a mascot, and record it as a Decision
+Receipt (RX-UI-17); make a set together and compare it side by side (RX-UI-18), and ship it as SVG
 coloured from tokens, with no text inside and alt text that says the meaning (RX-UI-19).
 
 Does not cover: component reuse and tokens (see `knowledge/design-system.md`).
@@ -305,13 +306,15 @@ A design direction from comparable screens: `extract_design_direction` (patterns
 ### RX-UI-17 [Contextual] Illustration follows a written style
 
 - When: the design adds or makes illustration (spot, empty state, onboarding, hero) and the brand has no illustration system
-- Do: Before the first drawing, write the style in five lines in DESIGN.md or the Assumptions:
+- Do: Before the first drawing, write the style in five lines (six with characters) in DESIGN.md or the Assumptions:
   - line: stroke weight and cap, or no stroke
   - shape: geometric or hand-drawn, and the corner radius
   - colour: 2 to 4 tokens from the palette, one accent
   - depth and detail: flat, one shadow tone, or 3D; how much detail
   - subject: objects from the product, people, or abstract
-  - Derive each line from the visual language (RX-UI-10): the stroke from the icon set, the radius from the components, the colour from the tokens.
+  - characters, when the style has people or a mascot: proportions, face detail, the range of people shown, and a short set of poses and expressions; one character system across the product
+  - Derive each line from the visual language (RX-UI-10): the stroke from the icon set, the radius from the components, the colour from the tokens. Functional icons stay in the icon set (RX-UI-13), not in the illustration style.
+  - Record the style as a Decision Receipt: evidence from a brand guide, references, or the brief; Evidence None when it is derived from the visual language alone.
 - Do not: Draw in the generator's default style (flat people with oversized limbs, gradient blobs, isometric 3D), or mix line and filled illustration in one product.
 - Why: Without a written style, illustration drifts toward the generator's default and away from the UI around it. (Art direction practice (a written illustration style); RX-UI-10 chosen visual language; anti-slop tell (generic illustration); owner review 2026-10-22: request for illustration guidance)
 - Not when: the brand already has an illustration system; follow it (RX-UI-13)
