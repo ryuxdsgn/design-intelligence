@@ -16,7 +16,7 @@ gates in `knowledge/anti-slop.md`). It works in four layers.
 4. **Density**: compact for repeat work, roomier for first-time or high-stakes decisions.
 5. **Color**: roles first (surface, text, accent for the primary action, status); contrast checked.
 6. **Containers**: use a container only when it groups or separates something.
-7. **Icons**: next to labels, from one set, at consistent sizes.
+7. **Icons**: next to labels, from one set, at consistent sizes, one meaning each (RX-UI-20).
 
 **Justify values.** Every value comes from the scale and has a reason you can say in one line:
 "12px between these two fields because they belong together; 24px before the next group because it
@@ -344,3 +344,17 @@ A design direction from comparable screens: `extract_design_direction` (patterns
 - Not when: a concept frame that will not be built
 - Trade-off: SVG built from tokens takes longer than one export
 - Check: render in every theme; read the SVG source
+
+### RX-UI-20 [Preferred] An icon means one thing, and says it
+
+- When: the design uses icons for actions, navigation, or status
+- Do: Pick each icon for the action or concept it stands for, not for its look.
+  - One icon, one meaning across the product: no icon for two actions, no two icons for one action.
+  - Pair the icon with a text label unless it is one of the few users know without one in this context (search, close, back, menu, home). Keep the label in a tab bar, on uncommon actions, and on destructive ones.
+  - Tell look-alikes apart by what they do: back leaves the screen, close dismisses a sheet or modal; delete removes, cancel stops.
+  - Use the platform's icon for platform actions (share differs on iOS and Android).
+- Do not: Choose an icon because it looks good, reuse one icon for two meanings, or ship an icon-only control whose meaning users have to guess.
+- Why: Few icons are recognised without a label; an ambiguous icon costs more than a word, and an icon whose meaning changes breaks what users learned. (NNGroup icon usability; Nielsen heuristic 4 (consistency and standards); Apple HIG and Material iconography)
+- Not when: a dense expert tool whose users learn the set; then a tooltip plus an accessible name
+- Trade-off: labels take space, especially in toolbars and tab bars
+- Check: review: list each icon with its meaning and flag duplicates; heuristic_eval H-04
