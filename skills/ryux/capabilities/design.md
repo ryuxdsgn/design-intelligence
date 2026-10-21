@@ -32,7 +32,8 @@ The six stages of the core workflow (SKILL.md), as Design runs them.
    **What exists.** When there is a screen, product, or design system already, read its
    analysis or run Analyze first (capabilities/analyze.md). Existing screens, components, and any
    screenshot or reference provided are your examples: read them before choosing patterns, take
-   their principles, and never copy their facts. Understand before you design. When the task
+   their principles, and never copy their facts. A request to copy a screenshot as it is goes to
+   Build as a recreate (capabilities/build.md, step 2). Understand before you design. When the task
    redesigns or improves what exists, list what works and keep it; change only what has a named
    problem (RX-UX-10).
    **Modules.** Read the modules the task needs from the task table before deciding anything, for example ux,
