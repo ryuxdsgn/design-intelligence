@@ -11,6 +11,10 @@ workflow (SKILL.md); Frame, Explore, and Evaluate happen in Design.
 2. **Find the design source**: the Design Direction, a Figma or pen.dev design, a DESIGN.md, or an
    approved mockup; it is the spec. If there is none, run Design's Frame, Explore, and Evaluate
    first (capabilities/design.md, stages 2-4) instead of inventing one in code.
+   A screenshot or another product's page is a reference, not the spec, unless the user asks to
+   recreate it ("recreate", "match this", "samakan"). Then match it, let QA compare at the same
+   viewport, and still leave out another product's brand, logo, and content (RX-AS-11). With no word
+   either way, design from its principles and write "reference, not recreate" in Assumptions.
 3. **Read the modules the task needs** from the task table: for example accessibility, responsive,
    and edge-cases for any UI, and forms and content for a form. When the build adds motion or
    transitions, read knowledge/ui.md (RX-UI-11) before writing any: how often the surface is seen
