@@ -188,13 +188,18 @@ async function runInstall(flags: Flags): Promise<void> {
     else p.note(MCP_STATUS, "ryux MCP");
   }
   if (nonInteractive) return;
+  let answers: Record<string, string> = {};
   if (!scope.global) {
     const s = await p.confirm({ message: "Set up project context now? Every question can be skipped.", initialValue: true });
     if (p.isCancel(s)) return cancel();
-    if (s && !(await setupInteractive(scope.root))) return cancel();
-    if (!s) p.log.info(`Set it up later with: ${CLI_CMD} setup`);
+    if (s) {
+      const a = await setupInteractive(scope.root);
+      if (!a) return cancel();
+      answers = a;
+    } else p.log.info(`Set it up later with: ${CLI_CMD} setup`);
   }
-  p.outro(`RYUX is ready. Try: ${pc.cyan('"Design a transaction detail page for our app."')}`);
+  p.note(suggestionsText(answers), "Try");
+  p.outro("RYUX is ready.");
 }
 
 async function runUpdate(flags: Flags): Promise<void> {
@@ -608,14 +613,47 @@ async function askContext(root: string): Promise<Record<string, string> | null> 
   return answers;
 }
 
-async function setupInteractive(root: string): Promise<boolean> {
+async function setupInteractive(root: string): Promise<Record<string, string> | null> {
   p.log.info("Teach RYUX about this project. Every question can be skipped: blanks stay unknown, and RYUX asks when they matter.");
   const answers = await askContext(root);
-  if (!answers) return false;
+  if (!answers) return null;
   const body = await writeContext(root, answers);
   p.log.success(`${CONTEXT_FILE} updated · ${filledCount(body)} of ${ASKED_FIELDS.length} setup fields filled`);
-  return true;
+  return answers;
 }
+
+/** Curated, per product kind (setup's Product answer): a typical screen and flow to name in example prompts. */
+const SUGGESTED: Record<string, { screen: string; flow: string }> = {
+  "Online store": { screen: "the checkout page", flow: "our checkout flow" },
+  "Payments or finance": { screen: "the transaction detail screen", flow: "our send-money flow" },
+  "Marketplace": { screen: "the seller's new listing form", flow: "our listing flow" },
+  "Booking or scheduling": { screen: "the date and time slot picker", flow: "our booking flow" },
+  "SaaS or dashboard": { screen: "the billing settings page", flow: "our onboarding flow" },
+  "Content or media": { screen: "the article reading page", flow: "our sign-up flow" },
+  "Internal tool": { screen: "the orders table with filters", flow: "our approval flow" },
+};
+
+/** Three concrete prompts, one per entry point, from the setup answers; the README examples when there are none. */
+function promptSuggestions(answers: Record<string, string>): string[] {
+  const kind = Object.keys(SUGGESTED).find((k) => (answers["Product"] ?? "").startsWith(k));
+  if (!kind) {
+    return [
+      "Design the transaction detail screen for our wallet, in pen.dev.",
+      "Critique our pricing page at https://example.com/pricing.",
+      "Analyze this checkout screen (screenshot attached).",
+    ];
+  }
+  const { screen, flow } = SUGGESTED[kind];
+  const changing = /existing flow|redesign/i.test(answers["Current work"] ?? "");
+  return [
+    `Design ${screen} for our app.`,
+    `Critique ${flow} and tell us what to fix first.`,
+    changing ? `Analyze ${flow} before we change it (screenshots attached).` : `QA the build of ${screen} against the design.`,
+  ];
+}
+
+const suggestionsText = (answers: Record<string, string>): string =>
+  [...promptSuggestions(answers).map((s) => `"${s}"`), "", "RYUX may ask up to three questions first."].join("\n");
 
 async function runSetup(flags: Flags): Promise<void> {
   if (flags.global) {
@@ -633,6 +671,7 @@ async function runSetup(flags: Flags): Promise<void> {
   if (Object.keys(fromFlags).length) {
     const body = await writeContext(root, fromFlags);
     console.log(`${pc.green("✓ ")}${CONTEXT_FILE} updated · ${filledCount(body)} of ${ASKED_FIELDS.length} setup fields filled`);
+    console.log(`\nTry:\n${suggestionsText(fromFlags).split("\n").map((l) => (l ? `  ${l}` : "")).join("\n")}`);
     return;
   }
   if (!process.stdin.isTTY) {
@@ -643,7 +682,9 @@ async function runSetup(flags: Flags): Promise<void> {
   }
   p.intro(pc.bgCyan(pc.black(" RYUX setup ")));
   p.log.message(KEY_LEGEND);
-  if (!(await setupInteractive(root))) return cancel();
+  const answers = await setupInteractive(root);
+  if (!answers) return cancel();
+  p.note(suggestionsText(answers), "Try");
   p.outro(`RYUX is ready. Next: ${CLI_CMD} check`);
 }
 

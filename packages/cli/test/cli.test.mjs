@@ -121,3 +121,15 @@ test("remove takes RYUX out but leaves the project context", () => {
   assert.match(readFileSync(join(dir, "DESIGN.md"), "utf8"), /ryux-context:start/);
   rmSync(dir, { recursive: true, force: true });
 });
+
+test("setup suggests three prompts for the product it was told about", () => {
+  const dir = project();
+  const store = run(dir, "setup", "--product", "Online store", "--work", "A redesign");
+  assert.equal(store.code, 0, store.out);
+  assert.match(store.out, /Try:/);
+  assert.match(store.out, /"Design the checkout page for our app\."/);
+  assert.match(store.out, /"Analyze our checkout flow before we change it/);
+  const other = run(dir, "setup", "--product", "Ticketing for local events");
+  assert.match(other.out, /"Critique our pricing page/);
+  rmSync(dir, { recursive: true, force: true });
+});
