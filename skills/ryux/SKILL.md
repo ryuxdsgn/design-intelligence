@@ -103,9 +103,7 @@ evidence when connected; none is required.
 - **[Hard Gate]**: a Required rule with no exceptions. Fix it before declaring the work complete.
 - **[Quality Lock]**: consistency that must hold across the product.
 
-## Hard Gates (always apply)
-
-No written exception; fix before delivery.
+## Hard Gates (always apply; no written exception, fix before delivery)
 
 - **Fake data or fake metrics.** Do not invent "48.000+ users", "4,8★", or "+12%". (RX-AS-01)
 - **Fake testimonials or people.** Do not make up testimonials, reviewers, or customer photos. (RX-AS-02)
@@ -121,6 +119,8 @@ No written exception; fix before delivery.
 - **Unnecessary complexity.** Do not add settings, sections, abstractions, or packages "for later", or features because similar products have them. (RX-AS-06)
 
 ## Task table: which knowledge to read
+
+A small change (a copy fix, one component, one state) reads only the module it touches, plus anti-slop for visual work; any other task reads its row:
 
 | Task | Read |
 | --- | --- |

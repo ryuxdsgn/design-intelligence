@@ -102,13 +102,13 @@ ${CORE_EVIDENCE}
 
 ${LEVELS}
 
-## Hard Gates (always apply)
-
-No written exception; fix before delivery.
+## Hard Gates (always apply; no written exception, fix before delivery)
 
 ${hardGatesBrief()}
 
 ## Task table: which knowledge to read
+
+A small change (a copy fix, one component, one state) reads only the module it touches, plus anti-slop for visual work; any other task reads its row:
 
 ${activationTable()}
 
