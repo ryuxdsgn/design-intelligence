@@ -519,7 +519,7 @@ gates in ryux-anti-slop). It works in four layers.
 4. **Density**: compact for repeat work, roomier for first-time or high-stakes decisions.
 5. **Color**: roles first (surface, text, accent for the primary action, status); contrast checked.
 6. **Containers**: use a container only when it groups or separates something.
-7. **Icons**: next to labels, from one set, at consistent sizes.
+7. **Icons**: next to labels, from one set, at consistent sizes, one meaning each (RX-UI-20).
 
 **Justify values.** Every value comes from the scale and has a reason you can say in one line:
 "12px between these two fields because they belong together; 24px before the next group because it

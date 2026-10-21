@@ -200,13 +200,13 @@ line below for its exact source.
 <!-- provenance:start -->
 | Source cited | Rules citing it | Rules citing only this |
 | --- | --- | --- |
-| Public standard or research | 68 | 50 |
+| Public standard or research | 69 | 51 |
 | Industry practice | 14 | 5 |
 | Observed in a RYUX run | 15 | 8 |
 | Pattern also in another MIT ruleset (text written for RYUX) | 4 | 4 |
 | RYUX principle, taxonomy, or review | 35 | 19 |
 
-All 111 rules cite a source; 25 cite more than one kind, so the "Rules citing it" column adds up to more than 111.
+All 112 rules cite a source; 25 cite more than one kind, so the "Rules citing it" column adds up to more than 112.
 <!-- provenance:end -->
 
 ## Rules
@@ -214,7 +214,7 @@ All 111 rules cite a source; 25 cite more than one kind, so the "Rules citing it
 Generated from `packages/cli/src/content.ts` by `pnpm sync:skills`. Edit the rules there, not here.
 
 <!-- rules:start -->
-111 rules across 13 modules: 59 Required, 19 Preferred, 33 Contextual; 17 Hard Gates and 11 Quality Locks.
+112 rules across 13 modules: 59 Required, 20 Preferred, 33 Contextual; 17 Hard Gates and 11 Quality Locks.
 
 ### Product thinking (RX-PR) · `knowledge/product.md`
 
@@ -943,6 +943,20 @@ Gate area UI. Covers the visual expression of a product: hierarchy, type, layout
 - Trade-off: SVG built from tokens takes longer than one export
 - Check: render in every theme; read the SVG source
 
+#### RX-UI-20 [Preferred] An icon means one thing, and says it
+
+- When: the design uses icons for actions, navigation, or status
+- Do: Pick each icon for the action or concept it stands for, not for its look.
+  - One icon, one meaning across the product: no icon for two actions, no two icons for one action.
+  - Pair the icon with a text label unless it is one of the few users know without one in this context (search, close, back, menu, home). Keep the label in a tab bar, on uncommon actions, and on destructive ones.
+  - Tell look-alikes apart by what they do: back leaves the screen, close dismisses a sheet or modal; delete removes, cancel stops.
+  - Use the platform's icon for platform actions (share differs on iOS and Android).
+- Do not: Choose an icon because it looks good, reuse one icon for two meanings, or ship an icon-only control whose meaning users have to guess.
+- Why: Few icons are recognised without a label; an ambiguous icon costs more than a word, and an icon whose meaning changes breaks what users learned. (NNGroup icon usability; Nielsen heuristic 4 (consistency and standards); Apple HIG and Material iconography)
+- Not when: a dense expert tool whose users learn the set; then a tooltip plus an accessible name
+- Trade-off: labels take space, especially in toolbars and tab bars
+- Check: review: list each icon with its meaning and flag duplicates; heuristic_eval H-04
+
 ---
 
 ### Design system (RX-DS) · `knowledge/design-system.md`
@@ -1007,7 +1021,7 @@ Gate area ACCESSIBILITY. Covers semantics, keyboard, focus, contrast, targets, n
 
 #### RX-A11Y-02 [Required] [Hard Gate] Readable text, reachable targets
 
-- Do: Keep body text around 14 to 16px on mobile, and touch targets at least 24×24px, preferably 44×44px.
+- Do: Keep body text around 14 to 16px on mobile, and touch targets at least 24×24px, preferably 44×44px. The target is the hit area, not the glyph: a 20 to 24px icon sits inside a 44×44 button.
 - Do not: Shrink body text or crowd small targets together.
 - Why: Small text and targets cause misreads and mis-taps. (WCAG 2.2 SC 2.5.8 (24px minimum); Apple HIG 44pt; Material 48dp; Fitts's law (Fitts 1954): bigger and nearer targets are faster to hit)
 - Check: audit_ui
@@ -1021,7 +1035,7 @@ Gate area ACCESSIBILITY. Covers semantics, keyboard, focus, contrast, targets, n
 
 #### RX-A11Y-04 [Required] [Hard Gate] Semantic structure, native controls, and names
 
-- Do: Use real headings, landmarks, lists, buttons, links, and the right input types before custom elements, and give icon-only buttons and meaningful images an accessible name or alt text.
+- Do: Use real headings, landmarks, lists, buttons, links, and the right input types before custom elements, and give icon-only buttons and meaningful images an accessible name or alt text. Hide decorative icons and images from assistive technology (aria-hidden, or an empty alt).
 - Do not: Build structure or controls from styled divs, or ship unlabeled icon buttons.
 - Why: Assistive technology navigates by semantics and announces unlabeled buttons as just "button"; native controls bring keyboard and platform behavior for free. (WCAG 2.2 SC 1.1.1, 1.3.1, and 4.1.2)
 - Check: read the accessibility tree (a Playwright accessibility snapshot, or the design file's layer types): every control is a native element or has a role, and every one has a name; headings are in order; fails on an unnamed control or a div acting as a button

@@ -38,7 +38,7 @@ Standards are the main evidence (WCAG 2.2 success criteria); reference screens s
 
 ### RX-A11Y-02 [Required] [Hard Gate] Readable text, reachable targets
 
-- Do: Keep body text around 14 to 16px on mobile, and touch targets at least 24×24px, preferably 44×44px.
+- Do: Keep body text around 14 to 16px on mobile, and touch targets at least 24×24px, preferably 44×44px. The target is the hit area, not the glyph: a 20 to 24px icon sits inside a 44×44 button.
 - Do not: Shrink body text or crowd small targets together.
 - Why: Small text and targets cause misreads and mis-taps. (WCAG 2.2 SC 2.5.8 (24px minimum); Apple HIG 44pt; Material 48dp; Fitts's law (Fitts 1954): bigger and nearer targets are faster to hit)
 - Check: audit_ui
@@ -52,7 +52,7 @@ Standards are the main evidence (WCAG 2.2 success criteria); reference screens s
 
 ### RX-A11Y-04 [Required] [Hard Gate] Semantic structure, native controls, and names
 
-- Do: Use real headings, landmarks, lists, buttons, links, and the right input types before custom elements, and give icon-only buttons and meaningful images an accessible name or alt text.
+- Do: Use real headings, landmarks, lists, buttons, links, and the right input types before custom elements, and give icon-only buttons and meaningful images an accessible name or alt text. Hide decorative icons and images from assistive technology (aria-hidden, or an empty alt).
 - Do not: Build structure or controls from styled divs, or ship unlabeled icon buttons.
 - Why: Assistive technology navigates by semantics and announces unlabeled buttons as just "button"; native controls bring keyboard and platform behavior for free. (WCAG 2.2 SC 1.1.1, 1.3.1, and 4.1.2)
 - Check: read the accessibility tree (a Playwright accessibility snapshot, or the design file's layer types): every control is a native element or has a role, and every one has a name; headings are in order; fails on an unnamed control or a div acting as a button
