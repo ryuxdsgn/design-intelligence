@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "ryux",
-  "version": "2.13.6",
+  "version": "2.13.7",
   "description": "RYUX, design intelligence for AI agents and designers: one skill with five entry points. Analyze an existing interface, Design without code, Build in your stack, Critique a Figma link, pen.dev design, website URL, or screenshot, and QA the result. RYUX reads only the knowledge each task needs.",
   "author": {
     "name": "ryux.design"
