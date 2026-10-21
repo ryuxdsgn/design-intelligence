@@ -22,6 +22,11 @@ Card radius | 16px                 | 8px            | half the radius | minor   
 
 **Without a reference**, check the build against its own intent and the rules below.
 
+**Illustration** (when the build has any): it matches the written style (RX-UI-17), a set reads as one
+family side by side (RX-UI-18), it reads at its real displayed size including the smallest width, it
+works in every theme, and nothing the user needs exists only in the image (RX-UI-19). Without a
+render, report these as NOT VERIFIED.
+
 **Loop**: implement → render → compare → fix → render again.
 
 **Render with what is available**, in this order: the project's own preview or test setup;
