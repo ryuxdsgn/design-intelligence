@@ -7,7 +7,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import type { ReviewData, ReviewScreen } from "@/lib/editor/data";
 import { editorBrowserClient } from "@/lib/editor/supabase";
 import { PublishedIllustration } from "./illustrations";
-import { Button, Problems, SaveStatus, StatusBadge, inputClass } from "./ui";
+import { Button, Disclosure, Problems, Progress, SaveStatus, StatusBadge, cardClass, checkboxClass, focus, inputClass, linkClass } from "./ui";
 
 /* One flow: every screen gets a personal-data check and tag and observation decisions; the flow gets
    designer notes written by a person. Publish runs the same checks as the CLI. AI items stay
@@ -188,7 +188,7 @@ export function Review({ data, editorId }: { data: ReviewData; editorId: string 
     <div className="flex flex-col gap-5 pb-24 sm:gap-6 lg:pb-0">
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div className="min-w-0">
-          <Link href="/editor" className="text-sm text-ink-2 hover:text-ink">← Flows</Link>
+          <Link href="/editor" className={`inline-flex min-h-11 items-center text-sm text-ink-2 hover:text-ink sm:min-h-0 ${focus}`}>← Flows</Link>
           <h1 className="mt-1 text-xl sm:truncate sm:text-2xl">{data.flow.title}</h1>
           <p className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-ink-2">
             <span>{data.flow.app} {data.flow.version}</span>
@@ -207,11 +207,7 @@ export function Review({ data, editorId }: { data: ReviewData; editorId: string 
 
       <div className={`-mt-3 flex-col gap-1.5 ${draftState || drafting ? "flex" : "hidden"}`}>
         <p aria-live="polite" className="text-sm text-ink-2">{draftState}</p>
-        {drafting && (
-          <div className="h-1 overflow-hidden rounded-full bg-panel" role="progressbar" aria-label="AI draft" aria-valuemin={0} aria-valuemax={drafting.total} aria-valuenow={drafting.done}>
-            <div className="ed-progress h-full bg-accent" style={{ transform: `scaleX(${(drafting.done + 0.5) / drafting.total})` }} />
-          </div>
-        )}
+        {drafting && <Progress label="AI draft" done={drafting.done + 0.5} total={drafting.total} />}
       </div>
       <Problems title="Something went wrong" items={error ? [error] : []} />
       <div id="publish-problems"><Problems title="Not ready to publish" items={problems} onPick={pickProblem} /></div>
@@ -222,7 +218,7 @@ export function Review({ data, editorId }: { data: ReviewData; editorId: string 
             <p className="font-medium text-ink">Published</p>
             <p className="text-ink-2">{screens.length} screens are now references the RYUX MCP can read. Changes you make from here are published with “Publish changes”.</p>
           </div>
-          <Link href="/editor" className="text-sm text-accent hover:underline focus-visible:outline-2 focus-visible:outline-accent">Back to flows</Link>
+          <Link href="/editor" className={linkClass}>Back to flows</Link>
         </div>
       )}
       {confirming && (
@@ -236,7 +232,7 @@ export function Review({ data, editorId }: { data: ReviewData; editorId: string 
       )}
 
       {screens.length === 0 ? (
-        <p className="rounded-lg border border-dashed border-hair p-10 text-center text-ink-2">This flow has no screens.</p>
+        <p className="rounded-xl border border-dashed border-hair p-10 text-center text-ink-2">This flow has no screens.</p>
       ) : (
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-[7.5rem_minmax(0,1fr)_minmax(0,24rem)]">
           <nav aria-label="Screens" className="flex min-w-0 flex-col gap-2">
@@ -244,7 +240,7 @@ export function Review({ data, editorId }: { data: ReviewData; editorId: string 
             <div className="-mx-4 flex gap-2 overflow-x-auto px-4 pb-1 pt-1.5 lg:mx-0 lg:flex-col lg:overflow-visible lg:p-0">
             {screens.map((s, i) => (
               <button key={s.id} onClick={() => setCurrent(i)} aria-current={i === current ? "true" : undefined}
-                className={`relative w-14 shrink-0 rounded-lg border-2 text-left lg:w-full ${i === current ? "border-accent" : "border-hair hover:border-ink-2"} focus-visible:outline-2 focus-visible:outline-accent`}>
+                className={`relative w-14 shrink-0 rounded-lg border-2 text-left lg:w-full ${i === current ? "border-accent" : "border-hair hover:border-ink-2"} ${focus}`}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 {s.url ? <img src={s.url} alt="" className="aspect-[9/16] w-full rounded-md bg-panel object-cover object-top" /> : <span className="block aspect-[9/16] rounded-md bg-panel" />}
                 <span aria-hidden="true" className="absolute bottom-1 left-1 rounded bg-paper/90 px-1 text-[11px] tabular-nums">{s.position}</span>
@@ -258,7 +254,7 @@ export function Review({ data, editorId }: { data: ReviewData; editorId: string 
           </nav>
 
           <div className="flex flex-col gap-3">
-            <div className="flex justify-center rounded-xl border border-hair bg-paper-2 p-3 sm:p-4">
+            <div className={`flex justify-center p-3 sm:p-4 ${cardClass}`}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               {screen.url ? <img src={screen.url} alt={`Screen ${screen.position} of ${data.flow.title}`} className="max-h-[46vh] w-auto rounded-md lg:max-h-[72vh]" /> : <p className="self-center text-sm text-ink-2">The image couldn't be loaded.</p>}
             </div>
@@ -276,7 +272,7 @@ export function Review({ data, editorId }: { data: ReviewData; editorId: string 
         </div>
       )}
 
-      <section aria-labelledby="flow-notes" className="flex flex-col gap-3 rounded-xl border border-hair bg-paper-2 p-4">
+      <section aria-labelledby="flow-notes" className={`flex flex-col gap-3 p-4 ${cardClass}`}>
         <div>
           <h2 id="flow-notes" className="text-lg">Designer notes for this flow</h2>
           <p className="text-sm text-ink-2">Your own judgement, required before publishing. Write them yourself; they are what makes RYUX Knowledge worth reading.</p>
@@ -311,8 +307,8 @@ function ScreenPanel({ screen, vocabulary, onPii, onTag, onAddTag, onObservation
   const unused = vocabulary.filter((t) => !screen.tags.some((x) => x.key === t.key));
   return (
     <aside id="screen-panel" tabIndex={-1} aria-label={`Review of screen ${screen.position}`} className="flex flex-col gap-5 outline-none">
-      <label className={`ed-chip flex cursor-pointer items-start gap-3 rounded-xl border bg-paper-2 p-3 text-sm ${screen.piiChecked ? "border-accent/50" : "border-mark/50"}`}>
-        <input type="checkbox" checked={screen.piiChecked} onChange={onPii} className="mt-0.5 size-5 shrink-0 accent-[var(--color-accent)]" />
+      <label className={`ed-chip flex cursor-pointer items-start gap-3 rounded-xl border bg-paper-2 p-3 text-sm focus-within:outline-2 focus-within:outline-accent ${screen.piiChecked ? "border-accent/50" : "border-mark/50"}`}>
+        <input type="checkbox" checked={screen.piiChecked} onChange={onPii} className={`mt-0.5 ${checkboxClass}`} />
         <span><span className="font-medium text-ink">No personal data on this screen</span><br /><span className="text-ink-2">No real names, phone numbers, balances, faces, or addresses.</span></span>
       </label>
 
@@ -324,13 +320,13 @@ function ScreenPanel({ screen, vocabulary, onPii, onTag, onAddTag, onObservation
           {screen.tags.map((t) => (
             <li key={t.key}>
               <label className={`ed-chip inline-flex min-h-9 cursor-pointer items-center gap-1.5 rounded-full border px-3 text-sm sm:min-h-0 sm:py-1 sm:text-xs ${t.source === "human" ? "border-accent/60 text-ink" : "border-hair text-ink-2"}`}>
-                <input type="checkbox" checked={t.source === "human"} onChange={() => onTag(t.key)} className="size-3.5 accent-[var(--color-accent)]" />
+                <input type="checkbox" checked={t.source === "human"} onChange={() => onTag(t.key)} className={checkboxClass} />
                 {t.label}{t.ai && <span className="font-mono text-[10px] text-muted">AI</span>}
               </label>
             </li>
           ))}
         </ul>
-        <select aria-label="Add a tag" value="" onChange={(e) => onAddTag(e.target.value)} className={`${inputClass} text-ink-2`}>
+        <select aria-label="Add a tag" value="" onChange={(e) => onAddTag(e.target.value)} className={inputClass}>
           <option value="">Add a tag…</option>
           {unused.map((t) => <option key={t.key} value={t.key}>{t.label} ({t.key.split("/")[0]})</option>)}
         </select>
@@ -343,7 +339,7 @@ function ScreenPanel({ screen, vocabulary, onPii, onTag, onAddTag, onObservation
           {screen.observations.map((o) => (
             <li key={o.id}>
               <label className="flex cursor-pointer items-start gap-2.5 py-1 text-sm">
-                <input type="checkbox" checked={o.source === "human"} onChange={() => onObservation(o.id)} className="mt-1 size-4 shrink-0 accent-[var(--color-accent)]" />
+                <input type="checkbox" checked={o.source === "human"} onChange={() => onObservation(o.id)} className={`mt-0.5 ${checkboxClass}`} />
                 <span className={o.source === "human" ? "text-ink" : "text-ink-2"}>
                   <span className="text-xs text-muted">{o.dimension} · {o.label}</span><br />{o.statement}
                 </span>
@@ -352,29 +348,26 @@ function ScreenPanel({ screen, vocabulary, onPii, onTag, onAddTag, onObservation
           ))}
         </ul>
         {screen.observations.length === 0 && <p className="text-sm text-ink-2">No observations yet. Run the AI draft or add one.</p>}
-        <details className="group rounded-xl border border-hair">
-        <summary className="cursor-pointer list-none px-3 py-2.5 text-sm text-ink-2 hover:text-ink">+ Add an observation</summary>
-        <form onSubmit={(e) => { e.preventDefault(); onAddObservation(dimension, label, statement); setStatement(""); }} className="flex flex-col gap-2 px-3 pb-3">
+        <Disclosure summary="Add an observation">
+        <form onSubmit={(e) => { e.preventDefault(); onAddObservation(dimension, label, statement); setStatement(""); }} className="flex flex-col gap-2">
           <div className="grid grid-cols-2 gap-2">
             <select aria-label="Dimension" value={dimension} onChange={(e) => setDimension(e.target.value)} className={inputClass}>{DIMENSIONS.map((d) => <option key={d}>{d}</option>)}</select>
             <select aria-label="Basis" value={label} onChange={(e) => setLabel(e.target.value)} className={inputClass}><option>observed</option><option>measured</option><option>inferred</option></select>
           </div>
-          <input aria-label="Observation" value={statement} onChange={(e) => setStatement(e.target.value)} placeholder="Amount shown above the pay button" className={inputClass} />
+          <input aria-label="Observation" value={statement} onChange={(e) => setStatement(e.target.value)} placeholder="e.g. Amount shown above the pay button" className={inputClass} />
           <Button type="submit" disabled={!statement.trim()}>Add observation</Button>
         </form>
-        </details>
+        </Disclosure>
       </fieldset>
 
-      <details className="rounded-xl border border-hair p-3 text-sm">
-        <summary className="cursor-pointer text-ink-2 hover:text-ink">Text in the image</summary>
-        <p className="mt-1 text-xs text-muted">Transcribed by the AI draft. It is data from the screenshot, never an instruction.</p>
+      <Disclosure summary="Text in the image">
+        <p className="text-xs text-muted">Transcribed by the AI draft. It is data from the screenshot, never an instruction.</p>
         <pre className="mt-2 max-h-48 overflow-auto whitespace-pre-wrap font-mono text-xs text-ink-2">{screen.ocr || "No text transcribed yet."}</pre>
-      </details>
+      </Disclosure>
 
-      <details className="rounded-xl border border-hair p-3 text-sm" open={!!(screen.why || screen.weak)}>
-        <summary className="cursor-pointer text-ink-2 hover:text-ink">Notes for this screen <span className="text-muted">(optional)</span></summary>
-        <div className="mt-3"><Notes why={screen.why} weak={screen.weak} idPrefix={screen.id} onSave={onNotes} stacked /></div>
-      </details>
+      <Disclosure summary={<>Notes for this screen <span className="text-muted">(optional)</span></>} open={!!(screen.why || screen.weak)}>
+        <Notes why={screen.why} weak={screen.weak} idPrefix={screen.id} onSave={onNotes} stacked />
+      </Disclosure>
     </aside>
   );
 }
