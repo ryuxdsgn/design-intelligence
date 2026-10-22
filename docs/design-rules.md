@@ -9,7 +9,7 @@
 > numbering are written by us.
 > **Not a derivative of any third-party licensed text** and not affiliated with NN/g or anyone else.
 >
-> **Version:** RYUX 2.13.8
+> **Version:** RYUX 2.14.0
 
 RYUX is design intelligence for AI agents and designers, packaged as one skill, `ryux`. It has five
 entry points: Analyze, Design, Build, Critique, and QA. The router (`SKILL.md`) picks the
@@ -169,7 +169,7 @@ UI, UX, copy, and frontend work ends with this report:
 PRODUCT        PASS | FAIL | NOT VERIFIED | N/A  · one-line reason · evidence Strong | Thin | None
 UX             PASS | FAIL | NOT VERIFIED | N/A  · one-line reason
 CONTENT        PASS | FAIL | NOT VERIFIED | N/A  · one-line reason
-UI             PASS | FAIL | NOT VERIFIED | N/A  · one-line reason · point of view: <concept> | task UI, signature: <signature>
+UI             PASS | FAIL | NOT VERIFIED | N/A  · one-line reason · point of view: <concept> | task UI, signature: <signature> · illustration style: <where written> | none
 DESIGN SYSTEM  PASS | FAIL | NOT VERIFIED | N/A  · one-line reason
 ACCESSIBILITY  PASS | FAIL | NOT VERIFIED | N/A  · one-line reason
 RESPONSIVE     PASS | FAIL | NOT VERIFIED | N/A  · one-line reason
