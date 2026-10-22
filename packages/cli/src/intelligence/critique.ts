@@ -206,7 +206,7 @@ Findings (most severe first, at most 12)
                      frames; the build was not tested)
     Impact:          buyers paying by QRIS may tap twice and pay twice
     Recommendation:  show status with a time estimate; disable the button while verifying
-    Source:          RX-IX-02; scr_demo_001
+    Source:          RX-IX-02; a screen_id from the ryux MCP, when connected
     Verify by:       a verifying-state frame exists and the button reads as disabled in it
 
 Not verifiable from this source

@@ -44,8 +44,8 @@ claude
 Example prompts:
 
 - "Use ryux-local, find a reference for a payment method picker with QRIS"
-- "Show the flow flw_demo_checkout from ryux-local"
-- "Compare Warung Contoh and Toko Contoh via ryux-local"
+- "List the flows in ryux-local, then show the first one"
+- "Compare two apps in ryux-local on their payment flow"
 - "Summarize the QRIS checkout design direction from ryux-local"
 - "Explain the virtual-account pattern from ryux-local"
 - "Run delivery_gate for this checkout design decision"
