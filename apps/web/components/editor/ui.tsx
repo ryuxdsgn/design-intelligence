@@ -1,4 +1,5 @@
 import type { ButtonHTMLAttributes, ReactNode } from "react";
+import { Icon } from "./icons";
 
 /* Editor primitives on the site's board tokens: teal is the action, coral marks a problem and nothing else.
    Every screen builds from these; a look that is needed twice belongs here, not in a page.
@@ -12,7 +13,7 @@ type Size = "md" | "sm";
 /** The button look, for a <button> or a <Link> that acts as one. */
 export function buttonClass(kind: Kind = "secondary", size: Size = "md") {
   const look = {
-    primary: "bg-accent text-paper hover:bg-accent/90 font-medium",
+    primary: "bg-accent text-paper hover:bg-accent/90 font-medium [--ic-dot:currentColor]",
     secondary: "border border-hair text-ink hover:bg-panel",
     quiet: "text-ink-2 hover:text-ink hover:bg-panel",
   }[kind];
@@ -53,7 +54,7 @@ export function Problems({ title, items, onPick }: { title: string; items: strin
   if (!items.length) return null;
   return (
     <div role="alert" className="ed-enter rounded-lg border border-mark/50 bg-mark/10 p-3 text-sm text-ink">
-      <p className="font-medium text-mark">{title}</p>
+      <p className="flex items-center gap-1.5 font-medium text-mark"><Icon name="alert" />{title}</p>
       <ul className="mt-1.5 list-disc space-y-0.5 pl-5 text-ink-2">
         {items.map((p) => (
           <li key={p}>{onPick ? <button type="button" onClick={() => onPick(p)} className={`inline text-left underline decoration-hair underline-offset-2 hover:text-ink ${focus}`}>{p}</button> : p}</li>
@@ -67,8 +68,8 @@ export function Problems({ title, items, onPick }: { title: string; items: strin
 export function SaveStatus({ state }: { state: "idle" | "saving" | "saved" | "error" }) {
   const text = { idle: "", saving: "Saving…", saved: "Saved", error: "Not saved" }[state];
   return (
-    <span aria-live="polite" className={`ed-fade text-xs ${state === "error" ? "text-mark" : "text-muted"} ${state === "idle" ? "opacity-0" : "opacity-100"}`}>
-      {text}
+    <span aria-live="polite" className={`ed-fade inline-flex items-center gap-1 text-xs ${state === "error" ? "text-mark" : "text-muted"} ${state === "idle" ? "opacity-0" : "opacity-100"}`}>
+      {state === "saved" && <Icon name="check" />}{state === "error" && <Icon name="alert" />}{text}
     </span>
   );
 }
@@ -87,7 +88,7 @@ export function Disclosure({ summary, open, children }: { summary: ReactNode; op
   return (
     <details open={open} className="group rounded-xl border border-hair text-sm">
       <summary className={`flex min-h-11 cursor-pointer list-none items-center gap-2 rounded-xl px-3 text-ink-2 hover:text-ink sm:min-h-10 ${focus}`}>
-        <span aria-hidden="true" className="text-muted transition-transform group-open:rotate-90 motion-reduce:transition-none">›</span>
+        <Icon name="disclose" className="text-muted" />
         {summary}
       </summary>
       <div className="px-3 pb-3">{children}</div>

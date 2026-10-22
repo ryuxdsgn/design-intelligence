@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Icon } from "@/components/editor/icons";
 import { FlowIllustration } from "@/components/editor/illustrations";
 import { StatusBadge, buttonClass, focus, linkClass } from "@/components/editor/ui";
 import { listFlows } from "@/lib/editor/data";
@@ -21,7 +22,7 @@ export default async function FlowList({ searchParams }: { searchParams: Promise
           <h1 className="text-3xl">Flows</h1>
           <p className="mt-1 text-sm text-ink-2">Screens become references for the RYUX MCP only after a person reviews and publishes them.</p>
         </div>
-        <Link href="/editor/new" className={buttonClass("primary")}>New flow</Link>
+        <Link href="/editor/new" className={buttonClass("primary")}><Icon name="add" />New flow</Link>
       </div>
 
       <nav aria-label="Filter by status" className="-mt-2 flex flex-wrap gap-2">
@@ -47,7 +48,7 @@ export default async function FlowList({ searchParams }: { searchParams: Promise
               : "Every flow has another status. Show all flows to see them."}
           </p>
           {all.length === 0 ? (
-            <Link href="/editor/new" className={`${buttonClass("primary")} mt-1`}>New flow</Link>
+            <Link href="/editor/new" className={`${buttonClass("primary")} mt-1`}><Icon name="add" />New flow</Link>
           ) : (
             <Link href="/editor" className={linkClass}>Show all flows</Link>
           )}

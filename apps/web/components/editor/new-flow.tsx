@@ -4,6 +4,7 @@ import { BUCKET, checkMeta, flowIds, mediaTypeFor, saveFlowRows, screenIdFromHas
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { editorBrowserClient } from "@/lib/editor/supabase";
+import { Icon } from "./icons";
 import { UploadIllustration } from "./illustrations";
 import { Button, Field, Problems, cardClass, inputClass } from "./ui";
 import { VideoFrames } from "./video-frames";
@@ -175,8 +176,8 @@ export function NewFlow() {
                 </div>
                 <p className="truncate font-mono text-xs text-muted" title={f.file.name}>{f.file.name}</p>
                 <div className="flex items-center gap-0.5">
-                  <Button type="button" kind="quiet" size="sm" disabled={i === 0 || !!progress} onClick={() => move(i, -1)} aria-label={`Move screen ${i + 1} earlier`}>←</Button>
-                  <Button type="button" kind="quiet" size="sm" disabled={i === files.length - 1 || !!progress} onClick={() => move(i, 1)} aria-label={`Move screen ${i + 1} later`}>→</Button>
+                  <Button type="button" kind="quiet" size="sm" disabled={i === 0 || !!progress} onClick={() => move(i, -1)} aria-label={`Move screen ${i + 1} earlier`}><Icon name="earlier" /></Button>
+                  <Button type="button" kind="quiet" size="sm" disabled={i === files.length - 1 || !!progress} onClick={() => move(i, 1)} aria-label={`Move screen ${i + 1} later`}><Icon name="later" /></Button>
                   <Button type="button" kind="quiet" size="sm" className="ml-auto" disabled={!!progress} onClick={() => remove(i)} aria-label={`Remove screen ${i + 1}`}>Remove</Button>
                 </div>
               </li>
@@ -186,7 +187,7 @@ export function NewFlow() {
 
         <Problems title="Can't upload yet" items={problems} />
         <div className="flex items-center gap-3">
-          <Button kind="primary" type="submit" disabled={!!progress}>{progress ? "Uploading…" : `Upload ${files.length || ""} ${files.length === 1 ? "screen" : "screens"}`.replace("  ", " ")}</Button>
+          <Button kind="primary" type="submit" disabled={!!progress}><Icon name="upload" />{progress ? "Uploading…" : `Upload ${files.length || ""} ${files.length === 1 ? "screen" : "screens"}`.replace("  ", " ")}</Button>
           <p aria-live="polite" className="text-sm text-ink-2">{progress}</p>
         </div>
       </div>
