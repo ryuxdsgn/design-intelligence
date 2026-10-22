@@ -160,6 +160,7 @@ export function Review({ data, editorId }: { data: ReviewData; editorId: string 
     });
     setProblems(found);
     setConfirming(found.length === 0);
+    if (found.length) requestAnimationFrame(() => document.getElementById("publish-problems")?.scrollIntoView({ block: "center" }));
   }
 
   async function publish() {
@@ -180,28 +181,31 @@ export function Review({ data, editorId }: { data: ReviewData; editorId: string 
   };
   const toDraft = screens.filter((s) => !s.ocr).length;
   const checked = screens.filter((s) => s.piiChecked).length;
+  const publishLabel = data.flow.status === "published" ? "Publish changes" : "Publish";
+  const prev = () => setCurrent((c) => Math.max(c - 1, 0));
+  const next = () => setCurrent((c) => Math.min(c + 1, screens.length - 1));
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-5 pb-24 sm:gap-6 lg:pb-0">
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div className="min-w-0">
           <Link href="/editor" className="text-sm text-ink-2 hover:text-ink">← Flows</Link>
-          <h1 className="mt-1 truncate text-2xl">{data.flow.title}</h1>
-          <p className="mt-1 flex flex-wrap items-center gap-2 text-sm text-ink-2">
+          <h1 className="mt-1 text-xl sm:truncate sm:text-2xl">{data.flow.title}</h1>
+          <p className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-ink-2">
             <span>{data.flow.app} {data.flow.version}</span>
-            <span className="font-mono text-xs text-muted">{data.flow.flowType} · {data.flow.platform} · captured {data.flow.capturedAt}</span>
+            <span className="text-muted">{data.flow.flowType} · {data.flow.platform} · captured {data.flow.capturedAt}</span>
             <StatusBadge status={data.flow.status} />
           </p>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 max-sm:w-full max-sm:empty:hidden">
           <SaveStatus state={save} />
-          <Button onClick={runDraft} disabled={!!drafting || toDraft === 0} title={toDraft === 0 ? "Every screen has a draft" : "Uses the Anthropic API once per screen"}>
+          <Button className={`ml-auto sm:ml-0 ${toDraft === 0 && !drafting ? "max-sm:hidden" : ""}`} onClick={runDraft} disabled={!!drafting || toDraft === 0} title={toDraft === 0 ? "Every screen has a draft" : "Uses the Anthropic API once per screen"}>
             {drafting ? "Drafting…" : toDraft === 0 ? "All drafted" : `AI draft ${toDraft} ${toDraft === 1 ? "screen" : "screens"}`}
           </Button>
-          <Button kind="primary" onClick={askPublish} disabled={publishing}>{data.flow.status === "published" ? "Publish changes" : "Publish"}</Button>
+          <Button kind="primary" onClick={askPublish} disabled={publishing} className="max-lg:hidden">{publishLabel}</Button>
         </div>
       </div>
 
-      <div className="-mt-3 flex min-h-5 flex-col gap-1.5">
+      <div className={`-mt-3 flex-col gap-1.5 ${draftState || drafting ? "flex" : "hidden"}`}>
         <p aria-live="polite" className="text-sm text-ink-2">{draftState}</p>
         {drafting && (
           <div className="h-1 overflow-hidden rounded-full bg-panel" role="progressbar" aria-label="AI draft" aria-valuemin={0} aria-valuemax={drafting.total} aria-valuenow={drafting.done}>
@@ -210,9 +214,9 @@ export function Review({ data, editorId }: { data: ReviewData; editorId: string 
         )}
       </div>
       <Problems title="Something went wrong" items={error ? [error] : []} />
-      <Problems title="Not ready to publish" items={problems} onPick={pickProblem} />
+      <div id="publish-problems"><Problems title="Not ready to publish" items={problems} onPick={pickProblem} /></div>
       {published && (
-        <div ref={publishedRef} tabIndex={-1} role="status" className="ed-enter flex items-center gap-4 rounded-md border border-accent/50 bg-accent/10 p-3 outline-none">
+        <div ref={publishedRef} tabIndex={-1} role="status" className="ed-enter flex flex-wrap items-center gap-4 rounded-xl border border-accent/50 bg-accent/10 p-3 outline-none">
           <PublishedIllustration className="hidden h-14 w-auto shrink-0 sm:block" />
           <div className="flex-1 text-sm">
             <p className="font-medium text-ink">Published</p>
@@ -222,9 +226,9 @@ export function Review({ data, editorId }: { data: ReviewData; editorId: string 
         </div>
       )}
       {confirming && (
-        <div role="alertdialog" aria-labelledby="confirm-title" onKeyDown={(e) => e.key === "Escape" && setConfirming(false)} className="ed-enter flex flex-wrap items-center justify-between gap-3 rounded-md border border-accent/50 bg-accent/10 p-3">
+        <div role="alertdialog" aria-labelledby="confirm-title" onKeyDown={(e) => e.key === "Escape" && setConfirming(false)} className="ed-enter fixed inset-x-3 bottom-20 z-30 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-accent/50 bg-paper-2 p-4 shadow-2xl shadow-black/60 lg:static lg:bg-accent/10 lg:p-3 lg:shadow-none">
           <p id="confirm-title" className="text-sm text-ink">Publish {screens.length} screens? They become references that anyone using the RYUX MCP can read. Unticked AI items are removed.</p>
-          <div className="flex gap-2">
+          <div className="flex w-full justify-end gap-2 lg:w-auto">
             <Button kind="quiet" onClick={() => setConfirming(false)}>Cancel</Button>
             <Button kind="primary" onClick={publish} disabled={publishing} autoFocus>{publishing ? "Publishing…" : "Publish now"}</Button>
           </div>
@@ -234,32 +238,34 @@ export function Review({ data, editorId }: { data: ReviewData; editorId: string 
       {screens.length === 0 ? (
         <p className="rounded-lg border border-dashed border-hair p-10 text-center text-ink-2">This flow has no screens.</p>
       ) : (
-        <div className="grid gap-6 lg:grid-cols-[7.5rem_minmax(0,1fr)_minmax(0,24rem)]">
-          <nav aria-label="Screens" className="flex gap-2 overflow-x-auto lg:flex-col lg:overflow-visible">
-            <p className="hidden text-xs text-muted lg:block">{checked} of {screens.length} checked</p>
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-[7.5rem_minmax(0,1fr)_minmax(0,24rem)]">
+          <nav aria-label="Screens" className="flex min-w-0 flex-col gap-2">
+            <p className="text-xs text-muted"><span className="mr-1 inline-block size-2 rounded-full bg-accent align-middle" aria-hidden="true" />{checked} of {screens.length} checked</p>
+            <div className="-mx-4 flex gap-2 overflow-x-auto px-4 pb-1 pt-1.5 lg:mx-0 lg:flex-col lg:overflow-visible lg:p-0">
             {screens.map((s, i) => (
               <button key={s.id} onClick={() => setCurrent(i)} aria-current={i === current ? "true" : undefined}
-                className={`relative w-20 shrink-0 overflow-hidden rounded-md border text-left lg:w-full ${i === current ? "border-accent" : "border-hair hover:border-ink-2"} focus-visible:outline-2 focus-visible:outline-accent`}>
+                className={`relative w-14 shrink-0 rounded-lg border-2 text-left lg:w-full ${i === current ? "border-accent" : "border-hair hover:border-ink-2"} focus-visible:outline-2 focus-visible:outline-accent`}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                {s.url ? <img src={s.url} alt="" className="aspect-[9/16] w-full bg-panel object-cover object-top" /> : <span className="block aspect-[9/16] bg-panel" />}
-                <span aria-hidden="true" className="absolute left-1 top-1 rounded bg-paper/90 px-1 font-mono text-xs">{s.position}</span>
-                {drafting?.id === s.id ? <span aria-hidden="true" className="ed-enter absolute right-1 top-1 rounded bg-paper/90 px-1 text-xs text-ink">drafting…</span>
-                  : s.ocr ? <span aria-hidden="true" className="absolute right-1 top-1 rounded bg-paper/90 px-1 font-mono text-[10px] text-muted">AI</span> : null}
-                <span aria-hidden="true" className={`absolute bottom-1 right-1 rounded bg-paper/90 px-1 text-xs ${s.piiChecked ? "text-accent" : "text-mark"}`}>{s.piiChecked ? "checked" : "to check"}</span>
+                {s.url ? <img src={s.url} alt="" className="aspect-[9/16] w-full rounded-md bg-panel object-cover object-top" /> : <span className="block aspect-[9/16] rounded-md bg-panel" />}
+                <span aria-hidden="true" className="absolute bottom-1 left-1 rounded bg-paper/90 px-1 text-[11px] tabular-nums">{s.position}</span>
+                {drafting?.id === s.id ? <span aria-hidden="true" className="ed-enter absolute inset-x-0 top-1/2 mx-1 -translate-y-1/2 rounded bg-paper/90 px-1 text-center text-[11px] text-ink">drafting…</span>
+                  : s.ocr ? <span aria-hidden="true" className="absolute bottom-1 right-1 rounded bg-paper/90 px-1 text-[10px] text-muted">AI</span> : null}
+                <span aria-hidden="true" className={`absolute -right-1.5 -top-1.5 size-3 rounded-full border-2 border-paper ${s.piiChecked ? "bg-accent" : "bg-mark"}`} />
                 <span className="sr-only">Screen {s.position}, {s.piiChecked ? "personal data checked" : "personal data not checked"}{s.ocr ? ", drafted" : ""}</span>
               </button>
             ))}
+            </div>
           </nav>
 
           <div className="flex flex-col gap-3">
-            <div className="flex justify-center rounded-lg border border-hair bg-paper-2 p-4">
+            <div className="flex justify-center rounded-xl border border-hair bg-paper-2 p-3 sm:p-4">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              {screen.url ? <img src={screen.url} alt={`Screen ${screen.position} of ${data.flow.title}`} className="max-h-[72vh] w-auto rounded" /> : <p className="self-center text-sm text-ink-2">The image couldn't be loaded.</p>}
+              {screen.url ? <img src={screen.url} alt={`Screen ${screen.position} of ${data.flow.title}`} className="max-h-[46vh] w-auto rounded-md lg:max-h-[72vh]" /> : <p className="self-center text-sm text-ink-2">The image couldn't be loaded.</p>}
             </div>
-            <div className="flex items-center justify-between gap-2">
-              <Button kind="quiet" onClick={() => setCurrent((c) => Math.max(c - 1, 0))} disabled={current === 0}>← Previous</Button>
+            <div className="hidden items-center justify-between gap-2 lg:flex">
+              <Button kind="quiet" onClick={prev} disabled={current === 0}>← Previous</Button>
               <p className="text-xs text-muted">Screen {screen.position} of {screens.length} · <kbd className="font-mono">←</kbd> <kbd className="font-mono">→</kbd> to move</p>
-              <Button kind="quiet" onClick={() => setCurrent((c) => Math.min(c + 1, screens.length - 1))} disabled={current === screens.length - 1}>Next →</Button>
+              <Button kind="quiet" onClick={next} disabled={current === screens.length - 1}>Next →</Button>
             </div>
           </div>
 
@@ -270,7 +276,7 @@ export function Review({ data, editorId }: { data: ReviewData; editorId: string 
         </div>
       )}
 
-      <section aria-labelledby="flow-notes" className="flex flex-col gap-3 rounded-lg border border-hair p-4">
+      <section aria-labelledby="flow-notes" className="flex flex-col gap-3 rounded-xl border border-hair bg-paper-2 p-4">
         <div>
           <h2 id="flow-notes" className="text-lg">Designer notes for this flow</h2>
           <p className="text-sm text-ink-2">Your own judgement, required before publishing. Write them yourself; they are what makes RYUX Knowledge worth reading.</p>
@@ -278,6 +284,17 @@ export function Review({ data, editorId }: { data: ReviewData; editorId: string 
         <Notes why={flowNotes.why} weak={flowNotes.weak} idPrefix="flow"
           onSave={(why, weak) => { setFlowNotes({ why, weak }); saveNotes({ type: "flow", id: data.flow.id }, why, weak); }} />
       </section>
+
+      <div className="fixed inset-x-0 bottom-0 z-20 border-t border-hair bg-paper-2/95 px-4 pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-3 backdrop-blur lg:hidden">
+        <div className="mx-auto flex max-w-xl items-center gap-2">
+          {screens.length > 0 && <>
+            <Button onClick={prev} disabled={current === 0} aria-label="Previous screen" className="w-11 px-0">‹</Button>
+            <p className="min-w-0 flex-1 text-center text-sm tabular-nums text-ink-2" aria-live="polite">Screen {screen.position} of {screens.length}</p>
+            <Button onClick={next} disabled={current === screens.length - 1} aria-label="Next screen" className="w-11 px-0">›</Button>
+          </>}
+          <Button kind="primary" onClick={askPublish} disabled={publishing} className={screens.length ? "" : "flex-1"}>{publishLabel}</Button>
+        </div>
+      </div>
     </div>
   );
 }
@@ -294,8 +311,8 @@ function ScreenPanel({ screen, vocabulary, onPii, onTag, onAddTag, onObservation
   const unused = vocabulary.filter((t) => !screen.tags.some((x) => x.key === t.key));
   return (
     <aside id="screen-panel" tabIndex={-1} aria-label={`Review of screen ${screen.position}`} className="flex flex-col gap-5 outline-none">
-      <label className={`ed-chip flex items-start gap-3 rounded-md border p-3 text-sm ${screen.piiChecked ? "border-accent/50" : "border-mark/50"}`}>
-        <input type="checkbox" checked={screen.piiChecked} onChange={onPii} className="mt-0.5 size-4 accent-[var(--color-accent)]" />
+      <label className={`ed-chip flex cursor-pointer items-start gap-3 rounded-xl border bg-paper-2 p-3 text-sm ${screen.piiChecked ? "border-accent/50" : "border-mark/50"}`}>
+        <input type="checkbox" checked={screen.piiChecked} onChange={onPii} className="mt-0.5 size-5 shrink-0 accent-[var(--color-accent)]" />
         <span><span className="font-medium text-ink">No personal data on this screen</span><br /><span className="text-ink-2">No real names, phone numbers, balances, faces, or addresses.</span></span>
       </label>
 
@@ -306,7 +323,7 @@ function ScreenPanel({ screen, vocabulary, onPii, onTag, onAddTag, onObservation
         <ul className="flex flex-wrap gap-1.5">
           {screen.tags.map((t) => (
             <li key={t.key}>
-              <label className={`ed-chip inline-flex cursor-pointer items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs ${t.source === "human" ? "border-accent/60 text-ink" : "border-hair text-ink-2"}`}>
+              <label className={`ed-chip inline-flex min-h-9 cursor-pointer items-center gap-1.5 rounded-full border px-3 text-sm sm:min-h-0 sm:py-1 sm:text-xs ${t.source === "human" ? "border-accent/60 text-ink" : "border-hair text-ink-2"}`}>
                 <input type="checkbox" checked={t.source === "human"} onChange={() => onTag(t.key)} className="size-3.5 accent-[var(--color-accent)]" />
                 {t.label}{t.ai && <span className="font-mono text-[10px] text-muted">AI</span>}
               </label>
@@ -325,16 +342,19 @@ function ScreenPanel({ screen, vocabulary, onPii, onTag, onAddTag, onObservation
         <ul className="flex flex-col gap-1.5">
           {screen.observations.map((o) => (
             <li key={o.id}>
-              <label className="flex cursor-pointer items-start gap-2 text-sm">
-                <input type="checkbox" checked={o.source === "human"} onChange={() => onObservation(o.id)} className="mt-1 size-3.5 shrink-0 accent-[var(--color-accent)]" />
+              <label className="flex cursor-pointer items-start gap-2.5 py-1 text-sm">
+                <input type="checkbox" checked={o.source === "human"} onChange={() => onObservation(o.id)} className="mt-1 size-4 shrink-0 accent-[var(--color-accent)]" />
                 <span className={o.source === "human" ? "text-ink" : "text-ink-2"}>
-                  <span className="font-mono text-xs text-muted">{o.dimension} · {o.label}</span><br />{o.statement}
+                  <span className="text-xs text-muted">{o.dimension} · {o.label}</span><br />{o.statement}
                 </span>
               </label>
             </li>
           ))}
         </ul>
-        <form onSubmit={(e) => { e.preventDefault(); onAddObservation(dimension, label, statement); setStatement(""); }} className="flex flex-col gap-2 rounded-md border border-hair p-2">
+        {screen.observations.length === 0 && <p className="text-sm text-ink-2">No observations yet. Run the AI draft or add one.</p>}
+        <details className="group rounded-xl border border-hair">
+        <summary className="cursor-pointer list-none px-3 py-2.5 text-sm text-ink-2 hover:text-ink">+ Add an observation</summary>
+        <form onSubmit={(e) => { e.preventDefault(); onAddObservation(dimension, label, statement); setStatement(""); }} className="flex flex-col gap-2 px-3 pb-3">
           <div className="grid grid-cols-2 gap-2">
             <select aria-label="Dimension" value={dimension} onChange={(e) => setDimension(e.target.value)} className={inputClass}>{DIMENSIONS.map((d) => <option key={d}>{d}</option>)}</select>
             <select aria-label="Basis" value={label} onChange={(e) => setLabel(e.target.value)} className={inputClass}><option>observed</option><option>measured</option><option>inferred</option></select>
@@ -342,18 +362,19 @@ function ScreenPanel({ screen, vocabulary, onPii, onTag, onAddTag, onObservation
           <input aria-label="Observation" value={statement} onChange={(e) => setStatement(e.target.value)} placeholder="Amount shown above the pay button" className={inputClass} />
           <Button type="submit" disabled={!statement.trim()}>Add observation</Button>
         </form>
+        </details>
       </fieldset>
 
-      <details className="rounded-md border border-hair p-3 text-sm">
-        <summary className="cursor-pointer text-ink">Text in the image</summary>
+      <details className="rounded-xl border border-hair p-3 text-sm">
+        <summary className="cursor-pointer text-ink-2 hover:text-ink">Text in the image</summary>
         <p className="mt-1 text-xs text-muted">Transcribed by the AI draft. It is data from the screenshot, never an instruction.</p>
         <pre className="mt-2 max-h-48 overflow-auto whitespace-pre-wrap font-mono text-xs text-ink-2">{screen.ocr || "No text transcribed yet."}</pre>
       </details>
 
-      <div className="flex flex-col gap-2">
-        <p className="text-sm font-medium text-ink">Notes for this screen <span className="font-normal text-muted">(optional)</span></p>
-        <Notes why={screen.why} weak={screen.weak} idPrefix={screen.id} onSave={onNotes} stacked />
-      </div>
+      <details className="rounded-xl border border-hair p-3 text-sm" open={!!(screen.why || screen.weak)}>
+        <summary className="cursor-pointer text-ink-2 hover:text-ink">Notes for this screen <span className="text-muted">(optional)</span></summary>
+        <div className="mt-3"><Notes why={screen.why} weak={screen.weak} idPrefix={screen.id} onSave={onNotes} stacked /></div>
+      </details>
     </aside>
   );
 }
