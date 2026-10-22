@@ -2,10 +2,11 @@
 
 import { BUCKET, checkMeta, flowIds, mediaTypeFor, saveFlowRows, screenIdFromHash, sha256Hex, storagePath, type FlowMeta } from "@ryux/core/knowledge";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { editorBrowserClient } from "@/lib/editor/supabase";
 import { UploadIllustration } from "./illustrations";
 import { Button, Field, Problems, inputClass } from "./ui";
+import { VideoFrames } from "./video-frames";
 
 interface Picked {
   file: File;
@@ -14,6 +15,8 @@ interface Picked {
 }
 
 const MAX_MB = 10;
+const IMAGE = /\.(png|jpe?g|webp)$/i;
+const VIDEO = /\.(mp4|mov|m4v|webm)$/i;
 
 export function NewFlow() {
   const router = useRouter();
@@ -23,18 +26,22 @@ export function NewFlow() {
   const [problems, setProblems] = useState<string[]>([]);
   const [progress, setProgress] = useState("");
   const [over, setOver] = useState(false);
+  const [video, setVideo] = useState<File | null>(null);
 
-  useEffect(() => () => files.forEach((f) => URL.revokeObjectURL(f.preview)), [files]);
+  // Frames from a video arrive while other state changes; read the current list, not a stale closure.
+  const current = useRef(files);
+  current.current = files;
+
+  // Object URLs are revoked on remove and when the page closes, not on every change of the list.
+  useEffect(() => () => current.current.forEach((f) => URL.revokeObjectURL(f.preview)), []);
 
   const set = (k: keyof FlowMeta) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => setMeta({ ...meta, [k]: e.target.value });
 
-  async function add(list: FileList | null) {
-    if (!list) return;
+  async function addImages(list: File[], sortByName: boolean) {
     const added: Picked[] = [];
     const skipped: string[] = [];
-    const known = new Set(files.map((f) => f.hash));
-    for (const file of Array.from(list)) {
-      if (!/\.(png|jpe?g|webp)$/i.test(file.name)) { skipped.push(`${file.name}: not a PNG, JPEG, or WebP image`); continue; }
+    const known = new Set(current.current.map((f) => f.hash));
+    for (const file of list) {
       if (file.size > MAX_MB * 1024 * 1024) { skipped.push(`${file.name}: larger than ${MAX_MB} MB`); continue; }
       const hash = await sha256Hex(await file.arrayBuffer());
       if (known.has(hash)) { skipped.push(`${file.name}: same image as one already added`); continue; }
@@ -42,9 +49,25 @@ export function NewFlow() {
       added.push({ file, hash, preview: URL.createObjectURL(file) });
     }
     // Files picked together are ordered by name (01.png, 02.png, ...), as in a flow folder.
-    added.sort((a, b) => a.file.name.localeCompare(b.file.name, undefined, { numeric: true }));
-    setFiles([...files, ...added]);
+    if (sortByName) added.sort((a, b) => a.file.name.localeCompare(b.file.name, undefined, { numeric: true }));
+    setFiles((prev) => [...prev, ...added]);
+    return skipped;
+  }
+
+  async function add(list: FileList | null) {
+    if (!list) return;
+    const all = Array.from(list);
+    const videos = all.filter((f) => VIDEO.test(f.name));
+    const skipped = all.filter((f) => !IMAGE.test(f.name) && !VIDEO.test(f.name)).map((f) => `${f.name}: not an image or a screen recording`);
+    skipped.push(...videos.slice(1).map((f) => `${f.name}: one recording at a time; add it after this one`));
+    if (videos[0]) setVideo(videos[0]);
+    skipped.push(...(await addImages(all.filter((f) => IMAGE.test(f.name)), true)));
     setNotes(skipped);
+    setProblems([]);
+  }
+
+  async function addFrames(frames: File[]) {
+    setNotes(await addImages(frames, false));
     setProblems([]);
   }
 
@@ -134,10 +157,11 @@ export function NewFlow() {
           onDrop={(e) => { e.preventDefault(); setOver(false); if (!progress) add(e.dataTransfer.files); }}
           className={`ed-drop ed-chip flex cursor-pointer flex-col items-center justify-center gap-1 rounded-lg border border-dashed p-6 text-center focus-within:outline-2 focus-within:outline-accent ${over ? "border-accent bg-accent/5" : "border-hair hover:border-accent/60"}`}>
           <UploadIllustration className="h-16 w-auto" />
-          <span className="text-sm text-ink">{over ? "Drop to add these screens" : "Drop screenshots here, or choose them"}</span>
-          <span className="text-xs text-muted">PNG, JPEG, or WebP, up to {MAX_MB} MB each. Hide personal data before uploading.</span>
-          <input id="screens" type="file" accept="image/png,image/jpeg,image/webp" multiple className="sr-only" disabled={!!progress} onChange={(e) => { add(e.target.files); e.target.value = ""; }} />
+          <span className="text-sm text-ink">{over ? "Drop to add" : "Drop screenshots or a screen recording here, or choose them"}</span>
+          <span className="text-xs text-muted">Screenshots: PNG, JPEG, or WebP, up to {MAX_MB} MB each. Recordings: MP4, MOV, or WebM; you pick the frames. Hide personal data before uploading.</span>
+          <input id="screens" type="file" accept="image/png,image/jpeg,image/webp,video/mp4,video/quicktime,video/webm,.m4v" multiple className="sr-only" disabled={!!progress} onChange={(e) => { add(e.target.files); e.target.value = ""; }} />
         </label>
+        {video && <VideoFrames file={video} disabled={!!progress} onFrames={addFrames} onClose={() => setVideo(null)} />}
         <Problems title="Not added" items={notes} />
 
         {files.length > 0 && (
