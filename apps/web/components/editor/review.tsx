@@ -3,10 +3,11 @@
 import { DIMENSIONS, observationId, publishReview, setPiiChecked, validateReview, type FlowReview } from "@ryux/core/knowledge";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import type { ReviewData, ReviewScreen } from "@/lib/editor/data";
 import { editorBrowserClient } from "@/lib/editor/supabase";
-import { Button, Problems, StatusBadge, inputClass } from "./ui";
+import { PublishedIllustration } from "./illustrations";
+import { Button, Problems, SaveStatus, StatusBadge, inputClass } from "./ui";
 
 /* One flow: every screen gets a personal-data check and tag and observation decisions; the flow gets
    designer notes written by a person. Publish runs the same checks as the CLI. AI items stay
@@ -23,10 +24,28 @@ export function Review({ data, editorId }: { data: ReviewData; editorId: string 
   const [problems, setProblems] = useState<string[]>([]);
   const [confirming, setConfirming] = useState(false);
   const [publishing, setPublishing] = useState(false);
+  const [save, setSave] = useState<"idle" | "saving" | "saved" | "error">("idle");
+  const [drafting, setDrafting] = useState<{ id: string; done: number; total: number } | null>(null);
+  const [published, setPublished] = useState(false);
+  const publishedRef = useRef<HTMLDivElement>(null);
+  const savedTimer = useRef<ReturnType<typeof setTimeout>>(undefined);
   const tagIds = useMemo(() => new Map(data.vocabulary.map((t) => [t.key, t.id])), [data.vocabulary]);
   // A refresh (after the AI draft or publish) brings new server data; show it.
   useEffect(() => setScreens(data.screens), [data.screens]);
   useEffect(() => setFlowNotes({ why: data.why, weak: data.weak }), [data.why, data.weak]);
+  // Reviewers move through many screens: ← and → switch screens when no field has focus.
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      const t = e.target as HTMLElement;
+      if (e.altKey || e.metaKey || e.ctrlKey || /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName) || t.isContentEditable) return;
+      if (e.key === "ArrowRight") setCurrent((c) => Math.min(c + 1, screens.length - 1));
+      if (e.key === "ArrowLeft") setCurrent((c) => Math.max(c - 1, 0));
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [screens.length]);
+  useEffect(() => { if (published) publishedRef.current?.focus(); }, [published]);
+
   // Any change makes the last publish check stale.
   useEffect(() => { setProblems([]); setConfirming(false); }, [screens, flowNotes]);
   const screen = screens[current];
@@ -34,7 +53,16 @@ export function Review({ data, editorId }: { data: ReviewData; editorId: string 
   const patch = (id: string, change: (s: ReviewScreen) => ReviewScreen) => setScreens((all) => all.map((s) => (s.id === id ? change(s) : s)));
   const run = async (what: string, fn: () => Promise<void>) => {
     setError("");
-    try { await fn(); } catch (err) { setError(`${what}: ${err instanceof Error ? err.message : String(err)}`); }
+    setSave("saving");
+    clearTimeout(savedTimer.current);
+    try {
+      await fn();
+      setSave("saved");
+      savedTimer.current = setTimeout(() => setSave("idle"), 1600);
+    } catch (err) {
+      setSave("error");
+      setError(`${what}: ${err instanceof Error ? err.message : String(err)}`);
+    }
   };
   const ok = (res: { error: { message: string } | null }) => { if (res.error) throw new Error(res.error.message); };
 
@@ -95,6 +123,7 @@ export function Review({ data, editorId }: { data: ReviewData; editorId: string 
     if (!todo.length) { setDraftState("Every screen already has a draft."); return; }
     let failed = 0;
     for (const [i, s] of todo.entries()) {
+      setDrafting({ id: s.id, done: i, total: todo.length });
       setDraftState(`Drafting screen ${s.position} (${i + 1} of ${todo.length})…`);
       const res = await fetch("/api/editor/draft", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ screenId: s.id }) });
       if (!res.ok) {
@@ -104,6 +133,7 @@ export function Review({ data, editorId }: { data: ReviewData; editorId: string 
         if (res.status === 401 || res.status === 503 || res.status === 429) break;
       }
     }
+    setDrafting(null);
     setDraftState(failed ? `Draft finished with ${failed} screen${failed > 1 ? "s" : ""} not drafted.` : "Draft finished. Review every item before publishing.");
     router.refresh();
   }
@@ -137,11 +167,18 @@ export function Review({ data, editorId }: { data: ReviewData; editorId: string 
     await run("Publish stopped", async () => {
       await publishReview(sb, review(), { appId: data.flow.appId, flowId: data.flow.id, screenIds: screens.map((s) => s.id) }, tagIds);
       setConfirming(false);
+      setPublished(true);
       router.refresh();
     });
     setPublishing(false);
   }
 
+  const pickProblem = (p: string) => {
+    const n = p.match(/^Screen (\d+)/)?.[1];
+    if (n) { setCurrent(Number(n) - 1); document.getElementById("screen-panel")?.focus(); return; }
+    if (p.startsWith("Flow notes")) document.getElementById("flow-why")?.focus();
+  };
+  const toDraft = screens.filter((s) => !s.ocr).length;
   const checked = screens.filter((s) => s.piiChecked).length;
   return (
     <div className="flex flex-col gap-6">
@@ -156,20 +193,40 @@ export function Review({ data, editorId }: { data: ReviewData; editorId: string 
           </p>
         </div>
         <div className="flex items-center gap-2">
-          <Button onClick={runDraft} disabled={!!draftState.startsWith("Drafting")}>{draftState.startsWith("Drafting") ? "Drafting…" : "Run AI draft"}</Button>
+          <SaveStatus state={save} />
+          <Button onClick={runDraft} disabled={!!drafting || toDraft === 0} title={toDraft === 0 ? "Every screen has a draft" : "Uses the Anthropic API once per screen"}>
+            {drafting ? "Drafting…" : toDraft === 0 ? "All drafted" : `AI draft ${toDraft} ${toDraft === 1 ? "screen" : "screens"}`}
+          </Button>
           <Button kind="primary" onClick={askPublish} disabled={publishing}>{data.flow.status === "published" ? "Publish changes" : "Publish"}</Button>
         </div>
       </div>
 
-      <p aria-live="polite" className="-mt-3 min-h-5 text-sm text-ink-2">{draftState}</p>
+      <div className="-mt-3 flex min-h-5 flex-col gap-1.5">
+        <p aria-live="polite" className="text-sm text-ink-2">{draftState}</p>
+        {drafting && (
+          <div className="h-1 overflow-hidden rounded-full bg-panel" role="progressbar" aria-label="AI draft" aria-valuemin={0} aria-valuemax={drafting.total} aria-valuenow={drafting.done}>
+            <div className="ed-progress h-full bg-accent" style={{ transform: `scaleX(${(drafting.done + 0.5) / drafting.total})` }} />
+          </div>
+        )}
+      </div>
       <Problems title="Something went wrong" items={error ? [error] : []} />
-      <Problems title="Not ready to publish" items={problems} />
+      <Problems title="Not ready to publish" items={problems} onPick={pickProblem} />
+      {published && (
+        <div ref={publishedRef} tabIndex={-1} role="status" className="ed-enter flex items-center gap-4 rounded-md border border-accent/50 bg-accent/10 p-3 outline-none">
+          <PublishedIllustration className="hidden h-14 w-auto shrink-0 sm:block" />
+          <div className="flex-1 text-sm">
+            <p className="font-medium text-ink">Published</p>
+            <p className="text-ink-2">{screens.length} screens are now references the RYUX MCP can read. Changes you make from here are published with “Publish changes”.</p>
+          </div>
+          <Link href="/editor" className="text-sm text-accent hover:underline focus-visible:outline-2 focus-visible:outline-accent">Back to flows</Link>
+        </div>
+      )}
       {confirming && (
-        <div role="alertdialog" aria-labelledby="confirm-title" className="flex flex-wrap items-center justify-between gap-3 rounded-md border border-accent/50 bg-accent/10 p-3">
+        <div role="alertdialog" aria-labelledby="confirm-title" onKeyDown={(e) => e.key === "Escape" && setConfirming(false)} className="ed-enter flex flex-wrap items-center justify-between gap-3 rounded-md border border-accent/50 bg-accent/10 p-3">
           <p id="confirm-title" className="text-sm text-ink">Publish {screens.length} screens? They become references that anyone using the RYUX MCP can read. Unticked AI items are removed.</p>
           <div className="flex gap-2">
             <Button kind="quiet" onClick={() => setConfirming(false)}>Cancel</Button>
-            <Button kind="primary" onClick={publish} disabled={publishing}>{publishing ? "Publishing…" : "Publish now"}</Button>
+            <Button kind="primary" onClick={publish} disabled={publishing} autoFocus>{publishing ? "Publishing…" : "Publish now"}</Button>
           </div>
         </div>
       )}
@@ -185,16 +242,25 @@ export function Review({ data, editorId }: { data: ReviewData; editorId: string 
                 className={`relative w-20 shrink-0 overflow-hidden rounded-md border text-left lg:w-full ${i === current ? "border-accent" : "border-hair hover:border-ink-2"} focus-visible:outline-2 focus-visible:outline-accent`}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 {s.url ? <img src={s.url} alt="" className="aspect-[9/16] w-full bg-panel object-cover object-top" /> : <span className="block aspect-[9/16] bg-panel" />}
-                <span className="absolute left-1 top-1 rounded bg-paper/90 px-1 font-mono text-xs">{s.position}</span>
-                <span className={`absolute bottom-1 right-1 rounded bg-paper/90 px-1 text-xs ${s.piiChecked ? "text-accent" : "text-mark"}`}>{s.piiChecked ? "checked" : "to check"}</span>
-                <span className="sr-only">Screen {s.position}, {s.piiChecked ? "personal data checked" : "personal data not checked"}</span>
+                <span aria-hidden="true" className="absolute left-1 top-1 rounded bg-paper/90 px-1 font-mono text-xs">{s.position}</span>
+                {drafting?.id === s.id ? <span aria-hidden="true" className="ed-enter absolute right-1 top-1 rounded bg-paper/90 px-1 text-xs text-ink">drafting…</span>
+                  : s.ocr ? <span aria-hidden="true" className="absolute right-1 top-1 rounded bg-paper/90 px-1 font-mono text-[10px] text-muted">AI</span> : null}
+                <span aria-hidden="true" className={`absolute bottom-1 right-1 rounded bg-paper/90 px-1 text-xs ${s.piiChecked ? "text-accent" : "text-mark"}`}>{s.piiChecked ? "checked" : "to check"}</span>
+                <span className="sr-only">Screen {s.position}, {s.piiChecked ? "personal data checked" : "personal data not checked"}{s.ocr ? ", drafted" : ""}</span>
               </button>
             ))}
           </nav>
 
-          <div className="flex justify-center rounded-lg border border-hair bg-paper-2 p-4">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            {screen.url ? <img src={screen.url} alt={`Screen ${screen.position} of ${data.flow.title}`} className="max-h-[78vh] w-auto rounded" /> : <p className="self-center text-sm text-ink-2">The image couldn't be loaded.</p>}
+          <div className="flex flex-col gap-3">
+            <div className="flex justify-center rounded-lg border border-hair bg-paper-2 p-4">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              {screen.url ? <img src={screen.url} alt={`Screen ${screen.position} of ${data.flow.title}`} className="max-h-[72vh] w-auto rounded" /> : <p className="self-center text-sm text-ink-2">The image couldn't be loaded.</p>}
+            </div>
+            <div className="flex items-center justify-between gap-2">
+              <Button kind="quiet" onClick={() => setCurrent((c) => Math.max(c - 1, 0))} disabled={current === 0}>← Previous</Button>
+              <p className="text-xs text-muted">Screen {screen.position} of {screens.length} · <kbd className="font-mono">←</kbd> <kbd className="font-mono">→</kbd> to move</p>
+              <Button kind="quiet" onClick={() => setCurrent((c) => Math.min(c + 1, screens.length - 1))} disabled={current === screens.length - 1}>Next →</Button>
+            </div>
           </div>
 
           <ScreenPanel key={screen.id} screen={screen} vocabulary={data.vocabulary}
@@ -227,8 +293,8 @@ function ScreenPanel({ screen, vocabulary, onPii, onTag, onAddTag, onObservation
   const [statement, setStatement] = useState("");
   const unused = vocabulary.filter((t) => !screen.tags.some((x) => x.key === t.key));
   return (
-    <aside aria-label={`Review of screen ${screen.position}`} className="flex flex-col gap-5">
-      <label className={`flex items-start gap-3 rounded-md border p-3 text-sm ${screen.piiChecked ? "border-accent/50" : "border-mark/50"}`}>
+    <aside id="screen-panel" tabIndex={-1} aria-label={`Review of screen ${screen.position}`} className="flex flex-col gap-5 outline-none">
+      <label className={`ed-chip flex items-start gap-3 rounded-md border p-3 text-sm ${screen.piiChecked ? "border-accent/50" : "border-mark/50"}`}>
         <input type="checkbox" checked={screen.piiChecked} onChange={onPii} className="mt-0.5 size-4 accent-[var(--color-accent)]" />
         <span><span className="font-medium text-ink">No personal data on this screen</span><br /><span className="text-ink-2">No real names, phone numbers, balances, faces, or addresses.</span></span>
       </label>
@@ -240,7 +306,7 @@ function ScreenPanel({ screen, vocabulary, onPii, onTag, onAddTag, onObservation
         <ul className="flex flex-wrap gap-1.5">
           {screen.tags.map((t) => (
             <li key={t.key}>
-              <label className={`inline-flex cursor-pointer items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs ${t.source === "human" ? "border-accent/60 text-ink" : "border-hair text-ink-2"}`}>
+              <label className={`ed-chip inline-flex cursor-pointer items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs ${t.source === "human" ? "border-accent/60 text-ink" : "border-hair text-ink-2"}`}>
                 <input type="checkbox" checked={t.source === "human"} onChange={() => onTag(t.key)} className="size-3.5 accent-[var(--color-accent)]" />
                 {t.label}{t.ai && <span className="font-mono text-[10px] text-muted">AI</span>}
               </label>
