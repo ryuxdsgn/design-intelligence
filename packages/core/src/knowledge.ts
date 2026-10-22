@@ -249,3 +249,65 @@ export async function publishReview(sb: SupabaseClient, r: FlowReview, ids: { ap
   check(await sb.from("flows").update({ status: "published" }).eq("id", ids.flowId), "publish flow");
   check(await sb.from("apps").update({ status: "published" }).eq("id", ids.appId), "publish app");
 }
+
+// ── Editor upkeep: change a screen's image, remove a screen, unpublish or delete a flow ──
+
+/** Replaces a screen's image at the same path, e.g. after hiding personal data. The AI's transcript may
+    still hold what was hidden, so it is cleared, and the personal-data check is reset for a new look. */
+export async function replaceScreenImage(sb: SupabaseClient, screenId: string, path: string, image: Blob, mediaType: string): Promise<void> {
+  const up = await sb.storage.from(BUCKET).upload(path, image, { contentType: mediaType, upsert: true });
+  if (up.error) throw new Error(`replace image ${screenId}: ${up.error.message}`);
+  check(await sb.from("screens").update({ ocr_text: null }).eq("id", screenId), `clear transcript ${screenId}`);
+  await setPiiChecked(sb, screenId, false, null);
+}
+
+// Rows that point at a screen by id rather than by foreign key (screen_tags cascade on their own).
+async function dropScreenRecords(sb: SupabaseClient, screenIds: string[]): Promise<void> {
+  if (!screenIds.length) return;
+  check(await sb.from("observations").delete().eq("target_type", "screen").in("target_id", screenIds), "remove observations");
+  check(await sb.from("designer_notes").delete().in("id", screenIds.map((id) => `dn_${id}`)), "remove screen notes");
+  check(await sb.from("reviews").delete().eq("target_type", "screen").in("target_id", screenIds), "remove checks");
+}
+
+type ScreenFile = { id: string; position: number; image_path: string };
+const flowScreens = async (sb: SupabaseClient, flowId: string) =>
+  check(await sb.from("screens").select("id, position, image_path").eq("flow_id", flowId).order("position"), "read screens") as ScreenFile[];
+
+/** Removes one screen with its image, tags, observations, notes, and check; the rest close up in order. */
+export async function removeScreen(sb: SupabaseClient, flowId: string, screenId: string): Promise<void> {
+  const rows = await flowScreens(sb, flowId);
+  const target = rows.find((r) => r.id === screenId);
+  if (!target) throw new Error(`${screenId} is not in ${flowId}`);
+  const gone = await sb.storage.from(BUCKET).remove([target.image_path]);
+  if (gone.error) throw new Error(`remove image ${screenId}: ${gone.error.message}`);
+  await dropScreenRecords(sb, [screenId]);
+  check(await sb.from("screens").delete().eq("id", screenId), `remove ${screenId}`);
+  const rest = rows.filter((r) => r.id !== screenId);
+  for (const [i, r] of rest.entries()) {
+    if (r.position !== i + 1) check(await sb.from("screens").update({ position: i + 1 }).eq("id", r.id), `reorder ${r.id}`);
+  }
+  check(await sb.from("flows").update({ step_count: rest.length }).eq("id", flowId), "update step count");
+}
+
+/** Takes a flow out of the public library: the flow, its screens, and their observations go back to draft.
+    Tags and notes follow, since the public reads them only through a published screen. */
+export async function unpublishFlow(sb: SupabaseClient, flowId: string): Promise<void> {
+  const ids = (await flowScreens(sb, flowId)).map((r) => r.id);
+  check(await sb.from("flows").update({ status: "draft" }).eq("id", flowId), "unpublish flow");
+  check(await sb.from("screens").update({ status: "draft" }).eq("flow_id", flowId), "unpublish screens");
+  if (ids.length) check(await sb.from("observations").update({ status: "draft" }).eq("target_type", "screen").in("target_id", ids), "unpublish observations");
+}
+
+/** Deletes a flow for good: every image in storage and every row that belongs to it. The app and its
+    version stay, since other flows may use them. */
+export async function deleteFlow(sb: SupabaseClient, flowId: string): Promise<void> {
+  const rows = await flowScreens(sb, flowId);
+  if (rows.length) {
+    const gone = await sb.storage.from(BUCKET).remove(rows.map((r) => r.image_path));
+    if (gone.error) throw new Error(`remove images: ${gone.error.message}`);
+  }
+  await dropScreenRecords(sb, rows.map((r) => r.id));
+  check(await sb.from("designer_notes").delete().eq("id", `dn_${flowId}`), "remove flow notes");
+  check(await sb.from("reviews").delete().eq("target_id", flowId), "remove flow reviews");
+  check(await sb.from("flows").delete().eq("id", flowId), `delete ${flowId}`);
+}
