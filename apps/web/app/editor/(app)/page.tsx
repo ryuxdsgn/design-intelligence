@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { FlowIllustration } from "@/components/editor/illustrations";
 import { StatusBadge } from "@/components/editor/ui";
 import { listFlows } from "@/lib/editor/data";
 import { editorServerClient } from "@/lib/editor/server";
@@ -20,7 +21,7 @@ export default async function FlowList({ searchParams }: { searchParams: Promise
           <h1 className="text-2xl">Flows</h1>
           <p className="mt-1 text-sm text-ink-2">Screens become references for the RYUX MCP only after a person reviews and publishes them.</p>
         </div>
-        <Link href="/editor/new" className="inline-flex min-h-9 items-center rounded-md bg-accent px-3.5 text-sm font-medium text-paper hover:bg-accent/90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent">New flow</Link>
+        <Link href="/editor/new" className="tactile inline-flex min-h-9 items-center rounded-md bg-accent px-3.5 text-sm font-medium text-paper hover:bg-accent/90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent">New flow</Link>
       </div>
 
       <nav aria-label="Filter by status" className="flex gap-1">
@@ -37,9 +38,19 @@ export default async function FlowList({ searchParams }: { searchParams: Promise
       </nav>
 
       {flows.length === 0 ? (
-        <div className="rounded-lg border border-dashed border-hair p-10 text-center">
+        <div className="ed-enter flex flex-col items-center gap-3 rounded-lg border border-dashed border-hair px-6 py-10 text-center">
+          {all.length === 0 && <FlowIllustration className="h-20 w-auto" />}
           <p className="text-ink">{all.length === 0 ? "No flows yet" : `No ${status} flows`}</p>
-          <p className="mt-1 text-sm text-ink-2">{all.length === 0 ? "Upload the screenshots of one journey, in order, to start." : "Try another filter."}</p>
+          <p className="max-w-md text-sm text-ink-2">
+            {all.length === 0
+              ? "A flow is the screens of one journey, in order. Upload them, run the AI draft, review every screen, and publish."
+              : "Every flow has another status. Show all flows to see them."}
+          </p>
+          {all.length === 0 ? (
+            <Link href="/editor/new" className="tactile mt-1 inline-flex min-h-9 items-center rounded-md bg-accent px-3.5 text-sm font-medium text-paper hover:bg-accent/90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent">New flow</Link>
+          ) : (
+            <Link href="/editor" className="text-sm text-accent hover:underline focus-visible:outline-2 focus-visible:outline-accent">Show all flows</Link>
+          )}
         </div>
       ) : (
         <div className="overflow-x-auto rounded-lg border border-hair">

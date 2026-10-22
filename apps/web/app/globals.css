@@ -327,3 +327,20 @@ code,
 @keyframes rise { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
 .rise { animation: rise 600ms cubic-bezier(0.23, 1, 0.32, 1) var(--d, 0ms) both; }
 @media (prefers-reduced-motion: reduce) { .rise { animation: none; } }
+
+/* Editor motion: a task tool used all day, so calm and short (RX-UI-11). L1 feedback (presses,
+   checkboxes, the save status) and L2 for messages that appear (problems, confirm, published).
+   Switching screens happens most often, so it appears at once. Transform and opacity only. */
+.ed-enter { animation: ed-enter var(--dur-2) var(--ease-out) both; }
+@keyframes ed-enter { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+.ed-fade { transition: opacity var(--dur-1) var(--ease-out); }
+.ed-chip { transition: border-color var(--dur-1) var(--ease-out), color var(--dur-1) var(--ease-out), background-color var(--dur-1) var(--ease-out); }
+.ed-arrow { transition: transform var(--dur-2) var(--ease-spring); }
+.ed-drop[data-over="true"] .ed-arrow { transform: translateY(-4px); }
+.ed-progress { transform-origin: left center; transition: transform var(--dur-3) var(--ease-out); }
+@keyframes ed-fade-in { from { opacity: 0; } to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) {
+  .ed-enter { animation: ed-fade-in var(--dur-1) linear both; }
+  .ed-arrow, .ed-progress, .tactile { transition: none; }
+  .ed-drop[data-over="true"] .ed-arrow { transform: none; }
+}
