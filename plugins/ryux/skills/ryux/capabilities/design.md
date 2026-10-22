@@ -64,6 +64,10 @@ The six stages of the core workflow (SKILL.md), as Design runs them.
      in all of them (RX-UX-08).
    - On task UI the brand layer carries one signature from the product's own domain, never a layout
      change for its own sake (RX-UI-12); on an expressive surface the signature can lead.
+   - Before the first illustration is drawn, in any alternative, write its style in the Design
+     Direction's Illustration field (RX-UI-17) and show it on the canvas next to the alternatives;
+     they share it, or each names its own. Writing it after drawing documents the result instead of
+     directing it.
    - A small change, or a screen inside a fixed design system, skips Explore: say so and continue.
 4. **Evaluate and select.** Rate each alternative against the Frame criteria, Strong, Adequate, or
    Weak with one reason each, rate the evidence (RX-PR-10), and recommend one with a Decision Receipt.
