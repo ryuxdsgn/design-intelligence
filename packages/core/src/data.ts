@@ -1,5 +1,5 @@
-// Data contoh untuk mencoba tool ryux secara lokal.
-// Nanti diganti query ke Supabase (hanya konten berstatus "published").
+// Data source for the ryux tools. apps/mcp loads published RYUX Knowledge from Supabase through
+// setData(); until then only the local patterns below (knowledge, with no screens as evidence) exist.
 
 export type Screen = {
   screen_id: string;
@@ -32,46 +32,9 @@ export type LocalPattern = {
   observed_apps?: string[];
 };
 
-export const SAMPLE_SCREENS: Screen[] = [
-  {
-    screen_id: "scr_demo_001",
-    app: { name: "Warung Contoh", category: "fnb" },
-    version: "3.4.0",
-    captured_at: "2026-09-10",
-    flow: { id: "flw_demo_checkout", type: "cart-checkout", position: 3 },
-    tags: ["payment-method-picker", "qris", "virtual-account", "bottom-sheet"],
-    image_url: "https://example.com/signed/scr_demo_001?exp=900",
-    designer_notes: {
-      why_it_works:
-        "QRIS diletakkan paling atas karena paling sering dipakai untuk nominal kecil; VA dikelompokkan per bank.",
-      weaknesses: "Biaya admin baru terlihat setelah metode dipilih.",
-    },
-    reviewed: true,
-    untrusted_text: { ocr: "Pilih metode pembayaran · QRIS · Virtual Account BCA" },
-    observations: [
-      { dimension: "hierarchy", label: "observed", statement: "QRIS is listed first, above the virtual account group." },
-      { dimension: "components", label: "observed", statement: "Payment methods sit in a bottom sheet, grouped by type." },
-    ],
-  },
-  {
-    screen_id: "scr_demo_002",
-    app: { name: "Toko Contoh", category: "ecommerce" },
-    version: "8.1.2",
-    captured_at: "2026-09-12",
-    flow: { id: "flw_demo_onboarding", type: "onboarding", position: 1 },
-    tags: ["otp-sms-wa", "otp-input"],
-    image_url: "https://example.com/signed/scr_demo_002?exp=900",
-    designer_notes: {
-      why_it_works: "Pengguna bisa memilih OTP lewat WhatsApp, yang lebih andal daripada SMS.",
-      weaknesses: "Hitung mundur kirim ulang terlalu lama (60 detik).",
-    },
-    reviewed: true,
-    untrusted_text: { ocr: "Kirim kode lewat WhatsApp · Kirim ulang dalam 60 detik" },
-    observations: [
-      { dimension: "interaction", label: "observed", statement: "The OTP channel can be switched to WhatsApp before sending." },
-    ],
-  },
-];
+// No sample screens: a screen is evidence, so it only comes from published RYUX Knowledge (setData).
+// Without Supabase the tools answer with no screens rather than with invented ones.
+export const SAMPLE_SCREENS: Screen[] = [];
 
 export const SAMPLE_LOCAL_PATTERNS: Record<string, LocalPattern> = {
   qris: {
@@ -83,8 +46,7 @@ export const SAMPLE_LOCAL_PATTERNS: Record<string, LocalPattern> = {
     useful_when: "Pembayaran tatap muka atau nominal kecil di merchant yang menerima QRIS.",
     risk: "Tanpa nominal dan nama merchant sebelum konfirmasi, pengguna bisa membayar ke pihak yang salah.",
     context: ["fnb", "ewallet", "pos-umkm"],
-    example_screen_ids: ["scr_demo_001"],
-    observed_apps: ["Warung Contoh"],
+    example_screen_ids: [],
   },
   "virtual-account": {
     name: "Virtual account",
@@ -94,12 +56,11 @@ export const SAMPLE_LOCAL_PATTERNS: Record<string, LocalPattern> = {
     useful_when: "Checkout online dengan pembayaran lewat transfer bank.",
     risk: "Batas waktu yang tersembunyi membuat pesanan batal tanpa disadari.",
     context: ["ecommerce"],
-    example_screen_ids: ["scr_demo_001"],
-    observed_apps: ["Warung Contoh"],
+    example_screen_ids: [],
   },
 };
 
-// Sumber data aktif. Default = data contoh; apps/mcp memuat data Supabase lewat setData().
+// Active data. Default: no screens and the sample patterns; apps/mcp loads Supabase through setData().
 let currentScreens: Screen[] = SAMPLE_SCREENS;
 let currentLocalPatterns: Record<string, LocalPattern> = SAMPLE_LOCAL_PATTERNS;
 
