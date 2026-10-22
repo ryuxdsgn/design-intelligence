@@ -154,6 +154,26 @@ export async function saveDraft(sb: SupabaseClient, screenId: string, draft: Dra
 }
 
 // ── Review and publish: personal-data checks, tag and observation decisions, human designer notes ──
+export const PII_DECISION = "pii_checked";
+
+/** Records (or clears) that a person checked a screen for personal data; stored in staff-only reviews. */
+export async function setPiiChecked(sb: SupabaseClient, screenId: string, checked: boolean, reviewer: string | null): Promise<void> {
+  const id = `rv_pii_${screenId}`;
+  if (!checked) {
+    check(await sb.from("reviews").delete().eq("id", id), `clear check ${screenId}`);
+    return;
+  }
+  check(
+    await sb.from("reviews").upsert({ id, target_type: "screen", target_id: screenId, reviewer, decision: PII_DECISION, reviewed_at: new Date().toISOString() }, { onConflict: "id" }),
+    `record check ${screenId}`,
+  );
+}
+
+export async function loadPiiChecked(sb: SupabaseClient, screenIds: string[]): Promise<Set<string>> {
+  const rows = check(await sb.from("reviews").select("target_id").eq("target_type", "screen").eq("decision", PII_DECISION).in("target_id", screenIds), "read checks") as { target_id: string }[];
+  return new Set(rows.map((r) => r.target_id));
+}
+
 export interface ScreenReview {
   screenId: string;
   piiChecked: boolean;
@@ -191,7 +211,10 @@ export function validateReview(r: FlowReview, flowId: string, screenIds: string[
 }
 
 export async function publishReview(sb: SupabaseClient, r: FlowReview, ids: { appId: string; flowId: string; screenIds: string[] }, tagIds: Map<string, string>): Promise<void> {
+  const reviewer = (await sb.auth.getUser()).data.user?.id ?? null;
+  const recorded = await loadPiiChecked(sb, ids.screenIds);
   for (const s of r.screens) {
+    if (s.piiChecked && !recorded.has(s.screenId)) await setPiiChecked(sb, s.screenId, true, reviewer);
     for (const t of s.tags) {
       const id = tagIds.get(t.key)!;
       // Upsert so a tag added by hand is inserted; a confirmed AI tag becomes human.
