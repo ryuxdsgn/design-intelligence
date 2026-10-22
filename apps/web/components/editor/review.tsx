@@ -1,6 +1,6 @@
 "use client";
 
-import { DIMENSIONS, observationId, publishReview, setPiiChecked, validateReview, type FlowReview } from "@ryux/core/knowledge";
+import { DIMENSIONS, deleteFlow, mediaTypeFor, observationId, publishReview, removeScreen, replaceScreenImage, setPiiChecked, unpublishFlow, validateReview, type FlowReview } from "@ryux/core/knowledge";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -9,6 +9,7 @@ import { editorBrowserClient } from "@/lib/editor/supabase";
 import { Icon } from "./icons";
 import { FormFactorBadge, useFormFactor } from "./form-factor";
 import { PublishedIllustration } from "./illustrations";
+import { Redactor, applyBoxes, type Box } from "./redactor";
 import { Button, Disclosure, Select, Problems, Progress, SaveStatus, StatusBadge, checkboxClass, focus, inputClass, linkClass } from "./ui";
 
 /* One flow: every screen gets a personal-data check and tag and observation decisions; the flow gets
@@ -29,6 +30,11 @@ export function Review({ data, editorId }: { data: ReviewData; editorId: string 
   const [save, setSave] = useState<"idle" | "saving" | "saved" | "error">("idle");
   const [drafting, setDrafting] = useState<{ id: string; done: number; total: number } | null>(null);
   const [published, setPublished] = useState(false);
+  const [hiding, setHiding] = useState<{ src: string; image: Blob } | null>(null);
+  const [savingAreas, setSavingAreas] = useState(false);
+  const [confirmRemove, setConfirmRemove] = useState(false);
+  const [flowAction, setFlowAction] = useState<"" | "unpublish" | "delete">("");
+  const [flowBusy, setFlowBusy] = useState(false);
   const publishedRef = useRef<HTMLDivElement>(null);
   const savedTimer = useRef<ReturnType<typeof setTimeout>>(undefined);
   const tagIds = useMemo(() => new Map(data.vocabulary.map((t) => [t.key, t.id])), [data.vocabulary]);
@@ -180,6 +186,56 @@ export function Review({ data, editorId }: { data: ReviewData; editorId: string 
     setPublishing(false);
   }
 
+  // ── Hide personal data on a stored screen: covered image replaces the original at the same path ──
+  async function openHide() {
+    setError("");
+    try {
+      const image = await (await fetch(screen.url!)).blob();
+      setHiding({ src: URL.createObjectURL(image), image });
+    } catch (err) {
+      setError(`Couldn't open the image: ${err instanceof Error ? err.message : String(err)}`);
+    }
+  }
+  const closeHide = () => { if (hiding) URL.revokeObjectURL(hiding.src); setHiding(null); };
+  async function saveHide(boxes: Box[]) {
+    if (!hiding) return;
+    if (!boxes.length) { closeHide(); return; }
+    setSavingAreas(true);
+    const s = screen;
+    await run("Couldn't hide the areas", async () => {
+      const type = hiding.image.type || mediaTypeFor(s.path);
+      const covered = await applyBoxes(hiding.image, boxes, type);
+      await replaceScreenImage(sb, s.id, s.path, covered, type);
+      patch(s.id, (x) => ({ ...x, url: URL.createObjectURL(covered), ocr: "", piiChecked: false }));
+      closeHide();
+    });
+    setSavingAreas(false);
+  }
+
+  async function confirmRemoveScreen() {
+    const s = screen;
+    await run("Couldn't remove the screen", async () => {
+      await removeScreen(sb, data.flow.id, s.id);
+      setScreens((all) => all.filter((x) => x.id !== s.id).map((x, i) => ({ ...x, position: i + 1 })));
+      setCurrent((c) => Math.max(0, Math.min(c, screens.length - 2)));
+      setConfirmRemove(false);
+      router.refresh();
+    });
+  }
+  useEffect(() => setConfirmRemove(false), [current]);
+
+  async function runFlowAction() {
+    setFlowBusy(true);
+    await run(flowAction === "delete" ? "Couldn't delete the flow" : "Couldn't unpublish the flow", async () => {
+      if (flowAction === "delete") { await deleteFlow(sb, data.flow.id); router.push("/editor"); router.refresh(); return; }
+      await unpublishFlow(sb, data.flow.id);
+      setFlowAction("");
+      setPublished(false);
+      router.refresh();
+    });
+    setFlowBusy(false);
+  }
+
   const pickProblem = (p: string) => {
     const n = p.match(/^Screen (\d+)/)?.[1];
     if (n) { setCurrent(Number(n) - 1); document.getElementById("screen-panel")?.focus(); return; }
@@ -247,6 +303,18 @@ export function Review({ data, editorId }: { data: ReviewData; editorId: string 
               {/* eslint-disable-next-line @next/next/no-img-element */}
               {screen.url ? <img src={screen.url} alt={`Screen ${screen.position} of ${data.flow.title}`} className="max-h-[46vh] w-auto max-w-full rounded-xl shadow-lg shadow-black/10 lg:max-h-[68vh]" /> : <p className="self-center py-16 text-sm text-ink-2">The image couldn't be loaded.</p>}
             </div>
+            <div className="flex flex-wrap items-center gap-2">
+              <Button onClick={openHide} disabled={!screen.url}><Icon name="hide" />Hide areas</Button>
+              {!confirmRemove ? (
+                <Button kind="quiet" onClick={() => setConfirmRemove(true)}><Icon name="remove" />Remove screen</Button>
+              ) : (
+                <div role="alertdialog" aria-labelledby="remove-title" onKeyDown={(e) => e.key === "Escape" && setConfirmRemove(false)} className="ed-enter flex flex-wrap items-center gap-2 rounded-xl bg-mark/10 py-1 pl-3 pr-1">
+                  <p id="remove-title" className="text-sm text-ink">Remove screen {screen.position}, with its tags, observations, and notes?</p>
+                  <Button kind="quiet" onClick={() => setConfirmRemove(false)}>Cancel</Button>
+                  <Button onClick={confirmRemoveScreen} autoFocus className="border-mark/50 text-mark"><Icon name="remove" />Remove</Button>
+                </div>
+              )}
+            </div>
             <nav aria-label="Screens" className="flex min-w-0 flex-col gap-2">
               <p className="text-sm text-ink-2"><span className="mr-1.5 inline-block size-2 rounded-full bg-accent align-middle" aria-hidden="true" />{checked} of {screens.length} checked</p>
               <div className="-mx-4 flex gap-3 overflow-x-auto px-4 pb-1 pt-2 lg:mx-0 lg:flex-wrap lg:overflow-visible lg:px-0">
@@ -299,6 +367,44 @@ export function Review({ data, editorId }: { data: ReviewData; editorId: string 
         <Notes why={flowNotes.why} weak={flowNotes.weak} idPrefix="flow"
           onSave={(why, weak) => { setFlowNotes({ why, weak }); saveNotes({ type: "flow", id: data.flow.id }, why, weak); }} />
       </section>
+
+      <section aria-labelledby="flow-remove" className="flex flex-col gap-4 rounded-2xl border border-hair p-5 sm:p-6">
+        <div>
+          <h2 id="flow-remove" className="text-xl">Remove from the library</h2>
+          <p className="text-sm text-ink-2">The RYUX MCP reads published flows. Changes reach it when it next loads the library.</p>
+        </div>
+        {data.flow.status === "published" && (
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+            <div className="flex-1">
+              <p className="text-sm font-medium text-ink">Unpublish</p>
+              <p className="text-sm text-ink-2">Take this flow out of the library. It stays here as a draft, with everything you wrote.</p>
+            </div>
+            <Button onClick={() => setFlowAction("unpublish")} disabled={flowBusy}>Unpublish</Button>
+          </div>
+        )}
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+          <div className="flex-1">
+            <p className="text-sm font-medium text-ink">Delete flow</p>
+            <p className="text-sm text-ink-2">Delete this flow, its {screens.length} {screens.length === 1 ? "screen" : "screens"}, and every tag, observation, and note. This can't be undone.</p>
+          </div>
+          <Button onClick={() => setFlowAction("delete")} disabled={flowBusy} className="border-mark/50 text-mark"><Icon name="remove" />Delete flow</Button>
+        </div>
+        {flowAction && (
+          <div role="alertdialog" aria-labelledby="flow-action-title" onKeyDown={(e) => e.key === "Escape" && setFlowAction("")} className={`ed-enter flex flex-wrap items-center justify-between gap-3 rounded-xl p-3 ${flowAction === "delete" ? "bg-mark/10" : "bg-panel"}`}>
+            <p id="flow-action-title" className="text-sm text-ink">{flowAction === "delete" ? `Delete “${data.flow.title}” for good?` : `Unpublish “${data.flow.title}”? You can publish it again later.`}</p>
+            <div className="flex gap-2">
+              <Button kind="quiet" onClick={() => setFlowAction("")} disabled={flowBusy}>Cancel</Button>
+              <Button onClick={runFlowAction} disabled={flowBusy} autoFocus className={flowAction === "delete" ? "border-mark/50 text-mark" : ""}>
+                {flowBusy ? (flowAction === "delete" ? "Deleting…" : "Unpublishing…") : flowAction === "delete" ? "Delete for good" : "Unpublish"}
+              </Button>
+            </div>
+          </div>
+        )}
+      </section>
+
+      {hiding && <Redactor src={hiding.src} boxes={[]} saving={savingAreas} onSave={saveHide} onCancel={closeHide}
+        title={`Hide personal data on screen ${screen.position}`}
+        extra={<p className="text-xs text-muted">Saving replaces this screen's image. The text the AI transcribed is cleared, and the personal-data check is reset so you can look again.</p>} />}
 
       <div className="fixed inset-x-0 bottom-0 z-20 border-t border-hair bg-paper/95 px-4 pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-3 backdrop-blur lg:hidden">
         <div className="mx-auto flex max-w-xl items-center gap-2">

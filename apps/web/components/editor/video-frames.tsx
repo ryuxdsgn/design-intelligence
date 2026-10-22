@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { Icon } from "./icons";
+import { Redactor, type Box } from "./redactor";
 import { Button, Problems, Progress, cardClass } from "./ui";
 
 // Suggested frames: sample the recording every STEP seconds on a tiny grayscale copy. A frame is kept
@@ -45,18 +46,34 @@ const change = (a: Uint8ClampedArray, b: Uint8ClampedArray) => {
 };
 
 /** A screen recording that never leaves this computer: the editor adds frames from it as screens. */
-export function VideoFrames({ file, disabled, onFrames, onClose }: { file: File; disabled: boolean; onFrames: (frames: File[]) => Promise<void>; onClose: () => void }) {
+export function VideoFrames({ file, disabled, masks, onMasks, onFrames, onClose }: {
+  file: File; disabled: boolean; masks: Box[]; onMasks: (boxes: Box[]) => Promise<void>;
+  onFrames: (frames: File[]) => Promise<void>; onClose: () => void;
+}) {
   const ref = useRef<HTMLVideoElement>(null);
   const stop = useRef(false);
   const [url, setUrl] = useState("");
   const [error, setError] = useState("");
   const [scan, setScan] = useState<{ done: number; total: number } | null>(null);
   const [result, setResult] = useState("");
+  const [editing, setEditing] = useState("");
+  // The buttons that read the visible frame wait until it has loaded, so a click never does nothing.
+  const [ready, setReady] = useState(false);
+
+  // Hidden areas for the whole recording are drawn on the paused frame and kept as fractions, so they
+  // fit every frame; personal data in a recording (an account name, a balance) usually stays in place.
+  async function openAreas() {
+    const v = ref.current;
+    if (!v || !v.videoWidth) return;
+    v.pause();
+    setEditing(URL.createObjectURL(await frameFile(v, base)));
+  }
   const base = file.name.replace(/\.[^.]+$/, "");
 
   useEffect(() => {
     const u = URL.createObjectURL(file);
     setUrl(u);
+    setReady(false);
     setError("");
     setResult("");
     return () => { stop.current = true; URL.revokeObjectURL(u); };
@@ -125,17 +142,24 @@ export function VideoFrames({ file, disabled, onFrames, onClose }: { file: File;
       {error ? (
         <Problems title="Can't read this video" items={[error]} />
       ) : (
-        <video ref={ref} src={url || undefined} controls muted playsInline className="max-h-[60vh] w-full rounded bg-panel object-contain"
+        <video ref={ref} src={url || undefined} controls muted playsInline onLoadedData={() => setReady(true)} className="max-h-[60vh] w-full rounded bg-panel object-contain"
           onError={() => setError(`${file.name}: the browser can't play this video. Try an MP4 (H.264) recording.`)} />
       )}
       {!error && (
         <div className="flex flex-wrap items-center gap-2">
-          <Button type="button" kind="primary" disabled={busy} onClick={addCurrent}><Icon name="capture" />Add this frame</Button>
+          <Button type="button" kind="primary" disabled={busy || !ready} onClick={addCurrent}><Icon name="capture" />Add this frame</Button>
           <Button type="button" disabled={busy} onClick={suggest}><Icon name="frames" />Suggest frames</Button>
+          <Button type="button" kind="quiet" disabled={busy || !ready} onClick={openAreas}><Icon name="hide" />{masks.length ? `${masks.length} hidden on every frame · edit` : "Hide areas on every frame"}</Button>
           {scan && <Button type="button" kind="quiet" onClick={() => { stop.current = true; }}><Icon name="stop" />Stop</Button>}
         </div>
       )}
       {scan && <Progress label="Looking for still screens" done={scan.done} total={scan.total} />}
+      {editing && (
+        <Redactor src={editing} boxes={masks} title="Hide personal data on every frame"
+          extra={<p className="text-xs text-muted">These areas are covered on every frame from {file.name}, those added already and those you add later. Check each frame afterwards: something that moves may need its own areas.</p>}
+          onCancel={() => { URL.revokeObjectURL(editing); setEditing(""); }}
+          onSave={async (boxes) => { await onMasks(boxes); URL.revokeObjectURL(editing); setEditing(""); setResult(boxes.length ? `${boxes.length} ${boxes.length === 1 ? "area is" : "areas are"} hidden on every frame.` : "No areas hidden."); }} />
+      )}
       <p aria-live="polite" className="text-sm text-ink-2">{scan ? `Looking for still screens… ${Math.round((scan.done / scan.total) * 100)}%` : result}</p>
     </section>
   );

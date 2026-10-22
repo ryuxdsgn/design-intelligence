@@ -378,6 +378,8 @@ code,
 :is(button, a, summary):not(:disabled):hover [data-icon="close"] .ed-ic-line { transform: rotate(90deg); }
 :is(button, a, summary):not(:disabled):hover [data-icon="capture"] .ed-ic-line { transform: scale(0.9); }
 :is(button, a, summary):not(:disabled):hover [data-icon="signOut"] .ed-ic-line { transform: translateX(-2px); }
+:is(button, a, summary):not(:disabled):hover [data-icon="remove"] .ed-ic-line { transform: rotate(-8deg); }
+:is(button, a, summary):not(:disabled):hover [data-icon="hide"] .ed-ic-line { transform: scaleY(0.85); }
 details[open] > summary [data-icon="disclose"] .ed-ic-line { transform: rotate(90deg); }
 @media (prefers-reduced-motion: reduce) {
   .ed-ic-dot, .ed-ic-line { transition: none; }

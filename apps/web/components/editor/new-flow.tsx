@@ -7,13 +7,27 @@ import { editorBrowserClient } from "@/lib/editor/supabase";
 import { Icon } from "./icons";
 import { FormFactorBadge, formFactorOf, type FormFactor } from "./form-factor";
 import { UploadIllustration } from "./illustrations";
+import { Redactor, applyBoxes, type Box } from "./redactor";
 import { Button, Field, Problems, Select, cardClass, inputClass } from "./ui";
 import { VideoFrames } from "./video-frames";
 
 interface Picked {
+  /** What gets uploaded: the original with its hidden areas painted solid. */
   file: File;
   hash: string;
   preview: string;
+  original: File;
+  boxes: Box[];
+  /** The recording a frame came from; its areas follow the recording's until edited here (own). */
+  source?: string;
+  own?: boolean;
+}
+
+/** The picked file again with `boxes` painted over its original; hash and preview follow the result. */
+async function cover(p: Picked, boxes: Box[], own: boolean): Promise<Picked> {
+  const type = p.original.type || mediaTypeFor(p.original.name);
+  const file = boxes.length ? new File([await applyBoxes(p.original, boxes, type)], p.original.name, { type }) : p.original;
+  return { ...p, file, boxes, own, hash: await sha256Hex(await file.arrayBuffer()), preview: URL.createObjectURL(file) };
 }
 
 const MAX_MB = 10;
@@ -30,6 +44,12 @@ export function NewFlow() {
   const [over, setOver] = useState(false);
   const [video, setVideo] = useState<File | null>(null);
   const [forms, setForms] = useState<Record<string, FormFactor>>({});
+  // Hidden areas per recording, applied to every frame taken from it (now and later).
+  const [masks, setMasks] = useState<Record<string, Box[]>>({});
+  const masksRef = useRef(masks);
+  masksRef.current = masks;
+  const [editing, setEditing] = useState<{ index: number; src: string } | null>(null);
+  const [saving, setSaving] = useState(false);
 
   // Frames from a video arrive while other state changes; read the current list, not a stale closure.
   const current = useRef(files);
@@ -40,7 +60,7 @@ export function NewFlow() {
 
   const set = (k: keyof FlowMeta) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => setMeta({ ...meta, [k]: e.target.value });
 
-  async function addImages(list: File[], sortByName: boolean) {
+  async function addImages(list: File[], sortByName: boolean, source?: string) {
     const added: Picked[] = [];
     const skipped: string[] = [];
     const known = new Set(current.current.map((f) => f.hash));
@@ -49,7 +69,9 @@ export function NewFlow() {
       const hash = await sha256Hex(await file.arrayBuffer());
       if (known.has(hash)) { skipped.push(`${file.name}: same image as one already added`); continue; }
       known.add(hash);
-      added.push({ file, hash, preview: URL.createObjectURL(file) });
+      const picked: Picked = { file, hash, preview: URL.createObjectURL(file), original: file, boxes: [], source };
+      const mask = source ? masksRef.current[source] ?? [] : [];
+      added.push(mask.length ? await cover(picked, mask, false) : picked);
     }
     // Files picked together are ordered by name (01.png, 02.png, ...), as in a flow folder.
     if (sortByName) added.sort((a, b) => a.file.name.localeCompare(b.file.name, undefined, { numeric: true }));
@@ -69,8 +91,33 @@ export function NewFlow() {
     setProblems([]);
   }
 
-  async function addFrames(frames: File[]) {
-    setNotes(await addImages(frames, false));
+  async function addFrames(frames: File[], source: string) {
+    setNotes(await addImages(frames, false, source));
+    setProblems([]);
+  }
+
+  // ── Hiding personal data: per picked file, or once per recording for all its frames ──
+  const openEditor = (index: number) => setEditing({ index, src: URL.createObjectURL(current.current[index].original) });
+  const closeEditor = () => { if (editing) URL.revokeObjectURL(editing.src); setEditing(null); };
+
+  async function saveAreas(boxes: Box[]) {
+    if (!editing) return;
+    setSaving(true);
+    const before = current.current[editing.index];
+    const after = await cover(before, boxes, true);
+    URL.revokeObjectURL(before.preview);
+    setFiles((all) => all.map((f) => (f === before ? after : f)));
+    setSaving(false);
+    setProblems([]);
+    closeEditor();
+  }
+
+  async function saveRecordingAreas(source: string, boxes: Box[]) {
+    setMasks((m) => ({ ...m, [source]: boxes }));
+    masksRef.current = { ...masksRef.current, [source]: boxes };
+    const updated = await Promise.all(current.current.map((f) => (f.source === source && !f.own ? cover(f, boxes, false) : f)));
+    current.current.forEach((f, i) => { if (updated[i] !== f) URL.revokeObjectURL(f.preview); });
+    setFiles(updated);
     setProblems([]);
   }
 
@@ -164,13 +211,14 @@ export function NewFlow() {
           <span className="text-xs text-muted">Screenshots: PNG, JPEG, or WebP, up to {MAX_MB} MB each. Recordings: MP4, MOV, or WebM; you pick the frames. Hide personal data before uploading.</span>
           <input id="screens" type="file" accept="image/png,image/jpeg,image/webp,video/mp4,video/quicktime,video/webm,.m4v" multiple className="sr-only" disabled={!!progress} onChange={(e) => { add(e.target.files); e.target.value = ""; }} />
         </label>
-        {video && <VideoFrames file={video} disabled={!!progress} onFrames={addFrames} onClose={() => setVideo(null)} />}
+        {video && <VideoFrames file={video} disabled={!!progress} masks={masks[video.name] ?? []}
+          onMasks={(boxes) => saveRecordingAreas(video.name, boxes)} onFrames={(frames) => addFrames(frames, video.name)} onClose={() => setVideo(null)} />}
         <Problems title="Not added" items={notes} />
 
         {files.length > 0 && (
           <ol className="grid grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-4">
             {files.map((f, i) => (
-              <li key={f.hash} className={`ed-enter flex flex-col gap-2 p-2 ${cardClass}`}>
+              <li key={`${f.original.name}-${f.original.size}-${f.original.lastModified}`} className={`ed-enter flex flex-col gap-2 p-2 ${cardClass}`}>
                 <div className="relative aspect-[9/16] overflow-hidden rounded-lg bg-panel">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img src={f.preview} alt={`Screen ${i + 1}: ${f.file.name}`} className="h-full w-full object-contain"
@@ -179,6 +227,9 @@ export function NewFlow() {
                   <span className="absolute left-1.5 top-1.5 rounded bg-paper/90 px-1.5 font-mono text-xs text-ink">{i + 1}</span>
                 </div>
                 <p className="truncate font-mono text-xs text-muted" title={f.file.name}>{f.file.name}</p>
+                <Button type="button" size="sm" disabled={!!progress} onClick={() => openEditor(i)} aria-label={`Hide areas on screen ${i + 1}`}>
+                  <Icon name="hide" />{f.boxes.length ? `${f.boxes.length} hidden · edit` : "Hide areas"}
+                </Button>
                 <div className="flex items-center gap-0.5">
                   <Button type="button" kind="quiet" size="sm" disabled={i === 0 || !!progress} onClick={() => move(i, -1)} aria-label={`Move screen ${i + 1} earlier`}><Icon name="earlier" /></Button>
                   <Button type="button" kind="quiet" size="sm" disabled={i === files.length - 1 || !!progress} onClick={() => move(i, 1)} aria-label={`Move screen ${i + 1} later`}><Icon name="later" /></Button>
@@ -190,6 +241,11 @@ export function NewFlow() {
         )}
 
         <Problems title="Can't upload yet" items={problems} />
+        {editing && files[editing.index] && (
+          <Redactor src={editing.src} boxes={files[editing.index].boxes} saving={saving} onSave={saveAreas} onCancel={closeEditor}
+            title={`Hide personal data on screen ${editing.index + 1}`}
+            extra={files[editing.index].source && <p className="text-xs text-muted">This frame is from {files[editing.index].source}. To hide the same areas on every frame, use “Hide areas on every frame” in the video panel.</p>} />
+        )}
         <div className="flex items-center gap-3">
           <Button kind="primary" type="submit" disabled={!!progress}><Icon name="upload" />{progress ? "Uploading…" : `Upload ${files.length || ""} ${files.length === 1 ? "screen" : "screens"}`.replace("  ", " ")}</Button>
           <p aria-live="polite" className="text-sm text-ink-2">{progress}</p>

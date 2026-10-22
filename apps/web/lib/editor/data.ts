@@ -46,6 +46,7 @@ export async function listFlows(sb: SupabaseClient): Promise<FlowListItem[]> {
 export interface ReviewScreen {
   id: string;
   position: number;
+  path: string;
   url: string | null;
   ocr: string;
   piiChecked: boolean;
@@ -92,6 +93,7 @@ export async function loadReview(sb: SupabaseClient, flowId: string): Promise<Re
     screens: screens.map((s) => ({
       id: s.id,
       position: s.position,
+      path: s.image_path,
       url: urls.get(s.id) ?? null,
       ocr: s.ocr_text ?? "",
       piiChecked: pii.has(s.id),

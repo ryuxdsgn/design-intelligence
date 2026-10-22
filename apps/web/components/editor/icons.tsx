@@ -6,7 +6,7 @@
    Motion: on hover of its control, each icon does one small move that says what it does (arrows
    nudge their way, plus turns, the plane takes off, the dot grows). None with reduced motion.
    One icon, one meaning: back leaves the page, chevrons move between screens, carets reorder;
-   mobile and desktop name a screen's form factor.
+   mobile and desktop name a screen's form factor; hide covers personal data; remove deletes.
    Icons sit next to a label; icon-only controls carry an accessible name. Decorative: aria-hidden. */
 
 const PATHS = {
@@ -27,6 +27,8 @@ const PATHS = {
   alert: ["M10.3 4.9a2 2 0 013.4 0l7 12.1a2 2 0 01-1.7 3H5a2 2 0 01-1.7-3z", "M12 10v3.5", "M12 16.8v.01"],
   disclose: ["M9.5 6.5L15 12l-5.5 5.5"],
   dropdown: ["M7 10l5 5 5-5"],
+  hide: ["M10.5 6.1c.5-.1 1-.1 1.5-.1 5.5 0 8.5 6 8.5 6a14.5 14.5 0 01-2.3 3.1", "M6.7 7.6C4.6 9.1 3.5 12 3.5 12s3 6 8.5 6c1.6 0 3-.4 4.2-1.1", "M10.1 10.2a2.6 2.6 0 003.7 3.7", "M4.5 4.5l15 15"],
+  remove: ["M5 7h14", "M10 7V5.5h4V7", "M7 7l.8 11.1a2 2 0 002 1.9h4.4a2 2 0 002-1.9L17 7", "M10.5 11v5", "M13.5 11v5"],
   signOut: ["M14 4h3a2 2 0 012 2v12a2 2 0 01-2 2h-3", "M10 8l-4 4 4 4", "M6 12h9.5"],
   mobile: ["M9 3.5h6A2.5 2.5 0 0117.5 6v12a2.5 2.5 0 01-2.5 2.5H9A2.5 2.5 0 016.5 18V6A2.5 2.5 0 019 3.5z", "M11 17.5h2"],
   desktop: ["M5.5 4.5h13A2.5 2.5 0 0121 7v7a2.5 2.5 0 01-2.5 2.5h-13A2.5 2.5 0 013 14V7a2.5 2.5 0 012.5-2.5z", "M12 16.5V20", "M8.5 20h7"],
