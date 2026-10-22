@@ -2,7 +2,7 @@
 
 Directs what a screen shows beyond its system: art direction, composition, expressive surfaces, motion, asset sourcing, illustration, and delight.
 
-> Group UI · Delivery Gate area UI · RYUX 2.14.0. Levels are defined in `SKILL.md`.
+> Group UI · Delivery Gate area UI · RYUX 2.14.1. Levels are defined in `SKILL.md`.
 
 **What a screen shows beyond its system.** Read this with `knowledge/ui.md` when the work has photos,
 illustration, 3D, motion, or an expressive surface (hero, landing, onboarding, empty state, brand
