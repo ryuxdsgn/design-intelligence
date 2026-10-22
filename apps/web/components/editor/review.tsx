@@ -7,6 +7,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import type { ReviewData, ReviewScreen } from "@/lib/editor/data";
 import { editorBrowserClient } from "@/lib/editor/supabase";
 import { Icon } from "./icons";
+import { FormFactorBadge, useFormFactor } from "./form-factor";
 import { PublishedIllustration } from "./illustrations";
 import { Button, Disclosure, Problems, Progress, SaveStatus, StatusBadge, checkboxClass, focus, inputClass, linkClass } from "./ui";
 
@@ -50,6 +51,10 @@ export function Review({ data, editorId }: { data: ReviewData; editorId: string 
   // Any change makes the last publish check stale.
   useEffect(() => { setProblems([]); setConfirming(false); }, [screens, flowNotes]);
   const screen = screens[current];
+  // The flow's form factor comes from its first screen; the Review card reads the current one.
+  const flowForm = useFormFactor(screens[0]?.url);
+  const screenForm = useFormFactor(screen?.url);
+  const wide = flowForm === "desktop";
 
   const patch = (id: string, change: (s: ReviewScreen) => ReviewScreen) => setScreens((all) => all.map((s) => (s.id === id ? change(s) : s)));
   const run = async (what: string, fn: () => Promise<void>) => {
@@ -195,6 +200,7 @@ export function Review({ data, editorId }: { data: ReviewData; editorId: string 
             <span>{data.flow.app} {data.flow.version}</span>
             <span className="text-muted">{data.flow.flowType} · {data.flow.platform} · captured {data.flow.capturedAt}</span>
             <StatusBadge status={data.flow.status} />
+            <FormFactorBadge value={flowForm} className="bg-panel" />
           </p>
         </div>
         <div className="flex items-center gap-2 max-sm:w-full max-sm:empty:hidden">
@@ -239,16 +245,16 @@ export function Review({ data, editorId }: { data: ReviewData; editorId: string 
           <div className="flex min-w-0 flex-col gap-4">
             <div className="flex justify-center rounded-3xl bg-paper-2 p-4 sm:p-8">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              {screen.url ? <img src={screen.url} alt={`Screen ${screen.position} of ${data.flow.title}`} className="max-h-[46vh] w-auto rounded-xl shadow-lg shadow-black/10 lg:max-h-[68vh]" /> : <p className="self-center py-16 text-sm text-ink-2">The image couldn't be loaded.</p>}
+              {screen.url ? <img src={screen.url} alt={`Screen ${screen.position} of ${data.flow.title}`} className="max-h-[46vh] w-auto max-w-full rounded-xl shadow-lg shadow-black/10 lg:max-h-[68vh]" /> : <p className="self-center py-16 text-sm text-ink-2">The image couldn't be loaded.</p>}
             </div>
             <nav aria-label="Screens" className="flex min-w-0 flex-col gap-2">
               <p className="text-sm text-ink-2"><span className="mr-1.5 inline-block size-2 rounded-full bg-accent align-middle" aria-hidden="true" />{checked} of {screens.length} checked</p>
               <div className="-mx-4 flex gap-3 overflow-x-auto px-4 pb-1 pt-2 lg:mx-0 lg:flex-wrap lg:overflow-visible lg:px-0">
               {screens.map((s, i) => (
                 <button key={s.id} onClick={() => setCurrent(i)} aria-current={i === current ? "true" : undefined}
-                  className={`ed-chip relative w-14 shrink-0 rounded-xl outline-offset-2 sm:w-16 ${i === current ? "outline-2 outline-ink" : "opacity-70 hover:opacity-100"} ${focus}`}>
+                  className={`ed-chip relative shrink-0 rounded-xl outline-offset-2 ${wide ? "w-28 sm:w-32" : "w-14 sm:w-16"} ${i === current ? "outline-2 outline-ink" : "opacity-70 hover:opacity-100"} ${focus}`}>
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  {s.url ? <img src={s.url} alt="" className="aspect-[9/16] w-full rounded-xl border border-hair bg-panel object-cover object-top" /> : <span className="block aspect-[9/16] rounded-xl bg-panel" />}
+                  {s.url ? <img src={s.url} alt="" className={`${wide ? "aspect-video" : "aspect-[9/16]"} w-full rounded-xl border border-hair bg-panel object-cover object-top`} /> : <span className={`block ${wide ? "aspect-video" : "aspect-[9/16]"} rounded-xl bg-panel`} />}
                   <span aria-hidden="true" className="absolute bottom-1 left-1 rounded-md bg-paper/95 px-1 text-[11px] tabular-nums text-ink">{s.position}</span>
                   {drafting?.id === s.id ? <span aria-hidden="true" className="ed-enter absolute inset-x-0 top-1/2 mx-1 -translate-y-1/2 rounded-md bg-paper/95 px-1 text-center text-[11px] text-ink">drafting…</span>
                     : s.ocr ? <span aria-hidden="true" className="absolute bottom-1 right-1 rounded-md bg-paper/95 p-0.5 text-[11px] text-ink-2"><Icon name="ai" /></span> : null}
@@ -263,7 +269,7 @@ export function Review({ data, editorId }: { data: ReviewData; editorId: string 
           {/* The Review card: like a booking card, it stays in view and always shows the next step. */}
           <div className="flex flex-col rounded-2xl border border-hair bg-paper lg:sticky lg:top-20 lg:max-h-[calc(100dvh-6rem)] lg:self-start lg:shadow-xl lg:shadow-black/5">
             <div className="border-b border-hair px-5 pb-3 pt-5">
-              <p className="text-lg font-semibold tracking-tight">Screen {screen.position} of {screens.length}</p>
+              <p className="flex items-center justify-between gap-2 text-lg font-semibold tracking-tight">Screen {screen.position} of {screens.length}<FormFactorBadge value={screenForm} className="bg-panel" /></p>
               <p className="text-sm text-muted">{checked} of {screens.length} checked for personal data</p>
             </div>
             <div className="min-h-0 flex-1 overflow-y-auto px-5 py-4">

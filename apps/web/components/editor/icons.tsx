@@ -5,7 +5,8 @@
    (the set's signature, and what makes it playful); flat, no other fill.
    Motion: on hover of its control, each icon does one small move that says what it does (arrows
    nudge their way, plus turns, the plane takes off, the dot grows). None with reduced motion.
-   One icon, one meaning: back leaves the page, chevrons move between screens, carets reorder.
+   One icon, one meaning: back leaves the page, chevrons move between screens, carets reorder;
+   mobile and desktop name a screen's form factor.
    Icons sit next to a label; icon-only controls carry an accessible name. Decorative: aria-hidden. */
 
 const PATHS = {
@@ -26,6 +27,8 @@ const PATHS = {
   alert: ["M10.3 4.9a2 2 0 013.4 0l7 12.1a2 2 0 01-1.7 3H5a2 2 0 01-1.7-3z", "M12 10v3.5", "M12 16.8v.01"],
   disclose: ["M9.5 6.5L15 12l-5.5 5.5"],
   signOut: ["M14 4h3a2 2 0 012 2v12a2 2 0 01-2 2h-3", "M10 8l-4 4 4 4", "M6 12h9.5"],
+  mobile: ["M9 3.5h6A2.5 2.5 0 0117.5 6v12a2.5 2.5 0 01-2.5 2.5H9A2.5 2.5 0 016.5 18V6A2.5 2.5 0 019 3.5z", "M11 17.5h2"],
+  desktop: ["M5.5 4.5h13A2.5 2.5 0 0121 7v7a2.5 2.5 0 01-2.5 2.5h-13A2.5 2.5 0 013 14V7a2.5 2.5 0 012.5-2.5z", "M12 16.5V20", "M8.5 20h7"],
 } as const;
 
 export type IconName = keyof typeof PATHS;

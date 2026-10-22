@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Icon } from "@/components/editor/icons";
+import { FlowCover } from "@/components/editor/form-factor";
 import { FlowIllustration } from "@/components/editor/illustrations";
 import { StatusBadge, buttonClass, focus, linkClass } from "@/components/editor/ui";
 import { listFlows } from "@/lib/editor/data";
@@ -58,12 +59,7 @@ export default async function FlowList({ searchParams }: { searchParams: Promise
           {flows.map((f) => (
             <li key={f.id}>
               <Link href={`/editor/flows/${f.id}`} className={`group block rounded-2xl ${focus}`}>
-                <span className="flex aspect-[4/3] items-center justify-center gap-2 overflow-hidden rounded-2xl bg-paper-2 p-4">
-                  {f.covers.length ? f.covers.map((u, i) => (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img key={i} src={u} alt="" className="h-full w-[30%] rounded-lg object-cover object-top shadow-sm transition-transform duration-[var(--dur-2)] ease-[var(--ease-out)] group-hover:-translate-y-1 motion-reduce:transition-none" />
-                  )) : <span className="text-sm text-muted">{f.steps ? "Preview unavailable" : "No screens yet"}</span>}
-                </span>
+                <FlowCover covers={f.covers} steps={f.steps} />
                 <span className="mt-3 flex items-start justify-between gap-3">
                   <span className="min-w-0">
                     <span className="block truncate font-medium text-ink group-hover:underline">{f.title || f.id}</span>
