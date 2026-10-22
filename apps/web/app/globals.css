@@ -360,3 +360,26 @@ code,
   --color-mark: #b4432a;
   color-scheme: light;
 }
+
+/* Editor icons (components/editor/icons.tsx): the highlighter dot and one small move per icon. */
+.ed-ic { overflow: visible; }
+.ed-ic-dot { fill: var(--ic-dot, var(--color-accent)); opacity: 0.28; transform-box: fill-box; transform-origin: center; transition: transform var(--dur-2) var(--ease-spring), opacity var(--dur-1) var(--ease-out); }
+.ed-ic-line { transform-box: fill-box; transform-origin: center; transition: transform var(--dur-2) var(--ease-spring); }
+:is(button, a, summary):not(:disabled):hover .ed-ic-dot { transform: scale(1.25); opacity: 0.4; }
+:is(button, a, summary):not(:disabled):hover [data-icon="back"] .ed-ic-line,
+:is(button, a, summary):not(:disabled):hover [data-icon="prev"] .ed-ic-line,
+:is(button, a, summary):not(:disabled):hover [data-icon="earlier"] .ed-ic-line { transform: translateX(-2px); }
+:is(button, a, summary):not(:disabled):hover [data-icon="next"] .ed-ic-line,
+:is(button, a, summary):not(:disabled):hover [data-icon="later"] .ed-ic-line { transform: translateX(2px); }
+:is(button, a, summary):not(:disabled):hover [data-icon="add"] .ed-ic-line { transform: rotate(90deg); }
+:is(button, a, summary):not(:disabled):hover [data-icon="ai"] .ed-ic-line { transform: rotate(12deg) scale(1.08); }
+:is(button, a, summary):not(:disabled):hover [data-icon="publish"] .ed-ic-line { transform: translate(2px, -2px); }
+:is(button, a, summary):not(:disabled):hover [data-icon="upload"] .ed-ic-line { transform: translateY(-2px); }
+:is(button, a, summary):not(:disabled):hover [data-icon="close"] .ed-ic-line { transform: rotate(90deg); }
+:is(button, a, summary):not(:disabled):hover [data-icon="capture"] .ed-ic-line { transform: scale(0.9); }
+:is(button, a, summary):not(:disabled):hover [data-icon="signOut"] .ed-ic-line { transform: translateX(-2px); }
+details[open] > summary [data-icon="disclose"] .ed-ic-line { transform: rotate(90deg); }
+@media (prefers-reduced-motion: reduce) {
+  .ed-ic-dot, .ed-ic-line { transition: none; }
+  :is(button, a, summary):hover .ed-ic-dot, :is(button, a, summary):hover .ed-ic-line { transform: none; }
+}

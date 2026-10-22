@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { ReviewData, ReviewScreen } from "@/lib/editor/data";
 import { editorBrowserClient } from "@/lib/editor/supabase";
+import { Icon } from "./icons";
 import { PublishedIllustration } from "./illustrations";
 import { Button, Disclosure, Problems, Progress, SaveStatus, StatusBadge, checkboxClass, focus, inputClass, linkClass } from "./ui";
 
@@ -188,7 +189,7 @@ export function Review({ data, editorId }: { data: ReviewData; editorId: string 
     <div className="flex flex-col gap-5 pb-24 sm:gap-6 lg:pb-0">
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div className="min-w-0">
-          <Link href="/editor" className={`inline-flex min-h-11 items-center text-sm text-ink-2 hover:text-ink sm:min-h-0 ${focus}`}>← Flows</Link>
+          <Link href="/editor" className={`inline-flex min-h-11 items-center text-sm text-ink-2 hover:text-ink sm:min-h-0 ${focus} gap-1.5`}><Icon name="back" />Flows</Link>
           <h1 className="mt-1 text-2xl sm:truncate sm:text-3xl">{data.flow.title}</h1>
           <p className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-ink-2">
             <span>{data.flow.app} {data.flow.version}</span>
@@ -199,9 +200,9 @@ export function Review({ data, editorId }: { data: ReviewData; editorId: string 
         <div className="flex items-center gap-2 max-sm:w-full max-sm:empty:hidden">
           <SaveStatus state={save} />
           <Button className={`ml-auto sm:ml-0 ${toDraft === 0 && !drafting ? "max-sm:hidden" : ""}`} onClick={runDraft} disabled={!!drafting || toDraft === 0} title={toDraft === 0 ? "Every screen has a draft" : "Uses the Anthropic API once per screen"}>
-            {drafting ? "Drafting…" : toDraft === 0 ? "All drafted" : `AI draft ${toDraft} ${toDraft === 1 ? "screen" : "screens"}`}
+            <Icon name="ai" />{drafting ? "Drafting…" : toDraft === 0 ? "All drafted" : `AI draft ${toDraft} ${toDraft === 1 ? "screen" : "screens"}`}
           </Button>
-          <Button onClick={askPublish} disabled={publishing} className="max-lg:hidden">{publishLabel}</Button>
+          <Button onClick={askPublish} disabled={publishing} className="max-lg:hidden"><Icon name="publish" />{publishLabel}</Button>
         </div>
       </div>
 
@@ -226,7 +227,7 @@ export function Review({ data, editorId }: { data: ReviewData; editorId: string 
           <p id="confirm-title" className="text-sm text-ink">Publish {screens.length} screens? They become references that anyone using the RYUX MCP can read. Unticked AI items are removed.</p>
           <div className="flex w-full justify-end gap-2 lg:w-auto">
             <Button kind="quiet" onClick={() => setConfirming(false)}>Cancel</Button>
-            <Button kind="primary" onClick={publish} disabled={publishing} autoFocus>{publishing ? "Publishing…" : "Publish now"}</Button>
+            <Button kind="primary" onClick={publish} disabled={publishing} autoFocus><Icon name="publish" />{publishing ? "Publishing…" : "Publish now"}</Button>
           </div>
         </div>
       )}
@@ -250,7 +251,7 @@ export function Review({ data, editorId }: { data: ReviewData; editorId: string 
                   {s.url ? <img src={s.url} alt="" className="aspect-[9/16] w-full rounded-xl border border-hair bg-panel object-cover object-top" /> : <span className="block aspect-[9/16] rounded-xl bg-panel" />}
                   <span aria-hidden="true" className="absolute bottom-1 left-1 rounded-md bg-paper/95 px-1 text-[11px] tabular-nums text-ink">{s.position}</span>
                   {drafting?.id === s.id ? <span aria-hidden="true" className="ed-enter absolute inset-x-0 top-1/2 mx-1 -translate-y-1/2 rounded-md bg-paper/95 px-1 text-center text-[11px] text-ink">drafting…</span>
-                    : s.ocr ? <span aria-hidden="true" className="absolute bottom-1 right-1 rounded-md bg-paper/95 px-1 text-[10px] text-ink-2">AI</span> : null}
+                    : s.ocr ? <span aria-hidden="true" className="absolute bottom-1 right-1 rounded-md bg-paper/95 p-0.5 text-[11px] text-ink-2"><Icon name="ai" /></span> : null}
                   <span aria-hidden="true" className={`absolute -right-1.5 -top-1.5 size-3.5 rounded-full border-2 border-paper ${s.piiChecked ? "bg-accent" : "bg-mark"}`} />
                   <span className="sr-only">Screen {s.position}, {s.piiChecked ? "personal data checked" : "personal data not checked"}{s.ocr ? ", drafted" : ""}</span>
                 </button>
@@ -273,12 +274,12 @@ export function Review({ data, editorId }: { data: ReviewData; editorId: string 
             </div>
             <div className="hidden flex-col gap-2 border-t border-hair px-5 py-4 lg:flex">
               <div className="flex gap-2">
-                <Button onClick={prev} disabled={current === 0} aria-label="Previous screen" className="w-11 px-0">←</Button>
+                <Button onClick={prev} disabled={current === 0} aria-label="Previous screen" className="w-11 px-0"><Icon name="prev" /></Button>
                 {current < screens.length - 1
-                  ? <Button kind="primary" onClick={next} className="h-12 flex-1 text-base">Next screen</Button>
-                  : <Button kind="primary" onClick={askPublish} disabled={publishing} className="h-12 flex-1 text-base">{publishLabel}</Button>}
+                  ? <Button kind="primary" onClick={next} className="h-12 flex-1 text-base">Next screen<Icon name="next" /></Button>
+                  : <Button kind="primary" onClick={askPublish} disabled={publishing} className="h-12 flex-1 text-base"><Icon name="publish" />{publishLabel}</Button>}
               </div>
-              <p className="text-center text-xs text-muted"><kbd className="font-sans">←</kbd> <kbd className="font-sans">→</kbd> to move between screens</p>
+              <p className="text-center text-xs text-muted"><kbd className="font-sans">←</kbd> <kbd className="font-sans">→</kbd> keys move between screens</p>
             </div>
           </div>
         </div>
@@ -296,11 +297,11 @@ export function Review({ data, editorId }: { data: ReviewData; editorId: string 
       <div className="fixed inset-x-0 bottom-0 z-20 border-t border-hair bg-paper/95 px-4 pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-3 backdrop-blur lg:hidden">
         <div className="mx-auto flex max-w-xl items-center gap-2">
           {screens.length > 0 && <>
-            <Button onClick={prev} disabled={current === 0} aria-label="Previous screen" className="w-11 px-0">‹</Button>
+            <Button onClick={prev} disabled={current === 0} aria-label="Previous screen" className="w-11 px-0"><Icon name="prev" /></Button>
             <p className="min-w-0 flex-1 text-center text-sm tabular-nums text-ink-2" aria-live="polite">Screen {screen.position} of {screens.length}</p>
-            <Button onClick={next} disabled={current === screens.length - 1} aria-label="Next screen" className="w-11 px-0">›</Button>
+            <Button onClick={next} disabled={current === screens.length - 1} aria-label="Next screen" className="w-11 px-0"><Icon name="next" /></Button>
           </>}
-          <Button kind="primary" onClick={askPublish} disabled={publishing} className={screens.length ? "" : "flex-1"}>{publishLabel}</Button>
+          <Button kind="primary" onClick={askPublish} disabled={publishing} className={screens.length ? "" : "flex-1"}><Icon name="publish" />{publishLabel}</Button>
         </div>
       </div>
     </div>
@@ -333,7 +334,7 @@ function ScreenPanel({ screen, vocabulary, onPii, onTag, onAddTag, onObservation
             <li key={t.key}>
               <label className={`ed-chip inline-flex min-h-9 cursor-pointer items-center gap-1.5 rounded-full border px-3 text-sm sm:min-h-0 sm:py-1 sm:text-xs ${t.source === "human" ? "border-accent bg-accent/10 text-ink" : "border-hair text-ink-2 hover:border-ink-2"}`}>
                 <input type="checkbox" checked={t.source === "human"} onChange={() => onTag(t.key)} className={checkboxClass} />
-                {t.label}{t.ai && <span className="font-mono text-[10px] text-muted">AI</span>}
+                {t.label}{t.ai && <span className="text-muted" title="Suggested by the AI draft"><Icon name="ai" /><span className="sr-only">, suggested by AI</span></span>}
               </label>
             </li>
           ))}

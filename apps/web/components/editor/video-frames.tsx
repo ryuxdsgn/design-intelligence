@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { Icon } from "./icons";
 import { Button, Problems, Progress, cardClass } from "./ui";
 
 // Suggested frames: sample the recording every STEP seconds on a tiny grayscale copy. A frame is kept
@@ -118,7 +119,7 @@ export function VideoFrames({ file, disabled, onFrames, onClose }: { file: File;
     <section aria-labelledby="video-title" className={`ed-enter flex flex-col gap-3 p-3 ${cardClass}`}>
       <div className="flex items-baseline gap-3">
         <h2 id="video-title" className="min-w-0 truncate text-sm font-medium text-ink" title={file.name}>Frames from {file.name}</h2>
-        <Button type="button" kind="quiet" size="sm" className="ml-auto" disabled={!!scan} onClick={onClose}>Close video</Button>
+        <Button type="button" kind="quiet" size="sm" className="ml-auto" disabled={!!scan} onClick={onClose}><Icon name="close" />Close video</Button>
       </div>
       <p className="text-xs text-muted">The video stays on this computer. Only the frames you add are uploaded, as screens.</p>
       {error ? (
@@ -129,9 +130,9 @@ export function VideoFrames({ file, disabled, onFrames, onClose }: { file: File;
       )}
       {!error && (
         <div className="flex flex-wrap items-center gap-2">
-          <Button type="button" kind="primary" disabled={busy} onClick={addCurrent}>Add this frame</Button>
-          <Button type="button" disabled={busy} onClick={suggest}>Suggest frames</Button>
-          {scan && <Button type="button" kind="quiet" onClick={() => { stop.current = true; }}>Stop</Button>}
+          <Button type="button" kind="primary" disabled={busy} onClick={addCurrent}><Icon name="capture" />Add this frame</Button>
+          <Button type="button" disabled={busy} onClick={suggest}><Icon name="frames" />Suggest frames</Button>
+          {scan && <Button type="button" kind="quiet" onClick={() => { stop.current = true; }}><Icon name="stop" />Stop</Button>}
         </div>
       )}
       {scan && <Progress label="Looking for still screens" done={scan.done} total={scan.total} />}
