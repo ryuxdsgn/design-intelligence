@@ -1,4 +1,4 @@
-import type { ButtonHTMLAttributes, ReactNode } from "react";
+import type { ButtonHTMLAttributes, ReactNode, SelectHTMLAttributes } from "react";
 import { Icon } from "./icons";
 
 /* Editor primitives on the site's board tokens: teal is the action, coral marks a problem and nothing else.
@@ -29,6 +29,16 @@ export function Button({ kind, size, className = "", ...props }: ButtonHTMLAttri
 export const linkClass = `text-sm text-accent underline-offset-2 hover:underline ${focus}`;
 
 export const inputClass = `w-full rounded-lg border border-hair bg-paper px-3 py-2.5 text-base text-ink placeholder:text-muted/70 sm:py-2 sm:text-sm ${focus}`;
+
+/** A native select (keyboard and mobile pickers stay native) with the set's chevron, inset from the edge. */
+export function Select({ className = "", children, ...props }: SelectHTMLAttributes<HTMLSelectElement>) {
+  return (
+    <span className={`relative block ${className}`}>
+      <select className={`${inputClass} cursor-pointer appearance-none pr-10 sm:pr-9`} {...props}>{children}</select>
+      <Icon name="dropdown" className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-ink-2" />
+    </span>
+  );
+}
 
 export const checkboxClass = "size-4 shrink-0 accent-[var(--color-accent)]";
 
