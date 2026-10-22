@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Button, Problems } from "./ui";
+import { Button, Problems, Progress, cardClass } from "./ui";
 
 // Suggested frames: sample the recording every STEP seconds on a tiny grayscale copy. A frame is kept
 // when the picture has stopped moving (mean change from the last sample <= STILL) and differs from the
@@ -115,10 +115,10 @@ export function VideoFrames({ file, disabled, onFrames, onClose }: { file: File;
 
   const busy = disabled || !!scan;
   return (
-    <section aria-labelledby="video-title" className="ed-enter flex flex-col gap-3 rounded-lg border border-hair bg-paper-2 p-3">
+    <section aria-labelledby="video-title" className={`ed-enter flex flex-col gap-3 p-3 ${cardClass}`}>
       <div className="flex items-baseline gap-3">
         <h2 id="video-title" className="min-w-0 truncate text-sm font-medium text-ink" title={file.name}>Frames from {file.name}</h2>
-        <Button type="button" kind="quiet" className="ml-auto min-h-8 px-2 text-xs" disabled={!!scan} onClick={onClose}>Close video</Button>
+        <Button type="button" kind="quiet" size="sm" className="ml-auto" disabled={!!scan} onClick={onClose}>Close video</Button>
       </div>
       <p className="text-xs text-muted">The video stays on this computer. Only the frames you add are uploaded, as screens.</p>
       {error ? (
@@ -134,11 +134,7 @@ export function VideoFrames({ file, disabled, onFrames, onClose }: { file: File;
           {scan && <Button type="button" kind="quiet" onClick={() => { stop.current = true; }}>Stop</Button>}
         </div>
       )}
-      {scan && (
-        <div className="h-1 overflow-hidden rounded bg-panel" role="progressbar" aria-label="Looking for still screens" aria-valuemin={0} aria-valuemax={scan.total} aria-valuenow={scan.done}>
-          <div className="ed-progress h-full bg-accent" style={{ transform: `scaleX(${scan.done / scan.total})` }} />
-        </div>
-      )}
+      {scan && <Progress label="Looking for still screens" done={scan.done} total={scan.total} />}
       <p aria-live="polite" className="text-sm text-ink-2">{scan ? `Looking for still screens… ${Math.round((scan.done / scan.total) * 100)}%` : result}</p>
     </section>
   );

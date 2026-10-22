@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { FlowIllustration } from "@/components/editor/illustrations";
-import { StatusBadge } from "@/components/editor/ui";
+import { StatusBadge, buttonClass, cardClass, focus, linkClass } from "@/components/editor/ui";
 import { listFlows } from "@/lib/editor/data";
 import { editorServerClient } from "@/lib/editor/server";
 
@@ -21,7 +21,7 @@ export default async function FlowList({ searchParams }: { searchParams: Promise
           <h1 className="text-2xl">Flows</h1>
           <p className="mt-1 text-sm text-ink-2">Screens become references for the RYUX MCP only after a person reviews and publishes them.</p>
         </div>
-        <Link href="/editor/new" className="tactile inline-flex min-h-11 items-center rounded-lg bg-accent px-3.5 text-sm font-medium text-paper hover:bg-accent/90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent sm:min-h-9">New flow</Link>
+        <Link href="/editor/new" className={buttonClass("primary")}>New flow</Link>
       </div>
 
       <nav aria-label="Filter by status" className="flex gap-1">
@@ -30,7 +30,7 @@ export default async function FlowList({ searchParams }: { searchParams: Promise
           const active = f.value === status;
           return (
             <Link key={f.label} href={f.value ? `/editor?status=${f.value}` : "/editor"} aria-current={active ? "page" : undefined}
-              className={`rounded-lg px-3 py-2 text-sm ${active ? "bg-panel text-ink" : "text-ink-2 hover:text-ink"}`}>
+              className={`inline-flex min-h-11 items-center rounded-lg px-3 text-sm sm:min-h-9 ${active ? "bg-panel text-ink" : "text-ink-2 hover:text-ink"} ${focus}`}>
               {f.label} <span className="font-mono text-xs text-muted">{count}</span>
             </Link>
           );
@@ -47,9 +47,9 @@ export default async function FlowList({ searchParams }: { searchParams: Promise
               : "Every flow has another status. Show all flows to see them."}
           </p>
           {all.length === 0 ? (
-            <Link href="/editor/new" className="tactile mt-1 inline-flex min-h-9 items-center rounded-md bg-accent px-3.5 text-sm font-medium text-paper hover:bg-accent/90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent">New flow</Link>
+            <Link href="/editor/new" className={`${buttonClass("primary")} mt-1`}>New flow</Link>
           ) : (
-            <Link href="/editor" className="text-sm text-accent hover:underline focus-visible:outline-2 focus-visible:outline-accent">Show all flows</Link>
+            <Link href="/editor" className={linkClass}>Show all flows</Link>
           )}
         </div>
       ) : (
@@ -57,7 +57,7 @@ export default async function FlowList({ searchParams }: { searchParams: Promise
         <ul className="flex flex-col gap-2 sm:hidden">
           {flows.map((f) => (
             <li key={f.id}>
-              <Link href={`/editor/flows/${f.id}`} className="tactile flex items-center gap-3 rounded-xl border border-hair bg-paper-2 p-4 focus-visible:outline-2 focus-visible:outline-accent">
+              <Link href={`/editor/flows/${f.id}`} className={`tactile flex items-center gap-3 p-4 ${cardClass} ${focus}`}>
                 <span className="min-w-0 flex-1">
                   <span className="block truncate font-medium text-ink">{f.title || f.id}</span>
                   <span className="mt-0.5 block truncate text-sm text-ink-2">{f.app} {f.version} · {f.steps} {f.steps === 1 ? "screen" : "screens"}</span>
@@ -83,7 +83,7 @@ export default async function FlowList({ searchParams }: { searchParams: Promise
                 <tr key={f.id} className="border-t border-hair hover:bg-paper-2">
                   <td className="px-4 py-3 text-ink">{f.app}</td>
                   <td className="px-4 py-3">
-                    <Link href={`/editor/flows/${f.id}`} className="text-ink hover:text-accent focus-visible:outline-2 focus-visible:outline-accent">{f.title || f.id}</Link>
+                    <Link href={`/editor/flows/${f.id}`} className={`text-ink hover:text-accent ${focus}`}>{f.title || f.id}</Link>
                     <span className="ml-2 font-mono text-xs text-muted">{f.flowType}</span>
                   </td>
                   <td className="px-4 py-3 font-mono text-xs text-ink-2">{f.version}</td>

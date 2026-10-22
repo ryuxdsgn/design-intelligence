@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { editorBrowserClient } from "@/lib/editor/supabase";
 import { UploadIllustration } from "./illustrations";
-import { Button, Field, Problems, inputClass } from "./ui";
+import { Button, Field, Problems, cardClass, inputClass } from "./ui";
 import { VideoFrames } from "./video-frames";
 
 interface Picked {
@@ -130,8 +130,8 @@ export function NewFlow() {
     <form onSubmit={submit} className="grid gap-8 lg:grid-cols-[minmax(0,22rem)_minmax(0,1fr)]">
       <fieldset className="flex flex-col gap-4" disabled={!!progress}>
         <legend className="sr-only">About this flow</legend>
-        <Field label="App" htmlFor="app"><input id="app" value={meta.app} onChange={set("app")} placeholder="Gojek" className={inputClass} /></Field>
-        <Field label="Category" htmlFor="category" hint="The kind of product, as in docs/taxonomy.md."><input id="category" value={meta.category} onChange={set("category")} placeholder="ewallet" className={inputClass} /></Field>
+        <Field label="App" htmlFor="app"><input id="app" value={meta.app} onChange={set("app")} placeholder="e.g. Gojek" className={inputClass} /></Field>
+        <Field label="Category" htmlFor="category" hint="The kind of product, as in docs/taxonomy.md."><input id="category" value={meta.category} onChange={set("category")} placeholder="e.g. ewallet" className={inputClass} /></Field>
         <div className="grid grid-cols-2 gap-3">
           <Field label="Platform" htmlFor="platform">
             <select id="platform" value={meta.platform} onChange={set("platform")} className={inputClass}>
@@ -140,14 +140,14 @@ export function NewFlow() {
               <option value="web">Web</option>
             </select>
           </Field>
-          <Field label="App version" htmlFor="version"><input id="version" value={meta.version} onChange={set("version")} placeholder="5.80.0" className={inputClass} /></Field>
+          <Field label="App version" htmlFor="version"><input id="version" value={meta.version} onChange={set("version")} placeholder="e.g. 5.80.0" className={inputClass} /></Field>
         </div>
         <div className="grid grid-cols-2 gap-3">
           <Field label="Captured on" htmlFor="captured_at"><input id="captured_at" type="date" value={meta.captured_at} onChange={set("captured_at")} className={inputClass} /></Field>
-          <Field label="Device" htmlFor="device"><input id="device" value={meta.device} onChange={set("device")} placeholder="iPhone 15 Pro" className={inputClass} /></Field>
+          <Field label="Device" htmlFor="device"><input id="device" value={meta.device} onChange={set("device")} placeholder="e.g. iPhone 15 Pro" className={inputClass} /></Field>
         </div>
-        <Field label="Flow type" htmlFor="flow_type" hint="For example payment, onboarding, checkout."><input id="flow_type" value={meta.flow_type} onChange={set("flow_type")} placeholder="payment" className={inputClass} /></Field>
-        <Field label="Title" htmlFor="title"><input id="title" value={meta.title} onChange={set("title")} placeholder="Pay a QRIS code with GoPay" className={inputClass} /></Field>
+        <Field label="Flow type" htmlFor="flow_type" hint="For example payment, onboarding, checkout."><input id="flow_type" value={meta.flow_type} onChange={set("flow_type")} placeholder="e.g. payment" className={inputClass} /></Field>
+        <Field label="Title" htmlFor="title"><input id="title" value={meta.title} onChange={set("title")} placeholder="e.g. Pay a QRIS code with GoPay" className={inputClass} /></Field>
       </fieldset>
 
       <div className="flex flex-col gap-4">
@@ -155,7 +155,7 @@ export function NewFlow() {
           onDragOver={(e) => { e.preventDefault(); if (!progress) setOver(true); }}
           onDragLeave={() => setOver(false)}
           onDrop={(e) => { e.preventDefault(); setOver(false); if (!progress) add(e.dataTransfer.files); }}
-          className={`ed-drop ed-chip flex cursor-pointer flex-col items-center justify-center gap-1 rounded-lg border border-dashed p-6 text-center focus-within:outline-2 focus-within:outline-accent ${over ? "border-accent bg-accent/5" : "border-hair hover:border-accent/60"}`}>
+          className={`ed-drop ed-chip flex cursor-pointer flex-col items-center justify-center gap-1 rounded-xl border border-dashed p-6 text-center focus-within:outline-2 focus-within:outline-accent ${over ? "border-accent bg-accent/5" : "border-hair hover:border-accent/60"}`}>
           <UploadIllustration className="h-16 w-auto" />
           <span className="text-sm text-ink">{over ? "Drop to add" : "Drop screenshots or a screen recording here, or choose them"}</span>
           <span className="text-xs text-muted">Screenshots: PNG, JPEG, or WebP, up to {MAX_MB} MB each. Recordings: MP4, MOV, or WebM; you pick the frames. Hide personal data before uploading.</span>
@@ -167,7 +167,7 @@ export function NewFlow() {
         {files.length > 0 && (
           <ol className="grid grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-4">
             {files.map((f, i) => (
-              <li key={f.hash} className="ed-enter flex flex-col gap-2 rounded-lg border border-hair bg-paper-2 p-2">
+              <li key={f.hash} className={`ed-enter flex flex-col gap-2 p-2 ${cardClass}`}>
                 <div className="relative aspect-[9/16] overflow-hidden rounded bg-panel">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img src={f.preview} alt={`Screen ${i + 1}: ${f.file.name}`} className="h-full w-full object-contain" />
@@ -175,9 +175,9 @@ export function NewFlow() {
                 </div>
                 <p className="truncate font-mono text-xs text-muted" title={f.file.name}>{f.file.name}</p>
                 <div className="flex items-center gap-0.5">
-                  <Button type="button" kind="quiet" className="min-h-8 px-1.5" disabled={i === 0 || !!progress} onClick={() => move(i, -1)} aria-label={`Move screen ${i + 1} earlier`}>←</Button>
-                  <Button type="button" kind="quiet" className="min-h-8 px-1.5" disabled={i === files.length - 1 || !!progress} onClick={() => move(i, 1)} aria-label={`Move screen ${i + 1} later`}>→</Button>
-                  <Button type="button" kind="quiet" className="ml-auto min-h-8 px-2 text-xs" disabled={!!progress} onClick={() => remove(i)} aria-label={`Remove screen ${i + 1}`}>Remove</Button>
+                  <Button type="button" kind="quiet" size="sm" disabled={i === 0 || !!progress} onClick={() => move(i, -1)} aria-label={`Move screen ${i + 1} earlier`}>←</Button>
+                  <Button type="button" kind="quiet" size="sm" disabled={i === files.length - 1 || !!progress} onClick={() => move(i, 1)} aria-label={`Move screen ${i + 1} later`}>→</Button>
+                  <Button type="button" kind="quiet" size="sm" className="ml-auto" disabled={!!progress} onClick={() => remove(i)} aria-label={`Remove screen ${i + 1}`}>Remove</Button>
                 </div>
               </li>
             ))}
