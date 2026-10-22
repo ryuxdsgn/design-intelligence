@@ -26,6 +26,7 @@ const PATHS = {
   check: ["M5 12.5l4.5 4.5L19 7.5"],
   alert: ["M10.3 4.9a2 2 0 013.4 0l7 12.1a2 2 0 01-1.7 3H5a2 2 0 01-1.7-3z", "M12 10v3.5", "M12 16.8v.01"],
   disclose: ["M9.5 6.5L15 12l-5.5 5.5"],
+  dropdown: ["M7 10l5 5 5-5"],
   signOut: ["M14 4h3a2 2 0 012 2v12a2 2 0 01-2 2h-3", "M10 8l-4 4 4 4", "M6 12h9.5"],
   mobile: ["M9 3.5h6A2.5 2.5 0 0117.5 6v12a2.5 2.5 0 01-2.5 2.5H9A2.5 2.5 0 016.5 18V6A2.5 2.5 0 019 3.5z", "M11 17.5h2"],
   desktop: ["M5.5 4.5h13A2.5 2.5 0 0121 7v7a2.5 2.5 0 01-2.5 2.5h-13A2.5 2.5 0 013 14V7a2.5 2.5 0 012.5-2.5z", "M12 16.5V20", "M8.5 20h7"],
@@ -36,7 +37,7 @@ export type IconName = keyof typeof PATHS;
 // Where the highlighter dot sits: near the icon's weight, down and right.
 const DOT: Partial<Record<IconName, [number, number, number]>> = {
   back: [10, 15, 6], prev: [12, 14.5, 5.5], next: [13.5, 14.5, 5.5], earlier: [12.5, 14, 5], later: [12.5, 14, 5],
-  ai: [12.5, 13.5, 6], publish: [11, 15.5, 6], stop: [14, 14, 6], check: [12, 15, 6], disclose: [13.5, 14, 5],
+  ai: [12.5, 13.5, 6], publish: [11, 15.5, 6], stop: [14, 14, 6], check: [12, 15, 6], disclose: [13.5, 14, 5], dropdown: [13, 13.5, 5],
 };
 
 export function Icon({ name, size = "size-[1.15em]", className = "" }: { name: IconName; size?: string; className?: string }) {
