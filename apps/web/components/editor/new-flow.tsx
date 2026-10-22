@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { editorBrowserClient } from "@/lib/editor/supabase";
 import { Icon } from "./icons";
+import { FormFactorBadge, formFactorOf, type FormFactor } from "./form-factor";
 import { UploadIllustration } from "./illustrations";
 import { Button, Field, Problems, cardClass, inputClass } from "./ui";
 import { VideoFrames } from "./video-frames";
@@ -28,6 +29,7 @@ export function NewFlow() {
   const [progress, setProgress] = useState("");
   const [over, setOver] = useState(false);
   const [video, setVideo] = useState<File | null>(null);
+  const [forms, setForms] = useState<Record<string, FormFactor>>({});
 
   // Frames from a video arrive while other state changes; read the current list, not a stale closure.
   const current = useRef(files);
@@ -169,9 +171,11 @@ export function NewFlow() {
           <ol className="grid grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-4">
             {files.map((f, i) => (
               <li key={f.hash} className={`ed-enter flex flex-col gap-2 p-2 ${cardClass}`}>
-                <div className="relative aspect-[9/16] overflow-hidden rounded bg-panel">
+                <div className="relative aspect-[9/16] overflow-hidden rounded-lg bg-panel">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={f.preview} alt={`Screen ${i + 1}: ${f.file.name}`} className="h-full w-full object-contain" />
+                  <img src={f.preview} alt={`Screen ${i + 1}: ${f.file.name}`} className="h-full w-full object-contain"
+                    onLoad={(e) => { const { naturalWidth: w, naturalHeight: h } = e.currentTarget; setForms((m) => ({ ...m, [f.hash]: formFactorOf(w, h) })); }} />
+                  <FormFactorBadge value={forms[f.hash] ?? null} className="absolute bottom-1.5 left-1.5 shadow-sm" />
                   <span className="absolute left-1.5 top-1.5 rounded bg-paper/90 px-1.5 font-mono text-xs text-ink">{i + 1}</span>
                 </div>
                 <p className="truncate font-mono text-xs text-muted" title={f.file.name}>{f.file.name}</p>
