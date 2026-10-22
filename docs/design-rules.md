@@ -50,7 +50,8 @@ framework (questions, decision trees, templates) followed by its rules.
 | `knowledge/forms.md` | Forms: labels, layout, validation, input preservation, autofill, submission, unsaved work, OTP, address, e-KYC | RX-FM |
 | `knowledge/edge-cases.md` | Edge cases: data, form, network, permission, and system states beyond the happy path | RX-EC |
 | `knowledge/content.md` | Content design: specific copy, action labels, error messages, terminology, and locale (money, dates, natural Indonesian when the copy is Indonesian) | RX-CD |
-| `knowledge/ui.md` | UI design: the visual expression of a product: hierarchy, type, layout, density, color, imagery, art direction, composition, motion, and visual language | RX-UI |
+| `knowledge/ui.md` | UI design: the visual system of a product: hierarchy, type, layout, density, color, containers, icons, visual language, and detail craft | RX-UI |
+| `knowledge/imagery.md` | Imagery and motion: art direction, composition, expressive surfaces, motion, asset sourcing and provenance, illustration, and delight | RX-UI |
 | `knowledge/design-system.md` | Design system: search before create, tokens, component states, consistency locks | RX-DS |
 | `knowledge/accessibility.md` | Accessibility: semantics, keyboard, focus, contrast, targets, names, errors, reduced motion | RX-A11Y |
 | `knowledge/responsive.md` | Responsive design: prioritize, simplify, reorganize; tables, overlays, overflow, safe areas | RX-RD |
@@ -215,7 +216,7 @@ All 113 rules cite a source; 25 cite more than one kind, so the "Rules citing it
 Generated from `packages/cli/src/content.ts` by `pnpm sync:skills`. Edit the rules there, not here.
 
 <!-- rules:start -->
-113 rules across 13 modules: 59 Required, 20 Preferred, 34 Contextual; 17 Hard Gates and 11 Quality Locks.
+113 rules across 14 modules: 59 Required, 20 Preferred, 34 Contextual; 17 Hard Gates and 11 Quality Locks.
 
 ### Product thinking (RX-PR) · `knowledge/product.md`
 
@@ -767,7 +768,7 @@ Gate area CONTENT. Covers specific copy, action labels, error messages, terminol
 
 ### UI design (RX-UI) · `knowledge/ui.md`
 
-Gate area UI. Covers the visual expression of a product: hierarchy, type, layout, density, color, imagery, art direction, composition, motion, and visual language. Read when doing visual design or visual refinement, or directing images, 3D, or motion.
+Gate area UI. Covers the visual system of a product: hierarchy, type, layout, density, color, containers, icons, visual language, and detail craft. Read when doing visual design or visual refinement.
 
 #### RX-UI-01 [Required] [Quality Lock] Hierarchy follows priority
 
@@ -814,6 +815,58 @@ Gate area UI. Covers the visual expression of a product: hierarchy, type, layout
 - Trade-off: custom layouts cost design and build time
 - Check: review
 
+#### RX-UI-10 [Preferred] Visual language is chosen, not defaulted
+
+- Do: Derive the art direction from the brand, the audience, the product context, and reference screens, and write it as a Visual Brief (template in knowledge/imagery.md) (objective, concept, composition, color, material, lighting, motion, avoid) before designing an expressive surface or generating images, 3D, or motion.
+  - For a new product, decide the brand direction before the tokens, task UI included: palette, type, and shape follow from the product's character (fast, warm, trusted, and so on), not from the one accent that passes contrast.
+- Do not: Reach for the category cliché (coins, money rain, floating dashboards, or gradient blobs for fintech; generic 3D characters for any app), or write an image prompt without a brief (role, concept, composition).
+- Why: A default visual language makes the product interchangeable with its competitors. (art direction practice; RX-AS-05 purpose gate)
+- Not when: an existing brand system already defines the visual language; follow it
+- Trade-off: a brief takes time before any image exists
+- Check: the Visual Brief; review
+
+#### RX-UI-14 [Preferred] [Quality Lock] Type that is set, not only sized
+
+- Do: Set the type, not only its size:
+  - body paragraphs at 45 to 75 characters per line, checked in the render
+  - line-height from size: about 1.5 for body, 1.2 to 1.3 for headings, about 1.1 for display
+  - small uppercase labels opened slightly (about 0.05em), large display text tightened slightly
+  - tabular figures for numbers that are compared or that change (amounts, tables, timers)
+  - at most two families and three weights
+  - headings balanced so none ends on one stranded word
+- Do not: Let paragraphs run the full width of a desktop container, use one line-height for every size, set uppercase labels with no tracking, or let amounts in a column shift because digits differ in width.
+- Why: Line length and leading decide whether text is read or skimmed; aligned figures make numbers comparable at a glance. (Bringhurst, The Elements of Typographic Style (a measure of 45 to 75 characters; leading by size); WCAG 2.2 SC 1.4.12 text spacing; OpenType tnum; Apple HIG and Material type scales)
+- Not when: a single display line or a logo lockup, where the type is an image
+- Trade-off: narrower text columns leave more empty space on wide screens
+- Check: measure the render: characters per line, line-height, letter-spacing, font-variant-numeric, families and weights in use
+
+#### RX-UI-15 [Preferred] [Quality Lock] Detail craft
+
+- Do: Center icons on the optical middle of the text beside them and size them to its line-height; match icon stroke to the type weight; right-align (or decimal-align) number columns; take borders, dividers, radii, and shadows from a small token set; truncate long text on purpose, with the full value still reachable (a tooltip, a detail view, or wrapping).
+- Do not: Let icons sit high or low against their labels, mix stroke weights, center amounts in a table, or invent a one-off shadow for one card.
+- Why: Each detail is small; together they are what makes a screen look made rather than generated. (Bringhurst (figures and alignment); Apple HIG and Material iconography (optical size and alignment); owner review 2026-10-17: wrong tab icons in withryux.pen)
+- Check: render inspection at 390 and 1280: icon center within 2 px of the text center; column alignment
+
+#### RX-UI-20 [Preferred] An icon means one thing, and says it
+
+- When: the design uses icons for actions, navigation, or status
+- Do: Pick each icon for the action or concept it stands for, not for its look.
+  - One icon, one meaning across the product: no icon for two actions, no two icons for one action.
+  - Pair the icon with a text label unless it is one of the few users know without one in this context (search, close, back, menu, home). Keep the label in a tab bar, on uncommon actions, and on destructive ones.
+  - Tell look-alikes apart by what they do: back leaves the screen, close dismisses a sheet or modal; delete removes, cancel stops.
+  - Use the platform's icon for platform actions (share differs on iOS and Android).
+- Do not: Choose an icon because it looks good, reuse one icon for two meanings, or ship an icon-only control whose meaning users have to guess.
+- Why: Few icons are recognised without a label; an ambiguous icon costs more than a word, and an icon whose meaning changes breaks what users learned. (NNGroup icon usability; Nielsen heuristic 4 (consistency and standards); Apple HIG and Material iconography)
+- Not when: a dense expert tool whose users learn the set; then a tooltip plus an accessible name
+- Trade-off: labels take space, especially in toolbars and tab bars
+- Check: review: list each icon with its meaning and flag duplicates; heuristic_eval H-04
+
+---
+
+### Imagery and motion (RX-UI) · `knowledge/imagery.md`
+
+Gate area UI. Covers art direction, composition, expressive surfaces, motion, asset sourcing and provenance, illustration, and delight. Read when the work has photos, illustration, 3D, motion, or an expressive surface (hero, landing, onboarding, empty state, brand moment).
+
 #### RX-UI-07 [Contextual] Imagery has a job and is what it claims
 
 - When: the design uses photos, illustration, or 3D
@@ -833,16 +886,6 @@ Gate area UI. Covers the visual expression of a product: hierarchy, type, layout
 - Not when: a full-bleed visual with no text over it
 - Trade-off: less freedom to place the subject
 - Check: render at each width; review
-
-#### RX-UI-10 [Preferred] Visual language is chosen, not defaulted
-
-- Do: Derive the art direction from the brand, the audience, the product context, and reference screens, and write it as a Visual Brief (objective, concept, composition, color, material, lighting, motion, avoid) before designing an expressive surface or generating images, 3D, or motion.
-  - For a new product, decide the brand direction before the tokens, task UI included: palette, type, and shape follow from the product's character (fast, warm, trusted, and so on), not from the one accent that passes contrast.
-- Do not: Reach for the category cliché (coins, money rain, floating dashboards, or gradient blobs for fintech; generic 3D characters for any app), or write an image prompt without a brief (role, concept, composition).
-- Why: A default visual language makes the product interchangeable with its competitors. (art direction practice; RX-AS-05 purpose gate)
-- Not when: an existing brand system already defines the visual language; follow it
-- Trade-off: a brief takes time before any image exists
-- Check: the Visual Brief; review
 
 #### RX-UI-11 [Contextual] Motion earns its level
 
@@ -878,28 +921,6 @@ Gate area UI. Covers the visual expression of a product: hierarchy, type, layout
 - Not when: a wireframe or internal prototype where placeholders are expected
 - Trade-off: real or licensed assets take longer than a stock search
 - Check: asset list with sources; review
-
-#### RX-UI-14 [Preferred] [Quality Lock] Type that is set, not only sized
-
-- Do: Set the type, not only its size:
-  - body paragraphs at 45 to 75 characters per line, checked in the render
-  - line-height from size: about 1.5 for body, 1.2 to 1.3 for headings, about 1.1 for display
-  - small uppercase labels opened slightly (about 0.05em), large display text tightened slightly
-  - tabular figures for numbers that are compared or that change (amounts, tables, timers)
-  - at most two families and three weights
-  - headings balanced so none ends on one stranded word
-- Do not: Let paragraphs run the full width of a desktop container, use one line-height for every size, set uppercase labels with no tracking, or let amounts in a column shift because digits differ in width.
-- Why: Line length and leading decide whether text is read or skimmed; aligned figures make numbers comparable at a glance. (Bringhurst, The Elements of Typographic Style (a measure of 45 to 75 characters; leading by size); WCAG 2.2 SC 1.4.12 text spacing; OpenType tnum; Apple HIG and Material type scales)
-- Not when: a single display line or a logo lockup, where the type is an image
-- Trade-off: narrower text columns leave more empty space on wide screens
-- Check: measure the render: characters per line, line-height, letter-spacing, font-variant-numeric, families and weights in use
-
-#### RX-UI-15 [Preferred] [Quality Lock] Detail craft
-
-- Do: Center icons on the optical middle of the text beside them and size them to its line-height; match icon stroke to the type weight; right-align (or decimal-align) number columns; take borders, dividers, radii, and shadows from a small token set; truncate long text on purpose, with the full value still reachable (a tooltip, a detail view, or wrapping).
-- Do not: Let icons sit high or low against their labels, mix stroke weights, center amounts in a table, or invent a one-off shadow for one card.
-- Why: Each detail is small; together they are what makes a screen look made rather than generated. (Bringhurst (figures and alignment); Apple HIG and Material iconography (optical size and alignment); owner review 2026-10-17: wrong tab icons in withryux.pen)
-- Check: render inspection at 390 and 1280: icon center within 2 px of the text center; column alignment
 
 #### RX-UI-16 [Contextual] Delight stands on three legs
 
@@ -956,20 +977,6 @@ Gate area UI. Covers the visual expression of a product: hierarchy, type, layout
 - Not when: a concept frame that will not be built
 - Trade-off: SVG built from tokens takes longer than one export
 - Check: render in every theme; read the SVG source
-
-#### RX-UI-20 [Preferred] An icon means one thing, and says it
-
-- When: the design uses icons for actions, navigation, or status
-- Do: Pick each icon for the action or concept it stands for, not for its look.
-  - One icon, one meaning across the product: no icon for two actions, no two icons for one action.
-  - Pair the icon with a text label unless it is one of the few users know without one in this context (search, close, back, menu, home). Keep the label in a tab bar, on uncommon actions, and on destructive ones.
-  - Tell look-alikes apart by what they do: back leaves the screen, close dismisses a sheet or modal; delete removes, cancel stops.
-  - Use the platform's icon for platform actions (share differs on iOS and Android).
-- Do not: Choose an icon because it looks good, reuse one icon for two meanings, or ship an icon-only control whose meaning users have to guess.
-- Why: Few icons are recognised without a label; an ambiguous icon costs more than a word, and an icon whose meaning changes breaks what users learned. (NNGroup icon usability; Nielsen heuristic 4 (consistency and standards); Apple HIG and Material iconography)
-- Not when: a dense expert tool whose users learn the set; then a tooltip plus an accessible name
-- Trade-off: labels take space, especially in toolbars and tab bars
-- Check: review: list each icon with its meaning and flag duplicates; heuristic_eval H-04
 
 ---
 

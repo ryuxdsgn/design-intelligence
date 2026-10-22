@@ -26,8 +26,8 @@ from DESIGN.md and the repo's screens). Pick the entry point, read its file, the
 | **Critique** | find what should change first, and why; a heuristic evaluation | \`capabilities/critique.md\` |
 | **QA** | verify a build against the intended design | \`capabilities/qa.md\` |
 
-Knowledge modules (\`knowledge/\`): product, ux, interaction, forms, edge-cases, content, ui,
-design-system, accessibility, responsive, frontend, and anti-slop. Evidence comes from the brief, the
+Knowledge modules (\`knowledge/\`): product, ux, interaction, forms, edge-cases, content, ui, imagery (images, motion,
+illustration, expressive surfaces), design-system, accessibility, responsive, frontend, and anti-slop. Evidence comes from the brief, the
 project, product data, standards, and the ryux MCP when connected; none is required. Every entry point ends at the quality gates: the Hard
 Gates below and the Delivery Gate, with anti-slop as the last check, never the starting point. Keep them apart:
 Analyze says what exists, Design what to do, Critique if it is right, QA if it matches.`;
@@ -211,7 +211,7 @@ UI direction   layout and grid; type scale; spacing and density; color roles; co
                the icon style (outline or filled, stroke weight, corners)
 Design language personality, tone, interaction personality, density, formality; each with its
                reason from the product, the audience, or the existing system
-Visual direction for expressive surfaces: the Visual Brief (knowledge/ui.md, Visual production)
+Visual direction for expressive surfaces: the Visual Brief (knowledge/imagery.md, Visual production)
 Motion direction each motion: purpose (what it communicates: state change, feedback, spatial
                relationship, progress, hierarchy), lifecycle (before, trigger, transition, new
                state, feedback), level L1 to L5, timing and easing from one personality,
@@ -257,7 +257,7 @@ Dissent      evidence only one source holds, or the case for an option not chose
 Evidence names its count and never generalizes past it. "Evidence None, Confidence Low, Why:
 business priority was not provided" is a valid receipt; keep it visible instead of upgrading it.
 
-Visual, motion, and asset rules and tables live in knowledge/ui.md (RX-UI-07 to RX-UI-19); this
+Visual, motion, and asset rules and tables live in knowledge/ui.md and knowledge/imagery.md; this
 direction only records the choices made with them.`;
 
 export const BUILD_BODY = `# RYUX Build
@@ -279,7 +279,7 @@ workflow (SKILL.md); Frame, Explore, and Evaluate happen in Design.
    either way, design from its principles and write "reference, not recreate" in Assumptions.
 3. **Read the modules the task needs** from the task table: for example accessibility, responsive,
    and edge-cases for any UI, and forms and content for a form. When the build adds motion or
-   transitions, read knowledge/ui.md (RX-UI-11) before writing any: how often the surface is seen
+   transitions, read knowledge/imagery.md (RX-UI-11) before writing any: how often the surface is seen
    decides how much it moves. When it adds illustration, read RX-UI-19: SVG coloured from tokens,
    no text inside, alt text that says the meaning.
 4. **Implement faithfully.** Use semantic elements, existing components, and real data paths.
@@ -514,7 +514,8 @@ Does not cover: layout of the text (see ryux-ui).`,
   ui: `**Visuals are not decoration. They are communication.** RYUX UI owns the visual expression of
 a product: what each visual decision communicates, why it exists, and how it behaves. Functional UI
 helps the user read, decide, or act. Anything decorative needs a stated reason (see the purpose
-gates in ryux-anti-slop). It works in four layers.
+gates in ryux-anti-slop). This module is the visual system; art direction, motion, assets, and
+illustration live in knowledge/imagery.md, read when the work has them.
 
 **1. UI system.** Work in this order:
 1. **Hierarchy**: what is read first, second, third? The primary action and key information win.
@@ -544,7 +545,14 @@ their text, sized to its line-height, with a stroke that matches the type weight
 right or on the decimal. Borders, dividers, and shadows come from one small token set. Long text
 truncates on purpose, with the full value still reachable.
 
-**2. Art direction.** Each visual has a job (RX-UI-07), its composition leaves room for the
+Does not cover: component reuse and tokens (see ryux-design-system), or imagery, motion, and
+assets (see knowledge/imagery.md).`,
+
+  imagery: `**What a screen shows beyond its system.** Read this with ryux-ui when the work has photos,
+illustration, 3D, motion, or an expressive surface (hero, landing, onboarding, empty state, brand
+moment). It works in three layers.
+
+**1. Art direction.** Each visual has a job (RX-UI-07), its composition leaves room for the
 content (RX-UI-09), and the visual language is chosen, not defaulted (RX-UI-10). Name the visual
 language in a few words (editorial, product-centric, human, technical, playful, premium,
 institutional) and its form (shape language, geometric or organic, flat or with depth).
@@ -571,7 +579,7 @@ Then run the swap test (RX-AS-09): with a competitor's name and logo, would anyt
 If not, the surface has no point of view yet. Stay honest while being bold: a strong idea never
 needs invented numbers, people, or logos.
 
-**3. Motion.** Start from purpose: what the motion communicates; with no purpose, no motion.
+**2. Motion.** Start from purpose: what the motion communicates; with no purpose, no motion.
 Then ask how often someone will see it. The more often, the less of it they should notice: what
 people open many times a day (a command palette, a shortcut, core navigation) appears at once, and
 expression is kept for occasional or first-time moments. A purpose does not outweigh frequency.
@@ -607,7 +615,7 @@ defaults as soon as the product sets its own. Data the user is reading (a balanc
 table value) does not move for effect. With reduced motion requested, large movement becomes a fade
 or a cut (RX-A11Y-08).
 
-**4. Visual production.** Decide where each asset comes from before making anything (RX-UI-13):
+**3. Visual production.** Decide where each asset comes from before making anything (RX-UI-13):
 
 | Asset | First choice | Then | Never |
 | --- | --- | --- | --- |
@@ -652,7 +660,8 @@ drawing, plus a character system when it has people or a mascot, and record it a
 Receipt (RX-UI-17); make a set together and compare it side by side (RX-UI-18), and ship it as SVG
 coloured from tokens, with no text inside and alt text that says the meaning (RX-UI-19).
 
-Does not cover: component reuse and tokens (see ryux-design-system).`,
+Does not cover: the visual system, hierarchy, type, and icons (see ryux-ui), or component reuse
+and tokens (see ryux-design-system).`,
 
   "design-system": `Prioritize the existing system. Before creating anything:
 
