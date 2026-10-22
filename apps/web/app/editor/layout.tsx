@@ -6,5 +6,5 @@ export const metadata: Metadata = {
 };
 
 export default function EditorRoot({ children }: { children: React.ReactNode }) {
-  return <div className="min-h-dvh bg-paper text-ink [color-scheme:dark]">{children}</div>;
+  return <div className="ed-light min-h-dvh bg-paper text-ink">{children}</div>;
 }

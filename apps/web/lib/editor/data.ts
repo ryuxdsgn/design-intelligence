@@ -30,9 +30,17 @@ const toFlow = (f: FlowQuery): FlowRow => ({
   device: f.app_versions?.device ?? "",
 });
 
-export async function listFlows(sb: SupabaseClient): Promise<FlowRow[]> {
+export type FlowListItem = FlowRow & { covers: string[] };
+
+/** Flows, newest first, each with signed URLs for its first three screens (the card preview). */
+export async function listFlows(sb: SupabaseClient): Promise<FlowListItem[]> {
   const rows = check(await sb.from("flows").select(FLOW_SELECT).order("created_at", { ascending: false }), "read flows") as unknown as FlowQuery[];
-  return rows.map(toFlow);
+  const ids = rows.map((r) => r.id);
+  const firsts = ids.length ? (check(await sb.from("screens").select("flow_id, position, image_path").in("flow_id", ids).lte("position", 3).order("position"), "read covers") as { flow_id: string; image_path: string }[]) : [];
+  const signed = firsts.length ? await sb.storage.from(BUCKET).createSignedUrls(firsts.map((s) => s.image_path), 3600) : { data: [] };
+  const covers = new Map<string, string[]>();
+  (signed.data ?? []).forEach((u, i) => { if (u.signedUrl) covers.set(firsts[i].flow_id, [...(covers.get(firsts[i].flow_id) ?? []), u.signedUrl]); });
+  return rows.map((r) => ({ ...toFlow(r), covers: covers.get(r.id) ?? [] }));
 }
 
 export interface ReviewScreen {

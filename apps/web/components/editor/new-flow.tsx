@@ -155,7 +155,7 @@ export function NewFlow() {
           onDragOver={(e) => { e.preventDefault(); if (!progress) setOver(true); }}
           onDragLeave={() => setOver(false)}
           onDrop={(e) => { e.preventDefault(); setOver(false); if (!progress) add(e.dataTransfer.files); }}
-          className={`ed-drop ed-chip flex cursor-pointer flex-col items-center justify-center gap-1 rounded-xl border border-dashed p-6 text-center focus-within:outline-2 focus-within:outline-accent ${over ? "border-accent bg-accent/5" : "border-hair hover:border-accent/60"}`}>
+          className={`ed-drop ed-chip flex cursor-pointer flex-col items-center justify-center gap-1 rounded-2xl border border-dashed bg-paper-2 p-8 text-center focus-within:outline-2 focus-within:outline-accent ${over ? "border-accent bg-accent/5" : "border-hair hover:border-accent/60"}`}>
           <UploadIllustration className="h-16 w-auto" />
           <span className="text-sm text-ink">{over ? "Drop to add" : "Drop screenshots or a screen recording here, or choose them"}</span>
           <span className="text-xs text-muted">Screenshots: PNG, JPEG, or WebP, up to {MAX_MB} MB each. Recordings: MP4, MOV, or WebM; you pick the frames. Hide personal data before uploading.</span>

@@ -344,3 +344,19 @@ code,
   .ed-arrow, .ed-progress, .tactile { transition: none; }
   .ed-drop[data-over="true"] .ed-arrow { transform: none; }
 }
+
+/* Editor: a light working surface, apart from the site's graphite board. Airbnb-like restraint: white
+   page, warm grey stages that hold the screenshots, one teal for action (the logo's #14756f, 5.4:1 on
+   white), coral-red only for problems. Same token names, so every editor component follows. */
+.ed-light {
+  --color-paper: #ffffff;
+  --color-paper-2: #f7f7f5;
+  --color-panel: #efefeb;
+  --color-ink: #1b1e22;
+  --color-ink-2: #474d55;
+  --color-muted: #676d75;
+  --color-hair: #e3e3df;
+  --color-accent: #14756f;
+  --color-mark: #b4432a;
+  color-scheme: light;
+}
