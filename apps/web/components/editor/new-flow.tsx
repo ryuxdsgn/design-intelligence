@@ -4,6 +4,7 @@ import { BUCKET, checkMeta, flowIds, mediaTypeFor, saveFlowRows, screenIdFromHas
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { editorBrowserClient } from "@/lib/editor/supabase";
+import { UploadIllustration } from "./illustrations";
 import { Button, Field, Problems, inputClass } from "./ui";
 
 interface Picked {
@@ -21,6 +22,7 @@ export function NewFlow() {
   const [notes, setNotes] = useState<string[]>([]);
   const [problems, setProblems] = useState<string[]>([]);
   const [progress, setProgress] = useState("");
+  const [over, setOver] = useState(false);
 
   useEffect(() => () => files.forEach((f) => URL.revokeObjectURL(f.preview)), [files]);
 
@@ -126,8 +128,13 @@ export function NewFlow() {
       </fieldset>
 
       <div className="flex flex-col gap-4">
-        <label htmlFor="screens" className="flex cursor-pointer flex-col items-center justify-center gap-1 rounded-lg border border-dashed border-hair p-8 text-center hover:border-accent/60 focus-within:outline-2 focus-within:outline-accent">
-          <span className="text-sm text-ink">Choose screenshots</span>
+        <label htmlFor="screens" data-over={over}
+          onDragOver={(e) => { e.preventDefault(); if (!progress) setOver(true); }}
+          onDragLeave={() => setOver(false)}
+          onDrop={(e) => { e.preventDefault(); setOver(false); if (!progress) add(e.dataTransfer.files); }}
+          className={`ed-drop ed-chip flex cursor-pointer flex-col items-center justify-center gap-1 rounded-lg border border-dashed p-6 text-center focus-within:outline-2 focus-within:outline-accent ${over ? "border-accent bg-accent/5" : "border-hair hover:border-accent/60"}`}>
+          <UploadIllustration className="h-16 w-auto" />
+          <span className="text-sm text-ink">{over ? "Drop to add these screens" : "Drop screenshots here, or choose them"}</span>
           <span className="text-xs text-muted">PNG, JPEG, or WebP, up to {MAX_MB} MB each. Hide personal data before uploading.</span>
           <input id="screens" type="file" accept="image/png,image/jpeg,image/webp" multiple className="sr-only" disabled={!!progress} onChange={(e) => { add(e.target.files); e.target.value = ""; }} />
         </label>
@@ -136,7 +143,7 @@ export function NewFlow() {
         {files.length > 0 && (
           <ol className="grid grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-4">
             {files.map((f, i) => (
-              <li key={f.hash} className="flex flex-col gap-2 rounded-lg border border-hair bg-paper-2 p-2">
+              <li key={f.hash} className="ed-enter flex flex-col gap-2 rounded-lg border border-hair bg-paper-2 p-2">
                 <div className="relative aspect-[9/16] overflow-hidden rounded bg-panel">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img src={f.preview} alt={`Screen ${i + 1}: ${f.file.name}`} className="h-full w-full object-contain" />
