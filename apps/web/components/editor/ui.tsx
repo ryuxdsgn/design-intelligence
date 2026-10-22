@@ -32,7 +32,7 @@ export const inputClass = `w-full rounded-lg border border-hair bg-paper px-3 py
 export const checkboxClass = "size-4 shrink-0 accent-[var(--color-accent)]";
 
 /** A raised surface on the board: lists, panels, sections. */
-export const cardClass = "rounded-xl border border-hair bg-paper-2";
+export const cardClass = "rounded-2xl border border-hair bg-paper";
 
 export function Field({ label, hint, htmlFor, children }: { label: string; hint?: string; htmlFor: string; children: ReactNode }) {
   return (
@@ -45,8 +45,8 @@ export function Field({ label, hint, htmlFor, children }: { label: string; hint?
 }
 
 export function StatusBadge({ status }: { status: string }) {
-  const look = status === "published" ? "border-accent/40 text-accent" : "border-hair text-ink-2";
-  return <span className={`inline-flex shrink-0 rounded-full border px-2 py-0.5 text-xs ${look}`}>{status === "in_review" ? "in review" : status}</span>;
+  const look = status === "published" ? "bg-accent/10 text-accent" : "bg-panel text-ink-2";
+  return <span className={`inline-flex shrink-0 rounded-full px-2.5 py-0.5 text-xs font-medium ${look}`}>{status === "in_review" ? "in review" : status}</span>;
 }
 
 export function Problems({ title, items, onPick }: { title: string; items: string[]; onPick?: (item: string) => void }) {

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { FlowIllustration } from "@/components/editor/illustrations";
-import { StatusBadge, buttonClass, cardClass, focus, linkClass } from "@/components/editor/ui";
+import { StatusBadge, buttonClass, focus, linkClass } from "@/components/editor/ui";
 import { listFlows } from "@/lib/editor/data";
 import { editorServerClient } from "@/lib/editor/server";
 
@@ -18,29 +18,29 @@ export default async function FlowList({ searchParams }: { searchParams: Promise
     <div className="flex flex-col gap-6">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="text-2xl">Flows</h1>
+          <h1 className="text-3xl">Flows</h1>
           <p className="mt-1 text-sm text-ink-2">Screens become references for the RYUX MCP only after a person reviews and publishes them.</p>
         </div>
         <Link href="/editor/new" className={buttonClass("primary")}>New flow</Link>
       </div>
 
-      <nav aria-label="Filter by status" className="flex gap-1">
+      <nav aria-label="Filter by status" className="-mt-2 flex flex-wrap gap-2">
         {FILTERS.map((f) => {
           const count = f.value ? all.filter((x) => x.status === f.value).length : all.length;
           const active = f.value === status;
           return (
             <Link key={f.label} href={f.value ? `/editor?status=${f.value}` : "/editor"} aria-current={active ? "page" : undefined}
-              className={`inline-flex min-h-11 items-center rounded-lg px-3 text-sm sm:min-h-9 ${active ? "bg-panel text-ink" : "text-ink-2 hover:text-ink"} ${focus}`}>
-              {f.label} <span className="font-mono text-xs text-muted">{count}</span>
+              className={`ed-chip inline-flex min-h-11 items-center gap-1.5 rounded-full border px-4 text-sm sm:min-h-9 ${active ? "border-ink bg-ink text-paper" : "border-hair text-ink-2 hover:border-ink-2 hover:text-ink"} ${focus}`}>
+              {f.label} <span className={active ? "text-paper/70" : "text-muted"}>{count}</span>
             </Link>
           );
         })}
       </nav>
 
       {flows.length === 0 ? (
-        <div className="ed-enter flex flex-col items-center gap-3 rounded-lg border border-dashed border-hair px-6 py-10 text-center">
+        <div className="ed-enter flex flex-col items-center gap-3 rounded-2xl bg-paper-2 px-6 py-12 text-center">
           {all.length === 0 && <FlowIllustration className="h-20 w-auto" />}
-          <p className="text-ink">{all.length === 0 ? "No flows yet" : `No ${status} flows`}</p>
+          <p className="font-medium text-ink">{all.length === 0 ? "No flows yet" : `No ${status} flows`}</p>
           <p className="max-w-md text-sm text-ink-2">
             {all.length === 0
               ? "A flow is the screens of one journey, in order. Upload them, run the AI draft, review every screen, and publish."
@@ -53,48 +53,28 @@ export default async function FlowList({ searchParams }: { searchParams: Promise
           )}
         </div>
       ) : (
-        <>
-        <ul className="flex flex-col gap-2 sm:hidden">
+        <ul className="grid gap-x-6 gap-y-8 sm:grid-cols-2 lg:grid-cols-3">
           {flows.map((f) => (
             <li key={f.id}>
-              <Link href={`/editor/flows/${f.id}`} className={`tactile flex items-center gap-3 p-4 ${cardClass} ${focus}`}>
-                <span className="min-w-0 flex-1">
-                  <span className="block truncate font-medium text-ink">{f.title || f.id}</span>
-                  <span className="mt-0.5 block truncate text-sm text-ink-2">{f.app} {f.version} · {f.steps} {f.steps === 1 ? "screen" : "screens"}</span>
+              <Link href={`/editor/flows/${f.id}`} className={`group block rounded-2xl ${focus}`}>
+                <span className="flex aspect-[4/3] items-center justify-center gap-2 overflow-hidden rounded-2xl bg-paper-2 p-4">
+                  {f.covers.length ? f.covers.map((u, i) => (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img key={i} src={u} alt="" className="h-full w-[30%] rounded-lg object-cover object-top shadow-sm transition-transform duration-[var(--dur-2)] ease-[var(--ease-out)] group-hover:-translate-y-1 motion-reduce:transition-none" />
+                  )) : <span className="text-sm text-muted">{f.steps ? "Preview unavailable" : "No screens yet"}</span>}
                 </span>
-                <StatusBadge status={f.status} />
+                <span className="mt-3 flex items-start justify-between gap-3">
+                  <span className="min-w-0">
+                    <span className="block truncate font-medium text-ink group-hover:underline">{f.title || f.id}</span>
+                    <span className="mt-0.5 block truncate text-sm text-ink-2">{f.app} {f.version} · {f.steps} {f.steps === 1 ? "screen" : "screens"}</span>
+                    <span className="block truncate text-sm text-muted">{f.flowType} · {f.platform}</span>
+                  </span>
+                  <StatusBadge status={f.status} />
+                </span>
               </Link>
             </li>
           ))}
         </ul>
-        <div className="hidden overflow-x-auto rounded-xl border border-hair sm:block">
-          <table className="w-full text-left text-sm">
-            <thead className="bg-paper-2 text-xs text-muted">
-              <tr>
-                <th scope="col" className="px-4 py-2.5 font-medium">App</th>
-                <th scope="col" className="px-4 py-2.5 font-medium">Flow</th>
-                <th scope="col" className="px-4 py-2.5 font-medium">Version</th>
-                <th scope="col" className="px-4 py-2.5 text-right font-medium">Screens</th>
-                <th scope="col" className="px-4 py-2.5 font-medium">Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              {flows.map((f) => (
-                <tr key={f.id} className="border-t border-hair hover:bg-paper-2">
-                  <td className="px-4 py-3 text-ink">{f.app}</td>
-                  <td className="px-4 py-3">
-                    <Link href={`/editor/flows/${f.id}`} className={`text-ink hover:text-accent ${focus}`}>{f.title || f.id}</Link>
-                    <span className="ml-2 font-mono text-xs text-muted">{f.flowType}</span>
-                  </td>
-                  <td className="px-4 py-3 font-mono text-xs text-ink-2">{f.version}</td>
-                  <td className="px-4 py-3 text-right font-mono text-xs tabular-nums text-ink-2">{f.steps}</td>
-                  <td className="px-4 py-3"><StatusBadge status={f.status} /></td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-        </>
       )}
     </div>
   );
