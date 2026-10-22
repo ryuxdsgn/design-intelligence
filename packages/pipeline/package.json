@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.131.0",
+    "@ryux/core": "workspace:*",
     "@supabase/supabase-js": "^2.45.0"
   },
   "devDependencies": {
