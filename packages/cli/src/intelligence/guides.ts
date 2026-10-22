@@ -212,6 +212,7 @@ UI direction   layout and grid; type scale; spacing and density; color roles; co
 Design language personality, tone, interaction personality, density, formality; each with its
                reason from the product, the audience, or the existing system
 Visual direction for expressive surfaces: the Visual Brief (knowledge/imagery.md, Visual production)
+Illustration   the written style (RX-UI-17), before the first drawing; "none" when the design has none
 Motion direction each motion: purpose (what it communicates: state change, feedback, spatial
                relationship, progress, hierarchy), lifecycle (before, trigger, transition, new
                state, feedback), level L1 to L5, timing and easing from one personality,
@@ -644,6 +645,8 @@ Concept:        the visual thesis, in one sentence
 Subject:        what is shown (the product concept, not a generic person or device)
 Visual language: editorial / product-centric / technical / ..., and the art direction
 Form:           shape language, geometric or organic, depth
+Illustration:   when there is any, its written style before the first drawing (RX-UI-17): line,
+                shape, colour tokens, depth and detail, subject, characters
 Composition:    where the subject sits, and the space kept for copy
 Color, material, lighting: from the product palette; surfaces; direction and softness
 Motion:         level (L1 to L5) and personality
