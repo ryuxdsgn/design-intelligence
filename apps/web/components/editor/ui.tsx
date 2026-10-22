@@ -10,10 +10,10 @@ export function Button({ kind = "secondary", className = "", ...props }: ButtonH
     secondary: "border border-hair text-ink hover:bg-panel",
     quiet: "text-ink-2 hover:text-ink hover:bg-panel",
   }[kind];
-  return <button className={`tactile inline-flex min-h-9 items-center justify-center gap-2 rounded-md px-3.5 text-sm transition-colors disabled:cursor-not-allowed disabled:opacity-50 ${look} ${focus} ${className}`} {...props} />;
+  return <button className={`tactile inline-flex min-h-11 items-center justify-center gap-2 rounded-lg px-3.5 sm:min-h-9 text-sm transition-colors disabled:cursor-not-allowed disabled:opacity-50 ${look} ${focus} ${className}`} {...props} />;
 }
 
-export const inputClass = `w-full rounded-md border border-hair bg-paper px-3 py-2 text-sm text-ink placeholder:text-muted/70 ${focus}`;
+export const inputClass = `w-full rounded-lg border border-hair bg-paper px-3 py-2.5 text-base text-ink sm:py-2 sm:text-sm placeholder:text-muted/70 ${focus}`;
 
 export function Field({ label, hint, htmlFor, children }: { label: string; hint?: string; htmlFor: string; children: ReactNode }) {
   return (
@@ -27,13 +27,13 @@ export function Field({ label, hint, htmlFor, children }: { label: string; hint?
 
 export function StatusBadge({ status }: { status: string }) {
   const look = status === "published" ? "border-accent/40 text-accent" : "border-hair text-ink-2";
-  return <span className={`inline-flex rounded-full border px-2 py-0.5 font-mono text-xs ${look}`}>{status === "in_review" ? "in review" : status}</span>;
+  return <span className={`inline-flex rounded-full border px-2 py-0.5 text-xs ${look}`}>{status === "in_review" ? "in review" : status}</span>;
 }
 
 export function Problems({ title, items, onPick }: { title: string; items: string[]; onPick?: (item: string) => void }) {
   if (!items.length) return null;
   return (
-    <div role="alert" className="ed-enter rounded-md border border-mark/50 bg-mark/10 p-3 text-sm text-ink">
+    <div role="alert" className="ed-enter rounded-lg border border-mark/50 bg-mark/10 p-3 text-sm text-ink">
       <p className="font-medium text-mark">{title}</p>
       <ul className="mt-1.5 list-disc space-y-0.5 pl-5 text-ink-2">
         {items.map((p) => (

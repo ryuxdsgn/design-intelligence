@@ -21,7 +21,7 @@ export default async function FlowList({ searchParams }: { searchParams: Promise
           <h1 className="text-2xl">Flows</h1>
           <p className="mt-1 text-sm text-ink-2">Screens become references for the RYUX MCP only after a person reviews and publishes them.</p>
         </div>
-        <Link href="/editor/new" className="tactile inline-flex min-h-9 items-center rounded-md bg-accent px-3.5 text-sm font-medium text-paper hover:bg-accent/90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent">New flow</Link>
+        <Link href="/editor/new" className="tactile inline-flex min-h-11 items-center rounded-lg bg-accent px-3.5 text-sm font-medium text-paper hover:bg-accent/90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent sm:min-h-9">New flow</Link>
       </div>
 
       <nav aria-label="Filter by status" className="flex gap-1">
@@ -30,7 +30,7 @@ export default async function FlowList({ searchParams }: { searchParams: Promise
           const active = f.value === status;
           return (
             <Link key={f.label} href={f.value ? `/editor?status=${f.value}` : "/editor"} aria-current={active ? "page" : undefined}
-              className={`rounded-md px-3 py-1.5 text-sm ${active ? "bg-panel text-ink" : "text-ink-2 hover:text-ink"}`}>
+              className={`rounded-lg px-3 py-2 text-sm ${active ? "bg-panel text-ink" : "text-ink-2 hover:text-ink"}`}>
               {f.label} <span className="font-mono text-xs text-muted">{count}</span>
             </Link>
           );
@@ -53,7 +53,21 @@ export default async function FlowList({ searchParams }: { searchParams: Promise
           )}
         </div>
       ) : (
-        <div className="overflow-x-auto rounded-lg border border-hair">
+        <>
+        <ul className="flex flex-col gap-2 sm:hidden">
+          {flows.map((f) => (
+            <li key={f.id}>
+              <Link href={`/editor/flows/${f.id}`} className="tactile flex items-center gap-3 rounded-xl border border-hair bg-paper-2 p-4 focus-visible:outline-2 focus-visible:outline-accent">
+                <span className="min-w-0 flex-1">
+                  <span className="block truncate font-medium text-ink">{f.title || f.id}</span>
+                  <span className="mt-0.5 block truncate text-sm text-ink-2">{f.app} {f.version} · {f.steps} {f.steps === 1 ? "screen" : "screens"}</span>
+                </span>
+                <StatusBadge status={f.status} />
+              </Link>
+            </li>
+          ))}
+        </ul>
+        <div className="hidden overflow-x-auto rounded-xl border border-hair sm:block">
           <table className="w-full text-left text-sm">
             <thead className="bg-paper-2 text-xs text-muted">
               <tr>
@@ -80,6 +94,7 @@ export default async function FlowList({ searchParams }: { searchParams: Promise
             </tbody>
           </table>
         </div>
+        </>
       )}
     </div>
   );
