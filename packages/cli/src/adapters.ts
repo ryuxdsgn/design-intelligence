@@ -31,7 +31,7 @@ export const AGENTS_MD_INLINE = { id: "agents-md", label: "Any other agent (rule
 // Old per-concern installs (ruleset RX-1.x) mapped to the new skills, for --concerns.
 // RX-1.x --concerns values mapped to current skill ids (kept for migration).
 export const LEGACY_CONCERNS: Record<string, SkillId[]> = {
-  ui: ["ui", "design-system", "responsive"],
+  ui: ["ui", "imagery", "design-system", "responsive"],
   copy: ["content"],
   a11y: ["accessibility"],
   ux: ["ux", "interaction", "forms", "edge-cases"],

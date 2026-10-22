@@ -163,7 +163,7 @@ UI direction   layout and grid; type scale; spacing and density; color roles; co
                the icon style (outline or filled, stroke weight, corners)
 Design language personality, tone, interaction personality, density, formality; each with its
                reason from the product, the audience, or the existing system
-Visual direction for expressive surfaces: the Visual Brief (knowledge/ui.md, Visual production)
+Visual direction for expressive surfaces: the Visual Brief (knowledge/imagery.md, Visual production)
 Motion direction each motion: purpose (what it communicates: state change, feedback, spatial
                relationship, progress, hierarchy), lifecycle (before, trigger, transition, new
                state, feedback), level L1 to L5, timing and easing from one personality,
@@ -209,5 +209,5 @@ Dissent      evidence only one source holds, or the case for an option not chose
 Evidence names its count and never generalizes past it. "Evidence None, Confidence Low, Why:
 business priority was not provided" is a valid receipt; keep it visible instead of upgrading it.
 
-Visual, motion, and asset rules and tables live in knowledge/ui.md (RX-UI-07 to RX-UI-19); this
+Visual, motion, and asset rules and tables live in knowledge/ui.md and knowledge/imagery.md; this
 direction only records the choices made with them.

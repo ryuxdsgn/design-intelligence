@@ -14,7 +14,7 @@ Critique
      ↓
 Analyze                   what is actually there
      ↓
-knowledge modules         ux, ui, interaction, forms, content, accessibility,
+knowledge modules         ux, ui, imagery, interaction, forms, content, accessibility,
                           responsive, design-system, edge-cases, anti-slop
      ↓
 RYUX Knowledge            real product screens (search_screens, heuristic_eval)
@@ -133,7 +133,8 @@ could carry (RX-UX-08); report extraneous load, never the content the task needs
 | Interaction | `knowledge/interaction.md` | before, during, result, recovery; confirm or undo; cost upfront; local payments |
 | Forms | `knowledge/forms.md` | labels, validation, input kept, submission states |
 | Content | `knowledge/content.md` | specific labels, errors, terminology, Rupiah, dates and numbers |
-| UI | `knowledge/ui.md` | hierarchy, scale, color roles, density; each visual's job, composition around the copy, motion level; the result against its Visual Brief when there is one |
+| UI | `knowledge/ui.md` | hierarchy, scale, color roles, density, icons |
+| Imagery and motion | `knowledge/imagery.md` | each visual's job, composition around the copy, motion level, illustration style; the result against its Visual Brief when there is one |
 | Design system | `knowledge/design-system.md` | consistency, tokens, component states |
 | Accessibility | `knowledge/accessibility.md` | contrast, targets, focus, names, color alone |
 | Responsive | `knowledge/responsive.md` | what changes, stays, disappears, or stacks across widths |

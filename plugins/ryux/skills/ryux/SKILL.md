@@ -30,8 +30,8 @@ from DESIGN.md and the repo's screens). Pick the entry point, read its file, the
 | **Critique** | find what should change first, and why; a heuristic evaluation | `capabilities/critique.md` |
 | **QA** | verify a build against the intended design | `capabilities/qa.md` |
 
-Knowledge modules (`knowledge/`): product, ux, interaction, forms, edge-cases, content, ui,
-design-system, accessibility, responsive, frontend, and anti-slop. Evidence comes from the brief, the
+Knowledge modules (`knowledge/`): product, ux, interaction, forms, edge-cases, content, ui, imagery (images, motion,
+illustration, expressive surfaces), design-system, accessibility, responsive, frontend, and anti-slop. Evidence comes from the brief, the
 project, product data, standards, and the ryux MCP when connected; none is required. Every entry point ends at the quality gates: the Hard
 Gates below and the Delivery Gate, with anti-slop as the last check, never the starting point. Keep them apart:
 Analyze says what exists, Design what to do, Critique if it is right, QA if it matches.
@@ -120,7 +120,7 @@ evidence when connected; none is required.
 
 ## Task table: which knowledge to read
 
-A small change (a copy fix, one component, one state) reads only the module it touches, plus anti-slop for visual work; any other task reads its row:
+A small change (a copy fix, one component, one state) reads only the module it touches, plus anti-slop for visual work; any other task reads its row, plus `knowledge/imagery.md` when it has photos, illustration, 3D, motion, or an expressive surface:
 
 | Task | Read |
 | --- | --- |
