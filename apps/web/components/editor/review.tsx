@@ -9,7 +9,7 @@ import { editorBrowserClient } from "@/lib/editor/supabase";
 import { Icon } from "./icons";
 import { FormFactorBadge, useFormFactor } from "./form-factor";
 import { PublishedIllustration } from "./illustrations";
-import { Button, Disclosure, Problems, Progress, SaveStatus, StatusBadge, checkboxClass, focus, inputClass, linkClass } from "./ui";
+import { Button, Disclosure, Select, Problems, Progress, SaveStatus, StatusBadge, checkboxClass, focus, inputClass, linkClass } from "./ui";
 
 /* One flow: every screen gets a personal-data check and tag and observation decisions; the flow gets
    designer notes written by a person. Publish runs the same checks as the CLI. AI items stay
@@ -345,10 +345,10 @@ function ScreenPanel({ screen, vocabulary, onPii, onTag, onAddTag, onObservation
             </li>
           ))}
         </ul>
-        <select aria-label="Add a tag" value="" onChange={(e) => onAddTag(e.target.value)} className={inputClass}>
+        <Select aria-label="Add a tag" value="" onChange={(e) => onAddTag(e.target.value)}>
           <option value="">Add a tag…</option>
           {unused.map((t) => <option key={t.key} value={t.key}>{t.label} ({t.key.split("/")[0]})</option>)}
-        </select>
+        </Select>
       </fieldset>
 
       <fieldset className="flex flex-col gap-2">
@@ -370,8 +370,8 @@ function ScreenPanel({ screen, vocabulary, onPii, onTag, onAddTag, onObservation
         <Disclosure summary="Add an observation">
         <form onSubmit={(e) => { e.preventDefault(); onAddObservation(dimension, label, statement); setStatement(""); }} className="flex flex-col gap-2">
           <div className="grid grid-cols-2 gap-2">
-            <select aria-label="Dimension" value={dimension} onChange={(e) => setDimension(e.target.value)} className={inputClass}>{DIMENSIONS.map((d) => <option key={d}>{d}</option>)}</select>
-            <select aria-label="Basis" value={label} onChange={(e) => setLabel(e.target.value)} className={inputClass}><option>observed</option><option>measured</option><option>inferred</option></select>
+            <Select aria-label="Dimension" value={dimension} onChange={(e) => setDimension(e.target.value)}>{DIMENSIONS.map((d) => <option key={d}>{d}</option>)}</Select>
+            <Select aria-label="Basis" value={label} onChange={(e) => setLabel(e.target.value)}><option>observed</option><option>measured</option><option>inferred</option></Select>
           </div>
           <input aria-label="Observation" value={statement} onChange={(e) => setStatement(e.target.value)} placeholder="e.g. Amount shown above the pay button" className={inputClass} />
           <Button type="submit" disabled={!statement.trim()}>Add observation</Button>

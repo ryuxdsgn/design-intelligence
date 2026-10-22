@@ -7,7 +7,7 @@ import { editorBrowserClient } from "@/lib/editor/supabase";
 import { Icon } from "./icons";
 import { FormFactorBadge, formFactorOf, type FormFactor } from "./form-factor";
 import { UploadIllustration } from "./illustrations";
-import { Button, Field, Problems, cardClass, inputClass } from "./ui";
+import { Button, Field, Problems, Select, cardClass, inputClass } from "./ui";
 import { VideoFrames } from "./video-frames";
 
 interface Picked {
@@ -137,11 +137,11 @@ export function NewFlow() {
         <Field label="Category" htmlFor="category" hint="The kind of product, as in docs/taxonomy.md."><input id="category" value={meta.category} onChange={set("category")} placeholder="e.g. ewallet" className={inputClass} /></Field>
         <div className="grid grid-cols-2 gap-3">
           <Field label="Platform" htmlFor="platform">
-            <select id="platform" value={meta.platform} onChange={set("platform")} className={inputClass}>
+            <Select id="platform" value={meta.platform} onChange={set("platform")}>
               <option value="android">Android</option>
               <option value="ios">iOS</option>
               <option value="web">Web</option>
-            </select>
+            </Select>
           </Field>
           <Field label="App version" htmlFor="version"><input id="version" value={meta.version} onChange={set("version")} placeholder="e.g. 5.80.0" className={inputClass} /></Field>
         </div>
