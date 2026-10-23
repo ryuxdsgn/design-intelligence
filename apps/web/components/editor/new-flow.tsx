@@ -64,7 +64,10 @@ export function NewFlow() {
     const added: Picked[] = [];
     const skipped: string[] = [];
     const known = new Set(current.current.map((f) => f.hash));
+    // A frame's name carries its time in the recording, so finding screens again skips ones already added.
+    const taken = new Set(current.current.filter((f) => f.source && f.source === source).map((f) => f.original.name));
     for (const file of list) {
+      if (source && taken.has(file.name)) { skipped.push(`${file.name}: already added from this recording`); continue; }
       if (file.size > MAX_MB * 1024 * 1024) { skipped.push(`${file.name}: larger than ${MAX_MB} MB`); continue; }
       const hash = await sha256Hex(await file.arrayBuffer());
       if (known.has(hash)) { skipped.push(`${file.name}: same image as one already added`); continue; }
@@ -208,7 +211,7 @@ export function NewFlow() {
           className={`ed-drop ed-chip flex cursor-pointer flex-col items-center justify-center gap-1 rounded-2xl border border-dashed bg-paper-2 p-8 text-center focus-within:outline-2 focus-within:outline-accent ${over ? "border-accent bg-accent/5" : "border-hair hover:border-accent/60"}`}>
           <UploadIllustration className="h-16 w-auto" />
           <span className="text-sm text-ink">{over ? "Drop to add" : "Drop screenshots or a screen recording here, or choose them"}</span>
-          <span className="text-xs text-muted">Screenshots: PNG, JPEG, or WebP, up to {MAX_MB} MB each. Recordings: MP4, MOV, or WebM; you pick the frames. Hide personal data before uploading.</span>
+          <span className="text-xs text-muted">Screenshots: PNG, JPEG, or WebP, up to {MAX_MB} MB each. Recordings: MP4, MOV, or WebM; their screens are captured for you. Hide personal data before uploading.</span>
           <input id="screens" type="file" accept="image/png,image/jpeg,image/webp,video/mp4,video/quicktime,video/webm,.m4v" multiple className="sr-only" disabled={!!progress} onChange={(e) => { add(e.target.files); e.target.value = ""; }} />
         </label>
         {video && <VideoFrames file={video} disabled={!!progress} masks={masks[video.name] ?? []}
