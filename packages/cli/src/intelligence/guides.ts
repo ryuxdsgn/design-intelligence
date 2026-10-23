@@ -650,7 +650,8 @@ Subject:        what is shown (the product concept, not a generic person or devi
 Visual language: editorial / product-centric / technical / ..., and the art direction
 Form:           shape language, geometric or organic, depth
 Illustration:   when there is any, its written style before the first drawing (RX-UI-17): line,
-                shape, colour tokens, depth and detail, subject, characters
+                shape, colour tokens, depth and detail, subject, characters, texture
+Method:         SVG / generated raster / 3D / combined, why, and the tool you have (RX-UI-21)
 Composition:    where the subject sits, and the space kept for copy
 Color, material, lighting: from the product palette; surfaces; direction and softness
 Motion:         level (L1 to L5) and personality
@@ -665,7 +666,9 @@ screen (RX-UI-07).
 **Illustration.** With no brand system to follow, write the style in five lines before the first
 drawing, plus a character system when it has people or a mascot, and record it as a Decision
 Receipt (RX-UI-17); make a set together and compare it side by side (RX-UI-18), and ship it as SVG
-coloured from tokens, with no text inside and alt text that says the meaning (RX-UI-19).
+coloured from tokens, with no text inside and alt text that says the meaning (RX-UI-19). Pick the
+method from what the asset must do later (RX-UI-21), and write any texture or mixed media into the
+style with its source and its limits (RX-UI-22).
 
 Does not cover: the visual system, hierarchy, type, and icons (see ryux-ui), or component reuse
 and tokens (see ryux-design-system).`,

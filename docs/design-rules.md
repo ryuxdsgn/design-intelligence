@@ -203,12 +203,12 @@ line below for its exact source.
 | Source cited | Rules citing it | Rules citing only this |
 | --- | --- | --- |
 | Public standard or research | 70 | 52 |
-| Industry practice | 14 | 5 |
+| Industry practice | 16 | 5 |
 | Observed in a RYUX run | 15 | 8 |
 | Pattern also in another MIT ruleset (text written for RYUX) | 4 | 4 |
-| RYUX principle, taxonomy, or review | 35 | 19 |
+| RYUX principle, taxonomy, or review | 37 | 19 |
 
-All 113 rules cite a source; 25 cite more than one kind, so the "Rules citing it" column adds up to more than 113.
+All 115 rules cite a source; 27 cite more than one kind, so the "Rules citing it" column adds up to more than 115.
 <!-- provenance:end -->
 
 ## Rules
@@ -216,7 +216,7 @@ All 113 rules cite a source; 25 cite more than one kind, so the "Rules citing it
 Generated from `packages/cli/src/content.ts` by `pnpm sync:skills`. Edit the rules there, not here.
 
 <!-- rules:start -->
-113 rules across 14 modules: 59 Required, 20 Preferred, 34 Contextual; 17 Hard Gates and 11 Quality Locks.
+115 rules across 14 modules: 59 Required, 20 Preferred, 36 Contextual; 17 Hard Gates and 11 Quality Locks.
 
 ### Product thinking (RX-PR) · `knowledge/product.md`
 
@@ -945,6 +945,7 @@ Gate area UI. Covers art direction, composition, expressive surfaces, motion, as
   - colour: 2 to 4 tokens from the palette, one accent
   - depth and detail: flat, one shadow tone, or 3D; how much detail
   - subject: objects from the product, people, or abstract
+  - texture, when the style has any: one family, its source, and its strength (RX-UI-22)
   - characters, when the style has people or a mascot: proportions, face detail, the range of people shown, and a short set of poses and expressions; one character system across the product
   - Derive each line from the visual language (RX-UI-10): the stroke from the icon set, the radius from the components, the colour from the tokens. Functional icons stay in the icon set (RX-UI-13), not in the illustration style.
   - Record the style as a Decision Receipt: evidence from a brand guide, references, or the brief; Evidence None when it is derived from the visual language alone.
@@ -977,6 +978,34 @@ Gate area UI. Covers art direction, composition, expressive surfaces, motion, as
 - Not when: a concept frame that will not be built
 - Trade-off: SVG built from tokens takes longer than one export
 - Check: render in every theme; read the SVG source
+
+#### RX-UI-21 [Contextual] Pick the production method from the asset's job
+
+- When: the design makes illustration, 3D, or a generated visual rather than sourcing one (RX-UI-13)
+- Do: Choose the method from what the asset must do later, and write it on the Visual Brief's Method line:
+  - SVG, drawn or procedural: art that must follow the theme, scale, animate, or stay editable; the default for spot and empty-state illustration (RX-UI-19).
+  - Generated raster: painterly, photographic, or richly textured art for onboarding and hero moments. Lock the style with the written style (RX-UI-17) and reference images, then refine in steps (sketch, mask, edit), not by re-rolling the prompt.
+  - 3D render: when form, material, and light carry the meaning, or the same object appears from several angles or in motion. One scene per set: the same camera, lights, and materials, coloured from tokens.
+  - Combined: for example a 3D render with an SVG overlay; text stays in the HTML either way.
+  - Name the tool you actually have. With no generator or 3D tool available, hand off the brief with SVG or a placeholder that looks like one (RX-AS-03), and never claim a render you did not make.
+- Do not: Use whichever generator is at hand, make an empty state that must follow dark mode as a raster, re-roll a prompt until something looks good, or mix 3D and flat art in one set without a rule for it.
+- Why: The method decides what the asset can do later (theme, scale, animate, edit) and how far its style drifts from one image to the next. (Art direction practice (choosing a production method); RX-UI-19; owner review 2026-10-23: request for illustration production methods)
+- Not when: the brand's illustration system already sets the method; follow it
+- Trade-off: the best method for the job may be slower than the generator at hand
+- Check: the Visual Brief's Method line; review
+
+#### RX-UI-22 [Contextual] Texture has a source and a limit
+
+- When: the style uses texture or mixed media: grain, risograph, halftone, paper cut, collage, or hand-drawn marks
+- Do: Choose one texture family and write it into the illustration style (RX-UI-17): what it refers to (a print process, a paper, a craft), why that fits the product's concept, and its strength.
+  - Keep it on illustration and brand surfaces, never behind body text, amounts, or data, and measure contrast with the texture on (RX-A11Y-01).
+  - Risograph uses two or three inks from the tokens with one fixed misregistration offset; collage uses only pieces the team made or can license (RX-UI-13).
+  - On the web, build it as an SVG filter or a small tiled asset and check the page weight; reduce it at small sizes, where it turns to noise.
+- Do not: Add grain or noise to make generic art look handmade, stack several textures, put texture under text or numbers, or run a wobble filter over geometric art and call it hand-drawn.
+- Why: Texture with no source reads as an effect applied afterwards, not as character, and it costs contrast and page weight. (Art direction practice (print and craft texture: risograph, halftone, collage); RX-A11Y-01; RX-UI-13; owner review 2026-10-23: request for texture and mixed media)
+- Not when: a clean, flat illustration style with no texture
+- Trade-off: one texture family limits how expressive a single piece can be
+- Check: render at the smallest and largest size; contrast with the texture on
 
 ---
 

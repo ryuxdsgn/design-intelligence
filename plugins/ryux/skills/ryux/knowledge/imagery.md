@@ -101,7 +101,8 @@ Subject:        what is shown (the product concept, not a generic person or devi
 Visual language: editorial / product-centric / technical / ..., and the art direction
 Form:           shape language, geometric or organic, depth
 Illustration:   when there is any, its written style before the first drawing (RX-UI-17): line,
-                shape, colour tokens, depth and detail, subject, characters
+                shape, colour tokens, depth and detail, subject, characters, texture
+Method:         SVG / generated raster / 3D / combined, why, and the tool you have (RX-UI-21)
 Composition:    where the subject sits, and the space kept for copy
 Color, material, lighting: from the product palette; surfaces; direction and softness
 Motion:         level (L1 to L5) and personality
@@ -116,7 +117,9 @@ screen (RX-UI-07).
 **Illustration.** With no brand system to follow, write the style in five lines before the first
 drawing, plus a character system when it has people or a mascot, and record it as a Decision
 Receipt (RX-UI-17); make a set together and compare it side by side (RX-UI-18), and ship it as SVG
-coloured from tokens, with no text inside and alt text that says the meaning (RX-UI-19).
+coloured from tokens, with no text inside and alt text that says the meaning (RX-UI-19). Pick the
+method from what the asset must do later (RX-UI-21), and write any texture or mixed media into the
+style with its source and its limits (RX-UI-22).
 
 Does not cover: the visual system, hierarchy, type, and icons (see `knowledge/ui.md`), or component reuse
 and tokens (see `knowledge/design-system.md`).
@@ -209,6 +212,7 @@ How comparable products use imagery and motion: `search_screens` by pattern, `ex
   - colour: 2 to 4 tokens from the palette, one accent
   - depth and detail: flat, one shadow tone, or 3D; how much detail
   - subject: objects from the product, people, or abstract
+  - texture, when the style has any: one family, its source, and its strength (RX-UI-22)
   - characters, when the style has people or a mascot: proportions, face detail, the range of people shown, and a short set of poses and expressions; one character system across the product
   - Derive each line from the visual language (RX-UI-10): the stroke from the icon set, the radius from the components, the colour from the tokens. Functional icons stay in the icon set (RX-UI-13), not in the illustration style.
   - Record the style as a Decision Receipt: evidence from a brand guide, references, or the brief; Evidence None when it is derived from the visual language alone.
@@ -241,3 +245,31 @@ How comparable products use imagery and motion: `search_screens` by pattern, `ex
 - Not when: a concept frame that will not be built
 - Trade-off: SVG built from tokens takes longer than one export
 - Check: render in every theme; read the SVG source
+
+### RX-UI-21 [Contextual] Pick the production method from the asset's job
+
+- When: the design makes illustration, 3D, or a generated visual rather than sourcing one (RX-UI-13)
+- Do: Choose the method from what the asset must do later, and write it on the Visual Brief's Method line:
+  - SVG, drawn or procedural: art that must follow the theme, scale, animate, or stay editable; the default for spot and empty-state illustration (RX-UI-19).
+  - Generated raster: painterly, photographic, or richly textured art for onboarding and hero moments. Lock the style with the written style (RX-UI-17) and reference images, then refine in steps (sketch, mask, edit), not by re-rolling the prompt.
+  - 3D render: when form, material, and light carry the meaning, or the same object appears from several angles or in motion. One scene per set: the same camera, lights, and materials, coloured from tokens.
+  - Combined: for example a 3D render with an SVG overlay; text stays in the HTML either way.
+  - Name the tool you actually have. With no generator or 3D tool available, hand off the brief with SVG or a placeholder that looks like one (RX-AS-03), and never claim a render you did not make.
+- Do not: Use whichever generator is at hand, make an empty state that must follow dark mode as a raster, re-roll a prompt until something looks good, or mix 3D and flat art in one set without a rule for it.
+- Why: The method decides what the asset can do later (theme, scale, animate, edit) and how far its style drifts from one image to the next. (Art direction practice (choosing a production method); RX-UI-19; owner review 2026-10-23: request for illustration production methods)
+- Not when: the brand's illustration system already sets the method; follow it
+- Trade-off: the best method for the job may be slower than the generator at hand
+- Check: the Visual Brief's Method line; review
+
+### RX-UI-22 [Contextual] Texture has a source and a limit
+
+- When: the style uses texture or mixed media: grain, risograph, halftone, paper cut, collage, or hand-drawn marks
+- Do: Choose one texture family and write it into the illustration style (RX-UI-17): what it refers to (a print process, a paper, a craft), why that fits the product's concept, and its strength.
+  - Keep it on illustration and brand surfaces, never behind body text, amounts, or data, and measure contrast with the texture on (RX-A11Y-01).
+  - Risograph uses two or three inks from the tokens with one fixed misregistration offset; collage uses only pieces the team made or can license (RX-UI-13).
+  - On the web, build it as an SVG filter or a small tiled asset and check the page weight; reduce it at small sizes, where it turns to noise.
+- Do not: Add grain or noise to make generic art look handmade, stack several textures, put texture under text or numbers, or run a wobble filter over geometric art and call it hand-drawn.
+- Why: Texture with no source reads as an effect applied afterwards, not as character, and it costs contrast and page weight. (Art direction practice (print and craft texture: risograph, halftone, collage); RX-A11Y-01; RX-UI-13; owner review 2026-10-23: request for texture and mixed media)
+- Not when: a clean, flat illustration style with no texture
+- Trade-off: one texture family limits how expressive a single piece can be
+- Check: render at the smallest and largest size; contrast with the texture on
