@@ -59,6 +59,14 @@ export function VideoFrames({ file, disabled, masks, onMasks, onFrames, onClose 
   const [editing, setEditing] = useState("");
   // The buttons that read the visible frame wait until it has loaded, so a click never does nothing.
   const [ready, setReady] = useState(false);
+  // Screens are captured as soon as a recording is added; the buttons below add missed frames by hand.
+  const captured = useRef<File | null>(null);
+  useEffect(() => {
+    if (!ready || !url || disabled || captured.current === file) return;
+    captured.current = file;
+    suggest();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ready, url, file, disabled]);
 
   // Hidden areas for the whole recording are drawn on the paused frame and kept as fractions, so they
   // fit every frame; personal data in a recording (an account name, a balance) usually stays in place.
@@ -117,10 +125,10 @@ export function VideoFrames({ file, disabled, masks, onMasks, onFrames, onClose 
         prev = sig;
         setScan({ done: i + 1, total });
       }
-      if (stop.current) { setResult("Stopped. Nothing was added."); return; }
+      if (stop.current) { setResult("Stopped. Nothing was added; pause on a screen and add it by hand."); return; }
       if (frames.length) await onFrames(frames);
       setResult(frames.length
-        ? `Added ${frames.length} suggested ${frames.length === 1 ? "frame" : "frames"}. Remove any that repeat a screen.`
+        ? `Captured ${frames.length} ${frames.length === 1 ? "screen" : "screens"} from the recording. Remove any that repeat, and add one that was missed with “Add this frame”.`
         : "No still screens found. Pause on a screen and add it by hand.");
     } catch (err) {
       setError(`${file.name}: ${err instanceof Error ? err.message : String(err)}. Try an MP4 (H.264) recording.`);
@@ -138,7 +146,7 @@ export function VideoFrames({ file, disabled, masks, onMasks, onFrames, onClose 
         <h2 id="video-title" className="min-w-0 truncate text-sm font-medium text-ink" title={file.name}>Frames from {file.name}</h2>
         <Button type="button" kind="quiet" size="sm" className="ml-auto" disabled={!!scan} onClick={onClose}><Icon name="close" />Close video</Button>
       </div>
-      <p className="text-xs text-muted">The video stays on this computer. Only the frames you add are uploaded, as screens.</p>
+      <p className="text-xs text-muted">Screens are captured from the recording automatically. The video stays on this computer; only the screens are uploaded.</p>
       {error ? (
         <Problems title="Can't read this video" items={[error]} />
       ) : (
@@ -148,19 +156,19 @@ export function VideoFrames({ file, disabled, masks, onMasks, onFrames, onClose 
       {!error && (
         <div className="flex flex-wrap items-center gap-2">
           <Button type="button" kind="primary" disabled={busy || !ready} onClick={addCurrent}><Icon name="capture" />Add this frame</Button>
-          <Button type="button" disabled={busy} onClick={suggest}><Icon name="frames" />Suggest frames</Button>
+          <Button type="button" disabled={busy} onClick={suggest}><Icon name="frames" />Find screens again</Button>
           <Button type="button" kind="quiet" disabled={busy || !ready} onClick={openAreas}><Icon name="hide" />{masks.length ? `${masks.length} hidden on every frame · edit` : "Hide areas on every frame"}</Button>
           {scan && <Button type="button" kind="quiet" onClick={() => { stop.current = true; }}><Icon name="stop" />Stop</Button>}
         </div>
       )}
-      {scan && <Progress label="Looking for still screens" done={scan.done} total={scan.total} />}
+      {scan && <Progress label="Capturing screens" done={scan.done} total={scan.total} />}
       {editing && (
         <Redactor src={editing} boxes={masks} title="Hide personal data on every frame"
           extra={<p className="text-xs text-muted">These areas are covered on every frame from {file.name}, those added already and those you add later. Check each frame afterwards: something that moves may need its own areas.</p>}
           onCancel={() => { URL.revokeObjectURL(editing); setEditing(""); }}
           onSave={async (boxes) => { await onMasks(boxes); URL.revokeObjectURL(editing); setEditing(""); setResult(boxes.length ? `${boxes.length} ${boxes.length === 1 ? "area is" : "areas are"} hidden on every frame.` : "No areas hidden."); }} />
       )}
-      <p aria-live="polite" className="text-sm text-ink-2">{scan ? `Looking for still screens… ${Math.round((scan.done / scan.total) * 100)}%` : result}</p>
+      <p aria-live="polite" className="text-sm text-ink-2">{scan ? `Capturing screens… ${Math.round((scan.done / scan.total) * 100)}%` : result}</p>
     </section>
   );
 }
