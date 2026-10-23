@@ -1,14 +1,15 @@
 "use client";
 
-import { BUCKET, checkMeta, flowIds, mediaTypeFor, saveFlowRows, screenIdFromHash, sha256Hex, storagePath, type FlowMeta } from "@ryux/core/knowledge";
+import { APP_CATEGORIES, BUCKET, FLOW_TYPES, checkMeta, flowIds, mediaTypeFor, saveFlowRows, screenIdFromHash, sha256Hex, storagePath, type DetailsSuggestion, type FlowMeta } from "@ryux/core/knowledge";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
+import type { KnownDetails } from "@/lib/editor/data";
 import { editorBrowserClient } from "@/lib/editor/supabase";
 import { Icon } from "./icons";
 import { FormFactorBadge, formFactorOf, type FormFactor } from "./form-factor";
 import { UploadIllustration } from "./illustrations";
 import { Redactor, applyBoxes, type Box } from "./redactor";
-import { Button, Field, Problems, Select, cardClass, inputClass } from "./ui";
+import { Button, Field, Problems, Select, cardClass, inputClass, linkClass } from "./ui";
 import { VideoFrames } from "./video-frames";
 
 interface Picked {
@@ -34,7 +35,21 @@ const MAX_MB = 10;
 const IMAGE = /\.(png|jpe?g|webp)$/i;
 const VIDEO = /\.(mp4|mov|m4v|webm)$/i;
 
-export function NewFlow() {
+/** A small JPEG of a screen for the AI (long edge 1024 px). */
+async function small(file: File): Promise<string> {
+  const bitmap = await createImageBitmap(file);
+  const scale = Math.min(1, 1024 / Math.max(bitmap.width, bitmap.height));
+  const canvas = document.createElement("canvas");
+  canvas.width = Math.round(bitmap.width * scale);
+  canvas.height = Math.round(bitmap.height * scale);
+  canvas.getContext("2d")!.drawImage(bitmap, 0, 0, canvas.width, canvas.height);
+  bitmap.close();
+  return canvas.toDataURL("image/jpeg", 0.8).split(",")[1];
+}
+
+const dateOf = (ms: number) => { const d = new Date(ms); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`; };
+
+export function NewFlow({ known }: { known: KnownDetails }) {
   const router = useRouter();
   const [meta, setMeta] = useState<FlowMeta>({ app: "", category: "", platform: "android", version: "", captured_at: new Date().toISOString().slice(0, 10), device: "", flow_type: "", title: "" });
   const [files, setFiles] = useState<Picked[]>([]);
@@ -58,7 +73,72 @@ export function NewFlow() {
   // Object URLs are revoked on remove and when the page closes, not on every change of the list.
   useEffect(() => () => current.current.forEach((f) => URL.revokeObjectURL(f.preview)), []);
 
-  const set = (k: keyof FlowMeta) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => setMeta({ ...meta, [k]: e.target.value });
+  // ── Details: fields a person typed are never overwritten; filled ones carry where they came from ──
+  const [touched, setTouched] = useState<Set<keyof FlowMeta>>(new Set());
+  const [suggested, setSuggested] = useState<Partial<Record<keyof FlowMeta, string>>>({});
+  const [suggesting, setSuggesting] = useState<"" | "busy" | "done" | "error">("");
+  const [suggestNote, setSuggestNote] = useState("");
+  const asked = useRef(false);
+
+  const set = (k: keyof FlowMeta) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const value = e.target.value;
+    const next = { ...meta, [k]: value };
+    const marks = { ...suggested };
+    delete marks[k];
+    // Picking an app already in the library brings its category and platform along.
+    const app = k === "app" ? known.apps.find((a) => a.name.toLowerCase() === value.trim().toLowerCase()) : undefined;
+    if (app) {
+      if (app.category && !touched.has("category")) { next.category = app.category; marks.category = "Library"; }
+      if (app.platform && !touched.has("platform")) { next.platform = app.platform; marks.platform = "Library"; }
+    }
+    setMeta(next);
+    setSuggested(marks);
+    setTouched((t) => new Set(t).add(k));
+  };
+
+  async function suggestDetails() {
+    const firsts = current.current.slice(0, 3);
+    if (!firsts.length) return;
+    setSuggesting("busy");
+    setSuggestNote("");
+    // The capture date is a fact from the files (the recording's date for its frames), not a guess.
+    const stamp = video && firsts[0].source ? video.lastModified : Math.min(...firsts.map((f) => f.original.lastModified));
+    const fill: Partial<FlowMeta> = {};
+    const marks: Partial<Record<keyof FlowMeta, string>> = {};
+    if (stamp && !touched.has("captured_at")) { fill.captured_at = dateOf(stamp); marks.captured_at = "File date"; }
+    try {
+      const res = await fetch("/api/editor/suggest-details", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ images: await Promise.all(firsts.map((f) => small(f.file))) }) });
+      const body = (await res.json().catch(() => ({}))) as Partial<DetailsSuggestion> & { error?: string };
+      if (!res.ok) throw new Error(body.error ?? `request failed (${res.status})`);
+      for (const k of ["app", "category", "platform", "flow_type", "title", "version"] as const) {
+        const v = body[k]?.trim();
+        if (v && !touched.has(k)) { fill[k] = v; marks[k] = "Suggested"; }
+      }
+      // An app already in the library keeps its spelling, category, and platform: one app, one category.
+      const name = (fill.app ?? meta.app).trim().toLowerCase();
+      const app = name && known.apps.find((a) => a.name.toLowerCase() === name);
+      if (app) {
+        if (fill.app) fill.app = app.name;
+        if (app.category && !touched.has("category")) { fill.category = app.category; marks.category = "Library"; }
+        if (app.platform && !touched.has("platform")) { fill.platform = app.platform; marks.platform = "Library"; }
+      }
+      setSuggesting("done");
+      setSuggestNote(Object.keys(marks).length > 1 ? "Details suggested from your screens. Check each one before uploading." : "The screens didn't show enough to suggest details. Fill them in.");
+    } catch (err) {
+      setSuggesting("error");
+      setSuggestNote(`Couldn't suggest details: ${err instanceof Error ? err.message : String(err)}. Fill them in by hand.`);
+    }
+    setMeta((m) => ({ ...m, ...fill }));
+    setSuggested((s) => ({ ...s, ...marks }));
+  }
+
+  // Ask once, as soon as the first screens are in.
+  useEffect(() => {
+    if (asked.current || !files.length) return;
+    asked.current = true;
+    suggestDetails();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [files.length]);
 
   async function addImages(list: File[], sortByName: boolean, source?: string) {
     const added: Picked[] = [];
@@ -183,24 +263,48 @@ export function NewFlow() {
     <form onSubmit={submit} className="grid gap-8 lg:grid-cols-[minmax(0,22rem)_minmax(0,1fr)]">
       <fieldset className="flex flex-col gap-4" disabled={!!progress}>
         <legend className="sr-only">About this flow</legend>
-        <Field label="App" htmlFor="app"><input id="app" value={meta.app} onChange={set("app")} placeholder="e.g. Gojek" className={inputClass} /></Field>
-        <Field label="Category" htmlFor="category" hint="The kind of product, as in docs/taxonomy.md."><input id="category" value={meta.category} onChange={set("category")} placeholder="e.g. ewallet" className={inputClass} /></Field>
+        <p aria-live="polite" className={`flex min-h-5 items-start gap-1.5 text-sm ${suggesting === "error" ? "text-mark" : "text-ink-2"}`}>
+          {suggesting === "busy" ? <><Icon name="ai" className="mt-0.5" />Suggesting details from your screens…</>
+            : suggestNote ? <><Icon name={suggesting === "error" ? "alert" : "ai"} className="mt-0.5" />{suggestNote}</>
+            : !files.length ? "Add screens and the details are suggested for you." : null}
+        </p>
+        <Field label="App" htmlFor="app" suggested={suggested.app}>
+          <input id="app" list="known-apps" value={meta.app} onChange={set("app")} placeholder="e.g. Gojek" autoComplete="off" className={inputClass} />
+          <datalist id="known-apps">{known.apps.map((a) => <option key={a.name} value={a.name} />)}</datalist>
+        </Field>
+        <Field label="Category" htmlFor="category" suggested={suggested.category}>
+          <Select id="category" value={meta.category} onChange={set("category")}>
+            <option value="">Choose the kind of product</option>
+            {APP_CATEGORIES.map(([slug, label]) => <option key={slug} value={slug}>{label}</option>)}
+          </Select>
+        </Field>
         <div className="grid grid-cols-2 gap-3">
-          <Field label="Platform" htmlFor="platform">
+          <Field label="Platform" htmlFor="platform" suggested={suggested.platform}>
             <Select id="platform" value={meta.platform} onChange={set("platform")}>
               <option value="android">Android</option>
               <option value="ios">iOS</option>
               <option value="web">Web</option>
             </Select>
           </Field>
-          <Field label="App version" htmlFor="version"><input id="version" value={meta.version} onChange={set("version")} placeholder="e.g. 5.80.0" className={inputClass} /></Field>
+          <Field label="App version" htmlFor="version" suggested={suggested.version}><input id="version" value={meta.version} onChange={set("version")} placeholder="e.g. 5.80.0" className={inputClass} /></Field>
         </div>
         <div className="grid grid-cols-2 gap-3">
-          <Field label="Captured on" htmlFor="captured_at"><input id="captured_at" type="date" value={meta.captured_at} onChange={set("captured_at")} className={inputClass} /></Field>
-          <Field label="Device" htmlFor="device"><input id="device" value={meta.device} onChange={set("device")} placeholder="e.g. iPhone 15 Pro" className={inputClass} /></Field>
+          <Field label="Captured on" htmlFor="captured_at" suggested={suggested.captured_at}><input id="captured_at" type="date" value={meta.captured_at} onChange={set("captured_at")} className={inputClass} /></Field>
+          <Field label="Device" htmlFor="device">
+            <input id="device" list="known-devices" value={meta.device} onChange={set("device")} placeholder="e.g. iPhone 15 Pro" autoComplete="off" className={inputClass} />
+            <datalist id="known-devices">{known.devices.map((d) => <option key={d} value={d} />)}</datalist>
+          </Field>
         </div>
-        <Field label="Flow type" htmlFor="flow_type" hint="For example payment, onboarding, checkout."><input id="flow_type" value={meta.flow_type} onChange={set("flow_type")} placeholder="e.g. payment" className={inputClass} /></Field>
-        <Field label="Title" htmlFor="title"><input id="title" value={meta.title} onChange={set("title")} placeholder="e.g. Pay a QRIS code with GoPay" className={inputClass} /></Field>
+        <Field label="Flow type" htmlFor="flow_type" suggested={suggested.flow_type}>
+          <Select id="flow_type" value={meta.flow_type} onChange={set("flow_type")}>
+            <option value="">Choose the journey</option>
+            {FLOW_TYPES.map(([slug, label]) => <option key={slug} value={slug}>{label}</option>)}
+          </Select>
+        </Field>
+        <Field label="Title" htmlFor="title" suggested={suggested.title}><input id="title" value={meta.title} onChange={set("title")} placeholder="e.g. Bayar QRIS dengan GoPay" className={inputClass} /></Field>
+        {files.length > 0 && suggesting !== "busy" && (
+          <button type="button" onClick={suggestDetails} className={`self-start ${linkClass}`}>Suggest again from the first screens</button>
+        )}
       </fieldset>
 
       <div className="flex flex-col gap-4">

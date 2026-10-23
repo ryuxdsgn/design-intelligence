@@ -30,6 +30,18 @@ const toFlow = (f: FlowQuery): FlowRow => ({
   device: f.app_versions?.device ?? "",
 });
 
+export type KnownDetails = { apps: { name: string; category: string; platform: string }[]; devices: string[] };
+
+/** Apps and devices already in the library, so a new flow can pick them instead of retyping them. */
+export async function knownDetails(sb: SupabaseClient): Promise<KnownDetails> {
+  const apps = check(await sb.from("apps").select("name, category, platform").order("name"), "read apps") as { name: string; category: string | null; platform: string | null }[];
+  const versions = check(await sb.from("app_versions").select("device"), "read devices") as { device: string | null }[];
+  return {
+    apps: apps.map((a) => ({ name: a.name, category: a.category ?? "", platform: a.platform ?? "" })),
+    devices: [...new Set(versions.map((v) => v.device).filter((d): d is string => !!d))].sort(),
+  };
+}
+
 export type FlowListItem = FlowRow & { covers: string[] };
 
 /** Flows, newest first, each with signed URLs for its first three screens (the card preview). */

@@ -45,10 +45,13 @@ export const checkboxClass = "size-4 shrink-0 accent-[var(--color-accent)]";
 /** A raised surface on the board: lists, panels, sections. */
 export const cardClass = "rounded-2xl border border-hair bg-paper";
 
-export function Field({ label, hint, htmlFor, children }: { label: string; hint?: string; htmlFor: string; children: ReactNode }) {
+export function Field({ label, hint, htmlFor, suggested, children }: { label: string; hint?: string; htmlFor: string; suggested?: string; children: ReactNode }) {
   return (
     <div className="flex flex-col gap-1.5">
-      <label htmlFor={htmlFor} className="text-sm font-medium text-ink">{label}</label>
+      <label htmlFor={htmlFor} className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm font-medium text-ink">
+        {label}
+        {suggested && <span className="ed-enter inline-flex items-center gap-1 whitespace-nowrap rounded-full bg-accent/10 px-2 py-0.5 text-xs font-normal text-accent"><Icon name="ai" />{suggested}</span>}
+      </label>
       {children}
       {hint && <p className="text-xs text-muted">{hint}</p>}
     </div>
