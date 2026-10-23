@@ -182,7 +182,7 @@ ${rulesOf(s.id).map(ruleBlock).join("\n\n")}`;
 export const SKILL_NAME = "ryux";
 
 const RYUX_DESCRIPTION =
-  "RYUX - design intelligence for AI agents and designers. Tell it what you are doing and it routes to Analyze (understand an existing interface), Design (create or improve UI and UX in Figma, pen.dev, or mockups), Build (implement in code), Critique (find what to change first, with evidence, or run a heuristic evaluation), or QA (verify a build against the design), reads only the knowledge the task needs (product, UX, UI, interaction, forms, content, accessibility, responsive, design system, frontend, anti-slop), and closes with quality gates. Use for any UI, UX, copy, frontend, design review, or design analysis task.";
+  "RYUX - design intelligence for AI agents and designers. Tell it what you are doing and it routes to Analyze (understand an existing interface), Design (create or improve UI and UX in Figma, pen.dev, or mockups), Build (implement in code), Critique (find what to change first, with evidence, or run a heuristic evaluation), or QA (verify a build against the design), reads only the knowledge the task needs (product, UX, UI, interaction, forms, content, accessibility, responsive, design system, frontend, anti-slop), and closes with quality gates. Use for any UI, UX, copy, frontend, design review, or design analysis task, and for product visuals: illustration, 3D, imagery, icons, and motion, even when the request does not name RYUX.";
 
 /** Where a former skill id lives inside the single `ryux` skill folder. */
 export function modulePath(id: string): string | null {
@@ -237,9 +237,10 @@ export function renderAgentsBlock(): string {
 export function renderPointerBlock(): string {
   return `## RYUX
 
-RYUX is installed as one skill, \`ryux\`, in this project's agent skills folder. For UI, UX, copy, or
-frontend work, say what you are doing (analyze, design, build, critique, or QA); RYUX picks the
-knowledge it needs and ends with the Delivery Gate. Reference data and structured review will come
+RYUX is installed as one skill, \`ryux\`, in this project's agent skills folder. Load it before any
+UI, UX, copy, frontend, or product visual work (illustration, 3D, imagery, motion), even when the
+request does not mention RYUX. Say what you are doing (analyze, design, build, critique, or QA); RYUX
+picks the knowledge it needs and ends with the Delivery Gate. Reference data and structured review will come
 from the ryux MCP, which is not available yet.`;
 }
 
