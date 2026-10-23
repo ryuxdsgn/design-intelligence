@@ -5,13 +5,8 @@
   "license": "MIT",
   "packageManager": "pnpm@12.5.1",
   "scripts": {
-    "dev:mcp": "pnpm --filter @ryux/mcp dev",
-    "deploy:mcp": "pnpm --filter @ryux/mcp deploy",
-    "dev:web": "pnpm --filter @ryux/web dev",
-    "build:web": "pnpm --filter @ryux/web build",
     "sync:skills": "pnpm --filter @ryuxdsgn/design-intelligence build && node packages/cli/scripts/sync-skills.mjs",
     "typecheck": "pnpm -r typecheck",
-    "knowledge": "pnpm --filter @ryux/pipeline run knowledge",
     "test": "pnpm --filter @ryuxdsgn/design-intelligence build && pnpm --filter @ryuxdsgn/design-intelligence test",
     "check:sync": "pnpm --filter @ryuxdsgn/design-intelligence build && node packages/cli/scripts/sync-skills.mjs --check"
   }
