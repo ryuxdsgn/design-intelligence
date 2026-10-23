@@ -200,20 +200,10 @@ from them.
 ## MCP (optional)
 
 The RYUX MCP serves reference screens from real products and review tools (`search_screens`,
-`compare_apps`, `get_local_pattern`, `heuristic_eval`, `delivery_gate`, and more; see
-[`apps/mcp/README.md`](./apps/mcp/README.md)). The hosted server is not live yet. RYUX works without
-it and rates its evidence None.
+`compare_apps`, `get_local_pattern`, `heuristic_eval`, `delivery_gate`, and more). The hosted server
+is not live yet. RYUX works without it and rates its evidence None.
 
-To try it, run the server from this repo:
-
-```bash
-pnpm install
-pnpm dev:mcp
-```
-
-Then connect your agent to the local endpoint as described in [`apps/mcp/README.md`](./apps/mcp/README.md).
-Without Supabase credentials, the local server serves bundled sample data, not the reference library.
-Prompts that need it name the tool: "Find reference screens for a QRIS payment picker", or
+Once it is live, prompts that need it name the tool: "Find reference screens for a QRIS payment picker", or
 "Review this screen with `heuristic_eval`".
 
 ## How RYUX reasons
@@ -281,4 +271,3 @@ Understand → Frame → Explore → Evaluate and select → Build and critique 
 - [`docs/design-rules.md`](./docs/design-rules.md): every rule, level, and gate
 - [`docs/showcase.md`](./docs/showcase.md): every case, and how designers rated it
 - [`docs/benchmarks/`](./docs/benchmarks/): raw runs, and how to run one yourself
-- [`docs/taxonomy.md`](./docs/taxonomy.md): tags for the reference library (for MCP contributors)

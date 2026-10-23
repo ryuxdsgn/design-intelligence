@@ -27,9 +27,9 @@ sets (see [below](#visual-quality-rated-by-designers)).
 
 ### Lumo · Transaction detail (benchmark, 3 + 3 runs)
 
-<a href="../apps/web/public/proof/lumo-without.png"><img src="../apps/web/public/proof/lumo-without.png" alt="Without RYUX: Completed, Processing and Failed screens for a Rp48.000 card payment, with Share and Save receipt buttons that the brief never mentioned" width="100%"></a>
+<a href="proof/lumo-without.png"><img src="proof/lumo-without.png" alt="Without RYUX: Completed, Processing and Failed screens for a Rp48.000 card payment, with Share and Save receipt buttons that the brief never mentioned" width="100%"></a>
 
-<a href="../apps/web/public/proof/lumo-with.png"><img src="../apps/web/public/proof/lumo-with.png" alt="With RYUX: Completed, Processing and Failed screens, plus loading, a couldn't-load error, the report window after 30 days, a copied-ID message, and the screen at 320 wide; Share receipt is listed as unconfirmed" width="100%"></a>
+<a href="proof/lumo-with.png"><img src="proof/lumo-with.png" alt="With RYUX: Completed, Processing and Failed screens, plus loading, a couldn't-load error, the report window after 30 days, a copied-ID message, and the screen at 320 wide; Share receipt is listed as unconfirmed" width="100%"></a>
 
 Both sides put the fee on its own line and flagged that "Rp48.000 paid" can be read two ways. No run
 on either side asked a question before designing. Full table, brief, and method:
