@@ -26,9 +26,9 @@ public disclosure (coordinated disclosure).
 ## Scope
 
 **In scope**
-- MCP server (`apps/mcp`) and tool logic (`packages/core`)
 - The `ryux` CLI (`packages/cli`) and the skills in `skills/`
-- The `ryux.design` website and its API (once released)
+- The ryux MCP server and the `ryux.design` website and its API (once released; reports go to the
+  same address)
 
 **Out of scope**
 - Attacks that require physical access or an already-compromised account

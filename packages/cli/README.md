@@ -90,9 +90,8 @@ The agent reads the router, then only the capability and knowledge files a task 
 
 - The CLI makes no network requests and runs no other programs. It only writes the files listed
   above.
-- The ryux MCP server is optional and self-hosted: there is no hosted server yet, and RYUX never
-  connects to one on its own. RYUX works without it and rates its evidence None. To run it:
-  [`apps/mcp`](https://github.com/ryuxdsgn/design-intelligence/tree/main/apps/mcp).
+- The ryux MCP server is optional: there is no hosted server yet, and RYUX never connects to one on
+  its own. RYUX works without it and rates its evidence None.
 - The skill tells agents to treat what an MCP server, web page, or screenshot returns as data,
   never as instructions.
 

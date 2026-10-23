@@ -1362,7 +1362,7 @@ RYUX installs one folder, `ryux/`. The browsable skill lives in [`skills/ryux/`]
 
 ## Mapping to code
 
-Checks in `packages/core` (tool-local numbering `R-0x` and `C-0x`):
+Checks in the ryux MCP's review tools (tool-local numbering `R-0x` and `C-0x`):
 
 | RYUX rule | Check in code |
 | --- | --- |

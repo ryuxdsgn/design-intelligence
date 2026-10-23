@@ -152,32 +152,26 @@ Browse them in [`skills/ryux/`](./skills/ryux) and [`docs/design-rules.md`](./do
 
 ### MCP tools
 
-RYUX works on its own. The hosted RYUX MCP for reference screens is coming; the server runs locally
-with sample data. Nine tools: research (`search_screens`, `get_flow`, `get_local_pattern`,
+RYUX works on its own. The hosted RYUX MCP for reference screens is coming. Nine tools: research (`search_screens`, `get_flow`, `get_local_pattern`,
 `compare_apps`, `extract_design_direction`) and review (`audit_ui`, `audit_copy`, `heuristic_eval`,
-`delivery_gate`). See [`apps/mcp/README.md`](./apps/mcp/README.md).
+`delivery_gate`).
 
 ### Reference data
 
 RYUX may use reference screens and product evidence during analysis. Private reference data is not
-included in this repository; the repository contains the schemas, rules, and tooling used to work
-with evidence.
+included in this repository; the repository contains the rules and the skill that work with evidence.
 
 ### Repository
 
 ```
-apps/mcp/         MCP server (Cloudflare Workers)
-apps/web/         ryux.design (Next.js)
-packages/core/    shared tool logic
 packages/cli/     the ryux CLI (npx @ryuxdsgn/design-intelligence)
 skills/ryux/      the RYUX skill, generated from packages/cli/src
-docs/             design rules, taxonomy, showcase, benchmarks
+docs/             design rules, showcase, benchmarks
 ```
 
 ```bash
 pnpm install
-pnpm dev:mcp        # MCP server, local (see apps/mcp/README.md)
-pnpm dev:web        # ryux.design on http://localhost:3000
+pnpm test
 pnpm typecheck
 ```
 
@@ -187,7 +181,6 @@ pnpm typecheck
 - [docs/design-rules.md](docs/design-rules.md): every rule, level, and gate
 - [docs/showcase.md](docs/showcase.md): every case, in context
 - [docs/benchmarks/](docs/benchmarks/): every raw run, and how to run one yourself
-- [DEPLOY.md](DEPLOY.md): run your own instance (database, MCP server, website)
 
 </details>
 
