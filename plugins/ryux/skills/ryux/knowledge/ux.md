@@ -113,7 +113,7 @@ How Indonesian apps sequence and structure this flow: `get_flow` for a reference
 
 ### RX-UX-12 [Contextual] A test plan travels with the design
 
-- When: the work is a new flow or a consequential change (payment, sign-up, navigation, a core task)
+- When: the work is a new flow, a consequential change (payment, sign-up, navigation, a core task), or a recommendation on an open brief
 - Do: Close the design or build with a usability test plan a person can run; RYUX prepares it, people run it:
   - research questions: the open unknowns, the Frame success criteria, and the heuristic evaluation findings marked as needing a test
   - three to five task scenarios that are realistic, ask the participant to do something rather than describe it, and use none of the interface's labels or steps ("Kamu ingin membayar pesanan makan siang dengan saldo e-wallet", not "Ketuk Bayar lalu pilih GoPay")
@@ -121,6 +121,7 @@ How Indonesian apps sequence and structure this flow: `get_flow` for a reference
   - a success measure per task, taken from the Frame criteria
   - after launch: the metrics to watch (task success, time on task, errors, completion, support tickets) and the baseline to measure before release
   - Plan at least two rounds of test and fix; a result that changes the context or the criteria sends the work back to Understand or Frame.
+  - Before a full design exists (a proposal or a direction), the Decision Receipt's Test field is the minimum plan: never close a recommendation without it.
 - Do not: Claim the design was tested with users, present AI-simulated users as participants, or write tasks that name the buttons to tap.
 - Why: Rules and heuristics find likely problems; only people using the design show which ones are real, and a baseline is what makes the after-launch number mean something. (NNGroup usability testing 101; NNGroup how many test users (5 per group, 20 for quantitative); NNGroup task scenarios; NNGroup iterative design (at least three versions); NNGroup establishing baselines; NNGroup design thinking (test and implement))
 - Not when: a small change (a colour, one label, spacing) or when the user says no test plan
