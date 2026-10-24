@@ -170,7 +170,7 @@ Rule IDs and gate results belong in your report, never on the design itself.
 
 ## Design Decision Record
 
-For consequential choices (RX-PR-09) and deviations, write **Decision**, **Options** compared, **Evidence**,
+For consequential choices (RX-PR-09) and deviations, write **Decision**, **Options** compared (two or three, one line each with its mechanism, also when you chose for the user), **Evidence**,
 **Trade-off**, **Choice**, and **Test** (the riskiest assumption behind the choice, the cheapest way to test it, the signal that it works, and the result that would change the choice). Evidence is Strong (2+ comparable screen_ids), Thin (one, or another context),
 or None (no screen_id: a judgment call). With None on a consequential choice, show options or ask (RX-PR-10).
 
