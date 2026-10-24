@@ -108,10 +108,18 @@ The six stages of the core workflow (SKILL.md), as Design runs them.
    must be seen first, the brief's character words, conventions that must hold) before any
    alternative exists; Explore and Evaluate use these, and they do not change after you see the
    alternatives. For consequential choices, list the two or three patterns to compare, using
-   reference screens when the ryux MCP is connected (RX-PR-09).
-3. **Explore.** On a new screen or flow, a complex or ambiguous surface, or a brief that asks for a
-   new look, render two or three alternatives as frames side by side: the main state only, the same
-   content and sample data in each, each labelled with a name and a one-line hypothesis.
+   reference screens when the ryux MCP is connected (RX-PR-09). When the brief is open (what the
+   product should do is not decided yet), first write the problem behind the request in one sentence
+   and the open question that most changes the solution (a reading-place app: the nearest place, the
+   quietest, or a reading community?); answer it from evidence, or name the answer as an assumption.
+3. **Explore.** On a new screen or flow, an open brief whose solution is not decided, a complex or
+   ambiguous surface, or a brief that asks for a new look, render two or three alternatives as frames
+   side by side (or describe them, when there is no canvas): the main state only, the same content and
+   sample data in each, each labelled with a name and a one-line hypothesis.
+   - On an open brief they first differ in mechanism: each gives a different answer to Frame's open
+     question (find by distance, by mood, or through a community), so the product works differently,
+     not only looks different. Two alternatives with the same mechanism count as one. Then they differ
+     in structure, as below.
    - Each alternative is a hypothesis about what this user needs, not a style: on task UI, for
      example, task-first (status and the next action lead), editorial (type and composition carry
      the hierarchy), or expressive-brand (the brand layer leads without slowing the task). Choose
@@ -342,7 +350,7 @@ export const CORE_HONESTY = `Report what was checked, how, and what was not avai
 Rule IDs and gate results belong in your report, never on the design itself.`;
 
 export const CORE_DECISION_RECORD = `For consequential choices (RX-PR-09) and deviations, write **Decision**, **Options** compared, **Evidence**,
-**Trade-off**, and **Choice**. Evidence is Strong (2+ comparable screen_ids), Thin (one, or another context),
+**Trade-off**, **Choice**, and **Test** (the riskiest assumption behind the choice, the cheapest way to test it, the signal that it works, and the result that would change the choice). Evidence is Strong (2+ comparable screen_ids), Thin (one, or another context),
 or None (no screen_id: a judgment call). With None on a consequential choice, show options or ask (RX-PR-10).`;
 
 export const GATE_RULES = `- Each area is PASS, FAIL, NOT VERIFIED (it applies, but the evidence was not available: name what is missing), or N/A (it does not apply: say why). Scale the gate to the task: a copy fix or a one-component change marks the areas it cannot affect N/A, one line each.

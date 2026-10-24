@@ -49,10 +49,18 @@ The six stages of the core workflow (SKILL.md), as Design runs them.
    must be seen first, the brief's character words, conventions that must hold) before any
    alternative exists; Explore and Evaluate use these, and they do not change after you see the
    alternatives. For consequential choices, list the two or three patterns to compare, using
-   reference screens when the ryux MCP is connected (RX-PR-09).
-3. **Explore.** On a new screen or flow, a complex or ambiguous surface, or a brief that asks for a
-   new look, render two or three alternatives as frames side by side: the main state only, the same
-   content and sample data in each, each labelled with a name and a one-line hypothesis.
+   reference screens when the ryux MCP is connected (RX-PR-09). When the brief is open (what the
+   product should do is not decided yet), first write the problem behind the request in one sentence
+   and the open question that most changes the solution (a reading-place app: the nearest place, the
+   quietest, or a reading community?); answer it from evidence, or name the answer as an assumption.
+3. **Explore.** On a new screen or flow, an open brief whose solution is not decided, a complex or
+   ambiguous surface, or a brief that asks for a new look, render two or three alternatives as frames
+   side by side (or describe them, when there is no canvas): the main state only, the same content and
+   sample data in each, each labelled with a name and a one-line hypothesis.
+   - On an open brief they first differ in mechanism: each gives a different answer to Frame's open
+     question (find by distance, by mood, or through a community), so the product works differently,
+     not only looks different. Two alternatives with the same mechanism count as one. Then they differ
+     in structure, as below.
    - Each alternative is a hypothesis about what this user needs, not a style: on task UI, for
      example, task-first (status and the next action lead), editorial (type and composition carry
      the hierarchy), or expressive-brand (the brand layer leads without slowing the task). Choose
