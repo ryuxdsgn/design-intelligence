@@ -182,7 +182,7 @@ ${rulesOf(s.id).map(ruleBlock).join("\n\n")}`;
 export const SKILL_NAME = "ryux";
 
 const RYUX_DESCRIPTION =
-  "RYUX - design intelligence for AI agents and designers. Tell it what you are doing and it routes to Analyze (understand an existing interface), Design (create or improve UI and UX in Figma, pen.dev, or mockups), Build (implement in code), Critique (find what to change first, with evidence, or run a heuristic evaluation), or QA (verify a build against the design), reads only the knowledge the task needs (product, UX, UI, interaction, forms, content, accessibility, responsive, design system, frontend, anti-slop), and closes with quality gates. Use for any UI, UX, copy, frontend, design review, or design analysis task, and for product visuals: illustration, 3D, imagery, icons, and motion, even when the request does not name RYUX.";
+  "RYUX - design intelligence for AI agents and designers. Tell it what you are doing and it routes to Analyze (understand an existing interface), Design (create or improve UI and UX in Figma, pen.dev, or mockups), Build (implement in code), Critique (find what to change first, with evidence, or run a heuristic evaluation), or QA (verify a build against the design), reads only the knowledge the task needs (product, UX, UI, interaction, forms, content, accessibility, responsive, design system, frontend, anti-slop), and closes with quality gates. Use for any UI, UX, copy, frontend, design review, or design analysis task, and for product visuals: illustration, 3D, imagery, icons, logos, and motion, even when the request does not name RYUX.";
 
 /** Where a former skill id lives inside the single `ryux` skill folder. */
 export function modulePath(id: string): string | null {
