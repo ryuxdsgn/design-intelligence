@@ -21,17 +21,22 @@ The six stages of the core workflow (SKILL.md), as Design runs them.
    counts toward the three) instead of choosing it yourself. **No DESIGN.md and no product docs is the
    case where these questions matter most, never a reason to skip them:** ask, then wait for the
    answer before designing. Complete context means no questions.
+   **Voice and tone** is not asked by default: when the field is blank, infer it from the product's
+   existing copy or brand docs, label it inferred, and continue (RX-CD-11). Ask only when there is
+   no source at all and the work is mostly copy (onboarding, marketing, error and success messages);
+   it counts toward the three.
    **Ask as choices.** When you ask, or the user picks (stage 4, Reconsider), use the agent's
    question or choice tool if it has one: two to four options per question, the recommended one
    first and labeled, and room for the user's own answer. Without such a tool, write numbered
    options with the recommendation first, so the user can answer with a number. Never ask what the prompt, DESIGN.md, or the
    product docs already answer. For the rest, make the smallest reasonable assumption, write it
    down, and continue (RX-PR-01, RX-PR-02).
-   **Record direction answers.** When the user answers a UI or motion direction question, write the
-   answer into the UI direction or Motion direction field of the RYUX project context in DESIGN.md:
+   **Record direction answers.** When the user answers a UI direction, motion direction, or voice
+   question, or confirms an inferred voice, write the answer into the UI direction, Motion direction,
+   or Voice and tone field of the RYUX project context in DESIGN.md:
    between `<!-- ryux-context:start -->` and `<!-- ryux-context:end -->`, one line per field
    (`- **UI direction**: Calm, trustworthy`). If DESIGN.md or the block does not exist, create it
-   with those two fields. Change only those field lines; leave every other line as it is. Your own
+   with the fields answered. Change only those field lines; leave every other line as it is. Your own
    assumptions do not go into DESIGN.md.
    **What exists.** When there is a screen, product, or design system already, read its
    analysis or run Analyze first (capabilities/analyze.md). Existing screens, components, and any
