@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="https://www.npmjs.com/package/@ryuxdsgn/design-intelligence"><img src="https://img.shields.io/badge/version-early__access%20v2.17-1f6feb" alt="Version: early access v2.17"></a>
+  <a href="https://www.npmjs.com/package/@ryuxdsgn/design-intelligence"><img src="https://img.shields.io/badge/version-early__access%20v2.18-1f6feb" alt="Version: early access v2.18"></a>
   <a href="https://github.com/ryuxdsgn/design-intelligence/actions/workflows/ci.yml"><img src="https://github.com/ryuxdsgn/design-intelligence/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-2ea44f" alt="MIT License"></a>
 </p>
@@ -198,7 +198,7 @@ vulnerability, see [SECURITY.md](./SECURITY.md).
 
 ## Status and license
 
-RYUX 2.17, early access, free. Available now: the skill, the CLI, skills.sh, the Claude Code plugin,
+RYUX 2.18, early access, free. Available now: the skill, the CLI, skills.sh, the Claude Code plugin,
 and the MCP server run locally. Coming: the hosted MCP and a larger reference library.
 
 **MIT**, © 2026 ryux.design (see [LICENSE](./LICENSE)). The code and the RYUX skill are covered by
