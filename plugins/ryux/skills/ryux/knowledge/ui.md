@@ -123,8 +123,8 @@ A design direction from comparable screens: `extract_design_direction` (patterns
 
 ### RX-UI-15 [Preferred] [Quality Lock] Detail craft
 
-- Do: Center icons on the optical middle of the text beside them and size them to its line-height; match icon stroke to the type weight; right-align (or decimal-align) number columns; take borders, dividers, radii, and shadows from a small token set; truncate long text on purpose, with the full value still reachable (a tooltip, a detail view, or wrapping).
-- Do not: Let icons sit high or low against their labels, mix stroke weights, center amounts in a table, or invent a one-off shadow for one card.
+- Do: Center icons on the optical middle of the text beside them and size them to its line-height; take every icon from one set and match its stroke to the type weight; right-align (or decimal-align) number columns; take borders, dividers, radii, and shadows from a small token set; truncate long text on purpose, with the full value still reachable (a tooltip, a detail view, or wrapping).
+- Do not: Let icons sit high or low against their labels, mix icon sets or stroke weights, center amounts in a table, or invent a one-off shadow for one card.
 - Why: Each detail is small; together they are what makes a screen look made rather than generated. (Bringhurst (figures and alignment); Apple HIG and Material iconography (optical size and alignment); owner review 2026-10-17: wrong tab icons in withryux.pen)
 - Check: render inspection at 390 and 1280: icon center within 2 px of the text center; column alignment
 

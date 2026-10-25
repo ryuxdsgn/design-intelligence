@@ -341,8 +341,7 @@ compliance, product or competitor facts, screenshots, or references (RX-PR-02, R
 
 Record a source as \`{ type: observed | inferred | knowledge, origin, reference }\`, for example
 \`{ knowledge, ryux-knowledge, scr_123 }\` from the ryux MCP, or \`{ observed, screenshot, hero.png }\`.
-Optional sources (the ryux MCP, Figma, a browser, screenshots, other reference libraries) add
-evidence when connected; none is required.`;
+Optional sources (the ryux MCP, Figma, a browser, screenshots, other reference libraries) add evidence when connected; none is required.`;
 
 export const CORE_HONESTY = `Report what was checked, how, and what was not available. Do not claim "pixel perfect",
 "fully accessible", "production ready", "senior-level", or "UX optimized" without evidence. Say

@@ -92,15 +92,14 @@ compliance, product or competitor facts, screenshots, or references (RX-PR-02, R
 
 Record a source as `{ type: observed | inferred | knowledge, origin, reference }`, for example
 `{ knowledge, ryux-knowledge, scr_123 }` from the ryux MCP, or `{ observed, screenshot, hero.png }`.
-Optional sources (the ryux MCP, Figma, a browser, screenshots, other reference libraries) add
-evidence when connected; none is required.
+Optional sources (the ryux MCP, Figma, a browser, screenshots, other reference libraries) add evidence when connected; none is required.
 
 ## Levels
 
 - **[Required]**: applies within its stated scope; an exception needs a written reason.
 - **[Preferred]**: the default; break it only with a short written reason.
 - **[Contextual]**: applies only when its "When" situation is present.
-- **[Hard Gate]**: a Required rule with no exceptions. Fix it before declaring the work complete.
+- **[Hard Gate]**: a Required rule with no exceptions. Fix it before declaring the work complete. Kept for failures a check can show (a run, a count, a measurement, a source); a judgment call is a Required rule and goes to Critique.
 - **[Quality Lock]**: consistency that must hold across the product.
 
 ## Hard Gates (always apply; no written exception, fix before delivery)
@@ -113,10 +112,11 @@ evidence when connected; none is required.
 - **Missing critical states.** Do not ship only the filled, happy-path screen. (RX-EC-01)
 - **Broken responsive behavior.** Do not design for one width only, test a native iOS app at 320, or hand off a set of frames that only prove the layout did not break. (RX-RD-01)
 - **Accessibility failures.** Do not put light grey text on white or white text on a pale accent. (RX-A11Y-01, RX-A11Y-02, RX-A11Y-03, RX-A11Y-04)
-- **Unclear goal or competing actions.** Do not put two equal-weight calls to action side by side, or leave the screen's goal unclear. (RX-PR-03)
-- **Unexplained interaction behavior.** Do not ship an action whose in-progress, result, or failure behavior is undefined. (RX-IX-01, RX-IX-12)
+- **Competing primary actions.** Do not put two equal-weight calls to action side by side. (RX-PR-03)
+- **Unexplained interaction behavior.** Do not ship an action whose in-progress, result, or failure behavior is undefined. (RX-IX-01)
 - **Duplicate components.** Do not create a near-duplicate component or pattern for one screen. (RX-DS-01)
-- **Unnecessary complexity.** Do not add settings, sections, abstractions, or packages "for later", or features because similar products have them. (RX-AS-06)
+- **Build or typecheck fails.** Do not hand off code that does not build or typecheck, silence an error to make it pass (a type cast, a disabled rule, a skipped test), or call it done without running the checks. (RX-FE-16)
+- **Primary task cannot be completed.** Do not hand off a primary flow with a dead end: a button that does nothing, a submit that never resolves, a step that cannot be reached, or an error with no way back. (RX-QA-08)
 
 ## Task table: which knowledge to read
 

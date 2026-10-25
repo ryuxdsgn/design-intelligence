@@ -51,7 +51,7 @@ function ruleBlock(r: Rule): string {
 const LEVELS = `- **[Required]**: applies within its stated scope; an exception needs a written reason.
 - **[Preferred]**: the default; break it only with a short written reason.
 - **[Contextual]**: applies only when its "When" situation is present.
-- **[Hard Gate]**: a Required rule with no exceptions. Fix it before declaring the work complete.
+- **[Hard Gate]**: a Required rule with no exceptions. Fix it before declaring the work complete. Kept for failures a check can show (a run, a count, a measurement, a source); a judgment call is a Required rule and goes to Critique.
 - **[Quality Lock]**: consistency that must hold across the product.`;
 
 export function activationTable(): string {

@@ -108,3 +108,11 @@ The intended design (Figma, pen.dev, DESIGN.md) is the reference; RYUX screens a
 - Do not: Call the build done while it visibly differs from the design without saying so, or judge it only against itself.
 - Why: Visual QA answers whether the build matches the intent; whether the design is good is Critique's question. (ryux visual QA loop; ryux evidence principle)
 - Check: screenshot comparison, search_screens
+
+### RX-QA-08 [Required] [Hard Gate] The primary task completes
+
+- Do: In the running build or a clickable prototype, do the screen's primary task from start to result as a user would (tap, type, submit), then one failure path (invalid input or a failed request). Name the path you ran.
+- Do not: Hand off a primary flow with a dead end: a button that does nothing, a submit that never resolves, a step that cannot be reached, or an error with no way back.
+- Why: A broken primary action fails the one thing the screen exists for, whatever else is right. (Usability testing practice (task completion); owner review 2026-10-25: a broken main interaction belongs with the checks that cannot be argued)
+- Not when: static mockups with no interaction; then say the flow was not run and VISUAL QA is NOT VERIFIED
+- Check: run the primary task and one failure path in the render; fails on any dead end
