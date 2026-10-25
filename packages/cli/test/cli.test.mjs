@@ -78,7 +78,17 @@ test("setup fills only the answered fields and keeps the rest", () => {
   assert.match(after, /\*\*Product\*\*: acme-app \(what it does/);
   assert.match(after, /\*\*UX direction\*\*: guide first-time users/);
   assert.match(after, /\*\*Design intent\*\*: \(what users should understand/);
-  assert.match(run(dir, "check").out, /4 of 9 setup fields filled/);
+  assert.match(run(dir, "check").out, /4 of 10 setup fields filled/);
+  rmSync(dir, { recursive: true, force: true });
+});
+
+test("setup --voice records voice and tone next to the UI direction", () => {
+  const dir = project();
+  run(dir, "init", "--agent", "claude");
+  assert.match(readFileSync(join(dir, "DESIGN.md"), "utf8"), /\*\*Voice and tone\*\*: \(voice words/);
+  assert.equal(run(dir, "setup", "--voice", "Warm and casual, not salesy or hyped").code, 0);
+  const after = readFileSync(join(dir, "DESIGN.md"), "utf8");
+  assert.match(after, /\*\*UI direction\*\*:.*\n- \*\*Voice and tone\*\*: Warm and casual, not salesy or hyped\n/);
   rmSync(dir, { recursive: true, force: true });
 });
 
