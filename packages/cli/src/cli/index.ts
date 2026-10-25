@@ -17,6 +17,8 @@ import { CLI_CMD, CONTEXT_END, CONTEXT_FILE, CONTEXT_START, MARK_START, MCP_STAT
 import { validateBundle } from "../validate.js";
 import { renderAgentsBlock, renderBundle, renderPointerBlock, SKILL_NAME } from "../render.js";
 import { hasBlock, readIfExists, rel, removeBlock, removePath, upsertBlock, writeFileEnsured } from "./fsutil.js";
+import { hasHook, installHook, removeHook } from "./hook.js";
+import { runScan } from "./scan.js";
 import { readFile, readdir } from "node:fs/promises";
 
 type Flags = Record<string, string | boolean>;
@@ -198,12 +200,25 @@ async function runInstall(flags: Flags): Promise<void> {
     agents = agents.filter((x) => x !== AGENTS_MD_INLINE.id);
   }
 
+  let hook = Boolean(flags.hook);
+  if (!nonInteractive && agents.includes("claude")) {
+    const h = await p.confirm({ message: "Run ryux scan on each file Claude Code edits? (adds a hook to .claude/settings.json)", initialValue: false });
+    if (p.isCancel(h)) return cancel();
+    hook = h;
+  }
+  if (hook && !agents.includes("claude")) {
+    console.log(pc.yellow("--hook works with Claude Code only for now; skipped."));
+    hook = false;
+  }
+
   if (flags["dry-run"]) {
     const plan = await planInstall(agents, scope);
+    if (hook) plan.push(`${(await hasHook(scope.root)) ? "update" : "add"} the scan hook in .claude/settings.json (runs ryux scan after each edit)`);
     console.log(`Dry run: nothing was written. ${CLI_CMD} ${flags.init ? "init" : "install"} would:\n${plan.map((l) => `  ${l}`).join("\n")}`);
     return;
   }
   const written = await install(agents, scope);
+  if (hook) written.push(await installHook(scope.root));
   const summary = written.map((w) => pc.green("✓ ") + w).join("\n");
   if (nonInteractive) console.log(summary);
   else p.note(summary, "Installed");
@@ -238,6 +253,7 @@ async function runUpdate(flags: Flags): Promise<void> {
   }
   const done: string[] = [];
   for (const dir of dirs) done.push(...(await writeSkills(dir, scope.root)));
+  if (await hasHook(scope.root)) done.push(await installHook(scope.root));
   if (!scope.global) {
     for (const file of ["CLAUDE.md", "GEMINI.md", "AGENTS.md"] as PointerFile[]) {
       const path = join(scope.root, file);
@@ -259,7 +275,7 @@ async function runRemove(flags: Flags): Promise<void> {
     await Promise.all(pointerFiles.map(async (f) => (await readIfExists(join(scope.root, f)))?.includes(MARK_START)))
   ).some(Boolean);
   const hasLegacyCursor = existsSync(join(scope.root, LEGACY_CURSOR_RULES_DIR));
-  if (!hasSkills && !hasBlocks && !hasLegacyCursor) {
+  if (!hasSkills && !hasBlocks && !hasLegacyCursor && !(await hasHook(scope.root))) {
     console.log("No RYUX install found.");
     return;
   }
@@ -279,6 +295,7 @@ async function runRemove(flags: Flags): Promise<void> {
     removed.push(...(await removeLegacy(dir, scope.root)));
   }
   for (const f of pointerFiles) if (await removeBlock(join(scope.root, f))) removed.push(`${f} (block)`);
+  if (await removeHook(scope.root)) removed.push(".claude/settings.json (scan hook)");
   console.log(removed.length ? removed.map((r) => pc.red("− ") + r).join("\n") : "No files removed.");
 }
 
@@ -339,6 +356,7 @@ async function runCheck(flags: Flags): Promise<void> {
       add("ok", CONTEXT_FILE, `project context present, ${filledCount(context)} of ${ASKED_FIELDS.length} setup fields filled (blanks are treated as unknown)`);
     } else add("warn", CONTEXT_FILE, "no RYUX project context", "setup");
   }
+  if (await hasHook(scope.root)) add("ok", ".claude/settings.json", "scan hook present");
 
   const ok = !findings.some((f) => f.level === "fail");
   if (!ok) process.exitCode = 1;
@@ -764,6 +782,8 @@ Commands:
   setup       Teach RYUX about this project: a few skippable questions, saved to DESIGN.md.
   init        Install RYUX and add the DESIGN.md project context block.
   check       Check the install: files, version, references, pointers, project context.
+  scan        Check source files for rules a machine can see (Rupiah format, alt text, zoom, focus, ...).
+              No LLM, no network. Default path: this folder.
   update      Update an install to this version (also migrates RYUX 1.x folders).
   remove      Remove RYUX and the marked blocks.
   help        Show this help.
@@ -778,7 +798,10 @@ Options:
   --mcp                print the ryux MCP connect command
   --yes                skip the confirmation (remove)
   --dry-run            list what install or init would create or update, and write nothing
-  --json               print check's findings as JSON (for agents and CI)
+  --json               print check's or scan's findings as JSON (for agents and CI)
+  --hook               install: run ryux scan after each Claude Code edit (opt-in)
+  --list-rules         scan: list what each check looks for
+  --ignore <ids>       scan: skip rules, e.g. RX-DS-03 (or a ryux-ignore RX-.. comment in the file)
   --product, --work, --audience, --market, --constraints, --intent, --ux, --ui, --motion <text>
                        set project context fields without questions (setup)
 
@@ -795,8 +818,11 @@ Examples:
   ${CLI_CMD} remove --yes
   ${CLI_CMD} init --agent claude --dry-run
   ${CLI_CMD} check --json
+  ${CLI_CMD} scan src
+  ${CLI_CMD} scan --list-rules
+  ${CLI_CMD} install --agent claude --hook
 
-Exit codes: 0 done or healthy, 1 a problem was found or the command failed, 2 the command was used wrongly.`);
+Exit codes: 0 done or healthy, 1 a problem was found (for scan: a fail) or the command failed, 2 the command was used wrongly.`);
 }
 
 async function main(): Promise<void> {
@@ -818,6 +844,8 @@ async function main(): Promise<void> {
     case "check":
     case "doctor":
       return runCheck(flags);
+    case "scan":
+      return runScan(argv.slice(1));
     case "init":
       return runInit(flags);
     case "setup":

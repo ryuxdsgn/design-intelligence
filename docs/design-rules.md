@@ -664,6 +664,7 @@ Gate area CONTENT. Covers specific copy, action labels, error messages, terminol
 - Do not: Write Rp 1.250.000, IDR 1250000, or Rp1,250,000.
 - Why: It is the common Indonesian form; mixed formats look careless next to prices. (PUEBI currency notation; ryux run 2026-10-02)
 - Check: audit_copy C-07
+- Machine check: `ryux scan` flags Rupiah written as Rp 1.000, Rp. 1.000, Rp1,000, Rp1.000,00, Rp1000, IDR 1000, or Rp followed by a space before a value (fail)
 
 #### RX-CD-03 [Preferred] Specific, plain copy
 
@@ -695,6 +696,7 @@ Gate area CONTENT. Covers specific copy, action labels, error messages, terminol
 - Do not: Write 10/02/2026, 2:30 PM, or 1.5 in Indonesian copy.
 - Why: Slash dates are ambiguous and English number formats read as foreign or as the wrong value. (PUEBI number and time notation; id-ID locale conventions)
 - Check: audit_copy C-08
+- Machine check: `ryux scan` flags dates as 10/02/2026 and times as 2:30 PM in copy (warn)
 
 #### RX-CD-10 [Contextual] A FAQ answers questions people ask
 
@@ -1059,6 +1061,7 @@ Gate area DESIGN SYSTEM. Covers search before create, tokens, component states, 
 - Do not: Hard-code one-off values for things the system already defines, or define tokens for color only and leave spacing, radius, and type size literal.
 - Why: Tokens keep changes consistent and reviewable; values that are not tokens drift from frame to frame and state to state. (W3C Design Tokens Community Group; ryux four-problems baseline 2026-10-16: in all 12 runs, with or without RYUX, spacing, radius, and font size were 100% literal)
 - Check: count literal values after render; review
+- Machine check: `ryux scan` flags three or more one-off hex colors in a file that is not a token or theme file (warn)
 
 #### RX-DS-05 [Contextual] Every theme you ship works
 
@@ -1096,6 +1099,7 @@ Gate area ACCESSIBILITY. Covers semantics, keyboard, focus, contrast, targets, n
 - Do not: Shrink body text or crowd small targets together.
 - Why: Small text and targets cause misreads and mis-taps. (WCAG 2.2 SC 2.5.8 (24px minimum); Apple HIG 44pt; Material 48dp; Fitts's law (Fitts 1954): bigger and nearer targets are faster to hit)
 - Check: audit_ui
+- Machine check: `ryux scan` flags zoom turned off: user-scalable=no, maximum-scale=1, userScalable: false, maximumScale: 1 (fail); text set below 12px (CSS font-size, Tailwind text-[Npx], fontSize in style objects) (warn)
 
 #### RX-A11Y-03 [Required] [Hard Gate] Keyboard and visible focus
 
@@ -1103,6 +1107,7 @@ Gate area ACCESSIBILITY. Covers semantics, keyboard, focus, contrast, targets, n
 - Do not: Build pointer-only actions, or remove focus outlines without an accessible replacement.
 - Why: Keyboard and switch users navigate and act by focus. (WCAG 2.2 SC 2.1.1, 2.4.3, and 2.4.7; WAI-ARIA APG dialog pattern)
 - Check: tab through the render from the top: every control is reached in reading order and shows a visible focus indicator (3:1 against its background); fails on a skipped control, a focus trap, or an invisible focus
+- Machine check: `ryux scan` flags a positive tabindex, which takes the element out of the visual focus order (fail); focus outlines removed on a control (a button, link, input, or :focus rule) with no focus-visible replacement (warn)
 
 #### RX-A11Y-04 [Required] [Hard Gate] Semantic structure, native controls, and names
 
@@ -1110,6 +1115,7 @@ Gate area ACCESSIBILITY. Covers semantics, keyboard, focus, contrast, targets, n
 - Do not: Build structure or controls from styled divs, or ship unlabeled icon buttons.
 - Why: Assistive technology navigates by semantics and announces unlabeled buttons as just "button"; native controls bring keyboard and platform behavior for free. (WCAG 2.2 SC 1.1.1, 1.3.1, and 4.1.2)
 - Check: read the accessibility tree (a Playwright accessibility snapshot, or the design file's layer types): every control is a native element or has a role, and every one has a name; headings are in order; fails on an unnamed control or a div acting as a button
+- Machine check: `ryux scan` flags <img> with no alt attribute (fail); a clickable <div> or <span> with no role (warn); an icon-only <button> with no accessible name (warn); a heading that skips a level (h2 straight to h4) (warn)
 
 #### RX-A11Y-06 [Required] Not color alone
 
@@ -1131,6 +1137,7 @@ Gate area ACCESSIBILITY. Covers semantics, keyboard, focus, contrast, targets, n
 - Do not: Ignore the system reduced-motion setting.
 - Why: Large motion can cause discomfort for people with vestibular disorders. (WCAG 2.2 SC 2.3.3; prefers-reduced-motion; Apple HIG)
 - Check: review
+- Machine check: `ryux scan` flags animation in a folder where nothing handles prefers-reduced-motion (warn)
 
 ---
 
@@ -1235,6 +1242,7 @@ Gate area CODE QUALITY. Covers the repo's own stack, semantic elements, one home
 - Do not: Rely on Intl currency style alone, which inserts a space after Rp.
 - Why: The built-in output does not match the Rp1.250.000 form used in copy. (ryux run 2026-10-02: order-total.ts with and without ryux)
 - Check: audit_copy C-07 on rendered strings
+- Machine check: `ryux scan` flags Intl currency style with IDR, which prints Rp 1.250.000,00 (a space, and decimals unless set to 0) (warn)
 
 #### RX-FE-13 [Required] One home for each piece of logic
 
@@ -1340,6 +1348,7 @@ Gate area ANTI-SLOP. Covers hard gates, purpose gates, quality locks, honest cla
 - Do not: Put [REAL DATA], XXX, or lorem text on the canvas where sample data would do, or ship sample data or placeholder copy as final. A sample-data label does not turn a fee, policy, or claim into a fact (RX-PR-02).
 - Why: Bracketed values read as unfinished and hide the layout's real behavior; unlabeled sample data ships by accident. (ryux anti-slop principle; ryux visual benchmark 2.5, 2026-10-09: [Brand] and XXX read as unfinished)
 - Check: audit_copy C-01
+- Machine check: `ryux scan` flags lorem ipsum filler (fail); placeholder content: John Doe, Jane Doe, [DATA], [TBD], XXXX (warn)
 
 #### RX-AS-04 [Required] [Hard Gate] No fake urgency
 
@@ -1347,6 +1356,7 @@ Gate area ANTI-SLOP. Covers hard gates, purpose gates, quality locks, honest cla
 - Do not: Write "only 2 left", "offer ends tonight", or fake countdowns with nothing behind them.
 - Why: Manufactured pressure erodes trust once users notice. (NNGroup credibility research; ryux run 2026-10-02: WhatsApp promo)
 - Check: find every timer, deadline, stock count, and 'only N left'; each comes from the brief or real data; fails on any without a source
+- Machine check: `ryux scan` flags urgency copy (only 2 left, hurry, offer ends tonight, hanya tersisa 2, buruan, stok terbatas) (warn)
 
 #### RX-AS-05 [Required] Decoration passes a purpose gate
 

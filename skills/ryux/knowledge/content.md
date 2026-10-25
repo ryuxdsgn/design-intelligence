@@ -52,6 +52,7 @@ Real labels, errors, and how money, dates, and times are written in the product'
 - Do not: Write Rp 1.250.000, IDR 1250000, or Rp1,250,000.
 - Why: It is the common Indonesian form; mixed formats look careless next to prices. (PUEBI currency notation; ryux run 2026-10-02)
 - Check: audit_copy C-07
+- Machine check: `ryux scan` flags Rupiah written as Rp 1.000, Rp. 1.000, Rp1,000, Rp1.000,00, Rp1000, IDR 1000, or Rp followed by a space before a value (fail)
 
 ### RX-CD-03 [Preferred] Specific, plain copy
 
@@ -83,6 +84,7 @@ Real labels, errors, and how money, dates, and times are written in the product'
 - Do not: Write 10/02/2026, 2:30 PM, or 1.5 in Indonesian copy.
 - Why: Slash dates are ambiguous and English number formats read as foreign or as the wrong value. (PUEBI number and time notation; id-ID locale conventions)
 - Check: audit_copy C-08
+- Machine check: `ryux scan` flags dates as 10/02/2026 and times as 2:30 PM in copy (warn)
 
 ### RX-CD-10 [Contextual] A FAQ answers questions people ask
 
