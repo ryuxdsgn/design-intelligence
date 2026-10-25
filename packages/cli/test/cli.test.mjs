@@ -133,3 +133,48 @@ test("setup suggests three prompts for the product it was told about", () => {
   assert.match(other.out, /"Critique our pricing page/);
   rmSync(dir, { recursive: true, force: true });
 });
+
+test("check --json reports findings with fixes, and its exit code", () => {
+  const dir = project();
+  const none = run(dir, "check", "--json");
+  assert.equal(none.code, 1);
+  const empty = JSON.parse(none.out);
+  assert.equal(empty.ok, false);
+  assert.match(empty.findings[0].fix, /init$/);
+  run(dir, "install", "--agent", "claude");
+  const healthy = run(dir, "check", "--json");
+  assert.equal(healthy.code, 0, healthy.out);
+  const report = JSON.parse(healthy.out);
+  assert.equal(report.ok, true);
+  assert.equal(report.installs[0].dir, ".claude/skills/ryux");
+  rmSync(join(dir, ".claude/skills/ryux/knowledge/forms.md"));
+  const broken = run(dir, "check", "--json");
+  assert.equal(broken.code, 1);
+  const fail = JSON.parse(broken.out).findings.find((f) => f.level === "fail");
+  assert.match(fail.message, /forms\.md/);
+  assert.match(fail.fix, /update$/);
+  rmSync(dir, { recursive: true, force: true });
+});
+
+test("install and init --dry-run list the plan and write nothing", () => {
+  const dir = project();
+  writeFileSync(join(dir, "CLAUDE.md"), "# Our notes\n");
+  const i = run(dir, "install", "--agent", "claude", "--dry-run");
+  assert.equal(i.code, 0, i.out);
+  assert.match(i.out, /Dry run: nothing was written/);
+  assert.match(i.out, /create \.claude\/skills\/ryux\//);
+  assert.match(i.out, /add the pointer block to CLAUDE\.md/);
+  const n = run(dir, "init", "--agent", "claude", "--dry-run");
+  assert.match(n.out, /add the project context block to DESIGN\.md/);
+  assert.ok(!existsSync(join(dir, ".claude")));
+  assert.ok(!existsSync(join(dir, "DESIGN.md")));
+  assert.equal(readFileSync(join(dir, "CLAUDE.md"), "utf8"), "# Our notes\n");
+  rmSync(dir, { recursive: true, force: true });
+});
+
+test("a wrongly used command exits with 2", () => {
+  const dir = project();
+  assert.equal(run(dir, "frobnicate").code, 2);
+  assert.equal(run(dir, "install", "--agent", "nope").code, 2);
+  rmSync(dir, { recursive: true, force: true });
+});

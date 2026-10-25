@@ -22,6 +22,8 @@ npx @ryuxdsgn/design-intelligence                                          # sta
 npx @ryuxdsgn/design-intelligence setup                                    # teach RYUX about the project (DESIGN.md)
 npx @ryuxdsgn/design-intelligence setup --audience "..." --market "..."    # same, without questions
 npx @ryuxdsgn/design-intelligence check                                    # health check (exit 1 on problems)
+npx @ryuxdsgn/design-intelligence check --json                             # the same findings as JSON, for agents and CI
+npx @ryuxdsgn/design-intelligence init --agent claude --dry-run            # list what would change, write nothing
 npx @ryuxdsgn/design-intelligence init --agent claude                      # install + empty project context block
 npx @ryuxdsgn/design-intelligence install --agent claude,cursor,codex      # non-interactive
 npx @ryuxdsgn/design-intelligence install --agent all                      # every supported agent
@@ -35,11 +37,13 @@ npx @ryuxdsgn/design-intelligence remove --yes                             # rem
 | Command | What it does |
 | --- | --- |
 | `setup` | Asks a few questions with plain choices, "Write my own", or Skip: product, current work, audience, market and locale, constraints, design intent, and UX, UI, and motion direction. Saves the answers to the `<!-- ryux-context -->` block in `DESIGN.md`, changing only the fields you answer. The answers are direction, not evidence. Without a terminal, set fields with `--product`, `--work`, `--audience`, `--market`, `--constraints`, `--intent`, `--ux`, `--ui`, `--motion`. |
-| `init` | Installs RYUX, then adds a `<!-- ryux-context -->` block to `DESIGN.md` (product, audience, market and locale, design system, evidence sources, constraints), prefilled only with what it can detect. Re-running never overwrites what you wrote. |
-| `install` | Writes the `ryux/` skill into each agent's folder and a short pointer block into `CLAUDE.md`, `GEMINI.md`, or `AGENTS.md`. Interactive installs then offer `setup`. |
-| `check` (`doctor`) | Checks every install: all files present, frontmatter valid, version matches this CLI, every module reference resolves, no RYUX 1.x folders, pointer blocks, project context and how many setup fields are filled. Exits 1 on errors, so it works in CI. |
+| `init` | Installs RYUX, then adds a `<!-- ryux-context -->` block to `DESIGN.md` (product, audience, market and locale, design system, evidence sources, constraints), prefilled only with what it can detect. Re-running never overwrites what you wrote. `--dry-run` lists what it would create or update and writes nothing. |
+| `install` | Writes the `ryux/` skill into each agent's folder and a short pointer block into `CLAUDE.md`, `GEMINI.md`, or `AGENTS.md`. Interactive installs then offer `setup`. `--dry-run` lists the folders and blocks it would create or update and writes nothing. |
+| `check` (`doctor`) | Checks every install: all files present, frontmatter valid, version matches this CLI, every module reference resolves, no RYUX 1.x folders, pointer blocks, project context and how many setup fields are filled. Each problem names the command that fixes it. Exits 1 on errors, so it works in CI; `--json` prints `{ ok, cli, scope, installs, findings: [{ level, where, message, fix }] }`. |
 | `update` | Rewrites installs at this version and migrates RYUX 1.x. |
 | `remove` | Removes the skill and the pointer blocks. Leaves your `DESIGN.md` context. |
+
+Exit codes: 0 done or healthy, 1 a problem was found or the command failed, 2 the command was used wrongly (an unknown command or agent).
 
 One version: `packages/cli/package.json`. The skill header, the plugin manifests, and
 `ryux --version` all derive from it.
