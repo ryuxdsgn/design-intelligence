@@ -101,6 +101,7 @@ run the purpose gate; keep it when the answer is real, as in the last column.
 | Color roles | RX-UI-04 |
 | Terminology | RX-CD-05 |
 | Components | RX-DS-02 |
+| Component property names | RX-DS-07 |
 | Interaction patterns and states | RX-DS-02 |
 | Responsive behavior | RX-RD-06 |
 | Visual hierarchy | RX-UI-01 |
