@@ -75,6 +75,7 @@ The repo itself is the main evidence (stack, components, tokens); reference scre
 - Do not: Rely on Intl currency style alone, which inserts a space after Rp.
 - Why: The built-in output does not match the Rp1.250.000 form used in copy. (ryux run 2026-10-02: order-total.ts with and without ryux)
 - Check: audit_copy C-07 on rendered strings
+- Machine check: `ryux scan` flags Intl currency style with IDR, which prints Rp 1.250.000,00 (a space, and decimals unless set to 0) (warn)
 
 ### RX-FE-13 [Required] One home for each piece of logic
 
