@@ -1,12 +1,17 @@
-// `ryux scan`: run the deterministic detectors (../scan.ts) over files and folders, or over the file an
-// agent just edited (--hook, fed by a Claude Code PostToolUse hook on stdin).
+// `ryux scan`: run the deterministic detectors (../scan.ts) over files and folders, measure rendered
+// pages given as URLs (./page-scan.ts), or check the file an agent just edited (--hook, fed by a
+// Claude Code PostToolUse hook on stdin).
 import { existsSync, statSync } from "node:fs";
 import { readFile, readdir } from "node:fs/promises";
 import { join, relative } from "node:path";
 import pc from "picocolors";
 import { RULES } from "../intelligence/content.js";
 import { VERSION } from "../product.js";
-import { DETECTORS, SCAN_EXTS, scanSources, toSource, type ScanFinding } from "../scan.js";
+import { DETECTORS, RENDER_CHECKS, SCAN_EXTS, scanSources, toSource, type ScanFinding } from "../scan.js";
+import { scanPages } from "./page-scan.js";
+
+const DEFAULT_WIDTHS = [320, 390, 1280];
+const isUrl = (t: string): boolean => /^(?:https?|file):\/\//.test(t);
 
 const SKIP_DIRS = new Set(["node_modules", "dist", "build", "out", "coverage", "vendor", ".next", ".nuxt", ".svelte-kit", ".output"]);
 const MAX_BYTES = 512 * 1024;
@@ -44,16 +49,20 @@ const title = (id: string): string => RULES.find((r) => r.id === id)?.title ?? "
 
 function listRules(json: boolean): void {
   if (json) {
-    console.log(JSON.stringify(DETECTORS.map((d) => ({ rule: d.rule, title: title(d.rule), level: d.level, looksFor: d.looksFor, folderOnly: Boolean(d.folder) })), null, 2));
+    const entry = (d: { rule: string; level: string; looksFor: string; folder?: boolean }, kind: string) => ({ rule: d.rule, title: title(d.rule), level: d.level, kind, looksFor: d.looksFor, folderOnly: Boolean(d.folder) });
+    console.log(JSON.stringify([...DETECTORS.map((d) => entry(d, "source")), ...RENDER_CHECKS.map((d) => entry(d, "render"))], null, 2));
     return;
   }
-  console.log(`ryux scan v${VERSION}: ${DETECTORS.length} checks for rules a machine can see in source code. No LLM, no network.\n`);
-  for (const d of DETECTORS) {
+  const row = (d: { rule: string; level: string; looksFor: string; folder?: boolean }): void => {
     console.log(`${d.level === "fail" ? pc.red("fail") : pc.yellow("warn")}  ${d.rule.padEnd(11)} ${title(d.rule)}`);
     console.log(`      ${d.looksFor}${d.folder ? " (folder scans only)" : ""}`);
-  }
+  };
+  console.log(`ryux scan v${VERSION}: checks for rules a machine can see. No LLM.\n\nSource files (${DETECTORS.length}):`);
+  DETECTORS.forEach(row);
+  console.log(`\nRendered pages, for a URL (${RENDER_CHECKS.length}; needs Playwright in the project; widths ${DEFAULT_WIDTHS.join(", ")} unless --widths):`);
+  RENDER_CHECKS.forEach(row);
   console.log(`\nfail: wrong wherever it appears, exit 1. warn: worth a look, exit 0.
-Not checked here: anything that needs a render (contrast, target size, overflow) or a judgment call.`);
+Not checked: a judgment call, which belongs to Critique.`);
 }
 
 /** Read the PostToolUse payload Claude Code sends on stdin and return the edited file, if any. */
@@ -68,12 +77,15 @@ async function hookFile(): Promise<string | null> {
   }
 }
 
-function report(findings: ScanFinding[], files: number): string {
+function report(findings: ScanFinding[], files: number, pages = 0): string {
   const mark = { fail: pc.red("✗"), warn: pc.yellow("!") };
-  const lines = findings.map((f) => `${mark[f.level]} ${f.file}:${f.line}:${f.column} ${f.rule} ${f.message}`);
+  const lines = findings.map((f) =>
+    f.width ? `${mark[f.level]} ${f.file} @${f.width}px ${f.rule} ${f.message} [${f.selector}]` : `${mark[f.level]} ${f.file}:${f.line}:${f.column} ${f.rule} ${f.message}`,
+  );
   const fails = findings.filter((f) => f.level === "fail").length;
   const warns = findings.length - fails;
-  lines.push(`${lines.length ? "\n" : ""}${files} file${files === 1 ? "" : "s"} scanned: ${fails} fail, ${warns} warn.`);
+  const what = [files || !pages ? `${files} file${files === 1 ? "" : "s"}` : "", pages ? `${pages} page${pages === 1 ? "" : "s"}` : ""].filter(Boolean).join(" and ");
+  lines.push(`${lines.length ? "\n" : ""}${what} scanned: ${fails} fail, ${warns} warn.`);
   return lines.join("\n");
 }
 
@@ -81,12 +93,20 @@ export async function runScan(argv: string[]): Promise<void> {
   const paths: string[] = [];
   const skip = new Set<string>();
   const opts = { json: false, hook: false, list: false };
+  let widths = DEFAULT_WIDTHS;
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
     if (a === "--json") opts.json = true;
     else if (a === "--hook") opts.hook = true;
     else if (a === "--list-rules") opts.list = true;
-    else if (a === "--ignore") (argv[++i] ?? "").split(",").filter(Boolean).forEach((id) => skip.add(id.trim()));
+    else if (a === "--widths") {
+      widths = (argv[++i] ?? "").split(",").map(Number);
+      if (!widths.length || widths.some((w) => !Number.isInteger(w) || w < 200 || w > 3840)) {
+        console.error("--widths takes CSS pixel widths from 200 to 3840, e.g. --widths 320,390,1280");
+        process.exitCode = 2;
+        return;
+      }
+    } else if (a === "--ignore") (argv[++i] ?? "").split(",").filter(Boolean).forEach((id) => skip.add(id.trim()));
     else if (a.startsWith("--")) {
       console.error(`Unknown option for scan: ${a}`);
       process.exitCode = 2;
@@ -106,19 +126,30 @@ export async function runScan(argv: string[]): Promise<void> {
     return;
   }
 
-  const targets = paths.length ? paths : ["."];
+  const urls = paths.filter(isUrl);
+  const local = paths.filter((t) => !isUrl(t));
+  const targets = local.length || urls.length ? local : ["."];
   const missing = targets.filter((t) => !existsSync(t));
   if (missing.length) {
     console.error(`Not found: ${missing.join(", ")}`);
     process.exitCode = 2;
     return;
   }
-  const { files, findings } = await scanPaths(targets, skip);
+  const { files, findings } = targets.length ? await scanPaths(targets, skip) : { files: 0, findings: [] };
+  if (urls.length) {
+    try {
+      findings.push(...(await scanPages(urls, widths)).filter((f) => !skip.has(f.rule)));
+    } catch (err) {
+      console.error(err instanceof Error ? err.message : err);
+      process.exitCode = 1;
+      return;
+    }
+  }
   const ok = !findings.some((f) => f.level === "fail");
   if (!ok) process.exitCode = 1;
   if (opts.json) {
-    console.log(JSON.stringify({ ok, cli: VERSION, files, findings }, null, 2));
+    console.log(JSON.stringify({ ok, cli: VERSION, files, pages: urls.length, widths: urls.length ? widths : [], findings }, null, 2));
     return;
   }
-  console.log(report(findings, files));
+  console.log(report(findings, files, urls.length));
 }

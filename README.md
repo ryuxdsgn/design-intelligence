@@ -112,6 +112,7 @@ and as a plugin for Claude Code (`/plugin marketplace add ryuxdsgn/design-intell
 
 To check code without an LLM, run `npx @ryuxdsgn/design-intelligence scan src`. It flags what a
 machine can see, such as images with no alt text, zoom turned off, or Rupiah written as `Rp 50.000`.
+Give it a URL to measure the rendered page: sideways scroll, contrast, target size, colliding text.
 Add `--hook` to `install` to scan each file Claude Code edits ([guide](GUIDE.md#scan-your-code)).
 
 ## Benchmarks

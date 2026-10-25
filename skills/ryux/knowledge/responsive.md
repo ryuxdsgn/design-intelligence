@@ -49,6 +49,7 @@ How reference flows adapt across widths when captured: `get_flow`, `search_scree
 - Not when: a desktop-only internal tool with a documented minimum width
 - Trade-off: more widths to design and test
 - Check: visual QA
+- Measured: `ryux scan <url>` flags a page that scrolls sideways at a scanned width, naming the widest elements (fail)
 
 ### RX-RD-02 [Required] Prioritize, simplify, reorganize
 
