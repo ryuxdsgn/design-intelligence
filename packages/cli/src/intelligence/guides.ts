@@ -50,9 +50,9 @@ export const CORE_WORKFLOW = `One workflow, six stages; each entry point runs th
    structure, not paint; reference screens through the ryux MCP when connected. A small change skips it.
 4. **Evaluate and select**: rate the alternatives against the Frame criteria with evidence
    (RX-PR-09, RX-PR-10); the user picks from options (capabilities/design.md); write the Decision Receipt.
-5. **Build and critique**: design or implement the choice, render, inspect, and fix; Reconsider an
-   unchosen alternative when a finding contradicts the choice, and say why.
+5. **Build and critique**: design or implement the choice, render, inspect, and fix.
 6. **Verify and deliver**: Hard Gates, the Delivery Gate, honest claims, and a user test plan (RX-UX-12).
+   In 5 or 6, a finding rooted in the frame or the choice goes back to stage 2 or 3 (Reconsider an unchosen alternative), with the reason; it is not patched in the build.
 
 Analyze runs 1. Design runs 1-6. Build runs 1, 5, and 6 (2-4 through Design when no design exists).
 Critique runs 1 and the critique half of 5. QA runs 6. Never go from "generate" straight to "done".`;
