@@ -142,8 +142,7 @@ The six stages of the core workflow (SKILL.md), as Design runs them.
    options and your recommendation first (stage 1, "Ask as choices"). Build only the chosen one
    into the full design (states, widths, Visual Brief, RX-UI-10), write the Design Direction
    below, and mark the others on the canvas as not chosen. When the user has already said to pick for
-   them, continue with the recommendation and say so, and still list in your answer the alternatives
-   you compared, one line each with its mechanism, before the choice.
+   them, continue with the recommendation and say so.
    **Modes after the choice.** Refine improves the chosen alternative without losing its hypothesis.
    Reconsider returns to an unchosen alternative when a later finding or new evidence contradicts the
    choice: name the finding, show the alternative again, and let the user decide. Results from a
@@ -350,7 +349,7 @@ export const CORE_HONESTY = `Report what was checked, how, and what was not avai
 "Keyboard and focus checked by hand; no automated accessibility test was available" instead.
 Rule IDs and gate results belong in your report, never on the design itself.`;
 
-export const CORE_DECISION_RECORD = `For consequential choices (RX-PR-09) and deviations, write **Decision**, **Options** compared (two or three, one line each with its mechanism, also when you chose for the user), **Evidence**,
+export const CORE_DECISION_RECORD = `For consequential choices (RX-PR-09) and deviations, write **Decision**, **Options** compared, **Evidence**,
 **Trade-off**, **Choice**, and **Test** (the riskiest assumption behind the choice, the cheapest way to test it, the signal that it works, and the result that would change the choice). Evidence is Strong (2+ comparable screen_ids), Thin (one, or another context),
 or None (no screen_id: a judgment call). With None on a consequential choice, show options or ask (RX-PR-10).`;
 

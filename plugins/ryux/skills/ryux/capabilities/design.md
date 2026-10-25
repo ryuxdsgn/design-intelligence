@@ -83,8 +83,7 @@ The six stages of the core workflow (SKILL.md), as Design runs them.
    options and your recommendation first (stage 1, "Ask as choices"). Build only the chosen one
    into the full design (states, widths, Visual Brief, RX-UI-10), write the Design Direction
    below, and mark the others on the canvas as not chosen. When the user has already said to pick for
-   them, continue with the recommendation and say so, and still list in your answer the alternatives
-   you compared, one line each with its mechanism, before the choice.
+   them, continue with the recommendation and say so.
    **Modes after the choice.** Refine improves the chosen alternative without losing its hypothesis.
    Reconsider returns to an unchosen alternative when a later finding or new evidence contradicts the
    choice: name the finding, show the alternative again, and let the user decide. Results from a
