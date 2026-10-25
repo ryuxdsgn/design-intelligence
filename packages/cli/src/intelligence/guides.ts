@@ -786,6 +786,9 @@ render, report these as NOT VERIFIED.
 **Render with what is available**, in this order: the project's own preview or test setup;
 \`npx playwright screenshot --viewport-size=1440,900 <url>\` (and 390 wide for mobile); a browser
 tool; a design-tool export such as pen.dev \`Export\`. If none is available, say so in the gate.
+For a build that runs, also measure it: \`npx @ryuxdsgn/design-intelligence scan <url>\` checks
+sideways scroll, contrast, target size, and colliding text at 320, 390, and 1280 px (it needs
+Playwright in the project). Report its fails in the gate; it does not replace looking at the render.
 
 ${UNTRUSTED_CONTENT}
 

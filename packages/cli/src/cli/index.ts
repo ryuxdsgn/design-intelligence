@@ -783,7 +783,8 @@ Commands:
   init        Install RYUX and add the DESIGN.md project context block.
   check       Check the install: files, version, references, pointers, project context.
   scan        Check source files for rules a machine can see (Rupiah format, alt text, zoom, focus, ...).
-              No LLM, no network. Default path: this folder.
+              No LLM, no network. Default path: this folder. Give a URL to measure the rendered page
+              (sideways scroll, contrast, target size, colliding text); that needs Playwright.
   update      Update an install to this version (also migrates RYUX 1.x folders).
   remove      Remove RYUX and the marked blocks.
   help        Show this help.
@@ -802,6 +803,7 @@ Options:
   --hook               install: run ryux scan after each Claude Code edit (opt-in)
   --list-rules         scan: list what each check looks for
   --ignore <ids>       scan: skip rules, e.g. RX-DS-03 (or a ryux-ignore RX-.. comment in the file)
+  --widths <list>      scan <url>: viewport widths in CSS px (default 320,390,1280)
   --product, --work, --audience, --market, --constraints, --intent, --ux, --ui, --motion <text>
                        set project context fields without questions (setup)
 
@@ -819,6 +821,7 @@ Examples:
   ${CLI_CMD} init --agent claude --dry-run
   ${CLI_CMD} check --json
   ${CLI_CMD} scan src
+  ${CLI_CMD} scan http://localhost:3000/checkout
   ${CLI_CMD} scan --list-rules
   ${CLI_CMD} install --agent claude --hook
 

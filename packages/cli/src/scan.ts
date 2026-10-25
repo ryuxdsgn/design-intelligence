@@ -45,7 +45,20 @@ export interface ScanFinding {
   line: number;
   column: number;
   message: string;
+  /** Rendered checks only: the viewport width and the element. */
+  width?: number;
+  selector?: string;
 }
+
+/** What `ryux scan <url>` measures on the rendered page (cli/page-probe.ts), for --list-rules and the
+ *  rule text. */
+export const RENDER_CHECKS: Pick<Detector, "rule" | "level" | "looksFor">[] = [
+  { rule: "RX-RD-01", level: "fail", looksFor: "a page that scrolls sideways at a scanned width, naming the widest elements" },
+  { rule: "RX-A11Y-01", level: "fail", looksFor: "text under 4.5:1 contrast (3:1 when large) on a solid background; text over images or gradients is skipped" },
+  { rule: "RX-A11Y-02", level: "fail", looksFor: "controls under 24x24px that are crowded by neighbours (warn when spaced as WCAG 2.5.8 allows); rendered text under 12px (warn)" },
+  { rule: "RX-QA-03", level: "warn", looksFor: "text boxes of unrelated elements that overlap" },
+  { rule: "RX-QA-08", level: "warn", looksFor: "script errors thrown while the page loads" },
+];
 
 const MARKUP = ["html", "htm", "jsx", "tsx", "vue", "svelte", "astro"] as const;
 const STYLE = ["css", "scss", "sass", "less"] as const;
