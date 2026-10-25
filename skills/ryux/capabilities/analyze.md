@@ -71,8 +71,10 @@ Cover what the captures show; skip what they do not, and say it was not visible.
 | **Imagery and motion** | art direction (product UI, photography, illustration, 3D) and its style; each visual's job; composition (where the focal point sits, the space kept for copy); motion character and level (L1 to L5) when motion was captured |
 | **Design language** | the visual language in 3 to 5 traits, each tied to evidence; component patterns; the spacing and typography systems; interaction patterns |
 
-Also note content and tone (natural Indonesian or translated, how money and dates are written) and
-local patterns (QRIS, virtual accounts, OTP, addresses, paylater, e-KYC).
+Also note content and tone (natural Indonesian or translated, how money and dates are written,
+"kamu" or "Anda") and local patterns (QRIS, virtual accounts, OTP, addresses, paylater, e-KYC). When
+there is enough copy, place the voice on the four RX-CD-11 scales with the screens it comes from;
+it is observed, not the brand's rule until the user confirms it.
 
 ### 4. Patterns and evidence
 

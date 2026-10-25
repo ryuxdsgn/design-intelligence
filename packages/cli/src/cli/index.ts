@@ -500,6 +500,21 @@ const CONTEXT_FIELDS: ContextField[] = [
     ] },
   },
   {
+    label: "Voice and tone", hint: "(voice words, how it addresses people, what it must never sound like; tone shifts by moment)",
+    ask: { flag: "voice", group: "Design", question: "How should it talk?", example: 'Hangat, lugas, pakai "kamu"', options: [
+      { value: "Warm and casual", label: "Warm and casual" },
+      { value: "Calm and professional", label: "Calm and professional" },
+      { value: "Direct and brief", label: "Direct and brief" },
+      { value: "Playful", label: "Playful", hint: "only where it costs no clarity" },
+      { value: "Reassuring", label: "Reassuring", hint: "for money, health, or waiting" },
+    ], then: { question: "What must it never sound like? Pick any.", example: "not preachy", multi: true, options: [
+      { value: "not stiff or overly formal", label: "Stiff or overly formal" },
+      { value: "not salesy or hyped", label: "Salesy or hyped" },
+      { value: "not too familiar", label: "Too familiar" },
+      { value: "no jokes when things go wrong", label: "Jokey when things go wrong" },
+    ] } },
+  },
+  {
     label: "Motion direction", hint: "(feel, what motion communicates, what to avoid)",
     ask: { flag: "motion", group: "Design", question: "How much motion?", example: "Only to confirm a payment went through", options: [
       { value: "No motion unless necessary", label: "No motion unless necessary" },
@@ -804,7 +819,7 @@ Options:
   --list-rules         scan: list what each check looks for
   --ignore <ids>       scan: skip rules, e.g. RX-DS-03 (or a ryux-ignore RX-.. comment in the file)
   --widths <list>      scan <url>: viewport widths in CSS px (default 320,390,1280)
-  --product, --work, --audience, --market, --constraints, --intent, --ux, --ui, --motion <text>
+  --product, --work, --audience, --market, --constraints, --intent, --ux, --ui, --voice, --motion <text>
                        set project context fields without questions (setup)
 
 Examples:
