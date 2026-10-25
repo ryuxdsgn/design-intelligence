@@ -141,3 +141,47 @@ test("install --hook adds the hook, keeps the user's settings, and remove takes 
   assert.equal(readFileSync(settings, "utf8"), "{ broken", "an unreadable settings file is never overwritten");
   rmSync(dir, { recursive: true, force: true });
 });
+
+test("scan <url> without Playwright says how to add it and exits 1", () => {
+  const dir = mkdtempSync(join(tmpdir(), "ryux-scan-"));
+  const r = run(dir, ["scan", "https://example.com"]);
+  assert.equal(r.code, 1);
+  assert.match(r.out, /npm i -D playwright && npx playwright install chromium/);
+  assert.equal(run(dir, ["scan", "https://example.com", "--widths", "10"]).code, 2);
+  rmSync(dir, { recursive: true, force: true });
+});
+
+// Needs Playwright with its Chromium where the CLI runs: RYUX_PLAYWRIGHT_CWD, or the repo root.
+// Skipped when neither has one, so CI without a browser still passes.
+test("scan <url> measures overflow, contrast, targets, and collisions, and skips what it cannot know", (t) => {
+  const dir = mkdtempSync(join(tmpdir(), "ryux-page-"));
+  const page = join(dir, "page.html");
+  writeFileSync(
+    page,
+    `<!doctype html><meta name="viewport" content="width=device-width"><style>
+body{margin:0;font:16px sans-serif;background:#fff}.wide{width:600px}.grey{color:#bbb}
+.hero{position:relative;height:80px}.hero img{position:absolute;inset:0;width:100%;height:100%}.hero p{position:relative;color:#fff}
+.icons button{width:16px;height:16px;padding:0;margin:0;border:0}.over{position:relative}.over span{position:absolute;top:0;left:0}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}</style>
+<div class="wide">wide</div><p class="grey">grey text</p><p>dark text</p>
+<div class="hero"><img alt="" src="data:image/gif;base64,R0lGODlhAQABAAAAACw="><p>white on a photo</p></div>
+<div class="icons"><button aria-label="a"></button><button aria-label="b"></button></div>
+<p>Read <a href="#">the terms</a> first.</p><div class="over"><b>Rp50.000</b><span>Big sale</span></div>
+<div class="sr">hidden header</div><span>hidden header</span><button disabled style="color:#ccc">Off</button>`,
+  );
+  const r = run(process.env.RYUX_PLAYWRIGHT_CWD ?? join(dirname(cli), "..", "..", ".."), ["scan", `file://${page}`, "--widths", "320", "--json"]);
+  if (/needs Playwright|could not start Chromium/.test(r.out)) {
+    rmSync(dir, { recursive: true, force: true });
+    return t.skip("no Playwright browser here");
+  }
+  const found = JSON.parse(r.out).findings.map((f) => `${f.level} ${f.rule} ${f.message.split(/[:(]/)[0].trim()}`);
+  assert.equal(r.code, 1);
+  assert.deepEqual(found.sort(), [
+    'fail RX-A11Y-01 "grey text"',
+    'fail RX-A11Y-02 "a"',
+    'fail RX-A11Y-02 "b"',
+    "fail RX-RD-01 the page scrolls sideways",
+    'warn RX-QA-03 "Rp50.000" overlaps "Big sale"',
+  ]);
+  rmSync(dir, { recursive: true, force: true });
+});

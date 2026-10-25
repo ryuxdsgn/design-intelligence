@@ -1092,6 +1092,7 @@ Gate area ACCESSIBILITY. Covers semantics, keyboard, focus, contrast, targets, n
 - Do not: Put light grey text on white or white text on a pale accent.
 - Why: Low contrast fails outdoors, on cheap screens, and for low vision. (WCAG 2.2 SC 1.4.3 and 1.4.11)
 - Check: audit_ui
+- Measured: `ryux scan <url>` flags text under 4.5:1 contrast (3:1 when large) on a solid background; text over images or gradients is skipped (fail)
 
 #### RX-A11Y-02 [Required] [Hard Gate] Readable text, reachable targets
 
@@ -1100,6 +1101,7 @@ Gate area ACCESSIBILITY. Covers semantics, keyboard, focus, contrast, targets, n
 - Why: Small text and targets cause misreads and mis-taps. (WCAG 2.2 SC 2.5.8 (24px minimum); Apple HIG 44pt; Material 48dp; Fitts's law (Fitts 1954): bigger and nearer targets are faster to hit)
 - Check: audit_ui
 - Machine check: `ryux scan` flags zoom turned off: user-scalable=no, maximum-scale=1, userScalable: false, maximumScale: 1 (fail); text set below 12px (CSS font-size, Tailwind text-[Npx], fontSize in style objects) (warn)
+- Measured: `ryux scan <url>` flags controls under 24x24px that are crowded by neighbours (warn when spaced as WCAG 2.5.8 allows); rendered text under 12px (warn) (fail)
 
 #### RX-A11Y-03 [Required] [Hard Gate] Keyboard and visible focus
 
@@ -1156,6 +1158,7 @@ Gate area RESPONSIVE. Covers prioritize, simplify, reorganize; tables, overlays,
 - Not when: a desktop-only internal tool with a documented minimum width
 - Trade-off: more widths to design and test
 - Check: visual QA
+- Measured: `ryux scan <url>` flags a page that scrolls sideways at a scanned width, naming the widest elements (fail)
 
 #### RX-RD-02 [Required] Prioritize, simplify, reorganize
 
@@ -1299,6 +1302,7 @@ Gate area VISUAL QA. Covers did the build match the intended design: compare, li
 - Do not: Let a card cover prices or labels, or let nav items touch.
 - Why: Covered text is lost information and looks broken. (ryux run 2026-10-02: QRIS card over prices, colliding nav)
 - Check: screenshot
+- Measured: `ryux scan <url>` flags text boxes of unrelated elements that overlap (warn)
 
 #### RX-QA-04 [Required] Numbers agree
 
@@ -1321,6 +1325,7 @@ Gate area VISUAL QA. Covers did the build match the intended design: compare, li
 - Why: A broken primary action fails the one thing the screen exists for, whatever else is right. (Usability testing practice (task completion); owner review 2026-10-25: a broken main interaction belongs with the checks that cannot be argued)
 - Not when: static mockups with no interaction; then say the flow was not run and VISUAL QA is NOT VERIFIED
 - Check: run the primary task and one failure path in the render; fails on any dead end
+- Measured: `ryux scan <url>` flags script errors thrown while the page loads (warn)
 
 ---
 
