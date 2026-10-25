@@ -57,7 +57,8 @@ The plugin is the same skill in every agent: `plugins/ryux/` follows the open Ag
 ### Project setup (DESIGN.md)
 
 After the install, the CLI offers a short setup: product, what you are building right now,
-audience, market and locale, constraints, design intent, and UX, UI, and motion direction. You don't
+audience, market and locale, constraints, design intent, UX and UI direction, voice and tone, and
+motion direction. You don't
 need design vocabulary: each question offers plain choices, "Write my own", or "Skip, leave unknown".
 The answers go into a `<!-- ryux-context -->` block in `DESIGN.md`, which RYUX reads before every
 design task.
@@ -69,6 +70,7 @@ with evidence, and treats blanks as unknown instead of guessing. A UI direction 
 ```bash
 npx @ryuxdsgn/design-intelligence setup                                  # change the answers
 npx @ryuxdsgn/design-intelligence setup --audience "small business owners" --market "Global"
+npx @ryuxdsgn/design-intelligence setup --voice "Warm and casual, not salesy or hyped"
 npx @ryuxdsgn/design-intelligence check                                  # health check
 ```
 

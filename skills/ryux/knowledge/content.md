@@ -97,13 +97,14 @@ Real labels, errors, and how money, dates, and times are written in the product'
 ### RX-CD-11 [Preferred] Tone fits the moment, voice stays
 
 - Do: Set a tone profile once, from the brand and the users, on four scales: formal to casual, serious to funny, respectful to irreverent, matter-of-fact to enthusiastic; add a few tone words and the anti-tone words to avoid ("hangat, tidak sok akrab").
+  - Take it from the Voice and tone field in DESIGN.md when it is set. When it is blank, infer it from the product's existing copy or brand docs, label it inferred in Assumptions, and keep it out of DESIGN.md until the user confirms it: copy that is live is observed, not a brand rule.
   - Keep the voice the same everywhere and shift the tone with the user's state: matter-of-fact and serious for errors, money, and waiting; brief for success, where a check mark already says it worked ("Alamat disimpan", without "berhasil" unless the voice wants the warmth); warmer only in onboarding and empty moments.
   - Add personality only where it costs no clarity or length: clarity first, concision second, character third.
 - Do not: Joke in an error or a payment failure, cheer on a routine save, or switch between "kamu" and "Anda" across screens.
 - Why: The same words feel caring in one moment and careless in another; tone measurably changes how users judge a product. (NNGroup tone-of-voice dimensions (four dimensions; tested tone profiles); NNGroup 3 C's of informational microcopy)
 - Not when: the brand guide already defines the tone; follow it
 - Trade-off: a sober tone in serious moments gives up some brand flavour
-- Check: review
+- Check: review against the Voice and tone field in DESIGN.md; a profile taken from existing copy is labeled inferred
 
 ### RX-CD-12 [Required] Labels say what happens
 
