@@ -167,7 +167,7 @@ export const RULES: Rule[] = [
       level: "required",
       gate: "hard",
       do: "Give each screen one clear, dominant goal. When the task has a clear next step (a form, checkout, a confirmation), give it one primary action and make secondary actions look secondary.",
-      dont: "Put two equal-weight calls to action side by side, or leave the screen's goal unclear.",
+      dont: "Put two equal-weight calls to action side by side.",
       notWhen: "Monitoring and configuration screens (dashboards, settings) need a clear goal but not a single dominant action; do not invent one to satisfy this rule.",
       why: "A single clear path shortens the decision and the task.",
       basis: "Hick's law (Hick 1952; Hyman 1953): more options, longer decisions; NNGroup visual hierarchy",
@@ -906,8 +906,8 @@ export const RULES: Rule[] = [
       title: "Detail craft",
       level: "preferred",
       gate: "lock",
-      do: "Center icons on the optical middle of the text beside them and size them to its line-height; match icon stroke to the type weight; right-align (or decimal-align) number columns; take borders, dividers, radii, and shadows from a small token set; truncate long text on purpose, with the full value still reachable (a tooltip, a detail view, or wrapping).",
-      dont: "Let icons sit high or low against their labels, mix stroke weights, center amounts in a table, or invent a one-off shadow for one card.",
+      do: "Center icons on the optical middle of the text beside them and size them to its line-height; take every icon from one set and match its stroke to the type weight; right-align (or decimal-align) number columns; take borders, dividers, radii, and shadows from a small token set; truncate long text on purpose, with the full value still reachable (a tooltip, a detail view, or wrapping).",
+      dont: "Let icons sit high or low against their labels, mix icon sets or stroke weights, center amounts in a table, or invent a one-off shadow for one card.",
       why: "Each detail is small; together they are what makes a screen look made rather than generated.",
       basis: "Bringhurst (figures and alignment); Apple HIG and Material iconography (optical size and alignment); owner review 2026-10-17: wrong tab icons in withryux.pen",
       check: "render inspection at 390 and 1280: icon center within 2 px of the text center; column alignment",
@@ -958,6 +958,7 @@ export const RULES: Rule[] = [
       num: 11,
       title: "Motion earns its level",
       level: "contextual",
+      gate: "lock",
       when: "the design adds motion or transitions",
       do: "Classify each motion: L1 state feedback, L2 component transition, L3 page transition, L4 storytelling, L5 decorative; the higher the level, the stronger the reason it needs.\n  - Weigh how often people see it: a surface opened many times a day (command palette, shortcut, core navigation, list selection) appears and closes without movement, at most a fade too short to notice; standard transitions belong to occasional surfaces (modal, drawer, toast), and expression to rare or first-time moments.\n  - Take timing and easing from one motion personality, define them once as motion tokens, animate transform and opacity rather than layout properties, and honor reduced motion (RX-A11Y-08).\n  - Anything that opens and closes (menu, popover, dialog, drawer) uses transitions that can reverse halfway, so a close or reopen mid-animation turns back from where it is, and it closes no slower than it opened.",
       dont: "Animate everything, give a surface people open many times a day an entrance they must sit through, play an open-only keyframe animation on something people can close or reopen at any moment, use one generic duration and easing (transition: all 0.3s) everywhere, let decorative motion delay content or input, or move data the user is reading (a balance, an amount, a table value) for effect.",
@@ -1391,6 +1392,18 @@ export const RULES: Rule[] = [
       basis: `pattern also in ${AS} R-33; written for RYUX`,
       check: "review the diff",
     },
+    {
+      num: 16,
+      title: "The build passes",
+      level: "required",
+      gate: "hard",
+      do: "Before handoff, run the checks the repo already has (build, typecheck, lint, tests) and fix what fails. Report each one you ran and its result; a check you could not run is named, and the work is not called done.",
+      dont: "Hand off code that does not build or typecheck, silence an error to make it pass (a type cast, a disabled rule, a skipped test), or call it done without running the checks.",
+      notWhen: "design-only work with no code; then CODE QUALITY is N/A",
+      why: "A build that fails cannot be reviewed, rendered, or shipped; every other check in the Delivery Gate depends on it.",
+      basis: "Continuous integration practice; owner review 2026-10-25: build failure belongs with the checks that cannot be argued",
+      check: "run the repo's build, typecheck, lint, and tests; fails on any error",
+    },
   ]),
 
   ...skill("visual-qa", [
@@ -1434,6 +1447,18 @@ export const RULES: Rule[] = [
       why: "Visual QA answers whether the build matches the intent; whether the design is good is Critique's question.",
       basis: "ryux visual QA loop; ryux evidence principle",
       check: "screenshot comparison, search_screens",
+    },
+    {
+      num: 8,
+      title: "The primary task completes",
+      level: "required",
+      gate: "hard",
+      do: "In the running build or a clickable prototype, do the screen's primary task from start to result as a user would (tap, type, submit), then one failure path (invalid input or a failed request). Name the path you ran.",
+      dont: "Hand off a primary flow with a dead end: a button that does nothing, a submit that never resolves, a step that cannot be reached, or an error with no way back.",
+      notWhen: "static mockups with no interaction; then say the flow was not run and VISUAL QA is NOT VERIFIED",
+      why: "A broken primary action fails the one thing the screen exists for, whatever else is right.",
+      basis: "Usability testing practice (task completion); owner review 2026-10-25: a broken main interaction belongs with the checks that cannot be argued",
+      check: "run the primary task and one failure path in the render; fails on any dead end",
     },
   ]),
 
@@ -1501,12 +1526,11 @@ export const RULES: Rule[] = [
       num: 6,
       title: "Complexity with a reason",
       level: "required",
-      gate: "hard",
       do: "Remove elements, options, states, code paths, abstractions, and dependencies that serve no stated need. Complexity that cannot be removed is carried by the product (defaults, formatting, calculation), not handed to the user.",
       dont: "Add settings, sections, abstractions, or packages \"for later\", or features because similar products have them.",
       why: "Unneeded complexity costs every user and every future change.",
       basis: "Nielsen heuristic 8; Tesler's law of conserved complexity (Tesler, 1980s): some complexity cannot be removed, only moved; clean-code practice",
-      check: "list each element, option, state, and dependency the work added and the need it serves; fails on any without one",
+      check: "list each element, option, state, and dependency the work added and the need it serves; fails on any without one or a written reason",
       formerly: ["RX-K-05"],
     },
     {
@@ -1647,10 +1671,11 @@ export const HARD_GATES: { item: string; rules: string[] }[] = [
   { item: "Missing critical states", rules: ["RX-EC-01"] },
   { item: "Broken responsive behavior", rules: ["RX-RD-01"] },
   { item: "Accessibility failures", rules: ["RX-A11Y-01", "RX-A11Y-02", "RX-A11Y-03", "RX-A11Y-04"] },
-  { item: "Unclear goal or competing actions", rules: ["RX-PR-03"] },
-  { item: "Unexplained interaction behavior", rules: ["RX-IX-01", "RX-IX-12"] },
+  { item: "Competing primary actions", rules: ["RX-PR-03"] },
+  { item: "Unexplained interaction behavior", rules: ["RX-IX-01"] },
   { item: "Duplicate components", rules: ["RX-DS-01"] },
-  { item: "Unnecessary complexity", rules: ["RX-AS-06"] },
+  { item: "Build or typecheck fails", rules: ["RX-FE-16"] },
+  { item: "Primary task cannot be completed", rules: ["RX-QA-08"] },
 ];
 
 // Brief item: consistency that must hold across the product.
@@ -1664,6 +1689,8 @@ export const QUALITY_LOCKS: { item: string; rules: string[] }[] = [
   { item: "Responsive behavior", rules: ["RX-RD-06"] },
   { item: "Visual hierarchy", rules: ["RX-UI-01"] },
   { item: "Radius", rules: ["RX-UI-03", "RX-DS-03"] },
+  { item: "Icons", rules: ["RX-UI-15", "RX-UI-20"] },
+  { item: "Motion", rules: ["RX-UI-11"] },
 ];
 
 // Contextual activation: load only what the task needs (core is always loaded).

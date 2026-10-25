@@ -154,7 +154,7 @@ How comparable products use imagery and motion: `search_screens` by pattern, `ex
 - Trade-off: less freedom to place the subject
 - Check: render at each width; review
 
-### RX-UI-11 [Contextual] Motion earns its level
+### RX-UI-11 [Contextual] [Quality Lock] Motion earns its level
 
 - When: the design adds motion or transitions
 - Do: Classify each motion: L1 state feedback, L2 component transition, L3 page transition, L4 storytelling, L5 decorative; the higher the level, the stronger the reason it needs.

@@ -110,10 +110,11 @@ ryux's own agent runs say so ("ryux run 2026-10-02").
 | Missing critical states | RX-EC-01 |
 | Broken responsive behavior | RX-RD-01 |
 | Accessibility failures | RX-A11Y-01, RX-A11Y-02, RX-A11Y-03, RX-A11Y-04 |
-| Unclear goal or competing actions | RX-PR-03 |
-| Unexplained interaction behavior | RX-IX-01, RX-IX-12 |
+| Competing primary actions | RX-PR-03 |
+| Unexplained interaction behavior | RX-IX-01 |
 | Duplicate components | RX-DS-01 |
-| Unnecessary complexity | RX-AS-06 |
+| Build or typecheck fails | RX-FE-16 |
+| Primary task cannot be completed | RX-QA-08 |
 <!-- hardgates:end -->
 
 ### Purpose Gates
@@ -158,6 +159,8 @@ a result, ask **"Why does this exist?"** and remove it when there is no meaningf
 | Responsive behavior | RX-RD-06 |
 | Visual hierarchy | RX-UI-01 |
 | Radius | RX-UI-03, RX-DS-03 |
+| Icons | RX-UI-15, RX-UI-20 |
+| Motion | RX-UI-11 |
 <!-- locks:end -->
 
 ## Delivery Gate
@@ -206,9 +209,9 @@ line below for its exact source.
 | Industry practice | 16 | 5 |
 | Observed in a RYUX run | 15 | 8 |
 | Pattern also in another MIT ruleset (text written for RYUX) | 4 | 4 |
-| RYUX principle, taxonomy, or review | 38 | 20 |
+| RYUX principle, taxonomy, or review | 40 | 22 |
 
-All 116 rules cite a source; 27 cite more than one kind, so the "Rules citing it" column adds up to more than 116.
+All 118 rules cite a source; 27 cite more than one kind, so the "Rules citing it" column adds up to more than 118.
 <!-- provenance:end -->
 
 ## Rules
@@ -216,7 +219,7 @@ All 116 rules cite a source; 27 cite more than one kind, so the "Rules citing it
 Generated from `packages/cli/src/content.ts` by `pnpm sync:skills`. Edit the rules there, not here.
 
 <!-- rules:start -->
-116 rules across 14 modules: 59 Required, 20 Preferred, 37 Contextual; 17 Hard Gates and 11 Quality Locks.
+118 rules across 14 modules: 61 Required, 20 Preferred, 37 Contextual; 18 Hard Gates and 12 Quality Locks.
 
 ### Product thinking (RX-PR) · `knowledge/product.md`
 
@@ -247,7 +250,7 @@ Gate area PRODUCT. Covers user, task, goal, primary action, constraints, assumpt
 #### RX-PR-03 [Required] [Hard Gate] One clear goal; one primary action when the task has one
 
 - Do: Give each screen one clear, dominant goal. When the task has a clear next step (a form, checkout, a confirmation), give it one primary action and make secondary actions look secondary.
-- Do not: Put two equal-weight calls to action side by side, or leave the screen's goal unclear.
+- Do not: Put two equal-weight calls to action side by side.
 - Why: A single clear path shortens the decision and the task. (Hick's law (Hick 1952; Hyman 1953): more options, longer decisions; NNGroup visual hierarchy)
 - Not when: Monitoring and configuration screens (dashboards, settings) need a clear goal but not a single dominant action; do not invent one to satisfy this rule.
 - Check: name the screen's goal and its primary action, then count the controls styled as primary in the main state; fails when two compete at the same weight
@@ -843,8 +846,8 @@ Gate area UI. Covers the visual system of a product: hierarchy, type, layout, de
 
 #### RX-UI-15 [Preferred] [Quality Lock] Detail craft
 
-- Do: Center icons on the optical middle of the text beside them and size them to its line-height; match icon stroke to the type weight; right-align (or decimal-align) number columns; take borders, dividers, radii, and shadows from a small token set; truncate long text on purpose, with the full value still reachable (a tooltip, a detail view, or wrapping).
-- Do not: Let icons sit high or low against their labels, mix stroke weights, center amounts in a table, or invent a one-off shadow for one card.
+- Do: Center icons on the optical middle of the text beside them and size them to its line-height; take every icon from one set and match its stroke to the type weight; right-align (or decimal-align) number columns; take borders, dividers, radii, and shadows from a small token set; truncate long text on purpose, with the full value still reachable (a tooltip, a detail view, or wrapping).
+- Do not: Let icons sit high or low against their labels, mix icon sets or stroke weights, center amounts in a table, or invent a one-off shadow for one card.
 - Why: Each detail is small; together they are what makes a screen look made rather than generated. (Bringhurst (figures and alignment); Apple HIG and Material iconography (optical size and alignment); owner review 2026-10-17: wrong tab icons in withryux.pen)
 - Check: render inspection at 390 and 1280: icon center within 2 px of the text center; column alignment
 
@@ -888,7 +891,7 @@ Gate area UI. Covers art direction, composition, expressive surfaces, motion, as
 - Trade-off: less freedom to place the subject
 - Check: render at each width; review
 
-#### RX-UI-11 [Contextual] Motion earns its level
+#### RX-UI-11 [Contextual] [Quality Lock] Motion earns its level
 
 - When: the design adds motion or transitions
 - Do: Classify each motion: L1 state feedback, L2 component transition, L3 page transition, L4 storytelling, L5 decorative; the higher the level, the stronger the reason it needs.
@@ -1257,6 +1260,14 @@ Gate area CODE QUALITY. Covers the repo's own stack, semantic elements, one home
 - Why: Patched output is overwritten by the next build and hides where the behavior lives. (pattern also in anti-slop (MIT) R-33; written for RYUX)
 - Check: review the diff
 
+#### RX-FE-16 [Required] [Hard Gate] The build passes
+
+- Do: Before handoff, run the checks the repo already has (build, typecheck, lint, tests) and fix what fails. Report each one you ran and its result; a check you could not run is named, and the work is not called done.
+- Do not: Hand off code that does not build or typecheck, silence an error to make it pass (a type cast, a disabled rule, a skipped test), or call it done without running the checks.
+- Why: A build that fails cannot be reviewed, rendered, or shipped; every other check in the Delivery Gate depends on it. (Continuous integration practice; owner review 2026-10-25: build failure belongs with the checks that cannot be argued)
+- Not when: design-only work with no code; then CODE QUALITY is N/A
+- Check: run the repo's build, typecheck, lint, and tests; fails on any error
+
 ---
 
 ### Visual QA (RX-QA) · `capabilities/qa.md`
@@ -1294,6 +1305,14 @@ Gate area VISUAL QA. Covers did the build match the intended design: compare, li
 - Do not: Call the build done while it visibly differs from the design without saying so, or judge it only against itself.
 - Why: Visual QA answers whether the build matches the intent; whether the design is good is Critique's question. (ryux visual QA loop; ryux evidence principle)
 - Check: screenshot comparison, search_screens
+
+#### RX-QA-08 [Required] [Hard Gate] The primary task completes
+
+- Do: In the running build or a clickable prototype, do the screen's primary task from start to result as a user would (tap, type, submit), then one failure path (invalid input or a failed request). Name the path you ran.
+- Do not: Hand off a primary flow with a dead end: a button that does nothing, a submit that never resolves, a step that cannot be reached, or an error with no way back.
+- Why: A broken primary action fails the one thing the screen exists for, whatever else is right. (Usability testing practice (task completion); owner review 2026-10-25: a broken main interaction belongs with the checks that cannot be argued)
+- Not when: static mockups with no interaction; then say the flow was not run and VISUAL QA is NOT VERIFIED
+- Check: run the primary task and one failure path in the render; fails on any dead end
 
 ---
 
@@ -1340,12 +1359,12 @@ Gate area ANTI-SLOP. Covers hard gates, purpose gates, quality locks, honest cla
 - Why: Unjustified decoration is what makes AI-generated UI look the same. (ryux anti-slop principle)
 - Check: review
 
-#### RX-AS-06 [Required] [Hard Gate] Complexity with a reason
+#### RX-AS-06 [Required] Complexity with a reason
 
 - Do: Remove elements, options, states, code paths, abstractions, and dependencies that serve no stated need. Complexity that cannot be removed is carried by the product (defaults, formatting, calculation), not handed to the user.
 - Do not: Add settings, sections, abstractions, or packages "for later", or features because similar products have them.
 - Why: Unneeded complexity costs every user and every future change. (Nielsen heuristic 8; Tesler's law of conserved complexity (Tesler, 1980s): some complexity cannot be removed, only moved; clean-code practice)
-- Check: list each element, option, state, and dependency the work added and the need it serves; fails on any without one
+- Check: list each element, option, state, and dependency the work added and the need it serves; fails on any without one or a written reason
 
 #### RX-AS-07 [Required] Claims match the evidence
 
