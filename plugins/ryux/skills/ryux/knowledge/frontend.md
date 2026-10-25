@@ -99,3 +99,11 @@ The repo itself is the main evidence (stack, components, tokens); reference scre
 - Do not: Build a feature with a script that rewrites CSS or source by string replacement, or patch generated files.
 - Why: Patched output is overwritten by the next build and hides where the behavior lives. (pattern also in anti-slop (MIT) R-33; written for RYUX)
 - Check: review the diff
+
+### RX-FE-16 [Required] [Hard Gate] The build passes
+
+- Do: Before handoff, run the checks the repo already has (build, typecheck, lint, tests) and fix what fails. Report each one you ran and its result; a check you could not run is named, and the work is not called done.
+- Do not: Hand off code that does not build or typecheck, silence an error to make it pass (a type cast, a disabled rule, a skipped test), or call it done without running the checks.
+- Why: A build that fails cannot be reviewed, rendered, or shipped; every other check in the Delivery Gate depends on it. (Continuous integration practice; owner review 2026-10-25: build failure belongs with the checks that cannot be argued)
+- Not when: design-only work with no code; then CODE QUALITY is N/A
+- Check: run the repo's build, typecheck, lint, and tests; fails on any error
