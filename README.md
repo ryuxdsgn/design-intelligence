@@ -19,8 +19,7 @@ understand product context, separate facts from assumptions, decide, and verify 
 
 ## See the difference
 
-Same brief, same model, a fresh agent per run: a personal finance app with a dashboard, a payment,
-and the payment success screen, designed in pen.dev. Run 1 of each side, chosen before the runs.
+Same brief, same model, a fresh agent per run: a personal finance app designed in pen.dev.
 
 <a href="docs/benchmarks/hero-finance/"><img src="docs/benchmarks/hero-finance/see-the-difference.gif" alt="Animation: the same brief; with no skill the agent draws right away, with RYUX it asks three questions first; then both sets of screens; close-ups with seven invented facts circled on the left and labeled assumptions on the right; seven states drawn on the right and none on the left; then the totals across three runs, and a follow-up turn on the RYUX side with its recorded success animation" width="100%"></a>
 
@@ -35,26 +34,14 @@ decisions differ:
 - **States.** With no skill, the three screens only. With RYUX, 6 to 7 more: loading, empty, offline,
   processing, not enough balance, declined, and a narrow width.
 
-Three runs per side, RYUX 2.9.3. The end of the clip is a follow-up turn on the RYUX side only
-("more modern, simpler, a success that feels like a thank-you"), recorded from the build it made.
-Real brand names in the no-skill screens are blurred.
+Three runs per side, RYUX 2.9.3; brand names in the no-skill screens are blurred.
 [Brief, method, and every run](docs/benchmarks/hero-finance/).
 
-## Who it's for
+## Why RYUX
 
-- **Product designers** using AI to explore and produce screens, who want the UX decisions to stay
-  visible and checkable.
-- **Developers with AI coding agents** who want fewer product and design decisions made on guesses.
-- **Design engineers** connecting design direction, implementation, critique, and visual QA.
-
-## The problem and the approach
-
-- AI can generate an interface without the product context behind it.
-- Missing information quietly turns into assumptions on screen: an invented fee, a feature nobody
-  confirmed, a promise the product never made.
-- A screen that looks complete is not necessarily correct.
-
-RYUX sorts what the agent is working with before it designs:
+An agent can produce a screen that looks finished without the product context behind it, and the
+gaps quietly become content: an invented fee, a feature nobody confirmed, a promise the product
+never made. RYUX makes the agent sort what it is working with before it designs:
 
 - **Known**: stated in the prompt, DESIGN.md, or your product docs, or seen in the design itself.
 - **Design assumptions**: low-risk choices made from the context, written down.
@@ -71,6 +58,9 @@ Confidence   Low
 Assumption   [CONFIRM] The fee is charged on top of the amount.
              If the fee is taken out of the amount instead, the rows change.
 ```
+
+For product designers using AI to explore screens, developers with AI coding agents, and design
+engineers who connect design, build, critique, and QA.
 
 ## How it works
 
@@ -118,29 +108,16 @@ Add `--hook` to `install` to scan each file Claude Code edits ([guide](GUIDE.md#
 ## Benchmarks
 
 Each benchmark fixes its criteria before the first run, uses a fresh agent per run, and publishes the
-raw outputs. What each one shows, and its scope:
+raw outputs.
 
-- **Asking, invented facts, and states** (personal finance, above): asked first in 3 of 3 runs, no
-  fact shown that the brief did not give, 6 to 7 more states. 3 + 3 runs, counts only.
-- **States and promises** (Lumo transaction detail): more states covered, and no added action or
-  promise shown as fact. 3 + 3 runs.
-- **Typography**: on one Billing page, RYUX 2.9.2 brought paragraph lines down to 75–77 characters
-  in 2 of 3 runs (2.9.1: about 90 in all three) and scored higher on nine checks in 2 of 3 pairs; a product designer shipped the 2.9.2 page
-  in 2 of 3 blind pairs. 3 + 3 runs, one rater.
-- **Three directions**: on an expressive brief, every run rendered three structurally different
-  directions before building one; the designer found them real choices in 2 of 3 sets. 3 runs, one
-  rater.
-- **Hierarchy in Critique**: on screens with planted defects, "control far from its data" was found
-  in 4 of 6 cases, up from 0 of 6, with no false findings. 3 runs per condition.
-
-| Benchmark | Runs |
-| --- | --- |
-| [Personal finance app](docs/benchmarks/hero-finance/) | 3 + 3 |
-| [Lumo transaction detail](docs/benchmarks/lumo-td-2.6/) | 3 + 3 |
-| [Typography](docs/benchmarks/typo-craft/) (scorer included, [run it yourself](docs/benchmarks/typo-craft/#run-it-yourself)) | 3 + 3 |
-| [Explore, judge, critique](docs/benchmarks/explore-judge/) | 3–6 per condition |
-| [Five steps on one screen](docs/benchmarks/case-td-2.6/) | 1 |
-| [Scenarios](docs/benchmarks/scenarios/) | 1 + 1 each |
+| Benchmark | What it showed | Runs |
+| --- | --- | --- |
+| [Personal finance app](docs/benchmarks/hero-finance/) | Asked first in 3 of 3 runs; no fact the brief did not give; 6 to 7 more states | 3 + 3 |
+| [Lumo transaction detail](docs/benchmarks/lumo-td-2.6/) | More states covered; no added action or promise shown as fact | 3 + 3 |
+| [Typography](docs/benchmarks/typo-craft/) ([run it yourself](docs/benchmarks/typo-craft/#run-it-yourself)) | Paragraph lines down to 75–77 characters in 2 of 3 runs (from about 90); a designer shipped it in 2 of 3 blind pairs | 3 + 3, one rater |
+| [Explore, judge, critique](docs/benchmarks/explore-judge/) | Three structurally different directions in every run, real choices to the designer in 2 of 3 sets; "control far from its data" found in 4 of 6 planted cases, up from 0, with no false findings | 3–6 per condition |
+| [Five steps on one screen](docs/benchmarks/case-td-2.6/) | One screen through Analyze, Critique, Design, Build, and QA; a case study, every turn published | 1 |
+| [Scenarios](docs/benchmarks/scenarios/) | Six repeatable scenarios: does RYUX change the decisions and the built result | 1 + 1 each |
 
 Counts come from a few runs on one model. The [showcase](docs/showcase.md) reads them in context,
 including what designers picked and what is being improved next.
@@ -155,11 +132,10 @@ the knowledge modules those steps read. Rules have levels (Required, Preferred, 
 few Hard Gates that are never waived, such as no invented numbers and no missing critical states.
 Browse them in [`skills/ryux/`](./skills/ryux) and [`docs/design-rules.md`](./docs/design-rules.md).
 
-### MCP tools
+### MCP
 
-RYUX works on its own. The hosted RYUX MCP for reference screens is coming. Nine tools: research (`search_screens`, `get_flow`, `get_local_pattern`,
-`compare_apps`, `extract_design_direction`) and review (`audit_ui`, `audit_copy`, `heuristic_eval`,
-`delivery_gate`).
+RYUX works fully on its own. An optional MCP for reference screens from real products is coming; it
+is not available to install yet.
 
 ### Reference data
 
@@ -198,8 +174,8 @@ vulnerability, see [SECURITY.md](./SECURITY.md).
 
 ## Status and license
 
-RYUX 2.19, early access, free. Available now: the skill, the CLI, skills.sh, the Claude Code plugin,
-and the MCP server run locally. Coming: the hosted MCP and a larger reference library.
+RYUX 2.19, early access, free. Available now: the skill, the CLI with `scan`, skills.sh, and the
+Claude Code plugin. Coming: the optional reference-screen MCP and a larger reference library.
 
 **MIT**, © 2026 ryux.design (see [LICENSE](./LICENSE)). The code and the RYUX skill are covered by
 this license. The reference data and the hosted service are separate.
