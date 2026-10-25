@@ -16,7 +16,7 @@ Scripts for the RYUX visual and decision benchmarks. Results live in `docs/bench
 | Script | Use |
 | --- | --- |
 | `run.sh <A\|B> <out_dir> <prompt_file>` | One run; writes `turn1.jsonl` |
-| `turn2.sh <run_dir> <factsheet_file>` | Answers turn-1 questions from the fact sheet in the same session; writes `turn2.jsonl` |
+| `turn2.sh <run_dir> <factsheet_file> [name]` | Answers turn-1 questions from the fact sheet in the same session; writes `turn2.jsonl`, or `<name>.jsonl` for a later turn |
 | `run-summary.py <turn1.jsonl> [chars]` | Skill path loaded, tools used, the final answer |
 | `genericness.py name=<turn1.jsonl> …` | Counts 11 model defaults (fonts, colors, layout tells) from the executed pen.dev code, plus font-set diversity |
 | `ds-measure.js` | pen.dev `execute` snippet, run on the run's canvas before it is cleared: variables, components and instances, and per kind (color, spacing, radius, type, font) how many values use a `$variable` vs a literal; prints JSON with `tokenShare`. Spacing counts only `gap` and `padding`, so absolutely positioned layouts show none |

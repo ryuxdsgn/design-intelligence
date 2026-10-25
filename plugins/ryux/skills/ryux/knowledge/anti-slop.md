@@ -63,10 +63,11 @@ run the purpose gate; keep it when the answer is real, as in the last column.
 | Missing critical states | RX-EC-01 |
 | Broken responsive behavior | RX-RD-01 |
 | Accessibility failures | RX-A11Y-01, RX-A11Y-02, RX-A11Y-03, RX-A11Y-04 |
-| Unclear goal or competing actions | RX-PR-03 |
-| Unexplained interaction behavior | RX-IX-01, RX-IX-12 |
+| Competing primary actions | RX-PR-03 |
+| Unexplained interaction behavior | RX-IX-01 |
 | Duplicate components | RX-DS-01 |
-| Unnecessary complexity | RX-AS-06 |
+| Build or typecheck fails | RX-FE-16 |
+| Primary task cannot be completed | RX-QA-08 |
 
 ## Purpose Gates
 
@@ -104,6 +105,8 @@ run the purpose gate; keep it when the answer is real, as in the last column.
 | Responsive behavior | RX-RD-06 |
 | Visual hierarchy | RX-UI-01 |
 | Radius | RX-UI-03, RX-DS-03 |
+| Icons | RX-UI-15, RX-UI-20 |
+| Motion | RX-UI-11 |
 
 ## Evidence from RYUX Knowledge
 
@@ -154,12 +157,12 @@ Real screens show what real products do instead of invented numbers and urgency:
 - Why: Unjustified decoration is what makes AI-generated UI look the same. (ryux anti-slop principle)
 - Check: review
 
-### RX-AS-06 [Required] [Hard Gate] Complexity with a reason
+### RX-AS-06 [Required] Complexity with a reason
 
 - Do: Remove elements, options, states, code paths, abstractions, and dependencies that serve no stated need. Complexity that cannot be removed is carried by the product (defaults, formatting, calculation), not handed to the user.
 - Do not: Add settings, sections, abstractions, or packages "for later", or features because similar products have them.
 - Why: Unneeded complexity costs every user and every future change. (Nielsen heuristic 8; Tesler's law of conserved complexity (Tesler, 1980s): some complexity cannot be removed, only moved; clean-code practice)
-- Check: list each element, option, state, and dependency the work added and the need it serves; fails on any without one
+- Check: list each element, option, state, and dependency the work added and the need it serves; fails on any without one or a written reason
 
 ### RX-AS-07 [Required] Claims match the evidence
 
