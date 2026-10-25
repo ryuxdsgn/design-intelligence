@@ -13,6 +13,7 @@ import {
   type Skill,
 } from "./intelligence/content.js";
 import { VERSION } from "./product.js";
+import { DETECTORS } from "./scan.js";
 import {
   CORE_CAPABILITIES,
   CORE_DECISION_RECORD,
@@ -45,6 +46,8 @@ function ruleBlock(r: Rule): string {
   if (r.notWhen) lines.push(`- Not when: ${r.notWhen}`);
   if (r.tradeoff) lines.push(`- Trade-off: ${r.tradeoff}`);
   if (r.check) lines.push(`- Check: ${r.check}`);
+  const machine = DETECTORS.filter((d) => d.rule === r.id);
+  if (machine.length) lines.push(`- Machine check: \`ryux scan\` flags ${machine.map((d) => `${d.looksFor} (${d.level})`).join("; ")}`);
   return lines.join("\n");
 }
 

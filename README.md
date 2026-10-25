@@ -110,6 +110,10 @@ and as a plugin for Claude Code (`/plugin marketplace add ryuxdsgn/design-intell
 `/plugin install ryux@design-intelligence`), Codex, GitHub Copilot, VS Code, and Gemini CLI. The
 [guide](GUIDE.md) covers each agent's install, global installs, updates, and the MCP.
 
+To check code without an LLM, run `npx @ryuxdsgn/design-intelligence scan src`. It flags what a
+machine can see, such as images with no alt text, zoom turned off, or Rupiah written as `Rp 50.000`.
+Add `--hook` to `install` to scan each file Claude Code edits ([guide](GUIDE.md#scan-your-code)).
+
 ## Benchmarks
 
 Each benchmark fixes its criteria before the first run, uses a fresh agent per run, and publishes the

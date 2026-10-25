@@ -138,6 +138,7 @@ Real screens show what real products do instead of invented numbers and urgency:
 - Do not: Put [REAL DATA], XXX, or lorem text on the canvas where sample data would do, or ship sample data or placeholder copy as final. A sample-data label does not turn a fee, policy, or claim into a fact (RX-PR-02).
 - Why: Bracketed values read as unfinished and hide the layout's real behavior; unlabeled sample data ships by accident. (ryux anti-slop principle; ryux visual benchmark 2.5, 2026-10-09: [Brand] and XXX read as unfinished)
 - Check: audit_copy C-01
+- Machine check: `ryux scan` flags lorem ipsum filler (fail); placeholder content: John Doe, Jane Doe, [DATA], [TBD], XXXX (warn)
 
 ### RX-AS-04 [Required] [Hard Gate] No fake urgency
 
@@ -145,6 +146,7 @@ Real screens show what real products do instead of invented numbers and urgency:
 - Do not: Write "only 2 left", "offer ends tonight", or fake countdowns with nothing behind them.
 - Why: Manufactured pressure erodes trust once users notice. (NNGroup credibility research; ryux run 2026-10-02: WhatsApp promo)
 - Check: find every timer, deadline, stock count, and 'only N left'; each comes from the brief or real data; fails on any without a source
+- Machine check: `ryux scan` flags urgency copy (only 2 left, hurry, offer ends tonight, hanya tersisa 2, buruan, stok terbatas) (warn)
 
 ### RX-AS-05 [Required] Decoration passes a purpose gate
 

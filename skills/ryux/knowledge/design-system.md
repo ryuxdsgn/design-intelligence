@@ -57,6 +57,7 @@ How reference apps keep components consistent for this pattern: `search_screens`
 - Do not: Hard-code one-off values for things the system already defines, or define tokens for color only and leave spacing, radius, and type size literal.
 - Why: Tokens keep changes consistent and reviewable; values that are not tokens drift from frame to frame and state to state. (W3C Design Tokens Community Group; ryux four-problems baseline 2026-10-16: in all 12 runs, with or without RYUX, spacing, radius, and font size were 100% literal)
 - Check: count literal values after render; review
+- Machine check: `ryux scan` flags three or more one-off hex colors in a file that is not a token or theme file (warn)
 
 ### RX-DS-05 [Contextual] Every theme you ship works
 

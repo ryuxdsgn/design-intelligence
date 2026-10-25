@@ -72,6 +72,22 @@ npx @ryuxdsgn/design-intelligence setup --audience "small business owners" --mar
 npx @ryuxdsgn/design-intelligence check                                  # health check
 ```
 
+### Scan your code
+
+`scan` checks source files for what a machine can see without an LLM: Rupiah written as `Rp 50.000`,
+images with no alt text, zoom turned off, focus outlines removed from controls, filler text, and
+more. A fail exits 1; a warn is worth a look. `--list-rules` shows every check and the RX rule
+behind it. Contrast, target size, and overflow need a render and are not checked yet.
+
+```bash
+npx @ryuxdsgn/design-intelligence scan src                               # scan a folder
+npx @ryuxdsgn/design-intelligence scan --json                            # for agents and CI
+npx @ryuxdsgn/design-intelligence install --agent claude --hook          # scan each file Claude Code edits
+```
+
+Switch a check off for one line with a comment, `ryux-ignore RX-CD-02`, on that line or the line
+above it, and give the reason next to it.
+
 ### Update and remove
 
 ```bash
