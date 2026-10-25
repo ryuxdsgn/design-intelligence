@@ -89,6 +89,26 @@ async function install(agentIds: string[], scope: Scope): Promise<string[]> {
   return done;
 }
 
+/** What install would do, without writing: each skill folder and pointer block, created or updated. */
+async function planInstall(agentIds: string[], scope: Scope): Promise<string[]> {
+  const plan: string[] = [];
+  for (const dir of dirsFor(agentIds, scope)) {
+    const skillDir = join(dir, SKILL_NAME);
+    const old = OLD_SKILL_DIRS.filter((n) => existsSync(join(dir, n))).length;
+    plan.push(`${existsSync(skillDir) ? "update" : "create"} ${rel(skillDir)}/ (${Object.keys(renderBundle()).length} files)`);
+    if (old) plan.push(`replace ${old} RYUX 1.x folder${old === 1 ? "" : "s"} in ${rel(dir)}`);
+  }
+  if (scope.global) return plan;
+  const inline = agentIds.includes(AGENTS_MD_INLINE.id);
+  const files = pointersFor(agentIds).filter((f) => !(f === "AGENTS.md" && inline));
+  for (const file of [...files, ...(inline ? (["AGENTS.md"] as PointerFile[]) : [])]) {
+    const content = await readIfExists(join(scope.root, file));
+    const what = file === "AGENTS.md" && inline ? "rules inline" : "pointer block";
+    plan.push(content === null ? `create ${file} with the ${what}` : hasBlock(content) ? `update the ${what} in ${file}` : `add the ${what} to ${file} (the rest of the file is kept)`);
+  }
+  return plan;
+}
+
 const hasInstall = (dir: string): boolean =>
   existsSync(join(dir, SKILL_NAME, "SKILL.md")) || existsSync(join(dir, "ryux-core")) || existsSync(join(dir, "ryux-rules"));
 
@@ -147,7 +167,7 @@ async function runInstall(flags: Flags): Promise<void> {
     showMcp = Boolean(flags.mcp);
     if (!agents.length) {
       console.error(`Invalid agent.\nAgents: ${AGENT_IDS.join(",")},all`);
-      process.exitCode = 1;
+      process.exitCode = 2;
       return;
     }
   } else {
@@ -178,6 +198,11 @@ async function runInstall(flags: Flags): Promise<void> {
     agents = agents.filter((x) => x !== AGENTS_MD_INLINE.id);
   }
 
+  if (flags["dry-run"]) {
+    const plan = await planInstall(agents, scope);
+    console.log(`Dry run: nothing was written. ${CLI_CMD} ${flags.init ? "init" : "install"} would:\n${plan.map((l) => `  ${l}`).join("\n")}`);
+    return;
+  }
   const written = await install(agents, scope);
   const summary = written.map((w) => pc.green("✓ ") + w).join("\n");
   if (nonInteractive) console.log(summary);
@@ -268,48 +293,62 @@ async function readBundle(skillDir: string): Promise<Record<string, string>> {
   return files;
 }
 
+interface Finding {
+  level: "ok" | "warn" | "fail";
+  where: string;
+  message: string;
+  /** The command that fixes it, when there is one. */
+  fix?: string;
+}
+
 async function runCheck(flags: Flags): Promise<void> {
   const scope = scopeOf(flags);
-  const ok = (m: string): void => console.log(`${pc.green("✓")} ${m}`);
-  const warn = (m: string): void => console.log(`${pc.yellow("!")} ${m}`);
-  const fail = (m: string): void => {
-    console.log(`${pc.red("✗")} ${m}`);
-    process.exitCode = 1;
+  const findings: Finding[] = [];
+  const installs: { dir: string; version: string | null }[] = [];
+  const add = (level: Finding["level"], where: string, message: string, fix?: string): void => {
+    findings.push({ level, where, message, ...(fix ? { fix: `${CLI_CMD} ${fix}` } : {}) });
   };
 
   const dirs = detectInstalled(scope);
-  if (!dirs.length) {
-    fail(`RYUX is not installed ${scope.global ? "in your home directory" : "in this project"}. Run: ${CLI_CMD} init`);
-    return;
-  }
+  if (!dirs.length) add("fail", scope.global ? "~" : ".", `RYUX is not installed ${scope.global ? "in your home directory" : "in this project"}`, "init");
   for (const dir of dirs) {
     const where = rel(dir);
     const skillDir = join(dir, SKILL_NAME);
     const leftovers = OLD_SKILL_DIRS.filter((n) => existsSync(join(dir, n)));
-    if (leftovers.length) fail(`${where}: RYUX 1.x folders remain (${leftovers.length}). Run: ${CLI_CMD} update`);
+    if (leftovers.length) add("fail", where, `RYUX 1.x folders remain (${leftovers.length})`, "update");
     if (!existsSync(join(skillDir, "SKILL.md"))) {
-      fail(`${where}: no ${SKILL_NAME}/ skill. Run: ${CLI_CMD} update`);
+      add("fail", where, `no ${SKILL_NAME}/ skill`, "update");
       continue;
     }
     const report = validateBundle(await readBundle(skillDir));
-    for (const e of report.errors) fail(`${where}/${SKILL_NAME}: ${e}`);
-    for (const w of report.warnings) warn(`${where}/${SKILL_NAME}: ${w}`);
-    if (report.version && report.version !== VERSION) warn(`${where}: installed RYUX ${report.version}, this CLI is ${VERSION}. Run: ${CLI_CMD} update`);
-    if (!report.errors.length) ok(`${where}/${SKILL_NAME}: complete, RYUX ${report.version}`);
+    installs.push({ dir: `${where}/${SKILL_NAME}`, version: report.version ?? null });
+    for (const e of report.errors) add("fail", `${where}/${SKILL_NAME}`, e, "update");
+    for (const w of report.warnings) add("warn", `${where}/${SKILL_NAME}`, w);
+    if (report.version && report.version !== VERSION) add("warn", where, `installed RYUX ${report.version}, this CLI is ${VERSION}`, "update");
+    if (!report.errors.length) add("ok", `${where}/${SKILL_NAME}`, `complete, RYUX ${report.version}`);
   }
 
-  if (!scope.global) {
+  if (dirs.length && !scope.global) {
     const agentsHere = agentsAt(scope, true);
     for (const file of pointersFor(agentsHere)) {
-      if (hasBlock(await readIfExists(join(scope.root, file)))) ok(`${file}: RYUX pointer block present`);
-      else warn(`${file}: no RYUX pointer block. Run: ${CLI_CMD} update`);
+      if (hasBlock(await readIfExists(join(scope.root, file)))) add("ok", file, "RYUX pointer block present");
+      else add("warn", file, "no RYUX pointer block", "update");
     }
     const context = contextBody(await readIfExists(join(scope.root, CONTEXT_FILE)));
     if (context !== null) {
-      ok(`${CONTEXT_FILE}: project context present, ${filledCount(context)} of ${ASKED_FIELDS.length} setup fields filled (blanks are treated as unknown)`);
-    } else warn(`${CONTEXT_FILE}: no RYUX project context. Run: ${CLI_CMD} setup`);
+      add("ok", CONTEXT_FILE, `project context present, ${filledCount(context)} of ${ASKED_FIELDS.length} setup fields filled (blanks are treated as unknown)`);
+    } else add("warn", CONTEXT_FILE, "no RYUX project context", "setup");
   }
-  if (!process.exitCode) console.log(pc.green("\nRYUX is ready."));
+
+  const ok = !findings.some((f) => f.level === "fail");
+  if (!ok) process.exitCode = 1;
+  if (flags.json) {
+    console.log(JSON.stringify({ ok, cli: VERSION, scope: scope.global ? "global" : "project", installs, findings }, null, 2));
+    return;
+  }
+  const mark = { ok: pc.green("✓"), warn: pc.yellow("!"), fail: pc.red("✗") };
+  for (const f of findings) console.log(`${mark[f.level]} ${f.where}: ${f.message}${f.fix ? `. Run: ${f.fix}` : ""}`);
+  if (ok) console.log(pc.green("\nRYUX is ready."));
 }
 
 /** Facts init can detect without guessing: the project name and where design tokens live. */
@@ -697,8 +736,12 @@ async function runInit(flags: Flags): Promise<void> {
   const scope = scopeOf(flags);
   const path = join(scope.root, CONTEXT_FILE);
   const had = hasBlock(await readIfExists(path), CONTEXT_MARKS);
-  await runInstall(flags);
+  await runInstall({ ...flags, init: true });
   if (process.exitCode) return;
+  if (flags["dry-run"]) {
+    console.log(`  ${had ? `keep the project context in ${CONTEXT_FILE} as you wrote it` : `add the project context block to ${CONTEXT_FILE}`}`);
+    return;
+  }
   if (had) {
     console.log(`${pc.green("✓ ")}${CONTEXT_FILE}: project context already present (left as you wrote it). Edit it with: ${CLI_CMD} setup`);
   } else if (!hasBlock(await readIfExists(path), CONTEXT_MARKS)) {
@@ -734,6 +777,8 @@ Options:
   --global             install into your home directory instead of this project
   --mcp                print the ryux MCP connect command
   --yes                skip the confirmation (remove)
+  --dry-run            list what install or init would create or update, and write nothing
+  --json               print check's findings as JSON (for agents and CI)
   --product, --work, --audience, --market, --constraints, --intent, --ux, --ui, --motion <text>
                        set project context fields without questions (setup)
 
@@ -747,7 +792,11 @@ Examples:
   ${CLI_CMD} install --agent all
   ${CLI_CMD} install --agent claude --global
   ${CLI_CMD} update
-  ${CLI_CMD} remove --yes`);
+  ${CLI_CMD} remove --yes
+  ${CLI_CMD} init --agent claude --dry-run
+  ${CLI_CMD} check --json
+
+Exit codes: 0 done or healthy, 1 a problem was found or the command failed, 2 the command was used wrongly.`);
 }
 
 async function main(): Promise<void> {
@@ -780,7 +829,7 @@ async function main(): Promise<void> {
     default:
       console.error(`Unknown command: ${cmd}\n`);
       help();
-      process.exitCode = 1;
+      process.exitCode = 2;
   }
 }
 
