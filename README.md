@@ -8,14 +8,17 @@
 
 ### Understand before you design.
 
-AI can generate UI in seconds. But does it understand what it's designing?
+A design skill for AI agents: it asks before it invents, draws the loading, error, and empty states,
+and checks the result.
 
-RYUX helps AI agents make better-informed design decisions. It gives them a structured way to
-understand product context, separate facts from assumptions, decide, and verify the result.
+```bash
+npx @ryuxdsgn/design-intelligence
+```
 
-**The goal isn't more UI. It's fewer decisions made silently.**
+Works with Claude Code, Codex, Cursor, Gemini CLI, GitHub Copilot, OpenCode, Cline, Amp, Kimi Code,
+and Antigravity.
 
-**[Get started](#get-started)** · **[See the benchmark](#see-the-difference)** · **[Documentation](GUIDE.md)**
+**[Get started](#get-started)** · **[See the benchmark](#see-the-difference)** · **[Scan your code](#scan-your-code)** · **[Documentation](GUIDE.md)**
 
 ## See the difference
 
@@ -100,10 +103,31 @@ and as a plugin for Claude Code (`/plugin marketplace add ryuxdsgn/design-intell
 `/plugin install ryux@design-intelligence`), Codex, GitHub Copilot, VS Code, and Gemini CLI. The
 [guide](GUIDE.md) covers each agent's install, global installs, updates, and the MCP.
 
-To check code without an LLM, run `npx @ryuxdsgn/design-intelligence scan src`. It flags what a
-machine can see, such as images with no alt text, zoom turned off, or Rupiah written as `Rp 50.000`.
-Give it a URL to measure the rendered page: sideways scroll, contrast, target size, colliding text.
-Add `--hook` to `install` to scan each file Claude Code edits ([guide](GUIDE.md#scan-your-code)).
+## Scan your code
+
+`scan` checks what a machine can see, with no LLM and no API key. A fail exits 1, so it works in CI.
+
+```text
+$ npx @ryuxdsgn/design-intelligence scan src
+✗ src/Checkout.tsx:4:7 RX-A11Y-04 an <img> with no alt: describe meaningful images, use alt="" for decorative ones
+✗ src/Checkout.tsx:5:16 RX-CD-02 "Rp 50.000": write Rp1.250.000 (Rp right before the number, dots for thousands, no decimals)
+! src/Checkout.tsx:6:10 RX-AS-04 "Only 2 left": urgency copy; keep it only when the deadline or quota is real, stated as a plain fact
+! src/Checkout.tsx:7:7 RX-A11Y-04 an icon-only <button> with no name: add aria-label or visually hidden text
+
+1 file scanned: 2 fail, 2 warn.
+```
+
+Give it a URL and it renders the page at 320, 390, and 1280 px and measures sideways scroll,
+contrast, target size, and colliding text (Playwright in your project):
+
+```text
+$ npx @ryuxdsgn/design-intelligence scan file://$PWD/page.html --widths 320
+✗ file:///…/page.html @320px RX-RD-01 the page scrolls sideways: 480px of content in 320px; widest: div.promo (to 480px) [div.promo]
+✗ file:///…/page.html @320px RX-A11Y-01 "Transfers usually arrive in minutes.": contrast 2.32:1 (#aaaaaa on #ffffff), needs 4.5:1 [p.hint]
+```
+
+Add `--hook` to `install` and Claude Code gets the findings for each file it edits.
+`scan --list-rules` lists every check and the rule behind it ([guide](GUIDE.md#scan-your-code)).
 
 ## Benchmarks
 
