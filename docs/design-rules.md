@@ -206,9 +206,9 @@ line below for its exact source.
 | Industry practice | 16 | 5 |
 | Observed in a RYUX run | 15 | 8 |
 | Pattern also in another MIT ruleset (text written for RYUX) | 4 | 4 |
-| RYUX principle, taxonomy, or review | 37 | 19 |
+| RYUX principle, taxonomy, or review | 38 | 20 |
 
-All 115 rules cite a source; 27 cite more than one kind, so the "Rules citing it" column adds up to more than 115.
+All 116 rules cite a source; 27 cite more than one kind, so the "Rules citing it" column adds up to more than 116.
 <!-- provenance:end -->
 
 ## Rules
@@ -216,7 +216,7 @@ All 115 rules cite a source; 27 cite more than one kind, so the "Rules citing it
 Generated from `packages/cli/src/content.ts` by `pnpm sync:skills`. Edit the rules there, not here.
 
 <!-- rules:start -->
-115 rules across 14 modules: 59 Required, 20 Preferred, 36 Contextual; 17 Hard Gates and 11 Quality Locks.
+116 rules across 14 modules: 59 Required, 20 Preferred, 37 Contextual; 17 Hard Gates and 11 Quality Locks.
 
 ### Product thinking (RX-PR) · `knowledge/product.md`
 
@@ -1008,6 +1008,21 @@ Gate area UI. Covers art direction, composition, expressive surfaces, motion, as
 - Trade-off: one texture family limits how expressive a single piece can be
 - Check: render at the smallest and largest size; contrast with the texture on
 
+#### RX-UI-23 [Contextual] A mark designed on request
+
+- When: the user asks for a logo, wordmark, lettermark, app icon, or favicon
+- Do: Brief first (capabilities/design.md, stage 1, at most three questions): the name, what the product does, the audience, the one idea the mark should carry, where it appears (app icon down to a 16 px favicon, the header, social avatars), and any brand assets or limits that exist.
+  - Explore three directions that differ in the kind of mark (wordmark, lettermark or monogram, pictorial or abstract, combination), each with a concept from the product's own domain, not the category's cliché.
+  - Build each as vector (SVG, RX-UI-21): geometric construction on a grid with few anchor points; a wordmark is adjusted (spacing, a modified letter), not the name typed in a font, and the typeface's license is named.
+  - Check: legible at 16 and 32 px, a one-colour version, black and reversed, a clear silhouette, the negative space, and square and round app-icon masks; write the clear space and minimum size.
+  - Deliver: SVG in full colour, one colour, and reversed; app icon or favicon sizes when asked; a short usage note (clear space, minimum size, colours as tokens); a Decision Receipt; the user picks the direction.
+  - Say plainly that similarity and trademark were not checked and that a trademark search is needed before use; never call a mark unique or safe.
+- Do not: Use the default marks (initials in a circle, a swoosh, a globe, a generic leaf, a gradient blob), imitate another brand's mark, hand off a raster from an image model as the final file, or show a single direction with no choice.
+- Why: A generated mark drifts to the category's default and fails at small sizes; a mark nobody checked for similarity can collide with another company's. (Brand identity practice (mark types, small-size and one-colour tests, clear space); RX-AS-11; RX-UI-21; owner review 2026-10-24: request that RYUX design a logo when asked)
+- Not when: the product already has a mark; use its file (RX-AS-11)
+- Trade-off: three vector directions take longer than one generated image
+- Check: render at 16 and 32 px and in one colour; review
+
 ---
 
 ### Design system (RX-DS) · `knowledge/design-system.md`
@@ -1376,7 +1391,7 @@ Gate area ANTI-SLOP. Covers hard gates, purpose gates, quality locks, honest cla
 - Do: Use the brand's own file wherever the product's mark appears.
   - Look in the repo (public/, assets/, the app icon and favicon), DESIGN.md, the design file's components, and what the user attached, and name the file you used.
   - With no file, set the product name in plain text in the brand's type, or leave a visible [LOGO] placeholder, and list the mark as missing in the handoff.
-- Do not: Stand in for the mark with initials in a circle, an emoji, a generic shape, an invented SVG, a letter cut into a tile, or the name typeset to look like a logo; generate a favicon or app icon the user did not ask for; or redraw the brand's mark instead of using its file. Designing a mark is its own task, done only when the user asks for it.
+- Do not: Stand in for the mark with initials in a circle, an emoji, a generic shape, an invented SVG, a letter cut into a tile, or the name typeset to look like a logo; generate a favicon or app icon the user did not ask for; or redraw the brand's mark instead of using its file. Designing a mark is its own task, done only when the user asks for it (RX-UI-23).
 - Why: An invented mark looks finished and is the first thing a team has to throw away; it also passes for a decision nobody made. (pattern also in superdesign-skill (MIT), logo invariant; RX-UI-13 asset provenance; ryux owner review 2026-10-18 (the logo and favicon are the owner's to make); written for RYUX)
 - Check: list every mark slot and the file it uses, or the placeholder; fails on a slot filled by an invented mark
 <!-- rules:end -->

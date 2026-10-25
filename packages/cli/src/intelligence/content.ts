@@ -1071,6 +1071,19 @@ export const RULES: Rule[] = [
       tradeoff: "one texture family limits how expressive a single piece can be",
       check: "render at the smallest and largest size; contrast with the texture on",
     },
+    {
+      num: 23,
+      title: "A mark designed on request",
+      level: "contextual",
+      when: "the user asks for a logo, wordmark, lettermark, app icon, or favicon",
+      do: "Brief first (capabilities/design.md, stage 1, at most three questions): the name, what the product does, the audience, the one idea the mark should carry, where it appears (app icon down to a 16 px favicon, the header, social avatars), and any brand assets or limits that exist.\n  - Explore three directions that differ in the kind of mark (wordmark, lettermark or monogram, pictorial or abstract, combination), each with a concept from the product's own domain, not the category's cliché.\n  - Build each as vector (SVG, RX-UI-21): geometric construction on a grid with few anchor points; a wordmark is adjusted (spacing, a modified letter), not the name typed in a font, and the typeface's license is named.\n  - Check: legible at 16 and 32 px, a one-colour version, black and reversed, a clear silhouette, the negative space, and square and round app-icon masks; write the clear space and minimum size.\n  - Deliver: SVG in full colour, one colour, and reversed; app icon or favicon sizes when asked; a short usage note (clear space, minimum size, colours as tokens); a Decision Receipt; the user picks the direction.\n  - Say plainly that similarity and trademark were not checked and that a trademark search is needed before use; never call a mark unique or safe.",
+      dont: "Use the default marks (initials in a circle, a swoosh, a globe, a generic leaf, a gradient blob), imitate another brand's mark, hand off a raster from an image model as the final file, or show a single direction with no choice.",
+      why: "A generated mark drifts to the category's default and fails at small sizes; a mark nobody checked for similarity can collide with another company's.",
+      basis: "Brand identity practice (mark types, small-size and one-colour tests, clear space); RX-AS-11; RX-UI-21; owner review 2026-10-24: request that RYUX design a logo when asked",
+      notWhen: "the product already has a mark; use its file (RX-AS-11)",
+      tradeoff: "three vector directions take longer than one generated image",
+      check: "render at 16 and 32 px and in one colour; review",
+    },
   ]),
 
   ...skill("design-system", [
@@ -1548,7 +1561,7 @@ export const RULES: Rule[] = [
       gate: "hard",
       when: "the design has a logo, wordmark, app icon, or favicon",
       do: "Use the brand's own file wherever the product's mark appears.\n  - Look in the repo (public/, assets/, the app icon and favicon), DESIGN.md, the design file's components, and what the user attached, and name the file you used.\n  - With no file, set the product name in plain text in the brand's type, or leave a visible [LOGO] placeholder, and list the mark as missing in the handoff.",
-      dont: "Stand in for the mark with initials in a circle, an emoji, a generic shape, an invented SVG, a letter cut into a tile, or the name typeset to look like a logo; generate a favicon or app icon the user did not ask for; or redraw the brand's mark instead of using its file. Designing a mark is its own task, done only when the user asks for it.",
+      dont: "Stand in for the mark with initials in a circle, an emoji, a generic shape, an invented SVG, a letter cut into a tile, or the name typeset to look like a logo; generate a favicon or app icon the user did not ask for; or redraw the brand's mark instead of using its file. Designing a mark is its own task, done only when the user asks for it (RX-UI-23).",
       why: "An invented mark looks finished and is the first thing a team has to throw away; it also passes for a decision nobody made.",
       basis: `pattern also in superdesign-skill (MIT), logo invariant; RX-UI-13 asset provenance; ryux owner review 2026-10-18 (the logo and favicon are the owner's to make); written for RYUX`,
       check: "list every mark slot and the file it uses, or the placeholder; fails on a slot filled by an invented mark",
