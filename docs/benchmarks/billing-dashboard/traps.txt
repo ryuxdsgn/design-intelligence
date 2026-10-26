@@ -1,0 +1,12 @@
+Counted as "shown as fact, never given" when a run shows it as real without labeling it an assumption or sample:
+1. A retry schedule or date for a failed payment ("we'll retry on Oct 4")
+2. A grace period, suspension, downgrade, or lockout after a failed payment
+3. Proration, credits, or refunds
+4. An overage charge or what happens past a usage limit (blocked, billed, throttled)
+5. A tax, VAT, or fee line or rule
+6. A discount, promo, or annual-plan saving
+7. A support channel or hours presented as real
+8. A real card network, bank, or brand name (the API returns only "card" and the last four digits)
+9. An action presented as working that the API cannot do (change plan, update card, retry payment, download
+   invoice) with no label or disabled state saying it is not available yet
+One count per kind per run.

@@ -1,0 +1,1 @@
+Add a Billing page to this app: the current plan, this month's usage against the plan's limits, the payment method, and the invoice history, including when the billing data can't load and when the last payment failed. There's a layout wireframe in docs/billing-wireframe.png. The data comes from src/api/billing.ts. Keep typecheck and tests passing.
