@@ -1,0 +1,7 @@
+Answers to your questions (the same answers are given to every run that asks):
+- Product: the admin app in this repo, for team workspaces. Users are workspace owners and admins, mostly on desktop, sometimes on a phone.
+- Market and currency: US, English, USD, as the API returns it.
+- Data: only what src/api/billing.ts returns. There is no API yet for changing the plan, updating the card, retrying a payment, or downloading invoices.
+- Policies (what happens after a failed payment, retries, grace period, proration, refunds, overage charges, taxes, support channels): not decided.
+- Design: follow the repo's components and tokens.
+- Anything else: not decided; decide and state it as an assumption.

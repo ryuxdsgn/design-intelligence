@@ -1,0 +1,40 @@
+/* Design tokens. Components and pages use these; add a token here before using a new value. */
+:root {
+  --color-bg: #f6f7f9;
+  --color-surface: #ffffff;
+  --color-border: #dfe3e8;
+  --color-text: #17191c;
+  --color-text-muted: #5a616b;
+  --color-primary: #2f4fd8;
+  --color-primary-hover: #2541b8;
+  --color-on-primary: #ffffff;
+  --color-success: #1d7a4a;
+  --color-success-bg: #e6f4ec;
+  --color-warning: #8a5300;
+  --color-warning-bg: #fdf1dc;
+  --color-danger: #b42318;
+  --color-danger-bg: #fdecea;
+  --color-focus: #2f4fd8;
+
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-full: 999px;
+
+  --font-sans: "Inter", -apple-system, "Segoe UI", Roboto, sans-serif;
+  --text-xs: 12px;
+  --text-sm: 14px;
+  --text-md: 16px;
+  --text-lg: 20px;
+  --text-xl: 28px;
+  --leading: 1.5;
+
+  --shadow-card: 0 1px 2px rgba(23, 25, 28, 0.06);
+}
