@@ -1,0 +1,8 @@
+Answers to your questions (the same answers are given to every run that asks):
+- Product: a digital wallet app. This work is the transaction detail screen, opened from the activity list.
+- Users: adults in large cities, on mobile, often checking a payment right after it happened.
+- Market and currency: not decided; a global product in English. Use USD as sample data.
+- Brand, name, design system: not decided. Propose what you need and label it.
+- Policies (fees, refunds, disputes, reversals, limits, how long a transfer takes, support channels): not decided.
+- Width: mobile first, 390 wide.
+- Anything else: not decided; decide and state it as an assumption.

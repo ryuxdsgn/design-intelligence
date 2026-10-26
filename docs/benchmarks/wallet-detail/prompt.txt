@@ -1,0 +1,1 @@
+Build the transaction detail screen for a digital wallet app as a working web prototype in one HTML file, mobile first: what the customer sees for a payment, a transfer to a friend, and a top-up, including when something goes wrong. Flow inspiration: digital wallets and banking apps.
