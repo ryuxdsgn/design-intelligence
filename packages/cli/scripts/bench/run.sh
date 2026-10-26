@@ -1,6 +1,6 @@
 #!/bin/zsh
 # One benchmark run in a fresh folder, outside any project.
-#   run.sh <A|B> <out_dir> <prompt_file> [DESIGN.md]
+#   [BENCH_FIXTURE=<repo>] run.sh <A|B> <out_dir> <prompt_file> [DESIGN.md]
 # A = no skill: every skill and command is turned off for the session.
 # B = with RYUX: the local build (packages/cli/dist) is installed into the run folder, after the optional
 #     DESIGN.md is copied in (B only; A never gets it).
@@ -8,10 +8,17 @@
 # global skill loads, same model and permission mode. Runs are sequential: parallel Opus runs hit the
 # session limit, and a parallel run could find the skills folder already moved.
 set -e
-COND=$1; OUT=$2; PROMPT_FILE=${3:A}; DESIGN=${4:+${4:A}}
+COND=$1; OUT=$2; PROMPT_FILE=${3:A}; DESIGN=${4:+${4:A}}; FIXTURE=${BENCH_FIXTURE:+${BENCH_FIXTURE:A}}
 ROOT=${0:A:h}/../../../..
 CLI=$ROOT/packages/cli/dist/cli/index.js
 mkdir -p $OUT && cd $OUT
+# BENCH_FIXTURE=<dir>: start from a copy of that repo instead of an empty folder, dependencies installed and
+# committed once, so the run's changes are `git diff` against that commit. Same for both arms.
+if [[ -n $FIXTURE && ! -e package.json ]]; then
+  rsync -a --exclude node_modules --exclude dist --exclude '*.tsbuildinfo' $FIXTURE/ .
+  npm ci --no-audit --no-fund >/dev/null 2>&1
+  git init -q && git add -A && git -c user.name=fixture -c user.email=fixture@example.com commit -qm fixture
+fi
 if [[ $COND == B && ! -d .claude/skills/ryux ]]; then
   [[ -n $DESIGN ]] && cp $DESIGN DESIGN.md
   node $CLI install --agent claude >/dev/null

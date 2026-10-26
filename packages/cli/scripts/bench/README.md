@@ -8,6 +8,7 @@ Scripts for the RYUX visual and decision benchmarks. Results live in `docs/bench
 - One run = `claude -p` in a fresh empty folder outside any project, with the same model for every run (`BENCH_MODEL`, default `claude-opus-5-5`) and the same permission mode.
 - `run.sh A …` turns off every skill and command for the session: the baseline is "no skill".
 - `run.sh B … [DESIGN.md]` copies the DESIGN.md (B only) and installs the local build (`packages/cli/dist`) into the run folder.
+- `BENCH_FIXTURE=<repo>` starts both arms from a copy of that repo (dependencies installed, one commit) instead of an empty folder; the run's work is the `git diff` from that commit. B's RYUX install and DESIGN.md stay untracked.
 - Both arms: no MCP servers, synced plugins off (`BENCH_SETTINGS` overrides the settings JSON), and the whole `~/.claude/skills` moved aside and put back after, even when Claude Code recreates the folder during the run.
 - Run one at a time. Three Opus runs in parallel hit the account's session limit in about 16 minutes.
 - Check each run's first line with `run-summary.py`: only B lists `ryux`, and no MCP server is listed.
