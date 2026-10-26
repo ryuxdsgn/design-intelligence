@@ -8,17 +8,15 @@
 
 ### Understand before you design.
 
-A design skill for AI agents: it asks before it invents, draws the loading, error, and empty states,
-and checks the result.
+A design skill for AI agents. Your agent stops filling the gaps in your brief with invented fees, promos, and
+policies, builds the screens for when things go wrong, and tells you what it checked.
 
 ```bash
 npx @ryuxdsgn/design-intelligence
 ```
 
-Works with Claude Code, Codex, Cursor, Gemini CLI, GitHub Copilot, OpenCode, Cline, Amp, Kimi Code,
-and Antigravity.
-
-**[Get started](#get-started)** · **[See the benchmark](#see-the-difference)** · **[Scan your code](#scan-your-code)** · **[Documentation](GUIDE.md)**
+Works with Claude Code, Codex, Cursor, Gemini CLI, GitHub Copilot, OpenCode, Cline, Amp, Kimi Code, and
+Antigravity. Free, MIT.
 
 ## See the difference
 
@@ -26,30 +24,35 @@ Same brief, same model, a fresh agent per run: a personal finance app designed i
 
 <a href="docs/benchmarks/hero-finance/"><img src="docs/benchmarks/hero-finance/see-the-difference.gif" alt="Animation: the same brief; with no skill the agent draws right away, with RYUX it asks three questions first; then both sets of screens; close-ups with seven invented facts circled on the left and labeled assumptions on the right; seven states drawn on the right and none on the left; then the totals across three runs, and a follow-up turn on the RYUX side with its recorded success animation" width="100%"></a>
 
-Both sides look finished, and a fresh reader understood both dashboards (3 of 3 questions). The
-decisions differ:
+Both sides look finished. The difference is in what the agent decided on your behalf. Two briefs, three runs
+per side each:
 
-- **Asking.** With no skill, the agent drew right away and picked a market and currency itself. With
-  RYUX, it asked three questions first, in 3 of 3 runs.
-- **Facts.** With no skill, 7 to 9 kinds of things the brief never gave were shown as real: points,
-  promos, a PayLater limit with "0% fee", vouchers, ride and travel services. With RYUX, none; the fee
-  and how a payment is confirmed were listed as assumptions.
-- **States.** With no skill, the three screens only. With RYUX, 6 to 7 more: loading, empty, offline,
-  processing, not enough balance, declined, and a narrow width.
+| | Finance app<br>no skill | Finance app<br>with RYUX | Order tracking<br>no skill | Order tracking<br>with RYUX |
+| --- | :-: | :-: | :-: | :-: |
+| **Things the brief never gave, shown as real** (per run) | 7–9 | 0 | 8–9 | 0–1 |
+| **Screens for when things go wrong** (per run) | 0 | 6–7 | 0 | 3 |
+| **Asked before starting** | 0 of 3 | 3 of 3 | 0 of 3 | 0 of 3 |
 
-Three runs per side, RYUX 2.9.3; brand names in the no-skill screens are blurred.
-[Brief, method, and every run](docs/benchmarks/hero-finance/).
+Without a skill, the agents invented points, promos, a PayLater limit, and vouchers for the finance app, and a
+$5 late credit, free cancellation, an auto-pick timer, and tips for order tracking. With RYUX, the same gaps
+were listed as assumptions, and the agents built loading, empty, offline, error, and declined states. On order
+tracking no RYUX run asked first; each built, left the open policies out, and said so: *"Left out on purpose:
+calling the courier, cancelling the order, compensation for lateness, and fees, because I don't know your
+policies."*
 
-## Why RYUX
+[Finance app](docs/benchmarks/hero-finance/): designed in pen.dev, RYUX 2.9.3.
+[Order tracking](docs/benchmarks/order-tracking/): a working prototype, RYUX 2.19.0. Briefs, method, and every
+run are in each folder.
 
-An agent can produce a screen that looks finished without the product context behind it, and the
-gaps quietly become content: an invented fee, a feature nobody confirmed, a promise the product
-never made. RYUX makes the agent sort what it is working with before it designs:
+## Why
+
+An agent can produce a screen that looks finished without the product context behind it, and the gaps
+quietly become content: an invented fee, a feature nobody confirmed, a promise the product never made. Each
+one is a business decision nobody made. RYUX makes the agent sort what it is working with first:
 
 - **Known**: stated in the prompt, DESIGN.md, or your product docs, or seen in the design itself.
 - **Design assumptions**: low-risk choices made from the context, written down.
-- **Unconfirmed capabilities**: actions products like yours usually have, proposed and labeled
-  unconfirmed.
+- **Unconfirmed capabilities**: actions products like yours usually have, proposed and labeled unconfirmed.
 - **Facts, policies, and claims**: fees, refund times, guarantees. Never invented.
 
 Each major choice comes with a receipt. This one is quoted from a benchmark run:
@@ -62,46 +65,20 @@ Assumption   [CONFIRM] The fee is charged on top of the amount.
              If the fee is taken out of the amount instead, the rows change.
 ```
 
-For product designers using AI to explore screens, developers with AI coding agents, and design
-engineers who connect design, build, critique, and QA.
-
-## How it works
+## Use it
 
 Say what you are doing, in your own words. RYUX picks the step and reads only the knowledge it needs.
-Behind every capability runs one workflow: understand, frame the problem, explore two or three
-alternatives, evaluate them against the brief (you pick), build and critique, then verify.
 
-| Capability | What it does |
-| --- | --- |
-| **Analyze** | Understands an existing interface: what is there, what is measured, what is inferred |
-| **Design** | Turns context into UX, UI, and motion direction, in Figma, pen.dev, or a mockup |
-| **Build** | Implements the decisions in your stack without inventing rules, data, or API behavior |
-| **Critique** | Finds what to change first, with severity, evidence, and a fix, or runs a heuristic evaluation |
-| **QA** | Checks the build against the design at each width and state |
+| You say | RYUX runs | You get |
+| --- | --- | --- |
+| "Analyze this checkout screen" (screenshot attached) | **Analyze** | what is there, what is measured, what is only inferred |
+| "Design the transaction detail screen for our wallet, in pen.dev" | **Design** | two or three directions to pick from, then the screens and their states |
+| "Build this design in our React app" | **Build** | the code, without invented rules, data, or API behavior |
+| "Critique our pricing page at https://example.com/pricing" | **Critique** | what to change first, with severity, evidence, and a fix |
+| "QA the build against the design at 390 and 320 wide" | **QA** | a check of every width and state against the design |
 
-```text
-Analyze this checkout screen (screenshot attached).                → Analyze
-Design the transaction detail screen for our wallet, in pen.dev.   → Design
-Build this design in our React app.                                → Build
-Critique our pricing page at https://example.com/pricing.          → Critique
-QA the build against the design at 390 and 320 wide.               → QA
-```
-
-Every task ends with a report of what was verified and what was not. More in [Prompting RYUX](GUIDE.md#prompting-ryux).
-
-## Get started
-
-```bash
-npx @ryuxdsgn/design-intelligence
-```
-
-It asks which agents you use, installs RYUX, and offers a short setup that writes DESIGN.md, your
-project's direction. Run `npx @ryuxdsgn/design-intelligence setup` any time to change it.
-
-Also available through [skills.sh](https://skills.sh) (`npx skills add ryuxdsgn/design-intelligence`)
-and as a plugin for Claude Code (`/plugin marketplace add ryuxdsgn/design-intelligence`, then
-`/plugin install ryux@design-intelligence`), Codex, GitHub Copilot, VS Code, and Gemini CLI. The
-[guide](GUIDE.md) covers each agent's install, global installs, updates, and the MCP.
+Every task ends with a report of what was verified and what was not. The installer also offers a short setup
+that writes DESIGN.md, your project's direction (`npx @ryuxdsgn/design-intelligence setup` to change it).
 
 ## Scan your code
 
@@ -117,8 +94,8 @@ $ npx @ryuxdsgn/design-intelligence scan src
 1 file scanned: 2 fail, 2 warn.
 ```
 
-Give it a URL and it renders the page at 320, 390, and 1280 px and measures sideways scroll,
-contrast, target size, and colliding text (Playwright in your project):
+Give it a URL and it renders the page at 320, 390, and 1280 px and measures sideways scroll, contrast, target
+size, and colliding text (Playwright in your project):
 
 ```text
 $ npx @ryuxdsgn/design-intelligence scan file://$PWD/page.html --widths 320
@@ -126,47 +103,49 @@ $ npx @ryuxdsgn/design-intelligence scan file://$PWD/page.html --widths 320
 ✗ file:///…/page.html @320px RX-A11Y-01 "Transfers usually arrive in minutes.": contrast 2.32:1 (#aaaaaa on #ffffff), needs 4.5:1 [p.hint]
 ```
 
-Add `--hook` to `install` and Claude Code gets the findings for each file it edits.
-`scan --list-rules` lists every check and the rule behind it ([guide](GUIDE.md#scan-your-code)).
-
-## Benchmarks
-
-Each benchmark fixes its criteria before the first run, uses a fresh agent per run, and publishes the
-raw outputs.
-
-| Benchmark | What it showed | Runs |
-| --- | --- | --- |
-| [Personal finance app](docs/benchmarks/hero-finance/) | Asked first in 3 of 3 runs; no fact the brief did not give; 6 to 7 more states | 3 + 3 |
-| [Lumo transaction detail](docs/benchmarks/lumo-td-2.6/) | More states covered; no added action or promise shown as fact | 3 + 3 |
-| [Typography](docs/benchmarks/typo-craft/) ([run it yourself](docs/benchmarks/typo-craft/#run-it-yourself)) | Paragraph lines down to 75–77 characters in 2 of 3 runs (from about 90); a designer shipped it in 2 of 3 blind pairs | 3 + 3, one rater |
-| [Explore, judge, critique](docs/benchmarks/explore-judge/) | Three structurally different directions in every run, real choices to the designer in 2 of 3 sets; "control far from its data" found in 4 of 6 planted cases, up from 0, with no false findings | 3–6 per condition |
-| [Five steps on one screen](docs/benchmarks/case-td-2.6/) | One screen through Analyze, Critique, Design, Build, and QA; a case study, every turn published | 1 |
-| [Scenarios](docs/benchmarks/scenarios/) | Six repeatable scenarios: does RYUX change the decisions and the built result | 1 + 1 each |
-
-Counts come from a few runs on one model. The [showcase](docs/showcase.md) reads them in context,
-including what designers picked and what is being improved next.
+Add `--hook` to `install` and Claude Code gets the findings for each file it edits. `scan --list-rules` lists
+every check.
 
 <details>
-<summary><b>Technical details</b></summary>
+<summary><b>Other ways to install</b></summary>
 
-### What gets installed
+- [skills.sh](https://skills.sh): `npx skills add ryuxdsgn/design-intelligence`
+- Claude Code plugin: `/plugin marketplace add ryuxdsgn/design-intelligence`, then
+  `/plugin install ryux@design-intelligence`
+- Plugins for Codex, GitHub Copilot, VS Code, and Gemini CLI, global installs, and updates: see the
+  [guide](GUIDE.md).
 
-One skill folder, `ryux/`: a router (`SKILL.md`) that picks the step, five capability files, and
-the knowledge modules those steps read. Rules have levels (Required, Preferred, Contextual) and a
-few Hard Gates that are never waived, such as no invented numbers and no missing critical states.
-Browse them in [`skills/ryux/`](./skills/ryux) and [`docs/design-rules.md`](./docs/design-rules.md).
+</details>
 
-### MCP
+<details>
+<summary><b>All benchmarks</b></summary>
 
-RYUX works fully on its own. An optional MCP for reference screens from real products is coming; it
-is not available to install yet.
+Each benchmark fixes its criteria before the first run, uses a fresh agent per run, and publishes the raw
+outputs. Counts come from a few runs on one model: what those runs did, not rates.
 
-### Reference data
+| Benchmark | What it tests | Runs |
+| --- | --- | --- |
+| [Personal finance app](docs/benchmarks/hero-finance/) | Asking first, invented facts, and states, designed in pen.dev | 3 + 3 |
+| [Order tracking](docs/benchmarks/order-tracking/) | Invented policies, failure states, and `scan` results in a working prototype | 3 + 3 |
+| [Lumo transaction detail](docs/benchmarks/lumo-td-2.6/) | States covered; actions and promises the brief didn't give | 3 + 3 |
+| [Typography](docs/benchmarks/typo-craft/) | Line length, line-height, and weights, scored by a script; one blind designer rating | 3 + 3 |
+| [Explore, judge, critique](docs/benchmarks/explore-judge/) | Three directions before one design; planted problems found in Critique | 3–6 per condition |
+| [Five steps on one screen](docs/benchmarks/case-td-2.6/) | Analyze, Critique, Design, Build, and QA in one session; a case study | 1 |
+| [Scenarios](docs/benchmarks/scenarios/) | Six repeatable scenarios with a weighted rubric | 1 + 1 each |
 
-RYUX may use reference screens and product evidence during analysis. Private reference data is not
-included in this repository; the repository contains the rules and the skill that work with evidence.
+The [showcase](docs/showcase.md) reads them in context.
 
-### Repository
+</details>
+
+<details>
+<summary><b>What gets installed, and the repository</b></summary>
+
+One skill folder, `ryux/`: a router (`SKILL.md`) that picks the step, five capability files, and the knowledge
+modules those steps read. Behind every step runs one workflow: understand, frame the problem, explore two or
+three alternatives, evaluate them against the brief (you pick), build and critique, then verify. Rules have
+levels (Required, Preferred, Contextual) and a few Hard Gates that are never waived, such as no invented
+numbers and no missing critical states. Browse them in [`skills/ryux/`](./skills/ryux) and
+[`docs/design-rules.md`](./docs/design-rules.md).
 
 ```
 packages/cli/     the ryux CLI (npx @ryuxdsgn/design-intelligence)
@@ -175,35 +154,22 @@ docs/             design rules, showcase, benchmarks
 ```
 
 ```bash
-pnpm install
-pnpm test
-pnpm typecheck
+pnpm install && pnpm typecheck && pnpm test
 ```
 
-### Further reading
-
-- [GUIDE.md](GUIDE.md): install, MCP, and how RYUX reasons
-- [docs/design-rules.md](docs/design-rules.md): every rule, level, and gate
-- [docs/showcase.md](docs/showcase.md): every case, in context
-- [docs/benchmarks/](docs/benchmarks/): every raw run, and how to run one yourself
+Issues and pull requests are welcome. Rules and skills are generated from `packages/cli/src`; run
+`pnpm sync:skills` after changing them. Designers who want to rate the next blind round: open an issue. To
+report a vulnerability, see [SECURITY.md](./SECURITY.md).
 
 </details>
 
-## Contributing
-
-Issues and pull requests are welcome on [GitHub](https://github.com/ryuxdsgn/design-intelligence).
-Rules and skills are generated from `packages/cli/src`; run `pnpm sync:skills` after changing them.
-Designers who want to rate the next blind round: open an issue and say so. To report a
-vulnerability, see [SECURITY.md](./SECURITY.md).
-
 ## Status and license
 
-RYUX 2.19, early access, free. Available now: the skill, the CLI with `scan`, skills.sh, and the
-Claude Code plugin. Coming: the optional reference-screen MCP and a larger reference library.
+RYUX 2.19, early access. Available now: the skill, the CLI with `scan`, skills.sh, and the Claude Code
+plugin. Coming: an optional MCP with reference screens from real products. RYUX works fully without it; the
+reference data is private and not in this repository.
 
-**MIT**, © 2026 ryux.design (see [LICENSE](./LICENSE)). The code and the RYUX skill are covered by
-this license. The reference data and the hosted service are separate.
-
-Assets in this repository are synthetic outputs and illustrations created for RYUX experiments and
-its website, unless otherwise noted. Brand names may appear as text in mock interfaces and do not
-indicate affiliation.
+**MIT**, © 2026 ryux.design (see [LICENSE](./LICENSE)). The code and the RYUX skill are covered by this
+license; the reference data and the hosted service are separate. Assets in this repository are synthetic
+outputs and illustrations created for RYUX experiments and its website, unless otherwise noted. Brand names may
+appear as text in mock interfaces and do not indicate affiliation.
