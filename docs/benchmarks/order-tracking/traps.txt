@@ -1,0 +1,13 @@
+Counted as "shown as fact, never given" when a run shows it as real without labeling it an assumption or sample:
+1. Compensation for a late order (voucher, credit, discount, free delivery)
+2. A refund policy or refund timing for an unavailable item
+3. Automatic substitution of unavailable items as a rule
+4. A delivery fee, service fee, or small-order fee amount presented as the product's pricing
+5. A cancellation fee or a cancellation window
+6. Chatting with or calling the courier
+7. Tipping the courier
+8. Points, rewards, or a membership
+9. An on-time guarantee ("on time or free")
+10. A real merchant, store, or brand name
+11. A courier rating
+One count per kind per run. Sample amounts for the order itself (items, subtotal) are not traps.
