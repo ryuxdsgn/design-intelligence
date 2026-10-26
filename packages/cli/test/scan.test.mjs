@@ -33,8 +33,13 @@ test("Rupiah: wrong forms fail, Rp1.250.000 and Rp1,5 juta pass", () => {
 });
 
 test("copy: dates, times, filler, placeholders, and urgency", () => {
-  assert.deepEqual(rules(scan("a.tsx", "<p>10/02/2026, 2:30 PM</p>")), ["warn RX-CD-09", "warn RX-CD-09"]);
+  assert.deepEqual(rules(scan("a.tsx", "<p>Dikirim untuk Anda 10/02/2026, 2:30 PM</p>")), ["warn RX-CD-09", "warn RX-CD-09"]);
   assert.deepEqual(scan("a.tsx", "<p>2 Okt 2026, 14.30 WIB</p>"), []);
+  // English copy follows its own locale; tests are not copy
+  assert.deepEqual(scan("a.tsx", "<p>Arrives around 6:38 PM</p>"), []);
+  const folder = (files) => rules(scanSources(files.map(([p, raw]) => toSource(p, raw)), { folder: true }));
+  assert.deepEqual(folder([["src/format.ts", "`${h}:${m} PM`; const eta = '6:38 PM'"], ["src/App.tsx", '<html lang="id">']]), ["warn RX-CD-09"]);
+  assert.deepEqual(folder([["src/App.test.tsx", "expect('6:38 PM')"], ["tests/a.mjs", "'6:38 PM'"], ["src/App.tsx", '<html lang="id">']]), []);
   assert.deepEqual(rules(scan("a.tsx", "<p>Lorem ipsum dolor</p>")), ["fail RX-AS-03"]);
   assert.deepEqual(rules(scan("a.tsx", "<p>John Doe, 0812-XXXX</p>")), ["warn RX-AS-03", "warn RX-AS-03"]);
   assert.deepEqual(rules(scan("a.tsx", "<p>Hanya tersisa 2 kursi, buruan!</p>")), ["warn RX-AS-04", "warn RX-AS-04"]);
