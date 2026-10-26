@@ -1,0 +1,39 @@
+{
+ "static": {
+  "ok": true,
+  "cli": "2.19.0",
+  "files": 7,
+  "pages": 0,
+  "widths": [],
+  "findings": [
+   {
+    "level": "warn",
+    "rule": "RX-CD-09",
+    "file": "B3/index.html",
+    "line": 38,
+    "column": 102,
+    "message": "\"12:18 pm\": in Indonesian copy write 14.30 in 24-hour form (other markets follow their locale)"
+   },
+   {
+    "level": "warn",
+    "rule": "RX-DS-03",
+    "file": "B3/styles.css",
+    "line": 381,
+    "column": 52,
+    "message": "8 one-off colors (#9fd9b5, #4f6b3a, #3e6470, ...): use the color tokens, or define them by role"
+   }
+  ]
+ },
+ "render": {
+  "ok": true,
+  "cli": "2.19.0",
+  "files": 0,
+  "pages": 1,
+  "widths": [
+   320,
+   390,
+   1280
+  ],
+  "findings": []
+ }
+}
