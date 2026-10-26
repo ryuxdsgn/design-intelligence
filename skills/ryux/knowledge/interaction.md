@@ -2,7 +2,7 @@
 
 Designs what happens when people act: feedback, confirmation, undo, navigation, gestures, states, and local payments such as QRIS and virtual accounts.
 
-> Group UX · Delivery Gate area UX · RYUX 2.19.2. Levels are defined in `SKILL.md`.
+> Group UX · Delivery Gate area UX · RYUX 2.19.3. Levels are defined in `SKILL.md`.
 
 Define every meaningful action in four parts before implementing it:
 
