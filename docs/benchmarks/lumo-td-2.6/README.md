@@ -1,6 +1,9 @@
 # Lumo TD · Transaction detail, with and without RYUX
 
-The benchmark behind the comparison in the [README](../../../README.md#see-the-difference). One brief,
+> **Historical (RYUX 2.6.3).** Kept as a record, not as evidence for current claims. Current benchmarks are
+> listed in [`docs/benchmarks/`](../).
+
+One brief,
 six runs: three without RYUX (`a1`–`a3`) and three with RYUX 2.6.3 (`c1`–`c3`). Each run is one
 fresh agent in an empty folder, designing in pen.dev on a cleared canvas.
 

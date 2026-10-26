@@ -123,17 +123,15 @@ every check.
 Each benchmark fixes its criteria before the first run, uses a fresh agent per run, and publishes the raw
 outputs. Counts come from a few runs on one model: what those runs did, not rates.
 
-| Benchmark | What it tests | Runs |
-| --- | --- | --- |
-| [Personal finance app](docs/benchmarks/hero-finance/) | Asking first, invented facts, and states, designed in pen.dev | 3 + 3 |
-| [Order tracking](docs/benchmarks/order-tracking/) | Invented policies, failure states, and `scan` results in a working prototype | 3 + 3 |
-| [Lumo transaction detail](docs/benchmarks/lumo-td-2.6/) | States covered; actions and promises the brief didn't give | 3 + 3 |
-| [Typography](docs/benchmarks/typo-craft/) | Line length, line-height, and weights, scored by a script; one blind designer rating | 3 + 3 |
-| [Explore, judge, critique](docs/benchmarks/explore-judge/) | Three directions before one design; planted problems found in Critique | 3–6 per condition |
-| [Five steps on one screen](docs/benchmarks/case-td-2.6/) | Analyze, Critique, Design, Build, and QA in one session; a case study | 1 |
-| [Scenarios](docs/benchmarks/scenarios/) | Six repeatable scenarios with a weighted rubric | 1 + 1 each |
+| Benchmark | The question it answers | RYUX | Runs |
+| --- | --- | --- | --- |
+| [Order tracking](docs/benchmarks/order-tracking/) | Does the agent invent policies the brief left open, and build the states for when things go wrong? | 2.19.0 | 3 + 3 |
+| [Personal finance app](docs/benchmarks/hero-finance/) | Does it ask first, invent facts, and cover states? | 2.9.3 | 3 + 3 |
+| [Explore, judge, critique](docs/benchmarks/explore-judge/) | Does it offer real alternatives first, and does Critique find planted problems? Rated blind | 2.8 vs 2.9 | 3–6 per condition |
+| [Typography](docs/benchmarks/typo-craft/) | Does a craft rule change the built result? Measured by a script | 2.9.1 vs 2.9.2 | 3 + 3 |
 
-The [showcase](docs/showcase.md) reads them in context.
+Every run so far uses Claude Code; the other supported agents are not benchmarked yet. Older and historical runs
+are listed in [`docs/benchmarks/`](docs/benchmarks/).
 
 </details>
 
