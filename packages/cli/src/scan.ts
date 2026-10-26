@@ -19,7 +19,13 @@ export interface ScanContext {
   /** Some scanned file handles reduced motion. Undefined when single files were scanned, so
    *  folder-level detectors stay quiet instead of guessing. */
   reducedMotion?: boolean;
+  /** Some scanned file is Indonesian (lang id, id-ID, Rupiah, or common Indonesian words). Undefined
+   *  when single files were scanned; locale detectors then read the file itself. */
+  indonesian?: boolean;
 }
+
+const INDONESIAN = /\blang=["']id\b|\bid-ID\b|\blocale\s*[:=]\s*["'`]id\b|\bRp\.?\s?\d|\b(?:yang|untuk|tidak|silakan|pesanan|belum)\b/;
+const TEST_FILE = /(?:^|\/)(?:tests?|__tests__)\/|\.(?:test|spec)\.[cm]?[jt]sx?$/;
 
 interface Hit {
   index: number;
@@ -141,10 +147,10 @@ export const DETECTORS: Detector[] = [
   {
     rule: "RX-CD-09",
     level: "warn",
-    looksFor: "dates as 10/02/2026 and times as 2:30 PM in copy",
+    looksFor: "dates as 10/02/2026 and times as 2:30 PM in Indonesian copy (lang id, id-ID, Rupiah, or Indonesian words in the folder); test files are skipped",
     exts: CODE,
-    find: ({ text }) =>
-      matches(text, [
+    find: ({ path, text }, ctx) =>
+      TEST_FILE.test(path) || !(ctx.indonesian ?? INDONESIAN.test(text)) ? [] : matches(text, [
         [/(?<![\d/])\d{1,2}\/\d{1,2}\/\d{4}(?![\d/])/, (m) => `"${m[0]}": in Indonesian copy write 2 Okt 2026 (other markets follow their locale)`],
         [/\b\d{1,2}[:.]\d{2}\s?(?:AM|PM|am|pm)\b/, (m) => `"${m[0]}": in Indonesian copy write 14.30 in 24-hour form (other markets follow their locale)`],
       ]),
@@ -375,7 +381,10 @@ export interface ScanOptions {
 /** Run every detector over the sources. Findings are ordered by file, then line. */
 export function scanSources(sources: Source[], opts: ScanOptions): ScanFinding[] {
   const ctx: ScanContext = opts.folder
-    ? { reducedMotion: sources.some((s) => /prefers-reduced-motion|motion-(?:reduce|safe):|useReducedMotion|reducedMotion/.test(s.text)) }
+    ? {
+        reducedMotion: sources.some((s) => /prefers-reduced-motion|motion-(?:reduce|safe):|useReducedMotion|reducedMotion/.test(s.text)),
+        indonesian: sources.some((s) => !TEST_FILE.test(s.path) && INDONESIAN.test(s.text)),
+      }
     : {};
   const findings: ScanFinding[] = [];
   for (const src of sources) {
