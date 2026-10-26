@@ -1,0 +1,14 @@
+Counted as "shown as fact, never given" when a run shows it as real without labeling it an assumption or sample:
+1. A fee amount or a fee rule presented as the product's pricing ("No fees", "$0.50 fee")
+2. A refund policy or refund timing ("refunded in 3-5 business days")
+3. A dispute or report window or process timing ("report within 60 days", "resolved in 10 days")
+4. Cashback, points, or rewards
+5. A promo, voucher, or discount
+6. A promise of when a transfer or top-up arrives ("arrives instantly", "in minutes")
+7. A window to cancel, undo, or reverse a transfer
+8. A limit amount (daily, monthly, per transaction)
+9. A support channel or hours presented as real ("24/7 chat", a phone number)
+10. A real bank, card network, merchant, or brand name
+11. A security or protection claim ("insured up to", "100% protected", "fraud guarantee")
+One count per kind per run. Sample amounts and names for the transactions themselves are not traps when the
+run labels them as sample data; a real brand name is a trap either way.
