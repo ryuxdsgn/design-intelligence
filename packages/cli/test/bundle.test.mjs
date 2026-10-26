@@ -22,6 +22,13 @@ test("the router stays short enough to read on every task", () => {
   assert.ok(renderBundle()["SKILL.md"].split("\n").length <= 180);
 });
 
+test("Build with no design asks Design's stage 1 questions, even for a prototype", () => {
+  // order-tracking benchmark, 2.19.0: a "working prototype" brief skipped the questions in 3 of 3 runs
+  const build = renderBundle()["capabilities/build.md"].replace(/\s+/g, " ");
+  assert.match(build, /run Design's stages 1-4 first/);
+  assert.match(build, /even when the request is a quick build or a working prototype/);
+});
+
 test("validation catches a missing module, a broken reference, and 1.x names", () => {
   const files = renderBundle();
   const missing = { ...files };
