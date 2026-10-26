@@ -1,0 +1,270 @@
+{
+ "static": {
+  "ok": true,
+  "cli": "2.19.0",
+  "files": 3,
+  "pages": 0,
+  "widths": [],
+  "findings": [
+   {
+    "level": "warn",
+    "rule": "RX-DS-03",
+    "file": "A3/styles.css",
+    "line": 25,
+    "column": 20,
+    "message": "18 one-off colors (#dde4df, #fff, #3dbb80, ...): use the color tokens, or define them by role"
+   },
+   {
+    "level": "warn",
+    "rule": "RX-A11Y-02",
+    "file": "A3/styles.css",
+    "line": 62,
+    "column": 13,
+    "message": "11px text: body text is 14 to 16px on mobile; below 12px is hard to read"
+   },
+   {
+    "level": "warn",
+    "rule": "RX-A11Y-02",
+    "file": "A3/styles.css",
+    "line": 133,
+    "column": 16,
+    "message": "11px text: body text is 14 to 16px on mobile; below 12px is hard to read"
+   },
+   {
+    "level": "warn",
+    "rule": "RX-A11Y-02",
+    "file": "A3/styles.css",
+    "line": 202,
+    "column": 31,
+    "message": "11px text: body text is 14 to 16px on mobile; below 12px is hard to read"
+   },
+   {
+    "level": "warn",
+    "rule": "RX-A11Y-02",
+    "file": "A3/styles.css",
+    "line": 240,
+    "column": 74,
+    "message": "11px text: body text is 14 to 16px on mobile; below 12px is hard to read"
+   },
+   {
+    "level": "warn",
+    "rule": "RX-A11Y-02",
+    "file": "A3/styles.css",
+    "line": 269,
+    "column": 35,
+    "message": "11px text: body text is 14 to 16px on mobile; below 12px is hard to read"
+   },
+   {
+    "level": "warn",
+    "rule": "RX-A11Y-02",
+    "file": "A3/styles.css",
+    "line": 334,
+    "column": 12,
+    "message": "11px text: body text is 14 to 16px on mobile; below 12px is hard to read"
+   }
+  ]
+ },
+ "render": {
+  "ok": false,
+  "cli": "2.19.0",
+  "files": 0,
+  "pages": 1,
+  "widths": [
+   320,
+   390,
+   1280
+  ],
+  "findings": [
+   {
+    "rule": "RX-A11Y-01",
+    "level": "fail",
+    "selector": "div.eta > div > div.eta-label",
+    "message": "\"Estimated arrival\": contrast 3.56:1 (#7d8b84 on #ffffff), needs 4.5:1; 16 more with the same colors",
+    "file": "http://127.0.0.1:4303/",
+    "line": 0,
+    "column": 0,
+    "width": 320
+   },
+   {
+    "rule": "RX-A11Y-01",
+    "level": "fail",
+    "selector": "div#toasts > button.toast > span.app",
+    "message": "\"\ud83e\uddfa\": contrast 4.39:1 (#ffffff on #0e8a55), needs 4.5:1",
+    "file": "http://127.0.0.1:4303/",
+    "line": 0,
+    "column": 0,
+    "width": 320
+   },
+   {
+    "rule": "RX-A11Y-02",
+    "level": "warn",
+    "selector": "section#card > ol.progress > li.now",
+    "message": "\"Placed\": 11px text (8 elements); body text is 14 to 16px on mobile, below 12px is hard to read",
+    "file": "http://127.0.0.1:4303/",
+    "line": 0,
+    "column": 0,
+    "width": 320
+   },
+   {
+    "rule": "RX-A11Y-02",
+    "level": "warn",
+    "selector": "section#card > div.section > button.section-head",
+    "message": "\"Your items8 items \u2304\": target 284x18px, under 24x24 (spaced enough to pass WCAG 2.5.8); 44x44 is the preferred hit area",
+    "file": "http://127.0.0.1:4303/",
+    "line": 0,
+    "column": 0,
+    "width": 320
+   },
+   {
+    "rule": "RX-A11Y-02",
+    "level": "warn",
+    "selector": "section#card > div.section > button.section-head",
+    "message": "\"Order timelineOn track \u2304\": target 284x18px, under 24x24 (spaced enough to pass WCAG 2.5.8); 44x44 is the preferred hit area",
+    "file": "http://127.0.0.1:4303/",
+    "line": 0,
+    "column": 0,
+    "width": 320
+   },
+   {
+    "rule": "RX-QA-03",
+    "level": "warn",
+    "selector": "header.topbar > div.topbar-title > strong",
+    "message": "\"Green Basket Market\" overlaps \"Order placed\" (button.toast > span > strong)",
+    "file": "http://127.0.0.1:4303/",
+    "line": 0,
+    "column": 0,
+    "width": 320
+   },
+   {
+    "rule": "RX-QA-03",
+    "level": "warn",
+    "selector": "header.topbar > div.topbar-title > span",
+    "message": "\"Order #GB-20481 \u00b7 8 items\" overlaps \"We\u2019ve sent your order to Green Basket.\" (button.toast > span > p)",
+    "file": "http://127.0.0.1:4303/",
+    "line": 0,
+    "column": 0,
+    "width": 320
+   },
+   {
+    "rule": "RX-A11Y-01",
+    "level": "fail",
+    "selector": "div.eta > div > div.eta-label",
+    "message": "\"Estimated arrival\": contrast 3.56:1 (#7d8b84 on #ffffff), needs 4.5:1; 16 more with the same colors",
+    "file": "http://127.0.0.1:4303/",
+    "line": 0,
+    "column": 0,
+    "width": 390
+   },
+   {
+    "rule": "RX-A11Y-01",
+    "level": "fail",
+    "selector": "div#toasts > button.toast > span.app",
+    "message": "\"\ud83e\uddfa\": contrast 4.39:1 (#ffffff on #0e8a55), needs 4.5:1",
+    "file": "http://127.0.0.1:4303/",
+    "line": 0,
+    "column": 0,
+    "width": 390
+   },
+   {
+    "rule": "RX-A11Y-02",
+    "level": "warn",
+    "selector": "section#card > ol.progress > li.now",
+    "message": "\"Placed\": 11px text (8 elements); body text is 14 to 16px on mobile, below 12px is hard to read",
+    "file": "http://127.0.0.1:4303/",
+    "line": 0,
+    "column": 0,
+    "width": 390
+   },
+   {
+    "rule": "RX-A11Y-02",
+    "level": "warn",
+    "selector": "section#card > div.section > button.section-head",
+    "message": "\"Your items8 items \u2304\": target 354x18px, under 24x24 (spaced enough to pass WCAG 2.5.8); 44x44 is the preferred hit area",
+    "file": "http://127.0.0.1:4303/",
+    "line": 0,
+    "column": 0,
+    "width": 390
+   },
+   {
+    "rule": "RX-A11Y-02",
+    "level": "warn",
+    "selector": "section#card > div.section > button.section-head",
+    "message": "\"Order timelineOn track \u2304\": target 354x18px, under 24x24 (spaced enough to pass WCAG 2.5.8); 44x44 is the preferred hit area",
+    "file": "http://127.0.0.1:4303/",
+    "line": 0,
+    "column": 0,
+    "width": 390
+   },
+   {
+    "rule": "RX-QA-03",
+    "level": "warn",
+    "selector": "header.topbar > div.topbar-title > span",
+    "message": "\"Order #GB-20481 \u00b7 8 items\" overlaps \"We\u2019ve sent your order to Green Basket.\" (button.toast > span > p)",
+    "file": "http://127.0.0.1:4303/",
+    "line": 0,
+    "column": 0,
+    "width": 390
+   },
+   {
+    "rule": "RX-A11Y-01",
+    "level": "fail",
+    "selector": "div.eta > div > div.eta-label",
+    "message": "\"Estimated arrival\": contrast 3.56:1 (#7d8b84 on #ffffff), needs 4.5:1; 16 more with the same colors",
+    "file": "http://127.0.0.1:4303/",
+    "line": 0,
+    "column": 0,
+    "width": 1280
+   },
+   {
+    "rule": "RX-A11Y-01",
+    "level": "fail",
+    "selector": "div#toasts > button.toast > span.app",
+    "message": "\"\ud83e\uddfa\": contrast 4.39:1 (#ffffff on #0e8a55), needs 4.5:1",
+    "file": "http://127.0.0.1:4303/",
+    "line": 0,
+    "column": 0,
+    "width": 1280
+   },
+   {
+    "rule": "RX-A11Y-02",
+    "level": "warn",
+    "selector": "main#phone > div.statusbar > span.sb-icons",
+    "message": "\"\u2582\u2584\u2586 5G\": 11px text (9 elements); body text is 14 to 16px on mobile, below 12px is hard to read",
+    "file": "http://127.0.0.1:4303/",
+    "line": 0,
+    "column": 0,
+    "width": 1280
+   },
+   {
+    "rule": "RX-A11Y-02",
+    "level": "warn",
+    "selector": "section#card > div.section > button.section-head",
+    "message": "\"Your items8 items \u2304\": target 354x18px, under 24x24 (spaced enough to pass WCAG 2.5.8); 44x44 is the preferred hit area",
+    "file": "http://127.0.0.1:4303/",
+    "line": 0,
+    "column": 0,
+    "width": 1280
+   },
+   {
+    "rule": "RX-A11Y-02",
+    "level": "warn",
+    "selector": "section#card > div.section > button.section-head",
+    "message": "\"Order timelineOn track \u2304\": target 354x18px, under 24x24 (spaced enough to pass WCAG 2.5.8); 44x44 is the preferred hit area",
+    "file": "http://127.0.0.1:4303/",
+    "line": 0,
+    "column": 0,
+    "width": 1280
+   },
+   {
+    "rule": "RX-QA-03",
+    "level": "warn",
+    "selector": "header.topbar > div.topbar-title > span",
+    "message": "\"Order #GB-20481 \u00b7 8 items\" overlaps \"We\u2019ve sent your order to Green Basket.\" (button.toast > span > p)",
+    "file": "http://127.0.0.1:4303/",
+    "line": 0,
+    "column": 0,
+    "width": 1280
+   }
+  ]
+ }
+}

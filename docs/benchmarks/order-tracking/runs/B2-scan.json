@@ -1,0 +1,98 @@
+{
+ "static": {
+  "ok": true,
+  "cli": "2.19.0",
+  "files": 33,
+  "pages": 0,
+  "widths": [],
+  "findings": [
+   {
+    "level": "warn",
+    "rule": "RX-CD-09",
+    "file": "B2/src/App.test.tsx",
+    "line": 41,
+    "column": 72,
+    "message": "\"6:19 PM\": in Indonesian copy write 14.30 in 24-hour form (other markets follow their locale)"
+   },
+   {
+    "level": "warn",
+    "rule": "RX-CD-09",
+    "file": "B2/src/App.test.tsx",
+    "line": 54,
+    "column": 40,
+    "message": "\"6:38 PM\": in Indonesian copy write 14.30 in 24-hour form (other markets follow their locale)"
+   },
+   {
+    "level": "warn",
+    "rule": "RX-CD-09",
+    "file": "B2/src/domain/order.test.ts",
+    "line": 104,
+    "column": 103,
+    "message": "\"6:38 PM\": in Indonesian copy write 14.30 in 24-hour form (other markets follow their locale)"
+   }
+  ]
+ },
+ "render": {
+  "ok": true,
+  "cli": "2.19.0",
+  "files": 0,
+  "pages": 1,
+  "widths": [
+   320,
+   390,
+   1280
+  ],
+  "findings": [
+   {
+    "rule": "RX-A11Y-02",
+    "level": "warn",
+    "selector": "fieldset.proto__group > label.proto__radio > input",
+    "message": "\"input\": target 16x16px, under 24x24 (spaced enough to pass WCAG 2.5.8); 44x44 is the preferred hit area",
+    "file": "http://127.0.0.1:4305/",
+    "line": 0,
+    "column": 0,
+    "width": 1280
+   },
+   {
+    "rule": "RX-A11Y-02",
+    "level": "warn",
+    "selector": "fieldset.proto__group > label.proto__radio > input",
+    "message": "\"input\": target 13x16px, under 24x24 (spaced enough to pass WCAG 2.5.8); 44x44 is the preferred hit area",
+    "file": "http://127.0.0.1:4305/",
+    "line": 0,
+    "column": 0,
+    "width": 1280
+   },
+   {
+    "rule": "RX-A11Y-02",
+    "level": "warn",
+    "selector": "fieldset.proto__group > label.proto__radio > input",
+    "message": "\"input\": target 13x16px, under 24x24 (spaced enough to pass WCAG 2.5.8); 44x44 is the preferred hit area",
+    "file": "http://127.0.0.1:4305/",
+    "line": 0,
+    "column": 0,
+    "width": 1280
+   },
+   {
+    "rule": "RX-A11Y-02",
+    "level": "warn",
+    "selector": "fieldset.proto__group > label.proto__radio > input",
+    "message": "\"input\": target 13x16px, under 24x24 (spaced enough to pass WCAG 2.5.8); 44x44 is the preferred hit area",
+    "file": "http://127.0.0.1:4305/",
+    "line": 0,
+    "column": 0,
+    "width": 1280
+   },
+   {
+    "rule": "RX-A11Y-02",
+    "level": "warn",
+    "selector": "div#proto-body > label.proto__check > input",
+    "message": "\"input\": target 14x16px, under 24x24 (spaced enough to pass WCAG 2.5.8); 44x44 is the preferred hit area",
+    "file": "http://127.0.0.1:4305/",
+    "line": 0,
+    "column": 0,
+    "width": 1280
+   }
+  ]
+ }
+}
