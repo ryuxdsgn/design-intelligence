@@ -1,88 +1,78 @@
 # Order tracking: no skill vs RYUX 2.19.0 + DESIGN.md
 
-One brief for a working web prototype, six fresh agents: three with no skill (A), three with RYUX 2.19.0 and a
-five-line `DESIGN.md` (B). Opus 5.5, `claude -p`, no MCP servers, each run in an empty folder. What is counted,
-and which pair is shown (run 1 of each arm), was fixed in [`PROTOCOL.md`](PROTOCOL.md) before the first run.
-B gets DESIGN.md and A does not, so motion and voice differences partly come from that file.
+Six fresh agents built the same working prototype from one brief. Three had no skill (A1-A3), three had RYUX
+and a five-line [`DESIGN.md`](DESIGN.md) (B1-B3). The brief left every business policy open: fees, refunds,
+late compensation, cancellation, substitutions.
 
-| A1, no skill | B1, RYUX + DESIGN.md |
-| --- | --- |
-| <img src="runs/A1.jpg" alt="A1 at 390 wide: a map with a dotted route, an arrival card at 2:34 PM, a shopper card with a 4.9 star rating, chat and call buttons, and an item list with 'If unavailable: best match' under each item" width="300"> | <img src="runs/B1.jpg" alt="B1 at 390 wide: store name, a large 25 min estimate with an arrival range, 'Your shopper is picking your items', a four-step progress bar, an order row, and a 'Get help with this order' button" width="300"> |
+<a href="see-the-difference.gif"><img src="see-the-difference.gif" alt="Animation: the brief and the two arms; the late state with a $5 credit and 'Cancel for free' circled in A1 next to B1's reason and new time; the out-of-stock sheet with a one-minute auto-pick timer and refund timing circled in A1 next to B1's 'Decide later' with no timer; A1's delivered screen with a courier rating next to B1's offline and load-error screens; then totals across all six runs, including what RYUX missed" width="100%"></a>
 
-First screen at 390 wide, 2.5 seconds after load. Visual quality is not scored.
+Still version: [`see-the-difference.png`](see-the-difference.png). Shown: A1 and B1, the pair
+[`PROTOCOL.md`](PROTOCOL.md) fixed before the first run. Prototype controls are hidden in the captures; nothing
+else is edited.
 
-## The brief
+## What happened
 
-[`prompt.txt`](prompt.txt):
+**The no-skill runs filled the open policies with their own.** A $5 credit when an order is late, free
+cancellation, a 60- or 90-second timer after which the shopper picks a substitute, refund timing, tips, courier ratings,
+and in A2 real brands (Oatly, Alpro). None of it was labeled as an assumption. 25 across three runs.
 
-> Build an order tracking experience for a food and grocery delivery app as a working web prototype, mobile
-> first: the order status from placed to delivered, what the customer sees when the order is running late, and
-> what happens when an item is unavailable. Flow inspiration: delivery and ride-hailing apps.
+**The RYUX runs left the policies open and said so.** 2 across three runs. B1: "Left out on purpose: calling the
+courier, cancelling the order, compensation for lateness, and fees, because I don't know your policies." Each B
+run listed the rules it did have to make up for the prototype to work, and labeled stores, prices, and fees as
+sample data on screen.
 
-A run that asked first would get [`reply.txt`](reply.txt). No run asked, so no run got a second turn.
+**Only the RYUX runs built for things going wrong.** Loading, load error, and offline in 3 of 3 B runs, 0 of 3
+A runs.
 
-## Results
+This is why A looks more finished at first glance: more features on screen. Each extra feature is a business
+decision nobody made.
 
-| Run | Asked first | Shown as fact, never given ([`traps.txt`](traps.txt)) | Static scan | Render scan (320, 390, 1280) |
-| --- | --- | --- | --- | --- |
-| A1 | No | 8: late credit, refund, auto-substitution, fees, free-cancel window, courier chat, tip, courier rating | 9 | 17 (8 overlaps, 6 contrast, 3 small text) |
-| A2 | No | 9: the same kinds as A1, plus real brands (Oatly, Alpro) | 8 | 5 (small text and targets) |
-| A3 | No | 8: the same kinds as A1 | 7 | 19 (9 small text and targets, 6 contrast, 4 overlaps) |
-| B1 | No | 1: messaging the courier (the chat says messages stay on the device, but not that the feature is an assumption) | 1 | 7 (overlaps at 320, all with the prototype panel) |
-| B2 | No | 1: calling and messaging the courier | 0 | 5 (small inputs under 24px at 1280) |
-| B3 | No | 0 (messaging is listed under "Assumptions") | 1 | 0 |
+**What RYUX missed.** No run asked before building, B included. B2 explained why: "RYUX normally asks you to pick
+between two or three directions before building. Because you asked for a working prototype, I picked one and
+built it." B1 and B2 still offered calling or messaging the courier as a given. And only the A runs built a
+cancelled state; no run built a failed delivery.
 
-Totals: A 25 trap kinds across three runs, B 2. Every A run turned the open policies into product rules: a $5
-credit when late, free or full-refund cancellation, a 60 or 90 second timer after which the shopper applies a
-saved substitution, tips, and star ratings, with none of them labeled as an assumption on screen or in the final message. Every B run
-listed the rules it had to make up, said what it left out (calling, cancelling, late compensation, refund timing)
-because the policy was not given, and labeled all stores, prices, and fees as sample data on screen.
+## Per run
 
-Neither arm asked first. The brief asks for a working prototype, and B2 says so in its final message: "RYUX
-normally asks you to pick between two or three directions before building. Because you asked for a working
-prototype, I picked one and built it."
+| Run | Shown as fact, never given ([`traps.txt`](traps.txt)) | Loading, error, offline | `ryux scan`: static · rendered |
+| --- | --- | --- | --- |
+| A1 | 8: late credit, refund timing, auto-substitution, fees, free cancellation, courier chat, tip, courier rating | none | 9 · 17 |
+| A2 | 9: the same kinds, plus real brands | none | 8 · 5 |
+| A3 | 8: the same kinds | none | 7 · 19 |
+| B1 | 1: messaging the courier | all three | 1 · 7 |
+| B2 | 1: calling and messaging the courier | all three | 0 · 5 |
+| B3 | 0: messaging is listed under "Assumptions" | all three | 1 · 0 |
 
-### States, copy, motion, design system
+The scan columns count findings. Static: 11px text and skipped heading levels in A; one-off colors in both arms
+(A 18-31 per run, B 0-15). Rendered, at 320, 390, and 1280 wide: overlapping text and low contrast in A1 and A3;
+B1's overlaps are all in its prototype panel at 320. Raw output in `runs/<run>-scan.json`.
 
-| | A1 | A2 | A3 | B1 | B2 | B3 |
-| --- | --- | --- | --- | --- | --- | --- |
-| Loading, load error, offline | none | none | none | all three | all three | all three |
-| Cancelled | yes | yes | yes | no | no | no |
-| Failed delivery | no | no | no | no | no | no |
-| `prefers-reduced-motion` | yes | yes | yes | yes | yes | yes |
-| Endless decorative loops | none (one spinner) | map pulses | map pulse, shimmer bar | none (spinner, skeleton) | none (spinner) | none (spinner, skeleton) |
-| CSS custom properties | 16 | 16 | 16 | 34 | 56 | 49 |
-| One-off colors (RX-DS-03) | 23 | 31 | 18 | 15 | 0 | 8 |
+**Also checked, no clear split:** all six handle `prefers-reduced-motion`. All six say what happened in the late and
+the unavailable state, why, and what to do next, and none jokes; the A runs pair the apology with the invented
+credit ("$5.00 credit added to your wallet. No need to ask."). A2 and A3 loop decorative animations on the map;
+the B runs loop only spinners and skeletons, as DESIGN.md asks. The B runs define more design tokens (34-56 CSS
+custom properties against 16).
 
-Copy: all six say what happened in the late and the unavailable state, give a reason, and offer a next step. None
-jokes. The A runs pair the late apology with the invented credit ("Sorry — we've added $5 credit"). B2 and B3
-apologize once and give the reason that came with the order.
+## Method
 
-Static scan notes: the A findings are 11px text (RX-A11Y-02) and skipped heading levels (RX-A11Y-04). The scan
-also flagged "6:38 PM" style times in B1, B2, and B3 under RX-CD-09 (8 findings, 7 of them in test files). That
-rule asks for 24-hour time in Indonesian copy; this product is in English, so those are false positives and are
-left out of the counts above. Raw output: `runs/<run>-scan.json`.
+- **Brief:** [`prompt.txt`](prompt.txt). A run that asked first would have got [`reply.txt`](reply.txt); none did.
+- **Arms:** Opus 5.5, `claude -p`, no MCP servers, an empty folder each. A ran with every skill turned off. B had
+  RYUX 2.19.0 installed in the folder, plus DESIGN.md, which A did not have; motion and tone partly come from
+  that file. All three B runs loaded RYUX; no A run had it.
+- **Isolation:** global skills moved aside and synced plugins turned off for both arms. B also saw the built-in
+  skills every session gets; built-in `design` and `design-sync` were denied.
+- **Rerun:** the first B attempt (three runs in parallel) hit the account's session limit before any final
+  message. It was discarded and B1-B3 were rerun one at a time from fresh folders. A was not rerun.
+- **Scoring:** traps and copy read by hand from the screens and each final message; scans with `ryux scan`
+  2.19.0. The scan's RX-CD-09 (24-hour time in Indonesian copy) flagged "6:38 PM" in B 8 times, 7 of them in
+  test files; the product is in English, so those are left out.
+- **Stacks:** A1 one HTML file; A2, A3, B1, B3 plain HTML, CSS, and JS; B2 Vite, React, and TypeScript with tests.
+  A took 10-13 minutes, B 16-17.
 
-## Setup notes
-
-- **Isolation:** the global skills folder was moved aside during the runs. A ran with `--disable-slash-commands`
-  (no skills at all). B had the project-local RYUX plus the built-in skills every session gets; the built-in
-  `design` and `design-sync` skills were denied, and the synced `design` and `product-management` plugins were
-  off, in both arms.
-- **The first B attempt** (three runs in parallel) hit the account's session limit after about 16 minutes,
-  before any final message. Those runs were discarded and B1-B3 were rerun one at a time from fresh folders.
-  The A runs were not rerun.
-- **Skill counts:** B1 started with 18 skills and B2 and B3 with 30; the difference is built-in
-  `anthropic-skills:*` entries that synced between runs, not RYUX or user skills.
-- **Run time:** A 10-13 minutes, B 16-17 minutes.
-- **Stack:** A1 one HTML file; A2, A3, B1, B3 plain HTML, CSS, and JS; B2 Vite, React, and TypeScript with tests.
+Six runs, one brief, one model: what these runs did, not a rate.
 
 ## Files
 
 - `runs/<run>.jpg`: the first screen at 390 wide.
 - `runs/<run>-final.md`: each run's final message, local paths removed.
-- `runs/<run>-scan.json`: the static and render scans from `ryux scan` 2.19.0.
-
-## Scope
-
-Six runs, one brief, one model: these results describe these runs, not rates. B also had DESIGN.md.
+- `runs/<run>-scan.json`: the static and rendered scans.
