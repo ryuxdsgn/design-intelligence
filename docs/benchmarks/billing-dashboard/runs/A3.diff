@@ -1,0 +1,389 @@
+diff --git a/src/App.tsx b/src/App.tsx
+index 0cca6eb..feb9733 100644
+--- a/src/App.tsx
++++ b/src/App.tsx
+@@ -1,10 +1,12 @@
+ import { useEffect, useState } from "react";
++import { Billing } from "./pages/Billing";
+ import { Members } from "./pages/Members";
+ import { Overview } from "./pages/Overview";
+ 
+ const routes = [
+   { path: "#/", label: "Overview", page: Overview },
+   { path: "#/members", label: "Members", page: Members },
++  { path: "#/billing", label: "Billing", page: Billing },
+ ];
+ 
+ function useHash() {
+diff --git a/src/components/Meter.tsx b/src/components/Meter.tsx
+new file mode 100644
+index 0000000..b9a4eac
+--- /dev/null
++++ b/src/components/Meter.tsx
+@@ -0,0 +1,26 @@
++type Props = { label: string; value: number; max: number; valueText: string };
++
++/** A horizontal usage bar. Turns warning at 90% and danger past the max; the bar itself is capped at full. */
++export function Meter({ label, value, max, valueText }: Props) {
++  const ratio = max > 0 ? value / max : 0;
++  const tone = ratio > 1 ? "danger" : ratio >= 0.9 ? "warning" : "neutral";
++  return (
++    <div className="meter">
++      <div className="meter-label">
++        <span>{label}</span>
++        <span className={`meter-value meter-value-${tone}`}>{valueText}</span>
++      </div>
++      <div
++        className="meter-track"
++        role="meter"
++        aria-label={label}
++        aria-valuemin={0}
++        aria-valuemax={max}
++        aria-valuenow={value}
++        aria-valuetext={valueText}
++      >
++        <div className={`meter-fill meter-fill-${tone}`} style={{ width: `${Math.min(ratio, 1) * 100}%` }} />
++      </div>
++    </div>
++  );
++}
+diff --git a/src/components/components.css b/src/components/components.css
+index 0be49cf..23de4ce 100644
+--- a/src/components/components.css
++++ b/src/components/components.css
+@@ -32,3 +32,14 @@
+ .skeleton { background: var(--color-border); border-radius: var(--radius-sm); animation: pulse 1.4s ease-in-out infinite; }
+ @keyframes pulse { 50% { opacity: 0.5; } }
+ @media (prefers-reduced-motion: reduce) { .skeleton { animation: none; } }
++
++.meter { display: grid; gap: var(--space-2); }
++.meter-label { display: flex; justify-content: space-between; gap: var(--space-3); font-size: var(--text-sm); }
++.meter-value { color: var(--color-text-muted); font-variant-numeric: tabular-nums; }
++.meter-value-warning { color: var(--color-warning); font-weight: 600; }
++.meter-value-danger { color: var(--color-danger); font-weight: 600; }
++.meter-track { height: 8px; background: var(--color-bg); border: 1px solid var(--color-border); border-radius: var(--radius-full); overflow: hidden; }
++.meter-fill { height: 100%; border-radius: var(--radius-full); }
++.meter-fill-neutral { background: var(--color-primary); }
++.meter-fill-warning { background: var(--color-warning); }
++.meter-fill-danger { background: var(--color-danger); }
+diff --git a/src/components/index.ts b/src/components/index.ts
+index 1aa7d1b..cb3f89a 100644
+--- a/src/components/index.ts
++++ b/src/components/index.ts
+@@ -3,5 +3,6 @@ export { Banner } from "./Banner";
+ export { Button } from "./Button";
+ export { Card } from "./Card";
+ export { EmptyState } from "./EmptyState";
++export { Meter } from "./Meter";
+ export { Skeleton } from "./Skeleton";
+ export { Table, type Column } from "./Table";
+diff --git a/src/lib/format.test.ts b/src/lib/format.test.ts
+index ff0d678..09a3934 100644
+--- a/src/lib/format.test.ts
++++ b/src/lib/format.test.ts
+@@ -1,10 +1,15 @@
+-import { formatDate, formatMoney } from "./format";
++import { formatDate, formatMoney, formatNumber } from "./format";
+ 
+ test("formats cents as dollars", () => {
+   expect(formatMoney(9600)).toBe("$96.00");
+   expect(formatMoney(123456)).toBe("$1,234.56");
+ });
+ 
+-test("formats an ISO date", () => {
+-  expect(formatDate("2026-10-01T00:00:00Z")).toMatch(/Oct 1, 2026|Sep 30, 2026/);
++test("formats a number with grouping", () => {
++  expect(formatNumber(7300)).toBe("7,300");
++});
++
++test("formats an ISO date in UTC", () => {
++  expect(formatDate("2026-10-01T00:00:00Z")).toBe("Oct 1, 2026");
++  expect(formatDate("2026-10-31T23:59:59Z")).toBe("Oct 31, 2026");
+ });
+diff --git a/src/lib/format.ts b/src/lib/format.ts
+index 27edb38..9fd0aad 100644
+--- a/src/lib/format.ts
++++ b/src/lib/format.ts
+@@ -5,6 +5,11 @@ export function formatMoney(cents: number, currency = "USD"): string {
+   return new Intl.NumberFormat(LOCALE, { style: "currency", currency }).format(cents / 100);
+ }
+ 
++export function formatNumber(n: number): string {
++  return new Intl.NumberFormat(LOCALE).format(n);
++}
++
++/** Dates are shown in UTC so billing periods (which start at 00:00Z) don't shift a day for viewers west of UTC. */
+ export function formatDate(iso: string): string {
+-  return new Intl.DateTimeFormat(LOCALE, { year: "numeric", month: "short", day: "numeric" }).format(new Date(iso));
++  return new Intl.DateTimeFormat(LOCALE, { year: "numeric", month: "short", day: "numeric", timeZone: "UTC" }).format(new Date(iso));
+ }
+diff --git a/src/pages/Billing.test.tsx b/src/pages/Billing.test.tsx
+new file mode 100644
+index 0000000..0b79fc1
+--- /dev/null
++++ b/src/pages/Billing.test.tsx
+@@ -0,0 +1,64 @@
++import { fireEvent, render, screen, within } from "@testing-library/react";
++import { Billing } from "./Billing";
++
++function withScenario(name?: string) {
++  window.history.replaceState({}, "", name ? `/?scenario=${name}` : "/");
++}
++
++afterEach(() => withScenario());
++
++const ready = () => screen.findByText("Team", {}, { timeout: 2000 });
++
++test("shows plan, payment method, usage, and invoices", async () => {
++  withScenario();
++  render(<Billing />);
++  await ready();
++  expect(screen.getByText(/\$12\.00 per seat × 8 seats = \$96\.00 \/ month/)).toBeInTheDocument();
++  expect(screen.getByText("Current period Oct 1, 2026 – Oct 31, 2026")).toBeInTheDocument();
++  expect(screen.getByText("Card ending in 4242")).toBeInTheDocument();
++  expect(screen.getByRole("meter", { name: "Storage" })).toHaveAttribute("aria-valuetext", "412 of 500 GB");
++  expect(screen.getByRole("meter", { name: "Automation runs" })).toHaveAttribute("aria-valuetext", "7,300 of 10,000 runs");
++  const table = screen.getByRole("table", { name: "Invoices" });
++  expect(within(table).getAllByRole("row")).toHaveLength(7);
++  expect(within(table).getByText("INV-0006")).toBeInTheDocument();
++  expect(screen.queryByRole("alert")).not.toBeInTheDocument();
++});
++
++test("shows an error with retry when billing can't load", async () => {
++  withScenario("error");
++  render(<Billing />);
++  expect(await screen.findByText("Billing couldn't load", {}, { timeout: 2000 })).toBeInTheDocument();
++  withScenario();
++  fireEvent.click(screen.getByRole("button", { name: "Try again" }));
++  expect(await ready()).toBeInTheDocument();
++});
++
++test("alerts when the last payment failed", async () => {
++  withScenario("payment-failed");
++  render(<Billing />);
++  await ready();
++  const alert = screen.getByRole("alert");
++  expect(alert).toHaveTextContent("Your last payment failed");
++  expect(alert).toHaveTextContent("We couldn't charge $96.00 on Oct 1, 2026: the card was declined.");
++  expect(within(alert).getByRole("button", { name: "Update payment method" })).toBeInTheDocument();
++  const row = screen.getByText("INV-0006").closest("tr")!;
++  expect(within(row).getByText("Failed")).toBeInTheDocument();
++});
++
++test("flags usage over the plan limit", async () => {
++  withScenario("over-limit");
++  render(<Billing />);
++  await ready();
++  expect(screen.getByText("You're over your plan's limits")).toBeInTheDocument();
++  expect(screen.getByRole("meter", { name: "Storage" })).toHaveAttribute("aria-valuetext", "530 of 500 GB (30 GB over)");
++});
++
++test("handles no payment method and no invoices", async () => {
++  withScenario("empty");
++  render(<Billing />);
++  await ready();
++  expect(screen.getByText("No payment method on file")).toBeInTheDocument();
++  expect(screen.getByRole("button", { name: "Add payment method" })).toBeInTheDocument();
++  expect(screen.getByText("No invoices yet")).toBeInTheDocument();
++  expect(screen.queryByRole("table")).not.toBeInTheDocument();
++});
+diff --git a/src/pages/Billing.tsx b/src/pages/Billing.tsx
+new file mode 100644
+index 0000000..4260b83
+--- /dev/null
++++ b/src/pages/Billing.tsx
+@@ -0,0 +1,171 @@
++import { useCallback, useEffect, useState } from "react";
++import { getBilling, type Billing as BillingData } from "../api/billing";
++import { Badge, Banner, Button, Card, EmptyState, Meter, Skeleton, Table, type Column, type Tone } from "../components";
++import { formatDate, formatMoney, formatNumber } from "../lib/format";
++
++type State = { status: "loading" } | { status: "error" } | { status: "ready"; billing: BillingData };
++type Invoice = BillingData["invoices"][number];
++type FailureReason = NonNullable<BillingData["lastPayment"]["failureReason"]>;
++
++const FAILURE_REASONS: Record<FailureReason, string> = {
++  card_declined: "the card was declined",
++  insufficient_funds: "the card had insufficient funds",
++  expired_card: "the card has expired",
++};
++
++const INVOICE_STATUS: Record<Invoice["status"], { tone: Tone; label: string }> = {
++  paid: { tone: "success", label: "Paid" },
++  open: { tone: "neutral", label: "Open" },
++  failed: { tone: "danger", label: "Failed" },
++};
++
++const invoiceColumns: Column<Invoice>[] = [
++  { key: "number", header: "Invoice", render: (i) => i.number },
++  { key: "date", header: "Date", render: (i) => formatDate(i.issuedAt) },
++  { key: "amount", header: "Amount", numeric: true, render: (i) => formatMoney(i.amount) },
++  { key: "status", header: "Status", render: (i) => <Badge tone={INVOICE_STATUS[i.status].tone}>{INVOICE_STATUS[i.status].label}</Badge> },
++];
++
++/** A card is valid through the last day of its expiry month. */
++function isExpired(card: { expMonth: number; expYear: number }, now = new Date()): boolean {
++  return now.getFullYear() * 12 + now.getMonth() + 1 > card.expYear * 12 + card.expMonth;
++}
++
++export function Billing() {
++  const [state, setState] = useState<State>({ status: "loading" });
++
++  const load = useCallback(() => {
++    setState({ status: "loading" });
++    getBilling().then(
++      (billing) => setState({ status: "ready", billing }),
++      () => setState({ status: "error" }),
++    );
++  }, []);
++
++  useEffect(load, [load]);
++
++  if (state.status === "error") {
++    return (
++      <div className="stack">
++        <h1 className="page-title">Billing</h1>
++        <Banner tone="danger" title="Billing couldn't load" action={<Button variant="secondary" onClick={load}>Try again</Button>}>
++          Check your connection and try again.
++        </Banner>
++      </div>
++    );
++  }
++
++  if (state.status === "loading") {
++    return (
++      <div className="stack" aria-busy="true">
++        <h1 className="page-title">Billing</h1>
++        <div className="grid-2">
++          <Card title="Plan"><LoadingLines label="Loading plan" /></Card>
++          <Card title="Payment method"><LoadingLines label="Loading payment method" /></Card>
++        </div>
++        <Card title="Usage this period"><LoadingLines label="Loading usage" /></Card>
++        <Card title="Invoices"><LoadingLines label="Loading invoices" /></Card>
++      </div>
++    );
++  }
++
++  const { plan, usage, paymentMethod, lastPayment, invoices } = state.billing;
++  const overLimit = usage.filter((u) => u.used > u.limit);
++  const cardExpired = paymentMethod !== null && isExpired(paymentMethod);
++
++  return (
++    <div className="stack">
++      <h1 className="page-title">Billing</h1>
++
++      {lastPayment.status === "failed" && (
++        <Banner tone="danger" title="Your last payment failed" action={<Button>Update payment method</Button>}>
++          We couldn't charge {formatMoney(lastPayment.amount)} on {formatDate(lastPayment.attemptedAt)}
++          {lastPayment.failureReason ? `: ${FAILURE_REASONS[lastPayment.failureReason]}` : ""}. Update your payment method so
++          your workspace stays active.
++        </Banner>
++      )}
++      {paymentMethod === null && (
++        <Banner tone="warning" title="No payment method on file">
++          Add a card before your plan renews on {formatDate(plan.currentPeriodEnd)}.
++        </Banner>
++      )}
++      {cardExpired && lastPayment.status !== "failed" && (
++        <Banner tone="warning" title="Your card has expired">
++          Update your card before your plan renews on {formatDate(plan.currentPeriodEnd)}.
++        </Banner>
++      )}
++      {overLimit.length > 0 && (
++        <Banner tone="warning" title="You're over your plan's limits">
++          {overLimit.map((u) => u.label).join(" and ")} {overLimit.length === 1 ? "is" : "are"} above what the {plan.name} plan
++          includes this period.
++        </Banner>
++      )}
++
++      <div className="grid-2">
++        <Card title="Plan">
++          <div className="stack-sm">
++            <p className="lead">{plan.name}</p>
++            <p className="muted">
++              {formatMoney(plan.pricePerSeat)} per seat × {plan.seats} {plan.seats === 1 ? "seat" : "seats"} ={" "}
++              {formatMoney(plan.pricePerSeat * plan.seats)} / {plan.interval}
++            </p>
++            <p className="muted">
++              Current period {formatDate(plan.currentPeriodStart)} – {formatDate(plan.currentPeriodEnd)}
++            </p>
++            <Button variant="secondary">Change plan</Button>
++          </div>
++        </Card>
++
++        <Card title="Payment method">
++          {paymentMethod ? (
++            <div className="stack-sm">
++              <p className="lead">Card ending in {paymentMethod.last4}</p>
++              <p className="muted">
++                {paymentMethod.holder} · Expires {String(paymentMethod.expMonth).padStart(2, "0")}/{paymentMethod.expYear}{" "}
++                {cardExpired && <Badge tone="danger">Expired</Badge>}
++              </p>
++              <Button variant="secondary">Update card</Button>
++            </div>
++          ) : (
++            <div className="stack-sm">
++              <p className="muted">No payment method on file.</p>
++              <Button>Add payment method</Button>
++            </div>
++          )}
++        </Card>
++      </div>
++
++      <Card title="Usage this period">
++        <div className="stack">
++          {usage.map((u) => (
++            <Meter
++              key={u.label}
++              label={u.label}
++              value={u.used}
++              max={u.limit}
++              valueText={`${formatNumber(u.used)} of ${formatNumber(u.limit)} ${u.unit}${
++                u.used > u.limit ? ` (${formatNumber(u.used - u.limit)} ${u.unit} over)` : ""
++              }`}
++            />
++          ))}
++        </div>
++      </Card>
++
++      <Card title="Invoices">
++        {invoices.length === 0 ? (
++          <EmptyState title="No invoices yet">Invoices appear here after your first payment.</EmptyState>
++        ) : (
++          <Table caption="Invoices" columns={invoiceColumns} rows={invoices} rowKey={(i) => i.id} />
++        )}
++      </Card>
++    </div>
++  );
++}
++
++function LoadingLines({ label }: { label: string }) {
++  return (
++    <div className="stack-sm" aria-label={label}>
++      <Skeleton width="50%" height={20} /><Skeleton width="70%" /><Skeleton width="40%" />
++    </div>
++  );
++}
+diff --git a/src/styles/base.css b/src/styles/base.css
+index 2911e7b..04c7630 100644
+--- a/src/styles/base.css
++++ b/src/styles/base.css
+@@ -18,6 +18,7 @@ h1, h2, h3, p { margin: 0; }
+ .shell-main { padding: var(--space-6); max-width: 1040px; min-width: 0; }
+ .page-title { font-size: var(--text-xl); font-weight: 700; }
+ .stack { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-5); }
++.stack-sm { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-2); justify-items: start; }
+ 
+ @media (max-width: 720px) {
+   .shell { grid-template-columns: 1fr; grid-template-rows: auto 1fr; }
+@@ -26,3 +27,10 @@ h1, h2, h3, p { margin: 0; }
+   .shell-main { padding: var(--space-5) var(--space-4); }
+ }
+ .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
++.grid-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-5); }
++.muted { color: var(--color-text-muted); font-size: var(--text-sm); }
++.lead { font-size: var(--text-lg); font-weight: 600; }
++
++@media (max-width: 720px) {
++  .grid-2 { grid-template-columns: minmax(0, 1fr); }
++}

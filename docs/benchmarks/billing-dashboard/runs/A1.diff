@@ -1,0 +1,340 @@
+diff --git a/src/App.tsx b/src/App.tsx
+index 0cca6eb..feb9733 100644
+--- a/src/App.tsx
++++ b/src/App.tsx
+@@ -1,10 +1,12 @@
+ import { useEffect, useState } from "react";
++import { Billing } from "./pages/Billing";
+ import { Members } from "./pages/Members";
+ import { Overview } from "./pages/Overview";
+ 
+ const routes = [
+   { path: "#/", label: "Overview", page: Overview },
+   { path: "#/members", label: "Members", page: Members },
++  { path: "#/billing", label: "Billing", page: Billing },
+ ];
+ 
+ function useHash() {
+diff --git a/src/components/Meter.tsx b/src/components/Meter.tsx
+new file mode 100644
+index 0000000..981efe8
+--- /dev/null
++++ b/src/components/Meter.tsx
+@@ -0,0 +1,20 @@
++type Props = { label: string; value: number; max: number; valueText: string };
++
++/** A horizontal usage bar. Turns to the danger color once value exceeds max. */
++export function Meter({ label, value, max, valueText }: Props) {
++  const over = value > max;
++  const percent = max > 0 ? Math.min(100, (value / max) * 100) : 100;
++  return (
++    <div
++      className={`meter${over ? " meter-over" : ""}`}
++      role="meter"
++      aria-label={label}
++      aria-valuemin={0}
++      aria-valuemax={max}
++      aria-valuenow={Math.min(value, max)}
++      aria-valuetext={valueText}
++    >
++      <div className="meter-fill" style={{ width: `${percent}%` }} />
++    </div>
++  );
++}
+diff --git a/src/components/components.css b/src/components/components.css
+index 0be49cf..9c15db5 100644
+--- a/src/components/components.css
++++ b/src/components/components.css
+@@ -32,3 +32,7 @@
+ .skeleton { background: var(--color-border); border-radius: var(--radius-sm); animation: pulse 1.4s ease-in-out infinite; }
+ @keyframes pulse { 50% { opacity: 0.5; } }
+ @media (prefers-reduced-motion: reduce) { .skeleton { animation: none; } }
++
++.meter { height: var(--space-2); background: var(--color-bg); border: 1px solid var(--color-border); border-radius: var(--radius-full); overflow: hidden; }
++.meter-fill { height: 100%; background: var(--color-primary); border-radius: var(--radius-full); }
++.meter-over .meter-fill { background: var(--color-danger); }
+diff --git a/src/components/index.ts b/src/components/index.ts
+index 1aa7d1b..cb3f89a 100644
+--- a/src/components/index.ts
++++ b/src/components/index.ts
+@@ -3,5 +3,6 @@ export { Banner } from "./Banner";
+ export { Button } from "./Button";
+ export { Card } from "./Card";
+ export { EmptyState } from "./EmptyState";
++export { Meter } from "./Meter";
+ export { Skeleton } from "./Skeleton";
+ export { Table, type Column } from "./Table";
+diff --git a/src/lib/format.test.ts b/src/lib/format.test.ts
+index ff0d678..4c19cb1 100644
+--- a/src/lib/format.test.ts
++++ b/src/lib/format.test.ts
+@@ -1,4 +1,4 @@
+-import { formatDate, formatMoney } from "./format";
++import { formatDate, formatMoney, formatNumber } from "./format";
+ 
+ test("formats cents as dollars", () => {
+   expect(formatMoney(9600)).toBe("$96.00");
+@@ -8,3 +8,8 @@ test("formats cents as dollars", () => {
+ test("formats an ISO date", () => {
+   expect(formatDate("2026-10-01T00:00:00Z")).toMatch(/Oct 1, 2026|Sep 30, 2026/);
+ });
++
++test("formats a count with grouping", () => {
++  expect(formatNumber(7300)).toBe("7,300");
++  expect(formatNumber(10000)).toBe("10,000");
++});
+diff --git a/src/lib/format.ts b/src/lib/format.ts
+index 27edb38..a856e9c 100644
+--- a/src/lib/format.ts
++++ b/src/lib/format.ts
+@@ -8,3 +8,7 @@ export function formatMoney(cents: number, currency = "USD"): string {
+ export function formatDate(iso: string): string {
+   return new Intl.DateTimeFormat(LOCALE, { year: "numeric", month: "short", day: "numeric" }).format(new Date(iso));
+ }
++
++export function formatNumber(n: number): string {
++  return new Intl.NumberFormat(LOCALE).format(n);
++}
+diff --git a/src/pages/Billing.test.tsx b/src/pages/Billing.test.tsx
+new file mode 100644
+index 0000000..a2bc357
+--- /dev/null
++++ b/src/pages/Billing.test.tsx
+@@ -0,0 +1,53 @@
++import { fireEvent, render, screen, within } from "@testing-library/react";
++import { Billing } from "./Billing";
++
++function withScenario(name?: string) {
++  window.history.replaceState(null, "", name ? `/?scenario=${name}` : "/");
++}
++
++afterEach(() => withScenario());
++
++test("shows plan, payment method, usage, and invoices", async () => {
++  render(<Billing />);
++  expect(await screen.findByText("Team", {}, { timeout: 2000 })).toBeInTheDocument();
++  expect(screen.getByText("$96.00 per month")).toBeInTheDocument();
++  expect(screen.getByText("Card ending in 4242")).toBeInTheDocument();
++  expect(screen.getByText(/Expires 08\/2027/)).toBeInTheDocument();
++  expect(screen.getByRole("meter", { name: "Automation runs" })).toHaveAttribute("aria-valuetext", "7,300 of 10,000 runs");
++  expect(within(screen.getByRole("table", { name: "Invoices" })).getAllByRole("row")).toHaveLength(7);
++  expect(screen.queryByRole("alert")).not.toBeInTheDocument();
++});
++
++test("explains a failed payment", async () => {
++  withScenario("payment-failed");
++  render(<Billing />);
++  const alert = await screen.findByRole("alert", {}, { timeout: 2000 });
++  expect(alert).toHaveTextContent("Your last payment of $96.00 failed");
++  expect(alert).toHaveTextContent("Your card was declined.");
++  expect(screen.getAllByText("Failed").length).toBeGreaterThan(0);
++});
++
++test("flags usage over the plan limit", async () => {
++  withScenario("over-limit");
++  render(<Billing />);
++  expect(await screen.findByText("You're over your plan's limits", {}, { timeout: 2000 })).toBeInTheDocument();
++  expect(screen.getByText("Over limit")).toBeInTheDocument();
++  expect(screen.getByRole("meter", { name: "Storage" })).toHaveAttribute("aria-valuetext", "530 of 500 GB");
++});
++
++test("handles no payment method and no invoices", async () => {
++  withScenario("empty");
++  render(<Billing />);
++  expect(await screen.findByText("No payment method", {}, { timeout: 2000 })).toBeInTheDocument();
++  expect(screen.getByText("No invoices yet")).toBeInTheDocument();
++});
++
++test("shows an error with a retry when billing can't load", async () => {
++  withScenario("error");
++  render(<Billing />);
++  expect(await screen.findByText("Billing couldn't load", {}, { timeout: 2000 })).toBeInTheDocument();
++  withScenario();
++  fireEvent.click(screen.getByRole("button", { name: "Try again" }));
++  expect(await screen.findByText("Team", {}, { timeout: 2000 })).toBeInTheDocument();
++  expect(screen.queryByText("Billing couldn't load")).not.toBeInTheDocument();
++});
+diff --git a/src/pages/Billing.tsx b/src/pages/Billing.tsx
+new file mode 100644
+index 0000000..da46739
+--- /dev/null
++++ b/src/pages/Billing.tsx
+@@ -0,0 +1,156 @@
++import { useCallback, useEffect, useState } from "react";
++import { getBilling, type Billing as BillingData } from "../api/billing";
++import { Badge, Banner, Button, Card, EmptyState, Meter, Skeleton, Table, type Column, type Tone } from "../components";
++import { formatDate, formatMoney, formatNumber } from "../lib/format";
++
++type State = { status: "loading" } | { status: "error" } | { status: "ready"; billing: BillingData };
++type Invoice = BillingData["invoices"][number];
++type Usage = BillingData["usage"][number];
++type FailureReason = NonNullable<BillingData["lastPayment"]["failureReason"]>;
++
++const FAILURE_REASONS: Record<FailureReason, string> = {
++  card_declined: "Your card was declined.",
++  insufficient_funds: "Your card had insufficient funds.",
++  expired_card: "Your card has expired.",
++};
++
++const INVOICE_STATUS: Record<Invoice["status"], { tone: Tone; label: string }> = {
++  paid: { tone: "success", label: "Paid" },
++  open: { tone: "warning", label: "Open" },
++  failed: { tone: "danger", label: "Failed" },
++};
++
++const invoiceColumns: Column<Invoice>[] = [
++  { key: "number", header: "Invoice", render: (i) => i.number },
++  { key: "issuedAt", header: "Date", render: (i) => formatDate(i.issuedAt) },
++  { key: "amount", header: "Amount", numeric: true, render: (i) => formatMoney(i.amount) },
++  { key: "status", header: "Status", render: (i) => <Badge tone={INVOICE_STATUS[i.status].tone}>{INVOICE_STATUS[i.status].label}</Badge> },
++];
++
++function usageText(u: Usage): string {
++  return `${formatNumber(u.used)} of ${formatNumber(u.limit)} ${u.unit}`;
++}
++
++export function Billing() {
++  const [state, setState] = useState<State>({ status: "loading" });
++
++  const load = useCallback(() => {
++    setState({ status: "loading" });
++    getBilling().then(
++      (billing) => setState({ status: "ready", billing }),
++      () => setState({ status: "error" }),
++    );
++  }, []);
++
++  useEffect(load, [load]);
++
++  return (
++    <div className="stack">
++      <h1 className="page-title">Billing</h1>
++      {state.status === "error" && (
++        <Banner tone="danger" title="Billing couldn't load" action={<Button variant="secondary" onClick={load}>Try again</Button>}>
++          Check your connection and try again.
++        </Banner>
++      )}
++      {state.status === "loading" && <BillingSkeleton />}
++      {state.status === "ready" && <BillingDetails billing={state.billing} />}
++    </div>
++  );
++}
++
++function BillingSkeleton() {
++  return (
++    <div className="stack" aria-label="Loading billing">
++      <div className="columns">
++        <Card title="Plan"><div className="stack-tight"><Skeleton height={24} width="50%" /><Skeleton width="70%" /><Skeleton width="60%" /></div></Card>
++        <Card title="Payment method"><div className="stack-tight"><Skeleton height={24} width="55%" /><Skeleton width="40%" /></div></Card>
++      </div>
++      <Card title="Usage this period"><div className="stack-tight"><Skeleton width="40%" /><Skeleton height={8} /><Skeleton width="45%" /><Skeleton height={8} /></div></Card>
++      <Card title="Invoices"><div className="stack-tight"><Skeleton /><Skeleton /><Skeleton /></div></Card>
++    </div>
++  );
++}
++
++function BillingDetails({ billing }: { billing: BillingData }) {
++  const { plan, usage, paymentMethod, lastPayment, invoices } = billing;
++  const overLimit = usage.filter((u) => u.used > u.limit);
++
++  return (
++    <>
++      {lastPayment.status === "failed" && (
++        <Banner tone="danger" title={`Your last payment of ${formatMoney(lastPayment.amount)} failed`}>
++          {lastPayment.failureReason ? FAILURE_REASONS[lastPayment.failureReason] : "The payment didn't go through."}{" "}
++          We tried to charge your card on {formatDate(lastPayment.attemptedAt)}. Update your payment method to keep your plan active.
++        </Banner>
++      )}
++      {overLimit.length > 0 && (
++        <Banner tone="warning" title="You're over your plan's limits">
++          {overLimit.map((u) => `${u.label}: ${usageText(u)}`).join(". ")}.
++        </Banner>
++      )}
++
++      <div className="columns">
++        <Card title="Plan">
++          <div className="stack-tight">
++            <p className="emphasis">{plan.name}</p>
++            <p>
++              {formatMoney(plan.pricePerSeat * plan.seats)} per {plan.interval}
++            </p>
++            <p className="muted">
++              {plan.seats} {plan.seats === 1 ? "seat" : "seats"} × {formatMoney(plan.pricePerSeat)} per seat
++            </p>
++            <p className="muted">
++              Current period: {formatDate(plan.currentPeriodStart)} – {formatDate(plan.currentPeriodEnd)}
++            </p>
++          </div>
++        </Card>
++
++        <Card title="Payment method">
++          {paymentMethod ? (
++            <div className="stack-tight">
++              <p className="emphasis">Card ending in {paymentMethod.last4}</p>
++              <p className="muted">
++                {paymentMethod.holder} · Expires {String(paymentMethod.expMonth).padStart(2, "0")}/{paymentMethod.expYear}
++              </p>
++              {lastPayment.status === "failed" && <div><Badge tone="danger">Last payment failed</Badge></div>}
++            </div>
++          ) : (
++            <EmptyState title="No payment method">Add a card to pay for your plan.</EmptyState>
++          )}
++        </Card>
++      </div>
++
++      <Card title="Usage this period">
++        {usage.length === 0 ? (
++          <EmptyState title="No usage to show" />
++        ) : (
++          <div className="stack">
++            {usage.map((u) => {
++              const over = u.used > u.limit;
++              return (
++                <div key={u.label} className="stack-tight">
++                  <div className="row-between">
++                    <span>{u.label}</span>
++                    <span>
++                      {usageText(u)}
++                      {over && <> <Badge tone="danger">Over limit</Badge></>}
++                    </span>
++                  </div>
++                  <Meter label={u.label} value={u.used} max={u.limit} valueText={usageText(u)} />
++                </div>
++              );
++            })}
++          </div>
++        )}
++      </Card>
++
++      <Card title="Invoices">
++        {invoices.length === 0 ? (
++          <EmptyState title="No invoices yet">Invoices appear here after your first payment.</EmptyState>
++        ) : (
++          <Table caption="Invoices" columns={invoiceColumns} rows={invoices} rowKey={(i) => i.id} />
++        )}
++      </Card>
++    </>
++  );
++}
+diff --git a/src/styles/base.css b/src/styles/base.css
+index 2911e7b..2fdd1b7 100644
+--- a/src/styles/base.css
++++ b/src/styles/base.css
+@@ -18,11 +18,17 @@ h1, h2, h3, p { margin: 0; }
+ .shell-main { padding: var(--space-6); max-width: 1040px; min-width: 0; }
+ .page-title { font-size: var(--text-xl); font-weight: 700; }
+ .stack { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-5); }
++.stack-tight { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-2); }
++.columns { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-5); }
++.muted { color: var(--color-text-muted); font-size: var(--text-sm); }
++.emphasis { font-size: var(--text-lg); font-weight: 600; }
++.row-between { display: flex; justify-content: space-between; align-items: baseline; gap: var(--space-3); font-size: var(--text-sm); }
+ 
+ @media (max-width: 720px) {
+   .shell { grid-template-columns: 1fr; grid-template-rows: auto 1fr; }
+   .shell-nav { border-right: 0; border-bottom: 1px solid var(--color-border); padding: var(--space-3) var(--space-4); display: flex; gap: var(--space-2); align-items: center; overflow-x: auto; }
+   .shell-nav strong { margin: 0 var(--space-3) 0 0; }
+   .shell-main { padding: var(--space-5) var(--space-4); }
++  .columns { grid-template-columns: minmax(0, 1fr); }
+ }
+ .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }

@@ -1,0 +1,157 @@
+{
+ "measure": {
+  "typecheck": {
+   "pass": true,
+   "tail": []
+  },
+  "test": {
+   "pass": true,
+   "tail": [
+    "      Tests  16 passed (16)",
+    "   Start at  04:51:35",
+    "   Duration  4.15s (transform 198ms, setup 1.03s, collect 763ms, tests 3.15s, environment 3.72s, prepare 581ms)"
+   ]
+  },
+  "build": {
+   "pass": true,
+   "tail": [
+    "dist/assets/index-YDQ7EImr.css    5.64 kB \u2502 gzip:  1.63 kB",
+    "dist/assets/index-Dh__4_VV.js   152.83 kB \u2502 gzip: 49.13 kB",
+    "\u2713 built in 728ms"
+   ]
+  },
+  "files_added": [
+   "src/components/Meter.tsx",
+   "src/lib/billing.test.ts",
+   "src/lib/billing.ts",
+   "src/pages/Billing.test.tsx",
+   "src/pages/Billing.tsx"
+  ],
+  "files_changed": [
+   "src/App.tsx",
+   "src/components/components.css",
+   "src/components/index.ts",
+   "src/lib/format.test.ts",
+   "src/lib/format.ts",
+   "src/styles/base.css"
+  ],
+  "new_component_files": [
+   "src/components/Meter.tsx"
+  ],
+  "shared_components_imported": [
+   "Badge",
+   "Banner",
+   "Button",
+   "Card",
+   "EmptyState",
+   "Skeleton",
+   "Table"
+  ],
+  "literals_in_added_code": {
+   "color": 0,
+   "font-size": 0,
+   "spacing": 0
+  },
+  "token_uses_in_added_code": 21,
+  "tokens_added": 0,
+  "test_files_added": [
+   "src/lib/billing.test.ts",
+   "src/pages/Billing.test.tsx"
+  ],
+  "test_cases_added": 9
+ },
+ "scan_static": {
+  "ok": true,
+  "cli": "2.19.3",
+  "files": 28,
+  "pages": 0,
+  "widths": [],
+  "findings": []
+ },
+ "scan_rendered": {
+  "ok": true,
+  "cli": "2.19.3",
+  "files": 0,
+  "pages": 1,
+  "widths": [
+   320,
+   390,
+   1280
+  ],
+  "findings": []
+ },
+ "console_and_overflow": {
+  "default@1280": {
+   "errs": [],
+   "sideways": 0
+  },
+  "slow@1280": {
+   "errs": [],
+   "sideways": 0
+  },
+  "error@1280": {
+   "errs": [],
+   "sideways": 0
+  },
+  "payment-failed@1280": {
+   "errs": [],
+   "sideways": 0
+  },
+  "over-limit@1280": {
+   "errs": [],
+   "sideways": 0
+  },
+  "empty@1280": {
+   "errs": [],
+   "sideways": 0
+  },
+  "default@390": {
+   "errs": [],
+   "sideways": 0
+  },
+  "slow@390": {
+   "errs": [],
+   "sideways": 0
+  },
+  "error@390": {
+   "errs": [],
+   "sideways": 0
+  },
+  "payment-failed@390": {
+   "errs": [],
+   "sideways": 0
+  },
+  "over-limit@390": {
+   "errs": [],
+   "sideways": 0
+  },
+  "empty@390": {
+   "errs": [],
+   "sideways": 0
+  },
+  "default@320": {
+   "errs": [],
+   "sideways": 0
+  },
+  "slow@320": {
+   "errs": [],
+   "sideways": 0
+  },
+  "error@320": {
+   "errs": [],
+   "sideways": 0
+  },
+  "payment-failed@320": {
+   "errs": [],
+   "sideways": 0
+  },
+  "over-limit@320": {
+   "errs": [],
+   "sideways": 0
+  },
+  "empty@320": {
+   "errs": [],
+   "sideways": 0
+  }
+ }
+}
