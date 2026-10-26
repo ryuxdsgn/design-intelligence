@@ -696,7 +696,7 @@ Gate area CONTENT. Covers specific copy, action labels, error messages, terminol
 - Do not: Write 10/02/2026, 2:30 PM, or 1.5 in Indonesian copy.
 - Why: Slash dates are ambiguous and English number formats read as foreign or as the wrong value. (PUEBI number and time notation; id-ID locale conventions)
 - Check: audit_copy C-08
-- Machine check: `ryux scan` flags dates as 10/02/2026 and times as 2:30 PM in copy (warn)
+- Machine check: `ryux scan` flags dates as 10/02/2026 and times as 2:30 PM in Indonesian copy (lang id, id-ID, Rupiah, or Indonesian words in the folder); test files are skipped (warn)
 
 #### RX-CD-10 [Contextual] A FAQ answers questions people ask
 
