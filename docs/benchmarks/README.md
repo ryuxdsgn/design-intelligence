@@ -8,6 +8,7 @@ each folder says what was edited.
 
 | Benchmark | The question it answers | RYUX | Runs |
 | --- | --- | --- | --- |
+| [Wallet transaction detail](wallet-detail/) | Does the agent ask what changes the build, keep open money rules open, and build the states a money screen needs? One HTML file, no skill vs RYUX + DESIGN.md, with `ryux scan` and cost per run | 2.19.2 | 3 + 3 |
 | [Order tracking](order-tracking/) | Does the agent invent policies the brief left open, and build the states for when things go wrong? A working prototype, no skill vs RYUX + DESIGN.md, with `ryux scan` | 2.19.0 | 3 + 3 |
 | [Personal finance app](hero-finance/) | Does the agent ask first, invent facts, and cover states? Designed in pen.dev, no skill vs RYUX; the README demo | 2.9.3 | 3 + 3 |
 | [Explore, judge, critique](explore-judge/) | Does it offer real alternatives before one design, and does Critique find planted problems? Rated blind by a designer | 2.8 vs 2.9 | 3–6 per condition |
@@ -20,6 +21,7 @@ striking screen built on invented facts.
 
 | | Context understanding | UX correctness | Visual quality | Creative range | Reliability |
 | --- | :-: | :-: | :-: | :-: | :-: |
+| Wallet transaction detail | asked first, traps counted | statuses and states counted | not scored | — | `ryux scan`, assumptions listed, cost |
 | Order tracking | traps counted | states counted | not scored | — | `ryux scan`, assumptions listed |
 | Personal finance app | asked first, traps counted | states counted, comprehension | not scored | — | assumptions listed |
 | Explore, judge, critique | — | Critique on planted problems | blind, one designer | three directions | — |
