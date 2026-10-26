@@ -289,8 +289,12 @@ workflow (SKILL.md); Frame, Explore, and Evaluate happen in Design.
    used (where components, state, pure logic, and data access live), and the test runner
    (knowledge/frontend.md, knowledge/design-system.md). Reuse before creating.
 2. **Find the design source**: the Design Direction, a Figma or pen.dev design, a DESIGN.md, or an
-   approved mockup; it is the spec. If there is none, run Design's Frame, Explore, and Evaluate
-   first (capabilities/design.md, stages 2-4) instead of inventing one in code.
+   approved mockup; it is the spec. If there is none, run Design's stages 1-4 first
+   (capabilities/design.md) instead of inventing one in code. Stage 1's questions come first even
+   when the request is a quick build or a working prototype: ask the ones whose answers change what
+   gets built (a product rule such as fees, refunds, or what happens on failure; the market; the
+   data), at most three, in one message, and wait. A prototype may skip only the choice between
+   directions: build the recommended one and name the alternatives you did not build.
    A screenshot or another product's page is a reference, not the spec, unless the user asks to
    recreate it ("recreate", "match this", "samakan"). Then match it, let QA compare at the same
    viewport, and still leave out another product's brand, logo, and content (RX-AS-11). With no word
