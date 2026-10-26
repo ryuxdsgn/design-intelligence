@@ -1,5 +1,8 @@
 # Case TD-2.6 · One screen through RYUX's five steps
 
+> **Historical (RYUX 2.6.2).** Kept as a record, not as evidence for current claims. Current benchmarks are
+> listed in [`docs/benchmarks/`](../).
+
 One session of RYUX 2.6.2, five turns, on the transaction detail screen that the agent designed
 **without** RYUX in EN-TD-2.3.3 (run A2). Protocol, written before the run: [PROTOCOL.md](PROTOCOL.md).
 This is one run, a case study, not a benchmark.
