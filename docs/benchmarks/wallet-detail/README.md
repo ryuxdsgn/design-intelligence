@@ -33,7 +33,10 @@ channels are not decided, so the screen states none of them." Each B final messa
 - **A market bias.** All three B runs proposed Indonesia and IDR as their default for a brief that named no
   market. B2: "RYUX's edge cases are built around Rp amounts." The fixed reply overrode it, so the builds are in
   USD, but an agent that gets "go with defaults" would ship a Rupiah wallet. A2 picked Indonesia on its own too.
-- **Real brands.** B1, B2, and B3 all show Visa; B2 also Mastercard and Blue Bottle Coffee.
+  Fixed in 2.19.3 (RX-PR-05, Design stage 1, Build step 2): in two turn-1 checks on this brief, both runs
+  recommended "No specific market" and listed Indonesia as one option. The runs above stay as they were.
+- **Real brands.** B1, B2, and B3 all show Visa; B2 also Mastercard and Blue Bottle Coffee. RX-AS-03 in 2.19.3
+  now asks for made-up merchants, banks, and card networks; not rerun yet.
 - **Coverage.** B2 left out the refunded state on purpose ("not decided"), so its matrix is thinner than A1's.
 - **Cost.** B costs more: $2.50-2.80 per run against $1.57-2.03, and B3 took 22 minutes for its build turn.
 - **Scan noise.** Most of B's rendered findings sit in the prototype control panels (small radio targets,

@@ -72,7 +72,10 @@ The six stages of the core workflow (SKILL.md), as Design runs them.
    affects the user flow, what the product can do, or whether the content is correct, those
    questions alone, most consequential first, at most three, in one message, before designing.
    A product rule that changes which states or actions the screen has (refunds, fees, what happens
-   on failure) is a major decision. When the prompt and DESIGN.md disagree, the prompt wins for
+   on failure) is a major decision. **Market:** when the prompt, DESIGN.md, and the product docs
+   name no market, ask with no market as the recommended default; RYUX's examples are Indonesian
+   (Rp, id-ID), the product may not be. Without an answer, follow the prompt's language and that
+   language's common currency, as an assumption (RX-PR-05). When the prompt and DESIGN.md disagree, the prompt wins for
    this task; say so. A DESIGN.md written for a different product (another name, domain, or
    audience than this brief) sets no direction for this task: say so, and treat direction as unset.
    **Direction is the user's call:** when neither the prompt nor DESIGN.md sets the UI direction
@@ -292,8 +295,8 @@ workflow (SKILL.md); Frame, Explore, and Evaluate happen in Design.
    approved mockup; it is the spec. If there is none, run Design's stages 1-4 first
    (capabilities/design.md) instead of inventing one in code. Stage 1's questions come first even
    when the request is a quick build or a working prototype: ask the ones whose answers change what
-   gets built (a product rule such as fees, refunds, or what happens on failure; the market; the
-   data), at most three, in one message, and wait. A prototype may skip only the choice between
+   gets built (a product rule such as fees, refunds, or what happens on failure; the market, with
+   no default market when nothing names one; the data), at most three, in one message, and wait. A prototype may skip only the choice between
    directions: build the recommended one and name the alternatives you did not build.
    A screenshot or another product's page is a reference, not the spec, unless the user asks to
    recreate it ("recreate", "match this", "samakan"). Then match it, let QA compare at the same

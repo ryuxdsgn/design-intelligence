@@ -29,6 +29,18 @@ test("Build with no design asks Design's stage 1 questions, even for a prototype
   assert.match(build, /even when the request is a quick build or a working prototype/);
 });
 
+test("a brief with no market gets no default market, and sample data names no real brand", () => {
+  // wallet-detail benchmark, 2.19.2: 3 of 3 runs proposed Indonesia and IDR, and 3 of 3 showed Visa
+  const files = renderBundle();
+  const product = files["knowledge/product.md"].replace(/\s+/g, " ");
+  assert.match(product, /propose no market as your default/);
+  const design = files["capabilities/design.md"].replace(/\s+/g, " ");
+  assert.match(design, /name no market, ask with no market as the recommended default/);
+  assert.match(files["capabilities/build.md"].replace(/\s+/g, " "), /no default market when nothing names one/);
+  const antiSlop = files["knowledge/anti-slop.md"].replace(/\s+/g, " ");
+  assert.match(antiSlop, /Names are made up, including merchants, banks, and card networks/);
+});
+
 test("validation catches a missing module, a broken reference, and 1.x names", () => {
   const files = renderBundle();
   const missing = { ...files };
