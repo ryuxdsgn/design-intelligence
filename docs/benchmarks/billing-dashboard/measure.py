@@ -2,13 +2,13 @@
 """Machine counts for one billing-dashboard run: measure.py <run_dir> > <run>-measure.json
 
 Runs the repo's own checks, then reads the run's work as the git diff from the fixture commit (B's RYUX
-install, DESIGN.md, and build output are left out). Counts only added lines, so the fixture's own code
+install and its CLAUDE.md, DESIGN.md, the harness logs, and build output are left out). Counts only added lines, so the fixture's own code
 never counts against a run.
 """
 import json, re, subprocess, sys
 
 RUN = sys.argv[1]
-SKIP = re.compile(r"^(\.claude/|DESIGN\.md$|dist/|node_modules/|.*\.tsbuildinfo$|package-lock\.json$)")
+SKIP = re.compile(r"^(\.claude/|DESIGN\.md$|CLAUDE\.md$|turn\d.*\.(jsonl|err)$|dist/|node_modules/|.*\.tsbuildinfo$|package-lock\.json$)")
 SHARED = ["Badge", "Banner", "Button", "Card", "EmptyState", "Skeleton", "Table"]
 
 
