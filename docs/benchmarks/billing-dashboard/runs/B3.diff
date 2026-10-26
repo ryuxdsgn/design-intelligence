@@ -1,0 +1,423 @@
+diff --git a/src/App.tsx b/src/App.tsx
+index 0cca6eb..feb9733 100644
+--- a/src/App.tsx
++++ b/src/App.tsx
+@@ -1,10 +1,12 @@
+ import { useEffect, useState } from "react";
++import { Billing } from "./pages/Billing";
+ import { Members } from "./pages/Members";
+ import { Overview } from "./pages/Overview";
+ 
+ const routes = [
+   { path: "#/", label: "Overview", page: Overview },
+   { path: "#/members", label: "Members", page: Members },
++  { path: "#/billing", label: "Billing", page: Billing },
+ ];
+ 
+ function useHash() {
+diff --git a/src/components/Meter.tsx b/src/components/Meter.tsx
+new file mode 100644
+index 0000000..28b1740
+--- /dev/null
++++ b/src/components/Meter.tsx
+@@ -0,0 +1,16 @@
++type Props = { label: string; valueText: string; fraction: number; tone?: "default" | "danger" };
++
++/** A labeled bar for an amount against a limit. The text carries the value; the bar only repeats it visually. */
++export function Meter({ label, valueText, fraction, tone = "default" }: Props) {
++  return (
++    <div className="meter">
++      <div className="meter-row">
++        <span className="meter-label">{label}</span>
++        <span className="meter-value">{valueText}</span>
++      </div>
++      <div className="meter-track" aria-hidden="true">
++        <div className={`meter-fill meter-fill-${tone}`} style={{ width: `${fraction * 100}%` }} />
++      </div>
++    </div>
++  );
++}
+diff --git a/src/components/components.css b/src/components/components.css
+index 0be49cf..09c0fb7 100644
+--- a/src/components/components.css
++++ b/src/components/components.css
+@@ -1,4 +1,4 @@
+-.btn { display: inline-flex; align-items: center; justify-content: center; gap: var(--space-2); min-height: 40px; padding: 0 var(--space-4); border-radius: var(--radius-sm); border: 1px solid transparent; font: inherit; font-size: var(--text-sm); font-weight: 600; cursor: pointer; }
++.btn { white-space: nowrap; display: inline-flex; align-items: center; justify-content: center; gap: var(--space-2); min-height: 40px; padding: 0 var(--space-4); border-radius: var(--radius-sm); border: 1px solid transparent; font: inherit; font-size: var(--text-sm); font-weight: 600; cursor: pointer; }
+ .btn-primary { background: var(--color-primary); color: var(--color-on-primary); }
+ .btn-primary:hover { background: var(--color-primary-hover); }
+ .btn-secondary { background: var(--color-surface); color: var(--color-text); border-color: var(--color-border); }
+@@ -32,3 +32,13 @@
+ .skeleton { background: var(--color-border); border-radius: var(--radius-sm); animation: pulse 1.4s ease-in-out infinite; }
+ @keyframes pulse { 50% { opacity: 0.5; } }
+ @media (prefers-reduced-motion: reduce) { .skeleton { animation: none; } }
++
++.meter { display: grid; gap: var(--space-2); }
++.meter-row { display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--space-1) var(--space-3); font-size: var(--text-sm); }
++.meter-label { font-weight: 600; }
++.meter-value { font-variant-numeric: tabular-nums; }
++.meter-track { height: var(--space-2); border-radius: var(--radius-full); background: var(--color-bg); border: 1px solid var(--color-border); overflow: hidden; }
++.meter-fill { height: 100%; border-radius: var(--radius-full); }
++.meter-fill-default { background: var(--color-primary); }
++.meter-fill-danger { background: var(--color-danger); }
++@media (max-width: 480px) { .table th, .table td { padding-inline: var(--space-2); } }
+diff --git a/src/components/index.ts b/src/components/index.ts
+index 1aa7d1b..cb3f89a 100644
+--- a/src/components/index.ts
++++ b/src/components/index.ts
+@@ -3,5 +3,6 @@ export { Banner } from "./Banner";
+ export { Button } from "./Button";
+ export { Card } from "./Card";
+ export { EmptyState } from "./EmptyState";
++export { Meter } from "./Meter";
+ export { Skeleton } from "./Skeleton";
+ export { Table, type Column } from "./Table";
+diff --git a/src/lib/billing.test.ts b/src/lib/billing.test.ts
+new file mode 100644
+index 0000000..93a1ae8
+--- /dev/null
++++ b/src/lib/billing.test.ts
+@@ -0,0 +1,29 @@
++import { failureReasonText, isOverLimit, planTotal, usageFraction } from "./billing";
++
++const usage = (used: number, limit: number) => ({ label: "Storage", used, limit, unit: "GB" });
++
++test("plan total is price per seat times seats", () => {
++  const plan = { name: "Team", pricePerSeat: 1200, seats: 8, interval: "month" as const, currentPeriodStart: "", currentPeriodEnd: "" };
++  expect(planTotal(plan)).toBe(9600);
++  expect(planTotal({ ...plan, seats: 0 })).toBe(0);
++});
++
++test("usage fraction is clamped between 0 and 1", () => {
++  expect(usageFraction(usage(412, 500))).toBeCloseTo(0.824);
++  expect(usageFraction(usage(0, 500))).toBe(0);
++  expect(usageFraction(usage(530, 500))).toBe(1);
++  expect(usageFraction(usage(0, 0))).toBe(0);
++  expect(usageFraction(usage(5, 0))).toBe(1);
++});
++
++test("over limit only when used exceeds the limit", () => {
++  expect(isOverLimit(usage(500, 500))).toBe(false);
++  expect(isOverLimit(usage(501, 500))).toBe(true);
++});
++
++test("failure reasons read as plain sentences", () => {
++  expect(failureReasonText("card_declined")).toBe("The card was declined.");
++  expect(failureReasonText("insufficient_funds")).toBe("The card didn't have enough funds.");
++  expect(failureReasonText("expired_card")).toBe("The card has expired.");
++  expect(failureReasonText(undefined)).toBeNull();
++});
+diff --git a/src/lib/billing.ts b/src/lib/billing.ts
+new file mode 100644
+index 0000000..1e355e0
+--- /dev/null
++++ b/src/lib/billing.ts
+@@ -0,0 +1,29 @@
++import type { Billing } from "../api/billing";
++
++type Usage = Billing["usage"][number];
++type FailureReason = NonNullable<Billing["lastPayment"]["failureReason"]>;
++
++export function planTotal(plan: Billing["plan"]): number {
++  return plan.pricePerSeat * plan.seats;
++}
++
++/** Share of the limit used, clamped to 0–1 so a bar never draws past its track. */
++export function usageFraction({ used, limit }: Usage): number {
++  if (limit <= 0) return used > 0 ? 1 : 0;
++  return Math.min(Math.max(used / limit, 0), 1);
++}
++
++// Only "over" is flagged: the API defines no warning threshold below the limit, so none is invented here.
++export function isOverLimit({ used, limit }: Usage): boolean {
++  return used > limit;
++}
++
++const FAILURE_REASONS: Record<FailureReason, string> = {
++  card_declined: "The card was declined.",
++  insufficient_funds: "The card didn't have enough funds.",
++  expired_card: "The card has expired.",
++};
++
++export function failureReasonText(reason: FailureReason | undefined): string | null {
++  return reason ? FAILURE_REASONS[reason] : null;
++}
+diff --git a/src/lib/format.test.ts b/src/lib/format.test.ts
+index ff0d678..8c35613 100644
+--- a/src/lib/format.test.ts
++++ b/src/lib/format.test.ts
+@@ -1,4 +1,4 @@
+-import { formatDate, formatMoney } from "./format";
++import { formatCardExpiry, formatDate, formatMoney, formatNumber } from "./format";
+ 
+ test("formats cents as dollars", () => {
+   expect(formatMoney(9600)).toBe("$96.00");
+@@ -8,3 +8,18 @@ test("formats cents as dollars", () => {
+ test("formats an ISO date", () => {
+   expect(formatDate("2026-10-01T00:00:00Z")).toMatch(/Oct 1, 2026|Sep 30, 2026/);
+ });
++
++test("formats plain numbers with grouping", () => {
++  expect(formatNumber(7300)).toBe("7,300");
++  expect(formatNumber(0)).toBe("0");
++});
++
++test("formats card expiry with a two-digit month", () => {
++  expect(formatCardExpiry(8, 2027)).toBe("08/2027");
++  expect(formatCardExpiry(12, 2030)).toBe("12/2030");
++});
++
++test("formats an ISO date in a fixed time zone", () => {
++  expect(formatDate("2026-10-01T00:00:00Z", "UTC")).toBe("Oct 1, 2026");
++  expect(formatDate("2026-10-31T23:59:59Z", "UTC")).toBe("Oct 31, 2026");
++});
+diff --git a/src/lib/format.ts b/src/lib/format.ts
+index 27edb38..f076de2 100644
+--- a/src/lib/format.ts
++++ b/src/lib/format.ts
+@@ -5,6 +5,16 @@ export function formatMoney(cents: number, currency = "USD"): string {
+   return new Intl.NumberFormat(LOCALE, { style: "currency", currency }).format(cents / 100);
+ }
+ 
+-export function formatDate(iso: string): string {
+-  return new Intl.DateTimeFormat(LOCALE, { year: "numeric", month: "short", day: "numeric" }).format(new Date(iso));
++/** Pass a timeZone when the date belongs to a fixed calendar, such as a billing period set in UTC. */
++export function formatDate(iso: string, timeZone?: string): string {
++  return new Intl.DateTimeFormat(LOCALE, { year: "numeric", month: "short", day: "numeric", timeZone }).format(new Date(iso));
++}
++
++export function formatNumber(n: number): string {
++  return new Intl.NumberFormat(LOCALE).format(n);
++}
++
++/** Card expiry as printed on the card, e.g. 08/2027. */
++export function formatCardExpiry(month: number, year: number): string {
++  return `${String(month).padStart(2, "0")}/${year}`;
+ }
+diff --git a/src/pages/Billing.test.tsx b/src/pages/Billing.test.tsx
+new file mode 100644
+index 0000000..71ffc66
+--- /dev/null
++++ b/src/pages/Billing.test.tsx
+@@ -0,0 +1,54 @@
++import { fireEvent, render, screen, within } from "@testing-library/react";
++import { Billing } from "./Billing";
++
++function withScenario(name?: string) {
++  window.history.replaceState({}, "", name ? `/?scenario=${name}` : "/");
++}
++
++afterEach(() => withScenario());
++
++test("shows plan, payment method, usage, and invoices", async () => {
++  withScenario();
++  render(<Billing />);
++  expect(await screen.findByText("Team", {}, { timeout: 2000 })).toBeInTheDocument();
++  expect(screen.getByText(/\$96\.00 per month/)).toBeInTheDocument();
++  expect(screen.getByText("Current period: Oct 1, 2026 – Oct 31, 2026")).toBeInTheDocument();
++  expect(screen.getByText("Card ending 4242")).toBeInTheDocument();
++  expect(screen.getByText("412 of 500 GB")).toBeInTheDocument();
++  expect(screen.getByText("7,300 of 10,000 runs")).toBeInTheDocument();
++  expect(within(screen.getByRole("table", { name: "Invoices" })).getAllByRole("row")).toHaveLength(7);
++  expect(screen.queryByRole("alert")).not.toBeInTheDocument();
++});
++
++test("explains a failed payment", async () => {
++  withScenario("payment-failed");
++  render(<Billing />);
++  const alert = await screen.findByRole("alert", {}, { timeout: 2000 });
++  expect(alert).toHaveTextContent("Your last payment failed");
++  expect(alert).toHaveTextContent("We couldn't charge $96.00 to the card ending 4242 on Oct 1, 2026. The card was declined.");
++  expect(within(screen.getByRole("table", { name: "Invoices" })).getByText("Failed")).toBeInTheDocument();
++});
++
++test("flags usage over the limit", async () => {
++  withScenario("over-limit");
++  render(<Billing />);
++  expect(await screen.findByText("Storage is over its limit", {}, { timeout: 2000 })).toBeInTheDocument();
++  expect(screen.getByText("530 of 500 GB · 30 GB over")).toBeInTheDocument();
++});
++
++test("shows empty payment method and invoices", async () => {
++  withScenario("empty");
++  render(<Billing />);
++  expect(await screen.findByText("No payment method on file", {}, { timeout: 2000 })).toBeInTheDocument();
++  expect(screen.getByText("No invoices yet")).toBeInTheDocument();
++});
++
++test("offers a retry when billing can't load", async () => {
++  withScenario("error");
++  render(<Billing />);
++  expect(await screen.findByText("Billing couldn't load", {}, { timeout: 2000 })).toBeInTheDocument();
++  withScenario();
++  fireEvent.click(screen.getByRole("button", { name: "Try again" }));
++  expect(screen.getByLabelText("Loading plan")).toBeInTheDocument();
++  expect(await screen.findByText("Team", {}, { timeout: 2000 })).toBeInTheDocument();
++});
+diff --git a/src/pages/Billing.tsx b/src/pages/Billing.tsx
+new file mode 100644
+index 0000000..ebc094b
+--- /dev/null
++++ b/src/pages/Billing.tsx
+@@ -0,0 +1,147 @@
++import { useCallback, useEffect, useState } from "react";
++import { getBilling, type Billing as BillingData } from "../api/billing";
++import { Badge, Banner, Button, Card, EmptyState, Meter, Skeleton, Table, type Column, type Tone } from "../components";
++import { failureReasonText, isOverLimit, planTotal, usageFraction } from "../lib/billing";
++import { formatCardExpiry, formatDate, formatMoney, formatNumber } from "../lib/format";
++
++type State = { status: "loading" } | { status: "error" } | { status: "ready"; billing: BillingData };
++type Invoice = BillingData["invoices"][number];
++
++// Billing periods start and end on UTC boundaries in the API (Oct 1 00:00Z – Oct 31 23:59Z),
++// so dates are shown in UTC to keep the period from slipping a day in other time zones.
++const BILLING_TZ = "UTC";
++
++const invoiceStatus: Record<Invoice["status"], { label: string; tone: Tone }> = {
++  paid: { label: "Paid", tone: "success" },
++  open: { label: "Open", tone: "neutral" },
++  failed: { label: "Failed", tone: "danger" },
++};
++
++const invoiceColumns: Column<Invoice>[] = [
++  { key: "number", header: "Invoice", render: (i) => <span className="nowrap">{i.number}</span> },
++  { key: "issued", header: "Issued", render: (i) => formatDate(i.issuedAt, BILLING_TZ) },
++  { key: "amount", header: "Amount", numeric: true, render: (i) => formatMoney(i.amount) },
++  { key: "status", header: "Status", render: (i) => <Badge tone={invoiceStatus[i.status].tone}>{invoiceStatus[i.status].label}</Badge> },
++];
++
++function LoadingLines({ label }: { label: string }) {
++  return (
++    <div className="stack" aria-label={label}>
++      <Skeleton width="40%" height={20} /><Skeleton width="70%" /><Skeleton width="55%" />
++    </div>
++  );
++}
++
++function Alerts({ billing }: { billing: BillingData }) {
++  const { lastPayment, paymentMethod } = billing;
++  const over = billing.usage.filter(isOverLimit);
++  return (
++    <>
++      {lastPayment.status === "failed" && (
++        <Banner tone="danger" title="Your last payment failed">
++          We couldn't charge {formatMoney(lastPayment.amount)}
++          {paymentMethod && ` to the card ending ${paymentMethod.last4}`} on {formatDate(lastPayment.attemptedAt, BILLING_TZ)}.{" "}
++          {failureReasonText(lastPayment.failureReason)}
++        </Banner>
++      )}
++      {over.map((u) => (
++        <Banner key={u.label} tone="warning" title={`${u.label} is over its limit`}>
++          {formatNumber(u.used)} {u.unit} used of {formatNumber(u.limit)} {u.unit} this period.
++        </Banner>
++      ))}
++    </>
++  );
++}
++
++export function Billing() {
++  const [state, setState] = useState<State>({ status: "loading" });
++
++  const load = useCallback(() => {
++    setState({ status: "loading" });
++    getBilling().then(
++      (billing) => setState({ status: "ready", billing }),
++      () => setState({ status: "error" }),
++    );
++  }, []);
++
++  useEffect(load, [load]);
++
++  if (state.status === "error") {
++    return (
++      <div className="stack">
++        <h1 className="page-title">Billing</h1>
++        <Banner tone="danger" title="Billing couldn't load" action={<Button variant="secondary" onClick={load}>Try again</Button>}>
++          Check your connection and try again.
++        </Banner>
++      </div>
++    );
++  }
++
++  const billing = state.status === "ready" ? state.billing : null;
++
++  return (
++    <div className="stack">
++      <h1 className="page-title">Billing</h1>
++      {billing && <Alerts billing={billing} />}
++
++      <div className="grid-2">
++        <Card title="Plan">
++          {!billing ? <LoadingLines label="Loading plan" /> : (
++            <div className="stack-sm">
++              <p className="lead">{billing.plan.name}</p>
++              <p>
++                {formatMoney(planTotal(billing.plan))} per {billing.plan.interval}
++                <span className="text-muted"> · {billing.plan.seats} {billing.plan.seats === 1 ? "seat" : "seats"} × {formatMoney(billing.plan.pricePerSeat)}</span>
++              </p>
++              <p className="text-muted">
++                Current period: {formatDate(billing.plan.currentPeriodStart, BILLING_TZ)} – {formatDate(billing.plan.currentPeriodEnd, BILLING_TZ)}
++              </p>
++            </div>
++          )}
++        </Card>
++
++        <Card title="Payment method">
++          {!billing ? <LoadingLines label="Loading payment method" /> : billing.paymentMethod ? (
++            <div className="stack-sm">
++              <p className="lead">Card ending {billing.paymentMethod.last4}</p>
++              <p className="text-muted">
++                {billing.paymentMethod.holder} · Expires {formatCardExpiry(billing.paymentMethod.expMonth, billing.paymentMethod.expYear)}
++              </p>
++            </div>
++          ) : (
++            <EmptyState title="No payment method on file" />
++          )}
++        </Card>
++      </div>
++
++      <Card title="Usage this period">
++        {!billing ? <LoadingLines label="Loading usage" /> : billing.usage.length === 0 ? (
++          <EmptyState title="No usage to show for this period" />
++        ) : (
++          <div className="stack">
++            {billing.usage.map((u) => {
++              const over = isOverLimit(u);
++              return (
++                <Meter
++                  key={u.label}
++                  label={u.label}
++                  valueText={`${formatNumber(u.used)} of ${formatNumber(u.limit)} ${u.unit}${over ? ` · ${formatNumber(u.used - u.limit)} ${u.unit} over` : ""}`}
++                  fraction={usageFraction(u)}
++                  tone={over ? "danger" : "default"}
++                />
++              );
++            })}
++          </div>
++        )}
++      </Card>
++
++      <Card title="Invoices">
++        {!billing ? <LoadingLines label="Loading invoices" /> : billing.invoices.length === 0 ? (
++          <EmptyState title="No invoices yet">Invoices appear here once they're issued.</EmptyState>
++        ) : (
++          <Table caption="Invoices" columns={invoiceColumns} rows={billing.invoices} rowKey={(i) => i.id} />
++        )}
++      </Card>
++    </div>
++  );
++}
+diff --git a/src/styles/base.css b/src/styles/base.css
+index 2911e7b..8e91cdf 100644
+--- a/src/styles/base.css
++++ b/src/styles/base.css
+@@ -26,3 +26,9 @@ h1, h2, h3, p { margin: 0; }
+   .shell-main { padding: var(--space-5) var(--space-4); }
+ }
+ .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
++
++.grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: var(--space-5); }
++.text-muted { color: var(--color-text-muted); font-size: var(--text-sm); }
++.stack-sm { display: grid; gap: var(--space-1); }
++.lead { font-size: var(--text-lg); font-weight: 600; }
++.nowrap { white-space: nowrap; }
