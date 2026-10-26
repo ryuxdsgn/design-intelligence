@@ -95,10 +95,10 @@ How comparable products frame the same task and offer: `search_screens` (categor
 ### RX-PR-05 [Required] The product's market first
 
 - Do: Start from how users in the product's own market pay, sign in, write addresses, and read money and dates; check a pattern from another market before reusing it.
-  - Take the market from the brief or the codebase, and ask when it is unclear.
+  - Take the market from the brief or the codebase, and ask when it is unclear. When you ask, propose no market as your default: RYUX's own examples are Indonesian, the product may not be. If you must proceed without an answer, follow the brief's language and its common currency, and list it under Assumptions.
   - When the brief does not name payment methods (or another market-standard capability), show the market's standard set as unconfirmed capabilities, labeled as proposed in Assumptions, rather than leaving them out: a market's table stakes are not "for later" (RX-AS-06). Ask when the set would change the flow.
 - Do not: Import one market's checkout, currency, language, or tax rules into a product built for another market.
-- Why: Payment, address, and trust habits differ by market (local payment rails, address formats, messaging channels). (ryux taxonomy of local patterns)
+- Why: Payment, address, and trust habits differ by market (local payment rails, address formats, messaging channels). (ryux taxonomy of local patterns; wallet-detail benchmark, 2.19.2: 3 of 3 runs proposed Indonesia and IDR as the default for a brief with no market)
 - Check: search_screens
 
 ### RX-PR-09 [Required] Compare patterns before choosing

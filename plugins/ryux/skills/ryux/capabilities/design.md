@@ -13,7 +13,10 @@ The six stages of the core workflow (SKILL.md), as Design runs them.
    affects the user flow, what the product can do, or whether the content is correct, those
    questions alone, most consequential first, at most three, in one message, before designing.
    A product rule that changes which states or actions the screen has (refunds, fees, what happens
-   on failure) is a major decision. When the prompt and DESIGN.md disagree, the prompt wins for
+   on failure) is a major decision. **Market:** when the prompt, DESIGN.md, and the product docs
+   name no market, ask with no market as the recommended default; RYUX's examples are Indonesian
+   (Rp, id-ID), the product may not be. Without an answer, follow the prompt's language and that
+   language's common currency, as an assumption (RX-PR-05). When the prompt and DESIGN.md disagree, the prompt wins for
    this task; say so. A DESIGN.md written for a different product (another name, domain, or
    audience than this brief) sets no direction for this task: say so, and treat direction as unset.
    **Direction is the user's call:** when neither the prompt nor DESIGN.md sets the UI direction
