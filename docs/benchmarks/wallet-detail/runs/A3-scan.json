@@ -1,0 +1,350 @@
+{
+ "static": {
+  "ok": true,
+  "cli": "2.19.2",
+  "files": 1,
+  "pages": 0,
+  "widths": [],
+  "findings": [
+   {
+    "level": "warn",
+    "rule": "RX-DS-03",
+    "file": "A3/index.html",
+    "line": 6,
+    "column": 35,
+    "message": "24 one-off colors (#f4f5f7, #d9dde5, #05070a, ...): use the color tokens, or define them by role"
+   },
+   {
+    "level": "warn",
+    "rule": "RX-A11Y-02",
+    "file": "A3/index.html",
+    "line": 81,
+    "column": 77,
+    "message": "11px text: body text is 14 to 16px on mobile; below 12px is hard to read"
+   }
+  ]
+ },
+ "rendered": {
+  "ok": false,
+  "cli": "2.19.2",
+  "files": 0,
+  "pages": 1,
+  "widths": [
+   320,
+   390,
+   1280
+  ],
+  "findings": [
+   {
+    "rule": "RX-A11Y-01",
+    "level": "fail",
+    "selector": "main#screen > section.balance > button.btn-chip",
+    "message": "\"Add money\": contrast 4.37:1 (#ffffff on #6f67ea), needs 4.5:1",
+    "file": "http://127.0.0.1:4403/index.html",
+    "line": 0,
+    "column": 0,
+    "width": 320
+   },
+   {
+    "rule": "RX-A11Y-01",
+    "level": "fail",
+    "selector": "div.group > a.txrow > span.av",
+    "message": "\"MC\": contrast 3.09:1 (#ffffff on #e76f51), needs 4.5:1",
+    "file": "http://127.0.0.1:4403/index.html",
+    "line": 0,
+    "column": 0,
+    "width": 320
+   },
+   {
+    "rule": "RX-A11Y-01",
+    "level": "fail",
+    "selector": "div.group > a.txrow > span.av",
+    "message": "\"SO\": contrast 3.32:1 (#ffffff on #2a9d8f), needs 4.5:1",
+    "file": "http://127.0.0.1:4403/index.html",
+    "line": 0,
+    "column": 0,
+    "width": 320
+   },
+   {
+    "rule": "RX-A11Y-01",
+    "level": "fail",
+    "selector": "div.group > a.txrow > span.av",
+    "message": "\"C\": contrast 3.74:1 (#ffffff on #0d9488), needs 4.5:1",
+    "file": "http://127.0.0.1:4403/index.html",
+    "line": 0,
+    "column": 0,
+    "width": 320
+   },
+   {
+    "rule": "RX-A11Y-02",
+    "level": "warn",
+    "selector": "div.chips > button.chip > span.count",
+    "message": "\"6\": 11px text; body text is 14 to 16px on mobile, below 12px is hard to read",
+    "file": "http://127.0.0.1:4403/index.html",
+    "line": 0,
+    "column": 0,
+    "width": 320
+   },
+   {
+    "rule": "RX-QA-03",
+    "level": "warn",
+    "selector": "div#view > header.bar > h1",
+    "message": "\"Activity\" overlaps \"Today\" (main#screen > h2.day)",
+    "file": "http://127.0.0.1:4403/index.html",
+    "line": 0,
+    "column": 0,
+    "width": 320
+   },
+   {
+    "rule": "RX-QA-03",
+    "level": "warn",
+    "selector": "a.txrow > span.txrow-main > span.txrow-sub",
+    "message": "\"\u00b7 Waiting for Sam to accept\" overlaps \"\u2212$120.00\" (div.group > a.txrow > span.txrow-amt)",
+    "file": "http://127.0.0.1:4403/index.html",
+    "line": 0,
+    "column": 0,
+    "width": 320
+   },
+   {
+    "rule": "RX-QA-03",
+    "level": "warn",
+    "selector": "a.txrow > span.txrow-main > span.txrow-sub",
+    "message": "\"\u00b7 Charged by bank \u00b7 Not in wallet yet\" overlaps \"+$50.00\" (div.group > a.txrow > span.txrow-amt)",
+    "file": "http://127.0.0.1:4403/index.html",
+    "line": 0,
+    "column": 0,
+    "width": 320
+   },
+   {
+    "rule": "RX-QA-03",
+    "level": "warn",
+    "selector": "a.txrow > span.txrow-main > span.txrow-sub",
+    "message": "\"\u00b7 Refund arriving by Oct 28\" overlaps \"\u2212$14.20\" (div.group > a.txrow > span.txrow-amt)",
+    "file": "http://127.0.0.1:4403/index.html",
+    "line": 0,
+    "column": 0,
+    "width": 320
+   },
+   {
+    "rule": "RX-QA-03",
+    "level": "warn",
+    "selector": "a.txrow > span.txrow-main > span.txrow-sub",
+    "message": "\"\u00b7 Name didn\u2019t match \u00b7 Money back\" overlaps \"\u2212$22.00\" (div.group > a.txrow > span.txrow-amt)",
+    "file": "http://127.0.0.1:4403/index.html",
+    "line": 0,
+    "column": 0,
+    "width": 320
+   },
+   {
+    "rule": "RX-A11Y-01",
+    "level": "fail",
+    "selector": "main#screen > section.balance > button.btn-chip",
+    "message": "\"Add money\": contrast 4.37:1 (#ffffff on #6f67ea), needs 4.5:1",
+    "file": "http://127.0.0.1:4403/index.html",
+    "line": 0,
+    "column": 0,
+    "width": 390
+   },
+   {
+    "rule": "RX-A11Y-01",
+    "level": "fail",
+    "selector": "div.group > a.txrow > span.av",
+    "message": "\"MC\": contrast 3.09:1 (#ffffff on #e76f51), needs 4.5:1",
+    "file": "http://127.0.0.1:4403/index.html",
+    "line": 0,
+    "column": 0,
+    "width": 390
+   },
+   {
+    "rule": "RX-A11Y-01",
+    "level": "fail",
+    "selector": "div.group > a.txrow > span.av",
+    "message": "\"SO\": contrast 3.32:1 (#ffffff on #2a9d8f), needs 4.5:1",
+    "file": "http://127.0.0.1:4403/index.html",
+    "line": 0,
+    "column": 0,
+    "width": 390
+   },
+   {
+    "rule": "RX-A11Y-01",
+    "level": "fail",
+    "selector": "div.group > a.txrow > span.av",
+    "message": "\"C\": contrast 3.74:1 (#ffffff on #0d9488), needs 4.5:1",
+    "file": "http://127.0.0.1:4403/index.html",
+    "line": 0,
+    "column": 0,
+    "width": 390
+   },
+   {
+    "rule": "RX-A11Y-02",
+    "level": "warn",
+    "selector": "div.chips > button.chip > span.count",
+    "message": "\"6\": 11px text; body text is 14 to 16px on mobile, below 12px is hard to read",
+    "file": "http://127.0.0.1:4403/index.html",
+    "line": 0,
+    "column": 0,
+    "width": 390
+   },
+   {
+    "rule": "RX-QA-03",
+    "level": "warn",
+    "selector": "div#view > header.bar > h1",
+    "message": "\"Activity\" overlaps \"Today\" (main#screen > h2.day)",
+    "file": "http://127.0.0.1:4403/index.html",
+    "line": 0,
+    "column": 0,
+    "width": 390
+   },
+   {
+    "rule": "RX-QA-03",
+    "level": "warn",
+    "selector": "a.txrow > span.txrow-main > span.txrow-sub",
+    "message": "\"\u00b7 Charged by bank \u00b7 Not in wallet yet\" overlaps \"+$50.00\" (div.group > a.txrow > span.txrow-amt)",
+    "file": "http://127.0.0.1:4403/index.html",
+    "line": 0,
+    "column": 0,
+    "width": 390
+   },
+   {
+    "rule": "RX-QA-03",
+    "level": "warn",
+    "selector": "a.txrow > span.txrow-main > span.txrow-sub",
+    "message": "\"\u00b7 Refund arriving by Oct 28\" overlaps \"\u2212$14.20\" (div.group > a.txrow > span.txrow-amt)",
+    "file": "http://127.0.0.1:4403/index.html",
+    "line": 0,
+    "column": 0,
+    "width": 390
+   },
+   {
+    "rule": "RX-A11Y-01",
+    "level": "fail",
+    "selector": "div.stage > aside.panel > p",
+    "message": "\"Jump to any scenario. Everything insi...\": contrast 4.40:1 (#5b6470 on #d9dde5), needs 4.5:1",
+    "file": "http://127.0.0.1:4403/index.html",
+    "line": 0,
+    "column": 0,
+    "width": 1280
+   },
+   {
+    "rule": "RX-A11Y-01",
+    "level": "fail",
+    "selector": "nav#scenarios > h2",
+    "message": "\"Payment\": contrast 3.51:1 (#6b7380 on #d9dde5), needs 4.5:1; 11 more with the same colors",
+    "file": "http://127.0.0.1:4403/index.html",
+    "line": 0,
+    "column": 0,
+    "width": 1280
+   },
+   {
+    "rule": "RX-A11Y-01",
+    "level": "fail",
+    "selector": "main#screen > section.balance > button.btn-chip",
+    "message": "\"Add money\": contrast 4.37:1 (#ffffff on #6f67ea), needs 4.5:1",
+    "file": "http://127.0.0.1:4403/index.html",
+    "line": 0,
+    "column": 0,
+    "width": 1280
+   },
+   {
+    "rule": "RX-A11Y-01",
+    "level": "fail",
+    "selector": "div.group > a.txrow > span.av",
+    "message": "\"MC\": contrast 3.09:1 (#ffffff on #e76f51), needs 4.5:1",
+    "file": "http://127.0.0.1:4403/index.html",
+    "line": 0,
+    "column": 0,
+    "width": 1280
+   },
+   {
+    "rule": "RX-A11Y-01",
+    "level": "fail",
+    "selector": "div.group > a.txrow > span.av",
+    "message": "\"SO\": contrast 3.32:1 (#ffffff on #2a9d8f), needs 4.5:1",
+    "file": "http://127.0.0.1:4403/index.html",
+    "line": 0,
+    "column": 0,
+    "width": 1280
+   },
+   {
+    "rule": "RX-A11Y-01",
+    "level": "fail",
+    "selector": "div.group > a.txrow > span.av",
+    "message": "\"C\": contrast 3.74:1 (#ffffff on #0d9488), needs 4.5:1",
+    "file": "http://127.0.0.1:4403/index.html",
+    "line": 0,
+    "column": 0,
+    "width": 1280
+   },
+   {
+    "rule": "RX-A11Y-02",
+    "level": "warn",
+    "selector": "nav#scenarios > a > small",
+    "message": "\"entry point\": 11.6667px text (10 elements); body text is 14 to 16px on mobile, below 12px is hard to read",
+    "file": "http://127.0.0.1:4403/index.html",
+    "line": 0,
+    "column": 0,
+    "width": 1280
+   },
+   {
+    "rule": "RX-A11Y-02",
+    "level": "warn",
+    "selector": "div.chips > button.chip > span.count",
+    "message": "\"6\": 11px text; body text is 14 to 16px on mobile, below 12px is hard to read",
+    "file": "http://127.0.0.1:4403/index.html",
+    "line": 0,
+    "column": 0,
+    "width": 1280
+   },
+   {
+    "rule": "RX-A11Y-02",
+    "level": "warn",
+    "selector": "button#reset",
+    "message": "\"Reset prototype data\": target 127x19px, under 24x24 (spaced enough to pass WCAG 2.5.8); 44x44 is the preferred hit area",
+    "file": "http://127.0.0.1:4403/index.html",
+    "line": 0,
+    "column": 0,
+    "width": 1280
+   },
+   {
+    "rule": "RX-QA-03",
+    "level": "warn",
+    "selector": "div#app > div.statusbar > span",
+    "message": "\"9:41\" overlaps \"Today\" (main#screen > h2.day)",
+    "file": "http://127.0.0.1:4403/index.html",
+    "line": 0,
+    "column": 0,
+    "width": 1280
+   },
+   {
+    "rule": "RX-QA-03",
+    "level": "warn",
+    "selector": "div#view > header.bar > h1",
+    "message": "\"Activity\" overlaps \"B\" (div.group > a.txrow > span.av)",
+    "file": "http://127.0.0.1:4403/index.html",
+    "line": 0,
+    "column": 0,
+    "width": 1280
+   },
+   {
+    "rule": "RX-QA-03",
+    "level": "warn",
+    "selector": "a.txrow > span.txrow-main > span.txrow-sub",
+    "message": "\"\u00b7 Charged by bank \u00b7 Not in wallet yet\" overlaps \"+$50.00\" (div.group > a.txrow > span.txrow-amt)",
+    "file": "http://127.0.0.1:4403/index.html",
+    "line": 0,
+    "column": 0,
+    "width": 1280
+   },
+   {
+    "rule": "RX-QA-03",
+    "level": "warn",
+    "selector": "a.txrow > span.txrow-main > span.txrow-sub",
+    "message": "\"\u00b7 Refund arriving by Oct 28\" overlaps \"\u2212$14.20\" (div.group > a.txrow > span.txrow-amt)",
+    "file": "http://127.0.0.1:4403/index.html",
+    "line": 0,
+    "column": 0,
+    "width": 1280
+   }
+  ]
+ }
+}

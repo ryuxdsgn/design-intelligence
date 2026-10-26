@@ -1,0 +1,112 @@
+{
+ "static": {
+  "ok": true,
+  "cli": "2.19.2",
+  "files": 1,
+  "pages": 0,
+  "widths": [],
+  "findings": [
+   {
+    "level": "warn",
+    "rule": "RX-DS-03",
+    "file": "A1/index.html",
+    "line": 6,
+    "column": 35,
+    "message": "14 one-off colors (#f4f5f7, #0c0f14, #fff, ...): use the color tokens, or define them by role"
+   }
+  ]
+ },
+ "rendered": {
+  "ok": false,
+  "cli": "2.19.2",
+  "files": 0,
+  "pages": 1,
+  "widths": [
+   320,
+   390,
+   1280
+  ],
+  "findings": [
+   {
+    "rule": "RX-A11Y-01",
+    "level": "fail",
+    "selector": "li > button.tx-row > span.av",
+    "message": "\"MC\": contrast 4.00:1 (#ffffff on #0f8f7e), needs 4.5:1",
+    "file": "http://127.0.0.1:4401/index.html",
+    "line": 0,
+    "column": 0,
+    "width": 320
+   },
+   {
+    "rule": "RX-A11Y-01",
+    "level": "fail",
+    "selector": "li > button.tx-row > span.av",
+    "message": "\"DO\": contrast 4.19:1 (#ffffff on #c2610f), needs 4.5:1",
+    "file": "http://127.0.0.1:4401/index.html",
+    "line": 0,
+    "column": 0,
+    "width": 320
+   },
+   {
+    "rule": "RX-QA-03",
+    "level": "warn",
+    "selector": "div#app > header.topbar > h1.lg",
+    "message": "\"Activity\" overlaps \"Top-up\" (button.tx-row > span.mid > span.nm)",
+    "file": "http://127.0.0.1:4401/index.html",
+    "line": 0,
+    "column": 0,
+    "width": 320
+   },
+   {
+    "rule": "RX-A11Y-01",
+    "level": "fail",
+    "selector": "li > button.tx-row > span.av",
+    "message": "\"MC\": contrast 4.00:1 (#ffffff on #0f8f7e), needs 4.5:1",
+    "file": "http://127.0.0.1:4401/index.html",
+    "line": 0,
+    "column": 0,
+    "width": 390
+   },
+   {
+    "rule": "RX-A11Y-01",
+    "level": "fail",
+    "selector": "li > button.tx-row > span.av",
+    "message": "\"DO\": contrast 4.19:1 (#ffffff on #c2610f), needs 4.5:1",
+    "file": "http://127.0.0.1:4401/index.html",
+    "line": 0,
+    "column": 0,
+    "width": 390
+   },
+   {
+    "rule": "RX-QA-03",
+    "level": "warn",
+    "selector": "div#app > header.topbar > h1.lg",
+    "message": "\"Activity\" overlaps \"Top-up\" (button.tx-row > span.mid > span.nm)",
+    "file": "http://127.0.0.1:4401/index.html",
+    "line": 0,
+    "column": 0,
+    "width": 390
+   },
+   {
+    "rule": "RX-A11Y-01",
+    "level": "fail",
+    "selector": "li > button.tx-row > span.av",
+    "message": "\"MC\": contrast 4.00:1 (#ffffff on #0f8f7e), needs 4.5:1",
+    "file": "http://127.0.0.1:4401/index.html",
+    "line": 0,
+    "column": 0,
+    "width": 1280
+   },
+   {
+    "rule": "RX-A11Y-01",
+    "level": "fail",
+    "selector": "li > button.tx-row > span.av",
+    "message": "\"DO\": contrast 4.19:1 (#ffffff on #c2610f), needs 4.5:1",
+    "file": "http://127.0.0.1:4401/index.html",
+    "line": 0,
+    "column": 0,
+    "width": 1280
+   }
+  ]
+ }
+}

@@ -1,0 +1,112 @@
+{
+ "static": {
+  "ok": true,
+  "cli": "2.19.2",
+  "files": 3,
+  "pages": 0,
+  "widths": [],
+  "findings": [
+   {
+    "level": "warn",
+    "rule": "RX-DS-03",
+    "file": "B3/transaction-detail.html",
+    "line": 108,
+    "column": 79,
+    "message": "5 one-off colors (#fff, #1c3474, #fbfaf7, ...): use the color tokens, or define them by role"
+   }
+  ]
+ },
+ "rendered": {
+  "ok": false,
+  "cli": "2.19.2",
+  "files": 0,
+  "pages": 1,
+  "widths": [
+   320,
+   390,
+   1280
+  ],
+  "findings": [
+   {
+    "rule": "RX-A11Y-02",
+    "level": "fail",
+    "selector": "input#p-long",
+    "message": "\"input\": target 13x13px, under 24x24 and crowded by its neighbours; 44x44 is the preferred hit area",
+    "file": "http://127.0.0.1:4406/transaction-detail.html",
+    "line": 0,
+    "column": 0,
+    "width": 320
+   },
+   {
+    "rule": "RX-QA-03",
+    "level": "warn",
+    "selector": "details#proto > div.proto-body > label.check",
+    "message": "\"Long names and a large amount\" overlaps \"MO\" (li > button.row-btn > span.avatar)",
+    "file": "http://127.0.0.1:4406/transaction-detail.html",
+    "line": 0,
+    "column": 0,
+    "width": 320
+   },
+   {
+    "rule": "RX-QA-03",
+    "level": "warn",
+    "selector": "details#proto > div.proto-body > label",
+    "message": "\"When the detail loads\" overlaps \"Transfer \u00b7 Processing\" (button.row-btn > span > span.row-sub)",
+    "file": "http://127.0.0.1:4406/transaction-detail.html",
+    "line": 0,
+    "column": 0,
+    "width": 320
+   },
+   {
+    "rule": "RX-QA-03",
+    "level": "warn",
+    "selector": "div.proto-body > div > p",
+    "message": "\"(when Processing or refund in progress)\" overlaps \"Top-up \u00b7 Failed, not charged\" (button.row-btn > span > span.row-sub)",
+    "file": "http://127.0.0.1:4406/transaction-detail.html",
+    "line": 0,
+    "column": 0,
+    "width": 320
+   },
+   {
+    "rule": "RX-A11Y-02",
+    "level": "fail",
+    "selector": "input#p-long",
+    "message": "\"input\": target 13x13px, under 24x24 and crowded by its neighbours; 44x44 is the preferred hit area",
+    "file": "http://127.0.0.1:4406/transaction-detail.html",
+    "line": 0,
+    "column": 0,
+    "width": 390
+   },
+   {
+    "rule": "RX-QA-03",
+    "level": "warn",
+    "selector": "details#proto > div.proto-body > label.check",
+    "message": "\"Long names and a large amount\" overlaps \"MO\" (li > button.row-btn > span.avatar)",
+    "file": "http://127.0.0.1:4406/transaction-detail.html",
+    "line": 0,
+    "column": 0,
+    "width": 390
+   },
+   {
+    "rule": "RX-A11Y-02",
+    "level": "warn",
+    "selector": "input#p-long",
+    "message": "\"input\": target 13x13px, under 24x24 (spaced enough to pass WCAG 2.5.8); 44x44 is the preferred hit area",
+    "file": "http://127.0.0.1:4406/transaction-detail.html",
+    "line": 0,
+    "column": 0,
+    "width": 1280
+   },
+   {
+    "rule": "RX-QA-03",
+    "level": "warn",
+    "selector": "button.row-btn > span > span.row-name",
+    "message": "\"Top-up from Visa debit \u2022\u2022\u2022\u2022 4821\" overlaps \"$100.00\" (li > button.row-btn > span.row-amt)",
+    "file": "http://127.0.0.1:4406/transaction-detail.html",
+    "line": 0,
+    "column": 0,
+    "width": 1280
+   }
+  ]
+ }
+}
