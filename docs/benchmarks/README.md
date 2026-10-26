@@ -6,6 +6,7 @@ each folder says what was edited.
 
 | Folder | What it tests | RYUX | Runs |
 | --- | --- | --- | --- |
+| [`order-tracking/`](order-tracking/) | A working order-tracking prototype (late, item unavailable) from one brief, no skill vs RYUX + DESIGN.md: asking first, facts the brief didn't give, states, motion, `ryux scan` static and rendered | 2.19.0 | 3 + 3 |
 | [`hero-finance/`](hero-finance/) | A finance app (dashboard, payment, success) from one short brief, no skill vs RYUX: asking first, facts the brief didn't give, states covered; the README demo | 2.9.3 | 3 + 3 |
 | [`lumo-td-2.6/`](lumo-td-2.6/) | Transaction detail from one brief, with and without RYUX: states covered, actions and promises the brief didn't give | 2.6.3 | 3 + 3 |
 | [`case-td-2.6/`](case-td-2.6/) | One screen through all five steps in one session: analyze, critique, design in pen.dev, build, QA | 2.6.2 | 1 (case study) |

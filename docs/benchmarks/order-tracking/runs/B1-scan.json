@@ -1,0 +1,134 @@
+{
+ "static": {
+  "ok": true,
+  "cli": "2.19.0",
+  "files": 10,
+  "pages": 0,
+  "widths": [],
+  "findings": [
+   {
+    "level": "warn",
+    "rule": "RX-DS-03",
+    "file": "B1/styles.css",
+    "line": 79,
+    "column": 51,
+    "message": "15 one-off colors (#fff, #ffc9a8, #f0e8de, ...): use the color tokens, or define them by role"
+   },
+   {
+    "level": "warn",
+    "rule": "RX-CD-09",
+    "file": "B1/tests/order.test.js",
+    "line": 133,
+    "column": 41,
+    "message": "\"12:46 PM\": in Indonesian copy write 14.30 in 24-hour form (other markets follow their locale)"
+   },
+   {
+    "level": "warn",
+    "rule": "RX-CD-09",
+    "file": "B1/tests/order.test.js",
+    "line": 134,
+    "column": 56,
+    "message": "\"12:56 PM\": in Indonesian copy write 14.30 in 24-hour form (other markets follow their locale)"
+   },
+   {
+    "level": "warn",
+    "rule": "RX-CD-09",
+    "file": "B1/tests/order.test.js",
+    "line": 136,
+    "column": 48,
+    "message": "\"11:50 AM\": in Indonesian copy write 14.30 in 24-hour form (other markets follow their locale)"
+   },
+   {
+    "level": "warn",
+    "rule": "RX-CD-09",
+    "file": "B1/tests/order.test.js",
+    "line": 136,
+    "column": 57,
+    "message": "\"12:10 PM\": in Indonesian copy write 14.30 in 24-hour form (other markets follow their locale)"
+   }
+  ]
+ },
+ "render": {
+  "ok": true,
+  "cli": "2.19.0",
+  "files": 0,
+  "pages": 1,
+  "widths": [
+   320,
+   390,
+   1280
+  ],
+  "findings": [
+   {
+    "rule": "RX-QA-03",
+    "level": "warn",
+    "selector": "details#demo > div.demo__body > p.demo__note",
+    "message": "\"Sample data, not a real order. While ...\" overlaps \"FreshMart Riverside\" (p#store-name)",
+    "file": "http://127.0.0.1:4304/",
+    "line": 0,
+    "column": 0,
+    "width": 320
+   },
+   {
+    "rule": "RX-QA-03",
+    "level": "warn",
+    "selector": "fieldset.demo__group > div.seg > label",
+    "message": "\"Grocery\" overlaps \"27\" (span#eta-num)",
+    "file": "http://127.0.0.1:4304/",
+    "line": 0,
+    "column": 0,
+    "width": 320
+   },
+   {
+    "rule": "RX-QA-03",
+    "level": "warn",
+    "selector": "div.demo__body > fieldset.demo__group > legend",
+    "message": "\"Time\" overlaps \"Estimated arrival 2:32\u20132:42 PM\" (p#eta-time > span)",
+    "file": "http://127.0.0.1:4304/",
+    "line": 0,
+    "column": 0,
+    "width": 320
+   },
+   {
+    "rule": "RX-QA-03",
+    "level": "warn",
+    "selector": "div.demo__body > fieldset.demo__group > button.btn",
+    "message": "\"Pause\" overlaps \"FreshMart Riverside is confirming you...\" (h1#status-title)",
+    "file": "http://127.0.0.1:4304/",
+    "line": 0,
+    "column": 0,
+    "width": 320
+   },
+   {
+    "rule": "RX-QA-03",
+    "level": "warn",
+    "selector": "fieldset.demo__group > div.demo__row > button.btn",
+    "message": "\"Placed\" overlaps \"A shopper starts picking your items o...\" (p#status-detail)",
+    "file": "http://127.0.0.1:4304/",
+    "line": 0,
+    "column": 0,
+    "width": 320
+   },
+   {
+    "rule": "RX-QA-03",
+    "level": "warn",
+    "selector": "fieldset.demo__group > div.demo__row > button.btn",
+    "message": "\"Item unavailable\" overlaps \"Your order\" (span#summary-title)",
+    "file": "http://127.0.0.1:4304/",
+    "line": 0,
+    "column": 0,
+    "width": 320
+   },
+   {
+    "rule": "RX-QA-03",
+    "level": "warn",
+    "selector": "fieldset.demo__group > div.demo__row > button.btn",
+    "message": "\"Show load error\" overlaps \"Get help with this order\" (button#help-open)",
+    "file": "http://127.0.0.1:4304/",
+    "line": 0,
+    "column": 0,
+    "width": 320
+   }
+  ]
+ }
+}
