@@ -35,7 +35,7 @@ Both sides look finished. The difference is in what the agent decided on your be
 | **A DESIGN.md before building** | none | written by RYUX: users, job, evidence, patterns, how to evaluate |
 | **The food on screen** | emoji | real photos, credited |
 | **Loading, error, and offline screens** | none | all three |
-| **Cost per run** | $1.79–2.50 | $13.22 |
+| **Cost per run** | $1.79–2.50 | $10.43 |
 
 Without a skill, the agents made up a $5 credit when an order is late, refund timing, a 60- or 90-second auto-pick for
 a missing item, delivery fees, courier tips, and courier ratings. RYUX left those open and listed them as
@@ -43,7 +43,9 @@ questions. It even declined a policy it saw in a reference: *"The reference app 
 late. That's their policy, so I didn't adopt it."*
 
 What RYUX missed: one undecided rule (what happens if you don't answer about a missing item) still reads as
-fact on screen, two moments from the motion reference were not built, and the run cost about six times as much.
+fact on screen, two moments from the motion reference were not built, and the run cost four to six times as much.
+2.19.4 fixed the first: in [a repeat run](docs/benchmarks/food-delivery-designmd/round-3/), the order waits for
+your answer, and every undecided rule on screen carries a "Proposed rule" tag.
 
 One RYUX run, by choice, on RYUX's main branch just before 2.19.4, the release that ships writing the DESIGN.md. Brief, method,
 and every run: [food delivery](docs/benchmarks/food-delivery-designmd/round-2/), with no-skill runs from
@@ -131,7 +133,7 @@ outputs. Counts come from a few runs on one model: what those runs did, not rate
 
 | Benchmark | The question it answers | RYUX | Runs |
 | --- | --- | --- | --- |
-| [Food delivery, DESIGN.md by RYUX](docs/benchmarks/food-delivery-designmd/) | With no DESIGN.md given, does RYUX write one from a brief and references that answers the five questions, then build that direction without inventing policy? Two rounds | main before 2.19.4 | 1 + 1 new + 3 |
+| [Food delivery, DESIGN.md by RYUX](docs/benchmarks/food-delivery-designmd/) | With no DESIGN.md given, does RYUX write one from a brief and references that answers the five questions, then build that direction without inventing policy? Three rounds | main before 2.19.4, 2.19.4 | 1 + 1 + 1 new + 3 |
 | [Billing page in an existing repo](docs/benchmarks/billing-dashboard/) | Does a new page fit a real repo, keep checks passing, and invent no billing rule? | 2.19.3 | 3 + 3 |
 | [Wallet, expressive direction](docs/benchmarks/wallet-expressive/) | With a DESIGN.md that asks for character and motion, does it build that direction and still ask first and invent no money rule? | 2.19.3 | 3 new + 3 |
 | [Wallet transaction detail](docs/benchmarks/wallet-detail/) | Does it ask what changes the build, keep open money rules open, and build the states a money screen needs? | 2.19.2 | 3 + 3 |

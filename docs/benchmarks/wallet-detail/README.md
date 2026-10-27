@@ -38,7 +38,7 @@ channels are not decided, so the screen states none of them." Each B final messa
 - **Real brands.** B1, B2, and B3 all show Visa; B2 also Mastercard and Blue Bottle Coffee. RX-AS-03 in 2.19.3
   now asks for made-up merchants, banks, and card networks; not rerun yet.
 - **Coverage.** B2 left out the refunded state on purpose ("not decided"), so its matrix is thinner than A1's.
-- **Cost.** B costs more: $2.50-2.80 per run against $1.57-2.03, and B3 took 22 minutes for its build turn.
+- **Cost.** B costs more: $2.21-2.33 per run against $1.57-2.03, and B3 took 22 minutes for its build turn.
 - **Scan noise.** Most of B's rendered findings sit in the prototype control panels (small radio targets,
   labels at 320), not in the product. The scan does not tell them apart yet.
 
@@ -49,12 +49,13 @@ channels are not decided, so the screen states none of them." Each B final messa
 | A1 | no | 7: fee, refund incl. fee, dispute timing, arrival time, cancel window, 24/7 chat, real brands (Chase, Visa, Mastercard, Uniqlo, Blue Bottle) | C P F R · C P F · C P F | none | 1 · 8 | $1.63 · 8 |
 | A2 | no | 9: service fee, refund policy, dispute timing, points, promo code, arrival time, cancel top-up, 24/7 chat, real banks (BCA, Mandiri, BRI) | C F R · C P F · C P F | none | 5 · 8 | $1.57 · 8 |
 | A3 | no | 9: free transfers, refund timing, cashback, arrival time, cancel transfer, $2,500 limit, chat support, Visa, "FDIC-insured up to $250,000" | C F R · C P F · C P F | none | 2 · 31 | $2.03 · 11 |
-| B1 | 3 questions | 1: Visa | C P F R · C P F R · C P F | all three | 1 · 12 | $2.55 · 12 |
-| B2 | 3 questions | 1: Visa, Mastercard, Blue Bottle Coffee | C F · C P F · C F | all three | 1 · 35 | $2.50 · 12 |
-| B3 | 3 questions | 1: Visa | C P F R · C P F R · C P F R | all three | 1 · 8 | $2.80 · 22 |
+| B1 | 3 questions | 1: Visa | C P F R · C P F R · C P F | all three | 1 · 12 | $2.28 · 12 |
+| B2 | 3 questions | 1: Visa, Mastercard, Blue Bottle Coffee | C F · C P F · C F | all three | 1 · 35 | $2.21 · 12 |
+| B3 | 3 questions | 1: Visa | C P F R · C P F R · C P F R | all three | 1 · 8 | $2.33 · 22 |
 
 C completed, P pending or processing, F failed, R refunded or reversed (partly refunded in A1). B cost and
-minutes include the question turn ($0.27-0.47). The scan columns count findings, at 320, 390, and 1280 wide for
+minutes include the question turn. Corrected 2026-10-28: costs first published here added the question
+turn twice ($2.50-2.80); a resumed session already reports its total. The scan columns count findings, at 320, 390, and 1280 wide for
 the rendered one: low contrast in product UI in all three A runs and A3's overlapping text; for B, target-size
 and overlap findings in the prototype panels, plus one product overlap in B1 (a long merchant name). A2's static
 findings include three Rupiah format checks (RX-CD-02). Raw output in `runs/<run>-scan.json`.
