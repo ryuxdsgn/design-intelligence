@@ -40,7 +40,7 @@ promises no times, fees or support channels."
   counted as a failure.
 - **No run ran `ryux scan`.** All three declined to download the package without asking. Scans below were run
   after the session.
-- **Cost.** $2.48-3.38 per run against $1.57-2.03, and 12-16 minutes against 8-11.
+- **Cost.** $2.48-2.96 per run against $1.57-2.03, and 12-16 minutes against 8-11.
 - **Visual quality** is not rated by designers yet. "Built" above means present in the code and on screen, not
   that it is good.
 
@@ -51,14 +51,15 @@ promises no times, fees or support channels."
 | A1 | no | 7 | none | not asked | n/a | n/a | 1 · 8 | $1.63 · 8 |
 | A2 | no | 9 | none | not asked | n/a | n/a | 5 · 8 | $1.57 · 8 |
 | A3 | no | 9 | none | not asked | n/a | n/a | 2 · 31 | $2.03 · 11 |
-| B1 | 3 questions | 0 | all three | 6 | pending pulse | Bricolage Grotesque | 1 · 14 | $3.29 · 14 |
+| B1 | 3 questions | 0 | all three | 6 | pending pulse | Bricolage Grotesque | 1 · 14 | $2.96 · 14 |
 | B2 | no | 1: Visa | all three | 6 | pending dot | Bricolage Grotesque | 1 · 6 | $2.48 · 12 |
-| B3 | 3 questions | 0 | all three | 6 | none | Archivo | 0 · 4 | $3.38 · 16 |
+| B3 | 3 questions | 0 | all three | 6 | none | Archivo | 0 · 4 | $2.87 · 16 |
 
 A1-A3 are wallet-detail's runs, unchanged; their traps are listed there. Motion events: row press, detail push,
 amount settle, sheet or banner in, status change, success moment, read from each run's CSS and scripts, and for
 B1 also from the recording in the video. Spinners and skeletons loop in every B run and are not counted. B cost
-and minutes include the question turn ($0.33 and $0.51). Rendered scans at 320, 390, and 1280: most of B1's 14
+and minutes include the question turn. Corrected 2026-10-28: B1 and B3 were first published as $3.29 and
+$3.38, adding the question turn twice; a resumed session already reports its total. Rendered scans at 320, 390, and 1280: most of B1's 14
 are small radio targets in its prototype control panel (11) and ellipsis-truncated row titles read as overlap
 (3), neither in the product proper; the scan does not tell them apart yet. Raw output in `runs/<run>-scan.json`.
 

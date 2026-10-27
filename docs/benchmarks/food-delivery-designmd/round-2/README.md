@@ -20,11 +20,11 @@ the card, ride with the courier on the map, and land at the door. A paprika acce
 both references' brand colours". And it declined a policy it saw in the reference: *"the reference app pays a
 voucher when a pickup runs late. That's their policy, so I didn't adopt it."* It ended with three questions.
 
-**Turn 2, the fixed reply** ($1.63): recorded the answers and added "Prototype assumptions" P1–P9, each labeled
+**Turn 2, the fixed reply** ($0.47): recorded the answers and added "Prototype assumptions" P1–P9, each labeled
 and "never shown on screen as a promise": no late compensation, contact sheets that say they are a prototype,
 fees as labeled sample lines, cancelling, tipping, and rating out of scope.
 
-**Turn 3, the build** ($10.43, 42 min): Vite, React, and TypeScript; typecheck, lint, 28 unit and 30 end-to-end
+**Turn 3, the build** ($8.80, 42 min): Vite, React, and TypeScript; typecheck, lint, 28 unit and 30 end-to-end
 tests pass (reported by the run; `ryux scan` rerun here: 0 findings static and rendered). Food photos from
 Wikimedia Commons under free licences, with a credits sheet in the app. Twelve illustrations of its own (a courier
 character, a receipt, a chef, a basket, the door); no reference asset, brand, or character reused.
@@ -36,7 +36,7 @@ character, a receipt, a chef, a basket, the door); no reference asset, brand, or
 | The food on screen | emoji | real photos, credited in the app |
 | Loading, error, offline screens | none | all three, plus a failed send and a photo fallback |
 | `ryux scan`: static · rendered | 9 · 17, 8 · 5, 7 · 19 | 0 · 0 |
-| Cost | $1.79–2.50 | $13.22 ($1.16 + $1.63 + $10.43) |
+| Cost | $1.79–2.50 | $10.43 ($1.16 + $0.47 + $8.80) |
 
 B1's 0 follows order-tracking's scoring. The delivery and service fees on the receipt sit under the order list's
 "Sample orders in a prototype. Stores, couriers, prices, and times are not real." Message and Call open sheets
@@ -59,10 +59,11 @@ that say they are a prototype. The rendered scan saw the order list only (the ap
 
 - **The no-answer rule reads as fact on screen**, as in round 1: "If you don't choose by pickup, we'll leave it
   out and you won't be charged for it." It is labeled P1, an assumption, in DESIGN.md and the reply, not on the
-  sheet.
+  sheet. Fixed in 2.19.4 and checked in [round 3](../round-3/).
 - **Two reference moments not built:** the map camera stays still and the courier never leaps into the card. The
   run listed both as departures in [`runs/B1-app-README.md`](runs/B1-app-README.md).
-- **It cost about six times a no-skill run** and took 42 minutes to build.
+- **It cost four to six times a no-skill run** and took 42 minutes to build. First published as $13.22:
+  the per-turn totals were added, but a resumed session already reports its running total (corrected 2026-10-28).
 - One run, by choice: what this run did, not a rate. Visual quality is not rated by designers yet.
 
 ## Method

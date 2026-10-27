@@ -1,7 +1,7 @@
 # Food delivery order tracking, DESIGN.md written by RYUX
 
 A quick follow-up to [order-tracking](../order-tracking/): nobody wrote DESIGN.md. RYUX wrote it from the brief
-first (Design, "Write or update DESIGN.md", RX-PR-12), then built. **Round 2**, with Airbnb's look and a ride-hailing motion study as references: [`round-2/`](round-2/).
+first (Design, "Write or update DESIGN.md", RX-PR-12), then built. **Round 2**, with Airbnb's look and a ride-hailing motion study as references: [`round-2/`](round-2/). **Round 3**, round 2 repeated with 2.19.4 to check the on-screen label fix: [`round-3/`](round-3/).
 Protocol, fixed before the run:
 [`PROTOCOL.md`](PROTOCOL.md).
 
@@ -26,7 +26,7 @@ unanswered, and turn 3 built on RYUX's own recommended defaults: English, USD, c
 rule for the unavailable item. It said so: *"You didn't answer my three questions, so I used the recommended
 defaults. They're assumptions."*
 
-**Turn 3, the build** ($3.56, 20 min): a Vite, React, and TypeScript app with 17 tests, typecheck and build
+**Turn 3, the build** ($3.00, 20 min): a Vite, React, and TypeScript app with 17 tests, typecheck and build
 passing, rendered by the agent at 320, 390, and 1280.
 
 | | No skill, A1-A3 ([order-tracking](../order-tracking/)) | RYUX, B1 |
@@ -36,7 +36,7 @@ passing, rendered by the agent at 320, 390, and 1280.
 | Asked before building | 0 of 3 | 3 questions, unanswered |
 | Loading, error, offline screens | none | all three, plus map failed and order not found |
 | `ryux scan`: static · rendered | 9 · 17, 8 · 5, 7 · 19 | 2 · 24 |
-| Cost | $1.79–2.50 | $4.12 ($0.56 + $3.56) |
+| Cost | $1.79–2.50 | $3.56 ($0.56 + $3.00) |
 
 B1's 0 follows order-tracking's scoring: "Message" opens a note that the feature is not confirmed, and the
 unavailable-item rule is named an assumption in the final message. The 24 rendered findings are all the 8
@@ -48,7 +48,8 @@ inputs of the prototype panel, at three widths (18px targets); static: one 11px 
   charged for it." It is labeled an assumption in the code and the reply, not on the card.
 - **A plain look.** With no direction answered, it chose calm teal and the system font. The DESIGN.md left the
   visual direction open (Open question 2), so the build has no visual concept of its own.
-- **It cost about twice a no-skill run**, most of it in the build turn.
+- **It cost up to twice a no-skill run**, most of it in the build turn. First published as $4.12, adding
+  the turns' running totals (corrected 2026-10-28).
 - One run, by choice: what this run did, not a rate. Visual quality is not rated by designers yet.
 
 ## Method
