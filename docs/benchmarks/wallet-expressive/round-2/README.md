@@ -42,7 +42,7 @@ load-error screens in all three.
   border, and why.
 - **No run ran `ryux scan`.** All three were blocked from downloading the package; scans below ran after the
   session.
-- **Cost.** $2.35-3.23 per run against $1.57-2.03; B3 took 23 minutes.
+- **Cost.** $2.06-2.89 per run against $1.57-2.03; B3 took 23 minutes. Corrected 2026-10-28: first published with the question turn added twice.
 - **Visual quality** is not rated by designers yet.
 
 **Our spec caused some findings.** The rendered scans flag 11 px group labels and, in B1, a 10 px currency sign at 320
@@ -56,9 +56,9 @@ The spec should have set 12 px as a floor.
 | A1 | no | 7 | none | no DESIGN.md | n/a | 1 · 8 | $1.63 · 8 |
 | A2 | no | 9 | none | no DESIGN.md | n/a | 5 · 8 | $1.57 · 8 |
 | A3 | no | 9 | none | no DESIGN.md | n/a | 2 · 31 | $2.03 · 11 |
-| B1 | 3 questions | 0 | yes · yes · yes | all | 5 | 1 · 19 | $2.67 · 14 |
-| B2 | 3 questions | 1: Visa, Mastercard | yes · yes · no | all but the raised currency sign; primary button moved to a bottom bar, with a reason | 7 | 1 · 21 | $2.35 · 12 |
-| B3 | 3 questions | 0 | yes · yes · no | all but the raised currency sign | 4 | 1 · 6 | $3.23 · 23 |
+| B1 | 3 questions | 0 | yes · yes · yes | all | 5 | 1 · 19 | $2.42 · 14 |
+| B2 | 3 questions | 1: Visa, Mastercard | yes · yes · no | all but the raised currency sign; primary button moved to a bottom bar, with a reason | 7 | 1 · 21 | $2.06 · 12 |
+| B3 | 3 questions | 0 | yes · yes · no | all but the raised currency sign | 4 | 1 · 6 | $2.89 · 23 |
 
 A1-A3 are wallet-detail's runs, unchanged; their traps are listed there. "Spec followed" is read from each run's
 code and screens: the colour values, both typefaces, the perforated sheet and grain, the money path, and the motion
