@@ -1,3 +1,6 @@
-Write our DESIGN.md from this brief and the reference in ref/, then wait: "Build an order tracking experience for a food and grocery delivery app as a working web prototype, mobile first: the order status from placed to delivered, what the customer sees when the order is running late, and what happens when an item is unavailable. Flow inspiration: delivery and ride-hailing apps."
+Write our DESIGN.md from this brief and these references, then wait: "Build an order tracking experience for a food and grocery delivery app as a working web prototype, mobile first: the order status from placed to delivered, what the customer sees when the order is running late, and what happens when an item is unavailable. Flow inspiration: delivery and ride-hailing apps."
 
-Reference: ref/ has seven frames from a motion study of a ride-hailing booking flow, and ref/motion.md describes its motion. We want this level of illustration and interactive motion. It is another company's app: take the direction, not its brand, screens, or characters.
+References:
+- Visual direction: like Airbnb's app. Warm and airy, the food itself is the hero, rounded cards, friendly type, playful illustration, small delightful motion.
+- Flow and motion: ref/ has seven frames from a motion study of a ride-hailing booking flow, and ref/motion.md describes its motion. We want this level of interactive motion.
+Both are other companies' apps: take the direction, not their brand, screens, or characters.
