@@ -20,11 +20,11 @@ Antigravity. Free, MIT.
 
 ## See the difference
 
-Same brief, same model, a fresh agent per run: a wallet's transaction detail screen as a working prototype. The
-RYUX side's DESIGN.md asks for character and motion; both phones play each prototype's own screens, with the
-same taps.
+Same brief, same model, a fresh agent per run: food delivery order tracking as a working prototype. Nobody
+wrote a DESIGN.md: RYUX wrote one from the brief first, then built. Both phones play each prototype's own
+screens, with the same scenario.
 
-<a href="docs/benchmarks/wallet-expressive/"><img src="docs/benchmarks/wallet-expressive/see-the-difference.gif" alt="Animation: the brief and the two sides; the first reply, where the agent with no skill has already built and RYUX asks three questions; both prototypes played side by side with the same taps on a failed transfer, a completed payment, and a pending transfer, the left showing an invented fee, a real bank and merchant, and a cancel window, the right showing where the money is with a dot that travels to the merchant; then totals across six runs, including what RYUX missed and the cost" width="100%"></a>
+<a href="docs/benchmarks/food-delivery-designmd/"><img src="docs/benchmarks/food-delivery-designmd/see-the-difference.gif" alt="Animation: the brief and the two sides; the first reply, where the agent with no skill has already built and RYUX writes a DESIGN.md that answers who the users are, their job, the evidence, the interaction patterns, and how to evaluate; both prototypes side by side on an unavailable item then a late order, the left showing a one-minute auto-pick, refund timing, and an automatic credit, the right showing the price of each choice and the new time with no promise; then the numbers and what RYUX missed" width="100%"></a>
 
 Both sides look finished. The difference is in what the agent decided on your behalf. Two briefs, three runs
 per side each:
@@ -131,6 +131,7 @@ outputs. Counts come from a few runs on one model: what those runs did, not rate
 
 | Benchmark | The question it answers | RYUX | Runs |
 | --- | --- | --- | --- |
+| [Food delivery, DESIGN.md by RYUX](docs/benchmarks/food-delivery-designmd/) | With no DESIGN.md given, does RYUX write one that answers the five questions, then build without inventing policy? | main (unreleased) | 1 new + 3 |
 | [Billing page in an existing repo](docs/benchmarks/billing-dashboard/) | Does a new page fit a real repo, keep checks passing, and invent no billing rule? | 2.19.3 | 3 + 3 |
 | [Wallet, expressive direction](docs/benchmarks/wallet-expressive/) | With a DESIGN.md that asks for character and motion, does it build that direction and still ask first and invent no money rule? | 2.19.3 | 3 new + 3 |
 | [Wallet transaction detail](docs/benchmarks/wallet-detail/) | Does it ask what changes the build, keep open money rules open, and build the states a money screen needs? | 2.19.2 | 3 + 3 |

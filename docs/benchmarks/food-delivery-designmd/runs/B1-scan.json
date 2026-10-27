@@ -1,0 +1,280 @@
+{
+ "static": {
+  "ok": true,
+  "cli": "2.19.3",
+  "files": 25,
+  "pages": 0,
+  "widths": [],
+  "findings": [
+   {
+    "level": "warn",
+    "rule": "RX-A11Y-02",
+    "file": "B1/app/src/styles/app.css",
+    "line": 235,
+    "column": 45,
+    "message": "11px text: body text is 14 to 16px on mobile; below 12px is hard to read"
+   },
+   {
+    "level": "warn",
+    "rule": "RX-DS-03",
+    "file": "B1/app/src/styles/app.css",
+    "line": 284,
+    "column": 40,
+    "message": "4 one-off colors (#f3f6f5, #c3cdca, #22302e, ...): use the color tokens, or define them by role"
+   }
+  ]
+ },
+ "rendered": {
+  "ok": true,
+  "cli": "2.19.3",
+  "files": 0,
+  "pages": 1,
+  "widths": [
+   320,
+   390,
+   1280
+  ],
+  "findings": [
+   {
+    "rule": "RX-A11Y-02",
+    "level": "warn",
+    "selector": "div.demo__row > label.demo__toggle > input",
+    "message": "\"input\": target 18x18px, under 24x24 (spaced enough to pass WCAG 2.5.8); 44x44 is the preferred hit area",
+    "file": "http://127.0.0.1:4441/",
+    "line": 0,
+    "column": 0,
+    "width": 320
+   },
+   {
+    "rule": "RX-A11Y-02",
+    "level": "warn",
+    "selector": "div.demo__row > label.demo__toggle > input",
+    "message": "\"input\": target 18x18px, under 24x24 (spaced enough to pass WCAG 2.5.8); 44x44 is the preferred hit area",
+    "file": "http://127.0.0.1:4441/",
+    "line": 0,
+    "column": 0,
+    "width": 320
+   },
+   {
+    "rule": "RX-A11Y-02",
+    "level": "warn",
+    "selector": "fieldset.demo__group > label.demo__toggle > input",
+    "message": "\"input\": target 18x18px, under 24x24 (spaced enough to pass WCAG 2.5.8); 44x44 is the preferred hit area",
+    "file": "http://127.0.0.1:4441/",
+    "line": 0,
+    "column": 0,
+    "width": 320
+   },
+   {
+    "rule": "RX-A11Y-02",
+    "level": "warn",
+    "selector": "fieldset.demo__group > label.demo__toggle > input",
+    "message": "\"input\": target 18x18px, under 24x24 (spaced enough to pass WCAG 2.5.8); 44x44 is the preferred hit area",
+    "file": "http://127.0.0.1:4441/",
+    "line": 0,
+    "column": 0,
+    "width": 320
+   },
+   {
+    "rule": "RX-A11Y-02",
+    "level": "warn",
+    "selector": "fieldset.demo__group > label.demo__toggle > input",
+    "message": "\"input\": target 18x18px, under 24x24 (spaced enough to pass WCAG 2.5.8); 44x44 is the preferred hit area",
+    "file": "http://127.0.0.1:4441/",
+    "line": 0,
+    "column": 0,
+    "width": 320
+   },
+   {
+    "rule": "RX-A11Y-02",
+    "level": "warn",
+    "selector": "fieldset.demo__group > label.demo__toggle > input",
+    "message": "\"input\": target 18x18px, under 24x24 (spaced enough to pass WCAG 2.5.8); 44x44 is the preferred hit area",
+    "file": "http://127.0.0.1:4441/",
+    "line": 0,
+    "column": 0,
+    "width": 320
+   },
+   {
+    "rule": "RX-A11Y-02",
+    "level": "warn",
+    "selector": "fieldset.demo__group > label.demo__toggle > input",
+    "message": "\"input\": target 18x18px, under 24x24 (spaced enough to pass WCAG 2.5.8); 44x44 is the preferred hit area",
+    "file": "http://127.0.0.1:4441/",
+    "line": 0,
+    "column": 0,
+    "width": 320
+   },
+   {
+    "rule": "RX-A11Y-02",
+    "level": "warn",
+    "selector": "fieldset.demo__group > label.demo__toggle > input",
+    "message": "\"input\": target 18x18px, under 24x24 (spaced enough to pass WCAG 2.5.8); 44x44 is the preferred hit area",
+    "file": "http://127.0.0.1:4441/",
+    "line": 0,
+    "column": 0,
+    "width": 320
+   },
+   {
+    "rule": "RX-A11Y-02",
+    "level": "warn",
+    "selector": "div.demo__row > label.demo__toggle > input",
+    "message": "\"input\": target 18x18px, under 24x24 (spaced enough to pass WCAG 2.5.8); 44x44 is the preferred hit area",
+    "file": "http://127.0.0.1:4441/",
+    "line": 0,
+    "column": 0,
+    "width": 390
+   },
+   {
+    "rule": "RX-A11Y-02",
+    "level": "warn",
+    "selector": "div.demo__row > label.demo__toggle > input",
+    "message": "\"input\": target 18x18px, under 24x24 (spaced enough to pass WCAG 2.5.8); 44x44 is the preferred hit area",
+    "file": "http://127.0.0.1:4441/",
+    "line": 0,
+    "column": 0,
+    "width": 390
+   },
+   {
+    "rule": "RX-A11Y-02",
+    "level": "warn",
+    "selector": "fieldset.demo__group > label.demo__toggle > input",
+    "message": "\"input\": target 18x18px, under 24x24 (spaced enough to pass WCAG 2.5.8); 44x44 is the preferred hit area",
+    "file": "http://127.0.0.1:4441/",
+    "line": 0,
+    "column": 0,
+    "width": 390
+   },
+   {
+    "rule": "RX-A11Y-02",
+    "level": "warn",
+    "selector": "fieldset.demo__group > label.demo__toggle > input",
+    "message": "\"input\": target 18x18px, under 24x24 (spaced enough to pass WCAG 2.5.8); 44x44 is the preferred hit area",
+    "file": "http://127.0.0.1:4441/",
+    "line": 0,
+    "column": 0,
+    "width": 390
+   },
+   {
+    "rule": "RX-A11Y-02",
+    "level": "warn",
+    "selector": "fieldset.demo__group > label.demo__toggle > input",
+    "message": "\"input\": target 18x18px, under 24x24 (spaced enough to pass WCAG 2.5.8); 44x44 is the preferred hit area",
+    "file": "http://127.0.0.1:4441/",
+    "line": 0,
+    "column": 0,
+    "width": 390
+   },
+   {
+    "rule": "RX-A11Y-02",
+    "level": "warn",
+    "selector": "fieldset.demo__group > label.demo__toggle > input",
+    "message": "\"input\": target 18x18px, under 24x24 (spaced enough to pass WCAG 2.5.8); 44x44 is the preferred hit area",
+    "file": "http://127.0.0.1:4441/",
+    "line": 0,
+    "column": 0,
+    "width": 390
+   },
+   {
+    "rule": "RX-A11Y-02",
+    "level": "warn",
+    "selector": "fieldset.demo__group > label.demo__toggle > input",
+    "message": "\"input\": target 18x18px, under 24x24 (spaced enough to pass WCAG 2.5.8); 44x44 is the preferred hit area",
+    "file": "http://127.0.0.1:4441/",
+    "line": 0,
+    "column": 0,
+    "width": 390
+   },
+   {
+    "rule": "RX-A11Y-02",
+    "level": "warn",
+    "selector": "fieldset.demo__group > label.demo__toggle > input",
+    "message": "\"input\": target 18x18px, under 24x24 (spaced enough to pass WCAG 2.5.8); 44x44 is the preferred hit area",
+    "file": "http://127.0.0.1:4441/",
+    "line": 0,
+    "column": 0,
+    "width": 390
+   },
+   {
+    "rule": "RX-A11Y-02",
+    "level": "warn",
+    "selector": "div.demo__row > label.demo__toggle > input",
+    "message": "\"input\": target 18x18px, under 24x24 (spaced enough to pass WCAG 2.5.8); 44x44 is the preferred hit area",
+    "file": "http://127.0.0.1:4441/",
+    "line": 0,
+    "column": 0,
+    "width": 1280
+   },
+   {
+    "rule": "RX-A11Y-02",
+    "level": "warn",
+    "selector": "div.demo__row > label.demo__toggle > input",
+    "message": "\"input\": target 18x18px, under 24x24 (spaced enough to pass WCAG 2.5.8); 44x44 is the preferred hit area",
+    "file": "http://127.0.0.1:4441/",
+    "line": 0,
+    "column": 0,
+    "width": 1280
+   },
+   {
+    "rule": "RX-A11Y-02",
+    "level": "warn",
+    "selector": "fieldset.demo__group > label.demo__toggle > input",
+    "message": "\"input\": target 18x18px, under 24x24 (spaced enough to pass WCAG 2.5.8); 44x44 is the preferred hit area",
+    "file": "http://127.0.0.1:4441/",
+    "line": 0,
+    "column": 0,
+    "width": 1280
+   },
+   {
+    "rule": "RX-A11Y-02",
+    "level": "warn",
+    "selector": "fieldset.demo__group > label.demo__toggle > input",
+    "message": "\"input\": target 18x18px, under 24x24 (spaced enough to pass WCAG 2.5.8); 44x44 is the preferred hit area",
+    "file": "http://127.0.0.1:4441/",
+    "line": 0,
+    "column": 0,
+    "width": 1280
+   },
+   {
+    "rule": "RX-A11Y-02",
+    "level": "warn",
+    "selector": "fieldset.demo__group > label.demo__toggle > input",
+    "message": "\"input\": target 18x18px, under 24x24 (spaced enough to pass WCAG 2.5.8); 44x44 is the preferred hit area",
+    "file": "http://127.0.0.1:4441/",
+    "line": 0,
+    "column": 0,
+    "width": 1280
+   },
+   {
+    "rule": "RX-A11Y-02",
+    "level": "warn",
+    "selector": "fieldset.demo__group > label.demo__toggle > input",
+    "message": "\"input\": target 18x18px, under 24x24 (spaced enough to pass WCAG 2.5.8); 44x44 is the preferred hit area",
+    "file": "http://127.0.0.1:4441/",
+    "line": 0,
+    "column": 0,
+    "width": 1280
+   },
+   {
+    "rule": "RX-A11Y-02",
+    "level": "warn",
+    "selector": "fieldset.demo__group > label.demo__toggle > input",
+    "message": "\"input\": target 18x18px, under 24x24 (spaced enough to pass WCAG 2.5.8); 44x44 is the preferred hit area",
+    "file": "http://127.0.0.1:4441/",
+    "line": 0,
+    "column": 0,
+    "width": 1280
+   },
+   {
+    "rule": "RX-A11Y-02",
+    "level": "warn",
+    "selector": "fieldset.demo__group > label.demo__toggle > input",
+    "message": "\"input\": target 18x18px, under 24x24 (spaced enough to pass WCAG 2.5.8); 44x44 is the preferred hit area",
+    "file": "http://127.0.0.1:4441/",
+    "line": 0,
+    "column": 0,
+    "width": 1280
+   }
+  ]
+ }
+}

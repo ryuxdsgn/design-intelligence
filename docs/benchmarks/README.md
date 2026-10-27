@@ -8,6 +8,7 @@ each folder says what was edited.
 
 | Benchmark | The question it answers | RYUX | Runs |
 | --- | --- | --- | --- |
+| [Food delivery, DESIGN.md by RYUX](food-delivery-designmd/) | With no DESIGN.md given, does RYUX write one from the brief that answers who, which job, what evidence, which patterns, and how to evaluate, then build without inventing policy? One RYUX run against order-tracking's no-skill runs | main (unreleased) | 1 new + 3 |
 | [Billing page in an existing repo](billing-dashboard/) | Does a new page fit a real repo: reuse, tokens, checks passing, states covered, no invented billing rule? A React + TS fixture, no skill vs RYUX + DESIGN.md, measured from each run's diff | 2.19.3 | 3 + 3 |
 | [Wallet, expressive direction](wallet-expressive/) | With a DESIGN.md that asks for character and motion, does RYUX build that direction and still ask first, invent no money rule, and cover the states? Three new RYUX runs against wallet-detail's no-skill runs, with motion counted per event | 2.19.3 | 3 new + 3 |
 | [Wallet transaction detail](wallet-detail/) | Does the agent ask what changes the build, keep open money rules open, and build the states a money screen needs? One HTML file, no skill vs RYUX + DESIGN.md, with `ryux scan` and cost per run | 2.19.2 | 3 + 3 |
