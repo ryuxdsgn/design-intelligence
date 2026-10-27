@@ -4,6 +4,11 @@ The same food-delivery brief, designed in Figma instead of built in code, one ru
 cheaper, and does the difference still show? Protocol, fixed before the runs and amended once before scoring:
 [`PROTOCOL.md`](PROTOCOL.md).
 
+<a href="see-the-difference.mp4"><img src="see-the-difference.gif" alt="Animation: the brief; the no-skill agent designs straight away while RYUX writes DESIGN.md, asks, and explores three layouts; two Android phones play both Figma pages through an unavailable item, a late order, and the way to the door, the left showing a reply timer with an auto-pick, an instant refund, a late voucher, tips, and a rating, the right waiting for the customer's choice, keeping it after a failed send, and tagging every undecided rule on screen; then the numbers" width="100%"></a>
+
+Video: [`see-the-difference.mp4`](see-the-difference.mp4). The runs made still frames; the motion and taps are
+made for the video, the same way on both sides. B's frames are from "Pilot B1 fixed" (see After the pilot).
+
 ## Cost: about the same for RYUX, faster
 
 | | No skill | RYUX + DESIGN.md |
@@ -49,7 +54,7 @@ for five text sizes in one panel. A2 used rupiah and Jakarta places from the fil
 
 ## After the pilot (not scored)
 
-Two owner-requested rounds on a copy, page "Pilot B1 fixed"; "Pilot B1" and the counts above stay as the run left them.
+Three owner-requested rounds on a copy, page "Pilot B1 fixed"; "Pilot B1" and the counts above stay as the run left them.
 
 - **Fixes** ($3.43, 12 min, [`runs/B1-turn4-final.md`](runs/B1-turn4-final.md)): "Contact courier" tagged on screen
   with its sheet drawn ("nothing is sent"); Delivered shows the items total only; every rule tag readable at 390
@@ -58,4 +63,7 @@ Two owner-requested rounds on a copy, page "Pilot B1 fixed"; "Pilot B1" and the 
   review ("clip art"): one shared head with eight expressions, elbows and knees, a place per scene, food visible,
   a real e-bike; built as SVG by a script and imported as editable vectors.
   [`runs/B1-fixed-illustrations.jpg`](runs/B1-fixed-illustrations.jpg). Still stiff in the standing scenes.
-- With both, B1 cost $19.10 in all. [`runs/B1-fixed-DESIGN.md`](runs/B1-fixed-DESIGN.md) is DESIGN.md after them.
+- **Poses** ($6.02 with a $0.66 start cut by the session limit, [`runs/B1-turn6b-final.md`](runs/B1-turn6b-final.md)):
+  each standing scene its own body (weight on one leg, a step, tiptoe, dropped shoulders), stronger brows, and the
+  sheet's provenance corrected to "made by the agent as SVG from a script".
+- With all three, B1 cost $25.12 in all. [`runs/B1-fixed-DESIGN.md`](runs/B1-fixed-DESIGN.md) is DESIGN.md after them.
