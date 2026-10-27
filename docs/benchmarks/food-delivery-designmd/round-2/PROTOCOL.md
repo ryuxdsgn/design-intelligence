@@ -4,7 +4,8 @@ Written before the run; results go in README.md after scoring, and nothing here 
 
 **Amended once, before any result (2026-10-27):** the first start was stopped during turn 1, before it wrote
 anything, because the owner added a visual direction: Airbnb's look, the food shown, Gojek's flow. That partial
-turn is kept aside, not scored. The text below is the amended protocol.
+turn is kept aside, not scored. The amended run was then paused by the owner, also during turn 1 with nothing
+written, and restarted from a fresh folder; also kept aside, not scored. The text below is the amended protocol.
 
 ## Why a second round
 
