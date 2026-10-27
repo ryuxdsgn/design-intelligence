@@ -264,11 +264,15 @@ assumptions for a global English product.
 - **Avoid:** dark moody shots, heavy filters, hands or people, brand packaging with readable logos, and a photo that
   doesn't match the item named.
 
-### Illustration style (written before the first drawing; proposed, RX-UI-17; v2 for Pilot B1 fixed)
+### Illustration style (written before the first drawing; proposed, RX-UI-17; v3 for Pilot B1 fixed)
 *(Changed for v2 after the owner review, which said v1 read as clip art: stiff front-facing poses, no hands,
 expressions that barely changed, food drawn as flat yellow boxes, scenes floating on a grey ellipse, and an
 e-bike that read as a plain bicycle. Rules changed: the colour limit, the subject (places added), the
 construction and view, the bike, and the pose table. Each change says why.)*
+*(Changed for v3 after the owner and review feedback on v2: every standing scene shared one body, a straight
+torso with two parallel legs and the feet side by side, so only the arms and props changed and the set still
+read stiff. Rules changed: construction (poses with weight), the face (stronger brows), the pose table, and the
+provenance wording. Head component, palette, places and e-bike are unchanged.)*
 - **Line:** no outlines; shapes only. Small details (zip, steam, a strap) may use a thin stroke in the shadow tone.
 - **Shape:** soft geometry with rounded joints, echoing the shape lock; chunky and friendly.
 - **Colour:** the character and objects use the illustration colours `accent/primary`, `illo/cream`,
@@ -286,11 +290,19 @@ construction and view, the bike, and the pose table. Each change says why.)*
   - Construction: about three heads tall. Rounded, tapered limbs bend at the elbows and knees, with simple
     mitten hands (thumb shown) and shoes with a cream sole. The body is a tapered jacket shape that leans with
     the pose. *Changed: v1 had straight stick legs, arms as single bars and no hands.*
+  - Pose with weight: every standing scene has its own body, never a shared torso with parallel legs. Use
+    contrapposto (weight on one straight leg, the hip shifted over it, the other knee bent), a step in progress
+    (one foot forward, the back heel lifting), a reach on tiptoe, or dropped shoulders with the head tilted for
+    apologetic and calm states. The torso turns slightly toward what the courier looks at. Elbows bend; hands
+    close around what they hold (a strap, a bag rim, a phone) so the grip is visible. *Changed in v3: v2 reused
+    one straight standing body in every scene.*
   - View: three-quarter, facing the direction of travel, in every scene. The far limbs take the shadow tone.
   - Head: **one component**, `Illo2/Courier head`, reused in every scene and in the map marker, so the face and
     helmet never drift. It has one variant per expression: smile, focused, apologetic, shrug, warm, look up, look
     down and calm. Skin is a fill override on the instance.
-  - Face: dot eyes, brows and a mouth. Expressions come from the brows, the mouth and the posture together.
+  - Face: dot eyes, brows and a mouth. Expressions come from the brows, the mouth and the posture together. At
+    88 pt the posture and head tilt carry the state; brows are drawn a little exaggerated (thicker, steeper) so
+    they still read. *Changed in v3: v2 brows were too thin to read in the header crop.*
   - Outfit: a paprika jacket with a cream reflective band, a cream helmet with a paprika stripe and a yellow
     visor, dark trousers. No logo (the brand has none yet; RX-AS-11).
   - Kit: an **e-bike that reads as one**: a battery on the down tube, a hub motor, a small front light with a soft
@@ -304,26 +316,26 @@ construction and view, the bike, and the pose table. Each change says why.)*
 
 | State | Place | Pose | Expression | Tone |
 | --- | --- | --- | --- | --- |
-| Placed | kitchen pass | reads the order ticket with a tick, the empty bag at their feet | smile | friendly |
-| Preparing (food) | kitchen pass, ramen steaming under the heat lamp, gyoza beside it | leans in, holding the bag open with both hands | focused | warm |
-| Picking (grocery) | store aisle | reaches up to the top shelf, a bag of groceries in the other hand | look up | warm |
-| Finding a courier | street | looks at a phone, with a soft signal arc | look down | calm |
+| Placed | kitchen pass | contrapposto: weight on one leg, hand on the hip, reads the order ticket with a tick, head tilted; the empty bag at their feet | smile | friendly |
+| Preparing (food) | kitchen pass, ramen steaming under the heat lamp, gyoza beside it | lunges toward the pass, front knee bent, gripping the bag rim with both hands | focused | warm |
+| Picking (grocery) | store aisle | on tiptoe, stretching to the top shelf, torso turned to it, a bag of groceries gripped in the other hand | look up | warm |
+| Finding a courier | street | weight on one leg by the parked bike, phone held in both hands, head bowed to it, a soft signal arc | look down | calm |
 | On the way, Picked up | street with a kerb | leans into the ride; ramen and gyoza show in the box on the rack | smile | lively, small motion lines |
-| Arriving | doorstep with a mat | walks up with the bag, looking up for the door number | look up | friendly |
-| Delivered | open doorstep | holds the bag out with both hands; steam over the bowl | warm | warm, played once |
-| Running late | street, red light | stopped with a foot on the kerb, hands on the bars | apologetic | calm, no humour, no bounce |
-| Item unavailable | store aisle with a gap and an empty price strip | a small shrug with the empty hand open by the gap, the replacement held up | shrug | neutral, helpful |
-| Cancelled | street | stands by the parked bike with the box closed, hands relaxed | calm | calm, never sad for a joke |
-| Offline | street, lamppost | stands by the parked bike, phone lowered, faded signal arcs above | calm | calm |
+| Arriving | doorstep with a mat | a step in progress, front foot forward, back heel lifting, the bag carried by its strap, looking up for the door number | look up | friendly |
+| Delivered | open doorstep | weight forward onto the front foot, holding the bag out with both hands; steam over the bowl | warm | warm, played once |
+| Running late | street, red light | stopped with a foot on the kerb, hands on the bars, head tilted | apologetic | calm, no humour, no bounce |
+| Item unavailable | store aisle with a gap and an empty price strip | a small shrug, hip shifted, the empty hand open palm-up by the gap, the replacement held up, head tilted | shrug | neutral, helpful |
+| Cancelled | street | stands by the parked bike, shoulders dropped, one hand resting on the closed box, head lowered | calm | calm, never sad for a joke |
+| Offline | street, lamppost | leans by the parked bike, one hand in a pocket, phone lowered, head up to the faded signal arcs | calm | calm |
 
 - **Sizes:** full scenes (240 × 180) are used at 240 pt and up (Delivered, Cancelled). The sheet header (120 × 90 at
   390, 88 × 66 below 375) uses a **header crop** of the same scene: a medium shot of the courier, the food and a
   slice of the place, in a card with `radius/image` and a `border/subtle` edge (`Illo2/<state> · header`). The
   full scene was checked at 88 pt and read as noise; the crop keeps the face, hands and food legible.
-- **Delivery:** SVG built by the team, imported into Figma as editable vectors, with colours bound to the token
+- **Delivery:** SVG made by the agent (Claude) from a script, imported into Figma as editable vectors, with colours bound to the token
   variables. No text in the art. Alt text says what the state means ("Your order is being prepared"); purely
-  decorative uses are hidden from screen readers (RX-UI-19). Provenance: illustrative, drawn by us; no generated
-  images and no copied references.
+  decorative uses are hidden from screen readers (RX-UI-19). Provenance: illustrative, made by the agent (Claude)
+  as SVG from a script; no generated images and no copied references.
 - **Decision:** the style comes from the brief's character, the team's request for our own courier, the owner's
   v1 review and the tokens. Evidence: None (a judgment call). Confidence: Medium. Test it as a side-by-side set
   at real size before any screen is final.
