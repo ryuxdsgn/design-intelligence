@@ -46,3 +46,16 @@ for five text sizes in one panel. A2 used rupiah and Jakarta places from the fil
   after the run) and "Pilot B1".
 - The first A1 was cut off by the account's session limit and is not scored; B1 had not started.
 - Costs are each session's final running total (a resumed session reports its running total).
+
+## After the pilot (not scored)
+
+Two owner-requested rounds on a copy, page "Pilot B1 fixed"; "Pilot B1" and the counts above stay as the run left them.
+
+- **Fixes** ($3.43, 12 min, [`runs/B1-turn4-final.md`](runs/B1-turn4-final.md)): "Contact courier" tagged on screen
+  with its sheet drawn ("nothing is sent"); Delivered shows the items total only; every rule tag readable at 390
+  and 360; three text sizes. Its gate: PASS.
+- **Illustrations** ($6.21, 18 min, [`runs/B1-turn5-final.md`](runs/B1-turn5-final.md)): redrawn after an owner
+  review ("clip art"): one shared head with eight expressions, elbows and knees, a place per scene, food visible,
+  a real e-bike; built as SVG by a script and imported as editable vectors.
+  [`runs/B1-fixed-illustrations.jpg`](runs/B1-fixed-illustrations.jpg). Still stiff in the standing scenes.
+- With both, B1 cost $19.10 in all. [`runs/B1-fixed-DESIGN.md`](runs/B1-fixed-DESIGN.md) is DESIGN.md after them.
