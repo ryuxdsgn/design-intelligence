@@ -1,0 +1,22 @@
+{
+ "static": {
+  "ok": true,
+  "cli": "2.19.4",
+  "files": 27,
+  "pages": 0,
+  "widths": [],
+  "findings": []
+ },
+ "rendered": {
+  "ok": true,
+  "cli": "2.19.4",
+  "files": 0,
+  "pages": 1,
+  "widths": [
+   320,
+   390,
+   1280
+  ],
+  "findings": []
+ }
+}

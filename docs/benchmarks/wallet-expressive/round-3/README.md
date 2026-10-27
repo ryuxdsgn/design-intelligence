@@ -43,7 +43,7 @@ and load-error screens in all three.
 - **Offline** in one run of three (B3).
 - **Loops while pending.** All three move the money mark while a transaction is pending (a bob or a moving dashed
   line). DESIGN.md says nothing loops except loading; listed as borderline, as in round 1.
-- **Cost.** $2.13-2.51 per run against $1.57-2.03.
+- **Cost.** $2.13-2.26 per run against $1.57-2.03. Corrected 2026-10-28: first published with the question turn added twice.
 - **Visual quality** is not rated by designers yet.
 
 **Rerun note.** The first B2 and B3 were cut off by a session limit at 12:00 (B2 mid-build, B3 before its first
@@ -57,9 +57,9 @@ before the limit.
 | A1 | no | 7 | none | no DESIGN.md | — | 1 · 8 | $1.63 · 8 |
 | A2 | no | 9 | none | no DESIGN.md | — | 5 · 8 | $1.57 · 8 |
 | A3 | no | 9 | none | no DESIGN.md | — | 2 · 31 | $2.03 · 11 |
-| B1 | 3 questions | 1: cancel window | yes · yes · no | tangerine, Nunito, rounded; named as a proposal | "the money path": a coin on a track | 0 · 26 | $2.48 · 18 |
+| B1 | 3 questions | 1: cancel window | yes · yes · no | tangerine, Nunito, rounded; named as a proposal | "the money path": a coin on a track | 0 · 26 | $2.26 · 18 |
 | B2 | no | 0 | yes · yes · no | tangerine, Nunito; counted, not explained | a marker on a money trail | 1 · 17 | $2.13 · 13 |
-| B3 | 3 questions, Rupiah as its default | 0 | yes · yes · yes | persimmon, Nunito, warm paper; named as a proposal | "a money pebble" on a curved line | 1 · 13 | $2.51 · 14 |
+| B3 | 3 questions, Rupiah as its default | 0 | yes · yes · yes | persimmon, Nunito, warm paper; named as a proposal | "a money pebble" on a curved line | 1 · 13 | $2.15 · 14 |
 
 A1-A3 are wallet-detail's runs, unchanged. Rendered scans at 320, 390, and 1280: most findings are in the
 prototype control panels (small inputs, labels) and long names truncated next to the amount (RX-QA-03); B2's
