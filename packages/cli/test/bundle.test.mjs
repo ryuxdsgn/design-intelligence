@@ -129,3 +129,12 @@ test("Design can write or update a full DESIGN.md that answers five questions", 
   assert.match(flat("knowledge/product.md"), /RX-PR-12/);
   assert.match(flat("knowledge/product.md"), /A DESIGN\.md answers five questions or names what is unknown/);
 });
+
+test("an undecided rule shown on screen is labelled on that screen", () => {
+  // owner review 2026-10-27, food-delivery rounds 1 and 2
+  const files = renderBundle();
+  const flat = (f) => files[f].replace(/\s+/g, " ");
+  assert.match(flat("knowledge/product.md"), /label it on that same screen/);
+  assert.match(flat("knowledge/product.md"), /labelled only outside the screen/);
+  assert.match(flat("SKILL.md"), /Do not show an undecided rule as a plain sentence on screen/);
+});
