@@ -239,6 +239,7 @@ async function runInstall(flags: Flags): Promise<void> {
     } else p.log.info(`Set it up later with: ${CLI_CMD} setup`);
   }
   p.note(suggestionsText(answers), "Try");
+  p.log.info(AGENT_DESIGN_HINT);
   p.outro("RYUX is ready.");
 }
 
@@ -354,6 +355,8 @@ async function runCheck(flags: Flags): Promise<void> {
     const context = contextBody(await readIfExists(join(scope.root, CONTEXT_FILE)));
     if (context !== null) {
       add("ok", CONTEXT_FILE, `project context present, ${filledCount(context)} of ${ASKED_FIELDS.length} setup fields filled (blanks are treated as unknown)`);
+      const sections = designSections(await readIfExists(join(scope.root, CONTEXT_FILE)));
+      if (sections < DESIGN_SECTIONS.length) add("ok", CONTEXT_FILE, `${sections} of ${DESIGN_SECTIONS.length} design sections. ${AGENT_DESIGN_HINT}`);
     } else add("warn", CONTEXT_FILE, "no RYUX project context", "setup");
   }
   if (await hasHook(scope.root)) add("ok", ".claude/settings.json", "scan hook present");
@@ -524,6 +527,12 @@ const CONTEXT_FIELDS: ContextField[] = [
   },
 ];
 const ASKED_FIELDS = CONTEXT_FIELDS.filter((f) => f.ask);
+
+/** The sections a full DESIGN.md has (capabilities/design.md, Write or update DESIGN.md; RX-PR-12). */
+const DESIGN_SECTIONS = ["Users and needs", "Jobs to be done", "Evidence", "Interaction patterns", "Visual and motion language", "Voice and tone", "How we evaluate", "Open questions"];
+const AGENT_DESIGN_HINT = 'To fill the rest (users, jobs, evidence, patterns, how to evaluate), ask your agent: "Write our DESIGN.md from this brief", with the brief or links attached.';
+const designSections = (content: string | null): number =>
+  DESIGN_SECTIONS.filter((h) => new RegExp(`^## ${h}\\b`, "m").test(content ?? "")).length;
 const CONTEXT_MARKS: [string, string] = [CONTEXT_START, CONTEXT_END];
 
 const fieldLine = (label: string, text: string): string => `- **${label}**:${text ? ` ${text}` : ""}`;
@@ -744,6 +753,7 @@ async function runSetup(flags: Flags): Promise<void> {
     const body = await writeContext(root, fromFlags);
     console.log(`${pc.green("✓ ")}${CONTEXT_FILE} updated · ${filledCount(body)} of ${ASKED_FIELDS.length} setup fields filled`);
     console.log(`\nTry:\n${suggestionsText(fromFlags).split("\n").map((l) => (l ? `  ${l}` : "")).join("\n")}`);
+    console.log(`\n${AGENT_DESIGN_HINT}`);
     return;
   }
   if (!process.stdin.isTTY) {
@@ -757,6 +767,7 @@ async function runSetup(flags: Flags): Promise<void> {
   const answers = await setupInteractive(root);
   if (!answers) return cancel();
   p.note(suggestionsText(answers), "Try");
+  p.log.info(AGENT_DESIGN_HINT);
   p.outro(`RYUX is ready. Next: ${CLI_CMD} check`);
 }
 
@@ -795,6 +806,7 @@ Usage:
 Commands:
   install     Install RYUX (interactive, or with flags). Interactive also offers setup. Default. Start here.
   setup       Teach RYUX about this project: a few skippable questions, saved to DESIGN.md.
+              For the full file, ask your agent: "Write our DESIGN.md from this brief".
   init        Install RYUX and add the DESIGN.md project context block.
   check       Check the install: files, version, references, pointers, project context.
   scan        Check source files for rules a machine can see (Rupiah format, alt text, zoom, focus, ...).

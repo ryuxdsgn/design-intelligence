@@ -74,6 +74,21 @@ npx @ryuxdsgn/design-intelligence setup --voice "Warm and casual, not salesy or 
 npx @ryuxdsgn/design-intelligence check                                  # health check
 ```
 
+**A full DESIGN.md, from a brief or references.** Setup fills the short context block. For the whole file,
+ask your agent, with the brief, docs, links, or screenshots attached:
+
+```
+Write our DESIGN.md from this brief.
+Update DESIGN.md with this reference: <link or screenshot>.
+```
+
+RYUX (Design) asks in rounds, at most three questions at a time, until it can answer five questions: who the
+users are and what they need, which job they want done, what evidence supports each decision, which interaction
+patterns fit, and how the result is evaluated. The file gets these sections: Users and needs, Jobs to be done,
+Evidence, Interaction patterns, Visual and motion language, Voice and tone, How we evaluate, and Open questions.
+Nothing is invented: what no source answers goes under Open questions, and values RYUX chooses (colors, type,
+timing) are marked proposed, each with its reason. An update keeps the lines you wrote and lists what changed.
+
 ### Scan your code
 
 `scan` checks source files for what a machine can see without an LLM: Rupiah written as `Rp 50.000`,
