@@ -20,29 +20,34 @@ Antigravity. Free, MIT.
 
 ## See the difference
 
-Same brief, same model, a fresh agent per run: a personal finance app designed in pen.dev.
+Same brief, same model, a fresh agent per run: a wallet's transaction detail screen as a working prototype. The
+RYUX side's DESIGN.md asks for character and motion; both phones play each prototype's own screens, with the
+same taps.
 
-<a href="docs/benchmarks/hero-finance/"><img src="docs/benchmarks/hero-finance/see-the-difference.gif" alt="Animation: the same brief; with no skill the agent draws right away, with RYUX it asks three questions first; then both sets of screens; close-ups with seven invented facts circled on the left and labeled assumptions on the right; seven states drawn on the right and none on the left; then the totals across three runs, and a follow-up turn on the RYUX side with its recorded success animation" width="100%"></a>
+<a href="docs/benchmarks/wallet-expressive/"><img src="docs/benchmarks/wallet-expressive/see-the-difference.gif" alt="Animation: the brief and the two sides; the first reply, where the agent with no skill has already built and RYUX asks three questions; both prototypes played side by side with the same taps on a failed transfer, a completed payment, and a pending transfer, the left showing an invented fee, a real bank and merchant, and a cancel window, the right showing where the money is with a dot that travels to the merchant; then totals across six runs, including what RYUX missed and the cost" width="100%"></a>
 
 Both sides look finished. The difference is in what the agent decided on your behalf. Two briefs, three runs
 per side each:
 
-| | Finance app<br>no skill | Finance app<br>with RYUX | Order tracking<br>no skill | Order tracking<br>with RYUX |
+| | Wallet<br>no skill | Wallet<br>with RYUX | Existing repo<br>no skill | Existing repo<br>with RYUX |
 | --- | :-: | :-: | :-: | :-: |
-| **Things the brief never gave, shown as real** (per run) | 7–9 | 0 | 8–9 | 0–1 |
-| **Screens for when things go wrong** (per run) | 0 | 6–7 | 0 | 3 |
-| **Asked before starting** | 0 of 3 | 3 of 3 | 0 of 3 | 0 of 3 |
+| **Things the brief never gave, shown as real** (per run) | 7–9 | 0–1 | 1–2 | 0 |
+| **Asked before starting** | 0 of 3 | 2 of 3 | 0 of 3 | 0 of 3 |
+| **Built or checked beyond the happy path** | 0 of 3 | 3 of 3 | 0 of 3 | 3 of 3 |
 
-Without a skill, the agents invented points, promos, a PayLater limit, and vouchers for the finance app, and a
-$5 late credit, free cancellation, an auto-pick timer, and tips for order tracking. With RYUX, the same gaps
-were listed as assumptions, and the agents built loading, empty, offline, error, and declined states. On order
-tracking no RYUX run asked first; each built, left the open policies out, and said so: *"Left out on purpose:
-calling the courier, cancelling the order, compensation for lateness, and fees, because I don't know your
-policies."*
+Without a skill, the wallet agents invented a $1.50 transfer fee, dispute windows, cashback, 24/7 chat, and an
+FDIC insurance claim; in an existing React app they implied the plan stops after a failed payment and shipped
+buttons that do nothing. With RYUX the same gaps stayed open and were named: *"…no policies were given, so the
+copy promises no times, fees or support channels."* "Beyond the happy path" is loading, load-error, and offline
+screens for the wallet, and a look at its own page in a browser for the repo.
 
-[Finance app](docs/benchmarks/hero-finance/): designed in pen.dev, RYUX 2.9.3.
-[Order tracking](docs/benchmarks/order-tracking/): a working prototype, RYUX 2.19.0. Briefs, method, and every
-run are in each folder.
+What RYUX did not change, or missed: in the repo, code quality was the same on both sides, and no run asked
+first. One RYUX wallet run built without asking and put Visa on a sample card. RYUX runs cost more: $2.48–3.38
+against $1.57–2.03 per wallet run.
+
+[Wallet](docs/benchmarks/wallet-expressive/), RYUX 2.19.3 (no-skill runs from
+[wallet-detail](docs/benchmarks/wallet-detail/)). [Existing repo](docs/benchmarks/billing-dashboard/), RYUX
+2.19.3. Briefs, method, and every run are in each folder.
 
 ## Why
 
@@ -126,6 +131,7 @@ outputs. Counts come from a few runs on one model: what those runs did, not rate
 | Benchmark | The question it answers | RYUX | Runs |
 | --- | --- | --- | --- |
 | [Billing page in an existing repo](docs/benchmarks/billing-dashboard/) | Does a new page fit a real repo, keep checks passing, and invent no billing rule? | 2.19.3 | 3 + 3 |
+| [Wallet, expressive direction](docs/benchmarks/wallet-expressive/) | With a DESIGN.md that asks for character and motion, does it build that direction and still ask first and invent no money rule? | 2.19.3 | 3 new + 3 |
 | [Wallet transaction detail](docs/benchmarks/wallet-detail/) | Does it ask what changes the build, keep open money rules open, and build the states a money screen needs? | 2.19.2 | 3 + 3 |
 | [Order tracking](docs/benchmarks/order-tracking/) | Does the agent invent policies the brief left open, and build the states for when things go wrong? | 2.19.0 | 3 + 3 |
 | [Personal finance app](docs/benchmarks/hero-finance/) | Does it ask first, invent facts, and cover states? | 2.9.3 | 3 + 3 |
