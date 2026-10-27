@@ -207,7 +207,7 @@ line below for its exact source.
 | --- | --- | --- |
 | Public standard or research | 70 | 52 |
 | Industry practice | 16 | 5 |
-| Observed in a RYUX run | 16 | 8 |
+| Observed in a RYUX run | 17 | 8 |
 | Pattern also in another MIT ruleset (text written for RYUX) | 4 | 4 |
 | RYUX principle, taxonomy, or review | 42 | 22 |
 
@@ -1277,8 +1277,9 @@ Gate area CODE QUALITY. Covers the repo's own stack, semantic elements, one home
   - unit tests for every new or changed pure function (calculations, formatting, validation, state transitions), including edge cases such as zero, empty, maximum, and invalid input
   - integration tests for critical flows (checkout, payment, form submit, sign-in), covering the success and failure paths
   - the repo's test runner and conventions; with none, propose one as an assumption and ask before adding the dependency
+  - while iterating, run the tests the change touches; run the whole suite once before handing off, with quiet output (a summary or dot reporter, failures in full)
 - Do not: Ship changed logic without tests, write snapshot-only tests or tests that mock the code under test, or claim tested without running the tests.
-- Why: Tests catch the regressions review misses, before users find them in production. (Testing practice; owner review 2026-10-06)
+- Why: Tests catch the regressions review misses, before users find them in production. (Testing practice; owner review 2026-10-06; ryux run: food-delivery round 2 (2026-10-27) ran the full suite 21 times in one build, about a quarter of its steps)
 - Check: run the project's tests
 
 #### RX-FE-15 [Required] Change the source, not the output
@@ -1307,10 +1308,11 @@ Gate area VISUAL QA. Covers did the build match the intended design: compare, li
 - Do: Render the result at the target viewport (browser, screenshot, or design-tool export).
   - Inspect the main state, one empty or error state, and the smallest supported width (RX-RD-01), plus the largest text size on native.
   - Look for the defects source code hides: misaligned edges, type or spacing off the scale, density wrong for the task, overflow and clipping, a component that looks different from its siblings, a control that does nothing.
+  - Look at the states of one width together: tile their screenshots into one contact sheet and inspect that, open a single screenshot only to check a defect up close, and after a fix render again only what it touched.
   - Rank issues by impact, fix from the top, and render again. Name the widths and states you inspected; if no render tool is available, say so in the report.
   - Whether the design itself is right or intentional is Critique's call; QA reports what it can verify.
 - Do not: Claim visual quality for a layout you have only seen as code, or fix by guesswork without checking the result.
-- Why: Overlaps and clipping are invisible in source and obvious on screen; the loop turns a draft into a reviewed result. (ryux run 2026-10-02: two runs shipped overlaps they never saw)
+- Why: Overlaps and clipping are invisible in source and obvious on screen; the loop turns a draft into a reviewed result. (ryux run 2026-10-02: two runs shipped overlaps they never saw; ryux run: food-delivery round 2 (2026-10-27) read 21 screenshots one at a time, and every read stays in the context for the rest of the build)
 - Check: screenshot
 
 #### RX-QA-03 [Required] No covered or colliding text

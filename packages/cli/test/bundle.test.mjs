@@ -138,3 +138,12 @@ test("an undecided rule shown on screen is labelled on that screen", () => {
   assert.match(flat("knowledge/product.md"), /labelled only outside the screen/);
   assert.match(flat("SKILL.md"), /Do not show an undecided rule as a plain sentence on screen/);
 });
+
+test("builds keep their cost down: fresh session, contact sheets, targeted tests", () => {
+  // owner request 2026-10-28, after food-delivery round 2 cost $10.43 to build
+  const files = renderBundle();
+  const flat = (f) => files[f].replace(/\s+/g, " ");
+  assert.match(flat("capabilities/design.md"), /suggest building in a fresh session that starts from DESIGN\.md/);
+  assert.match(flat("capabilities/qa.md"), /one contact sheet/);
+  assert.match(flat("knowledge/frontend.md"), /run the whole suite once before handing off/);
+});

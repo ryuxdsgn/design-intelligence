@@ -90,8 +90,9 @@ The repo itself is the main evidence (stack, components, tokens); reference scre
   - unit tests for every new or changed pure function (calculations, formatting, validation, state transitions), including edge cases such as zero, empty, maximum, and invalid input
   - integration tests for critical flows (checkout, payment, form submit, sign-in), covering the success and failure paths
   - the repo's test runner and conventions; with none, propose one as an assumption and ask before adding the dependency
+  - while iterating, run the tests the change touches; run the whole suite once before handing off, with quiet output (a summary or dot reporter, failures in full)
 - Do not: Ship changed logic without tests, write snapshot-only tests or tests that mock the code under test, or claim tested without running the tests.
-- Why: Tests catch the regressions review misses, before users find them in production. (Testing practice; owner review 2026-10-06)
+- Why: Tests catch the regressions review misses, before users find them in production. (Testing practice; owner review 2026-10-06; ryux run: food-delivery round 2 (2026-10-27) ran the full suite 21 times in one build, about a quarter of its steps)
 - Check: run the project's tests
 
 ### RX-FE-15 [Required] Change the source, not the output
