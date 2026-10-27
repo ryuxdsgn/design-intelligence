@@ -30,7 +30,7 @@ passing, rendered by the agent at 320, 390, and 1280.
 
 | | No skill, A1-A3 ([order-tracking](../order-tracking/)) | RYUX, B1 |
 | --- | --- | --- |
-| Shown as fact, never given ([`traps.txt`](../order-tracking/traps.txt)) | 8 · 9 · 8 | 0 |
+| Policies made up, shown as real (fewer is better; [`traps.txt`](../order-tracking/traps.txt)) | 8 · 9 · 8 | 0 |
 | A DESIGN.md before building | none | 8 of 8 sections, 8 open questions |
 | Asked before building | 0 of 3 | 3 questions, unanswered |
 | Loading, error, offline screens | none | all three, plus map failed and order not found |
