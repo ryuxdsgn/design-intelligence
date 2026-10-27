@@ -28,8 +28,11 @@ fi
 G=$HOME/.claude/skills; ASIDE=$(mktemp -d)/skills
 restore() { [[ -e $G ]] && mv $G $ASIDE.recreated; mv $ASIDE $G; }
 if [[ -d $G ]]; then mv $G $ASIDE; trap restore EXIT; fi
-FLAGS=(--model ${BENCH_MODEL:-claude-opus-5-5} --strict-mcp-config --permission-mode auto
+FLAGS=(--model ${BENCH_MODEL:-claude-opus-5-5} --permission-mode auto
   --settings ${BENCH_SETTINGS:-'{"enabledPlugins":{"design@synced":false,"product-management@synced":false},"permissions":{"deny":["Skill(design)","Skill(design-sync)"]}}'}
   --output-format stream-json --verbose)
+# BENCH_CONNECTORS=1 keeps the claude.ai connectors (for a design-tool benchmark); deny the ones not
+# under test in BENCH_SETTINGS. Default: no MCP servers at all.
+[[ -n $BENCH_CONNECTORS ]] || FLAGS+=(--strict-mcp-config)
 [[ $COND == A ]] && FLAGS+=(--disable-slash-commands)
 claude -p "$(cat $PROMPT_FILE)" $FLAGS < /dev/null > turn1.jsonl 2> turn1.err
