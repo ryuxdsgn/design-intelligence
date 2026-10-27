@@ -1,0 +1,1 @@
+Write our DESIGN.md from this brief, then wait: "Build an order tracking experience for a food and grocery delivery app as a working web prototype, mobile first: the order status from placed to delivered, what the customer sees when the order is running late, and what happens when an item is unavailable. Flow inspiration: delivery and ride-hailing apps."
