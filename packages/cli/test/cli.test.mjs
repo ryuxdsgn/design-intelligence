@@ -79,6 +79,11 @@ test("setup fills only the answered fields and keeps the rest", () => {
   assert.match(after, /\*\*UX direction\*\*: guide first-time users/);
   assert.match(after, /\*\*Design intent\*\*: \(what users should understand/);
   assert.match(run(dir, "check").out, /4 of 10 setup fields filled/);
+  // the short context block is not the whole file: setup and check point to the agent for the rest (RX-PR-12)
+  assert.match(s.out, /ask your agent: "Write our DESIGN\.md from this brief"/);
+  assert.match(run(dir, "check").out, /0 of 8 design sections/);
+  writeFileSync(join(dir, "DESIGN.md"), after + "\n## Users and needs\n\n## Jobs to be done\n");
+  assert.match(run(dir, "check").out, /2 of 8 design sections/);
   rmSync(dir, { recursive: true, force: true });
 });
 

@@ -78,6 +78,7 @@ Say what you are doing, in your own words. RYUX picks the step and reads only th
 | --- | --- | --- |
 | "Analyze this checkout screen" (screenshot attached) | **Analyze** | what is there, what is measured, what is only inferred |
 | "Design the transaction detail screen for our wallet, in pen.dev" | **Design** | two or three directions to pick from, then the screens and their states |
+| "Write our DESIGN.md from this brief" (brief or links attached) | **Design** | a DESIGN.md that says who the users are, their job, the evidence, the patterns that fit, and how to evaluate; unknowns listed, not invented |
 | "Build this design in our React app" | **Build** | the code, without invented rules, data, or API behavior |
 | "Critique our pricing page at https://example.com/pricing" | **Critique** | what to change first, with severity, evidence, and a fix |
 | "QA the build against the design at 390 and 320 wide" | **QA** | a check of every width and state against the design |

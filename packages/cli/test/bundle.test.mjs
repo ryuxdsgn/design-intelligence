@@ -112,3 +112,20 @@ test("the Delivery Gate separates verified from assumed", () => {
   assert.match(router, /VISUAL QA without a render is NOT VERIFIED/);
   assert.match(router, /or was validated with users/);
 });
+
+test("Design can write or update a full DESIGN.md that answers five questions", () => {
+  // owner request 2026-10-27, after wallet-expressive rounds 2 and 3
+  const files = renderBundle();
+  const flat = (f) => files[f].replace(/\s+/g, " ");
+  const design = files["capabilities/design.md"];
+  assert.match(design, /## Write or update DESIGN\.md/);
+  for (const h of ["Users and needs", "Jobs to be done", "Evidence", "Interaction patterns", "Visual and motion language", "Voice and tone", "How we evaluate", "Open questions"]) {
+    assert.match(design, new RegExp(`## ${h}`), h);
+  }
+  assert.match(flat("capabilities/design.md"), /At most three questions per message/);
+  assert.match(flat("capabilities/design.md"), /keep every line the user wrote/);
+  assert.match(flat("SKILL.md"), /write or update DESIGN\.md from a brief or references/);
+  assert.match(flat("capabilities/analyze.md"), /Write or update DESIGN\.md, RX-PR-12/);
+  assert.match(flat("knowledge/product.md"), /RX-PR-12/);
+  assert.match(flat("knowledge/product.md"), /A DESIGN\.md answers five questions or names what is unknown/);
+});
