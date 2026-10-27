@@ -9,6 +9,7 @@ each folder says what was edited.
 | Benchmark | The question it answers | RYUX | Runs |
 | --- | --- | --- | --- |
 | [Billing page in an existing repo](billing-dashboard/) | Does a new page fit a real repo: reuse, tokens, checks passing, states covered, no invented billing rule? A React + TS fixture, no skill vs RYUX + DESIGN.md, measured from each run's diff | 2.19.3 | 3 + 3 |
+| [Wallet, expressive direction](wallet-expressive/) | With a DESIGN.md that asks for character and motion, does RYUX build that direction and still ask first, invent no money rule, and cover the states? Three new RYUX runs against wallet-detail's no-skill runs, with motion counted per event | 2.19.3 | 3 new + 3 |
 | [Wallet transaction detail](wallet-detail/) | Does the agent ask what changes the build, keep open money rules open, and build the states a money screen needs? One HTML file, no skill vs RYUX + DESIGN.md, with `ryux scan` and cost per run | 2.19.2 | 3 + 3 |
 | [Order tracking](order-tracking/) | Does the agent invent policies the brief left open, and build the states for when things go wrong? A working prototype, no skill vs RYUX + DESIGN.md, with `ryux scan` | 2.19.0 | 3 + 3 |
 | [Personal finance app](hero-finance/) | Does the agent ask first, invent facts, and cover states? Designed in pen.dev, no skill vs RYUX; the README demo | 2.9.3 | 3 + 3 |
@@ -23,6 +24,7 @@ striking screen built on invented facts.
 | | Context understanding | UX correctness | Visual quality | Creative range | Reliability |
 | --- | :-: | :-: | :-: | :-: | :-: |
 | Billing page in an existing repo | traps counted | scenarios reached | not scored | — | typecheck, tests, build, reuse, tokens, `ryux scan`, cost |
+| Wallet, expressive direction | asked first, traps counted | states counted | not scored yet; motion events and direction counted | — | `ryux scan`, cost |
 | Wallet transaction detail | asked first, traps counted | statuses and states counted | not scored | — | `ryux scan`, assumptions listed, cost |
 | Order tracking | traps counted | states counted | not scored | — | `ryux scan`, assumptions listed |
 | Personal finance app | asked first, traps counted | states counted, comprehension | not scored | — | assumptions listed |
