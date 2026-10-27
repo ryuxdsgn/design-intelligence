@@ -4,7 +4,8 @@ Written before the runs; results go in README.md after scoring, and nothing here
 
 ## Why
 
-The food-delivery prototypes cost $1.79–2.50 (no skill) and $13.22 (RYUX, round 2) per run, most of RYUX's in
+The food-delivery prototypes cost $1.79–2.50 (no skill) and $10.43 (RYUX, round 2; written here first as $13.22,
+corrected 2026-10-28 after the runs began: a resumed session already reports its running total) per run, most of RYUX's in
 building and testing code. The owner asked whether designing the screens in Figma, then animating the exported
 frames in Remotion as natively as a phone would, is cheaper and still shows the difference (owner request,
 2026-10-28).
@@ -29,6 +30,10 @@ no other MCP server (`BENCH_CONNECTORS=1`, every other server denied), the owner
 
 One run per side, by choice: a pilot for cost and feasibility, not a rate. A runs first, then B, never in
 parallel.
+
+Amended 2026-10-28, before any result was scored: the first A1 was cut off by the account's session limit after
+10 minutes ($2.67), half-drawn on page "Pilot A1", and B1 never started. A1 is kept aside, not scored; A runs
+again as A2 on page "Pilot A2" ([`prompt-a2.txt`](prompt-a2.txt), only the page name differs); B1 runs as written.
 
 ## What is counted
 
