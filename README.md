@@ -26,8 +26,19 @@ then built. Both phones play each prototype's own screens, with the same scenari
 
 <a href="docs/benchmarks/food-delivery-designmd/round-2/"><img src="docs/benchmarks/food-delivery-designmd/round-2/see-the-difference.gif" alt="Animation: the brief and the two sides; the agent with no skill builds straight away while RYUX writes a DESIGN.md answering who the users are, their job, the evidence, the patterns, and how to evaluate; both prototypes side by side on an unavailable item, a late order, and the way to the door, the left showing a one-minute auto-pick, refund timing, and a $5 credit, the right showing real food photos, the price of each choice, a time that rolls with no promise, and the food riding with the courier; then the numbers and what RYUX missed" width="100%"></a>
 
-Both sides look finished. The difference is in what the agent decided on your behalf. Two briefs, three runs
-per side each:
+Both sides look finished. The difference is in what the agent decided on your behalf. Without a skill, the
+order-tracking agents made up 8 to 9 policies per run: a $5 credit when an order is late, refund timing, a
+one-minute auto-pick, courier tips. RYUX made up none and wrote the open ones down as questions. It even
+declined a policy it saw in the reference: *"The reference app pays a voucher when a pickup runs late. That's
+their policy, so I didn't adopt it."* It showed real food photos with their credits, drew its own
+illustrations, and built loading, error, and offline screens.
+
+What RYUX missed: one undecided rule (what happens if you don't answer about a missing item) still reads as
+fact on screen, and two moments from the motion reference were not built. That run cost $13.22 against
+$1.79–2.50: one RYUX run, by choice. [Food delivery](docs/benchmarks/food-delivery-designmd/round-2/), RYUX
+main (unreleased); no-skill runs from [order-tracking](docs/benchmarks/order-tracking/).
+
+The same pattern on two more briefs, three runs per side each:
 
 | | Wallet<br>no skill | Wallet<br>with RYUX | Existing repo<br>no skill | Existing repo<br>with RYUX |
 | --- | :-: | :-: | :-: | :-: |
