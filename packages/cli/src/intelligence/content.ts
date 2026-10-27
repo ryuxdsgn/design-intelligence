@@ -230,6 +230,18 @@ export const RULES: Rule[] = [
       tradeoff: "criteria per response type take time before the first screen and need real inputs to write well",
       check: "review: a criteria list per response type, and the wrong, empty, slow, and failed states in the design",
     },
+    {
+      num: 12,
+      title: "A DESIGN.md answers five questions or names what is unknown",
+      level: "contextual",
+      when: "writing or updating DESIGN.md from a brief, product docs, references, or an existing product",
+      do: "Write DESIGN.md so it answers, each from a named source:\n  - who the users are and what they need\n  - which job they want done, and what done looks like\n  - what evidence supports each design decision, with its strength (Strong, Thin, None)\n  - which interaction patterns fit the context, and why\n  - how the result is evaluated: success criteria, machine checks, the riskiest assumption and its cheapest test\n  - Ask in rounds of at most three questions until each has an answer or a recorded Unknown; values you choose (colors, type, timing) are tokens with a one-line reason, marked proposed until the team confirms them. When updating, keep the lines the user wrote.",
+      dont: "Fill a DESIGN.md with personas, research, metrics, or policies nobody gave, present your chosen values as the team's, or rewrite lines the user wrote without asking.",
+      why: "DESIGN.md is what every later task reads first: an invented user or rule there spreads into every screen, and a file that only lists colors leaves the next agent to guess the user and the job.",
+      basis: "owner review 2026-10-27; ryux run: wallet-expressive benchmark rounds 2 and 3 (a DESIGN.md that dictated values tested spec-following; one that named only character left the values unexplained); RX-PR-02, RX-PR-10",
+      tradeoff: "takes a few rounds of questions before the first screen",
+      check: "review: the five questions each answered with a source or listed under Open questions; chosen tokens marked proposed with a reason",
+    },
   ]),
 
   ...skill("ux", [
