@@ -1,0 +1,63 @@
+{
+ "static": {
+  "ok": true,
+  "cli": "2.19.3",
+  "files": 2,
+  "pages": 0,
+  "widths": [],
+  "findings": []
+ },
+ "rendered": {
+  "ok": true,
+  "cli": "2.19.3",
+  "files": 0,
+  "pages": 1,
+  "widths": [
+   320,
+   390,
+   1280
+  ],
+  "findings": [
+   {
+    "rule": "RX-QA-03",
+    "level": "warn",
+    "selector": "button.row > span.row-main > span.row-name",
+    "message": "\"Neighbourhood Hardware & Garden Suppl...\" overlaps \"$38.25\" (li > button.row > span.row-amt)",
+    "file": "http://127.0.0.1:4413/index.html",
+    "line": 0,
+    "column": 0,
+    "width": 320
+   },
+   {
+    "rule": "RX-QA-03",
+    "level": "warn",
+    "selector": "button.row > span.row-main > span.row-name",
+    "message": "\"Rentwell Property Management\" overlaps \"\u2212$2,350.00\" (li > button.row > span.row-amt)",
+    "file": "http://127.0.0.1:4413/index.html",
+    "line": 0,
+    "column": 0,
+    "width": 320
+   },
+   {
+    "rule": "RX-QA-03",
+    "level": "warn",
+    "selector": "button.row > span.row-main > span.row-name",
+    "message": "\"Neighbourhood Hardware & Garden Suppl...\" overlaps \"$38.25\" (li > button.row > span.row-amt)",
+    "file": "http://127.0.0.1:4413/index.html",
+    "line": 0,
+    "column": 0,
+    "width": 390
+   },
+   {
+    "rule": "RX-QA-03",
+    "level": "warn",
+    "selector": "button.row > span.row-main > span.row-name",
+    "message": "\"Neighbourhood Hardware & Garden Suppl...\" overlaps \"$38.25\" (li > button.row > span.row-amt)",
+    "file": "http://127.0.0.1:4413/index.html",
+    "line": 0,
+    "column": 0,
+    "width": 1280
+   }
+  ]
+ }
+}

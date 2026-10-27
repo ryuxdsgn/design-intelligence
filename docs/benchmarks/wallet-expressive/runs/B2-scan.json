@@ -1,0 +1,92 @@
+{
+ "static": {
+  "ok": true,
+  "cli": "2.19.3",
+  "files": 2,
+  "pages": 0,
+  "widths": [],
+  "findings": [
+   {
+    "level": "warn",
+    "rule": "RX-DS-03",
+    "file": "../bench-runs/wallet-expressive/B2/index.html",
+    "line": 6,
+    "column": 35,
+    "message": "5 one-off colors (#120e14, #000, #e9e2ee, ...): use the color tokens, or define them by role"
+   }
+  ]
+ },
+ "rendered": {
+  "ok": true,
+  "cli": "2.19.3",
+  "files": 0,
+  "pages": 1,
+  "widths": [
+   320,
+   390,
+   1280
+  ],
+  "findings": [
+   {
+    "rule": "RX-QA-03",
+    "level": "warn",
+    "selector": "button.row > span.row-main > span.row-name",
+    "message": "\"Top-up from Visa \u2022\u20224821\" overlaps \"$50.00\" (li > button.row > span.row-amt)",
+    "file": "http://127.0.0.1:4412/index.html",
+    "line": 0,
+    "column": 0,
+    "width": 320
+   },
+   {
+    "rule": "RX-QA-03",
+    "level": "warn",
+    "selector": "button.row > span.row-main > span.row-name",
+    "message": "\"Top-up from Bank account \u2022\u20220932\" overlaps \"+$100.00\" (li > button.row > span.row-amt)",
+    "file": "http://127.0.0.1:4412/index.html",
+    "line": 0,
+    "column": 0,
+    "width": 320
+   },
+   {
+    "rule": "RX-QA-03",
+    "level": "warn",
+    "selector": "button.row > span.row-main > span.row-name",
+    "message": "\"Top-up from Visa \u2022\u20224821\" overlaps \"+$100.00\" (li > button.row > span.row-amt)",
+    "file": "http://127.0.0.1:4412/index.html",
+    "line": 0,
+    "column": 0,
+    "width": 320
+   },
+   {
+    "rule": "RX-QA-03",
+    "level": "warn",
+    "selector": "button.row > span.row-main > span.row-name",
+    "message": "\"Top-up from Bank account \u2022\u20220932\" overlaps \"+$100.00\" (li > button.row > span.row-amt)",
+    "file": "http://127.0.0.1:4412/index.html",
+    "line": 0,
+    "column": 0,
+    "width": 390
+   },
+   {
+    "rule": "RX-A11Y-02",
+    "level": "warn",
+    "selector": "input#stress",
+    "message": "\"input\": target 13x13px, under 24x24 (spaced enough to pass WCAG 2.5.8); 44x44 is the preferred hit area",
+    "file": "http://127.0.0.1:4412/index.html",
+    "line": 0,
+    "column": 0,
+    "width": 1280
+   },
+   {
+    "rule": "RX-QA-03",
+    "level": "warn",
+    "selector": "button.row > span.row-main > span.row-name",
+    "message": "\"Top-up from Bank account \u2022\u20220932\" overlaps \"+$100.00\" (li > button.row > span.row-amt)",
+    "file": "http://127.0.0.1:4412/index.html",
+    "line": 0,
+    "column": 0,
+    "width": 1280
+   }
+  ]
+ }
+}
