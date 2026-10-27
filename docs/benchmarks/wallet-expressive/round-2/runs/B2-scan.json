@@ -1,0 +1,242 @@
+{
+ "static": {
+  "ok": true,
+  "cli": "2.19.3",
+  "files": 1,
+  "pages": 0,
+  "widths": [],
+  "findings": [
+   {
+    "level": "warn",
+    "rule": "RX-DS-03",
+    "file": "index.html",
+    "line": 6,
+    "column": 35,
+    "message": "7 one-off colors (#110f1c, #0a0912, #efe6d5, ...): use the color tokens, or define them by role"
+   }
+  ]
+ },
+ "rendered": {
+  "ok": true,
+  "cli": "2.19.3",
+  "files": 0,
+  "pages": 1,
+  "widths": [
+   320,
+   390,
+   1280
+  ],
+  "findings": [
+   {
+    "rule": "RX-A11Y-02",
+    "level": "warn",
+    "selector": "div#list-body > section.group > h2",
+    "message": "\"Today\": 11px text (3 elements); body text is 14 to 16px on mobile, below 12px is hard to read",
+    "file": "http://127.0.0.1:4422/index.html",
+    "line": 0,
+    "column": 0,
+    "width": 320
+   },
+   {
+    "rule": "RX-A11Y-02",
+    "level": "warn",
+    "selector": "details.proto > label > input",
+    "message": "\"input\": target 20x20px, under 24x24 (spaced enough to pass WCAG 2.5.8); 44x44 is the preferred hit area",
+    "file": "http://127.0.0.1:4422/index.html",
+    "line": 0,
+    "column": 0,
+    "width": 320
+   },
+   {
+    "rule": "RX-A11Y-02",
+    "level": "warn",
+    "selector": "details.proto > label > input",
+    "message": "\"input\": target 20x20px, under 24x24 (spaced enough to pass WCAG 2.5.8); 44x44 is the preferred hit area",
+    "file": "http://127.0.0.1:4422/index.html",
+    "line": 0,
+    "column": 0,
+    "width": 320
+   },
+   {
+    "rule": "RX-A11Y-02",
+    "level": "warn",
+    "selector": "details.proto > label > input",
+    "message": "\"input\": target 20x20px, under 24x24 (spaced enough to pass WCAG 2.5.8); 44x44 is the preferred hit area",
+    "file": "http://127.0.0.1:4422/index.html",
+    "line": 0,
+    "column": 0,
+    "width": 320
+   },
+   {
+    "rule": "RX-A11Y-02",
+    "level": "warn",
+    "selector": "details.proto > label > input",
+    "message": "\"input\": target 20x20px, under 24x24 (spaced enough to pass WCAG 2.5.8); 44x44 is the preferred hit area",
+    "file": "http://127.0.0.1:4422/index.html",
+    "line": 0,
+    "column": 0,
+    "width": 320
+   },
+   {
+    "rule": "RX-A11Y-02",
+    "level": "warn",
+    "selector": "details.proto > label > input",
+    "message": "\"input\": target 20x20px, under 24x24 (spaced enough to pass WCAG 2.5.8); 44x44 is the preferred hit area",
+    "file": "http://127.0.0.1:4422/index.html",
+    "line": 0,
+    "column": 0,
+    "width": 320
+   },
+   {
+    "rule": "RX-QA-03",
+    "level": "warn",
+    "selector": "span.row-main > span.row-sub > span.row-what",
+    "message": "\"Visa \u2022\u2022\u2022\u2022 4821\" overlaps \"\u00b7\" (span.row-main > span.row-sub > span)",
+    "file": "http://127.0.0.1:4422/index.html",
+    "line": 0,
+    "column": 0,
+    "width": 320
+   },
+   {
+    "rule": "RX-QA-03",
+    "level": "warn",
+    "selector": "span.row-main > span.row-sub > span.row-what",
+    "message": "\"Transfer\" overlaps \"\u00b7\" (span.row-main > span.row-sub > span)",
+    "file": "http://127.0.0.1:4422/index.html",
+    "line": 0,
+    "column": 0,
+    "width": 320
+   },
+   {
+    "rule": "RX-QA-03",
+    "level": "warn",
+    "selector": "span.row-main > span.row-sub > span.row-what",
+    "message": "\"Mastercard \u2022\u2022\u2022\u2022 1907\" overlaps \"\u00b7\" (span.row-main > span.row-sub > span)",
+    "file": "http://127.0.0.1:4422/index.html",
+    "line": 0,
+    "column": 0,
+    "width": 320
+   },
+   {
+    "rule": "RX-A11Y-02",
+    "level": "warn",
+    "selector": "div#list-body > section.group > h2",
+    "message": "\"Today\": 11px text (3 elements); body text is 14 to 16px on mobile, below 12px is hard to read",
+    "file": "http://127.0.0.1:4422/index.html",
+    "line": 0,
+    "column": 0,
+    "width": 390
+   },
+   {
+    "rule": "RX-A11Y-02",
+    "level": "warn",
+    "selector": "details.proto > label > input",
+    "message": "\"input\": target 20x20px, under 24x24 (spaced enough to pass WCAG 2.5.8); 44x44 is the preferred hit area",
+    "file": "http://127.0.0.1:4422/index.html",
+    "line": 0,
+    "column": 0,
+    "width": 390
+   },
+   {
+    "rule": "RX-A11Y-02",
+    "level": "warn",
+    "selector": "details.proto > label > input",
+    "message": "\"input\": target 20x20px, under 24x24 (spaced enough to pass WCAG 2.5.8); 44x44 is the preferred hit area",
+    "file": "http://127.0.0.1:4422/index.html",
+    "line": 0,
+    "column": 0,
+    "width": 390
+   },
+   {
+    "rule": "RX-A11Y-02",
+    "level": "warn",
+    "selector": "details.proto > label > input",
+    "message": "\"input\": target 20x20px, under 24x24 (spaced enough to pass WCAG 2.5.8); 44x44 is the preferred hit area",
+    "file": "http://127.0.0.1:4422/index.html",
+    "line": 0,
+    "column": 0,
+    "width": 390
+   },
+   {
+    "rule": "RX-A11Y-02",
+    "level": "warn",
+    "selector": "details.proto > label > input",
+    "message": "\"input\": target 20x20px, under 24x24 (spaced enough to pass WCAG 2.5.8); 44x44 is the preferred hit area",
+    "file": "http://127.0.0.1:4422/index.html",
+    "line": 0,
+    "column": 0,
+    "width": 390
+   },
+   {
+    "rule": "RX-A11Y-02",
+    "level": "warn",
+    "selector": "details.proto > label > input",
+    "message": "\"input\": target 20x20px, under 24x24 (spaced enough to pass WCAG 2.5.8); 44x44 is the preferred hit area",
+    "file": "http://127.0.0.1:4422/index.html",
+    "line": 0,
+    "column": 0,
+    "width": 390
+   },
+   {
+    "rule": "RX-A11Y-02",
+    "level": "warn",
+    "selector": "div#list-body > section.group > h2",
+    "message": "\"Today\": 11px text (3 elements); body text is 14 to 16px on mobile, below 12px is hard to read",
+    "file": "http://127.0.0.1:4422/index.html",
+    "line": 0,
+    "column": 0,
+    "width": 1280
+   },
+   {
+    "rule": "RX-A11Y-02",
+    "level": "warn",
+    "selector": "details.proto > label > input",
+    "message": "\"input\": target 20x20px, under 24x24 (spaced enough to pass WCAG 2.5.8); 44x44 is the preferred hit area",
+    "file": "http://127.0.0.1:4422/index.html",
+    "line": 0,
+    "column": 0,
+    "width": 1280
+   },
+   {
+    "rule": "RX-A11Y-02",
+    "level": "warn",
+    "selector": "details.proto > label > input",
+    "message": "\"input\": target 20x20px, under 24x24 (spaced enough to pass WCAG 2.5.8); 44x44 is the preferred hit area",
+    "file": "http://127.0.0.1:4422/index.html",
+    "line": 0,
+    "column": 0,
+    "width": 1280
+   },
+   {
+    "rule": "RX-A11Y-02",
+    "level": "warn",
+    "selector": "details.proto > label > input",
+    "message": "\"input\": target 20x20px, under 24x24 (spaced enough to pass WCAG 2.5.8); 44x44 is the preferred hit area",
+    "file": "http://127.0.0.1:4422/index.html",
+    "line": 0,
+    "column": 0,
+    "width": 1280
+   },
+   {
+    "rule": "RX-A11Y-02",
+    "level": "warn",
+    "selector": "details.proto > label > input",
+    "message": "\"input\": target 20x20px, under 24x24 (spaced enough to pass WCAG 2.5.8); 44x44 is the preferred hit area",
+    "file": "http://127.0.0.1:4422/index.html",
+    "line": 0,
+    "column": 0,
+    "width": 1280
+   },
+   {
+    "rule": "RX-A11Y-02",
+    "level": "warn",
+    "selector": "details.proto > label > input",
+    "message": "\"input\": target 20x20px, under 24x24 (spaced enough to pass WCAG 2.5.8); 44x44 is the preferred hit area",
+    "file": "http://127.0.0.1:4422/index.html",
+    "line": 0,
+    "column": 0,
+    "width": 1280
+   }
+  ]
+ }
+}

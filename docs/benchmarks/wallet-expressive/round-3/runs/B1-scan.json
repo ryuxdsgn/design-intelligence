@@ -1,0 +1,283 @@
+{
+ "static": {
+  "ok": true,
+  "cli": "2.19.3",
+  "files": 1,
+  "pages": 0,
+  "widths": [],
+  "findings": []
+ },
+ "rendered": {
+  "ok": false,
+  "cli": "2.19.3",
+  "files": 0,
+  "pages": 1,
+  "widths": [
+   320,
+   390,
+   1280
+  ],
+  "findings": [
+   {
+    "rule": "RX-A11Y-02",
+    "level": "fail",
+    "selector": "input#pFailNext",
+    "message": "\"input\": target 13x13px, under 24x24 and crowded by its neighbours; 44x44 is the preferred hit area",
+    "file": "http://127.0.0.1:4431/transaction-detail.html",
+    "line": 0,
+    "column": 0,
+    "width": 320
+   },
+   {
+    "rule": "RX-A11Y-02",
+    "level": "fail",
+    "selector": "input#pReduce",
+    "message": "\"input\": target 13x13px, under 24x24 and crowded by its neighbours; 44x44 is the preferred hit area",
+    "file": "http://127.0.0.1:4431/transaction-detail.html",
+    "line": 0,
+    "column": 0,
+    "width": 320
+   },
+   {
+    "rule": "RX-QA-03",
+    "level": "warn",
+    "selector": "div > div.proto-row > button.proto-btn",
+    "message": "\"Pending \u2192 completes\" overlaps \"Activity\" (h1#listTitle)",
+    "file": "http://127.0.0.1:4431/transaction-detail.html",
+    "line": 0,
+    "column": 0,
+    "width": 320
+   },
+   {
+    "rule": "RX-QA-03",
+    "level": "warn",
+    "selector": "div.proto-body > div > label",
+    "message": "\"Simulate reduced motion\" overlaps \"SO\" (li > button.row-btn > span.av)",
+    "file": "http://127.0.0.1:4431/transaction-detail.html",
+    "line": 0,
+    "column": 0,
+    "width": 320
+   },
+   {
+    "rule": "RX-QA-03",
+    "level": "warn",
+    "selector": "div > h3 > span.tag",
+    "message": "\"not decided yet\" overlaps \"Top-up from Card \u2022\u20224821\" (button.row-btn > span.row-main > span.row-name)",
+    "file": "http://127.0.0.1:4431/transaction-detail.html",
+    "line": 0,
+    "column": 0,
+    "width": 320
+   },
+   {
+    "rule": "RX-QA-03",
+    "level": "warn",
+    "selector": "div > ul > li",
+    "message": "\"All names, amounts, dates and referen...\" overlaps \"\u00b7 Top-up\" (button.row-btn > span.row-main > span.row-sub)",
+    "file": "http://127.0.0.1:4431/transaction-detail.html",
+    "line": 0,
+    "column": 0,
+    "width": 320
+   },
+   {
+    "rule": "RX-QA-03",
+    "level": "warn",
+    "selector": "div > ul > li",
+    "message": "\"No fees are shown: the fee policy isn...\" overlaps \"Harbor Street Parking\" (button.row-btn > span.row-main > span.row-name)",
+    "file": "http://127.0.0.1:4431/transaction-detail.html",
+    "line": 0,
+    "column": 0,
+    "width": 320
+   },
+   {
+    "rule": "RX-QA-03",
+    "level": "warn",
+    "selector": "div > ul > li",
+    "message": "\"A pending transfer can be cancelled u...\" overlaps \"Yesterday\" (div#listGroups > h2.group-label)",
+    "file": "http://127.0.0.1:4431/transaction-detail.html",
+    "line": 0,
+    "column": 0,
+    "width": 320
+   },
+   {
+    "rule": "RX-QA-03",
+    "level": "warn",
+    "selector": "div > ul > li",
+    "message": "\"\"Get help\" sends a report with the tr...\" overlaps \"MC\" (li > button.row-btn > span.av)",
+    "file": "http://127.0.0.1:4431/transaction-detail.html",
+    "line": 0,
+    "column": 0,
+    "width": 320
+   },
+   {
+    "rule": "RX-QA-03",
+    "level": "warn",
+    "selector": "div > ul > li",
+    "message": "\"Brand (tangerine, Nunito, rounded sha...\" overlaps \"The Neighbourhood Hardware & Garden S...\" (button.row-btn > span.row-main > span.row-name)",
+    "file": "http://127.0.0.1:4431/transaction-detail.html",
+    "line": 0,
+    "column": 0,
+    "width": 320
+   },
+   {
+    "rule": "RX-QA-03",
+    "level": "warn",
+    "selector": "button.row-btn > span.row-main > span.row-name",
+    "message": "\"Top-up from Bank \u2022\u20220937\" overlaps \"+$250.00\" (li > button.row-btn > span.row-amt)",
+    "file": "http://127.0.0.1:4431/transaction-detail.html",
+    "line": 0,
+    "column": 0,
+    "width": 320
+   },
+   {
+    "rule": "RX-QA-03",
+    "level": "warn",
+    "selector": "button.row-btn > span.row-main > span.row-name",
+    "message": "\"Top-up from Card \u2022\u20224821\" overlaps \"+$100.00\" (li > button.row-btn > span.row-amt)",
+    "file": "http://127.0.0.1:4431/transaction-detail.html",
+    "line": 0,
+    "column": 0,
+    "width": 320
+   },
+   {
+    "rule": "RX-A11Y-02",
+    "level": "fail",
+    "selector": "input#pFailNext",
+    "message": "\"input\": target 13x13px, under 24x24 and crowded by its neighbours; 44x44 is the preferred hit area",
+    "file": "http://127.0.0.1:4431/transaction-detail.html",
+    "line": 0,
+    "column": 0,
+    "width": 390
+   },
+   {
+    "rule": "RX-A11Y-02",
+    "level": "fail",
+    "selector": "input#pReduce",
+    "message": "\"input\": target 13x13px, under 24x24 and crowded by its neighbours; 44x44 is the preferred hit area",
+    "file": "http://127.0.0.1:4431/transaction-detail.html",
+    "line": 0,
+    "column": 0,
+    "width": 390
+   },
+   {
+    "rule": "RX-QA-03",
+    "level": "warn",
+    "selector": "div > div.proto-row > button.proto-btn",
+    "message": "\"Pending \u2192 completes\" overlaps \"Activity\" (h1#listTitle)",
+    "file": "http://127.0.0.1:4431/transaction-detail.html",
+    "line": 0,
+    "column": 0,
+    "width": 390
+   },
+   {
+    "rule": "RX-QA-03",
+    "level": "warn",
+    "selector": "div.proto-body > div > label",
+    "message": "\"Simulate reduced motion\" overlaps \"SO\" (li > button.row-btn > span.av)",
+    "file": "http://127.0.0.1:4431/transaction-detail.html",
+    "line": 0,
+    "column": 0,
+    "width": 390
+   },
+   {
+    "rule": "RX-QA-03",
+    "level": "warn",
+    "selector": "div > h3 > span.tag",
+    "message": "\"not decided yet\" overlaps \"Top-up from Card \u2022\u20224821\" (button.row-btn > span.row-main > span.row-name)",
+    "file": "http://127.0.0.1:4431/transaction-detail.html",
+    "line": 0,
+    "column": 0,
+    "width": 390
+   },
+   {
+    "rule": "RX-QA-03",
+    "level": "warn",
+    "selector": "div > ul > li",
+    "message": "\"All names, amounts, dates and referen...\" overlaps \"\u00b7 Top-up\" (button.row-btn > span.row-main > span.row-sub)",
+    "file": "http://127.0.0.1:4431/transaction-detail.html",
+    "line": 0,
+    "column": 0,
+    "width": 390
+   },
+   {
+    "rule": "RX-QA-03",
+    "level": "warn",
+    "selector": "div > ul > li",
+    "message": "\"No fees are shown: the fee policy isn...\" overlaps \"Harbor Street Parking\" (button.row-btn > span.row-main > span.row-name)",
+    "file": "http://127.0.0.1:4431/transaction-detail.html",
+    "line": 0,
+    "column": 0,
+    "width": 390
+   },
+   {
+    "rule": "RX-QA-03",
+    "level": "warn",
+    "selector": "div > ul > li",
+    "message": "\"Failed = nothing left the wallet. Pen...\" overlaps \"\u00b7 Payment\" (button.row-btn > span.row-main > span.row-sub)",
+    "file": "http://127.0.0.1:4431/transaction-detail.html",
+    "line": 0,
+    "column": 0,
+    "width": 390
+   },
+   {
+    "rule": "RX-QA-03",
+    "level": "warn",
+    "selector": "div > ul > li",
+    "message": "\"A pending transfer can be cancelled u...\" overlaps \"Yesterday\" (div#listGroups > h2.group-label)",
+    "file": "http://127.0.0.1:4431/transaction-detail.html",
+    "line": 0,
+    "column": 0,
+    "width": 390
+   },
+   {
+    "rule": "RX-QA-03",
+    "level": "warn",
+    "selector": "div > ul > li",
+    "message": "\"\"Get help\" sends a report with the tr...\" overlaps \"MC\" (li > button.row-btn > span.av)",
+    "file": "http://127.0.0.1:4431/transaction-detail.html",
+    "line": 0,
+    "column": 0,
+    "width": 390
+   },
+   {
+    "rule": "RX-QA-03",
+    "level": "warn",
+    "selector": "button.row-btn > span.row-main > span.row-name",
+    "message": "\"The Neighbourhood Hardware & Garden S...\" overlaps \"$64.99\" (li > button.row-btn > span.row-amt)",
+    "file": "http://127.0.0.1:4431/transaction-detail.html",
+    "line": 0,
+    "column": 0,
+    "width": 390
+   },
+   {
+    "rule": "RX-A11Y-02",
+    "level": "warn",
+    "selector": "input#pFailNext",
+    "message": "\"input\": target 13x13px, under 24x24 (spaced enough to pass WCAG 2.5.8); 44x44 is the preferred hit area",
+    "file": "http://127.0.0.1:4431/transaction-detail.html",
+    "line": 0,
+    "column": 0,
+    "width": 1280
+   },
+   {
+    "rule": "RX-A11Y-02",
+    "level": "warn",
+    "selector": "input#pReduce",
+    "message": "\"input\": target 13x13px, under 24x24 (spaced enough to pass WCAG 2.5.8); 44x44 is the preferred hit area",
+    "file": "http://127.0.0.1:4431/transaction-detail.html",
+    "line": 0,
+    "column": 0,
+    "width": 1280
+   },
+   {
+    "rule": "RX-QA-03",
+    "level": "warn",
+    "selector": "button.row-btn > span.row-main > span.row-name",
+    "message": "\"The Neighbourhood Hardware & Garden S...\" overlaps \"$64.99\" (li > button.row-btn > span.row-amt)",
+    "file": "http://127.0.0.1:4431/transaction-detail.html",
+    "line": 0,
+    "column": 0,
+    "width": 1280
+   }
+  ]
+ }
+}

@@ -1,0 +1,202 @@
+{
+ "static": {
+  "ok": true,
+  "cli": "2.19.3",
+  "files": 1,
+  "pages": 0,
+  "widths": [],
+  "findings": [
+   {
+    "level": "warn",
+    "rule": "RX-DS-03",
+    "file": "transaction-detail.html",
+    "line": 6,
+    "column": 35,
+    "message": "8 one-off colors (#fff8f1, #f6ebe0, #ffdcc7, ...): use the color tokens, or define them by role"
+   }
+  ]
+ },
+ "rendered": {
+  "ok": true,
+  "cli": "2.19.3",
+  "files": 0,
+  "pages": 1,
+  "widths": [
+   320,
+   390,
+   1280
+  ],
+  "findings": [
+   {
+    "rule": "RX-A11Y-02",
+    "level": "warn",
+    "selector": "fieldset > label > input",
+    "message": "\"input\": target 20x20px, under 24x24 (spaced enough to pass WCAG 2.5.8); 44x44 is the preferred hit area",
+    "file": "http://127.0.0.1:4432/transaction-detail.html",
+    "line": 0,
+    "column": 0,
+    "width": 320
+   },
+   {
+    "rule": "RX-A11Y-02",
+    "level": "warn",
+    "selector": "fieldset > label > input",
+    "message": "\"input\": target 20x20px, under 24x24 (spaced enough to pass WCAG 2.5.8); 44x44 is the preferred hit area",
+    "file": "http://127.0.0.1:4432/transaction-detail.html",
+    "line": 0,
+    "column": 0,
+    "width": 320
+   },
+   {
+    "rule": "RX-A11Y-02",
+    "level": "warn",
+    "selector": "fieldset > label > input",
+    "message": "\"input\": target 20x20px, under 24x24 (spaced enough to pass WCAG 2.5.8); 44x44 is the preferred hit area",
+    "file": "http://127.0.0.1:4432/transaction-detail.html",
+    "line": 0,
+    "column": 0,
+    "width": 320
+   },
+   {
+    "rule": "RX-A11Y-02",
+    "level": "warn",
+    "selector": "fieldset > label > input",
+    "message": "\"input\": target 20x20px, under 24x24 (spaced enough to pass WCAG 2.5.8); 44x44 is the preferred hit area",
+    "file": "http://127.0.0.1:4432/transaction-detail.html",
+    "line": 0,
+    "column": 0,
+    "width": 320
+   },
+   {
+    "rule": "RX-A11Y-02",
+    "level": "warn",
+    "selector": "fieldset > label > input",
+    "message": "\"input\": target 20x20px, under 24x24 (spaced enough to pass WCAG 2.5.8); 44x44 is the preferred hit area",
+    "file": "http://127.0.0.1:4432/transaction-detail.html",
+    "line": 0,
+    "column": 0,
+    "width": 320
+   },
+   {
+    "rule": "RX-QA-03",
+    "level": "warn",
+    "selector": "button#row-tx5 > span.row-main > span.row-title",
+    "message": "\"To Sam Okafor-Whitfield\" overlaps \"$40.00\" (button#row-tx5 > span.row-amt)",
+    "file": "http://127.0.0.1:4432/transaction-detail.html",
+    "line": 0,
+    "column": 0,
+    "width": 320
+   },
+   {
+    "rule": "RX-A11Y-02",
+    "level": "warn",
+    "selector": "fieldset > label > input",
+    "message": "\"input\": target 20x20px, under 24x24 (spaced enough to pass WCAG 2.5.8); 44x44 is the preferred hit area",
+    "file": "http://127.0.0.1:4432/transaction-detail.html",
+    "line": 0,
+    "column": 0,
+    "width": 390
+   },
+   {
+    "rule": "RX-A11Y-02",
+    "level": "warn",
+    "selector": "fieldset > label > input",
+    "message": "\"input\": target 20x20px, under 24x24 (spaced enough to pass WCAG 2.5.8); 44x44 is the preferred hit area",
+    "file": "http://127.0.0.1:4432/transaction-detail.html",
+    "line": 0,
+    "column": 0,
+    "width": 390
+   },
+   {
+    "rule": "RX-A11Y-02",
+    "level": "warn",
+    "selector": "fieldset > label > input",
+    "message": "\"input\": target 20x20px, under 24x24 (spaced enough to pass WCAG 2.5.8); 44x44 is the preferred hit area",
+    "file": "http://127.0.0.1:4432/transaction-detail.html",
+    "line": 0,
+    "column": 0,
+    "width": 390
+   },
+   {
+    "rule": "RX-A11Y-02",
+    "level": "warn",
+    "selector": "fieldset > label > input",
+    "message": "\"input\": target 20x20px, under 24x24 (spaced enough to pass WCAG 2.5.8); 44x44 is the preferred hit area",
+    "file": "http://127.0.0.1:4432/transaction-detail.html",
+    "line": 0,
+    "column": 0,
+    "width": 390
+   },
+   {
+    "rule": "RX-A11Y-02",
+    "level": "warn",
+    "selector": "fieldset > label > input",
+    "message": "\"input\": target 20x20px, under 24x24 (spaced enough to pass WCAG 2.5.8); 44x44 is the preferred hit area",
+    "file": "http://127.0.0.1:4432/transaction-detail.html",
+    "line": 0,
+    "column": 0,
+    "width": 390
+   },
+   {
+    "rule": "RX-QA-03",
+    "level": "warn",
+    "selector": "button#row-tx6 > span.row-main > span.row-title",
+    "message": "\"Fern & Fig Neighbourhood Grocer\" overlaps \"\u2212$36.85\" (button#row-tx6 > span.row-amt)",
+    "file": "http://127.0.0.1:4432/transaction-detail.html",
+    "line": 0,
+    "column": 0,
+    "width": 390
+   },
+   {
+    "rule": "RX-A11Y-02",
+    "level": "warn",
+    "selector": "fieldset > label > input",
+    "message": "\"input\": target 20x20px, under 24x24 (spaced enough to pass WCAG 2.5.8); 44x44 is the preferred hit area",
+    "file": "http://127.0.0.1:4432/transaction-detail.html",
+    "line": 0,
+    "column": 0,
+    "width": 1280
+   },
+   {
+    "rule": "RX-A11Y-02",
+    "level": "warn",
+    "selector": "fieldset > label > input",
+    "message": "\"input\": target 20x20px, under 24x24 (spaced enough to pass WCAG 2.5.8); 44x44 is the preferred hit area",
+    "file": "http://127.0.0.1:4432/transaction-detail.html",
+    "line": 0,
+    "column": 0,
+    "width": 1280
+   },
+   {
+    "rule": "RX-A11Y-02",
+    "level": "warn",
+    "selector": "fieldset > label > input",
+    "message": "\"input\": target 20x20px, under 24x24 (spaced enough to pass WCAG 2.5.8); 44x44 is the preferred hit area",
+    "file": "http://127.0.0.1:4432/transaction-detail.html",
+    "line": 0,
+    "column": 0,
+    "width": 1280
+   },
+   {
+    "rule": "RX-A11Y-02",
+    "level": "warn",
+    "selector": "fieldset > label > input",
+    "message": "\"input\": target 20x20px, under 24x24 (spaced enough to pass WCAG 2.5.8); 44x44 is the preferred hit area",
+    "file": "http://127.0.0.1:4432/transaction-detail.html",
+    "line": 0,
+    "column": 0,
+    "width": 1280
+   },
+   {
+    "rule": "RX-A11Y-02",
+    "level": "warn",
+    "selector": "fieldset > label > input",
+    "message": "\"input\": target 20x20px, under 24x24 (spaced enough to pass WCAG 2.5.8); 44x44 is the preferred hit area",
+    "file": "http://127.0.0.1:4432/transaction-detail.html",
+    "line": 0,
+    "column": 0,
+    "width": 1280
+   }
+  ]
+ }
+}
