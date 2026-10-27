@@ -45,7 +45,7 @@ late. That's their policy, so I didn't adopt it."*
 What RYUX missed: one undecided rule (what happens if you don't answer about a missing item) still reads as
 fact on screen, two moments from the motion reference were not built, and the run cost about six times as much.
 
-One RYUX run, by choice, on RYUX's main branch: writing the DESIGN.md arrives in the next release. Brief, method,
+One RYUX run, by choice, on RYUX's main branch just before 2.19.4, the release that ships writing the DESIGN.md. Brief, method,
 and every run: [food delivery](docs/benchmarks/food-delivery-designmd/round-2/), with no-skill runs from
 [order-tracking](docs/benchmarks/order-tracking/). More briefs are under All benchmarks below.
 
@@ -131,7 +131,7 @@ outputs. Counts come from a few runs on one model: what those runs did, not rate
 
 | Benchmark | The question it answers | RYUX | Runs |
 | --- | --- | --- | --- |
-| [Food delivery, DESIGN.md by RYUX](docs/benchmarks/food-delivery-designmd/) | With no DESIGN.md given, does RYUX write one from a brief and references that answers the five questions, then build that direction without inventing policy? Two rounds | main (unreleased) | 1 + 1 new + 3 |
+| [Food delivery, DESIGN.md by RYUX](docs/benchmarks/food-delivery-designmd/) | With no DESIGN.md given, does RYUX write one from a brief and references that answers the five questions, then build that direction without inventing policy? Two rounds | main before 2.19.4 | 1 + 1 new + 3 |
 | [Billing page in an existing repo](docs/benchmarks/billing-dashboard/) | Does a new page fit a real repo, keep checks passing, and invent no billing rule? | 2.19.3 | 3 + 3 |
 | [Wallet, expressive direction](docs/benchmarks/wallet-expressive/) | With a DESIGN.md that asks for character and motion, does it build that direction and still ask first and invent no money rule? | 2.19.3 | 3 new + 3 |
 | [Wallet transaction detail](docs/benchmarks/wallet-detail/) | Does it ask what changes the build, keep open money rules open, and build the states a money screen needs? | 2.19.2 | 3 + 3 |
