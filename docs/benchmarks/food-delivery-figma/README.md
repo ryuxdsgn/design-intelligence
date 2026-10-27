@@ -6,8 +6,10 @@ cheaper, and does the difference still show? Protocol, fixed before the runs and
 
 <a href="see-the-difference.mp4"><img src="see-the-difference.gif" alt="Animation: the brief; the no-skill agent designs straight away while RYUX writes DESIGN.md, asks, and explores three layouts; two Android phones play both Figma pages through an unavailable item, a late order, and the way to the door, the left showing a reply timer with an auto-pick, an instant refund, a late voucher, tips, and a rating, the right waiting for the customer's choice, keeping it after a failed send, and tagging every undecided rule on screen; then the numbers" width="100%"></a>
 
-Video: [`see-the-difference.mp4`](see-the-difference.mp4). The runs made still frames; the motion and taps are
-made for the video, the same way on both sides. B's frames are from "Pilot B1 fixed" (see After the pilot).
+Video: [`see-the-difference.mp4`](see-the-difference.mp4). The runs made still frames; all motion is made for the
+video. Both sides get the same platform motion (a press and ripple under the finger, sheets, shared-axis pages); the
+RYUX side also gets the motion its DESIGN.md specifies (times that roll, the courier moving with the food, the home
+pin pulsing, illustrations that spring in). No Skill's design specified none. B's frames are from "Pilot B1 fixed" (see After the pilot).
 
 ## Cost: about the same for RYUX, faster
 
