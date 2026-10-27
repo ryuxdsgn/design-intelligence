@@ -26,29 +26,28 @@ then built. Both phones play each prototype's own screens, with the same scenari
 
 <a href="docs/benchmarks/food-delivery-designmd/round-2/"><img src="docs/benchmarks/food-delivery-designmd/round-2/see-the-difference.gif" alt="Animation: the brief and the two sides; the agent with no skill builds straight away while RYUX writes a DESIGN.md answering who the users are, their job, the evidence, the patterns, and how to evaluate; both prototypes side by side on an unavailable item, a late order, and the way to the door, the left showing a one-minute auto-pick, refund timing, and a $5 credit, the right showing real food photos, the price of each choice, a time that rolls with no promise, and the food riding with the courier; then the numbers and what RYUX missed" width="100%"></a>
 
-Both sides look finished. The difference is in what the agent decided on your behalf. Three briefs:
+Both sides look finished. The difference is in what the agent decided on your behalf:
 
-| | Food delivery<br>no skill | Food delivery<br>with RYUX | Wallet<br>no skill | Wallet<br>with RYUX | Existing repo<br>no skill | Existing repo<br>with RYUX |
-| --- | :-: | :-: | :-: | :-: | :-: | :-: |
-| **Policies made up, shown as real** (per run, fewer is better) | 8–9 | 0 | 7–9 | 0–1 | 1–2 | 0 |
-| **Asked before building** | 0 of 3 | 1 of 1 | 0 of 3 | 2 of 3 | 0 of 3 | 0 of 3 |
-| **Loading, error, offline, or a browser check** | 0 of 3 | 1 of 1 | 0 of 3 | 3 of 3 | 0 of 3 | 3 of 3 |
-| **Cost per run** | $1.79–2.50 | $13.22 | $1.57–2.03 | $2.48–3.38 | $0.37–0.43 | $1.02–1.30 |
+| | No skill<br>(3 runs) | With RYUX<br>(1 run) |
+| --- | :-: | :-: |
+| **Policies made up, shown as real** (per run, fewer is better) | 8–9 | 0 |
+| **Asked before building** | 0 of 3 | yes |
+| **A DESIGN.md before building** | none | written by RYUX: users, job, evidence, patterns, how to evaluate |
+| **The food on screen** | emoji | real photos, credited |
+| **Loading, error, and offline screens** | none | all three |
+| **Cost per run** | $1.79–2.50 | $13.22 |
 
-Without a skill, agents made up a $5 late credit, refund timing, a $1.50 transfer fee, cashback, 24/7 chat, and
-an FDIC insurance claim, and in an existing app shipped buttons that do nothing. With RYUX the same gaps stayed
-open and were named. On food delivery it even declined a policy it saw in a reference: *"The reference app pays
-a voucher when a pickup runs late. That's their policy, so I didn't adopt it."*
+Without a skill, the agents made up a $5 credit when an order is late, refund timing, a 60- or 90-second auto-pick for
+a missing item, delivery fees, courier tips, and courier ratings. RYUX left those open and listed them as
+questions. It even declined a policy it saw in a reference: *"The reference app pays a voucher when a pickup runs
+late. That's their policy, so I didn't adopt it."*
 
-What RYUX missed: on food delivery, one undecided rule still reads as fact on screen and two moments from the
-motion reference were not built; one wallet run built without asking and put Visa on a sample card; in the repo,
-code quality was the same on both sides. RYUX costs more, most on food delivery, where it also wrote the
-DESIGN.md and sourced the photos.
+What RYUX missed: one undecided rule (what happens if you don't answer about a missing item) still reads as
+fact on screen, two moments from the motion reference were not built, and the run cost about six times as much.
 
-[Food delivery](docs/benchmarks/food-delivery-designmd/round-2/) is one RYUX run, by choice, on RYUX's main branch:
-writing the DESIGN.md arrives in the next release. [Wallet](docs/benchmarks/wallet-expressive/) and
-[existing repo](docs/benchmarks/billing-dashboard/): three runs per side, RYUX 2.19.3. Briefs, method, and every
-run are in each folder.
+One RYUX run, by choice, on RYUX's main branch: writing the DESIGN.md arrives in the next release. Brief, method,
+and every run: [food delivery](docs/benchmarks/food-delivery-designmd/round-2/), with no-skill runs from
+[order-tracking](docs/benchmarks/order-tracking/). More briefs are under All benchmarks below.
 
 ## Why
 
