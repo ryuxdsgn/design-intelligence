@@ -26,39 +26,29 @@ then built. Both phones play each prototype's own screens, with the same scenari
 
 <a href="docs/benchmarks/food-delivery-designmd/round-2/"><img src="docs/benchmarks/food-delivery-designmd/round-2/see-the-difference.gif" alt="Animation: the brief and the two sides; the agent with no skill builds straight away while RYUX writes a DESIGN.md answering who the users are, their job, the evidence, the patterns, and how to evaluate; both prototypes side by side on an unavailable item, a late order, and the way to the door, the left showing a one-minute auto-pick, refund timing, and a $5 credit, the right showing real food photos, the price of each choice, a time that rolls with no promise, and the food riding with the courier; then the numbers and what RYUX missed" width="100%"></a>
 
-Both sides look finished. The difference is in what the agent decided on your behalf. Without a skill, the
-order-tracking agents made up 8 to 9 policies per run: a $5 credit when an order is late, refund timing, a
-one-minute auto-pick, courier tips. RYUX made up none and wrote the open ones down as questions. It even
-declined a policy it saw in the reference: *"The reference app pays a voucher when a pickup runs late. That's
-their policy, so I didn't adopt it."* It showed real food photos with their credits, drew its own
-illustrations, and built loading, error, and offline screens.
+Both sides look finished. The difference is in what the agent decided on your behalf. Three briefs:
 
-What RYUX missed: one undecided rule (what happens if you don't answer about a missing item) still reads as
-fact on screen, and two moments from the motion reference were not built. That run cost $13.22 against
-$1.79–2.50: one RYUX run, by choice. [Food delivery](docs/benchmarks/food-delivery-designmd/round-2/), RYUX
-main (unreleased); no-skill runs from [order-tracking](docs/benchmarks/order-tracking/).
+| | Food delivery<br>no skill | Food delivery<br>with RYUX | Wallet<br>no skill | Wallet<br>with RYUX | Existing repo<br>no skill | Existing repo<br>with RYUX |
+| --- | :-: | :-: | :-: | :-: | :-: | :-: |
+| **Policies made up, shown as real** (per run, fewer is better) | 8–9 | 0 | 7–9 | 0–1 | 1–2 | 0 |
+| **Asked before building** | 0 of 3 | 1 of 1 | 0 of 3 | 2 of 3 | 0 of 3 | 0 of 3 |
+| **Loading, error, offline, or a browser check** | 0 of 3 | 1 of 1 | 0 of 3 | 3 of 3 | 0 of 3 | 3 of 3 |
+| **Cost per run** | $1.79–2.50 | $13.22 | $1.57–2.03 | $2.48–3.38 | $0.37–0.43 | $1.02–1.30 |
 
-The same pattern on two more briefs, three runs per side each:
+Without a skill, agents made up a $5 late credit, refund timing, a $1.50 transfer fee, cashback, 24/7 chat, and
+an FDIC insurance claim, and in an existing app shipped buttons that do nothing. With RYUX the same gaps stayed
+open and were named. On food delivery it even declined a policy it saw in a reference: *"The reference app pays
+a voucher when a pickup runs late. That's their policy, so I didn't adopt it."*
 
-| | Wallet<br>no skill | Wallet<br>with RYUX | Existing repo<br>no skill | Existing repo<br>with RYUX |
-| --- | :-: | :-: | :-: | :-: |
-| **Things the brief never gave, shown as real** (per run) | 7–9 | 0–1 | 1–2 | 0 |
-| **Asked before starting** | 0 of 3 | 2 of 3 | 0 of 3 | 0 of 3 |
-| **Built or checked beyond the happy path** | 0 of 3 | 3 of 3 | 0 of 3 | 3 of 3 |
+What RYUX missed: on food delivery, one undecided rule still reads as fact on screen and two moments from the
+motion reference were not built; one wallet run built without asking and put Visa on a sample card; in the repo,
+code quality was the same on both sides. RYUX costs more, most on food delivery, where it also wrote the
+DESIGN.md and sourced the photos.
 
-Without a skill, the wallet agents invented a $1.50 transfer fee, dispute windows, cashback, 24/7 chat, and an
-FDIC insurance claim; in an existing React app they implied the plan stops after a failed payment and shipped
-buttons that do nothing. With RYUX the same gaps stayed open and were named: *"…no policies were given, so the
-copy promises no times, fees or support channels."* "Beyond the happy path" is loading, load-error, and offline
-screens for the wallet, and a look at its own page in a browser for the repo.
-
-What RYUX did not change, or missed: in the repo, code quality was the same on both sides, and no run asked
-first. One RYUX wallet run built without asking and put Visa on a sample card. RYUX runs cost more: $2.48–3.38
-against $1.57–2.03 per wallet run.
-
-[Wallet](docs/benchmarks/wallet-expressive/), RYUX 2.19.3 (no-skill runs from
-[wallet-detail](docs/benchmarks/wallet-detail/)). [Existing repo](docs/benchmarks/billing-dashboard/), RYUX
-2.19.3. Briefs, method, and every run are in each folder.
+[Food delivery](docs/benchmarks/food-delivery-designmd/round-2/) is one RYUX run, by choice, on RYUX's main branch:
+writing the DESIGN.md arrives in the next release. [Wallet](docs/benchmarks/wallet-expressive/) and
+[existing repo](docs/benchmarks/billing-dashboard/): three runs per side, RYUX 2.19.3. Briefs, method, and every
+run are in each folder.
 
 ## Why
 
