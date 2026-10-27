@@ -1,0 +1,9 @@
+Answers to your questions (the same answers are given to every run):
+- Product: a food and grocery delivery app. This work is the customer's order tracking after checkout.
+- Users: adults in large cities, on mobile, often on the move and using one hand.
+- Market and currency: not decided; a global product in English. Use USD as sample data.
+- Brand, name, design system: not decided. Propose what you need and label it.
+- Policies (delays, refunds, substitutions, fees, contacting the courier): not decided.
+- Width: mobile first, 390 wide.
+- Anything else: not decided; decide and state it as an assumption.
+- Look and motion: the visual direction of the Airbnb reference and the flow and motion of the one in ref/. Show the food: the dishes and groceries in the order should be visible and appetising. Illustrated, with a courier character of our own and illustrations for the states.
