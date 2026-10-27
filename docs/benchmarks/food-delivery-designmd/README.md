@@ -1,7 +1,8 @@
 # Food delivery order tracking, DESIGN.md written by RYUX
 
 A quick follow-up to [order-tracking](../order-tracking/): nobody wrote DESIGN.md. RYUX wrote it from the brief
-first (Design, "Write or update DESIGN.md", RX-PR-12), then built. Protocol, fixed before the run:
+first (Design, "Write or update DESIGN.md", RX-PR-12), then built. **Round 2**, with Airbnb's look and a ride-hailing motion study as references: [`round-2/`](round-2/).
+Protocol, fixed before the run:
 [`PROTOCOL.md`](PROTOCOL.md).
 
 <a href="see-the-difference.mp4"><img src="see-the-difference.gif" alt="Animation: the brief and the two sides; the first reply, where the agent with no skill has already built and RYUX writes a DESIGN.md that answers who the users are, their job, the evidence, the interaction patterns, and how to evaluate, with eight open questions; both prototypes side by side on the same scenario, an unavailable item then a late order, the left showing a one-minute auto-pick, refund timing, and an automatic credit, the right showing the price of each choice and the new time with no promise; then the numbers and what RYUX missed" width="100%"></a>
