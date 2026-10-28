@@ -82,9 +82,10 @@ How local apps handle the same action and its states, and local payment patterns
 
 - Do: Weigh each destructive or costly action: is it reversible, how big is the impact, how easy is recovery? Prefer undo for reversible actions; confirm with the specifics (amount, recipient, item) when it is irreversible and costly; skip confirmation when it only adds friction.
   - A confirmation restates the request and its effect ("Hapus 3 foto dari album Liburan? Foto tidak bisa dikembalikan."), and its buttons name the outcomes ("Hapus foto" and "Batal"), never Ya/Tidak or OK.
+  - While a confirmation is open it is the only control for that action: the button that opened it steps aside, and the confirming button repeats the trigger's label ("Publish changes", not "Publish now").
   - Give a destructive confirmation no default button; ask for typing a word only for the rarest, most dangerous actions.
-- Do not: Confirm every action by reflex, or use a bare "Are you sure?" before a payment.
-- Why: Confirmation that appears everywhere gets dismissed by habit; specifics and undo catch real mistakes. (Nielsen heuristic 5; NNGroup confirmation-dialog guidance)
+- Do not: Confirm every action by reflex, use a bare "Are you sure?" before a payment, or leave the trigger beside its confirmation under another name.
+- Why: Confirmation that appears everywhere gets dismissed by habit; specifics and undo catch real mistakes. Two buttons for one action, under two names, make people wonder whether they differ. (Nielsen heuristic 5; NNGroup confirmation-dialog guidance; owner review of the RYUX editor, 2026-10-29: editing a published flow showed "Publish changes" and "Publish now" at once)
 - Not when: reversible, low-impact actions where undo is enough
 - Trade-off: one extra step versus irreversible loss
 - Check: heuristic_eval H-05
