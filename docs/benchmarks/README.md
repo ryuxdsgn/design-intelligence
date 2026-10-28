@@ -8,6 +8,7 @@ each folder says what was edited.
 
 | Benchmark | The question it answers | RYUX | Runs |
 | --- | --- | --- | --- |
+| [Food delivery in Figma](food-delivery-figma/) | The food-delivery brief designed in Figma instead of built in code, through the Figma connector: is it cheaper, and does the difference still show in the frames? A pilot, one run per side | 2.19.4 | 1 + 1 |
 | [Food delivery, DESIGN.md by RYUX](food-delivery-designmd/) | With no DESIGN.md given, does RYUX write one from the brief that answers who, which job, what evidence, which patterns, and how to evaluate, then build without inventing policy? Round 2 adds two references (Airbnb's look, a ride-hailing motion study). One RYUX run per round against order-tracking's no-skill runs | main before 2.19.4 | 1 + 1 new + 3 |
 | [Billing page in an existing repo](billing-dashboard/) | Does a new page fit a real repo: reuse, tokens, checks passing, states covered, no invented billing rule? A React + TS fixture, no skill vs RYUX + DESIGN.md, measured from each run's diff | 2.19.3 | 3 + 3 |
 | [Wallet, expressive direction](wallet-expressive/) | With a DESIGN.md that asks for character and motion, does RYUX build that direction and still ask first, invent no money rule, and cover the states? Three new RYUX runs against wallet-detail's no-skill runs, with motion counted per event | 2.19.3 | 3 new + 3 |

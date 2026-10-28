@@ -20,36 +20,35 @@ Antigravity. Free, MIT.
 
 ## See the difference
 
-Same brief, same model, a fresh agent per run: food delivery order tracking as a working prototype. Nobody
-wrote a DESIGN.md: RYUX wrote one from the brief and two references (Airbnb's look, a ride-hailing motion study),
-then built. Both phones play each prototype's own screens, with the same scenario.
+Same brief, same model, a fresh agent per side: food delivery order tracking, designed in Figma. Nobody wrote a
+DESIGN.md: RYUX wrote one from the brief and two references (Airbnb's look, a ride-hailing motion study), asked,
+then designed. Both phones play each run's own Figma frames through the same scenario; the motion is made for the video.
 
-<a href="docs/benchmarks/food-delivery-designmd/round-2/"><img src="docs/benchmarks/food-delivery-designmd/round-2/see-the-difference.gif" alt="Animation: the brief and the two sides; the agent with no skill builds straight away while RYUX writes a DESIGN.md answering who the users are, their job, the evidence, the patterns, and how to evaluate; both prototypes side by side on an unavailable item, a late order, and the way to the door, the left showing a one-minute auto-pick, refund timing, and a $5 credit, the right showing real food photos, the price of each choice, a time that rolls with no promise, and the food riding with the courier; then the numbers and what RYUX missed" width="100%"></a>
+<a href="docs/benchmarks/food-delivery-figma/"><img src="docs/benchmarks/food-delivery-figma/see-the-difference.gif" alt="Animation: the brief; the no-skill agent designs straight away while RYUX writes DESIGN.md, asks, and explores three layouts; two Android phones play both Figma pages through an unavailable item, a late order, and the way to the door, the left showing a reply timer with an auto-pick, an instant refund, a late voucher, tips, and a rating, the right waiting for the customer's choice, keeping it after a failed send, and tagging every undecided rule on screen; then the numbers" width="100%"></a>
 
 Both sides look finished. The difference is in what the agent decided on your behalf:
 
-| | No skill<br>(3 runs) | With RYUX<br>(1 run) |
+| | No skill | With RYUX |
 | --- | :-: | :-: |
-| **Policies made up, shown as real** (per run, fewer is better) | 8–9 | 0 |
-| **Asked before building** | 0 of 3 | yes |
-| **A DESIGN.md before building** | none | written by RYUX: users, job, evidence, patterns, how to evaluate |
-| **The food on screen** | emoji | real photos, credited |
-| **Loading, error, and offline screens** | none | all three |
-| **Cost per run** | $1.79–2.50 | $10.43 |
+| **Policies made up, shown as real** (fewer is better) | 8 | 1 |
+| **Asked before designing** | no | yes |
+| **A DESIGN.md before designing** | none | written by RYUX: users, job, evidence, patterns, how to evaluate |
+| **Undecided rules on screen** | shown as fact | tagged "Prototype rule, not decided yet" |
+| **Screens** | 8 | 24, with loading, no courier, offline, and map failed |
+| **The food on screen** | grey boxes | real photos, credited |
+| **Cost of the run** | $2.16 | $9.46 |
 
-Without a skill, the agents made up a $5 credit when an order is late, refund timing, a 60- or 90-second auto-pick for
-a missing item, delivery fees, courier tips, and courier ratings. RYUX left those open and listed them as
-questions. It even declined a policy it saw in a reference: *"The reference app pays a voucher when a pickup runs
-late. That's their policy, so I didn't adopt it."*
+Without a skill, the agent made up a late voucher, automatic refunds, an auto-pick if you don't answer in time, a
+free-cancellation countdown, tips, and a courier rating. RYUX left those open and tagged them on screen.
 
-What RYUX missed: one undecided rule (what happens if you don't answer about a missing item) still reads as
-fact on screen, two moments from the motion reference were not built, and the run cost four to six times as much.
-2.19.4 fixed the first: in [a repeat run](docs/benchmarks/food-delivery-designmd/round-3/), the order waits for
-your answer, and every undecided rule on screen carries a "Proposed rule" tag.
+What RYUX missed: "Contact courier" sat on screen untagged, a checkout total implied fees with no line for them, and
+the run cost about four times as much. The video shows the frames after four owner-requested rounds on a copy
+(that fix, the illustrations twice, a critique's fixes), $33.16 in all; the counts above are the runs as they left them.
 
-One RYUX run, by choice, on RYUX's main branch just before 2.19.4, the release that ships writing the DESIGN.md. Brief, method,
-and every run: [food delivery](docs/benchmarks/food-delivery-designmd/round-2/), with no-skill runs from
-[order-tracking](docs/benchmarks/order-tracking/). More briefs are under All benchmarks below.
+One run per side, by choice: what they did, not a rate, and not rated by designers yet. Brief, method, and every
+frame: [food delivery in Figma](docs/benchmarks/food-delivery-figma/). The same brief built as code:
+[food delivery](docs/benchmarks/food-delivery-designmd/round-2/) and [the 2.19.4 repeat](docs/benchmarks/food-delivery-designmd/round-3/).
+More briefs are under All benchmarks below.
 
 ## Why
 
@@ -133,6 +132,7 @@ outputs. Counts come from a few runs on one model: what those runs did, not rate
 
 | Benchmark | The question it answers | RYUX | Runs |
 | --- | --- | --- | --- |
+| [Food delivery in Figma](docs/benchmarks/food-delivery-figma/) | Designed in Figma instead of code: is it cheaper, and does the difference still show in the frames? A pilot | 2.19.4 | 1 + 1 |
 | [Food delivery, DESIGN.md by RYUX](docs/benchmarks/food-delivery-designmd/) | With no DESIGN.md given, does RYUX write one from a brief and references that answers the five questions, then build that direction without inventing policy? Three rounds | main before 2.19.4, 2.19.4 | 1 + 1 + 1 new + 3 |
 | [Billing page in an existing repo](docs/benchmarks/billing-dashboard/) | Does a new page fit a real repo, keep checks passing, and invent no billing rule? | 2.19.3 | 3 + 3 |
 | [Wallet, expressive direction](docs/benchmarks/wallet-expressive/) | With a DESIGN.md that asks for character and motion, does it build that direction and still ask first and invent no money rule? | 2.19.3 | 3 new + 3 |
