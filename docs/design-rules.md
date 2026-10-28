@@ -205,13 +205,13 @@ line below for its exact source.
 <!-- provenance:start -->
 | Source cited | Rules citing it | Rules citing only this |
 | --- | --- | --- |
-| Public standard or research | 70 | 52 |
+| Public standard or research | 70 | 51 |
 | Industry practice | 16 | 4 |
 | Observed in a RYUX run | 16 | 8 |
 | Pattern also in another MIT ruleset (text written for RYUX) | 4 | 4 |
-| RYUX principle, taxonomy, or review | 44 | 22 |
+| RYUX principle, taxonomy, or review | 45 | 22 |
 
-All 119 rules cite a source; 29 cite more than one kind, so the "Rules citing it" column adds up to more than 119.
+All 119 rules cite a source; 30 cite more than one kind, so the "Rules citing it" column adds up to more than 119.
 <!-- provenance:end -->
 
 ## Rules
@@ -800,8 +800,9 @@ Gate area UI. Covers the visual system of a product: hierarchy, type, layout, de
   - Place each control next to the data it changes (a hide-balance toggle beside the balance it hides, not in the header).
   - Make the primary action read as an action, not a place: its own button with an action label. It may sit in the center of a bottom bar when it is clearly different from the tabs (its own shape, color, and size, with room around it), but it is never styled as one of the tabs and never crammed between them.
   - Use one display size per screen, for its single most important number or heading.
-- Do not: Give everything equal weight, let decoration outrank content, park a control far from what it acts on, or make the main action look like one more tab.
-- Why: Hierarchy is how users know what to read and do first; a control beside its data shows what it changes, and an action that looks like a tab reads as a place, not a task. (NNGroup visual hierarchy; Gestalt proximity; Fitts's law (Fitts 1954) for the primary action's size and reach; ryux four-problems blind rating, rater 1 (product designer), 2026-10-16: a hide toggle far from the balance and a CTA crowding the bottom nav were reasons not to ship; explore-judge blind rating 2026-10-18: the same rater shipped a screen with a distinct centered pay button in the bottom bar)
+  - Show each fact and each action once per view. When an action needs two places (a header and a bottom bar), each appears only at the widths where the other is hidden. Show a state as text, not as a disabled button ("Up to date", "All drafted").
+- Do not: Give everything equal weight, let decoration outrank content, park a control far from what it acts on, make the main action look like one more tab, or repeat a count or an action in the same view.
+- Why: Hierarchy is how users know what to read and do first; a control beside its data shows what it changes, and an action that looks like a tab reads as a place, not a task. A fact shown twice makes users check whether the two agree, and a second button for one action, or a disabled button that only reports a state, takes the place of the next real step. (NNGroup visual hierarchy; Gestalt proximity; Fitts's law (Fitts 1954) for the primary action's size and reach; ryux four-problems blind rating, rater 1 (product designer), 2026-10-16: a hide toggle far from the balance and a CTA crowding the bottom nav were reasons not to ship; explore-judge blind rating 2026-10-18: the same rater shipped a screen with a distinct centered pay button in the bottom bar; owner review of the RYUX editor, 2026-10-28 ("no double information or double action"): one personal-data count shown three times, Publish in both the header and the review card, and disabled "Up to date" and "All drafted" buttons that only reported a state)
 - Not when: screens with several equal peers, such as a dashboard of comparable items; use consistent hierarchy within each card instead
 - Trade-off: emphasizing one thing de-emphasizes the rest
 - Check: visual QA
