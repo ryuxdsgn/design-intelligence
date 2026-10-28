@@ -34,5 +34,5 @@ RYUX proposed a receipt action in 1 of 3 runs (c2).
   brief and harness on 2026-10-13, with the build that became 2.6.3.
 - Three runs per side: a small benchmark, not a study. It shows what the screens cover and claim,
   not how they look. Visual quality is rated blind by designers (see the
-  [showcase](../../showcase.md#visual-quality-rated-by-designers)).
+  [showcase at the time](https://github.com/ryuxdsgn/design-intelligence/blob/74674a8/docs/showcase.md#visual-quality-rated-by-designers)).
 - Edits to the raw output: the local path of the pen.dev file is replaced with `[local path]`.

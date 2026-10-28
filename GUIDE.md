@@ -308,5 +308,5 @@ Understand → Frame → Explore → Evaluate and select → Build and critique 
 ## More
 
 - [`docs/design-rules.md`](./docs/design-rules.md): every rule, level, and gate
-- [`docs/showcase.md`](./docs/showcase.md): every case, and how designers rated it
+- [`docs/showcase.md`](./docs/showcase.md): the latest case, one moment up close
 - [`docs/benchmarks/`](./docs/benchmarks/): raw runs, and how to run one yourself
