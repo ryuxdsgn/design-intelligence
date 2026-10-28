@@ -9,7 +9,7 @@
 > numbering are written by us.
 > **Not a derivative of any third-party licensed text** and not affiliated with NN/g or anyone else.
 >
-> **Version:** RYUX 2.19.4
+> **Version:** RYUX 2.19.5
 
 RYUX is design intelligence for AI agents and designers, packaged as one skill, `ryux`. It has five
 entry points: Analyze, Design, Build, Critique, and QA. The router (`SKILL.md`) picks the
