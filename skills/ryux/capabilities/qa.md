@@ -94,16 +94,19 @@ The intended design (Figma, pen.dev, DESIGN.md) is the reference; RYUX screens a
 ### RX-QA-03 [Required] No covered or colliding text
 
 - Do: Keep floating cards and mockups over empty space only, and keep navigation items clear of the logo and buttons.
+  - Labels in a row (steps, tabs, chips) stay visibly apart at the smallest width: at least twice a word space between two labels, or show only the current one.
+  - On a map, keep street and place labels clear of markers, chips, and the route.
 - Do not: Let a card cover prices or labels, or let nav items touch.
-- Why: Covered text is lost information and looks broken. (ryux run 2026-10-02: QRIS card over prices, colliding nav)
+- Why: Covered text is lost information and looks broken; labels a word space apart read as one phrase. (ryux run 2026-10-02: QRIS card over prices, colliding nav; ryux Figma pilot critique 2026-10-28: "On the way" and "Delivered" 6 pt apart at 360, a courier marker over street labels)
 - Check: screenshot
 - Measured: `ryux scan <url>` flags text boxes of unrelated elements that overlap (warn)
 
 ### RX-QA-04 [Required] Numbers agree
 
 - Do: Make line items add up to subtotals and totals, and show the same value the same way everywhere on the screen.
-- Do not: Show sample numbers that contradict each other.
-- Why: Readers check sums; one wrong total undermines everything else. (ryux README checkout image (items Rp125.000, subtotal Rp1.200.000))
+  - Times follow one timeline across a flow: the status-bar clock, timestamps, and estimates on each frame fit its stage.
+- Do not: Show sample numbers or times that contradict each other.
+- Why: Readers check sums and clocks; one wrong total or an arrival time already past undermines everything else. (ryux README checkout image (items Rp125.000, subtotal Rp1.200.000); ryux Figma pilot critique 2026-10-28: a 7:31 clock on every frame beside a 7:38 last update and a 6:15 arrival window)
 - Check: review
 
 ### RX-QA-06 [Preferred] Match the intended design

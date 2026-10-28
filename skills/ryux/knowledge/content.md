@@ -57,8 +57,9 @@ Real labels, errors, and how money, dates, and times are written in the product'
 ### RX-CD-03 [Preferred] Specific, plain copy
 
 - Do: Lead with the point and cut words that add length without meaning; write labels as RX-CD-12 says; use sentence case and plain lists, with at most one emoji where the channel expects it.
+  - When numbers are compared and lower is better (errors, invented policies, cost), say so beside the label ("fewer is better").
 - Do not: Use vague labels ("Submit", "Learn more", "Get started" when a specific action exists), hype words ("unlock", "elevate", "seamlessly", "revolutionary", "next-generation"), emoji bullets, ALL CAPS, or stacked exclamation marks.
-- Why: Specific, plain copy tells users what happens next; decoration on every line buries it and reads as generated. (NNGroup 3 C's of informational microcopy (clarity, concision, character); NNGroup button and link-label guidance; ryux run 2026-10-02: unconstrained WhatsApp copy)
+- Why: Specific, plain copy tells users what happens next; decoration on every line buries it and reads as generated. (NNGroup 3 C's of informational microcopy (clarity, concision, character); NNGroup button and link-label guidance; ryux run 2026-10-02: unconstrained WhatsApp copy; owner review of a benchmark video 2026-10-28: "8 vs 0, why does 0 look better?")
 - Check: audit_copy
 
 ### RX-CD-04 [Required] Errors: what, why, how to recover

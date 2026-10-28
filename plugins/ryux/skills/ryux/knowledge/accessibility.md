@@ -32,16 +32,17 @@ Standards are the main evidence (WCAG 2.2 success criteria); reference screens s
 ### RX-A11Y-01 [Required] [Hard Gate] Readable contrast
 
 - Do: Keep text contrast at least 4.5:1, and at least 3:1 for large text and component boundaries.
+  - Over a photo, illustration, or gradient (a status bar on a full-bleed hero, a caption on an image), measure against the worst pixel behind the text or icon, not the average; fix it with a scrim or the bar's light or dark appearance.
 - Do not: Put light grey text on white or white text on a pale accent.
-- Why: Low contrast fails outdoors, on cheap screens, and for low vision. (WCAG 2.2 SC 1.4.3 and 1.4.11)
+- Why: Low contrast fails outdoors, on cheap screens, and for low vision. (WCAG 2.2 SC 1.4.3 and 1.4.11; ryux Figma pilot critique 2026-10-28: a dark status bar over a dark food photo (1.3:1), then a white one over a light grocery photo (2.7:1) until the scrim was darkened)
 - Check: audit_ui
 - Measured: `ryux scan <url>` flags text under 4.5:1 contrast (3:1 when large) on a solid background; text over images or gradients is skipped (fail)
 
 ### RX-A11Y-02 [Required] [Hard Gate] Readable text, reachable targets
 
-- Do: Keep body text around 14 to 16px on mobile, and touch targets at least 24×24px, preferably 44×44px. The target is the hit area, not the glyph: a 20 to 24px icon sits inside a 44×44 button.
+- Do: Keep body text around 14 to 16px on mobile, and touch targets at least 24×24px, preferably 44×44px. The target is the hit area, not the glyph: a 20 to 24px icon sits inside a 44×44 button. Measure it on the element or node; a name or comment that states a size is not a measurement.
 - Do not: Shrink body text or crowd small targets together.
-- Why: Small text and targets cause misreads and mis-taps. (WCAG 2.2 SC 2.5.8 (24px minimum); Apple HIG 44pt; Material 48dp; Fitts's law (Fitts 1954): bigger and nearer targets are faster to hit)
+- Why: Small text and targets cause misreads and mis-taps. (WCAG 2.2 SC 2.5.8 (24px minimum); Apple HIG 44pt; Material 48dp; Fitts's law (Fitts 1954): bigger and nearer targets are faster to hit; ryux Figma pilot critique 2026-10-28: a layer named "Close (44 pt tap)" measured 24×44)
 - Check: audit_ui
 - Machine check: `ryux scan` flags zoom turned off: user-scalable=no, maximum-scale=1, userScalable: false, maximumScale: 1 (fail); text set below 12px (CSS font-size, Tailwind text-[Npx], fontSize in style objects) (warn)
 - Measured: `ryux scan <url>` flags controls under 24x24px that are crowded by neighbours (warn when spaced as WCAG 2.5.8 allows); rendered text under 12px (warn) (fail)

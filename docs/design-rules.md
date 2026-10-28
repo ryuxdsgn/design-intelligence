@@ -206,12 +206,12 @@ line below for its exact source.
 | Source cited | Rules citing it | Rules citing only this |
 | --- | --- | --- |
 | Public standard or research | 70 | 52 |
-| Industry practice | 16 | 5 |
+| Industry practice | 16 | 4 |
 | Observed in a RYUX run | 16 | 8 |
 | Pattern also in another MIT ruleset (text written for RYUX) | 4 | 4 |
-| RYUX principle, taxonomy, or review | 42 | 22 |
+| RYUX principle, taxonomy, or review | 44 | 22 |
 
-All 119 rules cite a source; 28 cite more than one kind, so the "Rules citing it" column adds up to more than 119.
+All 119 rules cite a source; 29 cite more than one kind, so the "Rules citing it" column adds up to more than 119.
 <!-- provenance:end -->
 
 ## Rules
@@ -685,8 +685,9 @@ Gate area CONTENT. Covers specific copy, action labels, error messages, terminol
 #### RX-CD-03 [Preferred] Specific, plain copy
 
 - Do: Lead with the point and cut words that add length without meaning; write labels as RX-CD-12 says; use sentence case and plain lists, with at most one emoji where the channel expects it.
+  - When numbers are compared and lower is better (errors, invented policies, cost), say so beside the label ("fewer is better").
 - Do not: Use vague labels ("Submit", "Learn more", "Get started" when a specific action exists), hype words ("unlock", "elevate", "seamlessly", "revolutionary", "next-generation"), emoji bullets, ALL CAPS, or stacked exclamation marks.
-- Why: Specific, plain copy tells users what happens next; decoration on every line buries it and reads as generated. (NNGroup 3 C's of informational microcopy (clarity, concision, character); NNGroup button and link-label guidance; ryux run 2026-10-02: unconstrained WhatsApp copy)
+- Why: Specific, plain copy tells users what happens next; decoration on every line buries it and reads as generated. (NNGroup 3 C's of informational microcopy (clarity, concision, character); NNGroup button and link-label guidance; ryux run 2026-10-02: unconstrained WhatsApp copy; owner review of a benchmark video 2026-10-28: "8 vs 0, why does 0 look better?")
 - Check: audit_copy
 
 #### RX-CD-04 [Required] Errors: what, why, how to recover
@@ -842,8 +843,9 @@ Gate area UI. Covers the visual system of a product: hierarchy, type, layout, de
 
 - Do: Derive the art direction from the brand, the audience, the product context, and reference screens, and write it as a Visual Brief (template in knowledge/imagery.md) (objective, concept, composition, color, material, lighting, motion, avoid) before designing an expressive surface or generating images, 3D, or motion.
   - For a new product, decide the brand direction before the tokens, task UI included: palette, type, and shape follow from the product's character (fast, warm, trusted, and so on), not from the one accent that passes contrast.
+  - With no visual direction in the brief or DESIGN.md, say before building that the result will look plain, and offer two or three directions.
 - Do not: Reach for the category cliché (coins, money rain, floating dashboards, or gradient blobs for fintech; generic 3D characters for any app), or write an image prompt without a brief (role, concept, composition).
-- Why: A default visual language makes the product interchangeable with its competitors. (art direction practice; RX-AS-05 purpose gate)
+- Why: A default visual language makes the product interchangeable with its competitors. (art direction practice; RX-AS-05 purpose gate; owner review 2026-10-27: a food-delivery build "too plain, no illustration" from a DESIGN.md with no visual direction)
 - Not when: an existing brand system already defines the visual language; follow it
 - Trade-off: a brief takes time before any image exists
 - Check: the Visual Brief; review
@@ -1106,16 +1108,17 @@ Gate area ACCESSIBILITY. Covers semantics, keyboard, focus, contrast, targets, n
 #### RX-A11Y-01 [Required] [Hard Gate] Readable contrast
 
 - Do: Keep text contrast at least 4.5:1, and at least 3:1 for large text and component boundaries.
+  - Over a photo, illustration, or gradient (a status bar on a full-bleed hero, a caption on an image), measure against the worst pixel behind the text or icon, not the average; fix it with a scrim or the bar's light or dark appearance.
 - Do not: Put light grey text on white or white text on a pale accent.
-- Why: Low contrast fails outdoors, on cheap screens, and for low vision. (WCAG 2.2 SC 1.4.3 and 1.4.11)
+- Why: Low contrast fails outdoors, on cheap screens, and for low vision. (WCAG 2.2 SC 1.4.3 and 1.4.11; ryux Figma pilot critique 2026-10-28: a dark status bar over a dark food photo (1.3:1), then a white one over a light grocery photo (2.7:1) until the scrim was darkened)
 - Check: audit_ui
 - Measured: `ryux scan <url>` flags text under 4.5:1 contrast (3:1 when large) on a solid background; text over images or gradients is skipped (fail)
 
 #### RX-A11Y-02 [Required] [Hard Gate] Readable text, reachable targets
 
-- Do: Keep body text around 14 to 16px on mobile, and touch targets at least 24×24px, preferably 44×44px. The target is the hit area, not the glyph: a 20 to 24px icon sits inside a 44×44 button.
+- Do: Keep body text around 14 to 16px on mobile, and touch targets at least 24×24px, preferably 44×44px. The target is the hit area, not the glyph: a 20 to 24px icon sits inside a 44×44 button. Measure it on the element or node; a name or comment that states a size is not a measurement.
 - Do not: Shrink body text or crowd small targets together.
-- Why: Small text and targets cause misreads and mis-taps. (WCAG 2.2 SC 2.5.8 (24px minimum); Apple HIG 44pt; Material 48dp; Fitts's law (Fitts 1954): bigger and nearer targets are faster to hit)
+- Why: Small text and targets cause misreads and mis-taps. (WCAG 2.2 SC 2.5.8 (24px minimum); Apple HIG 44pt; Material 48dp; Fitts's law (Fitts 1954): bigger and nearer targets are faster to hit; ryux Figma pilot critique 2026-10-28: a layer named "Close (44 pt tap)" measured 24×44)
 - Check: audit_ui
 - Machine check: `ryux scan` flags zoom turned off: user-scalable=no, maximum-scale=1, userScalable: false, maximumScale: 1 (fail); text set below 12px (CSS font-size, Tailwind text-[Npx], fontSize in style objects) (warn)
 - Measured: `ryux scan <url>` flags controls under 24x24px that are crowded by neighbours (warn when spaced as WCAG 2.5.8 allows); rendered text under 12px (warn) (fail)
@@ -1316,16 +1319,19 @@ Gate area VISUAL QA. Covers did the build match the intended design: compare, li
 #### RX-QA-03 [Required] No covered or colliding text
 
 - Do: Keep floating cards and mockups over empty space only, and keep navigation items clear of the logo and buttons.
+  - Labels in a row (steps, tabs, chips) stay visibly apart at the smallest width: at least twice a word space between two labels, or show only the current one.
+  - On a map, keep street and place labels clear of markers, chips, and the route.
 - Do not: Let a card cover prices or labels, or let nav items touch.
-- Why: Covered text is lost information and looks broken. (ryux run 2026-10-02: QRIS card over prices, colliding nav)
+- Why: Covered text is lost information and looks broken; labels a word space apart read as one phrase. (ryux run 2026-10-02: QRIS card over prices, colliding nav; ryux Figma pilot critique 2026-10-28: "On the way" and "Delivered" 6 pt apart at 360, a courier marker over street labels)
 - Check: screenshot
 - Measured: `ryux scan <url>` flags text boxes of unrelated elements that overlap (warn)
 
 #### RX-QA-04 [Required] Numbers agree
 
 - Do: Make line items add up to subtotals and totals, and show the same value the same way everywhere on the screen.
-- Do not: Show sample numbers that contradict each other.
-- Why: Readers check sums; one wrong total undermines everything else. (ryux README checkout image (items Rp125.000, subtotal Rp1.200.000))
+  - Times follow one timeline across a flow: the status-bar clock, timestamps, and estimates on each frame fit its stage.
+- Do not: Show sample numbers or times that contradict each other.
+- Why: Readers check sums and clocks; one wrong total or an arrival time already past undermines everything else. (ryux README checkout image (items Rp125.000, subtotal Rp1.200.000); ryux Figma pilot critique 2026-10-28: a 7:31 clock on every frame beside a 7:38 last update and a 6:15 arrival window)
 - Check: review
 
 #### RX-QA-06 [Preferred] Match the intended design
