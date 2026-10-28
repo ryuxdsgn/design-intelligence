@@ -2,7 +2,7 @@
 
 Makes the interface work for everyone: semantics, keyboard, focus, contrast, target size, and reduced motion, checked against WCAG 2.2.
 
-> Group UI · Delivery Gate area ACCESSIBILITY · RYUX 2.19.4. Levels are defined in `SKILL.md`.
+> Group UI · Delivery Gate area ACCESSIBILITY · RYUX 2.19.5. Levels are defined in `SKILL.md`.
 
 Accessibility is product quality, not an enhancement. Check:
 
