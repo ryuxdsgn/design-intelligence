@@ -120,7 +120,8 @@ At the hierarchy layer, run four checks on every screen and report each failure 
 - Does the primary action read as an action, not a place? If it is styled like a tab or crammed
   between tabs, that is a finding even when it is visible. A centered action button in the bottom bar
   is fine when its shape, color, size, and label set it clearly apart from the tabs.
-- Does any fact or action appear twice, or does a disabled button only report a state?
+- Does any fact or action appear twice (a confirmation beside the button that opened it, under another
+  name), or does a disabled button only report a state?
 - Are the things the user checks together grouped?
 (RX-UI-01, RX-UX-01.) Look for them even on a screen that is otherwise tidy: they are the defects a
 clean layout hides best. Then ask what the user must read, remember, or decide that the product
