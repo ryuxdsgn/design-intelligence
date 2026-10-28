@@ -56,7 +56,7 @@ for five text sizes in one panel. A2 used rupiah and Jakarta places from the fil
 
 ## After the pilot (not scored)
 
-Three owner-requested rounds on a copy, page "Pilot B1 fixed"; "Pilot B1" and the counts above stay as the run left them.
+Four owner-requested rounds on a copy, page "Pilot B1 fixed"; "Pilot B1" and the counts above stay as the run left them.
 
 - **Fixes** ($3.43, 12 min, [`runs/B1-turn4-final.md`](runs/B1-turn4-final.md)): "Contact courier" tagged on screen
   with its sheet drawn ("nothing is sent"); Delivered shows the items total only; every rule tag readable at 390
@@ -68,4 +68,20 @@ Three owner-requested rounds on a copy, page "Pilot B1 fixed"; "Pilot B1" and th
 - **Poses** ($6.02 with a $0.66 start cut by the session limit, [`runs/B1-turn6b-final.md`](runs/B1-turn6b-final.md)):
   each standing scene its own body (weight on one leg, a step, tiptoe, dropped shoulders), stronger brows, and the
   sheet's provenance corrected to "made by the agent as SVG from a script".
-- With all three, B1 cost $25.12 in all. [`runs/B1-fixed-DESIGN.md`](runs/B1-fixed-DESIGN.md) is DESIGN.md after them.
+- **A critique's fixes** ($8.04 over five turns, including a $0.06 start that could not reach Figma;
+  [`runs/B1-turn7b-final.md`](runs/B1-turn7b-final.md) to [`turn7e`](runs/B1-turn7e-final.md)): a RYUX critique of the
+  360 screens found eight problems, among them stage labels 6 pt apart, a 24 pt-wide close button, clocks that
+  contradicted the times on screen, and the offline chip covering the courier. All eight fixed:
+  - one stage label at a time;
+  - a 44 pt close button;
+  - one timeline of clocks;
+  - map labels clear of the markers;
+  - Android system bars at 360.
+
+  Two follow-ups:
+  - a white status bar and a darker scrim on photo screens, measured at the worst pixel;
+  - an audit of Alt C (a timeline rail, aligned markers).
+
+  Not tested on a device.
+- With all four, B1 cost $33.16 in all. [`runs/B1-fixed-DESIGN.md`](runs/B1-fixed-DESIGN.md) is DESIGN.md after them;
+  [`runs/B1-fixed-360.jpg`](runs/B1-fixed-360.jpg) is every changed screen at 360.
