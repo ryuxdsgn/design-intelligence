@@ -113,7 +113,8 @@ decided yet" is the on-screen label for any behaviour a prototype needs but the 
 
 ### Running late
 - **Late is a state of the same sheet, not an error screen.** The arrival time rolls to the new window, and the
-  previous window stays visible as one line ("Was 7:40–7:50 PM") so the change is honest.
+  previous window stays visible as one line ("Was 7:40–7:50 PM") so the change is honest. "Running late" is said
+  once, in the chip; the stage title keeps the stage ("On the way").
 - **The tone gets calmer, not louder.** The "attention" colour role with an icon and words, never colour alone
   (RX-A11Y-06). The courier illustration changes to its calm "waiting" pose (see Illustration). No bounce, no
   celebration.
@@ -221,13 +222,15 @@ Added while building the Figma file (proposed, same family):
 
 | Token | Size / line height | Use |
 | --- | --- | --- |
-| `type/display` | 32/36, semibold, tabular figures | The arrival window: the one display size per screen |
+| `type/display` | 32/36, semibold, tabular figures | The arrival window: the one display size per screen. Where there is no arrival window (Delivered, Cancelled) or a modal sheet covers it (Contact courier), the screen or sheet title takes it instead |
 | `type/body` | 16/24, regular; `body-strong` semibold | Body text and list rows; strong for stage and sheet titles, buttons, prices |
 | `type/small` | 13/18, medium; `small-strong` semibold | Labels, chips, stage labels, tags, timestamps and the age of stale data. Never the only carrier of important information |
 
 Three sizes per screen (RX-AS-10). *(Changed in Pilot B1 fixed: title 20 folded into body-strong 16, and label
 14 and caption 12 folded into small 13. Hierarchy now comes from weight and spacing. Figma styles `B1F/*`.)*
-Stage-indicator columns never get narrower than their label, so labels can't collide at 360.
+The stage indicator names only the current stage, under its own segment (start-aligned for stages 1–2, centred for 3,
+end-aligned for 4–5), at every width. *(Changed after the 360 critique: with all five labels, "On the way" and
+"Delivered" sat 6 pt apart at 360 and read as one phrase.)* Its accessible name is "Stage n of 5, <stage>".
 
 Family (proposed): **Figtree** (open licence). Its rounded, open shapes give friendly type without copying
 Airbnb's face. Confirm it has tabular figures before adopting it; if not, use SF Pro or Roboto for numbers. All
@@ -386,7 +389,13 @@ They follow the system setting.
 ### Responsive
 - Designed at 390 pt. Checked at 375 pt (the smallest iOS width) and 360 dp (Android), and at 200% text. The
   arrival window, the stage, and the primary action never truncate; at large text the sheet's peek height grows
-  and the map or food hero shrinks. The food row drops from four photos to three plus "+N" at 360.
+  and the map or food hero shrinks. The food row drops from four photos to three plus "+N" at 360, and the
+  caption under it names the same items ("… and 3 more"). *(The 360 frames showed four plus "+2"; the frames were
+  changed to match this rule, not the rule to match the frames.)*
+- 360 frames use Android system bars (status bar with the time, a camera cutout and status icons; a gesture
+  handle at the bottom); 390 and 375 frames use iOS bars.
+- Map street labels never sit under a marker or the route: a label moves along its street to a clear stretch, or
+  is hidden for that stage. On Arriving the courier stands beside the home pin, never on it.
 - Below 375 the illustration in the sheet header scales to 88 × 66, so the arrival window stays on one line
   (found in the 360 check: "PM" wrapped on its own line).
 - Prototype-rule tags fill the width of their container and wrap; they are never truncated. All of them were
@@ -468,6 +477,32 @@ text styles `B1/*` and effects `B1/elevation/*`.
 Page "Pilot B1 fixed" is a copy with four fixes (the page "Pilot B1" is kept as it was): the contact-courier label
 and sheet, Delivered showing only the items total (fees aren't decided, so no amount paid is shown), tags that
 wrap in full, and the three-size type ramp (styles `B1F/*`). Section 7 has every changed screen at 360.
+
+After the 360 critique the copy also has: one stage label at a time; the round 44 × 44 `NavButton` (close icon)
+in the Contact courier sheet; display-size titles on Cancelled and the Contact courier sheet; the "Last seen"
+chip above the courier marker with a pointer; map labels clear of markers and the route; Android bars at 360;
+three photos plus "+N" at 360; and one sample timeline for the status-bar clocks:
+
+| Order | Frame | Clock | Times shown |
+| --- | --- | --- | --- |
+| Food | Placed | 7:03 | placed 7:02; ETA 7:40–7:50 |
+| Food | Cancelled by the store | 7:10 | none |
+| Food | Preparing, Loading, Alts A–C | 7:12 | accepted 7:04 |
+| Food | Finding a courier | 7:20 | ETA 7:40–7:50 |
+| Food | Picked up | 7:28 | ETA 7:40–7:50 |
+| Food | On the way | 7:33 | ETA 7:40–7:50 |
+| Food | Map couldn't load | 7:34 | ETA 7:40–7:50 |
+| Food | Contact courier | 7:35 | ETA 7:40–7:50 |
+| Food | Running late | 7:36 | new 8:00–8:10, was 7:40–7:50 |
+| Food | Offline | 7:41 | last update 7:38 |
+| Food | Arriving | 7:46 | arriving now, 7:46 |
+| Food | Delivered | 7:48 | delivered 7:47 |
+| Grocery | Picking | 5:52 | ETA 6:15–6:30 |
+| Grocery | Item unavailable 1 → 4, dismissed | 5:55 → 5:58 | ETA 6:15–6:30 |
+
+The map's base layer is detached inside this page's `Map` variants so labels can move without touching the
+"Pilot B1" page. The new `StatusBar/Android` and `NavBar/Android gesture` components are on the copy's
+components board.
 
 ## Open questions
 
