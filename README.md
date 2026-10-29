@@ -55,8 +55,8 @@ complex editorial picture the no-skill side was rated better. More in [the illus
 
 ## Made with RYUX
 
-Mancing, an app for finding fishing spots and logging catches, designed with RYUX in Figma. The motion was added
-afterwards for the video.
+Mancing, an app for finding fishing spots and logging catches, designed with RYUX in Figma after a few rounds of
+the owner's feedback. The motion was added afterwards for the video.
 
 <a href="https://github.com/ryuxdsgn/design-intelligence/releases/download/media/showcase--mancing-flow.mp4"><img src="https://github.com/ryuxdsgn/design-intelligence/releases/download/media/showcase--mancing-poster.png" alt="Five phone screens from Mancing: a map of fishing spots, logging a catch, a spot's best hours today, the catch journal, and a badge unlocked. Links to the video." width="100%"></a>
 
