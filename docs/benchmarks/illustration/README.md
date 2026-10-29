@@ -60,12 +60,14 @@ higher and are about drawing and composition rather than broken geometry.
 | Pass the whole floor | 0 | 12 |
 | Fixed `width`/`height` on the root | 23 | 13 |
 | `<text>` inside the art | 2 (both editorial runs) | 0 |
-| Editor metadata | 8 | 0 |
+| Editor metadata | 4 | 0 |
 | Elements wholly outside the viewBox | 0 | 2 (T3 B1) |
 | Embedded raster | 0 | 0 |
 | Named groups | 99% | 97% |
 | Elements per file, mean | 38 | 46 |
 
+Editor metadata was first counted as 8: four more files only mention Inkscape in a comment, which
+`score-svg.mjs` counted until it was corrected on 2026-10-29, after the scores were in; no pass changed.
 The difference matches RX-UI-19 (a viewBox with no fixed size, no text inside the art). A fixed size is not
 wrong for a 24 px icon on its own; it is counted because the rule asks for it.
 
