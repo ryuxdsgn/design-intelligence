@@ -39,20 +39,6 @@ The video shows RYUX's frames after four rounds of owner feedback on a copy; the
 they left them. One run per side, not yet rated by designers. Brief, method, every frame, and the numbers:
 [food delivery in Figma](docs/benchmarks/food-delivery-figma/).
 
-### Illustration
-
-Same brief, same model, the first run of each side.
-
-<img src="https://github.com/ryuxdsgn/design-intelligence/releases/download/media/benchmarks--illustration--empty-states.png" alt="Three empty states for a recipe app, side by side. No skill: a recipe box with cards in it, a plate with crumbs, a pot with a no-signal badge. With RYUX: an open, empty recipe box with a dashed card to add, the same box searched and empty, the same pot with a broken signal." width="100%">
-
-**Empty states.** RYUX draws the recipe box empty, because the screen says there is nothing yet, and keeps one
-box and one pot across the set.
-
-<img src="https://github.com/ryuxdsgn/design-intelligence/releases/download/media/benchmarks--illustration--mascot.png" alt="A mascot for Kiln, a pottery-class app. No skill: a clay-pot character at a wheel, a kiln in the background. With RYUX: the kiln itself is the character, its face in the glowing door, throwing a pot." width="100%">
-
-**Mascot.** RYUX makes the kiln, the app's name, the character. The no-skill mascot is livelier, and on a
-complex editorial picture the no-skill side was rated better. More in [the illustration benchmark](docs/benchmarks/illustration/).
-
 ## Made with RYUX
 
 Mancing, an app for finding fishing spots and logging catches, designed with RYUX in Figma after a few rounds of
