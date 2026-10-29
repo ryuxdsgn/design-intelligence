@@ -8,6 +8,10 @@ six dimensions and equal on cohesion; it was higher only on the mascot task. It 
 Its files were cleaner (no text in the art, no editor metadata, more of them passing the technical floor). Every
 low score was an art-direction failure; none was a construction failure.
 
+**Rerun (below):** with the illustration module and RX-UI-24, the gap to no skill narrowed from −0.32 to
+−0.08 and no side scored low; empty states and the mascot moved ahead of no skill; Art direction did not
+move, and the editorial got worse. See [Rerun: B′](#rerun-b).
+
 ## Deviation from the protocol
 
 The protocol asks for a blind rating by the owner. The scores here come from **Claude in Chrome, an AI rater**,
@@ -111,3 +115,67 @@ Not done yet: the Figma import check (information only in the protocol).
 Raw runs are kept locally (`~/bench-runs/illustration/`); rating sheets and the unsealed mapping are in
 `knowledge/benchmarks/illustration/` (local). Mapping: pair-1 A1/B1, pair-2 B2/A2, pair-3 A1/B1, pair-4 A2/B2,
 pair-5 A1/B1, pair-6 B2/A2, pair-7 A1/B1, pair-8 B2/A2 (X/Y).
+
+## Rerun: B′
+
+Protocol: the [amendment](PROTOCOL.md#amendment-2026-10-29-the-rerun-b) locked before the first B′ run.
+B′ is RYUX from branch `ryux/illustration` (c903971): the new `illustration` module, RX-UI-24 (each
+illustration shows its meaning, read on the render with the label covered), and SVG checks in `ryux scan`.
+The A runs were reused and paired again with B′, X/Y drawn again and sealed. Rated by Claude in Chrome on
+the six dimensions, approved by the owner, as in the baseline.
+
+**The rater moved between passes.** The same A runs scored 3.88 in the baseline and 4.17 here. So B′ is
+read against A in its own pass, not against B's numbers.
+
+| Dimension | B − A, baseline | B′ − A, rerun | A, rerun | B′, rerun |
+| --- | --- | --- | --- | --- |
+| Originality | −0.38 | +0.38 | 3.62 | 4.00 |
+| Art direction | −0.50 | −0.50 | 4.12 | 3.62 |
+| Craft | −0.38 | −0.25 | 3.88 | 3.62 |
+| Cohesion | 0.00 | −0.25 | 4.38 | 4.12 |
+| Editability | −0.38 | +0.25 | 4.50 | 4.75 |
+| Brief fidelity | −0.25 | −0.12 | 4.50 | 4.38 |
+| Mean | −0.32 | −0.08 | 4.17 | 4.08 |
+
+| Task | B − A, baseline | B′ − A, rerun |
+| --- | --- | --- |
+| T0 icons | −0.67 | −0.17 |
+| T1 empty states | −0.50 | +0.25 |
+| T2 mascot | +0.42 | +0.25 |
+| T3 editorial | −0.50 | −0.67 |
+
+**Low scores:** none (baseline: two, both art direction on RYUX's side).
+
+**Against the criteria locked before the rerun:**
+- B′ at or above A on Originality: met (4.00 vs 3.62).
+- B′ at or above A on Art direction: **not met** (3.62 vs 4.12), the same gap as the baseline.
+- No low score on an empty state or an icon's meaning: met.
+- Cost no higher than B's: met ($8.22 vs $8.29, 33 minutes; no-skill A was $4.64).
+
+**Floor:** 21 of 22 B′ files pass (B 12 of 26, A 0 of 23): no fixed size, no text, no metadata, no raster.
+The one that does not is the C1 editorial: five building windows lie just past the right edge, a bleed,
+not broken art.
+
+**What the notes say:**
+- The concept gap closed where it was aimed. The empty states read as empty and tell one story ("recipe
+  box and tablecloth used across the set", "a slow cooker with its plug out for offline: the freshest
+  idea"), and the kiln became the mascot in both runs.
+- Composition did not. The editorial is "flat, heavy at the bottom", "reflections that look like
+  poles", a route line "not readable at the edges"; the mascot is "symmetrical, static". RX-UI-24
+  checks what each asset says, not how the picture is built around it, and no rule asks for a
+  composition study on a single complex image.
+- The rater counted editable text as a plus on a no-skill editorial (T3 A1); RX-UI-19 keeps text out
+  of the art, so that point does not count against B′.
+- The smoke run (T2, not scored, $1.84) showed the new loop working: three concepts written, then four
+  parts redrawn after reading the render without labels (a hand that read as a jug handle, a pot that
+  read as a bucket).
+
+**Next, if the owner wants the art direction gap:** a composition step for single complex images
+(editorial, hero, mascot scene): two or three thumbnail compositions by focal point, depth, and weight,
+read at display size before detailing. Imagery already asks this for expressive surfaces
+(Composition exploration); illustration does not point to it. A blind rating by a human designer
+remains the missing evidence.
+
+Raw B′ runs: `~/bench-runs/illustration/<task>/C1`, `C2`; sheets and the unsealed mapping in
+`knowledge/benchmarks/illustration-rerun/` (local). Mapping (X/Y): pair-1 C1/A1, pair-2 C2/A2, pair-3
+A1/C1, pair-4 C2/A2, pair-5 A1/C1, pair-6 C2/A2, pair-7 C1/A1, pair-8 C2/A2.
