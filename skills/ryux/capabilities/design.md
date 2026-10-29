@@ -105,6 +105,12 @@ The six stages of the core workflow (SKILL.md), as Design runs them.
    state that matters (empty, loading, error, including content that fails to load) and every width
    you claim, and source assets on purpose (RX-UI-13); illustration follows a written style and is
    made as one set (RX-UI-17, RX-UI-18).
+   **Building a component library** (RX-DS-07 to RX-DS-12): write the contract first (RX-DS-06),
+   then variables (primitives, semantic roles, modes), then components. In Figma, building needs the
+   Figma MCP with `use_figma` (the remote server and a Full seat); without it, build in pen.dev or
+   deliver the contract and sheet as a spec and say what was not built. Work in a draft or a
+   duplicate file, build in small steps (one collection or one component set per call), bind every
+   value to a variable, and render the sheet after each component set.
    **Render and inspect.** Screenshot what you made, check it against the direction and the rules,
    fix, and render again (capabilities/qa.md). Then, on the render:
    - Literal values: turn each into a variable or name the exception (RX-DS-03).
