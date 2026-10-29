@@ -80,7 +80,8 @@ The six stages of the core workflow (SKILL.md), as Design runs them.
    audience than this brief) sets no direction for this task: say so, and treat direction as unset.
    **Direction is the user's call:** when neither the prompt nor DESIGN.md sets the UI direction
    (character, or brand colour and type) or the motion direction, ask for it in that message (it
-   counts toward the three) instead of choosing it yourself. **No DESIGN.md and no product docs is the
+   counts toward the three) instead of choosing it yourself; on an expressive surface, ask in the
+   same question for one product or site whose look they like, as a taste anchor. **No DESIGN.md and no product docs is the
    case where these questions matter most, never a reason to skip them:** ask, then wait for the
    answer before designing. Complete context means no questions.
    **Voice and tone** is not asked by default: when the field is blank, infer it from the product's
@@ -145,8 +146,15 @@ The six stages of the core workflow (SKILL.md), as Design runs them.
      directing it.
    - A small change, or a screen inside a fixed design system, skips Explore: say so and continue.
 4. **Evaluate and select.** Rate each alternative against the Frame criteria, Strong, Adequate, or
-   Weak with one reason each, rate the evidence (RX-PR-10), and recommend one with a Decision Receipt.
-   "It looks better" is not a reason. Then stop and let the user choose, with the alternatives as
+   Weak with one reason each, fit first: the user's main task (can it be done fast, where the hand
+   is), what must be seen first, how much space the layout spends on what matters, and the
+   conventions that must hold. Fit decides. Craft (hierarchy at a glance, type and spacing,
+   distinctiveness by the swap test, RX-AS-09) only breaks a tie between alternatives equally strong
+   on fit; a more distinctive alternative never wins over one that is easier to use or wastes less
+   space. Compare in pairs ("A beats B on reach because …"), rate the evidence (RX-PR-10), recommend
+   one with a Decision Receipt, name the runner-up and what would make it win, and say "close call"
+   when it is one. When the user gave a reference or a taste anchor, the alternative closest to it
+   wins a tie. "It looks better" is not a reason. Then stop and let the user choose, with the alternatives as
    options and your recommendation first (stage 1, "Ask as choices"). Build only the chosen one
    into the full design (states, widths, Visual Brief, RX-UI-10), write the Design Direction
    below, and mark the others on the canvas as not chosen. When the user has already said to pick for
