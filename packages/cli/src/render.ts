@@ -113,7 +113,7 @@ ${hardGatesBrief()}
 
 ## Task table: which knowledge to read
 
-A small change (a copy fix, one component, one state) reads only the module it touches, plus anti-slop for visual work; any other task reads its row, plus \`knowledge/imagery.md\` when it has photos, illustration, 3D, motion, or an expressive surface:
+A small change (a copy fix, one component, one state) reads only the module it touches, plus anti-slop for visual work; any other task reads its row, plus \`knowledge/imagery.md\` when it has photos, illustration, 3D, motion, or an expressive surface, and \`knowledge/illustration.md\` when it draws illustration, a mascot, or custom icons:
 
 ${activationTable()}
 

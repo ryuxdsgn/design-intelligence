@@ -1,0 +1,5 @@
+The Late Line is the magazine of a city's public transport authority. Its next feature is about the night buses that keep the city running after midnight: the drivers, the riders, and the routes most people never see.
+
+Design the hero illustration for that article, 1600 by 900, shown at full width above the headline on the web.
+
+Deliver it as an SVG file in a folder named `art/`, built so a designer can open and edit it. When you are done, list the files.

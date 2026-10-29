@@ -1,0 +1,5 @@
+Tidewater is an app for a small sailing club: members book boats, join crews, and check conditions before they go out.
+
+Design six custom icons for it: book a boat, crew list, weather window, tide times, running late, and safety check. They sit in the tab bar and in list rows at 24 px, in light and dark mode.
+
+Deliver one SVG file per icon in a folder named `art/`, built so a designer can open and edit them. When you are done, list the files.
