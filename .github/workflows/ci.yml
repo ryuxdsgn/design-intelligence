@@ -22,3 +22,48 @@ jobs:
         run: pnpm test
       - name: Generated skill, docs, and versions match the sources
         run: pnpm check:sync
+
+  # When packages/cli/package.json carries a version with no tag yet, tag the commit that set it
+  # and publish a GitHub release. npm publishing stays manual.
+  release:
+    needs: check
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Tag and release a new version
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          version=$(node -p "require('./packages/cli/package.json').version")
+          tag="v$version"
+          if git rev-parse -q --verify "refs/tags/$tag" >/dev/null; then
+            echo "$tag already exists"; exit 0
+          fi
+          commit=$(git log -1 --format=%H -G'"version"' -- packages/cli/package.json)
+          prev=$(git describe --tags --abbrev=0 --match 'v[0-9]*' "$commit^" 2>/dev/null || true)
+          changes=$(git log --no-merges --format='- %s' ${prev:+$prev..}"$commit" | grep -E '^- (feat|fix)' || true)
+          {
+            echo "## Changes"
+            echo
+            echo "${changes:-No rule or CLI changes in this release.}"
+            echo
+            echo "## Install"
+            echo
+            echo '```bash'
+            echo 'npx @ryuxdsgn/design-intelligence'
+            echo '# or'
+            echo 'npx skills add ryuxdsgn/design-intelligence'
+            echo '```'
+            echo
+            echo "npm: [\`@ryuxdsgn/design-intelligence@$version\`](https://www.npmjs.com/package/@ryuxdsgn/design-intelligence/v/$version)"
+          } > notes.md
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git tag -a "$tag" -m "RYUX $version" "$commit"
+          git push origin "$tag"
+          gh release create "$tag" --verify-tag --title "RYUX $version" --notes-file notes.md --latest
