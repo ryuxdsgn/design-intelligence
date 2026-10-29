@@ -15,11 +15,12 @@ const TASKS = { 't0-icons': 24, 't1-empty-states': 240, 't2-mascot': 320, 't3-ed
 const svgs = dir => existsSync(join(dir, 'art'))
   ? readdirSync(join(dir, 'art')).filter(f => f.endsWith('.svg')).sort().map(f => ({ name: f, src: readFileSync(join(dir, 'art', f), 'utf8') }))
   : [];
-// A file named for dark mode is shown on dark only; its light twin on light only.
+// A file named for dark mode is shown on dark only; one named for light, on light only (then the plain
+// file, a default, is left out of that mode). With no mode files, every file shows in both.
 const forMode = (files, mode) => {
-  const dark = files.filter(f => /dark/i.test(f.name));
-  if (!dark.length) return files;
-  return mode === 'dark' ? dark : files.filter(f => !/dark/i.test(f.name));
+  const dark = files.filter(f => /dark/i.test(f.name)), light = files.filter(f => /light/i.test(f.name));
+  if (mode === 'dark') return dark.length ? dark : files;
+  return light.length ? light : files.filter(f => !/dark/i.test(f.name));
 };
 // Layer outline: groups and shapes by id or data-name, nested; long lists cut.
 const outline = src => {
