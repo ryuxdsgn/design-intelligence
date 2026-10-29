@@ -1,0 +1,70 @@
+name: Rule feedback
+description: A RYUX rule misfired, missed something, or gave advice that does not fit.
+title: "[Rule] "
+labels: ["rules"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Real cases make rules better. Share what the agent did and what you expected; a screenshot or
+        the relevant output is the strongest evidence. Remove anything private before posting.
+  - type: input
+    id: rule
+    attributes:
+      label: Rule ID
+      description: For example RX-IX-04. Leave blank if no rule caught it and you think one should have.
+      placeholder: RX-
+  - type: dropdown
+    id: kind
+    attributes:
+      label: What happened
+      options:
+        - The rule fired where it should not (false positive)
+        - Nothing caught a problem (missed)
+        - The advice does not fit this context
+        - The agent invented a fact, number, or policy
+        - Something else
+    validations:
+      required: true
+  - type: textarea
+    id: observed
+    attributes:
+      label: What you saw
+      description: The output, finding, or screen, and the prompt or brief that led to it.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What you expected
+      description: What a good result would have been, and why. Cite a standard or source if you have one.
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: RYUX version
+      description: Run `npx @ryuxdsgn/design-intelligence --version`.
+      placeholder: "2.19.7"
+  - type: dropdown
+    id: agent
+    attributes:
+      label: Agent
+      options:
+        - Claude Code
+        - Codex
+        - GitHub Copilot
+        - Gemini CLI
+        - Other
+  - type: dropdown
+    id: step
+    attributes:
+      label: RYUX step
+      options:
+        - Analyze
+        - Design
+        - Build
+        - Critique
+        - QA
+        - ryux scan
+        - Not sure

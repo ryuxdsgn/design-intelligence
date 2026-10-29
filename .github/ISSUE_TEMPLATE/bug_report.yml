@@ -1,0 +1,48 @@
+name: Bug report
+description: Something in the CLI, ryux scan, or the install does not work.
+title: "[Bug] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        For a rule that gives the wrong advice, use **Rule feedback** instead. For a security problem,
+        do not open an issue: see SECURITY.md.
+  - type: textarea
+    id: what
+    attributes:
+      label: What went wrong
+      description: The command you ran and the full output or error.
+      render: shell
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1.
+        2.
+        3.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What you expected
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: RYUX version
+      description: Run `npx @ryuxdsgn/design-intelligence --version`.
+      placeholder: "2.19.7"
+    validations:
+      required: true
+  - type: input
+    id: env
+    attributes:
+      label: Environment
+      description: OS, Node version, and how you installed RYUX (npx, skills.sh, plugin).
+      placeholder: macOS 15, Node 22, npx
