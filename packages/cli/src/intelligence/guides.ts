@@ -234,6 +234,10 @@ patterns fit the context, and how the result is evaluated.
    unless they agree to change it, and keep the context block's field lines as \`setup\` writes them. End with a
    short list of what changed and why.
 6. Close with a Delivery Gate scaled to a document: PRODUCT, UX, and CONTENT; the other areas N/A.
+7. **Hand off to the build.** The file now carries the decisions, so the build does not need this session's
+   history. When the session is already long (references read, images, several rounds), say so and suggest
+   building in a fresh session that starts from DESIGN.md: every later step rereads the whole history, which is
+   most of a long build's cost.
 
 \`\`\`
 # DESIGN.md

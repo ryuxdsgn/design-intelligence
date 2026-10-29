@@ -85,10 +85,11 @@ The intended design (Figma, pen.dev, DESIGN.md) is the reference; RYUX screens a
 - Do: Render the result at the target viewport (browser, screenshot, or design-tool export).
   - Inspect the main state, one empty or error state, and the smallest supported width (RX-RD-01), plus the largest text size on native.
   - Look for the defects source code hides: misaligned edges, type or spacing off the scale, density wrong for the task, overflow and clipping, a component that looks different from its siblings, a control that does nothing.
+  - Look at the states of one width together: tile their screenshots into one contact sheet and inspect that, open a single screenshot only to check a defect up close, and after a fix render again only what it touched.
   - Rank issues by impact, fix from the top, and render again. Name the widths and states you inspected; if no render tool is available, say so in the report.
   - Whether the design itself is right or intentional is Critique's call; QA reports what it can verify.
 - Do not: Claim visual quality for a layout you have only seen as code, or fix by guesswork without checking the result.
-- Why: Overlaps and clipping are invisible in source and obvious on screen; the loop turns a draft into a reviewed result. (ryux run 2026-10-02: two runs shipped overlaps they never saw)
+- Why: Overlaps and clipping are invisible in source and obvious on screen; the loop turns a draft into a reviewed result. (ryux run 2026-10-02: two runs shipped overlaps they never saw; ryux run: food-delivery round 2 (2026-10-27) read 21 screenshots one at a time, and every read stays in the context for the rest of the build)
 - Check: screenshot
 
 ### RX-QA-03 [Required] No covered or colliding text
