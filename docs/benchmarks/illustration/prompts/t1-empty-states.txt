@@ -1,0 +1,5 @@
+Potluck is an app where a group of friends shares recipes and plans dinners together.
+
+Design three empty-state illustrations for it, used together in the app: no recipes yet (a new group), a search that found nothing, and no connection. Each is shown about 240 px wide on a phone, above a short line of text and a button, in light and dark mode.
+
+Deliver one SVG file per illustration in a folder named `art/`, built so a designer can open and edit them. When you are done, list the files.

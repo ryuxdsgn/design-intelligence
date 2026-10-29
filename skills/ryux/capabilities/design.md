@@ -84,7 +84,8 @@ The six stages of the core workflow (SKILL.md), as Design runs them.
    - Before the first illustration is drawn, in any alternative, write its style in the Design
      Direction's Illustration field (RX-UI-17) and show it on the canvas next to the alternatives;
      they share it, or each names its own. Writing it after drawing documents the result instead of
-     directing it.
+     directing it. Each drawn asset also gets its concept line: what it must say and the cue
+     that shows it (RX-UI-24, knowledge/illustration.md).
    - A small change, or a screen inside a fixed design system, skips Explore: say so and continue.
 4. **Evaluate and select.** Rate each alternative against the Frame criteria, Strong, Adequate, or
    Weak with one reason each, fit first: the user's main task (can it be done fast, where the hand
@@ -111,8 +112,8 @@ The six stages of the core workflow (SKILL.md), as Design runs them.
    roles, spacing, radius, and type sizes and families before the first frame, and components for
    repeated elements (RX-DS-03). Building the system does not replace the states: design every
    state that matters (empty, loading, error, including content that fails to load) and every width
-   you claim, and source assets on purpose (RX-UI-13); illustration follows a written style and is
-   made as one set (RX-UI-17, RX-UI-18).
+   you claim, and source assets on purpose (RX-UI-13); illustration follows a written style, is
+   made as one set, and shows its meaning (RX-UI-17, RX-UI-18, RX-UI-24).
    **Building a component library** (RX-DS-07 to RX-DS-12): write the contract first (RX-DS-06),
    then variables (primitives, semantic roles, modes), then components. In Figma, building needs the
    Figma MCP with `use_figma` (the remote server and a Full seat); without it, build in pen.dev or

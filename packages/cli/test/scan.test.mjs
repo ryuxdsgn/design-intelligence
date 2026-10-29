@@ -190,3 +190,16 @@ body{margin:0;font:16px sans-serif;background:#fff}.wide{width:600px}.grey{color
   ]);
   rmSync(dir, { recursive: true, force: true });
 });
+
+test("SVG art: no viewBox fails; fixed size, raster, text, and editor metadata warn once each", () => {
+  // illustration baseline, 2026-10-29: 23 of 23 no-skill files had a fixed size, 8 had editor metadata
+  assert.deepEqual(rules(scan("art/empty.svg", '<svg xmlns="http://www.w3.org/2000/svg"><path d="M0 0h4"/></svg>')), ["fail RX-UI-19"]);
+  const bad = '<svg xmlns="http://www.w3.org/2000/svg" xmlns:inkscape="x" width="240" height="180" viewBox="0 0 240 180">' +
+    '<g inkscape:label="a" inkscape:groupmode="layer"><image href="data:image/png;base64,AA"/><text>Kosong</text></g></svg>';
+  assert.deepEqual(rules(scan("art/empty.svg", bad)), ["warn RX-UI-19", "warn RX-UI-19", "warn RX-UI-19", "warn RX-UI-19"]);
+  assert.deepEqual(scan("art/empty.svg", '<?xml version="1.0"?>\n<svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 240 180"><g id="box"><path d="M0 0h4"/></g></svg>'), []);
+});
+
+test("SVG art: stroke-width is not a fixed size, and a comment naming an editor is not metadata", () => {
+  assert.deepEqual(scan("a.svg", '<svg viewBox="0 0 8 8" stroke-width="3"><!-- drawn for Inkscape users --><path d="M0 0h4"/></svg>'), []);
+});
