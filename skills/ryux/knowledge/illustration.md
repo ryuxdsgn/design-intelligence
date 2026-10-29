@@ -2,7 +2,7 @@
 
 Makes illustration, mascots, and custom icon sets that say something: a concept for each asset's meaning, a written style, one family, checked on the render.
 
-> Group UI · Delivery Gate area UI · RYUX 2.20.0. Levels are defined in `SKILL.md`.
+> Group UI · Delivery Gate area UI · RYUX 2.21.0. Levels are defined in `SKILL.md`.
 
 **Illustration that says something.** Read this with knowledge/imagery.md when the work
 draws illustration, a mascot or character, or a custom icon set. The common failure is not broken

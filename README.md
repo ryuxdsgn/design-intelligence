@@ -176,7 +176,7 @@ report a vulnerability, see [SECURITY.md](./SECURITY.md).
 
 ## Status and license
 
-RYUX 2.20, early access. Available now: the skill, the CLI with `scan`, skills.sh, and the Claude Code
+RYUX 2.21, early access. Available now: the skill, the CLI with `scan`, skills.sh, and the Claude Code
 plugin. Coming: an optional MCP with reference screens from real products. RYUX works fully without it; the
 reference data is private and not in this repository.
 
