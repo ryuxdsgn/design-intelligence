@@ -1,15 +1,17 @@
 # Security Policy
 
 We appreciate responsible vulnerability reports. Thank you for helping keep
-ryux and its users safe.
+RYUX and its users safe.
 
 ## Supported versions
 
 | Version | Supported |
 | --- | --- |
-| `main` (v0.1, pre-release) | ✅ |
+| Latest 2.x release on npm, and `main` | ✅ |
+| Older releases | ❌ |
 
-During pre-release, only the `main` branch receives security fixes.
+Fixes ship in a new release; update with `npx @ryuxdsgn/design-intelligence update`. Check your version
+with `npx @ryuxdsgn/design-intelligence --version`.
 
 ## Reporting a vulnerability
 
@@ -26,14 +28,16 @@ public disclosure (coordinated disclosure).
 ## Scope
 
 **In scope**
-- The `ryux` CLI (`packages/cli`) and the skills in `skills/`
-- The ryux MCP server and the `ryux.design` website and its API (once released; reports go to the
-  same address)
+- The `ryux` CLI (`packages/cli`), including `ryux scan`, and the RYUX skill in `skills/` and `plugins/`
+- The ryux MCP server (early access, by key) and the `ryux.design` website and its API; report these
+  through the same Security tab
 
 **Out of scope**
 - Attacks that require physical access or an already-compromised account
 - Rate limiting or volumetric denial-of-service
 - Automated reports with no real impact (for example, scanner output without a PoC)
+- Problems in the AI agent or host that runs RYUX (Claude Code, Codex, and others): report those to
+  their vendor
 
 ## Security principles already in place
 
@@ -50,8 +54,12 @@ public disclosure (coordinated disclosure).
 - **Data access (production).** Row Level Security is on for every table from the first migration;
   the website and MCP only read content with `published` status; the service role key is only used to
   write `usage_events` and `credit_ledger`, not to query on a user's behalf.
-- **Tokens.** OAuth authentication; tokens can be revoked per connection; no static API keys.
-- **Image assets.** Accessed through signed URLs that expire, not permanent public URLs.
+- **MCP keys.** Every MCP client carries a personal key issued by a staff member. Only the key's
+  SHA-256 hash is stored; a key can be revoked at any time, and each call is logged per key. A
+  missing or revoked key gets 401; more than 60 calls a minute per key gets 429. The MCP checks keys
+  without the service role key.
+- **Image assets.** Accessed through signed URLs that expire after 15 minutes, not permanent public
+  URLs.
 
 ## App owner objections (takedown)
 
