@@ -45,7 +45,7 @@ body:
     attributes:
       label: RYUX version
       description: Run `npx @ryuxdsgn/design-intelligence --version`.
-      placeholder: "2.19.7"
+      placeholder: "the output of --version"
   - type: dropdown
     id: agent
     attributes:
