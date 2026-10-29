@@ -2,7 +2,7 @@
 
 Designs beyond the happy path: empty, loading, error, offline, permission, and long-content states.
 
-> Group UX · Delivery Gate area EDGE CASES · RYUX 2.19.7. Levels are defined in `SKILL.md`.
+> Group UX · Delivery Gate area EDGE CASES · RYUX 2.20.0. Levels are defined in `SKILL.md`.
 
 The happy path is not enough. Walk this list for the screen you built:
 
