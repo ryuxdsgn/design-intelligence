@@ -1,0 +1,5 @@
+Kiln is an app for booking pottery classes at local studios.
+
+Design its mascot for the onboarding screen: the mascot at work at a pottery wheel, shaping clay, with the tools and objects of a studio around it. The illustration is shown about 320 px wide on a phone, in light and dark mode.
+
+Deliver it as an SVG file in a folder named `art/`, built so a designer can open and edit it. When you are done, list the files.
