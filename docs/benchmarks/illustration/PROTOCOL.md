@@ -89,3 +89,30 @@ construction failures are common enough to justify geometry tooling. Nothing in 
 ## Scope
 
 One model, one harness, two runs per cell: a baseline to find gaps, not a rate. One rater, the owner.
+
+## Amendment, 2026-10-29: the rerun (B′)
+
+Written before the first B′ run; nothing above changes.
+
+**Why:** after the baseline the owner chose art direction over geometry tooling. RYUX gained an
+`illustration` module with RX-UI-24 (each illustration shows its meaning: a concept line before drawing,
+read on the render with the label covered) and static SVG checks in `ryux scan`. The rerun asks whether
+that closes the gap the baseline found.
+
+**Arm B′:** RYUX from branch `ryux/illustration` at commit c903971 (still versioned 2.20.0), installed the
+same way as B. Same briefs, model, harness, isolation, reply rule, and folder layout
+(`~/bench-runs/illustration/<task>/C1`, `C2`). Two runs per task, 8 runs, one at a time. Before them,
+one smoke run on T2, not scored, to see that the concept lines and the read test appear at all.
+
+**A is reused** from the baseline, not run again. B′1 is paired with A1 and B′2 with A2, X/Y drawn
+again at random, sealed again. Sheets, dimensions, failure labels, and the deterministic floor are
+the same as above (`score-svg.mjs` as corrected on 2026-10-29).
+
+**Rating:** the same way as the baseline was rated, so the two can be read side by side: Claude in
+Chrome with the six dimensions, approved by the owner, unless the owner rates blind. The rater is
+named in the results. B from the baseline is reported next to B′, with the caveat that it was
+rated in an earlier pass.
+
+**What counts as closing the gap:** B′ at or above A on Art direction and Originality, no low score
+labelled art direction on an empty state or an icon's meaning, and cost no higher than B's. Anything
+less is reported as it is.
