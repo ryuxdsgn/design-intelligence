@@ -29,26 +29,37 @@ then designed. Both phones play each run's own Figma frames through the same sce
 
 Both sides look finished. The difference is in what the agent decided on your behalf:
 
-| | No skill | With RYUX |
-| --- | :-: | :-: |
-| **Policies made up, shown as real** (fewer is better) | 8 | 1 |
-| **Asked before designing** | no | yes |
-| **A DESIGN.md before designing** | none | written by RYUX: users, job, evidence, patterns, how to evaluate |
-| **Undecided rules on screen** | shown as fact | tagged "Prototype rule, not decided yet" |
-| **Screens** | 8 | 24, with loading, no courier, offline, and map failed |
-| **The food on screen** | grey boxes | real photos, credited |
-| **Cost of the run** | $2.16 | $9.46 |
+- **It made up less.** Without a skill, the agent invented 8 policies (a late voucher, automatic refunds, an
+  auto-pick if you don't answer in time, tips…) and showed them as real. RYUX invented 1 and tagged the rest
+  "Prototype rule, not decided yet".
+- **It asked first, and designed for when things go wrong:** no courier, offline, a map that failed to load.
+- **It cost more:** about four times as much for this run.
 
-Without a skill, the agent made up a late voucher, automatic refunds, an auto-pick if you don't answer in time, a
-free-cancellation countdown, tips, and a courier rating. RYUX left those open and tagged them on screen.
+The video shows RYUX's frames after four rounds of owner feedback on a copy; the points above are the runs as
+they left them. One run per side, not yet rated by designers. Brief, method, every frame, and the numbers:
+[food delivery in Figma](docs/benchmarks/food-delivery-figma/).
 
-What RYUX missed: "Contact courier" sat on screen untagged, a checkout total implied fees with no line for them, and
-the run cost about four times as much. The video shows the frames after four owner-requested rounds on a copy
-(that fix, the illustrations twice, a critique's fixes), $33.16 in all; the counts above are the runs as they left them.
+### Illustration
 
-One run per side, by choice: what they did, not a rate, and not rated by designers yet. Brief, method, and every
-frame: [food delivery in Figma](docs/benchmarks/food-delivery-figma/). The same brief built as code:
-[food delivery](docs/benchmarks/food-delivery-designmd/round-2/) and [the 2.19.4 repeat](docs/benchmarks/food-delivery-designmd/round-3/).
+Same brief, same model, the first run of each side.
+
+<img src="https://github.com/ryuxdsgn/design-intelligence/releases/download/media/benchmarks--illustration--empty-states.png" alt="Three empty states for a recipe app, side by side. No skill: a recipe box with cards in it, a plate with crumbs, a pot with a no-signal badge. With RYUX: an open, empty recipe box with a dashed card to add, the same box searched and empty, the same pot with a broken signal." width="100%">
+
+**Empty states.** RYUX draws the recipe box empty, because the screen says there is nothing yet, and keeps one
+box and one pot across the set.
+
+<img src="https://github.com/ryuxdsgn/design-intelligence/releases/download/media/benchmarks--illustration--mascot.png" alt="A mascot for Kiln, a pottery-class app. No skill: a clay-pot character at a wheel, a kiln in the background. With RYUX: the kiln itself is the character, its face in the glowing door, throwing a pot." width="100%">
+
+**Mascot.** RYUX makes the kiln, the app's name, the character. The no-skill mascot is livelier, and on a
+complex editorial picture the no-skill side was rated better. More in [the illustration benchmark](docs/benchmarks/illustration/).
+
+## Made with RYUX
+
+Mancing, an app for finding fishing spots and logging catches, designed with RYUX in Figma. The motion was added
+afterwards for the video.
+
+<a href="https://github.com/ryuxdsgn/design-intelligence/releases/download/media/showcase--mancing-flow.mp4"><img src="https://github.com/ryuxdsgn/design-intelligence/releases/download/media/showcase--mancing-poster.png" alt="Five phone screens from Mancing: a map of fishing spots, logging a catch, a spot's best hours today, the catch journal, and a badge unlocked. Links to the video." width="100%"></a>
+
 More briefs are under All benchmarks below.
 
 ## Why
@@ -134,6 +145,7 @@ outputs. Counts come from a few runs on one model: what those runs did, not rate
 | Benchmark | The question it answers | RYUX | Runs |
 | --- | --- | --- | --- |
 | [Food delivery in Figma](docs/benchmarks/food-delivery-figma/) | Designed in Figma instead of code: is it cheaper, and does the difference still show in the frames? A pilot | 2.19.4 | 1 + 1 |
+| [Illustration](docs/benchmarks/illustration/) | Icons, empty states, a mascot, an editorial picture: do they say what they mean, in one style? Rated blind by an AI rater the owner approved | 2.20.0, 2.21.0 | 8 + 8 + 8 |
 | [Food delivery, DESIGN.md by RYUX](docs/benchmarks/food-delivery-designmd/) | With no DESIGN.md given, does RYUX write one from a brief and references that answers the five questions, then build that direction without inventing policy? Three rounds | main before 2.19.4, 2.19.4 | 1 + 1 + 1 new + 3 |
 | [Billing page in an existing repo](docs/benchmarks/billing-dashboard/) | Does a new page fit a real repo, keep checks passing, and invent no billing rule? | 2.19.3 | 3 + 3 |
 | [Wallet, expressive direction](docs/benchmarks/wallet-expressive/) | With a DESIGN.md that asks for character and motion, does it build that direction and still ask first and invent no money rule? | 2.19.3 | 3 new + 3 |
