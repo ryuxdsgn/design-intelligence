@@ -1,0 +1,11 @@
+version: 2
+updates:
+  # Frozen benchmark fixture: its lockfile must stay as it was when the runs were made.
+  # Never installed by RYUX users. Ignore covers security updates too.
+  - package-ecosystem: npm
+    directory: /docs/benchmarks/billing-dashboard/fixture
+    schedule:
+      interval: monthly
+    open-pull-requests-limit: 0
+    ignore:
+      - dependency-name: "*"
