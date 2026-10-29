@@ -13,7 +13,7 @@ states the data can be in, and invents no billing policy?
 
 - **Fixture:** [`fixture/`](fixture/), a small admin app (React 18, TypeScript, Vite, Vitest) with design tokens,
   seven shared components, a Members page that shows its loading and error pattern, a fake API with
-  `?scenario=` cases, tests, and a layout wireframe ([`fixture/docs/billing-wireframe.png`](fixture/docs/billing-wireframe.png)).
+  `?scenario=` cases, tests, and a layout wireframe ([`fixture/docs/billing-wireframe.png`](https://github.com/ryuxdsgn/design-intelligence/releases/download/media/benchmarks--billing-dashboard--fixture--docs--billing-wireframe.png)).
 - **A, No skill:** a copy of the fixture, [`prompt.txt`](prompt.txt) as the only message, every skill and command
   off.
 - **B, RYUX 2.19.3 + DESIGN.md:** the same copy plus [`DESIGN.md`](DESIGN.md) and RYUX 2.19.3 installed for

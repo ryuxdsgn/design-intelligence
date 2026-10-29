@@ -9,7 +9,7 @@ designer with nine years of experience. Same model throughout, a fresh agent per
 different in structure (what comes first, the layout, where the main action lives, type, colour),
 rates them against the brief, and lets the user pick. Only the chosen one gets built out.
 
-<a href="three-directions.png"><img src="three-directions.png" alt="Three wallet home directions from one pen.dev run: Counter with a pay block on top, Receipt with activity printed as a receipt, Pass with a card you tap to pay, and the Receipt direction built out" width="100%"></a>
+<a href="https://github.com/ryuxdsgn/design-intelligence/releases/download/media/benchmarks--explore-judge--three-directions.png"><img src="https://github.com/ryuxdsgn/design-intelligence/releases/download/media/benchmarks--explore-judge--three-directions.png" alt="Three wallet home directions from one pen.dev run: Counter with a pay block on top, Receipt with activity printed as a receipt, Pass with a card you tap to pay, and the Receipt direction built out" width="100%"></a>
 
 **Brief:** a digital wallet home, "more personality while it stays trustworthy", in pen.dev.
 
@@ -19,7 +19,7 @@ rates them against the brief, and lets the user pick. Only the chosen one gets b
 - The designer picked a different direction than RYUX recommended in all three sets. That is why the
   pick is the user's: RYUX lays out the options and the trade-offs, the person decides.
 
-<a href="wallet-home.png"><img src="wallet-home.png" alt="Two finished wallet home screens: RYUX 2.8 on the left with a yellow Pay button in the bottom bar, RYUX 2.9 on the right with a receipt-style activity list and a Scan to pay button" width="62%"></a>
+<a href="https://github.com/ryuxdsgn/design-intelligence/releases/download/media/benchmarks--explore-judge--wallet-home.png"><img src="https://github.com/ryuxdsgn/design-intelligence/releases/download/media/benchmarks--explore-judge--wallet-home.png" alt="Two finished wallet home screens: RYUX 2.8 on the left with a yellow Pay button in the bottom bar, RYUX 2.9 on the right with a receipt-style activity list and a Scan to pay button" width="62%"></a>
 
 Final screens, shuffled and unlabeled: the designer shipped one from each side and neither in the
 third pair. One pick praised a clear, centered pay button in the bottom bar, so RYUX 2.9.2 now allows

@@ -17,14 +17,14 @@ picks the best match; the price difference "goes back to your wallet automatical
 pays out instantly. Screen 06 adds a Rp10.000 late voucher and a full refund for orders 30+ minutes late. The brief
 said none of this, and the agent asked nothing.
 
-<a href="benchmarks/food-delivery-figma/runs/A2-page.jpg"><img src="benchmarks/food-delivery-figma/runs/A2-page.jpg" alt="No skill: eight order-tracking screens; the item-unavailable sheet has a reply timer, an automatic refund to the wallet, and a pre-selected replacement; the late screen adds a voucher" width="100%"></a>
+<a href="https://github.com/ryuxdsgn/design-intelligence/releases/download/media/benchmarks--food-delivery-figma--runs--A2-page.jpg"><img src="https://github.com/ryuxdsgn/design-intelligence/releases/download/media/benchmarks--food-delivery-figma--runs--A2-page.jpg" alt="No skill: eight order-tracking screens; the item-unavailable sheet has a reply timer, an automatic refund to the wallet, and a pre-selected replacement; the late screen adds a voucher" width="100%"></a>
 
 **With RYUX.** The order waits for the customer's choice. Sending shows progress and cannot be tapped twice; a failed
 send says what happened and keeps the choice; dismissing the sheet decides nothing and pins it above the tracker.
 What happens if nobody answers, and how a removed item is refunded, are tagged on screen as "Prototype rule, not
 decided yet".
 
-<a href="benchmarks/food-delivery-figma/runs/B1-4-late-and-unavailable.jpg"><img src="benchmarks/food-delivery-figma/runs/B1-4-late-and-unavailable.jpg" alt="With RYUX: running late, then the out-of-stock sheet in four states (decide, sending, failed with the choice kept, replaced with the new total) and the dismissed sheet pinned above the tracker; undecided rules carry a dashed prototype-rule tag" width="100%"></a>
+<a href="https://github.com/ryuxdsgn/design-intelligence/releases/download/media/benchmarks--food-delivery-figma--runs--B1-4-late-and-unavailable.jpg"><img src="https://github.com/ryuxdsgn/design-intelligence/releases/download/media/benchmarks--food-delivery-figma--runs--B1-4-late-and-unavailable.jpg" alt="With RYUX: running late, then the out-of-stock sheet in four states (decide, sending, failed with the choice kept, replaced with the new total) and the dismissed sheet pinned above the tracker; undecided rules carry a dashed prototype-rule tag" width="100%"></a>
 
 ### What RYUX missed
 

@@ -4,12 +4,12 @@ Round 1's B1 was honest but plain. Here RYUX wrote the DESIGN.md from the same b
 look, in words; the owner's motion study of a ride-hailing booking flow, in frames), then built. Protocol, fixed
 before the run and amended once before any result: [`PROTOCOL.md`](PROTOCOL.md).
 
-<a href="see-the-difference.mp4"><img src="see-the-difference.gif" alt="Animation: the brief and the two sides; the agent with no skill builds straight away while RYUX writes a DESIGN.md answering who the users are, their job, the evidence, the patterns, and how to evaluate, and declines the reference app's late voucher as someone else's policy; both prototypes side by side on an unavailable item, a late order, and the way to the door, the left showing a one-minute auto-pick, refund timing, and a $5 credit, the right showing real food photos, the price of each choice with Undo, a time that rolls with no promise, and the food riding with the courier on the map; then the numbers and what RYUX missed" width="100%"></a>
+<a href="https://github.com/ryuxdsgn/design-intelligence/releases/download/media/benchmarks--food-delivery-designmd--round-2--see-the-difference.mp4"><img src="https://github.com/ryuxdsgn/design-intelligence/releases/download/media/benchmarks--food-delivery-designmd--round-2--see-the-difference.gif" alt="Animation: the brief and the two sides; the agent with no skill builds straight away while RYUX writes a DESIGN.md answering who the users are, their job, the evidence, the patterns, and how to evaluate, and declines the reference app's late voucher as someone else's policy; both prototypes side by side on an unavailable item, a late order, and the way to the door, the left showing a one-minute auto-pick, refund timing, and a $5 credit, the right showing real food photos, the price of each choice with Undo, a time that rolls with no promise, and the food riding with the courier on the map; then the numbers and what RYUX missed" width="100%"></a>
 
-Video: [`see-the-difference.mp4`](see-the-difference.mp4). Shown: order-tracking's A1 and this B1, the same
+Video: [`see-the-difference.mp4`](https://github.com/ryuxdsgn/design-intelligence/releases/download/media/benchmarks--food-delivery-designmd--round-2--see-the-difference.mp4). Shown: order-tracking's A1 and this B1, the same
 scenario (an item becomes unavailable, remove it, the order runs late, then on to the door). Scenario controls
 were clicked by script with the prototype panels hidden; the dots are in-app taps only. Screens:
-[`runs/B1-screens.jpg`](runs/B1-screens.jpg), illustrations: [`runs/B1-illustrations.png`](runs/B1-illustrations.png).
+[`runs/B1-screens.jpg`](https://github.com/ryuxdsgn/design-intelligence/releases/download/media/benchmarks--food-delivery-designmd--round-2--runs--B1-screens.jpg), illustrations: [`runs/B1-illustrations.png`](https://github.com/ryuxdsgn/design-intelligence/releases/download/media/benchmarks--food-delivery-designmd--round-2--runs--B1-illustrations.png).
 
 ## What happened
 

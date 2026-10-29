@@ -4,7 +4,7 @@ One Build prompt, six fresh agents: three with RYUX 2.9.1, three with the build 
 RX-UI-14 (type that is set, not only sized) and RX-UI-15 (detail craft). Same model, same prompt,
 each run in an empty folder. The criteria and the keep rule were written down before the first run.
 
-<a href="typography-measure.png"><img src="typography-measure.png" alt="The same help paragraph from two runs: RYUX 2.9.1 at 91 characters per line, RYUX 2.9.2 at 75 characters per line" width="100%"></a>
+<a href="https://github.com/ryuxdsgn/design-intelligence/releases/download/media/benchmarks--typo-craft--typography-measure.png"><img src="https://github.com/ryuxdsgn/design-intelligence/releases/download/media/benchmarks--typo-craft--typography-measure.png" alt="The same help paragraph from two runs: RYUX 2.9.1 at 91 characters per line, RYUX 2.9.2 at 75 characters per line" width="100%"></a>
 
 ## The prompt
 

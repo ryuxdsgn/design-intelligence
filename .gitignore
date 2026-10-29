@@ -21,3 +21,14 @@ docs/ops.md
 
 # Local design working files (encrypted .pen and exports)
 /design/
+
+# Benchmark media lives in the `media` GitHub release, not in git
+# (docs/benchmarks/x/y.png is uploaded as asset benchmarks--x--y.png)
+/docs/**/*.png
+/docs/**/*.jpg
+/docs/**/*.jpeg
+/docs/**/*.gif
+/docs/**/*.mp4
+/docs/**/*.webm
+/docs/**/*.mov
+/docs/**/*.webp

@@ -25,7 +25,7 @@ Same brief, same model, a fresh agent per side: food delivery order tracking, de
 DESIGN.md: RYUX wrote one from the brief and two references (Airbnb's look, a ride-hailing motion study), asked,
 then designed. Both phones play each run's own Figma frames through the same scenario; the motion is made for the video.
 
-<a href="docs/benchmarks/food-delivery-figma/"><img src="docs/benchmarks/food-delivery-figma/see-the-difference.gif" alt="Animation: the brief; the no-skill agent designs straight away while RYUX writes DESIGN.md, asks, and explores three layouts; two Android phones play both Figma pages through an unavailable item, a late order, and the way to the door, the left showing a reply timer with an auto-pick, an instant refund, a late voucher, tips, and a rating, the right waiting for the customer's choice, keeping it after a failed send, and tagging every undecided rule on screen; then the numbers" width="100%"></a>
+<a href="docs/benchmarks/food-delivery-figma/"><img src="https://github.com/ryuxdsgn/design-intelligence/releases/download/media/benchmarks--food-delivery-figma--see-the-difference.gif" alt="Animation: the brief; the no-skill agent designs straight away while RYUX writes DESIGN.md, asks, and explores three layouts; two Android phones play both Figma pages through an unavailable item, a late order, and the way to the door, the left showing a reply timer with an auto-pick, an instant refund, a late voucher, tips, and a rating, the right waiting for the customer's choice, keeping it after a failed send, and tagging every undecided rule on screen; then the numbers" width="100%"></a>
 
 Both sides look finished. The difference is in what the agent decided on your behalf:
 

@@ -5,9 +5,9 @@ model, same harness, each run in an empty folder, designed in pen.dev on a clear
 counts, the order of runs, and which pair goes in the README (run 1 of each side, whatever it
 showed) were written down before the first run.
 
-<a href="see-the-difference.gif"><img src="see-the-difference.gif" alt="Animation: the same brief; with no skill the agent draws right away, with RYUX it asks three questions first; then both sets of screens; close-ups with seven invented facts circled on the left and labeled assumptions on the right; seven states drawn on the right and none on the left; then the totals across three runs, and a follow-up turn on the RYUX side with its recorded success animation" width="100%"></a>
+<a href="https://github.com/ryuxdsgn/design-intelligence/releases/download/media/benchmarks--hero-finance--see-the-difference.gif"><img src="https://github.com/ryuxdsgn/design-intelligence/releases/download/media/benchmarks--hero-finance--see-the-difference.gif" alt="Animation: the same brief; with no skill the agent draws right away, with RYUX it asks three questions first; then both sets of screens; close-ups with seven invented facts circled on the left and labeled assumptions on the right; seven states drawn on the right and none on the left; then the totals across three runs, and a follow-up turn on the RYUX side with its recorded success animation" width="100%"></a>
 
-Still version: [`see-the-difference.png`](see-the-difference.png).
+Still version: [`see-the-difference.png`](https://github.com/ryuxdsgn/design-intelligence/releases/download/media/benchmarks--hero-finance--see-the-difference.png).
 
 ## The brief
 
@@ -38,12 +38,12 @@ From the exported frames and each run's final message:
 
 | Run | Asked first | Screens | Shown as fact, never given | Market |
 | --- | --- | --- | --- | --- |
-| [A1](runs/A1.jpg) | no | 3 | coins (12.400, +430 earned), travel promo "10% back", PayLater "0% fee" and a limit, voucher code, "Service fee Free", ride, food, flights, hotels, insurance, ride offer "pickup in 4 min" | IDR, chosen without asking |
-| [A2](runs/A2.jpg) | no | 3 | points (1,240), 5% cashback "within 24 hours", travel promo "10% back by 31 Oct", "No fees", ride, food, flights, hotels, insurance, ride offer "4 min away", a Rewards tab | SGD, chosen without asking |
-| [A3](runs/A3.jpg) | no | 3 | points (12,480, +765), PayLater limit, voucher code, "Service fee Free", travel, insurance, investing, "30% off airport rides", ride offer "15% off", a monthly budget | IDR, chosen without asking |
-| [B1](runs/B1.jpg) | yes, 3 questions | 3 + [7 states](runs/B1-other-frames.jpg): loading, empty, offline, processing, not enough balance, declined, 360 wide | none; fee "$0.00 is sample data", Face ID or PIN, saved billers, and the brand listed to confirm | USD sample, from the reply |
-| [B2](runs/B2.jpg) | yes | 3 + [6 states and 360 wide](runs/B2-other-frames.jpg) | none; "No fee is shown, on purpose. Fees aren't decided"; added features listed as added | USD sample |
-| [B3](runs/B3.jpg) | yes | 3 + [7 states, 360 wide, three dashboard directions](runs/B3-other-frames.jpg) | none; fees, failure wording, Face ID, and Share receipt listed as assumptions | USD sample |
+| [A1](https://github.com/ryuxdsgn/design-intelligence/releases/download/media/benchmarks--hero-finance--runs--A1.jpg) | no | 3 | coins (12.400, +430 earned), travel promo "10% back", PayLater "0% fee" and a limit, voucher code, "Service fee Free", ride, food, flights, hotels, insurance, ride offer "pickup in 4 min" | IDR, chosen without asking |
+| [A2](https://github.com/ryuxdsgn/design-intelligence/releases/download/media/benchmarks--hero-finance--runs--A2.jpg) | no | 3 | points (1,240), 5% cashback "within 24 hours", travel promo "10% back by 31 Oct", "No fees", ride, food, flights, hotels, insurance, ride offer "4 min away", a Rewards tab | SGD, chosen without asking |
+| [A3](https://github.com/ryuxdsgn/design-intelligence/releases/download/media/benchmarks--hero-finance--runs--A3.jpg) | no | 3 | points (12,480, +765), PayLater limit, voucher code, "Service fee Free", travel, insurance, investing, "30% off airport rides", ride offer "15% off", a monthly budget | IDR, chosen without asking |
+| [B1](https://github.com/ryuxdsgn/design-intelligence/releases/download/media/benchmarks--hero-finance--runs--B1.jpg) | yes, 3 questions | 3 + [7 states](https://github.com/ryuxdsgn/design-intelligence/releases/download/media/benchmarks--hero-finance--runs--B1-other-frames.jpg): loading, empty, offline, processing, not enough balance, declined, 360 wide | none; fee "$0.00 is sample data", Face ID or PIN, saved billers, and the brand listed to confirm | USD sample, from the reply |
+| [B2](https://github.com/ryuxdsgn/design-intelligence/releases/download/media/benchmarks--hero-finance--runs--B2.jpg) | yes | 3 + [6 states and 360 wide](https://github.com/ryuxdsgn/design-intelligence/releases/download/media/benchmarks--hero-finance--runs--B2-other-frames.jpg) | none; "No fee is shown, on purpose. Fees aren't decided"; added features listed as added | USD sample |
+| [B3](https://github.com/ryuxdsgn/design-intelligence/releases/download/media/benchmarks--hero-finance--runs--B3.jpg) | yes | 3 + [7 states, 360 wide, three dashboard directions](https://github.com/ryuxdsgn/design-intelligence/releases/download/media/benchmarks--hero-finance--runs--B3-other-frames.jpg) | none; fees, failure wording, Face ID, and Share receipt listed as assumptions | USD sample |
 
 - Asked before designing: A 0 of 3, B 3 of 3.
 - Facts not in the brief shown as given: A 7 to 9 kinds per run, in 3 of 3; B none, in 3 of 3, with

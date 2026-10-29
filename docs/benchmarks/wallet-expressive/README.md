@@ -9,9 +9,9 @@ typefaces, a signature, motion specs): the runs followed the spec. [`round-3/`](
 concept: the screens came out plain. Both led to RYUX writing the DESIGN.md itself (RX-PR-12, see
 [food delivery](../food-delivery-designmd/)).
 
-<a href="see-the-difference.mp4"><img src="see-the-difference.gif" alt="Animation: the brief and the two sides; the first reply, where A1 has already built and B1 asks three questions with no specific market as its recommendation; both prototypes played side by side with the same taps on a failed transfer, a completed payment, and a pending transfer, A1 showing an invented fee, a real bank and merchant, and a cancel window, B1 showing where the money is with a dot that travels to the merchant; then totals across all six runs, including what RYUX missed and the cost" width="100%"></a>
+<a href="https://github.com/ryuxdsgn/design-intelligence/releases/download/media/benchmarks--wallet-expressive--see-the-difference.mp4"><img src="https://github.com/ryuxdsgn/design-intelligence/releases/download/media/benchmarks--wallet-expressive--see-the-difference.gif" alt="Animation: the brief and the two sides; the first reply, where A1 has already built and B1 asks three questions with no specific market as its recommendation; both prototypes played side by side with the same taps on a failed transfer, a completed payment, and a pending transfer, A1 showing an invented fee, a real bank and merchant, and a cancel window, B1 showing where the money is with a dot that travels to the merchant; then totals across all six runs, including what RYUX missed and the cost" width="100%"></a>
 
-Video: [`see-the-difference.mp4`](see-the-difference.mp4). Still: [`see-the-difference.png`](see-the-difference.png).
+Video: [`see-the-difference.mp4`](https://github.com/ryuxdsgn/design-intelligence/releases/download/media/benchmarks--wallet-expressive--see-the-difference.mp4). Still: [`see-the-difference.png`](https://github.com/ryuxdsgn/design-intelligence/releases/download/media/benchmarks--wallet-expressive--see-the-difference.png).
 Shown: A1 and B1, the pair [`PROTOCOL.md`](PROTOCOL.md) fixed before the first run. Both phones play each
 prototype's own screens, recorded in Chromium at 390 wide with the same tap script; the finger and captions are
 drawn on top, the same way on both sides. Prototype controls are hidden; nothing else is edited.
