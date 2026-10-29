@@ -71,7 +71,7 @@ const STYLE = ["css", "scss", "sass", "less"] as const;
 const SCRIPT = ["js", "mjs", "cjs", "ts"] as const;
 const CODE = [...MARKUP, ...SCRIPT] as const;
 /** Every extension `ryux scan` reads. Markdown is left out: docs quote wrong examples on purpose. */
-export const SCAN_EXTS: readonly string[] = [...MARKUP, ...STYLE, ...SCRIPT];
+export const SCAN_EXTS: readonly string[] = [...MARKUP, ...STYLE, ...SCRIPT, "svg"];
 
 const short = (s: string): string => {
   const t = s.replace(/\s+/g, " ").trim();
@@ -331,6 +331,40 @@ export const DETECTORS: Detector[] = [
       const distinct = [...new Set(found.map((f) => f.value))];
       if (distinct.length < 3) return [];
       return [{ index: found[0].index, length: found[0].value.length, message: `${distinct.length} one-off colors (${distinct.slice(0, 3).join(", ")}${distinct.length > 3 ? ", ..." : ""}): use the color tokens, or define them by role` }];
+    },
+  },
+  {
+    rule: "RX-UI-19",
+    level: "fail",
+    looksFor: "an .svg file whose root has no viewBox, so it cannot scale",
+    exts: ["svg"],
+    find: ({ text }) => {
+      const root = tags(text, "svg")[0];
+      if (!root || /\bviewBox\s*=/.test(root.attrs)) return [];
+      return [{ index: root.index, length: 4, message: "<svg> with no viewBox: add one (viewBox=\"0 0 w h\") so the art scales with its container" }];
+    },
+  },
+  {
+    rule: "RX-UI-19",
+    level: "warn",
+    looksFor: "an .svg file with a fixed width or height on the root, an embedded raster, <text> inside the art, or editor metadata",
+    exts: ["svg"],
+    find: ({ text }) => {
+      const root = tags(text, "svg")[0];
+      if (!root) return [];
+      const fixed = [...root.attrs.matchAll(/(?<![\w:-])(width|height)\s*=\s*["']([^"']+)["']/g)].filter((m) => !/%$/.test(m[2].trim()));
+      return [
+        ...(fixed.length ? [{ index: root.index, length: 4, message: `fixed ${fixed.map((m) => `${m[1]}="${m[2]}"`).join(" ")} on the root: leave the size to CSS so the art fits its container` }] : []),
+        // One finding per kind: an editor export repeats its metadata on every element.
+        ...([
+          [/<(?:image|feImage)\b|data:image\/(?:png|jpe?g|gif|webp)/, "an embedded raster inside the SVG: draw it as vector, or ship the raster on its own at 2x"],
+          [/<text\b/, "<text> inside the art: keep words in the HTML so they can be translated, read, and zoomed"],
+          [/\b(?:sodipodi|inkscape):|xmlns:sketch|data-figma|<metadata\b/, "editor metadata: export without it"],
+        ] as const).flatMap(([re, message]) => {
+          const m = re.exec(text);
+          return m ? [{ index: m.index, length: m[0].length, message }] : [];
+        }),
+      ];
     },
   },
 ];

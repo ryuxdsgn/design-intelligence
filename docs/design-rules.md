@@ -1031,6 +1031,7 @@ Gate area UI. Covers each asset's concept and meaning, the written style, one fa
 - Not when: a concept frame that will not be built
 - Trade-off: SVG built from tokens takes longer than one export
 - Check: render in every theme; read the SVG source
+- Machine check: `ryux scan` flags an .svg file whose root has no viewBox, so it cannot scale (fail); an .svg file with a fixed width or height on the root, an embedded raster, <text> inside the art, or editor metadata (warn)
 
 #### RX-UI-21 [Contextual] Pick the production method from the asset's job
 

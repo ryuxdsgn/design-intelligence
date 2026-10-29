@@ -21,7 +21,8 @@ const measure = ({ src, shapes }) => {
   const raster = Math.max(root.querySelectorAll('image, feImage').length,
     (src.match(/data:image\/(png|jpe?g|gif|webp)/g) || []).length);
   const text = root.querySelectorAll('text').length;
-  const metadata = /sodipodi|inkscape|xmlns:sketch|data-figma|<metadata/i.test(src);
+  // Editor attributes, not the word: a comment that mentions Inkscape is not metadata (amended 2026-10-29, after scoring).
+  const metadata = /\b(?:sodipodi|inkscape):|xmlns:sketch|data-figma|<metadata\b/.test(src);
   const groups = [...root.querySelectorAll('g')];
   const named = groups.filter(g => g.id || g.getAttribute('data-name') || g.getAttribute('inkscape:label'));
   const depth = el => { let d = 0; for (let p = el.parentElement; p && p !== root; p = p.parentElement) if (p.localName === 'g') d++; return d; };
