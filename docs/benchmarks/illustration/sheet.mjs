@@ -1,5 +1,5 @@
-// sheet.mjs <runs_dir> <out_dir>: blind rating sheets for the illustration protocol.
-// Pairs A1-B1 and A2-B2 per task, X/Y at random, mapping sealed in <out_dir>/sealed/mapping.json.
+// sheet.mjs <runs_dir> <out_dir> [arm]: blind rating sheets for the illustration protocol.
+// Pairs A1 with <arm>1 and A2 with <arm>2 per task (arm B by default; C for the B′ rerun), X/Y at random, mapping sealed in <out_dir>/sealed/mapping.json.
 // Each side: its SVGs inline at display size and 2x, on light and on dark, with the layer outline.
 //   PLAYWRIGHT_ROOT=<dir> node sheet.mjs ~/bench-runs/illustration knowledge/benchmarks/illustration
 import { readFileSync, readdirSync, writeFileSync, mkdirSync, existsSync } from 'fs';
@@ -9,7 +9,7 @@ import { createRequire } from 'module';
 const require = createRequire(process.env.PLAYWRIGHT_ROOT ? process.env.PLAYWRIGHT_ROOT + '/' : import.meta.url);
 const { chromium } = require('playwright');
 
-const [runs, out] = process.argv.slice(2);
+const [runs, out, arm = 'B'] = process.argv.slice(2);
 // Display width per task (px), from each brief.
 const TASKS = { 't0-icons': 24, 't1-empty-states': 240, 't2-mascot': 320, 't3-editorial': 800 };
 const svgs = dir => existsSync(join(dir, 'art'))
@@ -54,10 +54,10 @@ mkdirSync(join(out, 'sealed'), { recursive: true }); mkdirSync(join(out, 'survey
 const mapping = {}; const pages = [];
 let n = 0;
 for (const [task, w] of Object.entries(TASKS)) for (const i of [1, 2]) {
-  const a = svgs(join(runs, task, `A${i}`)), b = svgs(join(runs, task, `B${i}`));
+  const a = svgs(join(runs, task, `A${i}`)), b = svgs(join(runs, task, `${arm}${i}`));
   const flip = randomInt(2) === 1; n++;
   const pair = `pair-${n}`;
-  mapping[pair] = { task, X: flip ? `B${i}` : `A${i}`, Y: flip ? `A${i}` : `B${i}` };
+  mapping[pair] = { task, X: flip ? `${arm}${i}` : `A${i}`, Y: flip ? `A${i}` : `${arm}${i}` };
   const [x, y] = flip ? [b, a] : [a, b];
   const html = `<!doctype html><meta charset="utf-8"><title>${pair}</title><style>
     body{font:14px system-ui;margin:24px;color:#222} h1{font-size:18px} section{margin:0 0 40px}
