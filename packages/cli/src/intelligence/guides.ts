@@ -27,7 +27,7 @@ from DESIGN.md and the repo's screens). Pick the entry point, read its file, the
 | **QA** | verify a build against the intended design | \`capabilities/qa.md\` |
 
 Knowledge modules (\`knowledge/\`): product, ux, interaction, forms, edge-cases, content, ui, imagery (images, motion,
-illustration, expressive surfaces), design-system, accessibility, responsive, frontend, and anti-slop. Evidence comes from the brief, the
+expressive surfaces), illustration, design-system, accessibility, responsive, frontend, and anti-slop. Evidence comes from the brief, the
 project, product data, standards, and the ryux MCP when connected; none is required. Every entry point ends at the quality gates: the Hard
 Gates below and the Delivery Gate, with anti-slop as the last check, never the starting point. Keep them apart:
 Analyze says what exists, Design what to do, Critique if it is right, QA if it matches.`;
@@ -143,7 +143,8 @@ The six stages of the core workflow (SKILL.md), as Design runs them.
    - Before the first illustration is drawn, in any alternative, write its style in the Design
      Direction's Illustration field (RX-UI-17) and show it on the canvas next to the alternatives;
      they share it, or each names its own. Writing it after drawing documents the result instead of
-     directing it.
+     directing it. Each drawn asset also gets its concept line: what it must say and the cue
+     that shows it (RX-UI-24, knowledge/illustration.md).
    - A small change, or a screen inside a fixed design system, skips Explore: say so and continue.
 4. **Evaluate and select.** Rate each alternative against the Frame criteria, Strong, Adequate, or
    Weak with one reason each, fit first: the user's main task (can it be done fast, where the hand
@@ -170,8 +171,8 @@ The six stages of the core workflow (SKILL.md), as Design runs them.
    roles, spacing, radius, and type sizes and families before the first frame, and components for
    repeated elements (RX-DS-03). Building the system does not replace the states: design every
    state that matters (empty, loading, error, including content that fails to load) and every width
-   you claim, and source assets on purpose (RX-UI-13); illustration follows a written style and is
-   made as one set (RX-UI-17, RX-UI-18).
+   you claim, and source assets on purpose (RX-UI-13); illustration follows a written style, is
+   made as one set, and shows its meaning (RX-UI-17, RX-UI-18, RX-UI-24).
    **Building a component library** (RX-DS-07 to RX-DS-12): write the contract first (RX-DS-06),
    then variables (primitives, semantic roles, modes), then components. In Figma, building needs the
    Figma MCP with \`use_figma\` (the remote server and a Full seat); without it, build in pen.dev or
@@ -369,8 +370,8 @@ workflow (SKILL.md); Frame, Explore, and Evaluate happen in Design.
 3. **Read the modules the task needs** from the task table: for example accessibility, responsive,
    and edge-cases for any UI, and forms and content for a form. When the build adds motion or
    transitions, read knowledge/imagery.md (RX-UI-11) before writing any: how often the surface is seen
-   decides how much it moves. When it adds illustration, read RX-UI-19: SVG coloured from tokens,
-   no text inside, alt text that says the meaning.
+   decides how much it moves. When it adds illustration, read knowledge/illustration.md: each asset's concept line
+   (RX-UI-24), and SVG coloured from tokens, no text inside, alt text that says the meaning (RX-UI-19).
 4. **Implement faithfully.** Use semantic elements, existing components, and real data paths.
    Build must not invent business rules, prices, or limits; API behavior or response shapes; or
    data presented as real (RX-FE-02, RX-PR-02). It must not silently change a design decision: a
@@ -603,8 +604,8 @@ Does not cover: layout of the text (see ryux-ui).`,
   ui: `**Visuals are not decoration. They are communication.** RYUX UI owns the visual expression of
 a product: what each visual decision communicates, why it exists, and how it behaves. Functional UI
 helps the user read, decide, or act. Anything decorative needs a stated reason (see the purpose
-gates in ryux-anti-slop). This module is the visual system; art direction, motion, assets, and
-illustration live in knowledge/imagery.md, read when the work has them.
+gates in ryux-anti-slop). This module is the visual system; art direction, motion, and assets live in
+knowledge/imagery.md, and illustration in knowledge/illustration.md, read when the work has them.
 
 **1. UI system.** Work in this order:
 1. **Hierarchy**: what is read first, second, third? The primary action and key information win.
@@ -741,7 +742,8 @@ Subject:        what is shown (the product concept, not a generic person or devi
 Visual language: editorial / product-centric / technical / ..., and the art direction
 Form:           shape language, geometric or organic, depth
 Illustration:   when there is any, its written style before the first drawing (RX-UI-17): line,
-                shape, colour tokens, depth and detail, subject, characters, texture
+                shape, colour tokens, depth and detail, subject, characters, texture; and
+                each asset's concept line (RX-UI-24)
 Method:         SVG / generated raster / 3D / combined, why, and the tool you have (RX-UI-21)
 Composition:    where the subject sits, and the space kept for copy
 Color, material, lighting: from the product palette; surfaces; direction and softness
@@ -754,15 +756,40 @@ Sources:        reference screen_ids or the analysis it came from
 A generated image is illustrative art; never present it as a real customer or a real product
 screen (RX-UI-07).
 
-**Illustration.** With no brand system to follow, write the style in five lines before the first
-drawing, plus a character system when it has people or a mascot, and record it as a Decision
-Receipt (RX-UI-17); make a set together and compare it side by side (RX-UI-18), and ship it as SVG
-coloured from tokens, with no text inside and alt text that says the meaning (RX-UI-19). Pick the
-method from what the asset must do later (RX-UI-21), and write any texture or mixed media into the
-style with its source and its limits (RX-UI-22).
+**Illustration.** Drawing it (each asset's concept, the written style, one family, the method,
+the themed SVG, and the render-and-read check) lives in knowledge/illustration.md.
 
-Does not cover: the visual system, hierarchy, type, and icons (see ryux-ui), or component reuse
-and tokens (see ryux-design-system).`,
+Does not cover: the visual system, hierarchy, type, and icons (see ryux-ui), drawing illustration
+(see knowledge/illustration.md), or component reuse and tokens (see ryux-design-system).`,
+
+  illustration: `**Illustration that says something.** Read this with knowledge/imagery.md when the work
+draws illustration, a mascot or character, or a custom icon set. The common failure is not broken
+geometry but a concept that says the wrong thing: an empty state drawn full, an icon that is the
+category's pictogram (illustration baseline, 2026-10-29). Work in five stages; each leaves something
+you can check.
+
+1. **Brief.** Each asset's job, the line it must say (RX-UI-24), its display size, and its modes
+   (light, dark). On an expressive surface, the Visual Brief comes first (knowledge/imagery.md).
+2. **Concepts.** Two or three concepts per asset, a line each, from the product's own world rather
+   than the category's; pick the one that reads fastest without its label. Write the style before the
+   first drawing (RX-UI-17); a set shares it (RX-UI-18). Only the chosen concept is drawn.
+3. **Construction.** Silhouette first: the subject reads as one flat shape at display size before
+   any detail. Then the relations between parts (what touches, what overlaps, where the light comes
+   from), then detail. Name layers for what they are (\`recipe-box\`, \`steam\`, not \`path-12\` or a
+   coordinate). Pick the method from the asset's job (RX-UI-21) and ship it themed (RX-UI-19).
+4. **Render and read.** Render at display size and 2x, on light and dark, and look before anything
+   else. Cover the label and write what each asset says; compare it with the stage 1 line. Then
+   craft: the silhouette, joints and overlaps, the size of shadows, contrast between the subject and
+   what is behind it, and what is lost at the smallest size. Fix and render again; compare a set side
+   by side (RX-UI-18).
+5. **Final direction.** Hold the result against the brief: each asset says its line, in one style,
+   with no part that reads as something else. A mode or size you did not render is NOT VERIFIED.
+
+Keep the cost in proportion: concepts are written, not drawn, and the render loop stops when the
+read matches the line, not when nothing more could be polished.
+
+Does not cover: photos, 3D scenes, motion, and sourcing (see knowledge/imagery.md), or functional
+icons from the icon set (see ryux-ui).`,
 
   "design-system": `Prioritize the existing system. Before creating anything:
 
@@ -858,8 +885,8 @@ Card radius | 16px                 | 8px            | half the radius | minor   
 
 **Without a reference**, check the build against its own intent and the rules below.
 
-**Illustration** (when the build has any): it matches the written style (RX-UI-17), a set reads as one
-family side by side (RX-UI-18), it reads at its real displayed size including the smallest width, it
+**Illustration** (when the build has any): with its label covered, each asset says its concept
+line (RX-UI-24); it matches the written style (RX-UI-17), a set reads as one family side by side (RX-UI-18), it reads at its real displayed size including the smallest width, it
 works in every theme, and nothing the user needs exists only in the image (RX-UI-19). Without a
 render, report these as NOT VERIFIED.
 
