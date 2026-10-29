@@ -168,7 +168,7 @@ docs/             design rules, showcase, benchmarks
 pnpm install && pnpm typecheck && pnpm test
 ```
 
-Issues and pull requests are welcome. Rules and skills are generated from `packages/cli/src`; run
+Issues and pull requests are welcome; start with [CONTRIBUTING.md](./CONTRIBUTING.md). Rules and skills are generated from `packages/cli/src`; run
 `pnpm sync:skills` after changing them. Designers who want to rate the next blind round: open an issue. To
 report a vulnerability, see [SECURITY.md](./SECURITY.md).
 

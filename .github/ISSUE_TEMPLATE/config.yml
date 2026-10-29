@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Report a vulnerability
+    url: https://github.com/ryuxdsgn/design-intelligence/security/advisories/new
+    about: Security problems go here privately, never in a public issue.
+  - name: Guide
+    url: https://github.com/ryuxdsgn/design-intelligence/blob/main/GUIDE.md
+    about: Install, prompting, and how RYUX reasons.
