@@ -58,7 +58,10 @@ check the motion rules already in force (RX-UI-11, RX-A11Y-08):
 - a close mid-way turns back from where it is, with no jump to fully open and no restart;
 - closing takes no longer than opening; entrances never use ease-in;
 - only transform and opacity move; a menu grows from its trigger, a drawer from its own edge;
-- what people open many times a day (menus, tabs) appears at once or with a short fade;
+- what people open many times a day (menus, tabs) uses a short transition, 250 ms or less, that a
+  click can interrupt; a command palette opened from the keyboard appears at once;
+- when tabs or a segmented control switch, the panel content moves with the indicator, not only
+  the indicator;
 - reduced motion leaves a fade or a cut, no movement;
 - after a dialog or drawer closes, focus is back on the control that opened it.
 Then record the interaction and step through it frame by frame: look for broken or skipped frames,
