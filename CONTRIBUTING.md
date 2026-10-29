@@ -16,7 +16,8 @@ that invented a fact while RYUX was loaded. Code and docs pull requests are welc
 - **Pull requests** for fixes, tests, and docs. For a new rule or a change to how a step works, open
   an issue first so we can agree on the evidence before you write it.
 
-Security problems never go in a public issue: see [SECURITY.md](./SECURITY.md).
+Security problems never go in a public issue: see [SECURITY.md](./SECURITY.md). Everyone taking
+part follows the [Code of Conduct](./CODE_OF_CONDUCT.md).
 
 ## Set up
 
