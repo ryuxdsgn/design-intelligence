@@ -51,7 +51,8 @@ framework (questions, decision trees, templates) followed by its rules.
 | `knowledge/edge-cases.md` | Edge cases: data, form, network, permission, and system states beyond the happy path | RX-EC |
 | `knowledge/content.md` | Content design: specific copy, action labels, error messages, terminology, and locale (money, dates, natural Indonesian when the copy is Indonesian) | RX-CD |
 | `knowledge/ui.md` | UI design: the visual system of a product: hierarchy, type, layout, density, color, containers, icons, visual language, and detail craft | RX-UI |
-| `knowledge/imagery.md` | Imagery and motion: art direction, composition, expressive surfaces, motion, asset sourcing and provenance, illustration, and delight | RX-UI |
+| `knowledge/imagery.md` | Imagery and motion: art direction, composition, expressive surfaces, motion, asset sourcing and provenance, and delight | RX-UI |
+| `knowledge/illustration.md` | Illustration: each asset's concept and meaning, the written style, one family, the production method, and the render-and-read check | RX-UI |
 | `knowledge/design-system.md` | Design system: search before create, tokens, component states, consistency locks | RX-DS |
 | `knowledge/accessibility.md` | Accessibility: semantics, keyboard, focus, contrast, targets, names, errors, reduced motion | RX-A11Y |
 | `knowledge/responsive.md` | Responsive design: prioritize, simplify, reorganize; tables, overlays, overflow, safe areas | RX-RD |
@@ -207,12 +208,12 @@ line below for its exact source.
 | Source cited | Rules citing it | Rules citing only this |
 | --- | --- | --- |
 | Public standard or research | 72 | 51 |
-| Industry practice | 20 | 7 |
+| Industry practice | 21 | 8 |
 | Observed in a RYUX run | 17 | 8 |
 | Pattern also in another MIT ruleset (text written for RYUX) | 4 | 4 |
 | RYUX principle, taxonomy, or review | 48 | 22 |
 
-All 125 rules cite a source; 33 cite more than one kind, so the "Rules citing it" column adds up to more than 125.
+All 126 rules cite a source; 33 cite more than one kind, so the "Rules citing it" column adds up to more than 126.
 <!-- provenance:end -->
 
 ## Rules
@@ -220,7 +221,7 @@ All 125 rules cite a source; 33 cite more than one kind, so the "Rules citing it
 Generated from `packages/cli/src/content.ts` by `pnpm sync:skills`. Edit the rules there, not here.
 
 <!-- rules:start -->
-125 rules across 14 modules: 61 Required, 20 Preferred, 44 Contextual; 18 Hard Gates and 13 Quality Locks.
+126 rules across 15 modules: 61 Required, 20 Preferred, 45 Contextual; 18 Hard Gates and 13 Quality Locks.
 
 ### Product thinking (RX-PR) · `knowledge/product.md`
 
@@ -893,7 +894,7 @@ Gate area UI. Covers the visual system of a product: hierarchy, type, layout, de
 
 ### Imagery and motion (RX-UI) · `knowledge/imagery.md`
 
-Gate area UI. Covers art direction, composition, expressive surfaces, motion, asset sourcing and provenance, illustration, and delight. Read when the work has photos, illustration, 3D, motion, or an expressive surface (hero, landing, onboarding, empty state, brand moment).
+Gate area UI. Covers art direction, composition, expressive surfaces, motion, asset sourcing and provenance, and delight. Read when the work has photos, illustration, 3D, motion, or an expressive surface (hero, landing, onboarding, empty state, brand moment).
 
 #### RX-UI-07 [Contextual] Imagery has a job and is what it claims
 
@@ -965,6 +966,29 @@ Gate area UI. Covers art direction, composition, expressive surfaces, motion, as
 - Trade-off: the reflective layer needs knowledge of what users value, which may need research
 - Check: review; Critique Design Read
 
+#### RX-UI-23 [Contextual] A mark designed on request
+
+- When: the user asks for a logo, wordmark, lettermark, app icon, or favicon
+- Do: Brief first (capabilities/design.md, stage 1, at most three questions): the name, what the product does, the audience, the one idea the mark should carry, where it appears (app icon down to a 16 px favicon, the header, social avatars), and any brand assets or limits that exist.
+  - Explore three directions that differ in the kind of mark (wordmark, lettermark or monogram, pictorial or abstract, combination), each with a concept from the product's own domain, not the category's cliché.
+  - Build each as vector (SVG, RX-UI-21): geometric construction on a grid with few anchor points; a wordmark is adjusted (spacing, a modified letter), not the name typed in a font, and the typeface's license is named.
+  - Keep the concept's character for the audience (warmth, energy, trust) in colour and form; take detail away only where small sizes need it, with a simplified favicon when the full mark breaks down.
+  - An app icon is the mark on a full-bleed square tile in the brand colour; the platform applies the mask. One silhouette: no overlapping shapes that merge at 16 px.
+  - Before handing off, render every direction's icon at 16, 32, and 256 px and the lockup on light and dark (a browser or an SVG converter), look at the renders, and fix what fails: legibility at 16 and 32 px, a one-colour version, black and reversed, a clear silhouette, the negative space, and square and round masks. Write the clear space and minimum size. A check you could not run is named, and that direction is not called ready.
+  - Deliver: SVG in full colour, one colour, and reversed; app icon or favicon sizes when asked; a short usage note (clear space, minimum size, colours as tokens); a Decision Receipt; the user picks the direction.
+  - Say plainly that similarity and trademark were not checked and that a trademark search is needed before use; never call a mark unique or safe.
+- Do not: Use the default marks (initials in a circle, a swoosh, a globe, a generic leaf, a gradient blob), imitate another brand's mark, hand off a raster from an image model as the final file, show a single direction with no choice, ship an app icon with no tile, or hand off sizes you did not render and look at.
+- Why: A generated mark drifts to the category's default and fails at small sizes; a mark nobody checked for similarity can collide with another company's. (Brand identity practice (mark types, small-size and one-colour tests, clear space); RX-AS-11; RX-UI-21; owner review 2026-10-24: request that RYUX design a logo when asked)
+- Not when: the product already has a mark; use its file (RX-AS-11)
+- Trade-off: three vector directions take longer than one generated image
+- Check: the renders at 16, 32, and 256 px, light and dark, in one colour, inspected before handoff; review
+
+---
+
+### Illustration (RX-UI) · `knowledge/illustration.md`
+
+Gate area UI. Covers each asset's concept and meaning, the written style, one family, the production method, and the render-and-read check. Read when the work draws, revises, or reviews illustration, a mascot or character, or a custom icon set.
+
 #### RX-UI-17 [Contextual] Illustration follows a written style
 
 - When: the design adds or makes illustration (spot, empty state, onboarding, hero) and the brand has no illustration system
@@ -987,8 +1011,8 @@ Gate area UI. Covers art direction, composition, expressive surfaces, motion, as
 #### RX-UI-18 [Contextual] A set reads as one family
 
 - When: the product uses more than one illustration (empty states, onboarding steps, errors)
-- Do: Make the set together: same canvas and framing, same stroke and palette, same subject scale, viewpoint, and level of detail.
-  - Tie each subject to the screen's job: an empty state shows what will appear there, not a mascot shrugging.
+- Do: Make the set together: same canvas and framing, same stroke and palette, same subject scale and footprint (an added badge stays inside it), viewpoint, and level of detail.
+  - Tie each subject to the screen's job: an empty state shows what will appear there, drawn empty (RX-UI-24), not a mascot shrugging.
   - Put the set side by side before handoff and fix the one that stands out.
 - Do not: Make each illustration in a separate prompt and hand them off without comparing them, or give one more detail or colour than the rest.
 - Why: Users read a mismatched set as a mistake or a different product, and a generator drifts in style from prompt to prompt. (Design-system practice (one illustration family); RX-DS-02 consistency; owner review 2026-10-22: request for illustration guidance)
@@ -1036,22 +1060,19 @@ Gate area UI. Covers art direction, composition, expressive surfaces, motion, as
 - Trade-off: one texture family limits how expressive a single piece can be
 - Check: render at the smallest and largest size; contrast with the texture on
 
-#### RX-UI-23 [Contextual] A mark designed on request
+#### RX-UI-24 [Contextual] Each illustration shows its meaning
 
-- When: the user asks for a logo, wordmark, lettermark, app icon, or favicon
-- Do: Brief first (capabilities/design.md, stage 1, at most three questions): the name, what the product does, the audience, the one idea the mark should carry, where it appears (app icon down to a 16 px favicon, the header, social avatars), and any brand assets or limits that exist.
-  - Explore three directions that differ in the kind of mark (wordmark, lettermark or monogram, pictorial or abstract, combination), each with a concept from the product's own domain, not the category's cliché.
-  - Build each as vector (SVG, RX-UI-21): geometric construction on a grid with few anchor points; a wordmark is adjusted (spacing, a modified letter), not the name typed in a font, and the typeface's license is named.
-  - Keep the concept's character for the audience (warmth, energy, trust) in colour and form; take detail away only where small sizes need it, with a simplified favicon when the full mark breaks down.
-  - An app icon is the mark on a full-bleed square tile in the brand colour; the platform applies the mask. One silhouette: no overlapping shapes that merge at 16 px.
-  - Before handing off, render every direction's icon at 16, 32, and 256 px and the lockup on light and dark (a browser or an SVG converter), look at the renders, and fix what fails: legibility at 16 and 32 px, a one-colour version, black and reversed, a clear silhouette, the negative space, and square and round masks. Write the clear space and minimum size. A check you could not run is named, and that direction is not called ready.
-  - Deliver: SVG in full colour, one colour, and reversed; app icon or favicon sizes when asked; a short usage note (clear space, minimum size, colours as tokens); a Decision Receipt; the user picks the direction.
-  - Say plainly that similarity and trademark were not checked and that a trademark search is needed before use; never call a mark unique or safe.
-- Do not: Use the default marks (initials in a circle, a swoosh, a globe, a generic leaf, a gradient blob), imitate another brand's mark, hand off a raster from an image model as the final file, show a single direction with no choice, ship an app icon with no tile, or hand off sizes you did not render and look at.
-- Why: A generated mark drifts to the category's default and fails at small sizes; a mark nobody checked for similarity can collide with another company's. (Brand identity practice (mark types, small-size and one-colour tests, clear space); RX-AS-11; RX-UI-21; owner review 2026-10-24: request that RYUX design a logo when asked)
-- Not when: the product already has a mark; use its file (RX-AS-11)
-- Trade-off: three vector directions take longer than one generated image
-- Check: the renders at 16, 32, and 256 px, light and dark, in one colour, inspected before handoff; review
+- When: the design draws illustration, a mascot, or a custom icon rather than taking one from the icon set
+- Do: Before drawing, write one line per asset: what it must say (an empty recipe box: "nothing saved yet, add the first"), the concept that says it, taken from the product rather than the category (RX-UI-12), and the one visible cue that proves it (the box is open and empty; a crew-list icon has the list).
+  - Write two or three concepts per asset, a line each, and pick the one that reads fastest without its label; draw only the chosen one.
+  - The state is the meaning: an empty state is visibly empty (no cards, no full shelf), a no-results scene shows the search finding nothing, an offline scene shows the broken link.
+  - A stock pictogram (a plain sailboat, two people, a sun and a cloud) is a choice: use it only when the meaning is the generic one, and say so.
+  - After rendering, look at each asset at its display size with the label covered and write what it says. When that is not the line you wrote, or a part reads as something else (a magnifier as a pan, a vehicle lost against a same-coloured background), redraw that part and look again.
+- Do not: Draw the category's pictogram for a specific meaning, put content in an empty state, or judge the art only enlarged with its caption beside it.
+- Why: An illustration that does not show its meaning is decoration; in the illustration baseline every low score was a concept that said the wrong thing, none was broken drawing. (Art direction practice (concept before rendering; the read test without a caption); illustration baseline 2026-10-29 (docs/benchmarks/illustration): a crew-list icon with no list, empty states that read as full; AI rater approved by the owner; owner decision 2026-10-29: art direction first, no geometry engine)
+- Not when: the brand's illustration system already fixes the subject for this asset; follow it
+- Trade-off: a written line per asset and one more look at the render before handoff
+- Check: the concept lines; the render at display size with the label covered
 
 ---
 

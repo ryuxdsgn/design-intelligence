@@ -146,3 +146,19 @@ test("builds keep their cost down: fresh session, contact sheets, targeted tests
   assert.match(flat("capabilities/qa.md"), /one contact sheet/);
   assert.match(flat("knowledge/frontend.md"), /run the whole suite once before handing off/);
 });
+
+test("illustration is its own module: concept line first, then the read test on the render", () => {
+  // illustration baseline, 2026-10-29: every low score was a concept that said the wrong thing
+  // (a crew-list icon with no list, empty states drawn full); none was broken geometry
+  const files = renderBundle();
+  const ill = files["knowledge/illustration.md"].replace(/\s+/g, " ");
+  assert.match(ill, /RX-UI-24/);
+  assert.match(ill, /an empty state is visibly empty/);
+  assert.match(ill, /with the label covered/);
+  assert.match(ill, /concepts are written, not drawn/);
+  for (const id of ["RX-UI-17", "RX-UI-18", "RX-UI-19", "RX-UI-21", "RX-UI-22"]) {
+    assert.match(ill, new RegExp(`### ${id} `));
+    assert.doesNotMatch(files["knowledge/imagery.md"], new RegExp(`### ${id} `));
+  }
+  assert.match(files["SKILL.md"], /knowledge\/illustration\.md/);
+});

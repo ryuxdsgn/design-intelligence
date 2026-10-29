@@ -22,7 +22,7 @@ Critique
      ↓
 Analyze                   what is actually there
      ↓
-knowledge modules         ux, ui, imagery, interaction, forms, content, accessibility,
+knowledge modules         ux, ui, imagery, illustration, interaction, forms, content, accessibility,
                           responsive, design-system, edge-cases, anti-slop
      ↓
 RYUX Knowledge            real product screens (search_screens, heuristic_eval)
@@ -123,7 +123,8 @@ could carry (RX-UX-08); report extraneous load, never the content the task needs
 | Forms | ryux-forms | labels, validation, input kept, submission states |
 | Content | ryux-content | specific labels, errors, terminology, Rupiah, dates and numbers |
 | UI | ryux-ui | hierarchy, scale, color roles, density, icons |
-| Imagery and motion | ryux-imagery | each visual's job, composition around the copy, motion level, illustration style; the result against its Visual Brief when there is one |
+| Imagery and motion | ryux-imagery | each visual's job, composition around the copy, motion level; the result against its Visual Brief when there is one |
+| Illustration | ryux-illustration | with the label covered, whether each asset says its meaning (an empty state drawn empty); the written style; one family; the themed SVG |
 | Design system | ryux-design-system | consistency, tokens, component states |
 | Accessibility | ryux-accessibility | contrast, targets, focus, names, color alone |
 | Responsive | ryux-responsive | what changes, stays, disappears, or stacks across widths |

@@ -7,8 +7,8 @@ Gives a product a visual system: hierarchy, type, layout, density, color, icons,
 **Visuals are not decoration. They are communication.** RYUX UI owns the visual expression of
 a product: what each visual decision communicates, why it exists, and how it behaves. Functional UI
 helps the user read, decide, or act. Anything decorative needs a stated reason (see the purpose
-gates in `knowledge/anti-slop.md`). This module is the visual system; art direction, motion, assets, and
-illustration live in knowledge/imagery.md, read when the work has them.
+gates in `knowledge/anti-slop.md`). This module is the visual system; art direction, motion, and assets live in
+knowledge/imagery.md, and illustration in knowledge/illustration.md, read when the work has them.
 
 **1. UI system.** Work in this order:
 1. **Hierarchy**: what is read first, second, third? The primary action and key information win.
