@@ -4,9 +4,9 @@ Six fresh agents built the same working prototype from one brief. Three had no s
 and a five-line [`DESIGN.md`](DESIGN.md) (B1-B3). The brief left every business policy open: fees, refunds,
 late compensation, cancellation, substitutions.
 
-<a href="see-the-difference.gif"><img src="see-the-difference.gif" alt="Animation: the brief and the two arms; the late state with a $5 credit and 'Cancel for free' circled in A1 next to B1's reason and new time; the out-of-stock sheet with a one-minute auto-pick timer and refund timing circled in A1 next to B1's 'Decide later' with no timer; A1's delivered screen with a courier rating next to B1's offline and load-error screens; then totals across all six runs, including what RYUX missed" width="100%"></a>
+<a href="https://github.com/ryuxdsgn/design-intelligence/releases/download/media/benchmarks--order-tracking--see-the-difference.gif"><img src="https://github.com/ryuxdsgn/design-intelligence/releases/download/media/benchmarks--order-tracking--see-the-difference.gif" alt="Animation: the brief and the two arms; the late state with a $5 credit and 'Cancel for free' circled in A1 next to B1's reason and new time; the out-of-stock sheet with a one-minute auto-pick timer and refund timing circled in A1 next to B1's 'Decide later' with no timer; A1's delivered screen with a courier rating next to B1's offline and load-error screens; then totals across all six runs, including what RYUX missed" width="100%"></a>
 
-Still version: [`see-the-difference.png`](see-the-difference.png). Shown: A1 and B1, the pair
+Still version: [`see-the-difference.png`](https://github.com/ryuxdsgn/design-intelligence/releases/download/media/benchmarks--order-tracking--see-the-difference.png). Shown: A1 and B1, the pair
 [`PROTOCOL.md`](PROTOCOL.md) fixed before the first run. Prototype controls are hidden in the captures; nothing
 else is edited.
 

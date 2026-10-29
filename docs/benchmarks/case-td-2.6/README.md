@@ -17,7 +17,7 @@ One edit to the raw transcripts: the local MCP connect command quoted from the 2
 | 4 | "Build it as one HTML and CSS file." | [4-build.md](4-build.md), [run/receipt.html](run/receipt.html) |
 | 5 | "QA the build against your design." | [5-qa.md](5-qa.md), renders in [qa/](qa/) |
 
-Input: [input/screen.png](input/screen.png). Full transcripts: `run/turn1.jsonl` to `run/turn5.jsonl`.
+Input: [input/screen.png](https://github.com/ryuxdsgn/design-intelligence/releases/download/media/benchmarks--case-td-2.6--input--screen.png). Full transcripts: `run/turn1.jsonl` to `run/turn5.jsonl`.
 `after/` holds our renders of the final `receipt.html` (Chromium, en-US): 390 × 963 (the input's
 size, for the before and after view), 390 × 844, 375 × 667 and 320 × 568.
 

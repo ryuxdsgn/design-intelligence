@@ -4,9 +4,9 @@ Flagship A, "Think before designing". Six fresh agents got the same brief: a tra
 digital wallet, as one HTML file. Three had no skill (A1-A3), three had RYUX and a short [`DESIGN.md`](DESIGN.md)
 (B1-B3). The brief left every money rule open: fees, refunds, disputes, timing, limits, support.
 
-<a href="see-the-difference.gif"><img src="see-the-difference.gif" alt="Animation: the brief and the two arms; the first reply, where A1 has already built and B1 asks three questions (with its Indonesia and IDR default flagged); a failed transfer with a refunded fee and a real bank circled in A1 next to B1's what-happened and next-step copy; A1's pending transfer with an invented cancel window next to B1's offline and load-error screens; then totals across all six runs, including what RYUX missed and the cost per run" width="100%"></a>
+<a href="https://github.com/ryuxdsgn/design-intelligence/releases/download/media/benchmarks--wallet-detail--see-the-difference.gif"><img src="https://github.com/ryuxdsgn/design-intelligence/releases/download/media/benchmarks--wallet-detail--see-the-difference.gif" alt="Animation: the brief and the two arms; the first reply, where A1 has already built and B1 asks three questions (with its Indonesia and IDR default flagged); a failed transfer with a refunded fee and a real bank circled in A1 next to B1's what-happened and next-step copy; A1's pending transfer with an invented cancel window next to B1's offline and load-error screens; then totals across all six runs, including what RYUX missed and the cost per run" width="100%"></a>
 
-Still version: [`see-the-difference.png`](see-the-difference.png). Shown: A1 and B1, the pair
+Still version: [`see-the-difference.png`](https://github.com/ryuxdsgn/design-intelligence/releases/download/media/benchmarks--wallet-detail--see-the-difference.png). Shown: A1 and B1, the pair
 [`PROTOCOL.md`](PROTOCOL.md) fixed before the first run. Prototype controls are hidden in the captures; nothing
 else is edited.
 

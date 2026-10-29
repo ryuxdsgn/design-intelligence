@@ -2,7 +2,9 @@
 
 Raw outputs behind every claim in the [README](../../README.md) and the [showcase](../showcase.md).
 Everything in a run folder is the agent's own output; the only edits are removed local paths, and
-each folder says what was edited.
+each folder says what was edited. Screenshots, GIFs, and videos live in the
+[`media` release](https://github.com/ryuxdsgn/design-intelligence/releases/tag/media) to keep the
+repo small: `docs/benchmarks/x/y.png` is the asset `benchmarks--x--y.png`.
 
 ## Current evidence
 

@@ -4,9 +4,9 @@ The same food-delivery brief, designed in Figma instead of built in code, one ru
 cheaper, and does the difference still show? Protocol, fixed before the runs and amended once before scoring:
 [`PROTOCOL.md`](PROTOCOL.md).
 
-<a href="see-the-difference.mp4"><img src="see-the-difference.gif" alt="Animation: the brief; the no-skill agent designs straight away while RYUX writes DESIGN.md, asks, and explores three layouts; two Android phones play both Figma pages through an unavailable item, a late order, and the way to the door, the left showing a reply timer with an auto-pick, an instant refund, a late voucher, tips, and a rating, the right waiting for the customer's choice, keeping it after a failed send, and tagging every undecided rule on screen; then the numbers" width="100%"></a>
+<a href="https://github.com/ryuxdsgn/design-intelligence/releases/download/media/benchmarks--food-delivery-figma--see-the-difference.mp4"><img src="https://github.com/ryuxdsgn/design-intelligence/releases/download/media/benchmarks--food-delivery-figma--see-the-difference.gif" alt="Animation: the brief; the no-skill agent designs straight away while RYUX writes DESIGN.md, asks, and explores three layouts; two Android phones play both Figma pages through an unavailable item, a late order, and the way to the door, the left showing a reply timer with an auto-pick, an instant refund, a late voucher, tips, and a rating, the right waiting for the customer's choice, keeping it after a failed send, and tagging every undecided rule on screen; then the numbers" width="100%"></a>
 
-Video: [`see-the-difference.mp4`](see-the-difference.mp4). The runs made still frames; all motion is made for the
+Video: [`see-the-difference.mp4`](https://github.com/ryuxdsgn/design-intelligence/releases/download/media/benchmarks--food-delivery-figma--see-the-difference.mp4). The runs made still frames; all motion is made for the
 video. Both sides get the same platform motion (a press and ripple under the finger, sheets, shared-axis pages); the
 RYUX side also gets the motion its DESIGN.md specifies (times that roll, the courier moving with the food, the home
 pin pulsing, illustrations that spring in). No Skill's design specified none. B's frames are from "Pilot B1 fixed" (see After the pilot).
@@ -64,7 +64,7 @@ Four owner-requested rounds on a copy, page "Pilot B1 fixed"; "Pilot B1" and the
 - **Illustrations** ($6.21, 18 min, [`runs/B1-turn5-final.md`](runs/B1-turn5-final.md)): redrawn after an owner
   review ("clip art"): one shared head with eight expressions, elbows and knees, a place per scene, food visible,
   a real e-bike; built as SVG by a script and imported as editable vectors.
-  [`runs/B1-fixed-illustrations.jpg`](runs/B1-fixed-illustrations.jpg). Still stiff in the standing scenes.
+  [`runs/B1-fixed-illustrations.jpg`](https://github.com/ryuxdsgn/design-intelligence/releases/download/media/benchmarks--food-delivery-figma--runs--B1-fixed-illustrations.jpg). Still stiff in the standing scenes.
 - **Poses** ($6.02 with a $0.66 start cut by the session limit, [`runs/B1-turn6b-final.md`](runs/B1-turn6b-final.md)):
   each standing scene its own body (weight on one leg, a step, tiptoe, dropped shoulders), stronger brows, and the
   sheet's provenance corrected to "made by the agent as SVG from a script".
@@ -84,4 +84,4 @@ Four owner-requested rounds on a copy, page "Pilot B1 fixed"; "Pilot B1" and the
 
   Not tested on a device.
 - With all four, B1 cost $33.16 in all. [`runs/B1-fixed-DESIGN.md`](runs/B1-fixed-DESIGN.md) is DESIGN.md after them;
-  [`runs/B1-fixed-360.jpg`](runs/B1-fixed-360.jpg) is every changed screen at 360.
+  [`runs/B1-fixed-360.jpg`](https://github.com/ryuxdsgn/design-intelligence/releases/download/media/benchmarks--food-delivery-figma--runs--B1-fixed-360.jpg) is every changed screen at 360.

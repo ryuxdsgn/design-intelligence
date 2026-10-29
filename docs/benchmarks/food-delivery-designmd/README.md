@@ -5,9 +5,9 @@ first (Design, "Write or update DESIGN.md", RX-PR-12), then built. **Round 2**, 
 Protocol, fixed before the run:
 [`PROTOCOL.md`](PROTOCOL.md).
 
-<a href="see-the-difference.mp4"><img src="see-the-difference.gif" alt="Animation: the brief and the two sides; the first reply, where the agent with no skill has already built and RYUX writes a DESIGN.md that answers who the users are, their job, the evidence, the interaction patterns, and how to evaluate, with eight open questions; both prototypes side by side on the same scenario, an unavailable item then a late order, the left showing a one-minute auto-pick, refund timing, and an automatic credit, the right showing the price of each choice and the new time with no promise; then the numbers and what RYUX missed" width="100%"></a>
+<a href="https://github.com/ryuxdsgn/design-intelligence/releases/download/media/benchmarks--food-delivery-designmd--see-the-difference.mp4"><img src="https://github.com/ryuxdsgn/design-intelligence/releases/download/media/benchmarks--food-delivery-designmd--see-the-difference.gif" alt="Animation: the brief and the two sides; the first reply, where the agent with no skill has already built and RYUX writes a DESIGN.md that answers who the users are, their job, the evidence, the interaction patterns, and how to evaluate, with eight open questions; both prototypes side by side on the same scenario, an unavailable item then a late order, the left showing a one-minute auto-pick, refund timing, and an automatic credit, the right showing the price of each choice and the new time with no promise; then the numbers and what RYUX missed" width="100%"></a>
 
-Video: [`see-the-difference.mp4`](see-the-difference.mp4). Shown: order-tracking's A1 and this B1, the same
+Video: [`see-the-difference.mp4`](https://github.com/ryuxdsgn/design-intelligence/releases/download/media/benchmarks--food-delivery-designmd--see-the-difference.mp4). Shown: order-tracking's A1 and this B1, the same
 scenario on both (an item becomes unavailable, remove it, then the order runs late). Scenario controls were
 clicked by script with the prototype panels hidden; the dots are in-app taps only.
 

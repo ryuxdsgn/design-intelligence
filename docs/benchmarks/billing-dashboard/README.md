@@ -5,9 +5,9 @@ Flagship C, "Design that survives delivery". Six fresh agents got the same small
 request: add a Billing page. Three had no skill (A1-A3), three had RYUX and a short [`DESIGN.md`](DESIGN.md)
 (B1-B3). The repo says nothing about what happens after a failed payment.
 
-<a href="see-the-difference.gif"><img src="see-the-difference.gif" alt="Animation: the brief and the two arms; the failed-payment state at 390 wide with 'to keep your plan active' and a period ending 'Nov 1' circled in A1, next to B1's what-happened copy and a period ending Oct 31; how each run checked its work, A1 by tests only and B1 with browser screenshots of every scenario; then totals across all six runs, including where the arms were the same and the cost" width="100%"></a>
+<a href="https://github.com/ryuxdsgn/design-intelligence/releases/download/media/benchmarks--billing-dashboard--see-the-difference.gif"><img src="https://github.com/ryuxdsgn/design-intelligence/releases/download/media/benchmarks--billing-dashboard--see-the-difference.gif" alt="Animation: the brief and the two arms; the failed-payment state at 390 wide with 'to keep your plan active' and a period ending 'Nov 1' circled in A1, next to B1's what-happened copy and a period ending Oct 31; how each run checked its work, A1 by tests only and B1 with browser screenshots of every scenario; then totals across all six runs, including where the arms were the same and the cost" width="100%"></a>
 
-Still version: [`see-the-difference.png`](see-the-difference.png). Shown: A1 and B1, the pair
+Still version: [`see-the-difference.png`](https://github.com/ryuxdsgn/design-intelligence/releases/download/media/benchmarks--billing-dashboard--see-the-difference.png). Shown: A1 and B1, the pair
 [`PROTOCOL.md`](PROTOCOL.md) fixed before the first run. Nothing in the captures is edited.
 
 ## What happened
