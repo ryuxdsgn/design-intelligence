@@ -10,6 +10,7 @@ repo small: `docs/benchmarks/x/y.png` is the asset `benchmarks--x--y.png`.
 
 | Benchmark | The question it answers | RYUX | Runs |
 | --- | --- | --- | --- |
+| [Gold savings landing page](landing-gold/) | One brief, sent once to no skill, Impeccable, antislop, and RYUX: a landing page in desktop and mobile in Figma, rated blind by the owner per area, with facts made up and Figma craft counted | 2.21.0 | 1 + 1 + 1 + 1 |
 | [Food delivery in Figma](food-delivery-figma/) | The food-delivery brief designed in Figma instead of built in code, through the Figma connector: is it cheaper, and does the difference still show in the frames? A pilot, one run per side | 2.19.4 | 1 + 1 |
 | [Food delivery, DESIGN.md by RYUX](food-delivery-designmd/) | With no DESIGN.md given, does RYUX write one from the brief that answers who, which job, what evidence, which patterns, and how to evaluate, then build without inventing policy? Round 2 adds two references (Airbnb's look, a ride-hailing motion study). One RYUX run per round against order-tracking's no-skill runs | main before 2.19.4 | 1 + 1 new + 3 |
 | [Billing page in an existing repo](billing-dashboard/) | Does a new page fit a real repo: reuse, tokens, checks passing, states covered, no invented billing rule? A React + TS fixture, no skill vs RYUX + DESIGN.md, measured from each run's diff | 2.19.3 | 3 + 3 |
@@ -27,6 +28,7 @@ striking screen built on invented facts.
 
 | | Context understanding | UX correctness | Visual quality | Creative range | Reliability |
 | --- | :-: | :-: | :-: | :-: | :-: |
+| Gold savings landing page | facts made up, counted | — | blind, one rater, four arms | — | text styles, variables, cost |
 | Billing page in an existing repo | traps counted | scenarios reached | not scored | — | typecheck, tests, build, reuse, tokens, `ryux scan`, cost |
 | Wallet, expressive direction | asked first, traps counted | states counted | not scored yet; motion events and direction counted | — | `ryux scan`, cost |
 | Wallet transaction detail | asked first, traps counted | statuses and states counted | not scored | — | `ryux scan`, assumptions listed, cost |
@@ -35,8 +37,7 @@ striking screen built on invented facts.
 | Explore, judge, critique | — | Critique on planted problems | blind, one designer | three directions | — |
 | Typography | — | — | script, blind, one designer | — | — |
 
-Not measured yet: creative range and visual quality with no skill vs RYUX (both are version comparisons so far),
-more than one rater, and agents other than Claude Code.
+Not measured yet: creative range with no skill vs RYUX, visual quality on more than one run per arm, more than one rater, and agents other than Claude Code.
 
 ## Historical
 
