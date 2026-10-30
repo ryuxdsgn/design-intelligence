@@ -31,7 +31,7 @@ fi
 # original back, so the restore never fails silently.
 G=$HOME/.claude/skills; ASIDE=$(mktemp -d)/skills
 restore() { [[ -e $G ]] && mv $G $ASIDE.recreated; mv $ASIDE $G; }
-if [[ -d $G ]]; then mv $G $ASIDE; trap restore EXIT; fi
+if [[ -d $G ]]; then mv $G $ASIDE; trap restore EXIT; trap "exit 1" INT TERM HUP; fi
 FLAGS=(--model ${BENCH_MODEL:-claude-opus-5-5} --permission-mode auto
   --settings ${BENCH_SETTINGS:-'{"enabledPlugins":{"design@synced":false,"product-management@synced":false},"permissions":{"deny":["Skill(design)","Skill(design-sync)"]}}'}
   --output-format stream-json --verbose)
