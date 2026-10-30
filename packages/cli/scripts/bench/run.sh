@@ -1,6 +1,6 @@
 #!/bin/zsh
 # One benchmark run in a fresh folder, outside any project.
-#   [BENCH_FIXTURE=<repo>] run.sh <A|B> <out_dir> <prompt_file> [DESIGN.md]
+#   [BENCH_FIXTURE=<repo>] [BENCH_INSTALL=<dir>] run.sh <A|B|other arm> <out_dir> <prompt_file> [DESIGN.md]
 # A = no skill: every skill and command is turned off for the session.
 # B = with RYUX: the local build (packages/cli/dist) is installed into the run folder, after the optional
 #     DESIGN.md is copied in (B only; A never gets it).
@@ -19,7 +19,11 @@ if [[ -n $FIXTURE && ! -e package.json ]]; then
   npm ci --no-audit --no-fund >/dev/null 2>&1
   git init -q && git add -A && git -c user.name=fixture -c user.email=fixture@example.com commit -qm fixture
 fi
-if [[ $COND == B && ! -d .claude/skills/ryux ]]; then
+# BENCH_INSTALL=<dir>: any other arm (another skill, or RYUX built from a tag) starts from a copy of a folder
+# that skill's own installer wrote into, instead of the local RYUX build.
+if [[ $COND != A && -n $BENCH_INSTALL && ! -d .claude ]]; then
+  rsync -a ${BENCH_INSTALL:A}/ .
+elif [[ $COND == B && ! -d .claude/skills/ryux ]]; then
   [[ -n $DESIGN ]] && cp $DESIGN DESIGN.md
   node $CLI install --agent claude >/dev/null
 fi

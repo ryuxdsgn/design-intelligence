@@ -12,7 +12,7 @@ for l in open(sys.argv[1]):
     if o.get('session_id'): sid=o['session_id']
 print(sid)" $(ls -t $DIR/turn*.jsonl | head -1))
 cd $DIR
-# Same isolation as run.sh; a folder with RYUX installed is B, anything else is A.
+# Same isolation as run.sh; a folder with skills installed is a skill arm, anything else is A.
 G=$HOME/.claude/skills; ASIDE=$(mktemp -d)/skills
 restore() { [[ -e $G ]] && mv $G $ASIDE.recreated; mv $ASIDE $G; }
 if [[ -d $G ]]; then mv $G $ASIDE; trap restore EXIT; fi
@@ -22,5 +22,5 @@ FLAGS=(--model ${BENCH_MODEL:-claude-opus-5-5} --permission-mode auto
 # BENCH_CONNECTORS=1 keeps the claude.ai connectors (for a design-tool benchmark); deny the ones not
 # under test in BENCH_SETTINGS. Default: no MCP servers at all.
 [[ -n $BENCH_CONNECTORS ]] || FLAGS+=(--strict-mcp-config)
-[[ -d .claude/skills/ryux ]] || FLAGS+=(--disable-slash-commands)
+[[ -d .claude/skills ]] || FLAGS+=(--disable-slash-commands)
 claude -p --resume "$SID" "$(cat $FACTS)" $FLAGS < /dev/null > $NAME.jsonl 2> $NAME.err
