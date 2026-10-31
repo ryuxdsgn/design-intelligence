@@ -207,13 +207,13 @@ line below for its exact source.
 <!-- provenance:start -->
 | Source cited | Rules citing it | Rules citing only this |
 | --- | --- | --- |
-| Public standard or research | 74 | 52 |
-| Industry practice | 26 | 9 |
+| Public standard or research | 75 | 53 |
+| Industry practice | 27 | 9 |
 | Observed in a RYUX run | 17 | 8 |
 | Pattern also in another MIT ruleset (text written for RYUX) | 4 | 4 |
-| RYUX principle, taxonomy, or review | 54 | 23 |
+| RYUX principle, taxonomy, or review | 55 | 23 |
 
-All 134 rules cite a source; 38 cite more than one kind, so the "Rules citing it" column adds up to more than 134.
+All 136 rules cite a source; 39 cite more than one kind, so the "Rules citing it" column adds up to more than 136.
 <!-- provenance:end -->
 
 ## Rules
@@ -221,7 +221,7 @@ All 134 rules cite a source; 38 cite more than one kind, so the "Rules citing it
 Generated from `packages/cli/src/content.ts` by `pnpm sync:skills`. Edit the rules there, not here.
 
 <!-- rules:start -->
-134 rules across 15 modules: 61 Required, 28 Preferred, 45 Contextual; 18 Hard Gates and 13 Quality Locks.
+136 rules across 15 modules: 62 Required, 29 Preferred, 45 Contextual; 18 Hard Gates and 13 Quality Locks.
 
 ### Product thinking (RX-PR) · `knowledge/product.md`
 
@@ -320,7 +320,7 @@ Gate area PRODUCT. Covers user, task, goal, primary action, constraints, assumpt
 
 #### RX-PR-13 [Preferred] Before a direction, learn what makes this product specific
 
-- When: a new product, a new look, or an expressive surface, and the prompt, DESIGN.md, and the product docs do not say who exactly it is for and why they would choose it
+- When: a new product, a new look, or an expressive surface, and the prompt, DESIGN.md, and the product docs do not say who exactly it is for and why they would choose it, or what the product does and which numbers may be shown
 - Do: Before any visual direction, ask the questions the context does not answer, in one message, as choices with a recommended answer each and room for the user's own:
   - who exactly: the group, their moment, and what they use today (first-job savers putting money aside for a dowry, market traders, parents buying jewellery gold)
   - why they would choose this product over what they use now: cheaper, more trusted, easier, or something else
@@ -328,7 +328,8 @@ Gate area PRODUCT. Covers user, task, goal, primary action, constraints, assumpt
   - one product or site they like the look of, and one they do not
   - the page's status and goal: live or not yet, and what the visitor should do (download, sign up, trust it first)
   - Add the product-fact questions (RX-PR-01) to the same message; five questions at most, most consequential first. A fact with a mark (a store, a payment method, a partner, a regulator) asks for its official files in the same question (RX-UI-28).
-  - Write each answer into the RYUX project context in DESIGN.md (Audience, Why choose it, UI direction, Taste references, Design intent) so the next task does not ask again.
+  - Ask what the page can say, too, even when who and why are already known (then these are the only questions): the three things people do in the product, the numbers that may be shown (a minimum, a fee, a limit), and whether real screenshots or photos exist. A page built only from positioning is thin; one built from invented features is false (RX-PR-02).
+  - Write each answer into the RYUX project context in DESIGN.md (Audience, Why choose it, UI direction, Taste references, Design intent, What people do in it, Numbers that may be shown) so the next task does not ask again. A field that is missing or blank is not answered: Confirmed capabilities does not answer what people do in the product.
   - When the user hands the questions back, infer each answer from the brief, label it inferred, and continue; the directions then say they rest on inferences.
 - Do not: Build directions from the category alone (every gold app gets a gold shop), recommend plain, clean, or minimal as the character, ask open questions with no options, ask what the context already answers, or treat an inferred answer as the user's.
 - Why: Without the product's own audience and reason to exist, an agent fills the gap with the category's cliché, so every product of a kind gets the same look; the answers are what make the direction specific. (Brand strategy and design discovery practice (audience, positioning, personality, references before visual work); landing-gold rounds 3 and 4, 2026-10-31 (docs/benchmarks/landing-gold): with only the category to go on, every RYUX run proposed the same gold-shop direction, and a run inferred a pre-launch waiting list the brief never set; owner review 2026-10-31)
@@ -892,17 +893,18 @@ Gate area UI. Covers the visual system of a product: hierarchy, type, layout, de
   - Build three directions from the direction grammar (knowledge/ui.md): one conventional (close to the category default, done well), one grounded in this audience's world (an object, place, ritual, or material these users know, not the category's), one that stretches how the product speaks. Conventional means a familiar structure, not a bare surface: it too has a signature and a visual anchor the tile shows. The three use different weight carriers (RX-UI-29), and grounded does not mean a paper object.
   - Each tile's palette is built by RX-UI-31 (roles, a named scheme, neutrals from the dominant hue).
   - The three speak different visual languages, not one language in three concepts: each has a base surface (the colour most of the page sits on) from a different family: light and cool (white, blue-grey), dark (ink, near-black), or a saturated colour as the canvas. Cream, ivory, warm white, and paper are one family (very light with a warm tint), used by one direction at most. At least one direction is cool or neutral in temperature whatever the character: warmth can come from type, shape, and imagery.
+  - They differ in material and imagery model too: material from flat, dimensional (soft gradients and shadows), atmospheric (mesh, light, glow with a job), or textured (grain, print); imagery model from flat vector, dimensional vector, 3D render, the product's UI composed large and layered, retouched photography, mixed media, or atmosphere. At most one direction is flat with flat vectors; at least one uses a render, a retouched photo, or a UI composite (knowledge/imagery.md, Making images).
   - Calibrate each against a well-known product of its visual language (a vivid gradient with product UI, warm photography or illustration, dark and precise, display type over colour blocks) for its level of craft, never for its look: name it in the tile, and take nothing from it (palette, type, or signature). Name each by its character (Quiet Financial Confidence), not by a style keyword, and say which answer each rests on; two products with different answers get different directions.
   - Each pair differs on at least three grammar dimensions, philosophy or grounding among them; a palette change alone is the same direction. Each has a reason from the profile, and passes the coherence rules.
   - Each names its imagery: the product photographed or rendered (generated from a Visual Brief and labeled), an illustration style, the product's own complete screens, or type alone; "none" needs a reason, and a landing page keeps at least one strong visual anchor.
   - Show each as a style tile with the same content in all three (name and philosophy, base surface, type pair with a heading, body, and figures, palette with roles, a button and a card in its shape, its imagery strategy, a small hero holding one asset made for it (the carrier's asset at small scale: a vector illustration, a generated image, a mesh, a product screen), its signature, its calibration product, and its risk): frames side by side on a canvas, or text with the same fields.
   - Ask as choices (capabilities/design.md, stage 1), the recommended one first, with room to combine ("type from B, colour from C"); a combination passes the coherence rules again. Asked for other options, offer three new ones and do not repeat.
-  - Ask even without a question or choice tool: write the three as numbered options, end the turn, and wait. Choose yourself only when the user hands the choice back, or the task says to run without questions (a pipeline, a batch job): one with a reason from the profile, marked provisional in the Assumptions, the other two offered in a line each.
+  - Ask even without a question or choice tool: write the three as numbered options, end the turn, and wait. Choose yourself only when the user hands this choice back, or the task says to run without questions (a pipeline, a batch job). "Up to you" on another question (the numbers, the screenshots) hands back that question only; the direction is still asked as its own choice. When you do choose: one with a reason from the profile, marked provisional in the Assumptions, the other two offered in a line each.
 - Do not: Build the directions from the category alone, pick three style keywords from a list, offer three palettes of one layout, put all three on light warm surfaces, describe a carrier in the tile instead of making it, offer a conventional direction with no signature or visual anchor, recommend the category default because it feels safer, ask an open "what look do you want?" with no options, or let a direction change the facts: assumptions about the look are allowed, assumptions about the product are not (RX-AS-01, RX-PR-02).
 - Why: With no direction, an agent ranks the familiar look first and ships it, and a rule that tells it to be bold moves it to the next familiar look; the variety has to come from the user's choice among directions that fit. (Art direction practice (style tiles; a direction as a set of reasoned visual decisions); landing-gold rounds 2 and 3, 2026-10-30/31 (docs/benchmarks/landing-gold): owner's blind rating, RYUX 1.33 then 2.00 v 4.00 and 3.67 AI-slop resistance against a skill that assigns a direction; in round 3 a rule to commit to a grounded direction moved all three runs to one new default; owner decision 2026-10-31 (Design Direction Intelligence))
 - Not when: the prompt or DESIGN.md sets the direction, or an existing brand system defines it; follow it. A small change inside an existing product
 - Trade-off: one more question and three tiles before the design starts
-- Check: the Delivery Gate names the three directions offered, the answer each rests on, the one used, and whether the user chose it or it is provisional; the three differ on at least three grammar dimensions; three base surface families, warm off-white at most one, one cool or neutral direction; a made asset in each tile
+- Check: the Delivery Gate names the three directions offered, the answer each rests on, the one used, and whether the user chose it or it is provisional; the three differ on at least three grammar dimensions; three base surface families, warm off-white at most one, one cool or neutral direction; flat with flat vectors at most one, a render, retouched photo, or UI composite in at least one; a made asset in each tile
 
 #### RX-UI-31 [Preferred] A palette is built from roles, not picked
 
@@ -1014,14 +1016,17 @@ Gate area UI. Covers art direction, composition, expressive surfaces, motion, as
 - When: an expressive surface (a landing page, onboarding, a brand moment) with a chosen concept
 - Do: Which sections exist and their order come from the visitor's questions (RX-UX-13); the concept gives each of those sections its form. Write the concept's inventory (the parts the real thing has) and draw each section's form from it; a generic section form needs a reason (knowledge/imagery.md, Expressive surfaces).
   - The hero's concept object performs the product's core job with sample data, not a sample on display.
-  - Draw two or three graphic devices from the inventory and repeat them in at least three sections; one decisive type move and one dominant colour field come from the concept too.
+  - Write three candidate devices from the inventory and drop the one any product in the category would draw first (for gold: a coin, a bar, a scale, a ruler); keep two or three.
+  - Each device appears in at least three sections where it does a job there: shows data, marks structure, or leads the eye to the next step. A purely decorative repeat counts once, and no device sits between a message and its action.
+  - One decisive type move and one dominant colour field come from the concept too.
+  - Compose, do not stack: no more than two sections in a row share one skeleton (text on one side, a visual on the other), and the page uses at least two composition moves (knowledge/ui.md, Direction grammar, Layout): a visual crossing a band edge, a full-bleed image with type on it, oversized type cropped by the frame, layered cards overlapping, a sticky column, a horizontal rail, an asymmetric editorial grid. A move keeps the reading order and the path to the action (RX-UI-29).
   - Write headlines in the concept's language. Unknown product facts go to the handoff notes; on the canvas, copy that does not need them, never a section that is mostly placeholders.
   - Before the gate, run the skeleton, swap, and thumbnail tests on the render, with fresh eyes when a subagent is available (capabilities/design.md, stage 5).
-- Do not: Let the concept add sections or set their order, put the concept in one hero card and build the rest from the template order, leave the page empty and call it restraint, fill a section with "to confirm" chips or dashed boxes, or let a device or the concept invent a product fact (RX-AS-01, RX-PR-02).
+- Do not: Let the concept add sections or set their order, put the concept in one hero card and build the rest from the template order, leave the page empty and call it restraint, repeat a device as a divider to reach a count, alternate text-left and text-right splits down the page, fill a section with "to confirm" chips or dashed boxes, or let a device or the concept invent a product fact (RX-AS-01, RX-PR-02).
 - Why: A concept that lives in one card is decoration: the rest of the page is the same template every generated page uses, and that is what reads as AI-made. (Art direction practice (a concept carried as a system of forms and devices); landing-gold rounds 2 and 3, 2026-10-30/31 (docs/benchmarks/landing-gold): owner's blind rating, RYUX 1.33 and 2.00 v 4.00 and 3.67 AI-slop resistance; side-by-side read of the six round 3 pages: the RYUX pages kept the concept in the hero card over a template order, with placeholder sections and no devices, while the higher-rated pages formed every section from their concept; owner review 2026-10-31)
 - Not when: task UI, where the structure stays familiar (RX-AS-09); a brand system that already defines the page
 - Trade-off: a concept-shaped page takes longer and can overreach; each device still passes the purpose gate (RX-AS-05)
-- Check: sections whose form comes from the concept (at least half), devices repeated in three or more sections, sections that are mostly placeholders (none), and the skeleton, swap, and thumbnail tests; report them in the Delivery Gate UI line
+- Check: sections whose form comes from the concept (at least half), devices doing a job in three or more sections (decorative repeats counted once), the category's first-idea device dropped, same-skeleton sections in a row (two at most), composition moves (two or more), sections that are mostly placeholders (none), and the skeleton, swap, and thumbnail tests; report them in the Delivery Gate UI line
 
 #### RX-UI-29 [Preferred] An expressive page has one weight carrier, made at full strength
 
@@ -1033,12 +1038,31 @@ Gate area UI. Covers art direction, composition, expressive surfaces, motion, as
   - illustration: a set drawn for this product (RX-UI-17), in the hero and at least two more sections
   - display type: the headline at 80px or more on desktop, as the main event, with a decisive colour block behind it
   - Then the floor: the hero holds the carrier, not only text and buttons; at least one full-bleed band in a non-neutral colour, or a dark and light switch between bands; a named depth system (shadow levels, a surface ladder, or the atmosphere itself); no more than one section that is text alone. The base surface counts: coloured bands over a cream page are still a cream page.
+  - The carrier never costs the task: the primary action is visible on the first screen at desktop and at 390 by 844; nothing decorative sits between a message and its action; on mobile the hero visual does not push the next section more than one screen down; sample data carries its label next to the figure, not only in a footnote; decorative layers are hidden from assistive technology.
+  - A set of images shares one family (light, camera, material), but each section gets its own subject or angle; the same render twice reads as filler.
+  - Unity comes first (RX-UI-32): the carrier, its asset, and every floor item speak the direction's world.
   - Write the carrier and the depth system into the direction block in DESIGN.md (capabilities/design.md, stage 1), and make its asset before the page, read alone before use (RX-UI-30, knowledge/illustration.md): the page is built around it, not the other way round.
 - Do not: Ship a hero of text and buttons with a small card beside it, set every band on one neutral surface, name a carrier and then draw it small or leave it out, or fall back to text because making an image or a vector takes longer.
 - Why: A page with no weight carrier has nothing for the eye to land on; the reader sees layout and text, which is the look of every generated page, however correct its rules are. (Art direction practice; a read of published design-language descriptions of five marketing sites (gradient mesh, photography, dense product UI, display type at 80 to 136px over full-bleed colour bands): each puts its weight in one medium made at full strength; owner review 2026-10-31 of four RYUX trials of one landing page: every page sat on cream or white with text, tables, and small cards, with no illustration or made image, and the owner read all of them as plain and AI-made)
 - Not when: task UI; a brand system that already sets the page's look
 - Trade-off: making the carrier's asset takes time and tool calls before the page, and a strong carrier can crowd the message if its focal point fights the headline
-- Check: the carrier named and present in the hero; full-bleed non-neutral bands or a mode switch (count); depth system named; text-only sections (at most one); report the carrier in the Delivery Gate UI line
+- Check: the primary action on the first screen at 1440 and 390 by 844; no decoration between a message and its action; sample-data labels next to their figures; no image used twice; the carrier named and present in the hero; full-bleed non-neutral bands or a mode switch (count); depth system named; text-only sections (at most one); report the carrier in the Delivery Gate UI line
+
+#### RX-UI-32 [Required] One page, one world
+
+- When: an expressive surface built from a chosen direction
+- Do: Hold the whole page to the direction's world before adding anything:
+  - every asset, device, and section speaks the direction's material and light: a flat page gets flat or stylised images in its palette and light, a dimensional page gets renders lit the same way
+  - an asset made for another direction is not reused unless its material matches; when the direction changes, rebuild from the new direction block
+  - plan the backgrounds as a rhythm before building: two or three surfaces in a pattern that repeats, with the transitions between bands designed
+  - the concept's object or language runs through the page, not only the first and last section
+  - the counts in RX-UI-27, RX-UI-29, and RX-UI-30 (moves, devices, imagery) are minimums that serve the concept; when one fights unity, translate it into the world's language first (the same idea in the direction's material, light, and shapes) and cut it only when it cannot be; unity never lowers the carrier or the boldness the user chose
+  - Before the gate, ask fresh eyes which elements look as if they came from another page; list and fix them.
+- Do not: Make the page neat by making it timid, tick each rule with a different idea, carry a render from a rejected direction into the chosen one, change the background world every section, or add a composition move only to reach a count.
+- Why: A page that satisfies every rule with a different idea reads as a collage; people read unity as care and a collage as unfinished, however good each part is. (Art direction practice (unity, a design system for one surface); owner review 2026-10-31 of RYUX trial 8: a parcel-label page carried a dark spotlit bullion render from the rejected direction and changed its background world every section, and the owner read it as disconnected and not smooth; the next trial, with this rule, was neat but read as less creative, so unity is reached by translating ideas, not removing them)
+- Not when: task UI; a page that is deliberately a collage, where that is the chosen concept
+- Trade-off: unity narrows choices and can cut an idea that is good on its own
+- Check: fresh-eyes list of elements from another page (none left); every asset's material and light matching the direction block; the background rhythm written before the build
 
 #### RX-UI-13 [Contextual] Source assets on purpose
 
@@ -1193,7 +1217,7 @@ Gate area UI. Covers each asset's concept and meaning, the written style, one fa
 #### RX-UI-30 [Preferred] Planned imagery is made, and passes a craft read before the page uses it
 
 - When: the direction's carrier or imagery is an illustration, a render, or a photo
-- Do: Make each planned asset before the page (RX-UI-29), by the method its job needs (RX-UI-21): vector paths drawn in the design tool (in Figma, SVG through createNodeFromSvg), or the tool's image generation from the Visual Brief (in Figma, generate_image), labeled generated; a render of the real product often beats drawing it.
+- Do: Make each planned asset before the page (RX-UI-29), by the method its job needs (RX-UI-21) and the tools at hand, in the order of knowledge/imagery.md, Making images: vector paths in the design tool (in Figma, SVG through createNodeFromSvg); the design tool's image generation; a local render (Blender, or Three.js captured by a headless browser); an image API whose key the user gives; a licensed or the user's photo, retouched to the palette. Generated and retouched images are labeled; a render of the real product often beats drawing it. Before paid generation, say how many images and ask once.
   - Render each asset alone at display size and read it against seven checks: the silhouette reads with the label covered; each object has the parts that make it that object; one light direction; three tones per material; clean joints (no gaps, stray overlaps, or broken curves); the written style (RX-UI-17); it still reads at its smallest size.
   - Two or more fails: redraw, or switch method (a generated render instead of hand-built vectors); two rounds at most, then use the better one and say what is still weak.
   - Record each asset's method and the result of its read in the Delivery Gate.
@@ -1503,6 +1527,23 @@ Gate area CODE QUALITY. Covers the repo's own stack, semantic elements, one home
 - Why: A build that fails cannot be reviewed, rendered, or shipped; every other check in the Delivery Gate depends on it. (Continuous integration practice; owner review 2026-10-25: build failure belongs with the checks that cannot be argued)
 - Not when: design-only work with no code; then CODE QUALITY is N/A
 - Check: run the repo's build, typecheck, lint, and tests; fails on any error
+
+#### RX-FE-17 [Preferred] A visual library is offered as a choice, the lightest first
+
+- When: the build needs motion, 3D, a shader, or animated illustration that CSS and SVG cannot carry, and the repo has no library for it
+- Do: Offer two or three libraries as choices, the lightest that does the job first, each with its weight, license, the static fallback, and what happens under prefers-reduced-motion:
+  - UI and scroll motion: CSS first; Motion for React, GSAP elsewhere or for timelines
+  - animated illustration: Lottie (dotLottie) for exported animations, Rive for interactive state
+  - 3D: Three.js, React Three Fiber with drei in React, a Spline runtime when the scene is made in Spline
+  - gradients and shaders: OGL or a small WebGL shader, with a static image under it
+  - 2D canvas and generative: PixiJS, p5.js
+  - smooth scrolling (Lenis) only with a reason, never on long reading pages
+  - One library per job; record the choice in DESIGN.md with the reason, and load it lazily, after the page is usable.
+- Do not: Add a library for an effect CSS or SVG can do, add two libraries for one job, ship a 3D or shader hero with no static fallback, or ignore reduced motion.
+- Why: A visual library is a long-term cost in weight, upkeep, and accessibility; the user should choose it knowing what it costs, and the page must work without it. (Web performance and accessibility practice (WCAG 2.3.3 animation from interactions, prefers-reduced-motion); each library's documentation; owner request 2026-10-31 that RYUX offer library options when a direction needs them)
+- Not when: the repo already uses a library for this job: use it
+- Trade-off: a choice to make before building, and the lightest option may limit the effect
+- Check: options offered with weight, license, fallback, and reduced-motion behaviour; one library per job; static fallback renders
 
 ---
 
