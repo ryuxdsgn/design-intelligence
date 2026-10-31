@@ -33,6 +33,28 @@ tabular figures. Two families at most, three weights at most: hierarchy comes fr
 steps, not from more faces. Headings do not end on one stranded word (`text-wrap: balance`, or
 rewrite).
 
+**Direction grammar** (RX-UI-26). A direction is a set of visual decisions with reasons, not a style
+name. Build it from these dimensions; the values are vocabulary, not a menu:
+- **Philosophy**: minimal, expressive, functional, experimental
+- **Grounding**: the product's mechanism, an object, a place, a ritual, a material, or none (conventional)
+- **Movement**: swiss, editorial, brutalist, retro, vernacular, or none
+- **Type**: grotesk, humanist, geometric, serif, slab, mono; a display face with a partner
+- **Colour behaviour**: monochromatic, tonal, high contrast, vibrant, muted
+- **Shape**: geometric, organic, sharp, soft
+- **Layout**: modular, editorial, asymmetric, structured
+- **Density**: compact, balanced, spacious
+- **Material**: flat, tactile, translucent, dimensional
+- **Imagery**: the product photographed or rendered, illustration (vector, line, hand-drawn, collage,
+  editorial, character; RX-UI-17), the product's own complete screens, or type alone; none needs a reason
+- **Motion**: functional, expressive, playful, cinematic (RX-UI-11)
+
+Coherence: at most two dimensions at an extreme, the rest support them; each value has a reason from
+the product profile or follows another dimension for unity (say which). Risky pairs carry a condition:
+translucent with long text needs measured contrast; compact for older users fails; vibrant on money
+screens keeps the status colours readable. A keyword is not a recipe: swiss is not every B2B product,
+editorial is not always a big serif, minimal is not always cream and white space, playful is not
+always pastel and round.
+
 **Craft is the last 10 percent people notice first** (RX-UI-15). Icons sit on the optical center of
 their text, sized to its line-height, with a stroke that matches the type weight. Number columns align
 right or on the decimal. Borders, dividers, and shadows come from one small token set. Long text
@@ -101,12 +123,48 @@ A design direction from comparable screens: `extract_design_direction` (patterns
 
 - Do: Derive the art direction from the brand, the audience, the product context, and reference screens, and write it as a Visual Brief (template in knowledge/imagery.md) (objective, concept, composition, color, material, lighting, motion, avoid) before designing an expressive surface or generating images, 3D, or motion.
   - For a new product, decide the brand direction before the tokens, task UI included: palette, type, and shape follow from the product's character (fast, warm, trusted, and so on), not from the one accent that passes contrast.
-  - With no visual direction in the brief or DESIGN.md, say before building that the result will look plain, and offer two or three directions.
-- Do not: Reach for the category cliché (coins, money rain, floating dashboards, or gradient blobs for fintech; generic 3D characters for any app), or write an image prompt without a brief (role, concept, composition).
+  - With no visual direction in the brief or DESIGN.md, discover it with the user before building: three directions, one chosen (RX-UI-26).
+- Do not: Reach for the category cliché (coins, money rain, floating dashboards, or gradient blobs for fintech; generic 3D characters for any app), write an image prompt without a brief (role, concept, composition), or decline the category default by retreating to a neutral surface (cream or white, ink, one muted accent, no imagery): declining a look is not choosing one.
 - Why: A default visual language makes the product interchangeable with its competitors. (art direction practice; RX-AS-05 purpose gate; owner review 2026-10-27: a food-delivery build "too plain, no illustration" from a DESIGN.md with no visual direction)
 - Not when: an existing brand system already defines the visual language; follow it
 - Trade-off: a brief takes time before any image exists
 - Check: the Visual Brief; review
+
+### RX-UI-26 [Preferred] With no direction given, discover three and let the user choose
+
+- When: a new product, a new look, or an expressive surface, and no visual direction in the prompt or DESIGN.md
+- Do: Build the directions from the Product Discovery answers (RX-PR-13): the audience, why they would choose it, its character, and the taste references; name the category default (the look most products in this category ship).
+  - Build three directions from the direction grammar (knowledge/ui.md): one conventional (close to the category default, done well), one grounded in this audience's world (an object, place, ritual, or material these users know, not the category's), one that stretches how the product speaks. Conventional means a familiar structure, not a bare surface: it too has a signature and a visual anchor the tile shows. The three use different weight carriers (RX-UI-29), and grounded does not mean a paper object.
+  - Each tile's palette is built by RX-UI-31 (roles, a named scheme, neutrals from the dominant hue).
+  - The three speak different visual languages, not one language in three concepts: each has a base surface (the colour most of the page sits on) from a different family: light and cool (white, blue-grey), dark (ink, near-black), or a saturated colour as the canvas. Cream, ivory, warm white, and paper are one family (very light with a warm tint), used by one direction at most. At least one direction is cool or neutral in temperature whatever the character: warmth can come from type, shape, and imagery.
+  - Calibrate each against a well-known product of its visual language (a vivid gradient with product UI, warm photography or illustration, dark and precise, display type over colour blocks) for its level of craft, never for its look: name it in the tile, and take nothing from it (palette, type, or signature). Name each by its character (Quiet Financial Confidence), not by a style keyword, and say which answer each rests on; two products with different answers get different directions.
+  - Each pair differs on at least three grammar dimensions, philosophy or grounding among them; a palette change alone is the same direction. Each has a reason from the profile, and passes the coherence rules.
+  - Each names its imagery: the product photographed or rendered (generated from a Visual Brief and labeled), an illustration style, the product's own complete screens, or type alone; "none" needs a reason, and a landing page keeps at least one strong visual anchor.
+  - Show each as a style tile with the same content in all three (name and philosophy, base surface, type pair with a heading, body, and figures, palette with roles, a button and a card in its shape, its imagery strategy, a small hero holding one asset made for it (the carrier's asset at small scale: a vector illustration, a generated image, a mesh, a product screen), its signature, its calibration product, and its risk): frames side by side on a canvas, or text with the same fields.
+  - Ask as choices (capabilities/design.md, stage 1), the recommended one first, with room to combine ("type from B, colour from C"); a combination passes the coherence rules again. Asked for other options, offer three new ones and do not repeat.
+  - Ask even without a question or choice tool: write the three as numbered options, end the turn, and wait. Choose yourself only when the user hands the choice back, or the task says to run without questions (a pipeline, a batch job): one with a reason from the profile, marked provisional in the Assumptions, the other two offered in a line each.
+- Do not: Build the directions from the category alone, pick three style keywords from a list, offer three palettes of one layout, put all three on light warm surfaces, describe a carrier in the tile instead of making it, offer a conventional direction with no signature or visual anchor, recommend the category default because it feels safer, ask an open "what look do you want?" with no options, or let a direction change the facts: assumptions about the look are allowed, assumptions about the product are not (RX-AS-01, RX-PR-02).
+- Why: With no direction, an agent ranks the familiar look first and ships it, and a rule that tells it to be bold moves it to the next familiar look; the variety has to come from the user's choice among directions that fit. (Art direction practice (style tiles; a direction as a set of reasoned visual decisions); landing-gold rounds 2 and 3, 2026-10-30/31 (docs/benchmarks/landing-gold): owner's blind rating, RYUX 1.33 then 2.00 v 4.00 and 3.67 AI-slop resistance against a skill that assigns a direction; in round 3 a rule to commit to a grounded direction moved all three runs to one new default; owner decision 2026-10-31 (Design Direction Intelligence))
+- Not when: the prompt or DESIGN.md sets the direction, or an existing brand system defines it; follow it. A small change inside an existing product
+- Trade-off: one more question and three tiles before the design starts
+- Check: the Delivery Gate names the three directions offered, the answer each rests on, the one used, and whether the user chose it or it is provisional; the three differ on at least three grammar dimensions; three base surface families, warm off-white at most one, one cool or neutral direction; a made asset in each tile
+
+### RX-UI-31 [Preferred] A palette is built from roles, not picked
+
+- When: a new palette: a new product, a new look, or a direction's tile (RX-UI-26)
+- Do: Build the palette in this order and write each step down:
+  - roles first: dominant, supporting, the action accent, neutrals, and the semantic colours (success, warning, error); each colour keeps one meaning everywhere it appears
+  - name the scheme (monochromatic, analogous, complementary, or split-complementary) and why it fits the character
+  - derive the neutrals from the dominant hue: light and dark surfaces take that hue at very low saturation (a cobalt page gets a blue-tinted white, a green page a green-tinted white); a warm neutral (cream, ivory, warm white) only when the dominant hue is warm, or with a written reason
+  - three or four hues besides the neutrals; the brightest and most saturated colour goes to what matters most, the primary action first, and less important elements stay muted
+  - share the page roughly as dominant, supporting, and accent, about 60/30/10 as a guide, not a formula
+  - every text pair passes WCAG contrast, and colour is never the only cue (RX-A11Y-01)
+  - Write the scheme and where the neutrals come from into the direction block in DESIGN.md (capabilities/design.md, stage 1).
+- Do not: Reach for cream or ivory as the light colour because the character is warm or the product is gold, add a hue without a role, give one colour two meanings, or spend the strongest colour on decoration while the action stays muted.
+- Why: A palette chosen colour by colour drifts to the model's defaults (cream, one accent, grey); roles and a named scheme make every colour answer to the page's meaning and keep the neutrals in the same family as the brand. (NNGroup visual design articles (good visual design, the anatomy of a good design, principles of visual design: a limited palette of three or four colours, consistent meaning, bright for what matters, muted for the rest, contrast for low vision and colour blindness); colour practice for schemes and proportions; owner review 2026-10-31 of RYUX trial 5: a cobalt page still used cream for its light bands, and the owner asked why cream appeared in every trial)
+- Not when: a brand or design system that already defines the palette; then follow it
+- Trade-off: tinted neutrals tie the page to one hue and make a later change of the dominant colour touch every surface
+- Check: the scheme named; the light neutral's hue within 30 degrees of the dominant hue, or a written reason; hues besides neutrals four or fewer; the strongest colour on the primary action; text pairs measured
 
 ### RX-UI-14 [Preferred] [Quality Lock] Type that is set, not only sized
 

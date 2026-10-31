@@ -16,7 +16,9 @@ from the rules.
 **Purpose Gates**: these patterns are allowed when they have a purpose. For each one in the
 result, ask three questions: **purpose** (what does it do?), **contribution** (what does it add to
 understanding, interaction, or character?), and **necessity** (would something simpler do the
-same?). "It looks more interesting" answers none of them; remove what fails.
+same?). "It looks more interesting" answers none of them; remove what fails. On an expressive
+surface, character is a contribution and "simpler" is not "nothing": after removing, check the page
+still has its concept (RX-UI-27).
 
 **Quality Locks**: consistency that must hold across the product (listed below).
 
@@ -49,6 +51,13 @@ run the purpose gate; keep it when the answer is real, as in the last column.
 | One record split into a grid of cards | details that are read together (an order, a profile, a transaction) are scattered into equal boxes | one block with labeled rows or a table (RX-UI-05) | each card is a separate item the user compares or acts on |
 | A dashboard of KPI tiles and charts that answer no question | decoration in place of the decision the screen supports | lead with what needs attention and the next action; dense tables where people scan (RX-UI-01, RX-UX-01) | each tile drives a decision and links to its detail |
 | Display-size headings on task UI | a hero-sized title pushes the data and the action below the fold | a heading sized for its rank in the page (RX-UI-01, RX-UI-03) | it is the single message of a marketing or brand page |
+| The concept in one card: the idea sits in the hero while every other section is the template | the page reads as a template with a sticker; the concept never shapes the reading | give each section a form from the concept's inventory, and repeat its devices (RX-UI-27) | task UI with one brand moment |
+| A section of placeholders: "to confirm" chips, dashed [QR code] or [logo] boxes | reads as an unfinished wireframe, the opposite of trust | copy that does not need the missing fact, unknowns in the handoff notes, one quiet treatment in the page's voice (RX-AS-03) | the frame is a wireframe, labeled as such |
+| An empty page as restraint: wide plain bands, small grey text, no visual | the most common generated page; nothing in it is the product's | every element with a job, not few elements: the concept's devices, or the product's real screen with labeled sample data (RX-UI-27, RX-UI-07) | task UI, or a quiet brand carried by one strong type move |
+| A paper page by default: cream or white surface, ink, one muted accent, text and small cards, no made image | declining the category look by retreating to neutral; four RYUX trials of one brief ended here | a weight carrier at full strength and a colour field from the product's character (RX-UI-29) | the product's brand is paper and ink, and the page still has its carrier |
+| A text button dressed as a store badge, or a confirmed partner shown only in text | reads as unfinished or fake; the real mark is recognised before any label | the official badge or mark from its source, at its guideline size (RX-UI-28) | the fact is not confirmed: then no mark at all |
+| A device frame with a half-empty screen | the product looks thin and unbuilt, the opposite of what the frame is for | one complete screen at real density: platform status bar, real navigation, a full set of labeled sample data (RX-UI-07) | a wireframe, labeled as such |
+| Every direction with no imagery | type and flat colour alone read as a generated page on an expressive surface | name an imagery strategy per direction: the product rendered or photographed, an illustration style, or the product's screens (RX-UI-26) | the brand is carried by type on purpose, and the type move is strong |
 | A landing-page layout for a product screen | hero, feature rows, and a closing CTA on an app screen, a settings page, or a tool | the structure the task needs: list, detail, form, or workspace (RX-UI-05) | the surface really is marketing |
 
 ## Hard Gates
@@ -135,7 +144,7 @@ Real screens show what real products do instead of invented numbers and urgency:
 
 ### RX-AS-03 [Required] [Hard Gate] Sample data is realistic and labeled; placeholders only for what is missing
 
-- Do: Fill mockups with realistic sample content consistent with the brief (names, merchants, amounts in the brief's currency, dates). Names are made up, including merchants, banks, and card networks: a real brand on a sample card or receipt reads as a partnership and list it as sample data in the output. Keep a visible placeholder only for an asset that does not exist yet, such as [LOGO].
+- Do: Fill mockups with realistic sample content consistent with the brief (names, merchants, amounts in the brief's currency, dates). Names are made up, including merchants, banks, and card networks: a real brand on a sample card or receipt reads as a partnership and list it as sample data in the output. The exception is the mark of a confirmed fact (the stores the app is on, the payment methods it accepts, a confirmed partner), used as RX-UI-28 says. Keep a visible placeholder only for an asset that does not exist yet, such as [LOGO].
 - Do not: Put [REAL DATA], XXX, or lorem text on the canvas where sample data would do, or ship sample data or placeholder copy as final. A sample-data label does not turn a fee, policy, or claim into a fact (RX-PR-02).
 - Why: Bracketed values read as unfinished and hide the layout's real behavior; unlabeled sample data ships by accident. (ryux anti-slop principle; ryux visual benchmark 2.5, 2026-10-09: [Brand] and XXX read as unfinished; wallet-detail benchmark, 2.19.2: 3 of 3 runs showed Visa on a sample card)
 - Check: audit_copy C-01

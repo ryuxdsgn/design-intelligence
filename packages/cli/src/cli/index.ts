@@ -455,6 +455,8 @@ const CONTEXT_FIELDS: ContextField[] = [
       { value: "United States (en-US, USD)", label: "United States", hint: "en-US, US dollar" },
     ] },
   },
+  { label: "Why choose it", hint: "(why this audience would pick it over what they use now)" },
+  { label: "Taste references", hint: "(a product or site whose look they like, and one they do not)" },
   { label: "Brand and design system", hint: "" },
   { label: "Product docs", hint: "paths RYUX reads for product facts, for example docs/prd.md:" },
   { label: "Evidence sources", hint: "RYUX MCP (not available yet), Figma files, reference URLs:" },

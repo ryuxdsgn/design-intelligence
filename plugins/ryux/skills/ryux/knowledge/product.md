@@ -59,7 +59,7 @@ How comparable products frame the same task and offer: `search_screens` (categor
 
 - Do: Before designing, write down the user, their task, the business goal, the design intent (what the user must understand, feel, and do), the information that matters, the primary action, the constraints, and what success looks like.
   - Take what the prompt and DESIGN.md already give.
-  - Ask only when a missing answer materially affects the user flow, what the product can do, or whether the content is correct, or when neither the prompt nor DESIGN.md sets the UI or motion direction: at most three questions in one message, most consequential first, none when the context is complete.
+  - Ask only when a missing answer materially affects the user flow, what the product can do, or whether the content is correct, or when neither the prompt nor DESIGN.md sets the UI or motion direction: at most three questions in one message, most consequential first, none when the context is complete. A new product or a new look runs Product Discovery first (RX-PR-13).
   - Otherwise make the smallest reasonable assumption, write it down, and continue.
 - Do not: Start from a generic template with no stated user or task, or ask questions the prompt or DESIGN.md already answers.
 - Why: Without a task, design and review drift into taste. (`capabilities/critique.md` playbook; NNGroup task-based evaluation)
@@ -145,3 +145,21 @@ How comparable products frame the same task and offer: `search_screens` (categor
 - Why: DESIGN.md is what every later task reads first: an invented user or rule there spreads into every screen, and a file that only lists colors leaves the next agent to guess the user and the job. (owner review 2026-10-27; ryux run: wallet-expressive benchmark rounds 2 and 3 (a DESIGN.md that dictated values tested spec-following; one that named only character left the values unexplained); RX-PR-02, RX-PR-10)
 - Trade-off: takes a few rounds of questions before the first screen
 - Check: review: the five questions each answered with a source or listed under Open questions; chosen tokens marked proposed with a reason
+
+### RX-PR-13 [Preferred] Before a direction, learn what makes this product specific
+
+- When: a new product, a new look, or an expressive surface, and the prompt, DESIGN.md, and the product docs do not say who exactly it is for and why they would choose it
+- Do: Before any visual direction, ask the questions the context does not answer, in one message, as choices with a recommended answer each and room for the user's own:
+  - who exactly: the group, their moment, and what they use today (first-job savers putting money aside for a dowry, market traders, parents buying jewellery gold)
+  - why they would choose this product over what they use now: cheaper, more trusted, easier, or something else
+  - its character in three words, and what it must never feel like; the recommended answer comes from the audience and why they would choose it, and is a personality (warm, bold, witty, proud), never a safe word for restraint (plain, clean, simple, minimal): restraint is how a page behaves, not who the product is
+  - one product or site they like the look of, and one they do not
+  - the page's status and goal: live or not yet, and what the visitor should do (download, sign up, trust it first)
+  - Add the product-fact questions (RX-PR-01) to the same message; five questions at most, most consequential first. A fact with a mark (a store, a payment method, a partner, a regulator) asks for its official files in the same question (RX-UI-28).
+  - Write each answer into the RYUX project context in DESIGN.md (Audience, Why choose it, UI direction, Taste references, Design intent) so the next task does not ask again.
+  - When the user hands the questions back, infer each answer from the brief, label it inferred, and continue; the directions then say they rest on inferences.
+- Do not: Build directions from the category alone (every gold app gets a gold shop), recommend plain, clean, or minimal as the character, ask open questions with no options, ask what the context already answers, or treat an inferred answer as the user's.
+- Why: Without the product's own audience and reason to exist, an agent fills the gap with the category's cliché, so every product of a kind gets the same look; the answers are what make the direction specific. (Brand strategy and design discovery practice (audience, positioning, personality, references before visual work); landing-gold rounds 3 and 4, 2026-10-31 (docs/benchmarks/landing-gold): with only the category to go on, every RYUX run proposed the same gold-shop direction, and a run inferred a pre-launch waiting list the brief never set; owner review 2026-10-31)
+- Not when: the context already answers them, or a small change inside an existing product
+- Trade-off: one more round of questions before any design; the answers are kept, so it is asked once per product
+- Check: review: the questions asked or the answers cited from the context, each recorded in DESIGN.md or marked inferred

@@ -127,3 +127,16 @@ How Indonesian apps sequence and structure this flow: `get_flow` for a reference
 - Not when: a small change (a colour, one label, spacing) or when the user says no test plan
 - Trade-off: a plan nobody runs is only a list; say who should run it and when
 - Check: review
+
+### RX-UX-13 [Preferred] A page's sections answer the visitor's questions, in their order
+
+- When: a marketing or landing page, onboarding, or any page read top to bottom to reach one decision
+- Do: Before the layout, write the questions this visitor has, in the order they have them, from the audience and the page goal (RX-PR-13): for a first-time saver, "what is this?", "is it for someone like me?", "what do I get for a small amount?", "can I trust it?", "how do I start?".
+  - Each section answers one question; a question the visitor does not have gets no section, and a section that answers none is cut.
+  - The order of the questions is the order of the page; the primary action sits where the visitor is ready for it, and again at the end.
+  - The visual concept gives each section its form (RX-UI-27); it never adds a section or changes the order.
+- Do not: Start from the usual section list (hero, features, how it works, FAQ, call to action) and fill it, or let a visual idea decide which sections exist.
+- Why: A page that follows a template answers questions nobody asked and skips the one that decides; the visitor's own questions are what make the structure specific to this product. (Content strategy and conversion practice (a page as the answer to the reader's questions in order); NNGroup inverted pyramid; landing-gold concept-system trial 2026-10-31: a concept carried into every section still sat on the template order, as an independent reviewer and the owner noted)
+- Not when: task UI (a list, a form, a dashboard), where the user's task sets the structure (RX-UX-01)
+- Trade-off: the order can differ from what the team expects to see; show the question list with the layout
+- Check: review: the question list in Frame, and each section mapped to one question

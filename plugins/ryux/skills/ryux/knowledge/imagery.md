@@ -22,17 +22,43 @@ task UI usable; on expressive surfaces it is only the floor. Work concept, then 
 system:
 1. **Concept**: explore two or three alternatives first (name, concept, signature; capabilities/design.md, stage 3), then choose one. The idea
    comes from the product itself, not from the category: a tool about evidence might use receipts,
-   citations, and marks of proof; a calm finance app might use the ledger. The category default
+   citations, and marks of proof; a concept can be an atmosphere, a material, or a movement as well as an object. The category default
    (a terminal panel for developer tools, a dashboard screenshot for SaaS) is never the signature.
-2. **Signature**: one element that carries the concept and that people would remember. Choose the
-   lever: type (scale contrast, a distinctive face), composition (a broken grid, an unexpected
-   crop, a large number), art direction, color temperature, motion personality, or copy voice.
-3. **System**: everything else stays quiet and consistent so the signature reads.
+2. **Inventory** (RX-UI-27): write the concept as one sentence ("this page is a boarding pass"),
+   list the parts the real thing has (a tear line, a barcode, a seat block, a gate time, a stub, a
+   perforation), and give each section one of them. The sections and their order come
+   from the visitor's questions (RX-UX-13), never from the concept; the concept only shapes them,
+   down to the dividers. Most sections take their form from the
+   inventory; a generic section form (three icon columns, an accordion, a centred call-to-action band)
+   needs a reason. The concept in one hero card with a template page around it is decoration.
+3. **The hero does the job**: the concept object in the hero performs the product's core job with
+   sample data (a boarding pass that turns a booking into a seat and a gate time), not a sample on display.
+4. **Signature and devices**: one element people would remember, plus two or three graphic devices
+   taken from the inventory (a tear line, a barcode strip, a gate number), drawn simply and
+   repeated in at least three sections. Devices are illustration made from the concept, so an
+   expressive page rarely has none; write their style like any illustration (RX-UI-17).
+5. **Weight carrier** (RX-UI-29): name what carries the page's visual weight (atmosphere, photo or
+   render, the product's UI large and layered, illustration, or display type at 80px or more over a
+   colour block), make its asset first and read it alone (RX-UI-30, knowledge/illustration.md), and build the page around it. Then one decisive type move and
+   one dominant colour field, from the concept or the product's character, not a neutral surface with
+   one accent: a full-bleed band in it, or a dark and light switch between bands, and a named depth
+   system. Cream or white with ink is a choice that needs a reason, never the fallback.
+6. **Copy in the concept's language**: headlines carry the concept and the reader's world ("Your
+   seat is waiting at gate 4", not "Book your next trip today"). Unknown product facts
+   go to the handoff notes; on the canvas, write copy that does not need them, with at most one quiet
+   placeholder treatment in the page's own voice, never a section of "to confirm" chips (RX-AS-03).
+7. **System**: everything else stays quiet and consistent so the concept reads. Restraint means every
+   element has a job, not that there are few: an expressive page of wide empty bands, small grey text,
+   and no visual is not restrained, it is unfinished. Showing the product (its real screen with
+   labeled sample data) is not the floating-phone cliché.
 The Liveliness you set (Design Direction) turns into these levers: one focal point per screen,
 contrast in size and weight that builds the hierarchy, whitespace that groups, one deliberate
 accent, and a motif the signature repeats. Low energy uses the same levers, quietly.
-Then run the swap test (RX-AS-09): with a competitor's name and logo, would anything need to change?
-If not, the surface has no point of view yet. Stay honest while being bold: a strong idea never
+Then run three tests on the render. **Swap** (RX-AS-09): with a competitor's name and logo, would
+anything need to change? If not, the surface has no point of view yet. **Skeleton**: without colour,
+type, and devices, is the wireframe the template order (split hero, three columns, questions, a
+centred band, footer)? Then the concept is paint. **Thumbnail**: shrunk to icon size, does the page
+still have a shape you would recognise? Stay honest while being bold: a strong idea never
 needs invented numbers, people, or logos.
 
 **2. Motion.** Start from purpose: what the motion communicates; with no purpose, no motion.
@@ -184,15 +210,63 @@ How comparable products use imagery and motion: `search_screens` by pattern, `ex
 - Trade-off: a strong idea takes a decision someone may disagree with; keep it honest and on brand
 - Check: the swap test (RX-AS-09); review
 
+### RX-UI-27 [Preferred] On an expressive surface, the concept shapes the page, not one card
+
+- When: an expressive surface (a landing page, onboarding, a brand moment) with a chosen concept
+- Do: Which sections exist and their order come from the visitor's questions (RX-UX-13); the concept gives each of those sections its form. Write the concept's inventory (the parts the real thing has) and draw each section's form from it; a generic section form needs a reason (knowledge/imagery.md, Expressive surfaces).
+  - The hero's concept object performs the product's core job with sample data, not a sample on display.
+  - Draw two or three graphic devices from the inventory and repeat them in at least three sections; one decisive type move and one dominant colour field come from the concept too.
+  - Write headlines in the concept's language. Unknown product facts go to the handoff notes; on the canvas, copy that does not need them, never a section that is mostly placeholders.
+  - Before the gate, run the skeleton, swap, and thumbnail tests on the render, with fresh eyes when a subagent is available (capabilities/design.md, stage 5).
+- Do not: Let the concept add sections or set their order, put the concept in one hero card and build the rest from the template order, leave the page empty and call it restraint, fill a section with "to confirm" chips or dashed boxes, or let a device or the concept invent a product fact (RX-AS-01, RX-PR-02).
+- Why: A concept that lives in one card is decoration: the rest of the page is the same template every generated page uses, and that is what reads as AI-made. (Art direction practice (a concept carried as a system of forms and devices); landing-gold rounds 2 and 3, 2026-10-30/31 (docs/benchmarks/landing-gold): owner's blind rating, RYUX 1.33 and 2.00 v 4.00 and 3.67 AI-slop resistance; side-by-side read of the six round 3 pages: the RYUX pages kept the concept in the hero card over a template order, with placeholder sections and no devices, while the higher-rated pages formed every section from their concept; owner review 2026-10-31)
+- Not when: task UI, where the structure stays familiar (RX-AS-09); a brand system that already defines the page
+- Trade-off: a concept-shaped page takes longer and can overreach; each device still passes the purpose gate (RX-AS-05)
+- Check: sections whose form comes from the concept (at least half), devices repeated in three or more sections, sections that are mostly placeholders (none), and the skeleton, swap, and thumbnail tests; report them in the Delivery Gate UI line
+
+### RX-UI-29 [Preferred] An expressive page has one weight carrier, made at full strength
+
+- When: an expressive surface (a landing page, onboarding, a brand moment)
+- Do: Name what carries the page's visual weight and make it at full strength; strong marketing pages each have one:
+  - atmosphere: a colour field or mesh made as an asset (vector shapes or a generated image), across the hero and returning lower down
+  - photography or a render: of the real product or the subject, generated from a Visual Brief and labeled when not real
+  - the product's UI: its real screens with labeled sample data, large (half the hero width or more), layered, with depth
+  - illustration: a set drawn for this product (RX-UI-17), in the hero and at least two more sections
+  - display type: the headline at 80px or more on desktop, as the main event, with a decisive colour block behind it
+  - Then the floor: the hero holds the carrier, not only text and buttons; at least one full-bleed band in a non-neutral colour, or a dark and light switch between bands; a named depth system (shadow levels, a surface ladder, or the atmosphere itself); no more than one section that is text alone. The base surface counts: coloured bands over a cream page are still a cream page.
+  - Write the carrier and the depth system into the direction block in DESIGN.md (capabilities/design.md, stage 1), and make its asset before the page, read alone before use (RX-UI-30, knowledge/illustration.md): the page is built around it, not the other way round.
+- Do not: Ship a hero of text and buttons with a small card beside it, set every band on one neutral surface, name a carrier and then draw it small or leave it out, or fall back to text because making an image or a vector takes longer.
+- Why: A page with no weight carrier has nothing for the eye to land on; the reader sees layout and text, which is the look of every generated page, however correct its rules are. (Art direction practice; a read of published design-language descriptions of five marketing sites (gradient mesh, photography, dense product UI, display type at 80 to 136px over full-bleed colour bands): each puts its weight in one medium made at full strength; owner review 2026-10-31 of four RYUX trials of one landing page: every page sat on cream or white with text, tables, and small cards, with no illustration or made image, and the owner read all of them as plain and AI-made)
+- Not when: task UI; a brand system that already sets the page's look
+- Trade-off: making the carrier's asset takes time and tool calls before the page, and a strong carrier can crowd the message if its focal point fights the headline
+- Check: the carrier named and present in the hero; full-bleed non-neutral bands or a mode switch (count); depth system named; text-only sections (at most one); report the carrier in the Delivery Gate UI line
+
 ### RX-UI-13 [Contextual] Source assets on purpose
 
 - When: the design needs photos, illustration, 3D, icons, logos, or video
-- Do: Pick each asset's source in this order: real product screens or the brand's own assets; a licensed library (one icon set, photos whose license you can name); a custom or generated asset made from the Visual Brief and labeled illustrative; otherwise a placeholder that looks like one (RX-AS-03). Record where each asset came from.
-- Do not: Draw or imitate another company's logo, invent the product's own mark (RX-AS-11), mix icon sets, use a photo you cannot license, or fill a gap with a generic stock scene.
+- Do: Pick each asset's source in this order: real product screens or the brand's own assets; standard marks of a confirmed fact, from their official source (RX-UI-28); a licensed library (one icon set, photos whose license you can name); a custom or generated asset made from the Visual Brief (the design tool's image generation when it has one) and labeled illustrative; otherwise a placeholder that looks like one (RX-AS-03). Record where each asset came from.
+- Do not: Draw or imitate another company's logo (use its official file, RX-UI-28), invent the product's own mark (RX-AS-11), mix icon sets, use a photo you cannot license, or fill a gap with a generic stock scene.
 - Why: Assets carry claims about the product and its users; an unsourced or borrowed asset is a claim nobody can back. (licensing and trademark practice; RX-UI-07; RX-AS-02)
 - Not when: a wireframe or internal prototype where placeholders are expected
 - Trade-off: real or licensed assets take longer than a stock search
 - Check: asset list with sources; review
+
+### RX-UI-28 [Preferred] Standard marks are used as they are, when their fact is confirmed
+
+- When: the design shows where to get the app, how to pay, or who stands behind the product, and the brief, DESIGN.md, or the user confirms the fact
+- Do: Use the official mark whose fact is confirmed, from its owner's official source and at its guideline size and clear space:
+  - the app is on a store: the App Store and Google Play badges, in the page's language
+  - payment methods the product accepts: QRIS and the confirmed bank, e-wallet, or card marks
+  - a confirmed partner or regulator: its mark, with a handoff note that its use needs the owner's permission
+  - platform chrome on device screens: the real status bar, home indicator, and keyboard
+  - Ask for the files when the fact is confirmed, in the same message as the fact questions (RX-PR-13): "do you have the official logo files? a path, or I fetch them".
+  - Get each file the way the tool allows, in this order: the file the user gives; the owner's brand, press, or media kit page (find it by searching, do not guess file URLs); the platform's component library; a public file archive that names the file's source and license (Wikimedia Commons), with that note in the handoff. Upload it as it is.
+  - When none works, ask the user for the file before the build and continue only if they hand it back; then a slot with the mark's exact shape and size, named for the file, listed in the open tasks with where to get it. Never a text button made to look like it, and never a silent placeholder.
+- Do not: Draw a text button in place of a store badge, redraw or recolour an official mark, or show a mark whose fact is not confirmed (a store the app is not on, a bank that is not a partner): that is an invented claim (RX-PR-02).
+- Why: People recognise standard marks faster than any label, and their absence makes a page look unfinished; drawn lookalikes read as fake. (App Store and Google Play badge guidelines; licensing and trademark practice (use the owner's file as provided); owner review 2026-10-31 of RYUX trials: a live app's landing page drew both store badges as green text pills and named a confirmed regulator and partners only in text, and the owner read the page as plain and generic; in the next trial the badges were official, but the partner logos stayed empty slots after three guessed URLs failed, with no other source tried and no file asked for)
+- Not when: a wireframe; a fact that is not confirmed
+- Trade-off: official files take a download and their rules (size, clear space, no recolouring) limit the layout
+- Check: review: each mark tied to a confirmed fact and an official source; no drawn lookalikes; every slot left has a source to get it from and was asked for
 
 ### RX-UI-16 [Contextual] Delight stands on three legs
 

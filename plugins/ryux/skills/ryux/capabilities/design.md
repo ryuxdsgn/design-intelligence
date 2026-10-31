@@ -19,12 +19,18 @@ The six stages of the core workflow (SKILL.md), as Design runs them.
    language's common currency, as an assumption (RX-PR-05). When the prompt and DESIGN.md disagree, the prompt wins for
    this task; say so. A DESIGN.md written for a different product (another name, domain, or
    audience than this brief) sets no direction for this task: say so, and treat direction as unset.
+   **Product Discovery first** (RX-PR-13): for a new product or a new look, when the context does
+   not say who exactly it is for and why they would choose it, ask that before anything visual: the
+   audience, why this product, its character, a taste reference, the page's status and goal, plus the
+   product-fact questions, five at most, as choices. Record the answers in DESIGN.md.
    **Direction is the user's call:** when neither the prompt nor DESIGN.md sets the UI direction
-   (character, or brand colour and type) or the motion direction, ask for it in that message (it
-   counts toward the three) instead of choosing it yourself; on an expressive surface, ask in the
-   same question for one product or site whose look they like, as a taste anchor. **No DESIGN.md and no product docs is the
-   case where these questions matter most, never a reason to skip them:** ask, then wait for the
-   answer before designing. Complete context means no questions.
+   (character, or brand colour and type), discover it with the user in the next message (RX-UI-26):
+   three directions built from those answers, as style tiles (conventional, grounded, stretching),
+   instead of choosing one yourself; the motion direction rides with it. **No DESIGN.md and no product docs is the case where these questions matter most,
+   never a reason to skip them:** ask, then wait for the answer before designing. No question tool
+   is not a reason either: write the options as numbered text and end the turn. Choose yourself only
+   when the user hands the choice back or the task says to run without questions (RX-UI-26).
+   Complete context means no questions.
    **Voice and tone** is not asked by default: when the field is blank, infer it from the product's
    existing copy or brand docs, label it inferred, and continue (RX-CD-11). Ask only when there is
    no source at all and the work is mostly copy (onboarding, marketing, error and success messages);
@@ -39,9 +45,21 @@ The six stages of the core workflow (SKILL.md), as Design runs them.
    question, or confirms an inferred voice, write the answer into the UI direction, Motion direction,
    or Voice and tone field of the RYUX project context in DESIGN.md:
    between `<!-- ryux-context:start -->` and `<!-- ryux-context:end -->`, one line per field
-   (`- **UI direction**: Calm, trustworthy`). If DESIGN.md or the block does not exist, create it
-   with the fields answered. Change only those field lines; leave every other line as it is. Your own
+   (`- **UI direction**: Calm, trustworthy`); Product Discovery answers go to Audience, Why choose it,
+   Taste references, and Design intent the same way, adding a field line the block lacks. If DESIGN.md
+   or the block does not exist, create it with the fields answered. Change only those field lines; leave every other line as it is. Your own
    assumptions do not go into DESIGN.md.
+   **Write the foundation.** When the user chooses or combines a direction (RX-UI-26), write it out
+   before building, as one `direction:` YAML block under `## Visual and motion language` in DESIGN.md
+   (create the heading if missing; replace an earlier block, keep the rest): id, name, status (chosen,
+   combined, or provisional), philosophy, the grammar dimensions, the answers it rests on, the category
+   default and whether it was declined, the weight carrier and its asset (RX-UI-29), then the foundation: type (families, scale with sizes, figures),
+   colour (the scheme and where the neutrals come from, RX-UI-31; hex per role, with the contrast pairs that pass, and which colour fills the full-bleed bands), shape (radius per role, borders), depth (shadow levels, a surface ladder, or atmosphere),
+   spacing and layout, density, material, imagery (strategy, style, the assets and where each comes
+   from), motion, the signature and its devices, what to avoid, and the trade-offs. The user's choice
+   makes it a decision, not an assumption. Show a short summary in the reply and build from the file;
+   a later change goes into the file first. When DESIGN.md already has a `direction:` block, it is the
+   direction: build from it, and a deviation needs a Decision Receipt.
    **What exists.** When there is a screen, product, or design system already, read its
    analysis or run Analyze first (capabilities/analyze.md). Existing screens, components, and any
    screenshot or reference provided are your examples: read them before choosing patterns, take
@@ -54,7 +72,8 @@ The six stages of the core workflow (SKILL.md), as Design runs them.
    with a visual direction, ui and anti-slop as well. The rules shape the first idea, not only the
    review of it.
 2. **Frame.** Name the primary task, the flow, the one thing that must be seen first, and the
-   primary action. Write three to five success criteria from the brief (the user's main task, what
+   primary action. On a page read top to bottom (a landing page, onboarding), write the visitor's
+   questions in order first: they are the sections and their order (RX-UX-13). Write three to five success criteria from the brief (the user's main task, what
    must be seen first, the brief's character words, conventions that must hold) before any
    alternative exists; Explore and Evaluate use these, and they do not change after you see the
    alternatives. For consequential choices, list the two or three patterns to compare, using
@@ -86,6 +105,8 @@ The six stages of the core workflow (SKILL.md), as Design runs them.
      they share it, or each names its own. Writing it after drawing documents the result instead of
      directing it. Each drawn asset also gets its concept line: what it must say and the cue
      that shows it (RX-UI-24, knowledge/illustration.md).
+   - When stage 1 discovered the direction (RX-UI-26), the alternatives keep it and differ in
+     structure; another look is not another alternative.
    - A small change, or a screen inside a fixed design system, skips Explore: say so and continue.
 4. **Evaluate and select.** Rate each alternative against the Frame criteria, Strong, Adequate, or
    Weak with one reason each, fit first: the user's main task (can it be done fast, where the hand
@@ -120,6 +141,9 @@ The six stages of the core workflow (SKILL.md), as Design runs them.
    deliver the contract and sheet as a spec and say what was not built. Work in a draft or a
    duplicate file, build in small steps (one collection or one component set per call), bind every
    value to a variable, and render the sheet after each component set.
+   **Main page first.** On an expressive surface, make the main page rich and pass the review below
+   before the state boards and handoff notes; those follow, short. Effort spread across many frames
+   leaves the page people judge thin.
    **Render and inspect.** Screenshot what you made, check it against the direction and the rules,
    fix, and render again (capabilities/qa.md). Then, on the render:
    - Literal values: turn each into a variable or name the exception (RX-DS-03).
@@ -145,6 +169,11 @@ The six stages of the core workflow (SKILL.md), as Design runs them.
      from the Reference Read, or comparable screens from the ryux MCP) and write, per reference,
      what holds up and what reads weaker or more generic in yours (surface, hierarchy, brand layer,
      assets); no score. Fix what reads weaker for the task; say so when no reference was available.
+   - Fresh eyes: on an expressive surface, when the agent can start a subagent, hand it only the
+     renders (desktop and mobile) and the brief, not your reasoning, and ask for the skeleton, swap,
+     and thumbnail tests (knowledge/imagery.md), the three most generic things on the page, and a
+     verdict: ship, fix, or rethink. Fix and review once more at most. Without a subagent, run the
+     tests yourself on a fresh render and say the review was not independent.
    - Assets: generated images and illustrations arrive asynchronously. Wait until each one has
      landed and render again before exporting or closing the gate; never finish with one pending.
 6. **Verify and deliver.**
@@ -218,8 +247,8 @@ patterns fit the context, and how the result is evaluated.
 ## Interaction patterns       patterns that fit this context (platform conventions, confirmation before
                               irreversible actions, recovery, the states the data can be in), each with
                               why and its evidence strength
-## Visual and motion language character, concept, signature, things to avoid; tokens with a reason each,
-                              "proposed" until confirmed
+## Visual and motion language the `direction:` block (stage 1, Write the foundation): character, concept,
+                              signature, things to avoid; tokens with a reason each, "proposed" until confirmed
 ## Voice and tone             voice words, how it addresses people, how tone shifts by moment
 ## How we evaluate            three to five success criteria; machine checks (`ryux scan`, states, typecheck
                               and tests); the riskiest assumption, the cheapest test, the signal that would

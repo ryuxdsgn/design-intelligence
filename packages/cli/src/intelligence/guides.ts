@@ -78,12 +78,18 @@ The six stages of the core workflow (SKILL.md), as Design runs them.
    language's common currency, as an assumption (RX-PR-05). When the prompt and DESIGN.md disagree, the prompt wins for
    this task; say so. A DESIGN.md written for a different product (another name, domain, or
    audience than this brief) sets no direction for this task: say so, and treat direction as unset.
+   **Product Discovery first** (RX-PR-13): for a new product or a new look, when the context does
+   not say who exactly it is for and why they would choose it, ask that before anything visual: the
+   audience, why this product, its character, a taste reference, the page's status and goal, plus the
+   product-fact questions, five at most, as choices. Record the answers in DESIGN.md.
    **Direction is the user's call:** when neither the prompt nor DESIGN.md sets the UI direction
-   (character, or brand colour and type) or the motion direction, ask for it in that message (it
-   counts toward the three) instead of choosing it yourself; on an expressive surface, ask in the
-   same question for one product or site whose look they like, as a taste anchor. **No DESIGN.md and no product docs is the
-   case where these questions matter most, never a reason to skip them:** ask, then wait for the
-   answer before designing. Complete context means no questions.
+   (character, or brand colour and type), discover it with the user in the next message (RX-UI-26):
+   three directions built from those answers, as style tiles (conventional, grounded, stretching),
+   instead of choosing one yourself; the motion direction rides with it. **No DESIGN.md and no product docs is the case where these questions matter most,
+   never a reason to skip them:** ask, then wait for the answer before designing. No question tool
+   is not a reason either: write the options as numbered text and end the turn. Choose yourself only
+   when the user hands the choice back or the task says to run without questions (RX-UI-26).
+   Complete context means no questions.
    **Voice and tone** is not asked by default: when the field is blank, infer it from the product's
    existing copy or brand docs, label it inferred, and continue (RX-CD-11). Ask only when there is
    no source at all and the work is mostly copy (onboarding, marketing, error and success messages);
@@ -98,9 +104,21 @@ The six stages of the core workflow (SKILL.md), as Design runs them.
    question, or confirms an inferred voice, write the answer into the UI direction, Motion direction,
    or Voice and tone field of the RYUX project context in DESIGN.md:
    between \`<!-- ryux-context:start -->\` and \`<!-- ryux-context:end -->\`, one line per field
-   (\`- **UI direction**: Calm, trustworthy\`). If DESIGN.md or the block does not exist, create it
-   with the fields answered. Change only those field lines; leave every other line as it is. Your own
+   (\`- **UI direction**: Calm, trustworthy\`); Product Discovery answers go to Audience, Why choose it,
+   Taste references, and Design intent the same way, adding a field line the block lacks. If DESIGN.md
+   or the block does not exist, create it with the fields answered. Change only those field lines; leave every other line as it is. Your own
    assumptions do not go into DESIGN.md.
+   **Write the foundation.** When the user chooses or combines a direction (RX-UI-26), write it out
+   before building, as one \`direction:\` YAML block under \`## Visual and motion language\` in DESIGN.md
+   (create the heading if missing; replace an earlier block, keep the rest): id, name, status (chosen,
+   combined, or provisional), philosophy, the grammar dimensions, the answers it rests on, the category
+   default and whether it was declined, the weight carrier and its asset (RX-UI-29), then the foundation: type (families, scale with sizes, figures),
+   colour (the scheme and where the neutrals come from, RX-UI-31; hex per role, with the contrast pairs that pass, and which colour fills the full-bleed bands), shape (radius per role, borders), depth (shadow levels, a surface ladder, or atmosphere),
+   spacing and layout, density, material, imagery (strategy, style, the assets and where each comes
+   from), motion, the signature and its devices, what to avoid, and the trade-offs. The user's choice
+   makes it a decision, not an assumption. Show a short summary in the reply and build from the file;
+   a later change goes into the file first. When DESIGN.md already has a \`direction:\` block, it is the
+   direction: build from it, and a deviation needs a Decision Receipt.
    **What exists.** When there is a screen, product, or design system already, read its
    analysis or run Analyze first (capabilities/analyze.md). Existing screens, components, and any
    screenshot or reference provided are your examples: read them before choosing patterns, take
@@ -113,7 +131,8 @@ The six stages of the core workflow (SKILL.md), as Design runs them.
    with a visual direction, ui and anti-slop as well. The rules shape the first idea, not only the
    review of it.
 2. **Frame.** Name the primary task, the flow, the one thing that must be seen first, and the
-   primary action. Write three to five success criteria from the brief (the user's main task, what
+   primary action. On a page read top to bottom (a landing page, onboarding), write the visitor's
+   questions in order first: they are the sections and their order (RX-UX-13). Write three to five success criteria from the brief (the user's main task, what
    must be seen first, the brief's character words, conventions that must hold) before any
    alternative exists; Explore and Evaluate use these, and they do not change after you see the
    alternatives. For consequential choices, list the two or three patterns to compare, using
@@ -145,6 +164,8 @@ The six stages of the core workflow (SKILL.md), as Design runs them.
      they share it, or each names its own. Writing it after drawing documents the result instead of
      directing it. Each drawn asset also gets its concept line: what it must say and the cue
      that shows it (RX-UI-24, knowledge/illustration.md).
+   - When stage 1 discovered the direction (RX-UI-26), the alternatives keep it and differ in
+     structure; another look is not another alternative.
    - A small change, or a screen inside a fixed design system, skips Explore: say so and continue.
 4. **Evaluate and select.** Rate each alternative against the Frame criteria, Strong, Adequate, or
    Weak with one reason each, fit first: the user's main task (can it be done fast, where the hand
@@ -179,6 +200,9 @@ The six stages of the core workflow (SKILL.md), as Design runs them.
    deliver the contract and sheet as a spec and say what was not built. Work in a draft or a
    duplicate file, build in small steps (one collection or one component set per call), bind every
    value to a variable, and render the sheet after each component set.
+   **Main page first.** On an expressive surface, make the main page rich and pass the review below
+   before the state boards and handoff notes; those follow, short. Effort spread across many frames
+   leaves the page people judge thin.
    **Render and inspect.** Screenshot what you made, check it against the direction and the rules,
    fix, and render again (capabilities/qa.md). Then, on the render:
    - Literal values: turn each into a variable or name the exception (RX-DS-03).
@@ -204,6 +228,11 @@ The six stages of the core workflow (SKILL.md), as Design runs them.
      from the Reference Read, or comparable screens from the ryux MCP) and write, per reference,
      what holds up and what reads weaker or more generic in yours (surface, hierarchy, brand layer,
      assets); no score. Fix what reads weaker for the task; say so when no reference was available.
+   - Fresh eyes: on an expressive surface, when the agent can start a subagent, hand it only the
+     renders (desktop and mobile) and the brief, not your reasoning, and ask for the skeleton, swap,
+     and thumbnail tests (knowledge/imagery.md), the three most generic things on the page, and a
+     verdict: ship, fix, or rethink. Fix and review once more at most. Without a subagent, run the
+     tests yourself on a fresh render and say the review was not independent.
    - Assets: generated images and illustrations arrive asynchronously. Wait until each one has
      landed and render again before exporting or closing the gate; never finish with one pending.
 6. **Verify and deliver.**
@@ -266,8 +295,8 @@ patterns fit the context, and how the result is evaluated.
 ## Interaction patterns       patterns that fit this context (platform conventions, confirmation before
                               irreversible actions, recovery, the states the data can be in), each with
                               why and its evidence strength
-## Visual and motion language character, concept, signature, things to avoid; tokens with a reason each,
-                              "proposed" until confirmed
+## Visual and motion language the \`direction:\` block (stage 1, Write the foundation): character, concept,
+                              signature, things to avoid; tokens with a reason each, "proposed" until confirmed
 ## Voice and tone             voice words, how it addresses people, how tone shifts by moment
 ## How we evaluate            three to five success criteria; machine checks (\`ryux scan\`, states, typecheck
                               and tests); the riskiest assumption, the cheapest test, the signal that would
@@ -630,6 +659,28 @@ tabular figures. Two families at most, three weights at most: hierarchy comes fr
 steps, not from more faces. Headings do not end on one stranded word (\`text-wrap: balance\`, or
 rewrite).
 
+**Direction grammar** (RX-UI-26). A direction is a set of visual decisions with reasons, not a style
+name. Build it from these dimensions; the values are vocabulary, not a menu:
+- **Philosophy**: minimal, expressive, functional, experimental
+- **Grounding**: the product's mechanism, an object, a place, a ritual, a material, or none (conventional)
+- **Movement**: swiss, editorial, brutalist, retro, vernacular, or none
+- **Type**: grotesk, humanist, geometric, serif, slab, mono; a display face with a partner
+- **Colour behaviour**: monochromatic, tonal, high contrast, vibrant, muted
+- **Shape**: geometric, organic, sharp, soft
+- **Layout**: modular, editorial, asymmetric, structured
+- **Density**: compact, balanced, spacious
+- **Material**: flat, tactile, translucent, dimensional
+- **Imagery**: the product photographed or rendered, illustration (vector, line, hand-drawn, collage,
+  editorial, character; RX-UI-17), the product's own complete screens, or type alone; none needs a reason
+- **Motion**: functional, expressive, playful, cinematic (RX-UI-11)
+
+Coherence: at most two dimensions at an extreme, the rest support them; each value has a reason from
+the product profile or follows another dimension for unity (say which). Risky pairs carry a condition:
+translucent with long text needs measured contrast; compact for older users fails; vibrant on money
+screens keeps the status colours readable. A keyword is not a recipe: swiss is not every B2B product,
+editorial is not always a big serif, minimal is not always cream and white space, playful is not
+always pastel and round.
+
 **Craft is the last 10 percent people notice first** (RX-UI-15). Icons sit on the optical center of
 their text, sized to its line-height, with a stroke that matches the type weight. Number columns align
 right or on the decimal. Borders, dividers, and shadows come from one small token set. Long text
@@ -656,17 +707,43 @@ task UI usable; on expressive surfaces it is only the floor. Work concept, then 
 system:
 1. **Concept**: explore two or three alternatives first (name, concept, signature; capabilities/design.md, stage 3), then choose one. The idea
    comes from the product itself, not from the category: a tool about evidence might use receipts,
-   citations, and marks of proof; a calm finance app might use the ledger. The category default
+   citations, and marks of proof; a concept can be an atmosphere, a material, or a movement as well as an object. The category default
    (a terminal panel for developer tools, a dashboard screenshot for SaaS) is never the signature.
-2. **Signature**: one element that carries the concept and that people would remember. Choose the
-   lever: type (scale contrast, a distinctive face), composition (a broken grid, an unexpected
-   crop, a large number), art direction, color temperature, motion personality, or copy voice.
-3. **System**: everything else stays quiet and consistent so the signature reads.
+2. **Inventory** (RX-UI-27): write the concept as one sentence ("this page is a boarding pass"),
+   list the parts the real thing has (a tear line, a barcode, a seat block, a gate time, a stub, a
+   perforation), and give each section one of them. The sections and their order come
+   from the visitor's questions (RX-UX-13), never from the concept; the concept only shapes them,
+   down to the dividers. Most sections take their form from the
+   inventory; a generic section form (three icon columns, an accordion, a centred call-to-action band)
+   needs a reason. The concept in one hero card with a template page around it is decoration.
+3. **The hero does the job**: the concept object in the hero performs the product's core job with
+   sample data (a boarding pass that turns a booking into a seat and a gate time), not a sample on display.
+4. **Signature and devices**: one element people would remember, plus two or three graphic devices
+   taken from the inventory (a tear line, a barcode strip, a gate number), drawn simply and
+   repeated in at least three sections. Devices are illustration made from the concept, so an
+   expressive page rarely has none; write their style like any illustration (RX-UI-17).
+5. **Weight carrier** (RX-UI-29): name what carries the page's visual weight (atmosphere, photo or
+   render, the product's UI large and layered, illustration, or display type at 80px or more over a
+   colour block), make its asset first and read it alone (RX-UI-30, knowledge/illustration.md), and build the page around it. Then one decisive type move and
+   one dominant colour field, from the concept or the product's character, not a neutral surface with
+   one accent: a full-bleed band in it, or a dark and light switch between bands, and a named depth
+   system. Cream or white with ink is a choice that needs a reason, never the fallback.
+6. **Copy in the concept's language**: headlines carry the concept and the reader's world ("Your
+   seat is waiting at gate 4", not "Book your next trip today"). Unknown product facts
+   go to the handoff notes; on the canvas, write copy that does not need them, with at most one quiet
+   placeholder treatment in the page's own voice, never a section of "to confirm" chips (RX-AS-03).
+7. **System**: everything else stays quiet and consistent so the concept reads. Restraint means every
+   element has a job, not that there are few: an expressive page of wide empty bands, small grey text,
+   and no visual is not restrained, it is unfinished. Showing the product (its real screen with
+   labeled sample data) is not the floating-phone cliché.
 The Liveliness you set (Design Direction) turns into these levers: one focal point per screen,
 contrast in size and weight that builds the hierarchy, whitespace that groups, one deliberate
 accent, and a motif the signature repeats. Low energy uses the same levers, quietly.
-Then run the swap test (RX-AS-09): with a competitor's name and logo, would anything need to change?
-If not, the surface has no point of view yet. Stay honest while being bold: a strong idea never
+Then run three tests on the render. **Swap** (RX-AS-09): with a competitor's name and logo, would
+anything need to change? If not, the surface has no point of view yet. **Skeleton**: without colour,
+type, and devices, is the wireframe the template order (split hero, three columns, questions, a
+centred band, footer)? Then the concept is paint. **Thumbnail**: shrunk to icon size, does the page
+still have a shape you would recognise? Stay honest while being bold: a strong idea never
 needs invented numbers, people, or logos.
 
 **2. Motion.** Start from purpose: what the motion communicates; with no purpose, no motion.
@@ -777,8 +854,16 @@ you can check.
    any detail. Then the relations between parts (what touches, what overlaps, where the light comes
    from), then detail. Name layers for what they are (\`recipe-box\`, \`steam\`, not \`path-12\` or a
    coordinate). Pick the method from the asset's job (RX-UI-21) and ship it themed (RX-UI-19).
-4. **Render and read.** Render at display size and 2x, on light and dark, and look before anything
-   else. Cover the label and write what each asset says; compare it with the stage 1 line. Then
+   **Craft on a canvas.** Draw from paths, not stacked rectangles and circles: in Figma, write the
+   SVG and import it (\`createNodeFromSvg\`); in pen.dev, use its path nodes. Give each object the parts
+   that make it that object (a scale has a pan, a beam, and a needle; a plain box with a number is a
+   display, not a scale). Light comes from one side; each material gets three tones from the palette
+   (base, shadow, highlight): metal a bright band and a dark reflection, paper an edge and a soft
+   shadow. A photo or a 3D render of the real product is often better than drawing it: generate it
+   from the Visual Brief with the tool's image generation (in Figma, generate_image) and label it
+   (RX-UI-13). A planned asset is made, never dropped for type or a slot because it takes longer.
+4. **Render and read** (RX-UI-30). Render each asset alone at display size and 2x, on light and dark, and look before anything
+   else; read it against the seven checks, and redraw or switch method on two fails. Cover the label and write what each asset says; compare it with the stage 1 line. Then
    craft: the silhouette, joints and overlaps, the size of shadows, contrast between the subject and
    what is behind it, and what is lost at the smallest size. Fix and render again; compare a set side
    by side (RX-UI-18).
@@ -937,7 +1022,9 @@ from the rules.
 **Purpose Gates**: these patterns are allowed when they have a purpose. For each one in the
 result, ask three questions: **purpose** (what does it do?), **contribution** (what does it add to
 understanding, interaction, or character?), and **necessity** (would something simpler do the
-same?). "It looks more interesting" answers none of them; remove what fails.
+same?). "It looks more interesting" answers none of them; remove what fails. On an expressive
+surface, character is a contribution and "simpler" is not "nothing": after removing, check the page
+still has its concept (RX-UI-27).
 
 **Quality Locks**: consistency that must hold across the product (listed below).
 
@@ -970,5 +1057,12 @@ run the purpose gate; keep it when the answer is real, as in the last column.
 | One record split into a grid of cards | details that are read together (an order, a profile, a transaction) are scattered into equal boxes | one block with labeled rows or a table (RX-UI-05) | each card is a separate item the user compares or acts on |
 | A dashboard of KPI tiles and charts that answer no question | decoration in place of the decision the screen supports | lead with what needs attention and the next action; dense tables where people scan (RX-UI-01, RX-UX-01) | each tile drives a decision and links to its detail |
 | Display-size headings on task UI | a hero-sized title pushes the data and the action below the fold | a heading sized for its rank in the page (RX-UI-01, RX-UI-03) | it is the single message of a marketing or brand page |
+| The concept in one card: the idea sits in the hero while every other section is the template | the page reads as a template with a sticker; the concept never shapes the reading | give each section a form from the concept's inventory, and repeat its devices (RX-UI-27) | task UI with one brand moment |
+| A section of placeholders: "to confirm" chips, dashed [QR code] or [logo] boxes | reads as an unfinished wireframe, the opposite of trust | copy that does not need the missing fact, unknowns in the handoff notes, one quiet treatment in the page's voice (RX-AS-03) | the frame is a wireframe, labeled as such |
+| An empty page as restraint: wide plain bands, small grey text, no visual | the most common generated page; nothing in it is the product's | every element with a job, not few elements: the concept's devices, or the product's real screen with labeled sample data (RX-UI-27, RX-UI-07) | task UI, or a quiet brand carried by one strong type move |
+| A paper page by default: cream or white surface, ink, one muted accent, text and small cards, no made image | declining the category look by retreating to neutral; four RYUX trials of one brief ended here | a weight carrier at full strength and a colour field from the product's character (RX-UI-29) | the product's brand is paper and ink, and the page still has its carrier |
+| A text button dressed as a store badge, or a confirmed partner shown only in text | reads as unfinished or fake; the real mark is recognised before any label | the official badge or mark from its source, at its guideline size (RX-UI-28) | the fact is not confirmed: then no mark at all |
+| A device frame with a half-empty screen | the product looks thin and unbuilt, the opposite of what the frame is for | one complete screen at real density: platform status bar, real navigation, a full set of labeled sample data (RX-UI-07) | a wireframe, labeled as such |
+| Every direction with no imagery | type and flat colour alone read as a generated page on an expressive surface | name an imagery strategy per direction: the product rendered or photographed, an illustration style, or the product's screens (RX-UI-26) | the brand is carried by type on purpose, and the type move is strong |
 | A landing-page layout for a product screen | hero, feature rows, and a closing CTA on an app screen, a settings page, or a tool | the structure the task needs: list, detail, form, or workspace (RX-UI-05) | the surface really is marketing |`,
 };
