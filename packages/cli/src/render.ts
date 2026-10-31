@@ -70,7 +70,7 @@ export function deliveryGateTemplate(): string {
     a === "FINAL"
       ? `${a.padEnd(width)}PASS | FAIL | NOT VERIFIED`
       : a === "UI"
-        ? `${a.padEnd(width)}PASS | FAIL | NOT VERIFIED | N/A  · one-line reason · point of view: <concept> | task UI, signature: <signature> · illustration style: <where written> | none`
+        ? `${a.padEnd(width)}PASS | FAIL | NOT VERIFIED | N/A  · one-line reason · point of view: <concept> | task UI, signature: <signature> · concept sections <n>/<total>, devices <n>, carrier <kind>, made assets <n>/<planned> · illustration style: <where written> | none`
         : a === "PRODUCT"
         ? `${a.padEnd(width)}PASS | FAIL | NOT VERIFIED | N/A  · one-line reason · evidence Strong | Thin | None`
         : a === "EDGE CASES"

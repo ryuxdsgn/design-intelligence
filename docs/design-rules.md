@@ -174,7 +174,7 @@ UI, UX, copy, and frontend work ends with this report:
 PRODUCT        PASS | FAIL | NOT VERIFIED | N/A  · one-line reason · evidence Strong | Thin | None
 UX             PASS | FAIL | NOT VERIFIED | N/A  · one-line reason
 CONTENT        PASS | FAIL | NOT VERIFIED | N/A  · one-line reason
-UI             PASS | FAIL | NOT VERIFIED | N/A  · one-line reason · point of view: <concept> | task UI, signature: <signature> · illustration style: <where written> | none
+UI             PASS | FAIL | NOT VERIFIED | N/A  · one-line reason · point of view: <concept> | task UI, signature: <signature> · concept sections <n>/<total>, devices <n>, carrier <kind>, made assets <n>/<planned> · illustration style: <where written> | none
 DESIGN SYSTEM  PASS | FAIL | NOT VERIFIED | N/A  · one-line reason
 ACCESSIBILITY  PASS | FAIL | NOT VERIFIED | N/A  · one-line reason
 RESPONSIVE     PASS | FAIL | NOT VERIFIED | N/A  · one-line reason
@@ -207,13 +207,13 @@ line below for its exact source.
 <!-- provenance:start -->
 | Source cited | Rules citing it | Rules citing only this |
 | --- | --- | --- |
-| Public standard or research | 72 | 51 |
-| Industry practice | 21 | 8 |
+| Public standard or research | 74 | 52 |
+| Industry practice | 26 | 9 |
 | Observed in a RYUX run | 17 | 8 |
 | Pattern also in another MIT ruleset (text written for RYUX) | 4 | 4 |
-| RYUX principle, taxonomy, or review | 48 | 22 |
+| RYUX principle, taxonomy, or review | 54 | 23 |
 
-All 126 rules cite a source; 33 cite more than one kind, so the "Rules citing it" column adds up to more than 126.
+All 134 rules cite a source; 38 cite more than one kind, so the "Rules citing it" column adds up to more than 134.
 <!-- provenance:end -->
 
 ## Rules
@@ -221,7 +221,7 @@ All 126 rules cite a source; 33 cite more than one kind, so the "Rules citing it
 Generated from `packages/cli/src/content.ts` by `pnpm sync:skills`. Edit the rules there, not here.
 
 <!-- rules:start -->
-126 rules across 15 modules: 61 Required, 20 Preferred, 45 Contextual; 18 Hard Gates and 13 Quality Locks.
+134 rules across 15 modules: 61 Required, 28 Preferred, 45 Contextual; 18 Hard Gates and 13 Quality Locks.
 
 ### Product thinking (RX-PR) · `knowledge/product.md`
 
@@ -231,7 +231,7 @@ Gate area PRODUCT. Covers user, task, goal, primary action, constraints, assumpt
 
 - Do: Before designing, write down the user, their task, the business goal, the design intent (what the user must understand, feel, and do), the information that matters, the primary action, the constraints, and what success looks like.
   - Take what the prompt and DESIGN.md already give.
-  - Ask only when a missing answer materially affects the user flow, what the product can do, or whether the content is correct, or when neither the prompt nor DESIGN.md sets the UI or motion direction: at most three questions in one message, most consequential first, none when the context is complete.
+  - Ask only when a missing answer materially affects the user flow, what the product can do, or whether the content is correct, or when neither the prompt nor DESIGN.md sets the UI or motion direction: at most three questions in one message, most consequential first, none when the context is complete. A new product or a new look runs Product Discovery first (RX-PR-13).
   - Otherwise make the smallest reasonable assumption, write it down, and continue.
 - Do not: Start from a generic template with no stated user or task, or ask questions the prompt or DESIGN.md already answers.
 - Why: Without a task, design and review drift into taste. (`capabilities/critique.md` playbook; NNGroup task-based evaluation)
@@ -317,6 +317,24 @@ Gate area PRODUCT. Covers user, task, goal, primary action, constraints, assumpt
 - Why: DESIGN.md is what every later task reads first: an invented user or rule there spreads into every screen, and a file that only lists colors leaves the next agent to guess the user and the job. (owner review 2026-10-27; ryux run: wallet-expressive benchmark rounds 2 and 3 (a DESIGN.md that dictated values tested spec-following; one that named only character left the values unexplained); RX-PR-02, RX-PR-10)
 - Trade-off: takes a few rounds of questions before the first screen
 - Check: review: the five questions each answered with a source or listed under Open questions; chosen tokens marked proposed with a reason
+
+#### RX-PR-13 [Preferred] Before a direction, learn what makes this product specific
+
+- When: a new product, a new look, or an expressive surface, and the prompt, DESIGN.md, and the product docs do not say who exactly it is for and why they would choose it
+- Do: Before any visual direction, ask the questions the context does not answer, in one message, as choices with a recommended answer each and room for the user's own:
+  - who exactly: the group, their moment, and what they use today (first-job savers putting money aside for a dowry, market traders, parents buying jewellery gold)
+  - why they would choose this product over what they use now: cheaper, more trusted, easier, or something else
+  - its character in three words, and what it must never feel like; the recommended answer comes from the audience and why they would choose it, and is a personality (warm, bold, witty, proud), never a safe word for restraint (plain, clean, simple, minimal): restraint is how a page behaves, not who the product is
+  - one product or site they like the look of, and one they do not
+  - the page's status and goal: live or not yet, and what the visitor should do (download, sign up, trust it first)
+  - Add the product-fact questions (RX-PR-01) to the same message; five questions at most, most consequential first. A fact with a mark (a store, a payment method, a partner, a regulator) asks for its official files in the same question (RX-UI-28).
+  - Write each answer into the RYUX project context in DESIGN.md (Audience, Why choose it, UI direction, Taste references, Design intent) so the next task does not ask again.
+  - When the user hands the questions back, infer each answer from the brief, label it inferred, and continue; the directions then say they rest on inferences.
+- Do not: Build directions from the category alone (every gold app gets a gold shop), recommend plain, clean, or minimal as the character, ask open questions with no options, ask what the context already answers, or treat an inferred answer as the user's.
+- Why: Without the product's own audience and reason to exist, an agent fills the gap with the category's cliché, so every product of a kind gets the same look; the answers are what make the direction specific. (Brand strategy and design discovery practice (audience, positioning, personality, references before visual work); landing-gold rounds 3 and 4, 2026-10-31 (docs/benchmarks/landing-gold): with only the category to go on, every RYUX run proposed the same gold-shop direction, and a run inferred a pre-launch waiting list the brief never set; owner review 2026-10-31)
+- Not when: the context already answers them, or a small change inside an existing product
+- Trade-off: one more round of questions before any design; the answers are kept, so it is asked once per product
+- Check: review: the questions asked or the answers cited from the context, each recorded in DESIGN.md or marked inferred
 
 ---
 
@@ -409,6 +427,19 @@ Gate area UX. Covers information architecture, navigation, flows, grouping, disc
 - Not when: a small change (a colour, one label, spacing) or when the user says no test plan
 - Trade-off: a plan nobody runs is only a list; say who should run it and when
 - Check: review
+
+#### RX-UX-13 [Preferred] A page's sections answer the visitor's questions, in their order
+
+- When: a marketing or landing page, onboarding, or any page read top to bottom to reach one decision
+- Do: Before the layout, write the questions this visitor has, in the order they have them, from the audience and the page goal (RX-PR-13): for a first-time saver, "what is this?", "is it for someone like me?", "what do I get for a small amount?", "can I trust it?", "how do I start?".
+  - Each section answers one question; a question the visitor does not have gets no section, and a section that answers none is cut.
+  - The order of the questions is the order of the page; the primary action sits where the visitor is ready for it, and again at the end.
+  - The visual concept gives each section its form (RX-UI-27); it never adds a section or changes the order.
+- Do not: Start from the usual section list (hero, features, how it works, FAQ, call to action) and fill it, or let a visual idea decide which sections exist.
+- Why: A page that follows a template answers questions nobody asked and skips the one that decides; the visitor's own questions are what make the structure specific to this product. (Content strategy and conversion practice (a page as the answer to the reader's questions in order); NNGroup inverted pyramid; landing-gold concept-system trial 2026-10-31: a concept carried into every section still sat on the template order, as an independent reviewer and the owner noted)
+- Not when: task UI (a list, a form, a dashboard), where the user's task sets the structure (RX-UX-01)
+- Trade-off: the order can differ from what the team expects to see; show the question list with the layout
+- Check: review: the question list in Frame, and each section mapped to one question
 
 ---
 
@@ -847,12 +878,48 @@ Gate area UI. Covers the visual system of a product: hierarchy, type, layout, de
 
 - Do: Derive the art direction from the brand, the audience, the product context, and reference screens, and write it as a Visual Brief (template in knowledge/imagery.md) (objective, concept, composition, color, material, lighting, motion, avoid) before designing an expressive surface or generating images, 3D, or motion.
   - For a new product, decide the brand direction before the tokens, task UI included: palette, type, and shape follow from the product's character (fast, warm, trusted, and so on), not from the one accent that passes contrast.
-  - With no visual direction in the brief or DESIGN.md, say before building that the result will look plain, and offer two or three directions.
-- Do not: Reach for the category cliché (coins, money rain, floating dashboards, or gradient blobs for fintech; generic 3D characters for any app), or write an image prompt without a brief (role, concept, composition).
+  - With no visual direction in the brief or DESIGN.md, discover it with the user before building: three directions, one chosen (RX-UI-26).
+- Do not: Reach for the category cliché (coins, money rain, floating dashboards, or gradient blobs for fintech; generic 3D characters for any app), write an image prompt without a brief (role, concept, composition), or decline the category default by retreating to a neutral surface (cream or white, ink, one muted accent, no imagery): declining a look is not choosing one.
 - Why: A default visual language makes the product interchangeable with its competitors. (art direction practice; RX-AS-05 purpose gate; owner review 2026-10-27: a food-delivery build "too plain, no illustration" from a DESIGN.md with no visual direction)
 - Not when: an existing brand system already defines the visual language; follow it
 - Trade-off: a brief takes time before any image exists
 - Check: the Visual Brief; review
+
+#### RX-UI-26 [Preferred] With no direction given, discover three and let the user choose
+
+- When: a new product, a new look, or an expressive surface, and no visual direction in the prompt or DESIGN.md
+- Do: Build the directions from the Product Discovery answers (RX-PR-13): the audience, why they would choose it, its character, and the taste references; name the category default (the look most products in this category ship).
+  - Build three directions from the direction grammar (knowledge/ui.md): one conventional (close to the category default, done well), one grounded in this audience's world (an object, place, ritual, or material these users know, not the category's), one that stretches how the product speaks. Conventional means a familiar structure, not a bare surface: it too has a signature and a visual anchor the tile shows. The three use different weight carriers (RX-UI-29), and grounded does not mean a paper object.
+  - Each tile's palette is built by RX-UI-31 (roles, a named scheme, neutrals from the dominant hue).
+  - The three speak different visual languages, not one language in three concepts: each has a base surface (the colour most of the page sits on) from a different family: light and cool (white, blue-grey), dark (ink, near-black), or a saturated colour as the canvas. Cream, ivory, warm white, and paper are one family (very light with a warm tint), used by one direction at most. At least one direction is cool or neutral in temperature whatever the character: warmth can come from type, shape, and imagery.
+  - Calibrate each against a well-known product of its visual language (a vivid gradient with product UI, warm photography or illustration, dark and precise, display type over colour blocks) for its level of craft, never for its look: name it in the tile, and take nothing from it (palette, type, or signature). Name each by its character (Quiet Financial Confidence), not by a style keyword, and say which answer each rests on; two products with different answers get different directions.
+  - Each pair differs on at least three grammar dimensions, philosophy or grounding among them; a palette change alone is the same direction. Each has a reason from the profile, and passes the coherence rules.
+  - Each names its imagery: the product photographed or rendered (generated from a Visual Brief and labeled), an illustration style, the product's own complete screens, or type alone; "none" needs a reason, and a landing page keeps at least one strong visual anchor.
+  - Show each as a style tile with the same content in all three (name and philosophy, base surface, type pair with a heading, body, and figures, palette with roles, a button and a card in its shape, its imagery strategy, a small hero holding one asset made for it (the carrier's asset at small scale: a vector illustration, a generated image, a mesh, a product screen), its signature, its calibration product, and its risk): frames side by side on a canvas, or text with the same fields.
+  - Ask as choices (capabilities/design.md, stage 1), the recommended one first, with room to combine ("type from B, colour from C"); a combination passes the coherence rules again. Asked for other options, offer three new ones and do not repeat.
+  - Ask even without a question or choice tool: write the three as numbered options, end the turn, and wait. Choose yourself only when the user hands the choice back, or the task says to run without questions (a pipeline, a batch job): one with a reason from the profile, marked provisional in the Assumptions, the other two offered in a line each.
+- Do not: Build the directions from the category alone, pick three style keywords from a list, offer three palettes of one layout, put all three on light warm surfaces, describe a carrier in the tile instead of making it, offer a conventional direction with no signature or visual anchor, recommend the category default because it feels safer, ask an open "what look do you want?" with no options, or let a direction change the facts: assumptions about the look are allowed, assumptions about the product are not (RX-AS-01, RX-PR-02).
+- Why: With no direction, an agent ranks the familiar look first and ships it, and a rule that tells it to be bold moves it to the next familiar look; the variety has to come from the user's choice among directions that fit. (Art direction practice (style tiles; a direction as a set of reasoned visual decisions); landing-gold rounds 2 and 3, 2026-10-30/31 (docs/benchmarks/landing-gold): owner's blind rating, RYUX 1.33 then 2.00 v 4.00 and 3.67 AI-slop resistance against a skill that assigns a direction; in round 3 a rule to commit to a grounded direction moved all three runs to one new default; owner decision 2026-10-31 (Design Direction Intelligence))
+- Not when: the prompt or DESIGN.md sets the direction, or an existing brand system defines it; follow it. A small change inside an existing product
+- Trade-off: one more question and three tiles before the design starts
+- Check: the Delivery Gate names the three directions offered, the answer each rests on, the one used, and whether the user chose it or it is provisional; the three differ on at least three grammar dimensions; three base surface families, warm off-white at most one, one cool or neutral direction; a made asset in each tile
+
+#### RX-UI-31 [Preferred] A palette is built from roles, not picked
+
+- When: a new palette: a new product, a new look, or a direction's tile (RX-UI-26)
+- Do: Build the palette in this order and write each step down:
+  - roles first: dominant, supporting, the action accent, neutrals, and the semantic colours (success, warning, error); each colour keeps one meaning everywhere it appears
+  - name the scheme (monochromatic, analogous, complementary, or split-complementary) and why it fits the character
+  - derive the neutrals from the dominant hue: light and dark surfaces take that hue at very low saturation (a cobalt page gets a blue-tinted white, a green page a green-tinted white); a warm neutral (cream, ivory, warm white) only when the dominant hue is warm, or with a written reason
+  - three or four hues besides the neutrals; the brightest and most saturated colour goes to what matters most, the primary action first, and less important elements stay muted
+  - share the page roughly as dominant, supporting, and accent, about 60/30/10 as a guide, not a formula
+  - every text pair passes WCAG contrast, and colour is never the only cue (RX-A11Y-01)
+  - Write the scheme and where the neutrals come from into the direction block in DESIGN.md (capabilities/design.md, stage 1).
+- Do not: Reach for cream or ivory as the light colour because the character is warm or the product is gold, add a hue without a role, give one colour two meanings, or spend the strongest colour on decoration while the action stays muted.
+- Why: A palette chosen colour by colour drifts to the model's defaults (cream, one accent, grey); roles and a named scheme make every colour answer to the page's meaning and keep the neutrals in the same family as the brand. (NNGroup visual design articles (good visual design, the anatomy of a good design, principles of visual design: a limited palette of three or four colours, consistent meaning, bright for what matters, muted for the rest, contrast for low vision and colour blindness); colour practice for schemes and proportions; owner review 2026-10-31 of RYUX trial 5: a cobalt page still used cream for its light bands, and the owner asked why cream appeared in every trial)
+- Not when: a brand or design system that already defines the palette; then follow it
+- Trade-off: tinted neutrals tie the page to one hue and make a later change of the dominant colour touch every surface
+- Check: the scheme named; the light neutral's hue within 30 degrees of the dominant hue, or a written reason; hues besides neutrals four or fewer; the strongest colour on the primary action; text pairs measured
 
 #### RX-UI-14 [Preferred] [Quality Lock] Type that is set, not only sized
 
@@ -942,15 +1009,63 @@ Gate area UI. Covers art direction, composition, expressive surfaces, motion, as
 - Trade-off: a strong idea takes a decision someone may disagree with; keep it honest and on brand
 - Check: the swap test (RX-AS-09); review
 
+#### RX-UI-27 [Preferred] On an expressive surface, the concept shapes the page, not one card
+
+- When: an expressive surface (a landing page, onboarding, a brand moment) with a chosen concept
+- Do: Which sections exist and their order come from the visitor's questions (RX-UX-13); the concept gives each of those sections its form. Write the concept's inventory (the parts the real thing has) and draw each section's form from it; a generic section form needs a reason (knowledge/imagery.md, Expressive surfaces).
+  - The hero's concept object performs the product's core job with sample data, not a sample on display.
+  - Draw two or three graphic devices from the inventory and repeat them in at least three sections; one decisive type move and one dominant colour field come from the concept too.
+  - Write headlines in the concept's language. Unknown product facts go to the handoff notes; on the canvas, copy that does not need them, never a section that is mostly placeholders.
+  - Before the gate, run the skeleton, swap, and thumbnail tests on the render, with fresh eyes when a subagent is available (capabilities/design.md, stage 5).
+- Do not: Let the concept add sections or set their order, put the concept in one hero card and build the rest from the template order, leave the page empty and call it restraint, fill a section with "to confirm" chips or dashed boxes, or let a device or the concept invent a product fact (RX-AS-01, RX-PR-02).
+- Why: A concept that lives in one card is decoration: the rest of the page is the same template every generated page uses, and that is what reads as AI-made. (Art direction practice (a concept carried as a system of forms and devices); landing-gold rounds 2 and 3, 2026-10-30/31 (docs/benchmarks/landing-gold): owner's blind rating, RYUX 1.33 and 2.00 v 4.00 and 3.67 AI-slop resistance; side-by-side read of the six round 3 pages: the RYUX pages kept the concept in the hero card over a template order, with placeholder sections and no devices, while the higher-rated pages formed every section from their concept; owner review 2026-10-31)
+- Not when: task UI, where the structure stays familiar (RX-AS-09); a brand system that already defines the page
+- Trade-off: a concept-shaped page takes longer and can overreach; each device still passes the purpose gate (RX-AS-05)
+- Check: sections whose form comes from the concept (at least half), devices repeated in three or more sections, sections that are mostly placeholders (none), and the skeleton, swap, and thumbnail tests; report them in the Delivery Gate UI line
+
+#### RX-UI-29 [Preferred] An expressive page has one weight carrier, made at full strength
+
+- When: an expressive surface (a landing page, onboarding, a brand moment)
+- Do: Name what carries the page's visual weight and make it at full strength; strong marketing pages each have one:
+  - atmosphere: a colour field or mesh made as an asset (vector shapes or a generated image), across the hero and returning lower down
+  - photography or a render: of the real product or the subject, generated from a Visual Brief and labeled when not real
+  - the product's UI: its real screens with labeled sample data, large (half the hero width or more), layered, with depth
+  - illustration: a set drawn for this product (RX-UI-17), in the hero and at least two more sections
+  - display type: the headline at 80px or more on desktop, as the main event, with a decisive colour block behind it
+  - Then the floor: the hero holds the carrier, not only text and buttons; at least one full-bleed band in a non-neutral colour, or a dark and light switch between bands; a named depth system (shadow levels, a surface ladder, or the atmosphere itself); no more than one section that is text alone. The base surface counts: coloured bands over a cream page are still a cream page.
+  - Write the carrier and the depth system into the direction block in DESIGN.md (capabilities/design.md, stage 1), and make its asset before the page, read alone before use (RX-UI-30, knowledge/illustration.md): the page is built around it, not the other way round.
+- Do not: Ship a hero of text and buttons with a small card beside it, set every band on one neutral surface, name a carrier and then draw it small or leave it out, or fall back to text because making an image or a vector takes longer.
+- Why: A page with no weight carrier has nothing for the eye to land on; the reader sees layout and text, which is the look of every generated page, however correct its rules are. (Art direction practice; a read of published design-language descriptions of five marketing sites (gradient mesh, photography, dense product UI, display type at 80 to 136px over full-bleed colour bands): each puts its weight in one medium made at full strength; owner review 2026-10-31 of four RYUX trials of one landing page: every page sat on cream or white with text, tables, and small cards, with no illustration or made image, and the owner read all of them as plain and AI-made)
+- Not when: task UI; a brand system that already sets the page's look
+- Trade-off: making the carrier's asset takes time and tool calls before the page, and a strong carrier can crowd the message if its focal point fights the headline
+- Check: the carrier named and present in the hero; full-bleed non-neutral bands or a mode switch (count); depth system named; text-only sections (at most one); report the carrier in the Delivery Gate UI line
+
 #### RX-UI-13 [Contextual] Source assets on purpose
 
 - When: the design needs photos, illustration, 3D, icons, logos, or video
-- Do: Pick each asset's source in this order: real product screens or the brand's own assets; a licensed library (one icon set, photos whose license you can name); a custom or generated asset made from the Visual Brief and labeled illustrative; otherwise a placeholder that looks like one (RX-AS-03). Record where each asset came from.
-- Do not: Draw or imitate another company's logo, invent the product's own mark (RX-AS-11), mix icon sets, use a photo you cannot license, or fill a gap with a generic stock scene.
+- Do: Pick each asset's source in this order: real product screens or the brand's own assets; standard marks of a confirmed fact, from their official source (RX-UI-28); a licensed library (one icon set, photos whose license you can name); a custom or generated asset made from the Visual Brief (the design tool's image generation when it has one) and labeled illustrative; otherwise a placeholder that looks like one (RX-AS-03). Record where each asset came from.
+- Do not: Draw or imitate another company's logo (use its official file, RX-UI-28), invent the product's own mark (RX-AS-11), mix icon sets, use a photo you cannot license, or fill a gap with a generic stock scene.
 - Why: Assets carry claims about the product and its users; an unsourced or borrowed asset is a claim nobody can back. (licensing and trademark practice; RX-UI-07; RX-AS-02)
 - Not when: a wireframe or internal prototype where placeholders are expected
 - Trade-off: real or licensed assets take longer than a stock search
 - Check: asset list with sources; review
+
+#### RX-UI-28 [Preferred] Standard marks are used as they are, when their fact is confirmed
+
+- When: the design shows where to get the app, how to pay, or who stands behind the product, and the brief, DESIGN.md, or the user confirms the fact
+- Do: Use the official mark whose fact is confirmed, from its owner's official source and at its guideline size and clear space:
+  - the app is on a store: the App Store and Google Play badges, in the page's language
+  - payment methods the product accepts: QRIS and the confirmed bank, e-wallet, or card marks
+  - a confirmed partner or regulator: its mark, with a handoff note that its use needs the owner's permission
+  - platform chrome on device screens: the real status bar, home indicator, and keyboard
+  - Ask for the files when the fact is confirmed, in the same message as the fact questions (RX-PR-13): "do you have the official logo files? a path, or I fetch them".
+  - Get each file the way the tool allows, in this order: the file the user gives; the owner's brand, press, or media kit page (find it by searching, do not guess file URLs); the platform's component library; a public file archive that names the file's source and license (Wikimedia Commons), with that note in the handoff. Upload it as it is.
+  - When none works, ask the user for the file before the build and continue only if they hand it back; then a slot with the mark's exact shape and size, named for the file, listed in the open tasks with where to get it. Never a text button made to look like it, and never a silent placeholder.
+- Do not: Draw a text button in place of a store badge, redraw or recolour an official mark, or show a mark whose fact is not confirmed (a store the app is not on, a bank that is not a partner): that is an invented claim (RX-PR-02).
+- Why: People recognise standard marks faster than any label, and their absence makes a page look unfinished; drawn lookalikes read as fake. (App Store and Google Play badge guidelines; licensing and trademark practice (use the owner's file as provided); owner review 2026-10-31 of RYUX trials: a live app's landing page drew both store badges as green text pills and named a confirmed regulator and partners only in text, and the owner read the page as plain and generic; in the next trial the badges were official, but the partner logos stayed empty slots after three guessed URLs failed, with no other source tried and no file asked for)
+- Not when: a wireframe; a fact that is not confirmed
+- Trade-off: official files take a download and their rules (size, clear space, no recolouring) limit the layout
+- Check: review: each mark tied to a confirmed fact and an official source; no drawn lookalikes; every slot left has a source to get it from and was asked for
 
 #### RX-UI-16 [Contextual] Delight stands on three legs
 
@@ -1074,6 +1189,19 @@ Gate area UI. Covers each asset's concept and meaning, the written style, one fa
 - Not when: the brand's illustration system already fixes the subject for this asset; follow it
 - Trade-off: a written line per asset and one more look at the render before handoff
 - Check: the concept lines; the render at display size with the label covered
+
+#### RX-UI-30 [Preferred] Planned imagery is made, and passes a craft read before the page uses it
+
+- When: the direction's carrier or imagery is an illustration, a render, or a photo
+- Do: Make each planned asset before the page (RX-UI-29), by the method its job needs (RX-UI-21): vector paths drawn in the design tool (in Figma, SVG through createNodeFromSvg), or the tool's image generation from the Visual Brief (in Figma, generate_image), labeled generated; a render of the real product often beats drawing it.
+  - Render each asset alone at display size and read it against seven checks: the silhouette reads with the label covered; each object has the parts that make it that object; one light direction; three tones per material; clean joints (no gaps, stray overlaps, or broken curves); the written style (RX-UI-17); it still reads at its smallest size.
+  - Two or more fails: redraw, or switch method (a generated render instead of hand-built vectors); two rounds at most, then use the better one and say what is still weak.
+  - Record each asset's method and the result of its read in the Delivery Gate.
+- Do not: Drop a planned illustration or render for type, a slot, or a stock icon because making it takes longer; build a subject from stacked rectangles and circles; or place an asset on the page before reading it alone.
+- Why: A direction sold on its imagery and then built without it is a different, plainer direction; an asset nobody read alone reaches the page with its flaws. (Illustration and art direction practice (silhouette, construction, light and tone); owner review 2026-10-31 of four RYUX trials of one landing page: no vector or illustration was made in three, and the owner read the pages as plain; RX-UI-29 led the fourth to draw its carrier)
+- Not when: the direction's imagery is type alone or the product's screens
+- Trade-off: making and reading each asset costs tool calls before the page exists; the read stops when the seven checks pass, not when nothing could be polished
+- Check: assets made out of those planned, each with its method and the seven-check read; report them in the Delivery Gate UI line
 
 ---
 
@@ -1450,7 +1578,7 @@ Gate area ANTI-SLOP. Covers hard gates, purpose gates, quality locks, honest cla
 
 #### RX-AS-03 [Required] [Hard Gate] Sample data is realistic and labeled; placeholders only for what is missing
 
-- Do: Fill mockups with realistic sample content consistent with the brief (names, merchants, amounts in the brief's currency, dates). Names are made up, including merchants, banks, and card networks: a real brand on a sample card or receipt reads as a partnership and list it as sample data in the output. Keep a visible placeholder only for an asset that does not exist yet, such as [LOGO].
+- Do: Fill mockups with realistic sample content consistent with the brief (names, merchants, amounts in the brief's currency, dates). Names are made up, including merchants, banks, and card networks: a real brand on a sample card or receipt reads as a partnership and list it as sample data in the output. The exception is the mark of a confirmed fact (the stores the app is on, the payment methods it accepts, a confirmed partner), used as RX-UI-28 says. Keep a visible placeholder only for an asset that does not exist yet, such as [LOGO].
 - Do not: Put [REAL DATA], XXX, or lorem text on the canvas where sample data would do, or ship sample data or placeholder copy as final. A sample-data label does not turn a fee, policy, or claim into a fact (RX-PR-02).
 - Why: Bracketed values read as unfinished and hide the layout's real behavior; unlabeled sample data ships by accident. (ryux anti-slop principle; ryux visual benchmark 2.5, 2026-10-09: [Brand] and XXX read as unfinished; wallet-detail benchmark, 2.19.2: 3 of 3 runs showed Visa on a sample card)
 - Check: audit_copy C-01
