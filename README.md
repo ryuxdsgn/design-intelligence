@@ -1,11 +1,16 @@
 <p align="center">
-  <a href="https://www.npmjs.com/package/@ryuxdsgn/design-intelligence"><img src="https://img.shields.io/npm/v/@ryuxdsgn/design-intelligence?label=npm&color=14756f" alt="npm version"></a>
+  <a href="https://www.npmjs.com/package/@ryuxdsgn/design-intelligence"><img src="https://img.shields.io/npm/v/@ryuxdsgn/design-intelligence?label=npm&color=6A4DF5" alt="npm version"></a>
   <a href="#use-it"><img src="https://img.shields.io/badge/works%20with-Claude%20Code%20%C2%B7%20Codex%20%C2%B7%20Cursor%20%C2%B7%20Gemini%20CLI%20%C2%B7%20%2B6-555" alt="Works with Claude Code, Codex, Cursor, Gemini CLI, and 6 more agents"></a>
   <a href="https://github.com/ryuxdsgn/design-intelligence/actions/workflows/ci.yml"><img src="https://github.com/ryuxdsgn/design-intelligence/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-2ea44f" alt="MIT License"></a>
 </p>
 
-# RYUX
+<h1>
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset=".github/assets/ryux-dark.svg">
+    <img src=".github/assets/ryux-light.svg" alt="RYUX" width="200">
+  </picture>
+</h1>
 
 ### Understand before you design.
 
