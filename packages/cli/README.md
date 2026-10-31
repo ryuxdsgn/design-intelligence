@@ -1,4 +1,8 @@
-# @ryuxdsgn/design-intelligence
+<h1>
+  <img src="https://raw.githubusercontent.com/ryuxdsgn/design-intelligence/main/.github/assets/ryux-light.svg" alt="RYUX" width="130">
+</h1>
+
+`@ryuxdsgn/design-intelligence`
 
 Install **RYUX**, design intelligence for AI agents and designers, with one command. RYUX is one
 skill with five entry points. Tell your agent what you are doing; RYUX picks the knowledge the task
