@@ -8,7 +8,7 @@
 <h1>
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset=".github/assets/ryux-dark.svg">
-    <img src=".github/assets/ryux-light.svg" alt="RYUX" width="200">
+    <img src=".github/assets/ryux-light.svg" alt="RYUX" width="130">
   </picture>
 </h1>
 
