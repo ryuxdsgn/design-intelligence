@@ -1,7 +1,5 @@
-<svg viewBox="6 14 240 92" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="RYUX">
+<svg viewBox="121 23 125 76" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="RYUX">
 <title>RYUX</title>
-<path d="M14.6 97.3996V47.8996C14.6 30.2996 27.8 22.5996 44.3 22.5996C60.8 22.5996 69.6 31.3996 76.2 42.3996L109.2 97.3996" stroke="#F6F1E7" stroke-width="13.2" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M76.2 97.4004L109.2 42.4004" stroke="#C8F25A" stroke-width="13.2" stroke-linecap="round" stroke-linejoin="round"/>
 <path d="M127.37 72.9744V43.4883C127.37 33.3788 134.11 29.1665 143.377 29.1665C149.274 29.1665 152.644 31.6939 155.171 35.0637C156.856 47.7006 162.753 62.8649 169.493 62.8649C176.232 62.8649 181.287 51.9129 182.972 30.8514V62.8649M182.972 62.8649V72.9744C182.972 88.1386 173.705 94.0358 164.438 92.3509M182.972 62.8649C184.657 68.7621 188.869 72.9744 195.609 72.9744C204.034 72.9744 209.931 67.0772 209.931 56.1252V30.8514C210.773 25.7967 216.67 26.6391 219.198 30.8514L239.417 72.9744" stroke="#F6F1E7" stroke-width="6.73967" stroke-linecap="round" stroke-linejoin="round"/>
 <path d="M219.198 72.9745L239.417 30.8516" stroke="#C8F25A" stroke-width="6.73967" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>
