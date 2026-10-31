@@ -19,23 +19,14 @@ The six stages of the core workflow (SKILL.md), as Design runs them.
    language's common currency, as an assumption (RX-PR-05). When the prompt and DESIGN.md disagree, the prompt wins for
    this task; say so. A DESIGN.md written for a different product (another name, domain, or
    audience than this brief) sets no direction for this task: say so, and treat direction as unset.
-   **Product Discovery first** (RX-PR-13): for a new product or a new look, when the context does
-   not say who exactly it is for and why they would choose it, ask that before anything visual: the
-   audience, why this product, its character, a taste reference, the page's status and goal, plus the
-   product-fact questions, five at most, as choices. Record the answers in DESIGN.md. When who and why
-   are known but the page's content is not (what people do in the product, the numbers that may be
-   shown, real screenshots), ask those alone before the directions: the What people do in it and
-   Numbers that may be shown fields, missing or blank, mean they are not known.
-   **Direction is the user's call:** when neither the prompt nor DESIGN.md sets the UI direction
-   (character, or brand colour and type), discover it with the user in the next message (RX-UI-26):
-   three directions built from those answers, as style tiles (conventional, grounded, stretching),
-   instead of choosing one yourself; the motion direction rides with it. **No DESIGN.md and no product docs is the case where these questions matter most,
-   never a reason to skip them:** ask, then wait for the answer before designing. No question tool
-   is not a reason either: write the options as numbered text and end the turn. Choose yourself only
-   when the user hands this choice back or the task says to run without questions (RX-UI-26); "up
-   to you" on another question hands back that question only. The alternatives asked here are visual
-   directions as style tiles; structural alternatives (stage 3) come after, inside the chosen one.
-   Complete context means no questions.
+   **Product Discovery first** (RX-PR-13): for a new product or a new look, ask what the context
+   does not answer (who, why, character, taste, goal, what the page can say) before anything visual,
+   in one message of choices; record the answers in DESIGN.md.
+   **Direction is the user's call** (RX-UI-26): when neither the prompt nor DESIGN.md sets the UI
+   direction, the next message offers three directions as style tiles and waits; the motion direction
+   rides with it. No DESIGN.md, no product docs, and no question tool are never reasons to skip it:
+   write numbered options and end the turn. Structural alternatives (stage 3) come after, inside the
+   chosen direction. Complete context means no questions.
    **Voice and tone** is not asked by default: when the field is blank, infer it from the product's
    existing copy or brand docs, label it inferred, and continue (RX-CD-11). Ask only when there is
    no source at all and the work is mostly copy (onboarding, marketing, error and success messages);
@@ -54,17 +45,16 @@ The six stages of the core workflow (SKILL.md), as Design runs them.
    Taste references, and Design intent the same way, adding a field line the block lacks. If DESIGN.md
    or the block does not exist, create it with the fields answered. Change only those field lines; leave every other line as it is. Your own
    assumptions do not go into DESIGN.md.
-   **Write the foundation.** When the user chooses or combines a direction (RX-UI-26), write it out
-   before building, as one `direction:` YAML block under `## Visual and motion language` in DESIGN.md
-   (create the heading if missing; replace an earlier block, keep the rest): id, name, status (chosen,
-   combined, or provisional), philosophy, the grammar dimensions, the answers it rests on, the category
-   default and whether it was declined, the weight carrier and its asset (RX-UI-29), then the foundation: type (families, scale with sizes, figures),
-   colour (the scheme and where the neutrals come from, RX-UI-31; hex per role, with the contrast pairs that pass, and which colour fills the full-bleed bands), shape (radius per role, borders), depth (shadow levels, a surface ladder, or atmosphere),
-   spacing and layout, density, material, imagery (strategy, style, the assets and where each comes
-   from), motion, the signature and its devices, what to avoid, and the trade-offs. The user's choice
-   makes it a decision, not an assumption. Show a short summary in the reply and build from the file;
-   a later change goes into the file first. When DESIGN.md already has a `direction:` block, it is the
-   direction: build from it, and a deviation needs a Decision Receipt.
+   **Write the foundation.** When the user chooses or combines a direction (RX-UI-26), write it before
+   building as one `direction:` YAML block under `## Visual and motion language` in DESIGN.md (replace
+   an earlier block, keep the rest): id, name, status (chosen, combined, provisional), philosophy,
+   grammar, the answers it rests on, the category default declined, the weight carrier and its asset
+   (RX-UI-29), type (families, scale, figures), colour (scheme, neutrals' source, hex per role, passing
+   contrast pairs, band colours; RX-UI-31), shape, depth, spacing and layout, background rhythm
+   (RX-UI-32), material, imagery (assets and sources), motion, signature and devices, avoid, and
+   trade-offs. The user's choice makes it a decision. Summarise it in the reply and build from the file;
+   later changes go into the file first. An existing `direction:` block is the direction: deviating
+   needs a Decision Receipt.
    **What exists.** When there is a screen, product, or design system already, read its
    analysis or run Analyze first (capabilities/analyze.md). Existing screens, components, and any
    screenshot or reference provided are your examples: read them before choosing patterns, take

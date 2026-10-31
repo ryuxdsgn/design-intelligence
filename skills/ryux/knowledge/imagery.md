@@ -19,52 +19,33 @@ focal point, hierarchy, negative space, relation to the copy, and balance (RX-UI
 
 **Expressive surfaces** (hero, landing, onboarding, empty states, brand moments). Restraint keeps
 task UI usable; on expressive surfaces it is only the floor. Work concept, then signature, then
-system:
-1. **Concept**: explore two or three alternatives first (name, concept, signature; capabilities/design.md, stage 3), then choose one. The idea
-   comes from the product itself, not from the category: a tool about evidence might use receipts,
-   citations, and marks of proof; a concept can be an atmosphere, a material, or a movement as well as an object. The category default
-   (a terminal panel for developer tools, a dashboard screenshot for SaaS) is never the signature.
-2. **Inventory** (RX-UI-27): write the concept as one sentence ("this page is a boarding pass"),
-   list the parts the real thing has (a tear line, a barcode, a seat block, a gate time, a stub, a
-   perforation), and give each section one of them. The sections and their order come
-   from the visitor's questions (RX-UX-13), never from the concept; the concept only shapes them,
-   down to the dividers. Most sections take their form from the
-   inventory; a generic section form (three icon columns, an accordion, a centred call-to-action band)
-   needs a reason. The concept in one hero card with a template page around it is decoration.
-3. **The hero does the job**: the concept object in the hero performs the product's core job with
-   sample data (a boarding pass that turns a booking into a seat and a gate time), not a sample on display.
-4. **Signature and devices**: one element people would remember, plus two or three graphic devices
-   taken from the inventory (a tear line, a barcode strip, a gate number), drawn simply, in at least
-   three sections where each does a job (shows data, marks structure, leads to the next step);
-   drop the device any product in the category would draw first, never put one between a message
-   and its action, and count a purely decorative repeat once. Devices are more than lines: data chips
-   around the product showing confirmed features with labeled sample data, annotations with leader
-   lines, a stamp or sticker, shapes cut from the concept, a pattern drawn from it, light and grain. Devices are illustration made from the concept, so an
-   expressive page rarely has none; write their style like any illustration (RX-UI-17).
-5. **Weight carrier** (RX-UI-29): name what carries the page's visual weight (atmosphere, photo or
-   render, the product's UI large and layered, illustration, or display type at 80px or more over a
-   colour block), make its asset first and read it alone (RX-UI-30, knowledge/illustration.md), and build the page around it. Then one decisive type move and
-   one dominant colour field, from the concept or the product's character, not a neutral surface with
-   one accent: a full-bleed band in it, or a dark and light switch between bands, and a named depth
-   system. Cream or white with ink is a choice that needs a reason, never the fallback.
-6. **Copy in the concept's language**: headlines carry the concept and the reader's world ("Your
-   seat is waiting at gate 4", not "Book your next trip today"). Unknown product facts
-   go to the handoff notes; on the canvas, write copy that does not need them, with at most one quiet
-   placeholder treatment in the page's own voice, never a section of "to confirm" chips (RX-AS-03).
-7. **System**: everything else stays quiet and consistent so the concept reads. Restraint means every
-   element has a job, not that there are few: an expressive page of wide empty bands, small grey text,
-   and no visual is not restrained, it is unfinished. Showing the product (its real screen with
-   labeled sample data) is not the floating-phone cliché.
+system, in one world (RX-UI-32):
+1. **Concept**: two or three alternatives first (capabilities/design.md, stage 3), then one. The idea
+   comes from the product, not the category; it can be an object, an atmosphere, a material, or a
+   movement. The category default (a terminal panel, a dashboard screenshot) is never the signature.
+2. **Inventory** (RX-UI-27): the concept in one sentence ("this page is a boarding pass") and the parts
+   the real thing has (a tear line, a barcode, a seat block, a gate time, a stub). The visitor's
+   questions set the sections (RX-UX-13); the inventory gives each its form, down to the dividers.
+3. **The hero does the job**: the concept object performs the core job with sample data (a boarding
+   pass that turns a booking into a seat and a gate time).
+4. **Signature and devices** (RX-UI-27): one element people remember, and two or three devices that do
+   a job where they appear. Devices are more than lines: data chips around the product (confirmed
+   features, labeled sample data), annotations with leader lines, a stamp, shapes cut from the concept,
+   a pattern, light and grain. Write their style like any illustration (RX-UI-17).
+5. **Weight carrier** (RX-UI-29): make its asset first, read it alone (RX-UI-30), and build around it;
+   one decisive type move and one dominant colour field from the concept. Cream or white with ink is
+   a choice that needs a reason, never the fallback.
+6. **Copy in the concept's language**: "Your seat is waiting at gate 4", not "Book your next trip
+   today". Unknown facts go to the handoff notes, never a section of "to confirm" chips (RX-AS-03).
+7. **System**: everything else stays consistent so the concept reads. Restraint means every element
+   has a job, not that there are few: wide empty bands, small grey text, and no visual is unfinished.
 The Liveliness you set (Design Direction) turns into these levers: one focal point per screen,
-contrast in size and weight that builds the hierarchy, whitespace that groups, one deliberate
-accent, and a motif the signature repeats. Low energy uses the same levers, quietly.
-Then run three tests on the render. **Swap** (RX-AS-09): with a competitor's name and logo, would
-anything need to change? If not, the surface has no point of view yet. **Skeleton**: without colour,
-type, and devices, is the wireframe the template order (split hero, three columns, questions, a
-centred band, footer), or a stack of split sections alternating sides? Count it: more than two
-same-skeleton sections in a row, or fewer than two composition moves, and the concept is paint. **Thumbnail**: shrunk to icon size, does the page
-still have a shape you would recognise? Stay honest while being bold: a strong idea never
-needs invented numbers, people, or logos.
+contrast in size and weight, whitespace that groups, one deliberate accent, and a motif the signature
+repeats. Then three tests on the render. **Swap** (RX-AS-09): with a competitor's name and logo, would
+anything need to change? **Skeleton**: without colour, type, and devices, is it the template order or
+a stack of alternating splits (more than two same-skeleton sections in a row, or fewer than two
+composition moves)? **Thumbnail**: shrunk to icon size, is the shape still recognisable? A strong
+idea never needs invented numbers, people, or logos.
 
 **2. Motion.** Start from purpose: what the motion communicates; with no purpose, no motion.
 Then ask how often someone will see it. The more often, the shorter and quieter it is, not absent:
@@ -237,16 +218,15 @@ How comparable products use imagery and motion: `search_screens` by pattern, `ex
 ### RX-UI-27 [Preferred] On an expressive surface, the concept shapes the page, not one card
 
 - When: an expressive surface (a landing page, onboarding, a brand moment) with a chosen concept
-- Do: Which sections exist and their order come from the visitor's questions (RX-UX-13); the concept gives each of those sections its form. Write the concept's inventory (the parts the real thing has) and draw each section's form from it; a generic section form needs a reason (knowledge/imagery.md, Expressive surfaces).
-  - The hero's concept object performs the product's core job with sample data, not a sample on display.
-  - Write three candidate devices from the inventory and drop the one any product in the category would draw first (for gold: a coin, a bar, a scale, a ruler); keep two or three.
-  - Each device appears in at least three sections where it does a job there: shows data, marks structure, or leads the eye to the next step. A purely decorative repeat counts once, and no device sits between a message and its action.
-  - One decisive type move and one dominant colour field come from the concept too.
-  - Compose, do not stack: no more than two sections in a row share one skeleton (text on one side, a visual on the other), and the page uses at least two composition moves (knowledge/ui.md, Direction grammar, Layout): a visual crossing a band edge, a full-bleed image with type on it, oversized type cropped by the frame, layered cards overlapping, a sticky column, a horizontal rail, an asymmetric editorial grid. A move keeps the reading order and the path to the action (RX-UI-29).
-  - Write headlines in the concept's language. Unknown product facts go to the handoff notes; on the canvas, copy that does not need them, never a section that is mostly placeholders.
-  - Before the gate, run the skeleton, swap, and thumbnail tests on the render, with fresh eyes when a subagent is available (capabilities/design.md, stage 5).
+- Do: Sections and their order come from the visitor's questions (RX-UX-13); the concept gives each its form from the concept's inventory (the parts the real thing has), and a generic section form needs a reason (knowledge/imagery.md, Expressive surfaces).
+  - The hero's concept object does the product's core job with sample data, not a sample on display.
+  - Devices: write three from the inventory, drop the one any product in the category would draw first (for gold: a coin, a bar, a scale, a ruler), and keep two or three; each appears in three or more sections where it does a job (shows data, marks structure, leads to the next step); a decorative repeat counts once, and none sits between a message and its action.
+  - One decisive type move and one dominant colour field come from the concept.
+  - Compose, do not stack: at most two same-skeleton sections in a row (text one side, a visual the other), and two or more composition moves (knowledge/ui.md, Direction grammar, Layout), each keeping the reading order and the path to the action.
+  - Headlines in the concept's language; unknown facts go to the handoff notes, never a section of placeholders.
+  - Before the gate, run the skeleton, swap, and thumbnail tests, with fresh eyes when a subagent is available (capabilities/design.md, stage 5).
 - Do not: Let the concept add sections or set their order, put the concept in one hero card and build the rest from the template order, leave the page empty and call it restraint, repeat a device as a divider to reach a count, alternate text-left and text-right splits down the page, fill a section with "to confirm" chips or dashed boxes, or let a device or the concept invent a product fact (RX-AS-01, RX-PR-02).
-- Why: A concept that lives in one card is decoration: the rest of the page is the same template every generated page uses, and that is what reads as AI-made. (Art direction practice (a concept carried as a system of forms and devices); landing-gold rounds 2 and 3, 2026-10-30/31 (docs/benchmarks/landing-gold): owner's blind rating, RYUX 1.33 and 2.00 v 4.00 and 3.67 AI-slop resistance; side-by-side read of the six round 3 pages: the RYUX pages kept the concept in the hero card over a template order, with placeholder sections and no devices, while the higher-rated pages formed every section from their concept; owner review 2026-10-31)
+- Why: A concept that lives in one card is decoration: the rest of the page is the same template every generated page uses, and that is what reads as AI-made. (Art direction practice (a concept carried as a system of forms and devices); landing-gold round 3 side-by-side read and owner trials T7 and T8, 2026-10-31: RYUX pages kept the concept in one card over a template order, then repeated one device as a divider and alternated split sections; owner review)
 - Not when: task UI, where the structure stays familiar (RX-AS-09); a brand system that already defines the page
 - Trade-off: a concept-shaped page takes longer and can overreach; each device still passes the purpose gate (RX-AS-05)
 - Check: sections whose form comes from the concept (at least half), devices doing a job in three or more sections (decorative repeats counted once), the category's first-idea device dropped, same-skeleton sections in a row (two at most), composition moves (two or more), sections that are mostly placeholders (none), and the skeleton, swap, and thumbnail tests; report them in the Delivery Gate UI line
@@ -254,19 +234,12 @@ How comparable products use imagery and motion: `search_screens` by pattern, `ex
 ### RX-UI-29 [Preferred] An expressive page has one weight carrier, made at full strength
 
 - When: an expressive surface (a landing page, onboarding, a brand moment)
-- Do: Name what carries the page's visual weight and make it at full strength; strong marketing pages each have one:
-  - atmosphere: a colour field or mesh made as an asset (vector shapes or a generated image), across the hero and returning lower down
-  - photography or a render: of the real product or the subject, generated from a Visual Brief and labeled when not real
-  - the product's UI: its real screens with labeled sample data, large (half the hero width or more), layered, with depth
-  - illustration: a set drawn for this product (RX-UI-17), in the hero and at least two more sections
-  - display type: the headline at 80px or more on desktop, as the main event, with a decisive colour block behind it
-  - Then the floor: the hero holds the carrier, not only text and buttons; at least one full-bleed band in a non-neutral colour, or a dark and light switch between bands; a named depth system (shadow levels, a surface ladder, or the atmosphere itself); no more than one section that is text alone. The base surface counts: coloured bands over a cream page are still a cream page.
-  - The carrier never costs the task: the primary action is visible on the first screen at desktop and at 390 by 844; nothing decorative sits between a message and its action; on mobile the hero visual does not push the next section more than one screen down; sample data carries its label next to the figure, not only in a footnote; decorative layers are hidden from assistive technology.
-  - A set of images shares one family (light, camera, material), but each section gets its own subject or angle; the same render twice reads as filler.
-  - Unity comes first (RX-UI-32): the carrier, its asset, and every floor item speak the direction's world.
-  - Write the carrier and the depth system into the direction block in DESIGN.md (capabilities/design.md, stage 1), and make its asset before the page, read alone before use (RX-UI-30, knowledge/illustration.md): the page is built around it, not the other way round.
+- Do: Name what carries the page's visual weight and make it at full strength, its asset first and read alone (RX-UI-30): atmosphere (a colour field or mesh made as an asset), a photo or render (labeled when not real), the product's UI (half the hero width or more, layered, with depth), illustration (a set for this product, in the hero and two more sections), or display type (80px or more on desktop over a colour block).
+  - Floor: the hero holds the carrier, not only text and buttons; a full-bleed non-neutral band or a dark and light switch (the base surface counts: coloured bands over a cream page are still a cream page); a named depth system; at most one text-only section; images in one family, each section with its own subject or angle.
+  - The carrier never costs the task: the primary action visible on the first screen at desktop and at 390 by 844; nothing decorative between a message and its action; on mobile the hero visual pushes the next section at most one screen down; sample-data labels next to their figures; decorative layers hidden from assistive technology.
+  - Write the carrier and the depth system into the direction block in DESIGN.md (capabilities/design.md, stage 1); all of it speaks the direction's world (RX-UI-32).
 - Do not: Ship a hero of text and buttons with a small card beside it, set every band on one neutral surface, name a carrier and then draw it small or leave it out, or fall back to text because making an image or a vector takes longer.
-- Why: A page with no weight carrier has nothing for the eye to land on; the reader sees layout and text, which is the look of every generated page, however correct its rules are. (Art direction practice; a read of published design-language descriptions of five marketing sites (gradient mesh, photography, dense product UI, display type at 80 to 136px over full-bleed colour bands): each puts its weight in one medium made at full strength; owner review 2026-10-31 of four RYUX trials of one landing page: every page sat on cream or white with text, tables, and small cards, with no illustration or made image, and the owner read all of them as plain and AI-made)
+- Why: A page with no weight carrier has nothing for the eye to land on; the reader sees layout and text, which is the look of every generated page, however correct its rules are. (Art direction practice; published design-language descriptions of five marketing sites (VoltAgent awesome-design-md, MIT): each puts its weight in one medium made at full strength; owner review 2026-10-31 of RYUX trials T1 to T4, all on cream or white with text and small cards, read as plain and AI-made)
 - Not when: task UI; a brand system that already sets the page's look
 - Trade-off: making the carrier's asset takes time and tool calls before the page, and a strong carrier can crowd the message if its focal point fights the headline
 - Check: the primary action on the first screen at 1440 and 390 by 844; no decoration between a message and its action; sample-data labels next to their figures; no image used twice; the carrier named and present in the hero; full-bleed non-neutral bands or a mode switch (count); depth system named; text-only sections (at most one); report the carrier in the Delivery Gate UI line
@@ -274,15 +247,14 @@ How comparable products use imagery and motion: `search_screens` by pattern, `ex
 ### RX-UI-32 [Required] One page, one world
 
 - When: an expressive surface built from a chosen direction
-- Do: Hold the whole page to the direction's world before adding anything:
-  - every asset, device, and section speaks the direction's material and light: a flat page gets flat or stylised images in its palette and light, a dimensional page gets renders lit the same way
-  - an asset made for another direction is not reused unless its material matches; when the direction changes, rebuild from the new direction block
-  - plan the backgrounds as a rhythm before building: two or three surfaces in a pattern that repeats, with the transitions between bands designed
-  - the concept's object or language runs through the page, not only the first and last section
-  - the counts in RX-UI-27, RX-UI-29, and RX-UI-30 (moves, devices, imagery) are minimums that serve the concept; when one fights unity, translate it into the world's language first (the same idea in the direction's material, light, and shapes) and cut it only when it cannot be; unity never lowers the carrier or the boldness the user chose
-  - Before the gate, ask fresh eyes which elements look as if they came from another page; list and fix them.
+- Do: Hold the page to the direction's world:
+  - every asset, device, and section shares the direction's material and light; an asset from another direction is reused only when its material matches, and a changed direction rebuilds from its new direction block
+  - plan the backgrounds as a rhythm before building: two or three surfaces in a repeating pattern, with the transitions designed
+  - the concept runs through the page, not only the first and last section
+  - the counts in RX-UI-27, RX-UI-29, and RX-UI-30 are minimums that serve the concept: an idea that fights unity is translated into the world's material, light, and shapes, and cut only when it cannot be; unity never lowers the carrier or the boldness the user chose
+  - Before the gate, fresh eyes list the elements that look as if they came from another page; fix them.
 - Do not: Make the page neat by making it timid, tick each rule with a different idea, carry a render from a rejected direction into the chosen one, change the background world every section, or add a composition move only to reach a count.
-- Why: A page that satisfies every rule with a different idea reads as a collage; people read unity as care and a collage as unfinished, however good each part is. (Art direction practice (unity, a design system for one surface); owner review 2026-10-31 of RYUX trial 8: a parcel-label page carried a dark spotlit bullion render from the rejected direction and changed its background world every section, and the owner read it as disconnected and not smooth; the next trial, with this rule, was neat but read as less creative, so unity is reached by translating ideas, not removing them)
+- Why: A page that satisfies every rule with a different idea reads as a collage; people read unity as care and a collage as unfinished, however good each part is. (Art direction practice (unity of one surface); owner review 2026-10-31 of trial T8 (a render from the rejected direction and a new background world every section, read as disconnected) and trial T9 (with a cut-first version of this rule, neat but less creative))
 - Not when: task UI; a page that is deliberately a collage, where that is the chosen concept
 - Trade-off: unity narrows choices and can cut an idea that is good on its own
 - Check: fresh-eyes list of elements from another page (none left); every asset's material and light matching the direction block; the background rhythm written before the build
@@ -300,16 +272,11 @@ How comparable products use imagery and motion: `search_screens` by pattern, `ex
 ### RX-UI-28 [Preferred] Standard marks are used as they are, when their fact is confirmed
 
 - When: the design shows where to get the app, how to pay, or who stands behind the product, and the brief, DESIGN.md, or the user confirms the fact
-- Do: Use the official mark whose fact is confirmed, from its owner's official source and at its guideline size and clear space:
-  - the app is on a store: the App Store and Google Play badges, in the page's language
-  - payment methods the product accepts: QRIS and the confirmed bank, e-wallet, or card marks
-  - a confirmed partner or regulator: its mark, with a handoff note that its use needs the owner's permission
-  - platform chrome on device screens: the real status bar, home indicator, and keyboard
-  - Ask for the files when the fact is confirmed, in the same message as the fact questions (RX-PR-13): "do you have the official logo files? a path, or I fetch them".
-  - Get each file the way the tool allows, in this order: the file the user gives; the owner's brand, press, or media kit page (find it by searching, do not guess file URLs); the platform's component library; a public file archive that names the file's source and license (Wikimedia Commons), with that note in the handoff. Upload it as it is.
-  - When none works, ask the user for the file before the build and continue only if they hand it back; then a slot with the mark's exact shape and size, named for the file, listed in the open tasks with where to get it. Never a text button made to look like it, and never a silent placeholder.
+- Do: Use the official mark of a confirmed fact, from its owner, at its guideline size and clear space: store badges (App Store, Google Play) in the page's language; accepted payment marks (QRIS, confirmed banks, e-wallets, cards); a confirmed partner's or regulator's mark, with a handoff note that it needs the owner's permission; real platform chrome on device screens.
+  - Ask for the files with the fact questions (RX-PR-13). Get each in this order: the user's file; the owner's brand or media kit page (found by searching, not guessed URLs); the platform's component library; a public archive that names source and license (Wikimedia Commons), noted in the handoff. Upload it as it is.
+  - When none works, ask the user before the build; only if they hand it back, a slot with the mark's exact shape, named for the file and listed in the open tasks with its source. Never a text lookalike or a silent placeholder.
 - Do not: Draw a text button in place of a store badge, redraw or recolour an official mark, or show a mark whose fact is not confirmed (a store the app is not on, a bank that is not a partner): that is an invented claim (RX-PR-02).
-- Why: People recognise standard marks faster than any label, and their absence makes a page look unfinished; drawn lookalikes read as fake. (App Store and Google Play badge guidelines; licensing and trademark practice (use the owner's file as provided); owner review 2026-10-31 of RYUX trials: a live app's landing page drew both store badges as green text pills and named a confirmed regulator and partners only in text, and the owner read the page as plain and generic; in the next trial the badges were official, but the partner logos stayed empty slots after three guessed URLs failed, with no other source tried and no file asked for)
+- Why: People recognise standard marks faster than any label, and their absence makes a page look unfinished; drawn lookalikes read as fake. (App Store and Google Play badge guidelines; licensing and trademark practice (use the owner's file as provided); owner review 2026-10-31 of RYUX trials T1 and T2: store badges drawn as text pills, then partner logos left as empty slots after guessed URLs failed)
 - Not when: a wireframe; a fact that is not confirmed
 - Trade-off: official files take a download and their rules (size, clear space, no recolouring) limit the layout
 - Check: review: each mark tied to a confirmed fact and an official source; no drawn lookalikes; every slot left has a source to get it from and was asked for

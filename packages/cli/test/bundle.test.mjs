@@ -162,3 +162,37 @@ test("illustration is its own module: concept line first, then the read test on 
   }
   assert.match(files["SKILL.md"], /knowledge\/illustration\.md/);
 });
+
+test("direction discovery: the user chooses among three directions that differ in visual language", () => {
+  // owner trials T1 to T9, 2026-10-31: options that differed only in concept all landed on cream and flat
+  const files = renderBundle();
+  const flat = (f) => files[f].replace(/\s+/g, " ");
+  const product = flat("knowledge/product.md");
+  assert.match(product, /### RX-PR-13 /);
+  assert.match(product, /never a word for restraint/);
+  assert.match(product, /What people do in it, Numbers that may be shown/);
+  const ui = flat("knowledge/ui.md");
+  assert.match(ui, /### RX-UI-26 /);
+  assert.match(ui, /cream, ivory, warm white, and paper are one family, used once at most/);
+  assert.match(ui, /flat with flat vectors once at most/);
+  assert.match(ui, /hands back only that question/);
+  assert.match(ui, /### RX-UI-31 /);
+  assert.match(ui, /neutrals from the dominant hue/);
+  assert.match(flat("capabilities/design.md"), /`direction:` YAML block/);
+});
+
+test("expressive pages: one weight carrier, devices with a job, one world, the task first", () => {
+  // owner trials T3 to T9, 2026-10-31: plain pages, a repeated ruler, a carried-over render, a timid fix
+  const files = renderBundle();
+  const img = files["knowledge/imagery.md"].replace(/\s+/g, " ");
+  for (const id of ["RX-UI-27", "RX-UI-28", "RX-UI-29", "RX-UI-32"]) assert.match(img, new RegExp(`### ${id} `), id);
+  assert.match(img, /drop the one any product in the category would draw first/);
+  assert.match(img, /at most two same-skeleton sections in a row/);
+  assert.match(img, /visible on the first screen at desktop and at 390 by 844/);
+  assert.match(img, /cut only when it cannot be/);
+  assert.match(img, /\*\*Making images\.\*\*/);
+  const ill = files["knowledge/illustration.md"].replace(/\s+/g, " ");
+  assert.match(ill, /### RX-UI-30 /);
+  assert.match(ill, /seven checks/);
+  assert.match(files["knowledge/frontend.md"].replace(/\s+/g, " "), /### RX-FE-17 /);
+});
