@@ -149,18 +149,18 @@ How comparable products frame the same task and offer: `search_screens` (categor
 ### RX-PR-13 [Preferred] Before a direction, learn what makes this product specific
 
 - When: a new product, a new look, or an expressive surface, and the prompt, DESIGN.md, and the product docs do not say who exactly it is for and why they would choose it, or what the product does and which numbers may be shown
-- Do: Before any visual direction, ask the questions the context does not answer, in one message, as choices with a recommended answer each and room for the user's own:
-  - who exactly: the group, their moment, and what they use today (first-job savers putting money aside for a dowry, market traders, parents buying jewellery gold)
-  - why they would choose this product over what they use now: cheaper, more trusted, easier, or something else
-  - its character in three words, and what it must never feel like; the recommended answer comes from the audience and why they would choose it, and is a personality (warm, bold, witty, proud), never a safe word for restraint (plain, clean, simple, minimal): restraint is how a page behaves, not who the product is
-  - one product or site they like the look of, and one they do not
-  - the page's status and goal: live or not yet, and what the visitor should do (download, sign up, trust it first)
-  - Add the product-fact questions (RX-PR-01) to the same message; five questions at most, most consequential first. A fact with a mark (a store, a payment method, a partner, a regulator) asks for its official files in the same question (RX-UI-28).
-  - Ask what the page can say, too, even when who and why are already known (then these are the only questions): the three things people do in the product, the numbers that may be shown (a minimum, a fee, a limit), and whether real screenshots or photos exist. A page built only from positioning is thin; one built from invented features is false (RX-PR-02).
-  - Write each answer into the RYUX project context in DESIGN.md (Audience, Why choose it, UI direction, Taste references, Design intent, What people do in it, Numbers that may be shown) so the next task does not ask again. A field that is missing or blank is not answered: Confirmed capabilities does not answer what people do in the product.
-  - When the user hands the questions back, infer each answer from the brief, label it inferred, and continue; the directions then say they rest on inferences.
+- Do: Before any visual direction, ask what the context does not answer, in one message of five questions at most, as choices with a recommended answer and room for the user's own:
+  - who exactly: the group, their moment, and what they use today
+  - why they would choose it over what they use now
+  - its character in three words and what it must never feel like; recommend a personality (warm, bold, witty, proud) from the audience and the why, never a word for restraint (plain, clean, minimal): restraint is how a page behaves, not who the product is
+  - one product or site whose look they like, and one they do not
+  - the page's status and goal: live or not, and what the visitor should do
+  - what the page can say: the three things people do in the product, the numbers that may be shown (a minimum, a fee, a limit), and whether real screenshots or photos exist; ask these even when who and why are known
+  - the product facts (RX-PR-01), and for a fact with a mark (a store, a partner, a regulator) its official files (RX-UI-28)
+  - Record each answer in the DESIGN.md context (Audience, Why choose it, UI direction, Taste references, Design intent, What people do in it, Numbers that may be shown); a missing or blank field is unanswered, and Confirmed capabilities does not say what people do.
+  - When the user hands a question back, infer that answer, label it inferred, and continue.
 - Do not: Build directions from the category alone (every gold app gets a gold shop), recommend plain, clean, or minimal as the character, ask open questions with no options, ask what the context already answers, or treat an inferred answer as the user's.
-- Why: Without the product's own audience and reason to exist, an agent fills the gap with the category's cliché, so every product of a kind gets the same look; the answers are what make the direction specific. (Brand strategy and design discovery practice (audience, positioning, personality, references before visual work); landing-gold rounds 3 and 4, 2026-10-31 (docs/benchmarks/landing-gold): with only the category to go on, every RYUX run proposed the same gold-shop direction, and a run inferred a pre-launch waiting list the brief never set; owner review 2026-10-31)
+- Why: Without the product's own audience and reason to exist, an agent fills the gap with the category's cliché, so every product of a kind gets the same look; the answers are what make the direction specific. (Brand strategy and design discovery practice (audience, positioning, personality, references before visual work); landing-gold rounds 3 and 4 and owner trials T1 to T9, 2026-10-31 (docs/benchmarks/landing-gold): with only the category to go on, every RYUX run proposed the same gold-shop direction, and without content questions the pages stayed thin; owner review)
 - Not when: the context already answers them, or a small change inside an existing product
 - Trade-off: one more round of questions before any design; the answers are kept, so it is asked once per product
 - Check: review: the questions asked or the answers cited from the context, each recorded in DESIGN.md or marked inferred

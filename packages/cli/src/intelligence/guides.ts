@@ -78,23 +78,14 @@ The six stages of the core workflow (SKILL.md), as Design runs them.
    language's common currency, as an assumption (RX-PR-05). When the prompt and DESIGN.md disagree, the prompt wins for
    this task; say so. A DESIGN.md written for a different product (another name, domain, or
    audience than this brief) sets no direction for this task: say so, and treat direction as unset.
-   **Product Discovery first** (RX-PR-13): for a new product or a new look, when the context does
-   not say who exactly it is for and why they would choose it, ask that before anything visual: the
-   audience, why this product, its character, a taste reference, the page's status and goal, plus the
-   product-fact questions, five at most, as choices. Record the answers in DESIGN.md. When who and why
-   are known but the page's content is not (what people do in the product, the numbers that may be
-   shown, real screenshots), ask those alone before the directions: the What people do in it and
-   Numbers that may be shown fields, missing or blank, mean they are not known.
-   **Direction is the user's call:** when neither the prompt nor DESIGN.md sets the UI direction
-   (character, or brand colour and type), discover it with the user in the next message (RX-UI-26):
-   three directions built from those answers, as style tiles (conventional, grounded, stretching),
-   instead of choosing one yourself; the motion direction rides with it. **No DESIGN.md and no product docs is the case where these questions matter most,
-   never a reason to skip them:** ask, then wait for the answer before designing. No question tool
-   is not a reason either: write the options as numbered text and end the turn. Choose yourself only
-   when the user hands this choice back or the task says to run without questions (RX-UI-26); "up
-   to you" on another question hands back that question only. The alternatives asked here are visual
-   directions as style tiles; structural alternatives (stage 3) come after, inside the chosen one.
-   Complete context means no questions.
+   **Product Discovery first** (RX-PR-13): for a new product or a new look, ask what the context
+   does not answer (who, why, character, taste, goal, what the page can say) before anything visual,
+   in one message of choices; record the answers in DESIGN.md.
+   **Direction is the user's call** (RX-UI-26): when neither the prompt nor DESIGN.md sets the UI
+   direction, the next message offers three directions as style tiles and waits; the motion direction
+   rides with it. No DESIGN.md, no product docs, and no question tool are never reasons to skip it:
+   write numbered options and end the turn. Structural alternatives (stage 3) come after, inside the
+   chosen direction. Complete context means no questions.
    **Voice and tone** is not asked by default: when the field is blank, infer it from the product's
    existing copy or brand docs, label it inferred, and continue (RX-CD-11). Ask only when there is
    no source at all and the work is mostly copy (onboarding, marketing, error and success messages);
@@ -113,17 +104,16 @@ The six stages of the core workflow (SKILL.md), as Design runs them.
    Taste references, and Design intent the same way, adding a field line the block lacks. If DESIGN.md
    or the block does not exist, create it with the fields answered. Change only those field lines; leave every other line as it is. Your own
    assumptions do not go into DESIGN.md.
-   **Write the foundation.** When the user chooses or combines a direction (RX-UI-26), write it out
-   before building, as one \`direction:\` YAML block under \`## Visual and motion language\` in DESIGN.md
-   (create the heading if missing; replace an earlier block, keep the rest): id, name, status (chosen,
-   combined, or provisional), philosophy, the grammar dimensions, the answers it rests on, the category
-   default and whether it was declined, the weight carrier and its asset (RX-UI-29), then the foundation: type (families, scale with sizes, figures),
-   colour (the scheme and where the neutrals come from, RX-UI-31; hex per role, with the contrast pairs that pass, and which colour fills the full-bleed bands), shape (radius per role, borders), depth (shadow levels, a surface ladder, or atmosphere),
-   spacing and layout, density, material, imagery (strategy, style, the assets and where each comes
-   from), motion, the signature and its devices, what to avoid, and the trade-offs. The user's choice
-   makes it a decision, not an assumption. Show a short summary in the reply and build from the file;
-   a later change goes into the file first. When DESIGN.md already has a \`direction:\` block, it is the
-   direction: build from it, and a deviation needs a Decision Receipt.
+   **Write the foundation.** When the user chooses or combines a direction (RX-UI-26), write it before
+   building as one \`direction:\` YAML block under \`## Visual and motion language\` in DESIGN.md (replace
+   an earlier block, keep the rest): id, name, status (chosen, combined, provisional), philosophy,
+   grammar, the answers it rests on, the category default declined, the weight carrier and its asset
+   (RX-UI-29), type (families, scale, figures), colour (scheme, neutrals' source, hex per role, passing
+   contrast pairs, band colours; RX-UI-31), shape, depth, spacing and layout, background rhythm
+   (RX-UI-32), material, imagery (assets and sources), motion, signature and devices, avoid, and
+   trade-offs. The user's choice makes it a decision. Summarise it in the reply and build from the file;
+   later changes go into the file first. An existing \`direction:\` block is the direction: deviating
+   needs a Decision Receipt.
    **What exists.** When there is a screen, product, or design system already, read its
    analysis or run Analyze first (capabilities/analyze.md). Existing screens, components, and any
    screenshot or reference provided are your examples: read them before choosing patterns, take
@@ -717,52 +707,33 @@ focal point, hierarchy, negative space, relation to the copy, and balance (RX-UI
 
 **Expressive surfaces** (hero, landing, onboarding, empty states, brand moments). Restraint keeps
 task UI usable; on expressive surfaces it is only the floor. Work concept, then signature, then
-system:
-1. **Concept**: explore two or three alternatives first (name, concept, signature; capabilities/design.md, stage 3), then choose one. The idea
-   comes from the product itself, not from the category: a tool about evidence might use receipts,
-   citations, and marks of proof; a concept can be an atmosphere, a material, or a movement as well as an object. The category default
-   (a terminal panel for developer tools, a dashboard screenshot for SaaS) is never the signature.
-2. **Inventory** (RX-UI-27): write the concept as one sentence ("this page is a boarding pass"),
-   list the parts the real thing has (a tear line, a barcode, a seat block, a gate time, a stub, a
-   perforation), and give each section one of them. The sections and their order come
-   from the visitor's questions (RX-UX-13), never from the concept; the concept only shapes them,
-   down to the dividers. Most sections take their form from the
-   inventory; a generic section form (three icon columns, an accordion, a centred call-to-action band)
-   needs a reason. The concept in one hero card with a template page around it is decoration.
-3. **The hero does the job**: the concept object in the hero performs the product's core job with
-   sample data (a boarding pass that turns a booking into a seat and a gate time), not a sample on display.
-4. **Signature and devices**: one element people would remember, plus two or three graphic devices
-   taken from the inventory (a tear line, a barcode strip, a gate number), drawn simply, in at least
-   three sections where each does a job (shows data, marks structure, leads to the next step);
-   drop the device any product in the category would draw first, never put one between a message
-   and its action, and count a purely decorative repeat once. Devices are more than lines: data chips
-   around the product showing confirmed features with labeled sample data, annotations with leader
-   lines, a stamp or sticker, shapes cut from the concept, a pattern drawn from it, light and grain. Devices are illustration made from the concept, so an
-   expressive page rarely has none; write their style like any illustration (RX-UI-17).
-5. **Weight carrier** (RX-UI-29): name what carries the page's visual weight (atmosphere, photo or
-   render, the product's UI large and layered, illustration, or display type at 80px or more over a
-   colour block), make its asset first and read it alone (RX-UI-30, knowledge/illustration.md), and build the page around it. Then one decisive type move and
-   one dominant colour field, from the concept or the product's character, not a neutral surface with
-   one accent: a full-bleed band in it, or a dark and light switch between bands, and a named depth
-   system. Cream or white with ink is a choice that needs a reason, never the fallback.
-6. **Copy in the concept's language**: headlines carry the concept and the reader's world ("Your
-   seat is waiting at gate 4", not "Book your next trip today"). Unknown product facts
-   go to the handoff notes; on the canvas, write copy that does not need them, with at most one quiet
-   placeholder treatment in the page's own voice, never a section of "to confirm" chips (RX-AS-03).
-7. **System**: everything else stays quiet and consistent so the concept reads. Restraint means every
-   element has a job, not that there are few: an expressive page of wide empty bands, small grey text,
-   and no visual is not restrained, it is unfinished. Showing the product (its real screen with
-   labeled sample data) is not the floating-phone cliché.
+system, in one world (RX-UI-32):
+1. **Concept**: two or three alternatives first (capabilities/design.md, stage 3), then one. The idea
+   comes from the product, not the category; it can be an object, an atmosphere, a material, or a
+   movement. The category default (a terminal panel, a dashboard screenshot) is never the signature.
+2. **Inventory** (RX-UI-27): the concept in one sentence ("this page is a boarding pass") and the parts
+   the real thing has (a tear line, a barcode, a seat block, a gate time, a stub). The visitor's
+   questions set the sections (RX-UX-13); the inventory gives each its form, down to the dividers.
+3. **The hero does the job**: the concept object performs the core job with sample data (a boarding
+   pass that turns a booking into a seat and a gate time).
+4. **Signature and devices** (RX-UI-27): one element people remember, and two or three devices that do
+   a job where they appear. Devices are more than lines: data chips around the product (confirmed
+   features, labeled sample data), annotations with leader lines, a stamp, shapes cut from the concept,
+   a pattern, light and grain. Write their style like any illustration (RX-UI-17).
+5. **Weight carrier** (RX-UI-29): make its asset first, read it alone (RX-UI-30), and build around it;
+   one decisive type move and one dominant colour field from the concept. Cream or white with ink is
+   a choice that needs a reason, never the fallback.
+6. **Copy in the concept's language**: "Your seat is waiting at gate 4", not "Book your next trip
+   today". Unknown facts go to the handoff notes, never a section of "to confirm" chips (RX-AS-03).
+7. **System**: everything else stays consistent so the concept reads. Restraint means every element
+   has a job, not that there are few: wide empty bands, small grey text, and no visual is unfinished.
 The Liveliness you set (Design Direction) turns into these levers: one focal point per screen,
-contrast in size and weight that builds the hierarchy, whitespace that groups, one deliberate
-accent, and a motif the signature repeats. Low energy uses the same levers, quietly.
-Then run three tests on the render. **Swap** (RX-AS-09): with a competitor's name and logo, would
-anything need to change? If not, the surface has no point of view yet. **Skeleton**: without colour,
-type, and devices, is the wireframe the template order (split hero, three columns, questions, a
-centred band, footer), or a stack of split sections alternating sides? Count it: more than two
-same-skeleton sections in a row, or fewer than two composition moves, and the concept is paint. **Thumbnail**: shrunk to icon size, does the page
-still have a shape you would recognise? Stay honest while being bold: a strong idea never
-needs invented numbers, people, or logos.
+contrast in size and weight, whitespace that groups, one deliberate accent, and a motif the signature
+repeats. Then three tests on the render. **Swap** (RX-AS-09): with a competitor's name and logo, would
+anything need to change? **Skeleton**: without colour, type, and devices, is it the template order or
+a stack of alternating splits (more than two same-skeleton sections in a row, or fewer than two
+composition moves)? **Thumbnail**: shrunk to icon size, is the shape still recognisable? A strong
+idea never needs invented numbers, people, or logos.
 
 **2. Motion.** Start from purpose: what the motion communicates; with no purpose, no motion.
 Then ask how often someone will see it. The more often, the shorter and quieter it is, not absent:
