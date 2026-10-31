@@ -41,11 +41,16 @@ name. Build it from these dimensions; the values are vocabulary, not a menu:
 - **Type**: grotesk, humanist, geometric, serif, slab, mono; a display face with a partner
 - **Colour behaviour**: monochromatic, tonal, high contrast, vibrant, muted
 - **Shape**: geometric, organic, sharp, soft
-- **Layout**: modular, editorial, asymmetric, structured
+- **Layout**: modular, editorial, asymmetric, structured; composition moves that break the stack of
+  split sections: a visual crossing a band edge, a full-bleed image with type on it, oversized type
+  cropped by the frame, layered cards overlapping, a sticky column beside scrolling content, a
+  horizontal rail, an asymmetric editorial grid, one centred statement between wide sections
 - **Density**: compact, balanced, spacious
-- **Material**: flat, tactile, translucent, dimensional
-- **Imagery**: the product photographed or rendered, illustration (vector, line, hand-drawn, collage,
-  editorial, character; RX-UI-17), the product's own complete screens, or type alone; none needs a reason
+- **Material**: flat, dimensional (soft gradients and shadows), atmospheric (mesh, light, glow with a
+  job), textured (grain, print), translucent
+- **Imagery**: flat vector, dimensional vector, 3D render, the product's UI composed large and layered,
+  retouched photography, mixed media (photo with drawn devices), atmosphere, illustration styles (line,
+  hand-drawn, collage, editorial, character; RX-UI-17), or type alone; none needs a reason
 - **Motion**: functional, expressive, playful, cinematic (RX-UI-11)
 
 Coherence: at most two dimensions at an extreme, the rest support them; each value has a reason from
@@ -137,17 +142,18 @@ A design direction from comparable screens: `extract_design_direction` (patterns
   - Build three directions from the direction grammar (knowledge/ui.md): one conventional (close to the category default, done well), one grounded in this audience's world (an object, place, ritual, or material these users know, not the category's), one that stretches how the product speaks. Conventional means a familiar structure, not a bare surface: it too has a signature and a visual anchor the tile shows. The three use different weight carriers (RX-UI-29), and grounded does not mean a paper object.
   - Each tile's palette is built by RX-UI-31 (roles, a named scheme, neutrals from the dominant hue).
   - The three speak different visual languages, not one language in three concepts: each has a base surface (the colour most of the page sits on) from a different family: light and cool (white, blue-grey), dark (ink, near-black), or a saturated colour as the canvas. Cream, ivory, warm white, and paper are one family (very light with a warm tint), used by one direction at most. At least one direction is cool or neutral in temperature whatever the character: warmth can come from type, shape, and imagery.
+  - They differ in material and imagery model too: material from flat, dimensional (soft gradients and shadows), atmospheric (mesh, light, glow with a job), or textured (grain, print); imagery model from flat vector, dimensional vector, 3D render, the product's UI composed large and layered, retouched photography, mixed media, or atmosphere. At most one direction is flat with flat vectors; at least one uses a render, a retouched photo, or a UI composite (knowledge/imagery.md, Making images).
   - Calibrate each against a well-known product of its visual language (a vivid gradient with product UI, warm photography or illustration, dark and precise, display type over colour blocks) for its level of craft, never for its look: name it in the tile, and take nothing from it (palette, type, or signature). Name each by its character (Quiet Financial Confidence), not by a style keyword, and say which answer each rests on; two products with different answers get different directions.
   - Each pair differs on at least three grammar dimensions, philosophy or grounding among them; a palette change alone is the same direction. Each has a reason from the profile, and passes the coherence rules.
   - Each names its imagery: the product photographed or rendered (generated from a Visual Brief and labeled), an illustration style, the product's own complete screens, or type alone; "none" needs a reason, and a landing page keeps at least one strong visual anchor.
   - Show each as a style tile with the same content in all three (name and philosophy, base surface, type pair with a heading, body, and figures, palette with roles, a button and a card in its shape, its imagery strategy, a small hero holding one asset made for it (the carrier's asset at small scale: a vector illustration, a generated image, a mesh, a product screen), its signature, its calibration product, and its risk): frames side by side on a canvas, or text with the same fields.
   - Ask as choices (capabilities/design.md, stage 1), the recommended one first, with room to combine ("type from B, colour from C"); a combination passes the coherence rules again. Asked for other options, offer three new ones and do not repeat.
-  - Ask even without a question or choice tool: write the three as numbered options, end the turn, and wait. Choose yourself only when the user hands the choice back, or the task says to run without questions (a pipeline, a batch job): one with a reason from the profile, marked provisional in the Assumptions, the other two offered in a line each.
+  - Ask even without a question or choice tool: write the three as numbered options, end the turn, and wait. Choose yourself only when the user hands this choice back, or the task says to run without questions (a pipeline, a batch job). "Up to you" on another question (the numbers, the screenshots) hands back that question only; the direction is still asked as its own choice. When you do choose: one with a reason from the profile, marked provisional in the Assumptions, the other two offered in a line each.
 - Do not: Build the directions from the category alone, pick three style keywords from a list, offer three palettes of one layout, put all three on light warm surfaces, describe a carrier in the tile instead of making it, offer a conventional direction with no signature or visual anchor, recommend the category default because it feels safer, ask an open "what look do you want?" with no options, or let a direction change the facts: assumptions about the look are allowed, assumptions about the product are not (RX-AS-01, RX-PR-02).
 - Why: With no direction, an agent ranks the familiar look first and ships it, and a rule that tells it to be bold moves it to the next familiar look; the variety has to come from the user's choice among directions that fit. (Art direction practice (style tiles; a direction as a set of reasoned visual decisions); landing-gold rounds 2 and 3, 2026-10-30/31 (docs/benchmarks/landing-gold): owner's blind rating, RYUX 1.33 then 2.00 v 4.00 and 3.67 AI-slop resistance against a skill that assigns a direction; in round 3 a rule to commit to a grounded direction moved all three runs to one new default; owner decision 2026-10-31 (Design Direction Intelligence))
 - Not when: the prompt or DESIGN.md sets the direction, or an existing brand system defines it; follow it. A small change inside an existing product
 - Trade-off: one more question and three tiles before the design starts
-- Check: the Delivery Gate names the three directions offered, the answer each rests on, the one used, and whether the user chose it or it is provisional; the three differ on at least three grammar dimensions; three base surface families, warm off-white at most one, one cool or neutral direction; a made asset in each tile
+- Check: the Delivery Gate names the three directions offered, the answer each rests on, the one used, and whether the user chose it or it is provisional; the three differ on at least three grammar dimensions; three base surface families, warm off-white at most one, one cool or neutral direction; flat with flat vectors at most one, a render, retouched photo, or UI composite in at least one; a made asset in each tile
 
 ### RX-UI-31 [Preferred] A palette is built from roles, not picked
 

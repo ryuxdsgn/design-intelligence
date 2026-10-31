@@ -22,14 +22,19 @@ The six stages of the core workflow (SKILL.md), as Design runs them.
    **Product Discovery first** (RX-PR-13): for a new product or a new look, when the context does
    not say who exactly it is for and why they would choose it, ask that before anything visual: the
    audience, why this product, its character, a taste reference, the page's status and goal, plus the
-   product-fact questions, five at most, as choices. Record the answers in DESIGN.md.
+   product-fact questions, five at most, as choices. Record the answers in DESIGN.md. When who and why
+   are known but the page's content is not (what people do in the product, the numbers that may be
+   shown, real screenshots), ask those alone before the directions: the What people do in it and
+   Numbers that may be shown fields, missing or blank, mean they are not known.
    **Direction is the user's call:** when neither the prompt nor DESIGN.md sets the UI direction
    (character, or brand colour and type), discover it with the user in the next message (RX-UI-26):
    three directions built from those answers, as style tiles (conventional, grounded, stretching),
    instead of choosing one yourself; the motion direction rides with it. **No DESIGN.md and no product docs is the case where these questions matter most,
    never a reason to skip them:** ask, then wait for the answer before designing. No question tool
    is not a reason either: write the options as numbered text and end the turn. Choose yourself only
-   when the user hands the choice back or the task says to run without questions (RX-UI-26).
+   when the user hands this choice back or the task says to run without questions (RX-UI-26); "up
+   to you" on another question hands back that question only. The alternatives asked here are visual
+   directions as style tiles; structural alternatives (stage 3) come after, inside the chosen one.
    Complete context means no questions.
    **Voice and tone** is not asked by default: when the field is blank, infer it from the product's
    existing copy or brand docs, label it inferred, and continue (RX-CD-11). Ask only when there is
@@ -171,8 +176,11 @@ The six stages of the core workflow (SKILL.md), as Design runs them.
      assets); no score. Fix what reads weaker for the task; say so when no reference was available.
    - Fresh eyes: on an expressive surface, when the agent can start a subagent, hand it only the
      renders (desktop and mobile) and the brief, not your reasoning, and ask for the skeleton, swap,
-     and thumbnail tests (knowledge/imagery.md), the three most generic things on the page, and a
-     verdict: ship, fix, or rethink. Fix and review once more at most. Without a subagent, run the
+     and thumbnail tests (knowledge/imagery.md), the three most generic things on the page, the elements that look as if they came
+     from another page (RX-UI-32), and a
+     verdict: ship, fix, or rethink. Fix and review once more at most. A failed swap test gets one
+   rewrite before the gate: headlines and the trust block from the "why choose it" answer and the
+   product's own facts, then the swap test again; report what still fails. Without a subagent, run the
      tests yourself on a fresh render and say the review was not independent.
    - Assets: generated images and illustrations arrive asynchronously. Wait until each one has
      landed and render again before exporting or closing the gate; never finish with one pending.

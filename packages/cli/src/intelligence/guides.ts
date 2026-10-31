@@ -81,14 +81,19 @@ The six stages of the core workflow (SKILL.md), as Design runs them.
    **Product Discovery first** (RX-PR-13): for a new product or a new look, when the context does
    not say who exactly it is for and why they would choose it, ask that before anything visual: the
    audience, why this product, its character, a taste reference, the page's status and goal, plus the
-   product-fact questions, five at most, as choices. Record the answers in DESIGN.md.
+   product-fact questions, five at most, as choices. Record the answers in DESIGN.md. When who and why
+   are known but the page's content is not (what people do in the product, the numbers that may be
+   shown, real screenshots), ask those alone before the directions: the What people do in it and
+   Numbers that may be shown fields, missing or blank, mean they are not known.
    **Direction is the user's call:** when neither the prompt nor DESIGN.md sets the UI direction
    (character, or brand colour and type), discover it with the user in the next message (RX-UI-26):
    three directions built from those answers, as style tiles (conventional, grounded, stretching),
    instead of choosing one yourself; the motion direction rides with it. **No DESIGN.md and no product docs is the case where these questions matter most,
    never a reason to skip them:** ask, then wait for the answer before designing. No question tool
    is not a reason either: write the options as numbered text and end the turn. Choose yourself only
-   when the user hands the choice back or the task says to run without questions (RX-UI-26).
+   when the user hands this choice back or the task says to run without questions (RX-UI-26); "up
+   to you" on another question hands back that question only. The alternatives asked here are visual
+   directions as style tiles; structural alternatives (stage 3) come after, inside the chosen one.
    Complete context means no questions.
    **Voice and tone** is not asked by default: when the field is blank, infer it from the product's
    existing copy or brand docs, label it inferred, and continue (RX-CD-11). Ask only when there is
@@ -230,8 +235,11 @@ The six stages of the core workflow (SKILL.md), as Design runs them.
      assets); no score. Fix what reads weaker for the task; say so when no reference was available.
    - Fresh eyes: on an expressive surface, when the agent can start a subagent, hand it only the
      renders (desktop and mobile) and the brief, not your reasoning, and ask for the skeleton, swap,
-     and thumbnail tests (knowledge/imagery.md), the three most generic things on the page, and a
-     verdict: ship, fix, or rethink. Fix and review once more at most. Without a subagent, run the
+     and thumbnail tests (knowledge/imagery.md), the three most generic things on the page, the elements that look as if they came
+     from another page (RX-UI-32), and a
+     verdict: ship, fix, or rethink. Fix and review once more at most. A failed swap test gets one
+   rewrite before the gate: headlines and the trust block from the "why choose it" answer and the
+   product's own facts, then the swap test again; report what still fails. Without a subagent, run the
      tests yourself on a fresh render and say the review was not independent.
    - Assets: generated images and illustrations arrive asynchronously. Wait until each one has
      landed and render again before exporting or closing the gate; never finish with one pending.
@@ -667,11 +675,16 @@ name. Build it from these dimensions; the values are vocabulary, not a menu:
 - **Type**: grotesk, humanist, geometric, serif, slab, mono; a display face with a partner
 - **Colour behaviour**: monochromatic, tonal, high contrast, vibrant, muted
 - **Shape**: geometric, organic, sharp, soft
-- **Layout**: modular, editorial, asymmetric, structured
+- **Layout**: modular, editorial, asymmetric, structured; composition moves that break the stack of
+  split sections: a visual crossing a band edge, a full-bleed image with type on it, oversized type
+  cropped by the frame, layered cards overlapping, a sticky column beside scrolling content, a
+  horizontal rail, an asymmetric editorial grid, one centred statement between wide sections
 - **Density**: compact, balanced, spacious
-- **Material**: flat, tactile, translucent, dimensional
-- **Imagery**: the product photographed or rendered, illustration (vector, line, hand-drawn, collage,
-  editorial, character; RX-UI-17), the product's own complete screens, or type alone; none needs a reason
+- **Material**: flat, dimensional (soft gradients and shadows), atmospheric (mesh, light, glow with a
+  job), textured (grain, print), translucent
+- **Imagery**: flat vector, dimensional vector, 3D render, the product's UI composed large and layered,
+  retouched photography, mixed media (photo with drawn devices), atmosphere, illustration styles (line,
+  hand-drawn, collage, editorial, character; RX-UI-17), or type alone; none needs a reason
 - **Motion**: functional, expressive, playful, cinematic (RX-UI-11)
 
 Coherence: at most two dimensions at an extreme, the rest support them; each value has a reason from
@@ -719,8 +732,12 @@ system:
 3. **The hero does the job**: the concept object in the hero performs the product's core job with
    sample data (a boarding pass that turns a booking into a seat and a gate time), not a sample on display.
 4. **Signature and devices**: one element people would remember, plus two or three graphic devices
-   taken from the inventory (a tear line, a barcode strip, a gate number), drawn simply and
-   repeated in at least three sections. Devices are illustration made from the concept, so an
+   taken from the inventory (a tear line, a barcode strip, a gate number), drawn simply, in at least
+   three sections where each does a job (shows data, marks structure, leads to the next step);
+   drop the device any product in the category would draw first, never put one between a message
+   and its action, and count a purely decorative repeat once. Devices are more than lines: data chips
+   around the product showing confirmed features with labeled sample data, annotations with leader
+   lines, a stamp or sticker, shapes cut from the concept, a pattern drawn from it, light and grain. Devices are illustration made from the concept, so an
    expressive page rarely has none; write their style like any illustration (RX-UI-17).
 5. **Weight carrier** (RX-UI-29): name what carries the page's visual weight (atmosphere, photo or
    render, the product's UI large and layered, illustration, or display type at 80px or more over a
@@ -742,7 +759,8 @@ accent, and a motif the signature repeats. Low energy uses the same levers, quie
 Then run three tests on the render. **Swap** (RX-AS-09): with a competitor's name and logo, would
 anything need to change? If not, the surface has no point of view yet. **Skeleton**: without colour,
 type, and devices, is the wireframe the template order (split hero, three columns, questions, a
-centred band, footer)? Then the concept is paint. **Thumbnail**: shrunk to icon size, does the page
+centred band, footer), or a stack of split sections alternating sides? Count it: more than two
+same-skeleton sections in a row, or fewer than two composition moves, and the concept is paint. **Thumbnail**: shrunk to icon size, does the page
 still have a shape you would recognise? Stay honest while being bold: a strong idea never
 needs invented numbers, people, or logos.
 
@@ -803,6 +821,25 @@ or a cut (RX-A11Y-08).
 
 Label every asset's provenance: observed (from the real product), sourced (licensed, with its
 source), illustrative, generated, or inferred (a stand-in). See the evidence model in the router.
+
+**Making images.** Use the first tool that can make the asset well, and say which:
+1. the design tool: vector paths (in Figma, SVG through createNodeFromSvg), image fills with their
+   filters, blend modes, and masks, and its image generation when it has credits
+2. a local render, free: Blender from the command line for objects in light (metal, glass, packaging);
+   Three.js in a headless browser for simple objects, gradients, and particles; export PNG at 2x and upload
+3. an image API whose key the user gives (an environment variable, never in the repo): for photo-real
+   scenes and heavy retouching; say the count and ask before paid generation
+4. a licensed photo or the user's own, retouched
+Recipes:
+- **3D render**: subject with its defining parts; material (gold: high metallic, low roughness, warm
+  reflections); one key light, a fill, and a rim; a camera at a named lens and angle; a background in the
+  palette's colour, so the render sits on the page; a set shares light and camera.
+- **Retouched photo**: cut out the subject (a background-removal model, or a mask); grade it to the
+  palette (duotone, tint, or temperature, then contrast); add grain or the material's texture so it
+  matches the page; never change what the product is, and label it retouched.
+- **UI composite**: the product's screen with labeled sample data, large, at an angle or overlapped,
+  with depth from the material (a soft shadow or glow), never invented features.
+Generated people never stand for customers (RX-AS-02).
 
 RYUX directs the generator; it is not the generator. Work context, goal,
 audience, role, art direction, composition, then generate, critique the result against the brief,
@@ -945,7 +982,8 @@ native the largest text size. No horizontal page scroll.`,
 4. **Tokens** instead of magic numbers; no duplicate styles.
 5. **No invented logic**: prices, limits, and permissions come from data or are marked as
    assumptions.
-6. **Dependencies** only when they clearly earn their weight.
+6. **Dependencies** only when they clearly earn their weight; a visual library (motion, 3D, shaders,
+   animated illustration) is offered as a choice, the lightest first, with its fallback (RX-FE-17).
 7. **Performance**: sized and lazy-loaded media; no heavy libraries for small effects.
 8. **Tests**: unit tests for pure logic with its edge cases, integration tests for critical flows,
    in the repo's own runner. Run them before claiming the work is done.
@@ -1033,7 +1071,7 @@ run the purpose gate; keep it when the answer is real, as in the last column.
 
 | Tell | Why it hurts | Fix | Fine when |
 | --- | --- | --- | --- |
-| A blue-to-purple gradient wash behind everything | carries no meaning and appears on every AI page | color from the brand and its roles (RX-UI-10), or a plain surface | the gradient is the brand, or it encodes a value |
+| A blue-to-purple gradient wash behind everything | carries no meaning and appears on every AI page | color from the brand and its roles (RX-UI-10), or a plain surface | the gradient is the brand or the direction's chosen material, or it encodes a value |
 | A fake app, terminal, or agent window as the hero | the category default, often with invented output | a signature from the product's own idea; product UI only when real or labeled (RX-UI-12, RX-UI-07) | it is the real product with labeled sample data |
 | Generic illustration: people with laptops, abstract blobs | unrelated to the product, so it steals attention and says nothing | a contextual illustration made from the brief, or no visual (RX-UI-07) | it explains a concept or an empty state words cannot |
 | Floating devices and dashboard mockups | fake screens imply features and data | real screens with labeled sample data (RX-UI-07, RX-AS-01) | the screens are real and labeled |

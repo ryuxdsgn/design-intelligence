@@ -16,7 +16,8 @@ Connect design decisions to the code that ships them.
 4. **Tokens** instead of magic numbers; no duplicate styles.
 5. **No invented logic**: prices, limits, and permissions come from data or are marked as
    assumptions.
-6. **Dependencies** only when they clearly earn their weight.
+6. **Dependencies** only when they clearly earn their weight; a visual library (motion, 3D, shaders,
+   animated illustration) is offered as a choice, the lightest first, with its fallback (RX-FE-17).
 7. **Performance**: sized and lazy-loaded media; no heavy libraries for small effects.
 8. **Tests**: unit tests for pure logic with its edge cases, integration tests for critical flows,
    in the repo's own runner. Run them before claiming the work is done.
@@ -109,3 +110,20 @@ The repo itself is the main evidence (stack, components, tokens); reference scre
 - Why: A build that fails cannot be reviewed, rendered, or shipped; every other check in the Delivery Gate depends on it. (Continuous integration practice; owner review 2026-10-25: build failure belongs with the checks that cannot be argued)
 - Not when: design-only work with no code; then CODE QUALITY is N/A
 - Check: run the repo's build, typecheck, lint, and tests; fails on any error
+
+### RX-FE-17 [Preferred] A visual library is offered as a choice, the lightest first
+
+- When: the build needs motion, 3D, a shader, or animated illustration that CSS and SVG cannot carry, and the repo has no library for it
+- Do: Offer two or three libraries as choices, the lightest that does the job first, each with its weight, license, the static fallback, and what happens under prefers-reduced-motion:
+  - UI and scroll motion: CSS first; Motion for React, GSAP elsewhere or for timelines
+  - animated illustration: Lottie (dotLottie) for exported animations, Rive for interactive state
+  - 3D: Three.js, React Three Fiber with drei in React, a Spline runtime when the scene is made in Spline
+  - gradients and shaders: OGL or a small WebGL shader, with a static image under it
+  - 2D canvas and generative: PixiJS, p5.js
+  - smooth scrolling (Lenis) only with a reason, never on long reading pages
+  - One library per job; record the choice in DESIGN.md with the reason, and load it lazily, after the page is usable.
+- Do not: Add a library for an effect CSS or SVG can do, add two libraries for one job, ship a 3D or shader hero with no static fallback, or ignore reduced motion.
+- Why: A visual library is a long-term cost in weight, upkeep, and accessibility; the user should choose it knowing what it costs, and the page must work without it. (Web performance and accessibility practice (WCAG 2.3.3 animation from interactions, prefers-reduced-motion); each library's documentation; owner request 2026-10-31 that RYUX offer library options when a direction needs them)
+- Not when: the repo already uses a library for this job: use it
+- Trade-off: a choice to make before building, and the lightest option may limit the effect
+- Check: options offered with weight, license, fallback, and reduced-motion behaviour; one library per job; static fallback renders
