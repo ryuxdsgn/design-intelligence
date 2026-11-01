@@ -199,7 +199,7 @@ A design direction from comparable screens: `extract_design_direction` (patterns
   - Tell look-alikes apart by what they do: back leaves the screen, close dismisses a sheet or modal; delete removes, cancel stops.
   - Use the platform's icon for platform actions (share differs on iOS and Android).
 - Do not: Choose an icon because it looks good, reuse one icon for two meanings, or ship an icon-only control whose meaning users have to guess.
-- Why: Few icons are recognised without a label; an ambiguous icon costs more than a word, and an icon whose meaning changes breaks what users learned. (NNGroup icon usability; Nielsen heuristic 4 (consistency and standards); Apple HIG and Material iconography)
+- Why: Few icons are recognised without a label; an ambiguous icon costs more than a word, and an icon whose meaning changes breaks what users learned. (NNGroup icon usability; Nielsen heuristic 4 (consistency and standards); Apple HIG and Material iconography; Prägnanz (Gestalt; Wertheimer 1923): people read the simplest shape a figure allows, so a simple silhouette is recognised first)
 - Not when: a dense expert tool whose users learn the set; then a tooltip plus an accessible name
 - Trade-off: labels take space, especially in toolbars and tab bars
 - Check: review: list each icon with its meaning and flag duplicates; heuristic_eval H-04

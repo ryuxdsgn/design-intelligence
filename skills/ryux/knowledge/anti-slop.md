@@ -154,7 +154,7 @@ Real screens show what real products do instead of invented numbers and urgency:
 
 - Do: State a deadline or a quota only when it is real, as a plain fact.
 - Do not: Write "only 2 left", "offer ends tonight", or fake countdowns with nothing behind them.
-- Why: Manufactured pressure erodes trust once users notice. (NNGroup credibility research; ryux run 2026-10-02: WhatsApp promo)
+- Why: Manufactured pressure erodes trust once users notice. (NNGroup credibility research; ryux run 2026-10-02: WhatsApp promo; cognitive bias research (Tversky and Kahneman 1974): scarcity and anchoring act before reflection, which is why they are never faked)
 - Check: find every timer, deadline, stock count, and 'only N left'; each comes from the brief or real data; fails on any without a source
 - Machine check: `ryux scan` flags urgency copy (only 2 left, hurry, offer ends tonight, hanya tersisa 2, buruan, stok terbatas) (warn)
 
@@ -166,14 +166,14 @@ Real screens show what real products do instead of invented numbers and urgency:
   - necessity: would something simpler do the same?
   - Three feature cards pass when the features are equal and compared; when one matters more, give it more weight instead.
 - Do not: Keep cards, gradients, badges, shadows, or animation that have no reason, or accept "it looks more interesting" as one.
-- Why: Unjustified decoration is what makes AI-generated UI look the same. (ryux anti-slop principle)
+- Why: Unjustified decoration is what makes AI-generated UI look the same. (ryux anti-slop principle; selective attention and banner blindness (Benway and Lane 1998; NNGroup eyetracking): people skip what looks like an ad or decoration, so a key message never wears that look)
 - Check: review
 
 ### RX-AS-06 [Required] Complexity with a reason
 
 - Do: Remove elements, options, states, code paths, abstractions, and dependencies that serve no stated need. Complexity that cannot be removed is carried by the product (defaults, formatting, calculation), not handed to the user.
 - Do not: Add settings, sections, abstractions, or packages "for later", or features because similar products have them.
-- Why: Unneeded complexity costs every user and every future change. (Nielsen heuristic 8; Tesler's law of conserved complexity (Tesler, 1980s): some complexity cannot be removed, only moved; clean-code practice)
+- Why: Unneeded complexity costs every user and every future change. (Nielsen heuristic 8; Tesler's law of conserved complexity (Tesler, 1980s): some complexity cannot be removed, only moved; clean-code practice; Occam's razor: of two designs that do the job, keep the one with fewer parts)
 - Check: list each element, option, state, and dependency the work added and the need it serves; fails on any without one or a written reason
 
 ### RX-AS-07 [Required] Claims match the evidence
