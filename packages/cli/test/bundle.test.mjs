@@ -200,6 +200,19 @@ test("Laws of UX: every law named in a rule's basis, and measured in Critique an
   assert.match(files["capabilities/qa.md"].replace(/\s+/g, " "), /measured Laws of UX checks/);
 });
 
+test("design rationale: every shaping decision has a reason, and a design-tool canvas carries it", () => {
+  // owner review 2026-11-02 of trial T10: the final message said what was made, not why
+  const files = renderBundle();
+  const product = files["knowledge/product.md"].replace(/\s+/g, " ");
+  assert.match(product, /### RX-PR-14 /);
+  assert.match(product, /never to a taste word: modern, clean, premium, elegant, and sleek are not reasons/);
+  assert.match(product, /Name the alternative that lost and why/);
+  const design = files["capabilities/design.md"].replace(/\s+/g, " ");
+  assert.match(design, /decision → because \(user, brief, or evidence, with its strength\) → principle/);
+  assert.match(design, /Figma, pen\.dev, Penpot, Framer, or another\), annotate three to five of those decisions beside the frames/);
+  assert.match(files["SKILL.md"], /rationale <n> lines, annotations <n> \| none/);
+});
+
 test("expressive pages: one weight carrier, devices with a job, one world, the task first", () => {
   // owner trials T3 to T9, 2026-10-31: plain pages, a repeated ruler, a carried-over render, a timid fix
   const files = renderBundle();

@@ -187,6 +187,16 @@ The six stages of the core workflow (SKILL.md), as Design runs them.
    - Test plan: for a new flow or a consequential change, write the usability test plan (RX-UX-12);
      skip it for a small change or when the user says so. Suggest that the team watch the sessions,
      so what users show becomes shared knowledge rather than one person's report.
+   - Rationale (RX-PR-14): five to seven lines, one per shaping decision (direction and concept,
+     weight carrier, section order, palette, type, where the primary action sits, what was cut):
+     decision → because (user, brief, or evidence, with its strength) → principle (a RYUX rule or a
+     law of UX) → cost → would change if. It goes in the final message, before the gate.
+   - Annotations on the canvas: when the design is made in a design tool (Figma, pen.dev, Penpot,
+     Framer, or another), annotate three to five of those decisions beside the frames, in plain
+     language, one or two sentences each: what was decided and why, for the person who opens the
+     file without the chat. Use the tool's own annotation feature when it has one; otherwise a
+     "Why it looks like this" frame next to the design, outside the frames for review. No rule IDs,
+     evidence codes, or gate results in them.
    - Close with the Delivery Gate, saying what was not designed, such as other widths or states. If
      you wrote DESIGN.md, say so in the final message: which file and which fields.
 
@@ -294,6 +304,7 @@ Assumptions    kept apart, all visible:
                unconfirmed capabilities (actions or features on the canvas the brief did not
                confirm; proposed, not requirements); sample data (realistic mockup content,
                never a fact, RX-AS-03)
+Rationale      five to seven lines: decision → because → principle → cost → would change if (RX-PR-14)
 Decisions      one Decision Receipt per major decision (below)
 ```
 
