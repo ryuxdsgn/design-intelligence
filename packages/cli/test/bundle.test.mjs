@@ -184,6 +184,22 @@ test("direction discovery: the user chooses among three directions that differ i
   assert.match(flat("capabilities/design.md"), /`direction:` YAML block/);
 });
 
+test("Laws of UX: every law named in a rule's basis, and measured in Critique and QA", () => {
+  // owner request 2026-11-02 (lawsofux.com): the laws were cited for 18 of 30, and never measured
+  const files = renderBundle();
+  const all = Object.values(files).join(" ").replace(/\s+/g, " ");
+  for (const law of ["Fitts", "Hick", "Jakob", "Miller", "Peak-end|peak-end", "Von Restorff", "aesthetic-usability", "Doherty", "goal-gradient", "proximity", "common region", "uniform connectedness", "Prägnanz", "similarity", "Postel", "Tesler", "Zeigarnik", "serial position", "Parkinson", "Occam", "Pareto", "selective attention", "cognitive load", "chunk", "mental model", "working memory", "choice overload", "flow \\(Csikszentmihalyi", "active user", "cognitive bias"]) {
+    assert.match(all, new RegExp(law, "i"), law);
+  }
+  const ux = files["knowledge/ux.md"].replace(/\s+/g, " ");
+  assert.match(ux, /\*\*Laws of UX, measured\.\*\*/);
+  for (const id of [...ux.matchAll(/\| (RX-[A-Z0-9]+-\d+(?:, RX-[A-Z0-9]+-\d+)*) \|/g)].flatMap((m) => m[1].split(", "))) {
+    assert.match(all, new RegExp(`### ${id} `), id);
+  }
+  assert.match(files["capabilities/critique.md"], /measured Laws of UX checks/);
+  assert.match(files["capabilities/qa.md"].replace(/\s+/g, " "), /measured Laws of UX checks/);
+});
+
 test("expressive pages: one weight carrier, devices with a job, one world, the task first", () => {
   // owner trials T3 to T9, 2026-10-31: plain pages, a repeated ruler, a carried-over render, a timid fix
   const files = renderBundle();

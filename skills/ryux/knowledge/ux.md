@@ -19,6 +19,30 @@ Choose structure from the user's goal, not from a template.
   users hunt.
 - **Recovery paths**: every flow has a way back and a way out.
 
+**Laws of UX, measured.** Critique and QA run these on every screen; a law is checked by what can
+be counted or measured on the render, and a fail is a finding with the measured value as its evidence.
+Miller's limit is about holding things in memory, not a cap on menu items.
+
+| Law | Measure | Passes when | Rule |
+| --- | --- | --- | --- |
+| Fitts | the primary action's size, and its distance from what it acts on | 44 by 44 pt or more (48 dp on Android), every target 24 px or more; next to its content; on a phone, in thumb reach or a sticky bar | RX-A11Y-02, RX-RD-03 |
+| Hick, choice overload | options in one decision, visible at once | one primary action; seven or fewer peer options, or grouped under labels | RX-PR-03 |
+| Von Restorff | elements wearing the action colour or the strongest contrast | only the primary action, one per view | RX-UI-01, RX-UI-04 |
+| Serial position | where the primary action and the key fact sit | on the first screen, and again at the end of a long page or list | RX-UX-13 |
+| Proximity, common region, uniform connectedness | the gap inside a group against the gap between groups | the inside gap half the outside gap or less; a label closer to its own field than to the next | RX-UX-01, RX-FM-01 |
+| Miller, chunking, working memory | long strings, and what the user must carry between screens | numbers grouped in threes or fours (a virtual account, a phone number); nothing carried in memory from one screen to the next | RX-UX-08 |
+| Doherty, flow | time to visible feedback; interruptions | feedback under 400 ms, progress after about 1 s; no dialog interrupting a task that does not need it | RX-IX-02 |
+| Jakob | where the logo, navigation, search, cart, and back sit | where the platform and the category put them, or a written reason | RX-DS-02 |
+| Goal-gradient, Zeigarnik | progress in a multi-step task | steps done and steps left are shown | RX-UX-02 |
+| Peak-end | the success and the failure ends | both designed: what happened and what to do next | RX-IX-01, RX-EC-01 |
+| Tesler, Occam | the removal test on each element | removing it loses information or an action | RX-AS-05, RX-AS-06 |
+| Postel, Parkinson | input formats accepted; fields the product could fill | spaces, dashes, and +62 or 0 accepted and normalised; known values filled | RX-FM-05 |
+| Selective attention | how the key message is styled | not like an ad or a banner, not only in a rotating carousel | RX-AS-05 |
+| Paradox of the active user | where help sits | inline at the point of need; no tutorial blocking first use | RX-CD-16 |
+| Prägnanz | icons and marks at their smallest size | recognisable at 16 to 24 px | RX-UI-20 |
+| Cognitive bias | defaults, anchors, scarcity | no pre-ticked add-on, no invented anchor price, no invented scarcity | RX-AS-04 |
+| Aesthetic-usability, Pareto | the test plan | judged on task success and time, not on liking the look; the top tasks tested first | RX-UX-12 |
+
 Reason like a senior designer: a principle, where it applies, where it does not, and what it costs.
 
 ```
@@ -46,7 +70,7 @@ How Indonesian apps sequence and structure this flow: `get_flow` for a reference
 
 - Do: Choose the information architecture and pattern from what users come to do and how they look for it. Keep together what the user checks together, and show each fact once.
 - Do not: Apply a stock SaaS layout (sidebar, KPI cards, table) because it is familiar, or show the same fact twice on one screen (the merchant or the amount in the summary and again in a row, the balance in the header and in a card).
-- Why: The right structure depends on the task; a template answers a different question. A repeated fact costs reading time and leaves the user to wonder which one is right. (NNGroup information architecture research; Gestalt proximity and common region (Palmer 1992): items close together or in one container read as one group; ryux four-problems blind rating, rater 1 (product designer), 2026-10-16: repeated facts were a reason not to ship)
+- Why: The right structure depends on the task; a template answers a different question. A repeated fact costs reading time and leaves the user to wonder which one is right. (NNGroup information architecture research; Gestalt proximity and common region (Palmer 1992): items close together or in one container read as one group; ryux four-problems blind rating, rater 1 (product designer), 2026-10-16: repeated facts were a reason not to ship; Pareto principle (Juran, after Pareto): a few tasks carry most of the use, so they get the structure first; uniform connectedness (Palmer and Rock 1994): elements joined by a line or a shared fill read as related)
 - Not when: the product already has an established structure users rely on; change it only with evidence
 - Trade-off: a less familiar layout can cost users a moment of learning
 - Check: review
@@ -136,7 +160,7 @@ How Indonesian apps sequence and structure this flow: `get_flow` for a reference
   - The order of the questions is the order of the page; the primary action sits where the visitor is ready for it, and again at the end.
   - The visual concept gives each section its form (RX-UI-27); it never adds a section or changes the order.
 - Do not: Start from the usual section list (hero, features, how it works, FAQ, call to action) and fill it, or let a visual idea decide which sections exist.
-- Why: A page that follows a template answers questions nobody asked and skips the one that decides; the visitor's own questions are what make the structure specific to this product. (Content strategy and conversion practice (a page as the answer to the reader's questions in order); NNGroup inverted pyramid; landing-gold concept-system trial 2026-10-31: a concept carried into every section still sat on the template order, as an independent reviewer and the owner noted)
+- Why: A page that follows a template answers questions nobody asked and skips the one that decides; the visitor's own questions are what make the structure specific to this product. (Content strategy and conversion practice (a page as the answer to the reader's questions in order); NNGroup inverted pyramid; landing-gold concept-system trial 2026-10-31: a concept carried into every section still sat on the template order, as an independent reviewer and the owner noted; serial position effect (Ebbinghaus 1885; Murdock 1962): people recall the first and last items of a sequence best, so the action sits early and again at the end)
 - Not when: task UI (a list, a form, a dashboard), where the user's task sets the structure (RX-UX-01)
 - Trade-off: the order can differ from what the team expects to see; show the question list with the layout
 - Check: review: the question list in Frame, and each section mapped to one question

@@ -207,13 +207,13 @@ line below for its exact source.
 <!-- provenance:start -->
 | Source cited | Rules citing it | Rules citing only this |
 | --- | --- | --- |
-| Public standard or research | 75 | 53 |
+| Public standard or research | 76 | 53 |
 | Industry practice | 27 | 8 |
 | Observed in a RYUX run | 17 | 8 |
 | Pattern also in another MIT ruleset (text written for RYUX) | 4 | 4 |
-| RYUX principle, taxonomy, or review | 56 | 23 |
+| RYUX principle, taxonomy, or review | 56 | 22 |
 
-All 136 rules cite a source; 40 cite more than one kind, so the "Rules citing it" column adds up to more than 136.
+All 136 rules cite a source; 41 cite more than one kind, so the "Rules citing it" column adds up to more than 136.
 <!-- provenance:end -->
 
 ## Rules
@@ -254,7 +254,7 @@ Gate area PRODUCT. Covers user, task, goal, primary action, constraints, assumpt
 
 - Do: Give each screen one clear, dominant goal. When the task has a clear next step (a form, checkout, a confirmation), give it one primary action and make secondary actions look secondary.
 - Do not: Put two equal-weight calls to action side by side.
-- Why: A single clear path shortens the decision and the task. (Hick's law (Hick 1952; Hyman 1953): more options, longer decisions; NNGroup visual hierarchy)
+- Why: A single clear path shortens the decision and the task. (Hick's law (Hick 1952; Hyman 1953): more options, longer decisions; NNGroup visual hierarchy; choice overload (Iyengar and Lepper 2000): a longer list of options can lower the chance that anyone chooses at all)
 - Not when: Monitoring and configuration screens (dashboards, settings) need a clear goal but not a single dominant action; do not invent one to satisfy this rule.
 - Check: name the screen's goal and its primary action, then count the controls styled as primary in the main state; fails when two compete at the same weight
 
@@ -347,7 +347,7 @@ Gate area UX. Covers information architecture, navigation, flows, grouping, disc
 
 - Do: Choose the information architecture and pattern from what users come to do and how they look for it. Keep together what the user checks together, and show each fact once.
 - Do not: Apply a stock SaaS layout (sidebar, KPI cards, table) because it is familiar, or show the same fact twice on one screen (the merchant or the amount in the summary and again in a row, the balance in the header and in a card).
-- Why: The right structure depends on the task; a template answers a different question. A repeated fact costs reading time and leaves the user to wonder which one is right. (NNGroup information architecture research; Gestalt proximity and common region (Palmer 1992): items close together or in one container read as one group; ryux four-problems blind rating, rater 1 (product designer), 2026-10-16: repeated facts were a reason not to ship)
+- Why: The right structure depends on the task; a template answers a different question. A repeated fact costs reading time and leaves the user to wonder which one is right. (NNGroup information architecture research; Gestalt proximity and common region (Palmer 1992): items close together or in one container read as one group; ryux four-problems blind rating, rater 1 (product designer), 2026-10-16: repeated facts were a reason not to ship; Pareto principle (Juran, after Pareto): a few tasks carry most of the use, so they get the structure first; uniform connectedness (Palmer and Rock 1994): elements joined by a line or a shared fill read as related)
 - Not when: the product already has an established structure users rely on; change it only with evidence
 - Trade-off: a less familiar layout can cost users a moment of learning
 - Check: review
@@ -437,7 +437,7 @@ Gate area UX. Covers information architecture, navigation, flows, grouping, disc
   - The order of the questions is the order of the page; the primary action sits where the visitor is ready for it, and again at the end.
   - The visual concept gives each section its form (RX-UI-27); it never adds a section or changes the order.
 - Do not: Start from the usual section list (hero, features, how it works, FAQ, call to action) and fill it, or let a visual idea decide which sections exist.
-- Why: A page that follows a template answers questions nobody asked and skips the one that decides; the visitor's own questions are what make the structure specific to this product. (Content strategy and conversion practice (a page as the answer to the reader's questions in order); NNGroup inverted pyramid; landing-gold concept-system trial 2026-10-31: a concept carried into every section still sat on the template order, as an independent reviewer and the owner noted)
+- Why: A page that follows a template answers questions nobody asked and skips the one that decides; the visitor's own questions are what make the structure specific to this product. (Content strategy and conversion practice (a page as the answer to the reader's questions in order); NNGroup inverted pyramid; landing-gold concept-system trial 2026-10-31: a concept carried into every section still sat on the template order, as an independent reviewer and the owner noted; serial position effect (Ebbinghaus 1885; Murdock 1962): people recall the first and last items of a sequence best, so the action sits early and again at the end)
 - Not when: task UI (a list, a form, a dashboard), where the user's task sets the structure (RX-UX-01)
 - Trade-off: the order can differ from what the team expects to see; show the question list with the layout
 - Check: review: the question list in Frame, and each section mapped to one question
@@ -461,7 +461,7 @@ Gate area UX. Covers before, during, result, recovery; feedback, confirmation, n
 
 - Do: Give an immediate pressed state; past about 1 second show a loading indicator; past about 10 seconds show progress with an estimate or let the user leave and come back. A loading skeleton has the shape of the layout it stands in for: the same blocks in the same places, so nothing jumps when the content arrives.
 - Do not: Let a payment or save run with no visible status.
-- Why: Silence during a wait reads as failure and invites double taps. (Nielsen response-time limits (0.1 / 1 / 10 s); Nielsen heuristic 1; Doherty threshold (Doherty and Thadani 1982): responses under about 400 ms keep people engaged; skeleton shape: pattern also in appllama-app-design-skill (MIT); written for RYUX)
+- Why: Silence during a wait reads as failure and invites double taps. (Nielsen response-time limits (0.1 / 1 / 10 s); Nielsen heuristic 1; Doherty threshold (Doherty and Thadani 1982): responses under about 400 ms keep people engaged; skeleton shape: pattern also in appllama-app-design-skill (MIT); written for RYUX; flow (Csikszentmihalyi 1990): a task without interruptions or unexplained waits keeps people absorbed in it)
 - Not when: instant actions under about 0.1 s; a spinner that flashes is noise
 - Trade-off: progress indicators need real progress data; a fake bar misleads
 - Check: heuristic_eval H-01
@@ -607,7 +607,7 @@ Gate area UX. Covers labels, layout, validation, input preservation, autofill, s
 
 - Do: Match the keyboard to the input (numeric for amounts, phone numbers, and OTP) and support autofill and paste. Accept the formats people type or paste (spaces, dashes, a country code or a leading zero) and normalize them in the product.
 - Do not: Show a text keyboard for numbers or block pasting codes.
-- Why: The right keyboard removes taps and typos on phones. (HTML inputmode and autocomplete (one-time-code); platform input guidance; robustness principle (Postel, RFC 761, 1980): be liberal in what you accept)
+- Why: The right keyboard removes taps and typos on phones. (HTML inputmode and autocomplete (one-time-code); platform input guidance; robustness principle (Postel, RFC 761, 1980): be liberal in what you accept; Parkinson's law (Parkinson 1955): work expands to the time it is given, so defaults and autofill shrink a task)
 - Not when: free-text fields where a restricted keyboard blocks valid input (names with punctuation)
 - Trade-off: inputmode varies across browsers; test on real devices
 - Check: review
@@ -819,7 +819,7 @@ Gate area CONTENT. Covers specific copy, action labels, error messages, terminol
 - Do: First make the step clear enough to need no help; when it still needs some, put it in context at that step (a line of helper text, a tooltip, an info sheet), not only in a help centre.
   - Write help as concrete steps for the user's task, and make longer help searchable by the words users type.
 - Do not: Send users to a generic FAQ or a help centre home for a question about one field, or explain the interface instead of the task.
-- Why: Help is read only at the moment of doubt; help elsewhere is help nobody finds. (Nielsen heuristic 10 (help and documentation); NNGroup 10 usability heuristics)
+- Why: Help is read only at the moment of doubt; help elsewhere is help nobody finds. (Nielsen heuristic 10 (help and documentation); NNGroup 10 usability heuristics; paradox of the active user (Carroll and Rosson 1987): people start using a product before reading any instructions, so help sits where the question comes up)
 - Trade-off: help in context adds text to the screen; keep it to the steps that need it
 - Check: heuristic_eval H-10
 
@@ -950,7 +950,7 @@ Gate area UI. Covers the visual system of a product: hierarchy, type, layout, de
   - Tell look-alikes apart by what they do: back leaves the screen, close dismisses a sheet or modal; delete removes, cancel stops.
   - Use the platform's icon for platform actions (share differs on iOS and Android).
 - Do not: Choose an icon because it looks good, reuse one icon for two meanings, or ship an icon-only control whose meaning users have to guess.
-- Why: Few icons are recognised without a label; an ambiguous icon costs more than a word, and an icon whose meaning changes breaks what users learned. (NNGroup icon usability; Nielsen heuristic 4 (consistency and standards); Apple HIG and Material iconography)
+- Why: Few icons are recognised without a label; an ambiguous icon costs more than a word, and an icon whose meaning changes breaks what users learned. (NNGroup icon usability; Nielsen heuristic 4 (consistency and standards); Apple HIG and Material iconography; Prägnanz (Gestalt; Wertheimer 1923): people read the simplest shape a figure allows, so a simple silhouette is recognised first)
 - Not when: a dense expert tool whose users learn the set; then a tooltip plus an accessible name
 - Trade-off: labels take space, especially in toolbars and tab bars
 - Check: review: list each icon with its meaning and flag duplicates; heuristic_eval H-04
@@ -1002,7 +1002,7 @@ Gate area UI. Covers art direction, composition, expressive surfaces, motion, as
   - On task UI: the alternatives are structure hypotheses and the conventions that must hold stay fixed. A new product's brand layer must carry one signature from its own domain (a mark, the type voice, a colour temperature, or one brand moment in the flow), never a layout change and never decoration without a job (RX-AS-05). Record it in the Delivery Gate UI line.
   - When the brief names reference products, read each one before it shapes the alternatives: the principle you borrow, what stays theirs (colours, mascot, signature features), and where you use it. Carry the borrowed character at the strength the brief asks for: when it asks for a reference's feel (playful, chunky, gamified), the feel shows on every main screen, in type weight, shape, colour energy, and one brand moment, not only in a button detail. A reference's signature mechanics (a streak, a daily goal, a score) are unconfirmed capabilities: propose them, never show them as facts.
 - Do not: Show alternatives that differ only in colour or copy, choose for the user without showing them, or let the signature be the category's default (for developer tools a terminal or agent-session panel; for SaaS a dashboard screenshot; copy on the left and product on the right), or relabel that default as a concept. A product screen can support the signature, not be it. Turn a named reference into adjectives ("calm, white, soft") or copy what belongs to its brand.
-- Why: Users remember a product by its idea; a correct but generic surface is forgotten and could belong to any competitor. (brand and art direction practice; RX-UI-05 layout from content; rendered variants on named axes, compared side by side, chosen by the user: pattern also in emilkowalski/skills (MIT) prototype; fit first with craft as tie-break, pairwise with a runner-up: ryux owner blind ratings 2026-10-18 (judge round 1: weighting distinctiveness picked against the designer); written for RYUX; owner review of a no-skill vs RYUX run (2026-10-20): RYUX kept the reference's feel to one button detail)
+- Why: Users remember a product by its idea; a correct but generic surface is forgotten and could belong to any competitor. (brand and art direction practice; RX-UI-05 layout from content; rendered variants on named axes, compared side by side, chosen by the user: pattern also in emilkowalski/skills (MIT) prototype; fit first with craft as tie-break, pairwise with a runner-up: ryux owner blind ratings 2026-10-18 (judge round 1: weighting distinctiveness picked against the designer); written for RYUX; owner review of a no-skill vs RYUX run (2026-10-20): RYUX kept the reference's feel to one button detail; aesthetic-usability effect (Kurosu and Kashimura 1995): people judge a better-looking interface as easier to use, which can also hide its problems in a test)
 - Not when: an existing product whose brand system already sets the brand layer, or a small change inside a fixed design system; follow it
 - Trade-off: a strong idea takes a decision someone may disagree with; keep it honest and on brand
 - Check: the swap test (RX-AS-09); review
@@ -1612,7 +1612,7 @@ Gate area ANTI-SLOP. Covers hard gates, purpose gates, quality locks, honest cla
 
 - Do: State a deadline or a quota only when it is real, as a plain fact.
 - Do not: Write "only 2 left", "offer ends tonight", or fake countdowns with nothing behind them.
-- Why: Manufactured pressure erodes trust once users notice. (NNGroup credibility research; ryux run 2026-10-02: WhatsApp promo)
+- Why: Manufactured pressure erodes trust once users notice. (NNGroup credibility research; ryux run 2026-10-02: WhatsApp promo; cognitive bias research (Tversky and Kahneman 1974): scarcity and anchoring act before reflection, which is why they are never faked)
 - Check: find every timer, deadline, stock count, and 'only N left'; each comes from the brief or real data; fails on any without a source
 - Machine check: `ryux scan` flags urgency copy (only 2 left, hurry, offer ends tonight, hanya tersisa 2, buruan, stok terbatas) (warn)
 
@@ -1624,14 +1624,14 @@ Gate area ANTI-SLOP. Covers hard gates, purpose gates, quality locks, honest cla
   - necessity: would something simpler do the same?
   - Three feature cards pass when the features are equal and compared; when one matters more, give it more weight instead.
 - Do not: Keep cards, gradients, badges, shadows, or animation that have no reason, or accept "it looks more interesting" as one.
-- Why: Unjustified decoration is what makes AI-generated UI look the same. (ryux anti-slop principle)
+- Why: Unjustified decoration is what makes AI-generated UI look the same. (ryux anti-slop principle; selective attention and banner blindness (Benway and Lane 1998; NNGroup eyetracking): people skip what looks like an ad or decoration, so a key message never wears that look)
 - Check: review
 
 #### RX-AS-06 [Required] Complexity with a reason
 
 - Do: Remove elements, options, states, code paths, abstractions, and dependencies that serve no stated need. Complexity that cannot be removed is carried by the product (defaults, formatting, calculation), not handed to the user.
 - Do not: Add settings, sections, abstractions, or packages "for later", or features because similar products have them.
-- Why: Unneeded complexity costs every user and every future change. (Nielsen heuristic 8; Tesler's law of conserved complexity (Tesler, 1980s): some complexity cannot be removed, only moved; clean-code practice)
+- Why: Unneeded complexity costs every user and every future change. (Nielsen heuristic 8; Tesler's law of conserved complexity (Tesler, 1980s): some complexity cannot be removed, only moved; clean-code practice; Occam's razor: of two designs that do the job, keep the one with fewer parts)
 - Check: list each element, option, state, and dependency the work added and the need it serves; fails on any without one or a written reason
 
 #### RX-AS-07 [Required] Claims match the evidence
