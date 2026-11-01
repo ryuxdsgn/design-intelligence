@@ -176,6 +176,9 @@ test("direction discovery: the user chooses among three directions that differ i
   assert.match(ui, /cream, ivory, warm white, and paper are one family, used once at most/);
   assert.match(ui, /flat with flat vectors once at most/);
   assert.match(ui, /hands back only that question/);
+  // landing-gold round 5, 2026-11-01: every idea came from the product; options numbered two ways
+  assert.match(ui, /At least one comes from culture and place, at most one from the product mechanic/);
+  assert.match(ui, /numbered once: the same number in the message, the question, and the tiles/);
   assert.match(ui, /### RX-UI-31 /);
   assert.match(ui, /neutrals from the dominant hue/);
   assert.match(flat("capabilities/design.md"), /`direction:` YAML block/);
@@ -190,6 +193,9 @@ test("expressive pages: one weight carrier, devices with a job, one world, the t
   assert.match(img, /at most two same-skeleton sections in a row/);
   assert.match(img, /visible on the first screen at desktop and at 390 by 844/);
   assert.match(img, /cut only when it cannot be/);
+  // landing-gold round 5: the same jar as the focal visual of four sections read as monotonous
+  assert.match(img, /The system repeats, the subject does not/);
+  assert.match(img, /focal visual of two sections at most/);
   assert.match(img, /\*\*Making images\.\*\*/);
   const ill = files["knowledge/illustration.md"].replace(/\s+/g, " ");
   assert.match(ill, /### RX-UI-30 /);

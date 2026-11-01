@@ -34,7 +34,8 @@ The six stages of the core workflow (SKILL.md), as Design runs them.
    **Ask as choices.** When you ask, or the user picks (stage 4, Reconsider), use the agent's
    question or choice tool if it has one: two to four options per question, the recommended one
    first and labeled, and room for the user's own answer. Without such a tool, write numbered
-   options with the recommendation first, so the user can answer with a number. Never ask what the prompt, DESIGN.md, or the
+   options with the recommendation first, so the user can answer with a number; use the same
+   numbers everywhere the options appear (the message, the question, the canvas). Never ask what the prompt, DESIGN.md, or the
    product docs already answer. For the rest, make the smallest reasonable assumption, write it
    down, and continue (RX-PR-01, RX-PR-02).
    **Record direction answers.** When the user answers a UI direction, motion direction, or voice

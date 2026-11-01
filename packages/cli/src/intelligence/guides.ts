@@ -93,7 +93,8 @@ The six stages of the core workflow (SKILL.md), as Design runs them.
    **Ask as choices.** When you ask, or the user picks (stage 4, Reconsider), use the agent's
    question or choice tool if it has one: two to four options per question, the recommended one
    first and labeled, and room for the user's own answer. Without such a tool, write numbered
-   options with the recommendation first, so the user can answer with a number. Never ask what the prompt, DESIGN.md, or the
+   options with the recommendation first, so the user can answer with a number; use the same
+   numbers everywhere the options appear (the message, the question, the canvas). Never ask what the prompt, DESIGN.md, or the
    product docs already answer. For the rest, make the smallest reasonable assumption, write it
    down, and continue (RX-PR-01, RX-PR-02).
    **Record direction answers.** When the user answers a UI direction, motion direction, or voice
@@ -709,7 +710,8 @@ focal point, hierarchy, negative space, relation to the copy, and balance (RX-UI
 task UI usable; on expressive surfaces it is only the floor. Work concept, then signature, then
 system, in one world (RX-UI-32):
 1. **Concept**: two or three alternatives first (capabilities/design.md, stage 3), then one. The idea
-   comes from the product, not the category; it can be an object, an atmosphere, a material, or a
+   comes from the product's world, not the category: its mechanic, the audience's objects and rituals,
+   or their culture and place (RX-UI-26); it can be an object, an atmosphere, a material, or a
    movement. The category default (a terminal panel, a dashboard screenshot) is never the signature.
 2. **Inventory** (RX-UI-27): the concept in one sentence ("this page is a boarding pass") and the parts
    the real thing has (a tear line, a barcode, a seat block, a gate time, a stub). The visitor's
@@ -717,7 +719,9 @@ system, in one world (RX-UI-32):
 3. **The hero does the job**: the concept object performs the core job with sample data (a boarding
    pass that turns a booking into a seat and a gate time).
 4. **Signature and devices** (RX-UI-27): one element people remember, and two or three devices that do
-   a job where they appear. Devices are more than lines: data chips around the product (confirmed
+   a job where they appear. The system repeats, the subject does not: a pattern, ground, or divider
+   returns, and each section's focal visual has its own subject, two sections at most per subject.
+   Devices are more than lines: data chips around the product (confirmed
    features, labeled sample data), annotations with leader lines, a stamp, shapes cut from the concept,
    a pattern, light and grain. Write their style like any illustration (RX-UI-17).
 5. **Weight carrier** (RX-UI-29): make its asset first, read it alone (RX-UI-30), and build around it;

@@ -21,7 +21,8 @@ focal point, hierarchy, negative space, relation to the copy, and balance (RX-UI
 task UI usable; on expressive surfaces it is only the floor. Work concept, then signature, then
 system, in one world (RX-UI-32):
 1. **Concept**: two or three alternatives first (capabilities/design.md, stage 3), then one. The idea
-   comes from the product, not the category; it can be an object, an atmosphere, a material, or a
+   comes from the product's world, not the category: its mechanic, the audience's objects and rituals,
+   or their culture and place (RX-UI-26); it can be an object, an atmosphere, a material, or a
    movement. The category default (a terminal panel, a dashboard screenshot) is never the signature.
 2. **Inventory** (RX-UI-27): the concept in one sentence ("this page is a boarding pass") and the parts
    the real thing has (a tear line, a barcode, a seat block, a gate time, a stub). The visitor's
@@ -29,7 +30,9 @@ system, in one world (RX-UI-32):
 3. **The hero does the job**: the concept object performs the core job with sample data (a boarding
    pass that turns a booking into a seat and a gate time).
 4. **Signature and devices** (RX-UI-27): one element people remember, and two or three devices that do
-   a job where they appear. Devices are more than lines: data chips around the product (confirmed
+   a job where they appear. The system repeats, the subject does not: a pattern, ground, or divider
+   returns, and each section's focal visual has its own subject, two sections at most per subject.
+   Devices are more than lines: data chips around the product (confirmed
    features, labeled sample data), annotations with leader lines, a stamp, shapes cut from the concept,
    a pattern, light and grain. Write their style like any illustration (RX-UI-17).
 5. **Weight carrier** (RX-UI-29): make its asset first, read it alone (RX-UI-30), and build around it;
@@ -221,21 +224,22 @@ How comparable products use imagery and motion: `search_screens` by pattern, `ex
 - Do: Sections and their order come from the visitor's questions (RX-UX-13); the concept gives each its form from the concept's inventory (the parts the real thing has), and a generic section form needs a reason (knowledge/imagery.md, Expressive surfaces).
   - The hero's concept object does the product's core job with sample data, not a sample on display.
   - Devices: write three from the inventory, drop the one any product in the category would draw first (for gold: a coin, a bar, a scale, a ruler), and keep two or three; each appears in three or more sections where it does a job (shows data, marks structure, leads to the next step); a decorative repeat counts once, and none sits between a message and its action.
+  - The system repeats, the subject does not: what returns across sections is a pattern, a ground, a divider with meaning, a data form, or a rhythm, changing its role or form each time; each section's focal visual has its own subject (a scene, a figure, a moment of use), and one subject is the focal visual of two sections at most (a new angle or state of the same object counts as the same subject).
   - One decisive type move and one dominant colour field come from the concept.
   - Compose, do not stack: at most two same-skeleton sections in a row (text one side, a visual the other), and two or more composition moves (knowledge/ui.md, Direction grammar, Layout), each keeping the reading order and the path to the action.
   - Headlines in the concept's language; unknown facts go to the handoff notes, never a section of placeholders.
   - Before the gate, run the skeleton, swap, and thumbnail tests, with fresh eyes when a subagent is available (capabilities/design.md, stage 5).
-- Do not: Let the concept add sections or set their order, put the concept in one hero card and build the rest from the template order, leave the page empty and call it restraint, repeat a device as a divider to reach a count, alternate text-left and text-right splits down the page, fill a section with "to confirm" chips or dashed boxes, or let a device or the concept invent a product fact (RX-AS-01, RX-PR-02).
-- Why: A concept that lives in one card is decoration: the rest of the page is the same template every generated page uses, and that is what reads as AI-made. (Art direction practice (a concept carried as a system of forms and devices); landing-gold round 3 side-by-side read and owner trials T7 and T8, 2026-10-31: RYUX pages kept the concept in one card over a template order, then repeated one device as a divider and alternated split sections; owner review)
+- Do not: Let the concept add sections or set their order, put the concept in one hero card and build the rest from the template order, leave the page empty and call it restraint, repeat a device as a divider to reach a count, redraw the hero object as the focal visual of section after section, alternate text-left and text-right splits down the page, fill a section with "to confirm" chips or dashed boxes, or let a device or the concept invent a product fact (RX-AS-01, RX-PR-02).
+- Why: A concept that lives in one card is decoration: the rest of the page is the same template every generated page uses, and that is what reads as AI-made. (Art direction practice (a concept carried as a system of forms and devices); landing-gold round 3 side-by-side read and owner trials T7 and T8, 2026-10-31: RYUX pages kept the concept in one card over a template order, then repeated one device as a divider and alternated split sections; owner review; landing-gold round 5, 2026-11-01: the same jar or ruler was the focal visual of three or four sections and read as monotonous (owner review), while the peer repeated a pattern or a scene break and changed the subject)
 - Not when: task UI, where the structure stays familiar (RX-AS-09); a brand system that already defines the page
 - Trade-off: a concept-shaped page takes longer and can overreach; each device still passes the purpose gate (RX-AS-05)
-- Check: sections whose form comes from the concept (at least half), devices doing a job in three or more sections (decorative repeats counted once), the category's first-idea device dropped, same-skeleton sections in a row (two at most), composition moves (two or more), sections that are mostly placeholders (none), and the skeleton, swap, and thumbnail tests; report them in the Delivery Gate UI line
+- Check: sections whose form comes from the concept (at least half), devices doing a job in three or more sections (decorative repeats counted once), the category's first-idea device dropped, same-skeleton sections in a row (two at most), composition moves (two or more), focal subjects per section listed (none focal in more than two sections), sections that are mostly placeholders (none), and the skeleton, swap, and thumbnail tests; report them in the Delivery Gate UI line
 
 ### RX-UI-29 [Preferred] An expressive page has one weight carrier, made at full strength
 
 - When: an expressive surface (a landing page, onboarding, a brand moment)
 - Do: Name what carries the page's visual weight and make it at full strength, its asset first and read alone (RX-UI-30): atmosphere (a colour field or mesh made as an asset), a photo or render (labeled when not real), the product's UI (half the hero width or more, layered, with depth), illustration (a set for this product, in the hero and two more sections), or display type (80px or more on desktop over a colour block).
-  - Floor: the hero holds the carrier, not only text and buttons; a full-bleed non-neutral band or a dark and light switch (the base surface counts: coloured bands over a cream page are still a cream page); a named depth system; at most one text-only section; images in one family, each section with its own subject or angle.
+  - Floor: the hero holds the carrier, not only text and buttons; a full-bleed non-neutral band or a dark and light switch (the base surface counts: coloured bands over a cream page are still a cream page); a named depth system; at most one text-only section; images in one family, each section with its own subject (a new angle of the same object is not a new subject, RX-UI-27).
   - The carrier never costs the task: the primary action visible on the first screen at desktop and at 390 by 844; nothing decorative between a message and its action; on mobile the hero visual pushes the next section at most one screen down; sample-data labels next to their figures; decorative layers hidden from assistive technology.
   - Write the carrier and the depth system into the direction block in DESIGN.md (capabilities/design.md, stage 1); all of it speaks the direction's world (RX-UI-32).
 - Do not: Ship a hero of text and buttons with a small card beside it, set every band on one neutral surface, name a carrier and then draw it small or leave it out, or fall back to text because making an image or a vector takes longer.
@@ -250,7 +254,7 @@ How comparable products use imagery and motion: `search_screens` by pattern, `ex
 - Do: Hold the page to the direction's world:
   - every asset, device, and section shares the direction's material and light; an asset from another direction is reused only when its material matches, and a changed direction rebuilds from its new direction block
   - plan the backgrounds as a rhythm before building: two or three surfaces in a repeating pattern, with the transitions designed
-  - the concept runs through the page, not only the first and last section
+  - the concept runs through the page, not only the first and last section, as a system (material, pattern, ground, rhythm) while each section's focal subject changes (RX-UI-27)
   - the counts in RX-UI-27, RX-UI-29, and RX-UI-30 are minimums that serve the concept: an idea that fights unity is translated into the world's material, light, and shapes, and cut only when it cannot be; unity never lowers the carrier or the boldness the user chose
   - Before the gate, fresh eyes list the elements that look as if they came from another page; fix them.
 - Do not: Make the page neat by making it timid, tick each rule with a different idea, carry a render from a rejected direction into the chosen one, change the background world every section, or add a composition move only to reach a count.
