@@ -171,7 +171,7 @@ UI, UX, copy, and frontend work ends with this report:
 
 <!-- gate:start -->
 ```
-PRODUCT        PASS | FAIL | NOT VERIFIED | N/A  · one-line reason · evidence Strong | Thin | None
+PRODUCT        PASS | FAIL | NOT VERIFIED | N/A  · one-line reason · evidence Strong | Thin | None · rationale <n> lines, annotations <n> | none
 UX             PASS | FAIL | NOT VERIFIED | N/A  · one-line reason
 CONTENT        PASS | FAIL | NOT VERIFIED | N/A  · one-line reason
 UI             PASS | FAIL | NOT VERIFIED | N/A  · one-line reason · point of view: <concept> | task UI, signature: <signature> · concept sections <n>/<total>, devices <n>, focal subjects <n>/<sections>, carrier <kind>, made assets <n>/<planned> · illustration style: <where written> | none
@@ -207,13 +207,13 @@ line below for its exact source.
 <!-- provenance:start -->
 | Source cited | Rules citing it | Rules citing only this |
 | --- | --- | --- |
-| Public standard or research | 76 | 53 |
+| Public standard or research | 77 | 53 |
 | Industry practice | 27 | 8 |
 | Observed in a RYUX run | 17 | 8 |
 | Pattern also in another MIT ruleset (text written for RYUX) | 4 | 4 |
-| RYUX principle, taxonomy, or review | 56 | 22 |
+| RYUX principle, taxonomy, or review | 57 | 22 |
 
-All 136 rules cite a source; 41 cite more than one kind, so the "Rules citing it" column adds up to more than 136.
+All 137 rules cite a source; 42 cite more than one kind, so the "Rules citing it" column adds up to more than 137.
 <!-- provenance:end -->
 
 ## Rules
@@ -221,7 +221,7 @@ All 136 rules cite a source; 41 cite more than one kind, so the "Rules citing it
 Generated from `packages/cli/src/content.ts` by `pnpm sync:skills`. Edit the rules there, not here.
 
 <!-- rules:start -->
-136 rules across 15 modules: 62 Required, 29 Preferred, 45 Contextual; 18 Hard Gates and 13 Quality Locks.
+137 rules across 15 modules: 63 Required, 29 Preferred, 45 Contextual; 18 Hard Gates and 13 Quality Locks.
 
 ### Product thinking (RX-PR) · `knowledge/product.md`
 
@@ -336,6 +336,20 @@ Gate area PRODUCT. Covers user, task, goal, primary action, constraints, assumpt
 - Not when: the context already answers them, or a small change inside an existing product
 - Trade-off: one more round of questions before any design; the answers are kept, so it is asked once per product
 - Check: review: the questions asked or the answers cited from the context, each recorded in DESIGN.md or marked inferred
+
+#### RX-PR-14 [Required] Every shaping decision carries its reason
+
+- When: a design, a direction, or a page is delivered
+- Do: Write the design rationale before the Delivery Gate: the five to seven decisions that shape the result (the direction and concept, the weight carrier, the section order, the palette, the type, where the primary action sits, and what was cut), one line each:
+  - **Decision** → **because**: the user, the brief, or the evidence it answers, with its source and strength (Strong, Thin, None) → **principle**: the RYUX rule or the law of UX it applies → **cost**: what it gives up → **would change if**: the result or fact that would reverse it
+  - Name the alternative that lost and why, in the line or right after it.
+  - A reason points to a person, a task, or a fact ("first-job savers distrust gold shops, so trust comes second, before how it works"), never to a taste word: modern, clean, premium, elegant, and sleek are not reasons.
+  - A choice made on judgment says so (evidence None); a cultural or visual reference names what it means and why it fits.
+- Do not: Describe what was made and call it the rationale, give a reason that only restates the choice ("indigo, because indigo feels trustworthy"), cite research, users, or numbers nobody gave (RX-AS-01, RX-PR-02), explain every small choice, or put rule IDs and evidence codes on the canvas.
+- Why: A design whose reasons are missing can only be liked or disliked; with its reasons it can be checked, argued with, and changed for the right cause, and the next person keeps what was deliberate. (Design rationale practice (a decision recorded with its goal, the options weighed, and its cost); NNGroup design critique (feedback tied to goals, not taste); owner review 2026-11-02 of trial T10: the final message listed what was made and its risks, but not why the concept, colour, type, or order were chosen)
+- Not when: a small change inside an existing product, where one line on what changed and why is enough
+- Trade-off: a longer final message; five to seven lines, not a receipt for every choice
+- Check: review: five to seven rationale lines, each with a user, brief, or evidence reason and its strength, a principle, a cost, and what would change it; the losing alternative named; no taste word as a reason; on a design-tool canvas, the annotations beside the frames
 
 ---
 

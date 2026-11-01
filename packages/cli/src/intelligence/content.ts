@@ -258,6 +258,19 @@ export const RULES: Rule[] = [
       tradeoff: "one more round of questions before any design; the answers are kept, so it is asked once per product",
       check: "review: the questions asked or the answers cited from the context, each recorded in DESIGN.md or marked inferred",
     },
+    {
+      num: 14,
+      title: "Every shaping decision carries its reason",
+      level: "required",
+      when: "a design, a direction, or a page is delivered",
+      do: "Write the design rationale before the Delivery Gate: the five to seven decisions that shape the result (the direction and concept, the weight carrier, the section order, the palette, the type, where the primary action sits, and what was cut), one line each:\n  - **Decision** → **because**: the user, the brief, or the evidence it answers, with its source and strength (Strong, Thin, None) → **principle**: the RYUX rule or the law of UX it applies → **cost**: what it gives up → **would change if**: the result or fact that would reverse it\n  - Name the alternative that lost and why, in the line or right after it.\n  - A reason points to a person, a task, or a fact (\"first-job savers distrust gold shops, so trust comes second, before how it works\"), never to a taste word: modern, clean, premium, elegant, and sleek are not reasons.\n  - A choice made on judgment says so (evidence None); a cultural or visual reference names what it means and why it fits.",
+      dont: "Describe what was made and call it the rationale, give a reason that only restates the choice (\"indigo, because indigo feels trustworthy\"), cite research, users, or numbers nobody gave (RX-AS-01, RX-PR-02), explain every small choice, or put rule IDs and evidence codes on the canvas.",
+      why: "A design whose reasons are missing can only be liked or disliked; with its reasons it can be checked, argued with, and changed for the right cause, and the next person keeps what was deliberate.",
+      basis: "Design rationale practice (a decision recorded with its goal, the options weighed, and its cost); NNGroup design critique (feedback tied to goals, not taste); owner review 2026-11-02 of trial T10: the final message listed what was made and its risks, but not why the concept, colour, type, or order were chosen",
+      notWhen: "a small change inside an existing product, where one line on what changed and why is enough",
+      tradeoff: "a longer final message; five to seven lines, not a receipt for every choice",
+      check: "review: five to seven rationale lines, each with a user, brief, or evidence reason and its strength, a principle, a cost, and what would change it; the losing alternative named; no taste word as a reason; on a design-tool canvas, the annotations beside the frames",
+    },
   ]),
 
   ...skill("ux", [
