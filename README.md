@@ -1,21 +1,16 @@
 <p align="center">
-  <a href="https://www.npmjs.com/package/@ryuxdsgn/design-intelligence"><img src="https://img.shields.io/npm/v/@ryuxdsgn/design-intelligence?label=npm&color=6A4DF5" alt="npm version"></a>
-  <a href="#use-it"><img src="https://img.shields.io/badge/works%20with-Claude%20Code%20%C2%B7%20Codex%20%C2%B7%20Cursor%20%C2%B7%20Gemini%20CLI%20%C2%B7%20%2B6-555" alt="Works with Claude Code, Codex, Cursor, Gemini CLI, and 6 more agents"></a>
-  <a href="https://github.com/ryuxdsgn/design-intelligence/actions/workflows/ci.yml"><img src="https://github.com/ryuxdsgn/design-intelligence/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
-  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-2ea44f" alt="MIT License"></a>
+  <a href="https://www.npmjs.com/package/@ryuxdsgn/design-intelligence"><img src="https://img.shields.io/npm/v/@ryuxdsgn/design-intelligence?label=npm&color=B9A8FF&labelColor=1E232B" alt="npm version"></a>
+  <a href="#use-it"><img src="https://img.shields.io/badge/works%20with-Claude%20Code%20%C2%B7%20Codex%20%C2%B7%20Cursor%20%C2%B7%20Gemini%20CLI%20%C2%B7%20%2B6-C8F25A?labelColor=1E232B" alt="Works with Claude Code, Codex, Cursor, Gemini CLI, and 6 more agents"></a>
+  <a href="https://github.com/ryuxdsgn/design-intelligence/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/ryuxdsgn/design-intelligence/ci.yml?branch=main&label=CI&labelColor=1E232B" alt="CI"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-F6F1E7?labelColor=1E232B" alt="MIT License"></a>
 </p>
 
 <h1>
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset=".github/assets/ryux-dark.svg">
-    <img src=".github/assets/ryux-light.svg" alt="RYUX" width="130">
+    <source media="(prefers-reduced-motion: reduce)" srcset="https://github.com/ryuxdsgn/design-intelligence/releases/download/media/readme--ryux-banner-still.png">
+    <img src="https://github.com/ryuxdsgn/design-intelligence/releases/download/media/readme--ryux-banner.gif" width="100%" alt="RYUX. Pixel-art office. A product owner gives an AI agent a task; the agent rushes it, and the owner reads each draft, crumples it, and throws it in the bin, three times. The owner installs RYUX, and a RYUX designer drops in. Now the agent asks first, sketches the wireframe on a board with RYUX, and ticks off a checklist. The owner reads the finished work, has a light-bulb moment, and everyone cheers as a flag goes up.">
   </picture>
 </h1>
-
-<picture>
-  <source media="(prefers-reduced-motion: reduce)" srcset="https://github.com/ryuxdsgn/design-intelligence/releases/download/media/readme--ryux-banner-still.png">
-  <img src="https://github.com/ryuxdsgn/design-intelligence/releases/download/media/readme--ryux-banner.gif" width="100%" alt="Pixel-art office. A product owner gives an AI agent a task; the agent rushes it, and the owner reads each draft, crumples it, and throws it in the bin, three times. The owner installs RYUX, and a RYUX designer drops in. Now the agent asks first, sketches the wireframe on a board with RYUX, and ticks off a checklist. The owner reads the finished work, has a light-bulb moment, and everyone cheers as a flag goes up.">
-</picture>
 
 ### Understand before you design.
 
