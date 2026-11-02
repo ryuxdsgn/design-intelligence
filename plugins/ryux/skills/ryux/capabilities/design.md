@@ -194,8 +194,11 @@ The six stages of the core workflow (SKILL.md), as Design runs them.
    - Annotations on the canvas: when the design is made in a design tool (Figma, pen.dev, Penpot,
      Framer, or another), annotate three to five of those decisions beside the frames, in plain
      language, one or two sentences each: what was decided and why, for the person who opens the
-     file without the chat. Use the tool's own annotation feature when it has one; otherwise a
-     "Why it looks like this" frame next to the design, outside the frames for review. No rule IDs,
+     file without the chat. Use the tool's own annotations, attached to the node each note explains:
+     in Figma, native annotations in a "Design rationale" category
+     (figma.annotations.addAnnotationCategoryAsync, then node.annotations); in another tool, look
+     for its annotation or comment feature first. Only when the tool has none, a "Why it looks like
+     this" frame next to the design, outside the frames for review. No rule IDs,
      evidence codes, or gate results in them. The final message says how many annotations there
      are, on which frames, and how to see them (in Figma, native annotations show in Dev Mode,
      Shift+D: select a frame or layer).
