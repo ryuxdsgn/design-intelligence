@@ -14,8 +14,9 @@
 
 ### Understand before you design.
 
-A design skill for AI agents. Your agent stops filling the gaps in your brief with invented fees, promos, and
-policies, builds the screens for when things go wrong, and tells you what it checked.
+A design skill for AI agents. Your agent asks about the product before it designs, keeps what it does not know
+out of the screens instead of inventing fees, promos, and policies, designs for when things go wrong, and
+explains each decision.
 
 ```bash
 npx @ryuxdsgn/design-intelligence
@@ -24,30 +25,10 @@ npx @ryuxdsgn/design-intelligence
 Works with Claude Code, Codex, Cursor, Gemini CLI, GitHub Copilot, OpenCode, Cline, Amp, Kimi Code, and
 Antigravity. Free, MIT.
 
-## See the difference
+## How it works
 
-Same brief, same model, a fresh agent per side: food delivery order tracking, designed in Figma. Nobody wrote a
-DESIGN.md: RYUX wrote one from the brief and two references (Airbnb's look, a ride-hailing motion study), asked,
-then designed. Both phones play each run's own Figma frames through the same scenario; the motion is made for the video.
-
-<a href="docs/benchmarks/food-delivery-figma/"><img src="https://github.com/ryuxdsgn/design-intelligence/releases/download/media/benchmarks--food-delivery-figma--see-the-difference.gif" alt="Animation: the brief; the no-skill agent designs straight away while RYUX writes DESIGN.md, asks, and explores three layouts; two Android phones play both Figma pages through an unavailable item, a late order, and the way to the door, the left showing a reply timer with an auto-pick, an instant refund, a late voucher, tips, and a rating, the right waiting for the customer's choice, keeping it after a failed send, and tagging every undecided rule on screen; then the numbers" width="100%"></a>
-
-Both sides look finished. The difference is in what the agent decided on your behalf:
-
-- **It made up less.** Without a skill, the agent invented 8 policies (a late voucher, automatic refunds, an
-  auto-pick if you don't answer in time, tips…) and showed them as real. RYUX invented 1 and tagged the rest
-  "Prototype rule, not decided yet".
-- **It asked first, and designed for when things go wrong:** no courier, offline, a map that failed to load.
-- **It cost more:** about four times as much for this run.
-
-The video shows RYUX's frames after four rounds of owner feedback on a copy; the points above are the runs as
-they left them. One run per side, not yet rated by designers. Brief, method, every frame, and the numbers:
-[food delivery in Figma](docs/benchmarks/food-delivery-figma/).
-
-## From one prompt to a Figma page, with its reasons
-
-A landing page for Raja Emas, a gold savings app for Indonesia, made in Claude Code with RYUX and the Figma
-connector. The prompt:
+One prompt in Claude Code with the Figma connector: a landing page for Raja Emas, a gold savings app for
+Indonesia.
 
 ```
 /ryux Design a one-page marketing landing page for a gold savings app, in two versions: desktop and mobile.
@@ -55,25 +36,22 @@ The app is for Indonesia: people buy and save gold in small amounts from their p
 English. Design it in Figma, on a new page in this file: <Figma link>
 ```
 
-1. **It reads what is already known.** The project's DESIGN.md held the product context from earlier sessions:
-   who it is for (first-job savers who find gold shops intimidating), why they would choose it, what the app
-   does, and that no price, fee, or minimum is confirmed.
-2. **It offers three directions, drawn in Figma, and asks which one.** Each idea comes from a different place:
-   an Indonesian proverb (*ilmu padi*, "the fuller the rice, the lower it bows"), the product itself (a gram
-   counter), and a family habit (gold kept in a drawer). Each tile shows its type, palette, medium, signature,
-   and the risk it carries.
+1. **It starts from what is known.** The project's DESIGN.md already held the product context: who it is for,
+   why they would choose it, what the app does, and that no price or fee is confirmed. In a new project, RYUX
+   asks these first.
+2. **It offers three directions and asks you to pick.** Drawn in Figma, each from a different idea: an
+   Indonesian proverb (*ilmu padi*, "the fuller the rice, the lower it bows"), the app's own gram counter, and
+   gold kept in a family drawer.
 
 <img src="https://github.com/ryuxdsgn/design-intelligence/releases/download/media/showcase--raja-emas-directions.png" alt="Three style tiles side by side: 1 Ilmu Padi, deep green with rendered rice terraces ripening to gold, marked recommended; 2 Gram by Gram, a light page with an app screen and a gram ring; 3 Mum's Drawer, plum with a rendered gold bangle and a phone. Each lists type, palette, medium, signature, motion, and risk." width="100%">
 
-3. **It asks how the page should be laid out:** a page that steps down like a terraced hillside, or a phone that
-   stays in place while the story scrolls. The owner picked direction 1 and the hillside.
-4. **It designs both widths.** Seven images rendered in Blender with one light and one ground, app screens with
-   labeled sample data, the official store badges on the first screen, and no number, rating, or logo the
-   brief did not confirm.
+3. **It asks one layout question, then designs both widths:** images rendered in Blender with one light, app
+   screens with labeled sample data, and no number, rating, or logo the brief did not confirm.
 
 <img src="https://github.com/ryuxdsgn/design-intelligence/releases/download/media/showcase--raja-emas-page.png" alt="The top of the Raja Emas page at desktop and mobile: a dark green hero, 'Gold that ripens, row by row.', store badges, a phone with the app's home screen over rendered rice terraces; below, a young green rice stalk beside a ripe gold one, 'Start small. No gold shop needed.', and the ilmu padi proverb." width="100%">
 
-5. **It says why.** From the final message, four of its six lines, word for word:
+4. **It explains its decisions,** in its final message and as Figma annotations on the frames. Four of the six
+   lines, word for word:
 
 ```
 Rice terrace instead of coins, bars or a price chart. It fits your warm, steady, proud character and
@@ -86,39 +64,31 @@ Section order follows the visitor's questions, not a template. I took the questi
 Cut: a QR code, numbers, and partner or regulator logos, because none of them is confirmed.
 ```
 
-The same reasons are attached to the frames as Figma annotations, so whoever opens the file reads them too.
-One run, two answers from the owner; the annotations were added when the owner asked, and 2.22.0 makes them
-part of the design step.
+One run; the owner answered two questions (direction 1, the hillside layout). The annotations were added when
+asked; 2.22.0 makes them part of the design step.
 
-## Made with RYUX
+## What it changes
 
-Mancing, an app for finding fishing spots and logging catches, designed with RYUX in Figma after a few rounds of
-the owner's feedback. The motion was added afterwards for the video.
-
-<a href="https://github.com/ryuxdsgn/design-intelligence/releases/download/media/showcase--mancing-flow.mp4"><img src="https://github.com/ryuxdsgn/design-intelligence/releases/download/media/showcase--mancing-poster.png" alt="Five phone screens from Mancing: a map of fishing spots, logging a catch, a spot's best hours today, the catch journal, and a badge unlocked. Links to the video." width="100%"></a>
-
-More briefs are under All benchmarks below.
-
-## Why
-
-An agent can produce a screen that looks finished without the product context behind it, and the gaps
-quietly become content: an invented fee, a feature nobody confirmed, a promise the product never made. Each
-one is a business decision nobody made. RYUX makes the agent sort what it is working with first:
+Without the product context, an agent fills the gaps in a brief with content: an invented fee, a feature nobody
+confirmed, a promise the product never made. RYUX makes it sort what it has first:
 
 - **Known**: stated in the prompt, DESIGN.md, or your product docs, or seen in the design itself.
 - **Design assumptions**: low-risk choices made from the context, written down.
 - **Unconfirmed capabilities**: actions products like yours usually have, proposed and labeled unconfirmed.
 - **Facts, policies, and claims**: fees, refund times, guarantees. Never invented.
 
-Each major choice comes with a receipt. This one is quoted from a benchmark run:
+The same brief with and without RYUX, food delivery order tracking designed in Figma:
 
-```
-Decision     Amount + Fee = Total paid, shown in the card
-Evidence     None
-Confidence   Low
-Assumption   [CONFIRM] The fee is charged on top of the amount.
-             If the fee is taken out of the amount instead, the rows change.
-```
+<a href="docs/benchmarks/food-delivery-figma/"><img src="https://github.com/ryuxdsgn/design-intelligence/releases/download/media/benchmarks--food-delivery-figma--see-the-difference.gif" alt="Animation: the brief; the no-skill agent designs straight away while RYUX writes DESIGN.md, asks, and explores three layouts; two Android phones play both Figma pages through an unavailable item, a late order, and the way to the door, the left showing a reply timer with an auto-pick, an instant refund, a late voucher, tips, and a rating, the right waiting for the customer's choice, keeping it after a failed send, and tagging every undecided rule on screen; then the numbers" width="100%"></a>
+
+- **Without a skill**, the agent invented 8 policies (a late voucher, automatic refunds, an auto-pick if you
+  don't answer in time, tips) and showed them as real. **With RYUX**, it invented 1 and tagged the rest
+  "Prototype rule, not decided yet".
+- RYUX asked first, and designed for when things go wrong: no courier, offline, a map that failed to load.
+- It cost about four times as much.
+
+One run per side; the video shows RYUX's frames after four rounds of owner feedback. Brief, method, and every
+frame: [food delivery in Figma](docs/benchmarks/food-delivery-figma/).
 
 ## Use it
 
@@ -161,6 +131,13 @@ $ npx @ryuxdsgn/design-intelligence scan file://$PWD/page.html --widths 320
 
 Add `--hook` to `install` and Claude Code gets the findings for each file it edits. `scan --list-rules` lists
 every check.
+
+## Made with RYUX
+
+Mancing, an app for finding fishing spots and logging catches, designed with RYUX in Figma after a few rounds of
+the owner's feedback. The motion was added afterwards for the video.
+
+<a href="https://github.com/ryuxdsgn/design-intelligence/releases/download/media/showcase--mancing-flow.mp4"><img src="https://github.com/ryuxdsgn/design-intelligence/releases/download/media/showcase--mancing-poster.png" alt="Five phone screens from Mancing: a map of fishing spots, logging a catch, a spot's best hours today, the catch journal, and a badge unlocked. Links to the video." width="100%"></a>
 
 <details>
 <summary><b>Other ways to install</b></summary>
