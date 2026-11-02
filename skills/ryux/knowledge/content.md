@@ -156,6 +156,6 @@ Real labels, errors, and how money, dates, and times are written in the product'
 - Do: First make the step clear enough to need no help; when it still needs some, put it in context at that step (a line of helper text, a tooltip, an info sheet), not only in a help centre.
   - Write help as concrete steps for the user's task, and make longer help searchable by the words users type.
 - Do not: Send users to a generic FAQ or a help centre home for a question about one field, or explain the interface instead of the task.
-- Why: Help is read only at the moment of doubt; help elsewhere is help nobody finds. (Nielsen heuristic 10 (help and documentation); NNGroup 10 usability heuristics)
+- Why: Help is read only at the moment of doubt; help elsewhere is help nobody finds. (Nielsen heuristic 10 (help and documentation); NNGroup 10 usability heuristics; paradox of the active user (Carroll and Rosson 1987): people start using a product before reading any instructions, so help sits where the question comes up)
 - Trade-off: help in context adds text to the screen; keep it to the steps that need it
 - Check: heuristic_eval H-10

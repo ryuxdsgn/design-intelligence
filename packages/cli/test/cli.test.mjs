@@ -58,6 +58,9 @@ test("init adds project context once and keeps what the user wrote", () => {
   const design = readFileSync(join(dir, "DESIGN.md"), "utf8");
   assert.match(design, /ryux-context:start/);
   assert.match(design, /\*\*Product\*\*: acme-app/);
+  for (const field of ["Why choose it", "Taste references", "What people do in it", "Numbers that may be shown"]) {
+    assert.match(design, new RegExp(`\\*\\*${field}\\*\\*:`), field);
+  }
   writeFileSync(join(dir, "DESIGN.md"), design.replace("**Audience**:", "**Audience**: freelancers"));
   run(dir, "init", "--agent", "claude");
   assert.match(readFileSync(join(dir, "DESIGN.md"), "utf8"), /\*\*Audience\*\*: freelancers/);

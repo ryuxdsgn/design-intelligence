@@ -126,6 +126,7 @@ At the hierarchy layer, run four checks on every screen and report each failure 
 (RX-UI-01, RX-UX-01.) Look for them even on a screen that is otherwise tidy: they are the defects a
 clean layout hides best. Then ask what the user must read, remember, or decide that the product
 could carry (RX-UX-08); report extraneous load, never the content the task needs.
+Then run the measured Laws of UX checks (knowledge/ux.md) and report each fail with its measured value.
 
 | Category | Skill | Look for |
 | --- | --- | --- |
