@@ -238,6 +238,13 @@ test("expressive pages: one weight carrier, devices with a job, one world, the t
   assert.match(img, /The system repeats, the subject does not/);
   assert.match(img, /focal visual of two sections at most/);
   assert.match(img, /\*\*Making images\.\*\*/);
+  // owner review 2026-11-02 of the Raja Emas app: a landing direction applied to the app read as flat, its mockup rebuilt
+  // RX-UI-33 sits in ui.md, read on every visual task: a mobile app task does not load imagery.md
+  const uiMd = files["knowledge/ui.md"].replace(/\s+/g, " ");
+  assert.match(uiMd, /### RX-UI-33 /);
+  assert.match(uiMd, /never trace the real screens from it/);
+  assert.match(uiMd, /routine task screens stay quiet in the same type and colour/);
+  assert.match(files["capabilities/design.md"].replace(/\s+/g, " "), /carries its brand layer, not its mockups/);
   // owner review 2026-11-02 of trial T11: renders, flat phones, and a flat edge read as undecided between 3D and 2D
   assert.match(img, /one named mix with its binding/);
   assert.match(img, /photo and vector: the photo cut out and graded to the palette/);
