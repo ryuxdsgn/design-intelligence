@@ -86,20 +86,21 @@ amounts from their phone. Design the home screen and the flow to buy gold, from 
 result. Write the copy in English. Design it in Figma, on a new page in this file: <Figma link>
 ```
 
-<img src="https://github.com/ryuxdsgn/design-intelligence/releases/download/media/showcase--raja-emas-app.png" alt="Two rows of four phone screens: home, choose an amount, review, and result. Top row, without a skill: a minimum of Rp 10.000, no service fee, a price held on a countdown, an insured vault, 24K gold at 99.99%, a virtual account confirmed in about a minute. Bottom row, with RYUX in the Ilmu Padi direction: the fee and the price hold tagged Prototype, not decided yet, the total shown as Rp100.000 + fee, and a rice row that ripens toward the savings goal." width="100%">
+<img src="https://github.com/ryuxdsgn/design-intelligence/releases/download/media/showcase--raja-emas-app.png" alt="Two rows of four phone screens: home, choose an amount, review, and result. Top row, without a skill: a minimum of Rp 10.000, no service fee, a price held on a countdown, an insured vault, 24K gold at 99.99%, a virtual account confirmed in about a minute. Bottom row, with RYUX in the Ilmu Padi direction: faint terrace contours on the green band, the minimum and the fee tagged Prototype rule, not decided yet, the price checked again at payment, and a row of grains that ripens toward the savings goal." width="100%">
 
 - **Without a skill**, the agent asked nothing and showed eight things as fact that nobody had decided: a
   minimum of Rp 10.000, no service fee, a price held on a countdown, an insured vault, 24K gold at 99.99%,
   a virtual account confirmed in about a minute, auto-save from Rp 10.000 a week, and a Send feature. Five
   screens, each filled.
 - **With RYUX**, it read the DESIGN.md it had written for the landing page and asked three questions first: how
-  people pay, what happens to the price before they pay, and whether there is a fee or a minimum. The owner left
-  the fee and the price hold undecided, so RYUX tagged them on screen. It drew three home layouts to choose
-  from, then 16 screens, including loading, first use, a price that failed to load, a price that changed, and a
-  payment that never arrived.
+  people pay, what happens if the price moves before they pay, and how to show a fee or a minimum nobody has
+  confirmed. The owner left the fee, the minimum, and the payment deadline undecided, so RYUX tagged each one on
+  the screen where it appears. It drew three home layouts to choose from, then 17 screens, including loading,
+  first use, offline, a price that changed, a payment that was declined, and a payment time that ran out.
 
 Not a level start: RYUX worked from the DESIGN.md it wrote in the landing step; the agent without a skill had
-the prompt alone.
+the prompt alone. The RYUX row is from 2.22.1, whose check for undecided rules and app rules came from earlier
+runs of this same brief.
 
 ## Use it
 
