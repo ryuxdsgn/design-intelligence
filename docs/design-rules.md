@@ -207,13 +207,13 @@ line below for its exact source.
 <!-- provenance:start -->
 | Source cited | Rules citing it | Rules citing only this |
 | --- | --- | --- |
-| Public standard or research | 77 | 53 |
+| Public standard or research | 78 | 54 |
 | Industry practice | 27 | 8 |
 | Observed in a RYUX run | 17 | 8 |
 | Pattern also in another MIT ruleset (text written for RYUX) | 4 | 4 |
 | RYUX principle, taxonomy, or review | 57 | 22 |
 
-All 137 rules cite a source; 42 cite more than one kind, so the "Rules citing it" column adds up to more than 137.
+All 138 rules cite a source; 42 cite more than one kind, so the "Rules citing it" column adds up to more than 138.
 <!-- provenance:end -->
 
 ## Rules
@@ -221,7 +221,7 @@ All 137 rules cite a source; 42 cite more than one kind, so the "Rules citing it
 Generated from `packages/cli/src/content.ts` by `pnpm sync:skills`. Edit the rules there, not here.
 
 <!-- rules:start -->
-137 rules across 15 modules: 63 Required, 29 Preferred, 45 Contextual; 18 Hard Gates and 13 Quality Locks.
+138 rules across 15 modules: 63 Required, 30 Preferred, 45 Contextual; 18 Hard Gates and 13 Quality Locks.
 
 ### Product thinking (RX-PR) · `knowledge/product.md`
 
@@ -1541,6 +1541,26 @@ Gate area CODE QUALITY. Covers the repo's own stack, semantic elements, one home
 - Not when: the repo already uses a library for this job: use it
 - Trade-off: a choice to make before building, and the lightest option may limit the effect
 - Check: options offered with weight, license, fallback, and reduced-motion behaviour; one library per job; static fallback renders
+
+#### RX-FE-18 [Preferred] A hard job gets a proven library, offered as a choice
+
+- When: the build needs a job that is hard to get right by hand (an accessible dialog, menu, combobox, or tabs; a form with validation; data from a server; a large table or list; dates; a chart; tests), and the platform and the repo do not cover it
+- Do: Choose in this order: the platform (<dialog>, <details>, the popover attribute, Intl.NumberFormat for Rupiah, Intl.DateTimeFormat, CSS), then a library the repo already has, then two or three options for the repo's framework, each with its size, license, last release, accessibility support, and framework fit:
+  - accessible components: Radix UI, React Aria, or Base UI (React); Reka UI (Vue); Bits UI or Melt UI (Svelte); Kobalte (Solid); Angular CDK (Angular); Ark UI on Zag.js across React, Vue, Solid, and Svelte; shadcn/ui and its Vue and Svelte ports when the team wants to own the component code
+  - forms and validation: TanStack Form (most frameworks), React Hook Form (React), VeeValidate (Vue), Superforms (SvelteKit), Angular's reactive forms; a schema in Zod or Valibot shared with the server
+  - server data: TanStack Query (React, Vue, Svelte, Solid, Angular), SWR (React)
+  - tables and long lists: TanStack Table and TanStack Virtual, across frameworks
+  - dates: date-fns or Day.js; money and numbers with Intl, no library
+  - charts: ECharts or Chart.js in any framework; Recharts or visx in React
+  - icons: Lucide, with a package per framework; toasts: Sonner (React) or its Vue and Svelte ports
+  - tests: Vitest, Testing Library for the framework, Playwright, and axe-core
+  - Before adding one, check on the npm registry and its documentation that the package exists under that exact name, is maintained, fits the framework version, and has the API you will call; this list is a starting point, not a source of truth.
+  - Ask before adding it (a dependency is a long-term choice), one library per job, and record the choice with its reason (RX-PR-14).
+- Do not: Hand-roll a focus trap, a combobox, or date arithmetic the platform or a proven library does correctly; add a library the platform covers; add a second library for a job the repo already solves; install a package name from memory without checking it exists; or call an API you have not read in its documentation (RX-FE-02).
+- Why: The hard parts of these jobs are keyboard, focus, screen readers, time zones, caching, and edge cases; hand-written versions usually miss them, and an unchecked package name can be one that does not exist or that someone registered to catch exactly that mistake. (W3C WAI-ARIA Authoring Practices (dialog, menu, combobox, and tabs patterns); each library's documentation; software supply chain practice (verify a package before installing it); owner request 2026-11-02 that RYUX recommend frontend libraries across frameworks)
+- Not when: the repo already uses a library for the job: use it; a prototype the user says will be thrown away
+- Trade-off: a question and a check before the build; a dependency to keep up to date
+- Check: review: the platform and the repo checked first; two or three options with size, license, last release, accessibility, and framework fit; each package verified on the registry and its docs before use; one library per job; the choice recorded with its reason
 
 ---
 

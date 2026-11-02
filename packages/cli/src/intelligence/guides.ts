@@ -993,7 +993,10 @@ native the largest text size. No horizontal page scroll.`,
 5. **No invented logic**: prices, limits, and permissions come from data or are marked as
    assumptions.
 6. **Dependencies** only when they clearly earn their weight; a visual library (motion, 3D, shaders,
-   animated illustration) is offered as a choice, the lightest first, with its fallback (RX-FE-17).
+   animated illustration) is offered as a choice, the lightest first, with its fallback (RX-FE-17);
+   a hard job (accessible components, forms, server data, tables, dates, charts, tests) uses the
+   platform, then the repo's library, then a proven one offered as a choice and checked on the
+   registry before it is installed (RX-FE-18).
 7. **Performance**: sized and lazy-loaded media; no heavy libraries for small effects.
 8. **Tests**: unit tests for pure logic with its edge cases, integration tests for critical flows,
    in the repo's own runner. Run them before claiming the work is done.
