@@ -23,6 +23,10 @@ Card radius | 16px                 | 8px            | half the radius | minor   
 **Without a reference**, check the build against its own intent, the rules below, and the measured
 Laws of UX checks in knowledge/ux.md.
 
+**Open rules** (with or without a reference): search the text of every screen and state for each
+rule and number nobody decided (fees, minimums, time limits, deadlines); each one shown carries its
+label on that screen (RX-PR-02). Report open rules on screen <tagged>/<shown> in the CONTENT line.
+
 **Illustration** (when the build has any): with its label covered, each asset says its concept
 line (RX-UI-24); it matches the written style (RX-UI-17), a set reads as one family side by side (RX-UI-18), it reads at its real displayed size including the smallest width, it
 works in every theme, and nothing the user needs exists only in the image (RX-UI-19). Without a

@@ -173,7 +173,7 @@ UI, UX, copy, and frontend work ends with this report:
 ```
 PRODUCT        PASS | FAIL | NOT VERIFIED | N/A  · one-line reason · evidence Strong | Thin | None · rationale <n> lines, annotations <n> | none
 UX             PASS | FAIL | NOT VERIFIED | N/A  · one-line reason
-CONTENT        PASS | FAIL | NOT VERIFIED | N/A  · one-line reason
+CONTENT        PASS | FAIL | NOT VERIFIED | N/A  · one-line reason · open rules on screen <tagged>/<shown> | none
 UI             PASS | FAIL | NOT VERIFIED | N/A  · one-line reason · point of view: <concept> | task UI, signature: <signature> · concept sections <n>/<total>, devices <n>, focal subjects <n>/<sections>, carrier <kind>, made assets <n>/<planned> · illustration style: <where written> | none
 DESIGN SYSTEM  PASS | FAIL | NOT VERIFIED | N/A  · one-line reason
 ACCESSIBILITY  PASS | FAIL | NOT VERIFIED | N/A  · one-line reason
@@ -248,7 +248,7 @@ Gate area PRODUCT. Covers user, task, goal, primary action, constraints, assumpt
 - Do not: Invent business rules, policies, guarantees, metrics, user data, permissions, pricing, requirements, or API behavior, or name a tool, command, integration, platform, or page the product does not have. Do not present an unconfirmed capability as a confirmed one. Do not show an undecided rule as a plain sentence on screen because it is listed as an assumption somewhere else.
 - Why: Invented facts turn into promises and bugs that someone has to unwind; a screen trimmed to the brief's literal words reads unfinished and hides what still needs confirming. (ryux run 2026-10-02: an unconstrained agent invented a 30-day trial and user counts; ryux visual benchmark 2.6 human rater, 2026-10-13: RYUX screens lost on a missing receipt action; NNGroup proto-personas and synthetic users (AI output is hypotheses, not research); owner review 2026-10-27, ryux run: food-delivery benchmark rounds 1 and 2, the no-answer rule for an unavailable item labelled an assumption only in DESIGN.md and the reply, read as fact on the screen)
 - Not when: This rule is not a reason to drop content the brief implies or to leave a screen looking unfinished: sample content is RX-AS-03, design assumptions are yours to make.
-- Check: compare every product fact on the screen (features, prices, fees, policies, names, integrations) with the brief, DESIGN.md, docs, or repo; each is sourced, or labelled as an assumption on the same screen; fails on one shown as fact without a source, or labelled only outside the screen
+- Check: compare every product fact on the screen (features, prices, fees, policies, names, integrations) with the brief, DESIGN.md, docs, or repo; each is sourced, or labelled as an assumption on the same screen; then sweep: list every undecided rule and number (Assumptions, open questions, DESIGN.md), search the text of every screen for each, and count the ones shown without a label on that screen; report open rules on screen <tagged>/<shown>; fails on one shown as fact without a source, or labelled only outside the screen (a read-me board or notes frame counts as outside)
 
 #### RX-PR-03 [Required] [Hard Gate] One clear goal; one primary action when the task has one
 
@@ -937,16 +937,17 @@ Gate area UI. Covers the visual system of a product: hierarchy, type, layout, de
 
 - When: a direction chosen for one surface (a landing page, a campaign, a marketing image) is used on another (the product app, a dashboard, an email)
 - Do: Carry the brand layer and decide the rest again for the new surface:
-  - carry: the type pair, the colour roles, shape, voice, the signature as a motif, and the medium where the new surface has room for it
+  - carry: the type pair, the colour roles, shape, voice, and the signature as one motif; in task UI the direction shows through these, not through the marketing page's imagery
   - decide again for the surface's job: density, components, navigation, hierarchy, and motion, with Frame and Explore for that surface (capabilities/design.md, stages 2 and 3)
   - a device mockup inside a marketing image is illustrative, a stand-in for screens nobody had designed; never trace the real screens from it
-  - map the medium to the surface's own moments, neither dropped nor spread over every screen: in a product app, first run, empty states, a goal or progress view, success and milestones get assets made in the direction's medium and asset spec (RX-UI-30); routine task screens stay quiet in the same type and colour
-  - write a surface entry in the DESIGN.md direction block: what carries, what changes, and which moments hold the medium
-- Do not: Rebuild the marketing page's phone mockup as the app, read a direction written for a page as the spec for task screens, drop every asset because the new surface is task UI, or put a hero render on every screen.
-- Why: A direction is chosen for the surface in front of the user; copied onto another, an app replays its own advertisement, flat where it has room to feel and dressed up where it has work to do. (Art direction practice (a brand carried across surfaces); owner review 2026-11-02 of the Raja Emas app (App 3): the landing direction applied to the app read as flat and as the landing's phone mockup built again)
+  - imagery in the app is optional and small: one or two moments at most that have room for it (an empty state, a success), sized to the component it sits in (a spot illustration in a card, not a landscape band); never behind data, figures, or actions; an asset that fails the craft read (RX-UI-30) is left out
+  - give the app's brand band one surface treatment taken from the direction's grammar (material, shape, colour), so it is not a flat fill: contour lines for a direction grounded in a landscape, a tonal gradient with a soft light for a warm one, soft shapes for an organic one, glass only when the material is glass or digital; one treatment across the app, drawn flat or as an effect (not a picture), text over it still passing contrast (RX-A11Y-01), and never a trend effect the direction does not call for
+  - write a surface entry in the DESIGN.md direction block: what carries, what changes, and which moments, if any, hold imagery
+- Do not: Rebuild the marketing page's phone mockup as the app, read a direction written for a page as the spec for task screens, set a landscape render behind a balance or a form, add imagery to a screen only so it looks less plain, leave the brand band a flat fill when the direction has a ground, or pick blobs or glass because they are in fashion.
+- Why: A direction is chosen for the surface in front of the user; an app carries it in its type, colour, and one motif, and a page's imagery set behind data reads as forced. (Art direction practice (a brand carried across surfaces); owner review 2026-11-02 of the Raja Emas app: App 3, the landing direction applied to the app, read as flat and as the landing's phone mockup built again; App 5, with imagery mapped to app moments, set a terrace render behind the balance and read as forced; App 6, with imagery left out, read as safe but plain; the owner compared contours, a gradient with warm light, soft bubbles, and glass on its green band and asked for a treatment chosen from the direction)
 - Not when: the direction block already has an entry for this surface; a small change inside an existing app
 - Trade-off: deciding the surface again costs a Frame and Explore round that the user may think is already done
-- Check: the surface entry in the direction block (carry, change, moments); screens not traced from a marketing mockup; each named moment holding an asset made in the direction's medium; routine screens without hero assets
+- Check: the surface entry in the direction block (carry, change, moments, surface treatment and the grammar it comes from); screens not traced from a marketing mockup; imagery on two moments at most, sized to its component, none behind data or actions, each passing the craft read; the brand band carries one surface treatment, text contrast over it measured
 
 #### RX-UI-14 [Preferred] [Quality Lock] Type that is set, not only sized
 

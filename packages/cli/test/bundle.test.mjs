@@ -136,6 +136,12 @@ test("an undecided rule shown on screen is labelled on that screen", () => {
   assert.match(flat("knowledge/product.md"), /label it on that same screen/);
   assert.match(flat("knowledge/product.md"), /labelled only outside the screen/);
   assert.match(flat("SKILL.md"), /Do not show an undecided rule as a plain sentence on screen/);
+  // owner review 2026-11-02 of App 5: fee, minimum, and hold time listed on a read-me board, plain on the screens
+  const design = files["capabilities/design.md"].replace(/\s+/g, " ");
+  assert.match(design, /Open-rule sweep \(RX-PR-02\)/);
+  assert.match(design, /a read-me board, a notes frame, or the final message does not count/);
+  assert.match(files["SKILL.md"], /open rules on screen <tagged>\/<shown> \| none/);
+  assert.match(files["capabilities/qa.md"].replace(/\s+/g, " "), /\*\*Open rules\*\*/);
 });
 
 test("builds keep their cost down: fresh session, contact sheets, targeted tests", () => {
@@ -243,7 +249,12 @@ test("expressive pages: one weight carrier, devices with a job, one world, the t
   const uiMd = files["knowledge/ui.md"].replace(/\s+/g, " ");
   assert.match(uiMd, /### RX-UI-33 /);
   assert.match(uiMd, /never trace the real screens from it/);
-  assert.match(uiMd, /routine task screens stay quiet in the same type and colour/);
+  // App 5, imagery mapped to app moments, read as forced: imagery is optional, small, never behind data
+  assert.match(uiMd, /imagery in the app is optional and small/);
+  assert.match(uiMd, /never behind data, figures, or actions/);
+  // App 6 read as plain: the brand band takes one surface treatment from the direction, not a trend
+  assert.match(uiMd, /one surface treatment taken from the direction's grammar/);
+  assert.match(uiMd, /glass only when the material is glass or digital/);
   assert.match(files["capabilities/design.md"].replace(/\s+/g, " "), /carries its brand layer, not its mockups/);
   // owner review 2026-11-02 of trial T11: renders, flat phones, and a flat edge read as undecided between 3D and 2D
   assert.match(img, /one named mix with its binding/);
