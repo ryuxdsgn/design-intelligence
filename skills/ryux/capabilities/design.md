@@ -196,7 +196,9 @@ The six stages of the core workflow (SKILL.md), as Design runs them.
      language, one or two sentences each: what was decided and why, for the person who opens the
      file without the chat. Use the tool's own annotation feature when it has one; otherwise a
      "Why it looks like this" frame next to the design, outside the frames for review. No rule IDs,
-     evidence codes, or gate results in them.
+     evidence codes, or gate results in them. The final message says how many annotations there
+     are, on which frames, and how to see them (in Figma, native annotations show in Dev Mode,
+     Shift+D: select a frame or layer).
    - Close with the Delivery Gate, saying what was not designed, such as other widths or states. If
      you wrote DESIGN.md, say so in the final message: which file and which fields.
 

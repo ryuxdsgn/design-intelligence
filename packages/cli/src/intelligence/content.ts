@@ -269,7 +269,7 @@ export const RULES: Rule[] = [
       basis: "Design rationale practice (a decision recorded with its goal, the options weighed, and its cost); NNGroup design critique (feedback tied to goals, not taste); owner review 2026-11-02 of trial T10: the final message listed what was made and its risks, but not why the concept, colour, type, or order were chosen",
       notWhen: "a small change inside an existing product, where one line on what changed and why is enough",
       tradeoff: "a longer final message; five to seven lines, not a receipt for every choice",
-      check: "review: five to seven rationale lines, each with a user, brief, or evidence reason and its strength, a principle, a cost, and what would change it; the losing alternative named; no taste word as a reason; on a design-tool canvas, the annotations beside the frames",
+      check: "review: five to seven rationale lines, each with a user, brief, or evidence reason and its strength, a principle, a cost, and what would change it; the losing alternative named; no taste word as a reason; on a design-tool canvas, the annotations beside the frames, and the final message saying how many, where, and how to see them",
     },
   ]),
 
