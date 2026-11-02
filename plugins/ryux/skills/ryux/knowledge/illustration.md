@@ -19,8 +19,16 @@ you can check.
    any detail. Then the relations between parts (what touches, what overlaps, where the light comes
    from), then detail. Name layers for what they are (`recipe-box`, `steam`, not `path-12` or a
    coordinate). Pick the method from the asset's job (RX-UI-21) and ship it themed (RX-UI-19).
-4. **Render and read.** Render at display size and 2x, on light and dark, and look before anything
-   else. Cover the label and write what each asset says; compare it with the stage 1 line. Then
+   **Craft on a canvas.** Draw from paths, not stacked rectangles and circles: in Figma, write the
+   SVG and import it (`createNodeFromSvg`); in pen.dev, use its path nodes. Give each object the parts
+   that make it that object (a scale has a pan, a beam, and a needle; a plain box with a number is a
+   display, not a scale). Light comes from one side; each material gets three tones from the palette
+   (base, shadow, highlight): metal a bright band and a dark reflection, paper an edge and a soft
+   shadow. A photo or a 3D render of the real product is often better than drawing it: generate it
+   from the Visual Brief with the tool's image generation (in Figma, generate_image) and label it
+   (RX-UI-13). A planned asset is made, never dropped for type or a slot because it takes longer.
+4. **Render and read** (RX-UI-30). Render each asset alone at display size and 2x, on light and dark, and look before anything
+   else; read it against the seven checks, and redraw or switch method on two fails. Cover the label and write what each asset says; compare it with the stage 1 line. Then
    craft: the silhouette, joints and overlaps, the size of shadows, contrast between the subject and
    what is behind it, and what is lost at the smallest size. Fix and render again; compare a set side
    by side (RX-UI-18).
@@ -128,3 +136,18 @@ How comparable products illustrate the same moment: `search_screens` by pattern 
 - Not when: the brand's illustration system already fixes the subject for this asset; follow it
 - Trade-off: a written line per asset and one more look at the render before handoff
 - Check: the concept lines; the render at display size with the label covered
+
+### RX-UI-30 [Preferred] Planned imagery is made, and passes a craft read before the page uses it
+
+- When: the direction's carrier or imagery is an illustration, a render, or a photo
+- Do: Make each planned asset before the page (RX-UI-29), by the method its job needs (RX-UI-21), with the tools in knowledge/imagery.md, Making images; label generated and retouched images, and before paid generation say how many and ask once.
+  - Before the first asset, write one asset spec for the page in the direction block, so the subjects change and the treatment does not: the medium (RX-UI-32); for renders and photos, the camera (height, lens, angle) and the light (direction, temperature); the scale of an object that recurs; the staging (a contact shadow on a ground, or floating), the same for every asset; the crop and edge; the colour grade.
+  - When the set is made, lay it side by side against the spec; an asset that differs on two or more axes is remade before the page uses it.
+  - Read each asset alone at display size against seven checks: the silhouette reads with the label covered; the object has its defining parts; one light direction; three tones per material; clean joints; the written style (RX-UI-17); it reads at its smallest size.
+  - Two or more fails: redraw or switch method (a render instead of hand-built vectors), two rounds at most, then use the better one and say what is weak.
+  - Record each asset's method and read in the Delivery Gate.
+- Do not: Drop a planned illustration or render for type, a slot, or a stock icon because making it takes longer; build a subject from stacked rectangles and circles; or place an asset on the page before reading it alone.
+- Why: A direction sold on its imagery and then built without it is a different, plainer direction; an asset nobody read alone reaches the page with its flaws. (Illustration and art direction practice (silhouette, construction, light and tone; a shot list with one camera and light for a set); owner review 2026-10-31 of RYUX trials T1 to T4: no image was made in three, and the pages read as plain; owner review 2026-11-02 of trial T11: three renders with different cameras, scales, and staging read as three pages)
+- Not when: the direction's imagery is type alone or the product's screens
+- Trade-off: making and reading each asset costs tool calls before the page exists; the read stops when the seven checks pass, not when nothing could be polished
+- Check: the asset spec written before the first asset; the set compared side by side against it; assets made out of those planned, each with its method and the seven-check read; report them in the Delivery Gate UI line
