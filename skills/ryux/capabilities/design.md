@@ -19,12 +19,14 @@ The six stages of the core workflow (SKILL.md), as Design runs them.
    language's common currency, as an assumption (RX-PR-05). When the prompt and DESIGN.md disagree, the prompt wins for
    this task; say so. A DESIGN.md written for a different product (another name, domain, or
    audience than this brief) sets no direction for this task: say so, and treat direction as unset.
-   **Direction is the user's call:** when neither the prompt nor DESIGN.md sets the UI direction
-   (character, or brand colour and type) or the motion direction, ask for it in that message (it
-   counts toward the three) instead of choosing it yourself; on an expressive surface, ask in the
-   same question for one product or site whose look they like, as a taste anchor. **No DESIGN.md and no product docs is the
-   case where these questions matter most, never a reason to skip them:** ask, then wait for the
-   answer before designing. Complete context means no questions.
+   **Product Discovery first** (RX-PR-13): for a new product or a new look, ask what the context
+   does not answer (who, why, character, taste, goal, what the page can say) before anything visual,
+   in one message of choices; record the answers in DESIGN.md.
+   **Direction is the user's call** (RX-UI-26): when neither the prompt nor DESIGN.md sets the UI
+   direction, the next message offers three directions as style tiles and waits; the motion direction
+   rides with it. No DESIGN.md, no product docs, and no question tool are never reasons to skip it:
+   write numbered options and end the turn. Structural alternatives (stage 3) come after, inside the
+   chosen direction. Complete context means no questions.
    **Voice and tone** is not asked by default: when the field is blank, infer it from the product's
    existing copy or brand docs, label it inferred, and continue (RX-CD-11). Ask only when there is
    no source at all and the work is mostly copy (onboarding, marketing, error and success messages);
@@ -32,16 +34,28 @@ The six stages of the core workflow (SKILL.md), as Design runs them.
    **Ask as choices.** When you ask, or the user picks (stage 4, Reconsider), use the agent's
    question or choice tool if it has one: two to four options per question, the recommended one
    first and labeled, and room for the user's own answer. Without such a tool, write numbered
-   options with the recommendation first, so the user can answer with a number. Never ask what the prompt, DESIGN.md, or the
+   options with the recommendation first, so the user can answer with a number; use the same
+   numbers everywhere the options appear (the message, the question, the canvas). Never ask what the prompt, DESIGN.md, or the
    product docs already answer. For the rest, make the smallest reasonable assumption, write it
    down, and continue (RX-PR-01, RX-PR-02).
    **Record direction answers.** When the user answers a UI direction, motion direction, or voice
    question, or confirms an inferred voice, write the answer into the UI direction, Motion direction,
    or Voice and tone field of the RYUX project context in DESIGN.md:
    between `<!-- ryux-context:start -->` and `<!-- ryux-context:end -->`, one line per field
-   (`- **UI direction**: Calm, trustworthy`). If DESIGN.md or the block does not exist, create it
-   with the fields answered. Change only those field lines; leave every other line as it is. Your own
+   (`- **UI direction**: Calm, trustworthy`); Product Discovery answers go to Audience, Why choose it,
+   Taste references, and Design intent the same way, adding a field line the block lacks. If DESIGN.md
+   or the block does not exist, create it with the fields answered. Change only those field lines; leave every other line as it is. Your own
    assumptions do not go into DESIGN.md.
+   **Write the foundation.** When the user chooses or combines a direction (RX-UI-26), write it before
+   building as one `direction:` YAML block under `## Visual and motion language` in DESIGN.md (replace
+   an earlier block, keep the rest): id, name, status (chosen, combined, provisional), philosophy,
+   grammar, the answers it rests on, the category default declined, the weight carrier and its asset
+   (RX-UI-29), type (families, scale, figures), colour (scheme, neutrals' source, hex per role, passing
+   contrast pairs, band colours; RX-UI-31), shape, depth, spacing and layout, background rhythm
+   (RX-UI-32), material, imagery (assets and sources), motion, signature and devices, avoid, and
+   trade-offs. The user's choice makes it a decision. Summarise it in the reply and build from the file;
+   later changes go into the file first. An existing `direction:` block is the direction: deviating
+   needs a Decision Receipt.
    **What exists.** When there is a screen, product, or design system already, read its
    analysis or run Analyze first (capabilities/analyze.md). Existing screens, components, and any
    screenshot or reference provided are your examples: read them before choosing patterns, take
@@ -54,7 +68,8 @@ The six stages of the core workflow (SKILL.md), as Design runs them.
    with a visual direction, ui and anti-slop as well. The rules shape the first idea, not only the
    review of it.
 2. **Frame.** Name the primary task, the flow, the one thing that must be seen first, and the
-   primary action. Write three to five success criteria from the brief (the user's main task, what
+   primary action. On a page read top to bottom (a landing page, onboarding), write the visitor's
+   questions in order first: they are the sections and their order (RX-UX-13). Write three to five success criteria from the brief (the user's main task, what
    must be seen first, the brief's character words, conventions that must hold) before any
    alternative exists; Explore and Evaluate use these, and they do not change after you see the
    alternatives. For consequential choices, list the two or three patterns to compare, using
@@ -86,6 +101,8 @@ The six stages of the core workflow (SKILL.md), as Design runs them.
      they share it, or each names its own. Writing it after drawing documents the result instead of
      directing it. Each drawn asset also gets its concept line: what it must say and the cue
      that shows it (RX-UI-24, knowledge/illustration.md).
+   - When stage 1 discovered the direction (RX-UI-26), the alternatives keep it and differ in
+     structure; another look is not another alternative.
    - A small change, or a screen inside a fixed design system, skips Explore: say so and continue.
 4. **Evaluate and select.** Rate each alternative against the Frame criteria, Strong, Adequate, or
    Weak with one reason each, fit first: the user's main task (can it be done fast, where the hand
@@ -120,6 +137,9 @@ The six stages of the core workflow (SKILL.md), as Design runs them.
    deliver the contract and sheet as a spec and say what was not built. Work in a draft or a
    duplicate file, build in small steps (one collection or one component set per call), bind every
    value to a variable, and render the sheet after each component set.
+   **Main page first.** On an expressive surface, make the main page rich and pass the review below
+   before the state boards and handoff notes; those follow, short. Effort spread across many frames
+   leaves the page people judge thin.
    **Render and inspect.** Screenshot what you made, check it against the direction and the rules,
    fix, and render again (capabilities/qa.md). Then, on the render:
    - Literal values: turn each into a variable or name the exception (RX-DS-03).
@@ -145,6 +165,14 @@ The six stages of the core workflow (SKILL.md), as Design runs them.
      from the Reference Read, or comparable screens from the ryux MCP) and write, per reference,
      what holds up and what reads weaker or more generic in yours (surface, hierarchy, brand layer,
      assets); no score. Fix what reads weaker for the task; say so when no reference was available.
+   - Fresh eyes: on an expressive surface, when the agent can start a subagent, hand it only the
+     renders (desktop and mobile) and the brief, not your reasoning, and ask for the skeleton, swap,
+     and thumbnail tests (knowledge/imagery.md), the three most generic things on the page, the elements that look as if they came
+     from another page (RX-UI-32), and a
+     verdict: ship, fix, or rethink. Fix and review once more at most. A failed swap test gets one
+   rewrite before the gate: headlines and the trust block from the "why choose it" answer and the
+   product's own facts, then the swap test again; report what still fails. Without a subagent, run the
+     tests yourself on a fresh render and say the review was not independent.
    - Assets: generated images and illustrations arrive asynchronously. Wait until each one has
      landed and render again before exporting or closing the gate; never finish with one pending.
 6. **Verify and deliver.**
@@ -159,6 +187,21 @@ The six stages of the core workflow (SKILL.md), as Design runs them.
    - Test plan: for a new flow or a consequential change, write the usability test plan (RX-UX-12);
      skip it for a small change or when the user says so. Suggest that the team watch the sessions,
      so what users show becomes shared knowledge rather than one person's report.
+   - Rationale (RX-PR-14): five to seven lines, one per shaping decision (direction and concept,
+     weight carrier, section order, palette, type, where the primary action sits, what was cut):
+     decision → because (user, brief, or evidence, with its strength) → principle (a RYUX rule or a
+     law of UX) → cost → would change if. It goes in the final message, before the gate.
+   - Annotations on the canvas: when the design is made in a design tool (Figma, pen.dev, Penpot,
+     Framer, or another), annotate three to five of those decisions beside the frames, in plain
+     language, one or two sentences each: what was decided and why, for the person who opens the
+     file without the chat. Use the tool's own annotations, attached to the node each note explains:
+     in Figma, native annotations in a "Design rationale" category
+     (figma.annotations.addAnnotationCategoryAsync, then node.annotations); in another tool, look
+     for its annotation or comment feature first. Only when the tool has none, a "Why it looks like
+     this" frame next to the design, outside the frames for review. No rule IDs,
+     evidence codes, or gate results in them. The final message says how many annotations there
+     are, on which frames, and how to see them (in Figma, native annotations show in Dev Mode,
+     Shift+D: select a frame or layer).
    - Close with the Delivery Gate, saying what was not designed, such as other widths or states. If
      you wrote DESIGN.md, say so in the final message: which file and which fields.
 
@@ -218,8 +261,8 @@ patterns fit the context, and how the result is evaluated.
 ## Interaction patterns       patterns that fit this context (platform conventions, confirmation before
                               irreversible actions, recovery, the states the data can be in), each with
                               why and its evidence strength
-## Visual and motion language character, concept, signature, things to avoid; tokens with a reason each,
-                              "proposed" until confirmed
+## Visual and motion language the `direction:` block (stage 1, Write the foundation): character, concept,
+                              signature, things to avoid; tokens with a reason each, "proposed" until confirmed
 ## Voice and tone             voice words, how it addresses people, how tone shifts by moment
 ## How we evaluate            three to five success criteria; machine checks (`ryux scan`, states, typecheck
                               and tests); the riskiest assumption, the cheapest test, the signal that would
@@ -266,6 +309,7 @@ Assumptions    kept apart, all visible:
                unconfirmed capabilities (actions or features on the canvas the brief did not
                confirm; proposed, not requirements); sample data (realistic mockup content,
                never a fact, RX-AS-03)
+Rationale      five to seven lines: decision → because → principle → cost → would change if (RX-PR-14)
 Decisions      one Decision Receipt per major decision (below)
 ```
 

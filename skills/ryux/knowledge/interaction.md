@@ -2,7 +2,7 @@
 
 Designs what happens when people act: feedback, confirmation, undo, navigation, gestures, states, and local payments such as QRIS and virtual accounts.
 
-> Group UX · Delivery Gate area UX · RYUX 2.21.0. Levels are defined in `SKILL.md`.
+> Group UX · Delivery Gate area UX · RYUX 2.22.0. Levels are defined in `SKILL.md`.
 
 Define every meaningful action in four parts before implementing it:
 
@@ -64,7 +64,7 @@ How local apps handle the same action and its states, and local payment patterns
 
 - Do: Give an immediate pressed state; past about 1 second show a loading indicator; past about 10 seconds show progress with an estimate or let the user leave and come back. A loading skeleton has the shape of the layout it stands in for: the same blocks in the same places, so nothing jumps when the content arrives.
 - Do not: Let a payment or save run with no visible status.
-- Why: Silence during a wait reads as failure and invites double taps. (Nielsen response-time limits (0.1 / 1 / 10 s); Nielsen heuristic 1; Doherty threshold (Doherty and Thadani 1982): responses under about 400 ms keep people engaged; skeleton shape: pattern also in appllama-app-design-skill (MIT); written for RYUX)
+- Why: Silence during a wait reads as failure and invites double taps. (Nielsen response-time limits (0.1 / 1 / 10 s); Nielsen heuristic 1; Doherty threshold (Doherty and Thadani 1982): responses under about 400 ms keep people engaged; skeleton shape: pattern also in appllama-app-design-skill (MIT); written for RYUX; flow (Csikszentmihalyi 1990): a task without interruptions or unexplained waits keeps people absorbed in it)
 - Not when: instant actions under about 0.1 s; a spinner that flashes is noise
 - Trade-off: progress indicators need real progress data; a fake bar misleads
 - Check: heuristic_eval H-01

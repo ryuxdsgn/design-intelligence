@@ -162,3 +162,90 @@ test("illustration is its own module: concept line first, then the read test on 
   }
   assert.match(files["SKILL.md"], /knowledge\/illustration\.md/);
 });
+
+test("direction discovery: the user chooses among three directions that differ in visual language", () => {
+  // owner trials T1 to T9, 2026-10-31: options that differed only in concept all landed on cream and flat
+  const files = renderBundle();
+  const flat = (f) => files[f].replace(/\s+/g, " ");
+  const product = flat("knowledge/product.md");
+  assert.match(product, /### RX-PR-13 /);
+  assert.match(product, /never a word for restraint/);
+  assert.match(product, /What people do in it, Numbers that may be shown/);
+  const ui = flat("knowledge/ui.md");
+  assert.match(ui, /### RX-UI-26 /);
+  assert.match(ui, /cream, ivory, warm white, and paper are one family, used once at most/);
+  assert.match(ui, /flat with flat vectors once at most/);
+  assert.match(ui, /hands back only that question/);
+  // landing-gold round 5, 2026-11-01: every idea came from the product; options numbered two ways
+  assert.match(ui, /At least one comes from culture and place, at most one from the product mechanic/);
+  assert.match(ui, /numbered once: the same number in the message, the question, and the tiles/);
+  assert.match(ui, /### RX-UI-31 /);
+  assert.match(ui, /neutrals from the dominant hue/);
+  assert.match(flat("capabilities/design.md"), /`direction:` YAML block/);
+});
+
+test("Laws of UX: every law named in a rule's basis, and measured in Critique and QA", () => {
+  // owner request 2026-11-02 (lawsofux.com): the laws were cited for 18 of 30, and never measured
+  const files = renderBundle();
+  const all = Object.values(files).join(" ").replace(/\s+/g, " ");
+  for (const law of ["Fitts", "Hick", "Jakob", "Miller", "Peak-end|peak-end", "Von Restorff", "aesthetic-usability", "Doherty", "goal-gradient", "proximity", "common region", "uniform connectedness", "Prägnanz", "similarity", "Postel", "Tesler", "Zeigarnik", "serial position", "Parkinson", "Occam", "Pareto", "selective attention", "cognitive load", "chunk", "mental model", "working memory", "choice overload", "flow \\(Csikszentmihalyi", "active user", "cognitive bias"]) {
+    assert.match(all, new RegExp(law, "i"), law);
+  }
+  const ux = files["knowledge/ux.md"].replace(/\s+/g, " ");
+  assert.match(ux, /\*\*Laws of UX, measured\.\*\*/);
+  for (const id of [...ux.matchAll(/\| (RX-[A-Z0-9]+-\d+(?:, RX-[A-Z0-9]+-\d+)*) \|/g)].flatMap((m) => m[1].split(", "))) {
+    assert.match(all, new RegExp(`### ${id} `), id);
+  }
+  assert.match(files["capabilities/critique.md"], /measured Laws of UX checks/);
+  assert.match(files["capabilities/qa.md"].replace(/\s+/g, " "), /measured Laws of UX checks/);
+});
+
+test("design rationale: every shaping decision has a reason, and a design-tool canvas carries it", () => {
+  // owner review 2026-11-02 of trial T10: the final message said what was made, not why
+  const files = renderBundle();
+  const product = files["knowledge/product.md"].replace(/\s+/g, " ");
+  assert.match(product, /### RX-PR-14 /);
+  assert.match(product, /never to a taste word: modern, clean, premium, elegant, and sleek are not reasons/);
+  assert.match(product, /Name the alternative that lost and why/);
+  const design = files["capabilities/design.md"].replace(/\s+/g, " ");
+  assert.match(design, /decision → because \(user, brief, or evidence, with its strength\) → principle/);
+  assert.match(design, /Figma, pen\.dev, Penpot, Framer, or another\), annotate three to five of those decisions beside the frames/);
+  assert.match(files["SKILL.md"], /rationale <n> lines, annotations <n> \| none/);
+  // owner review 2026-11-02 of trial T12: a notes frame first; native annotations only after the owner asked
+  assert.match(design, /in Figma, native annotations in a "Design rationale" category/);
+  assert.match(design, /The final message says how many annotations there are, on which frames, and how to see them/);
+});
+
+test("frontend libraries: platform first, then the repo's, then verified options across frameworks", () => {
+  // owner request 2026-11-02: library recommendations for proper frontend code, across frameworks
+  const fe = renderBundle()["knowledge/frontend.md"].replace(/\s+/g, " ");
+  assert.match(fe, /### RX-FE-18 /);
+  assert.match(fe, /Choose in this order: the platform/);
+  for (const name of ["Radix UI", "Reka UI", "Bits UI", "Kobalte", "Angular CDK", "Ark UI", "TanStack Query", "VeeValidate"]) assert.match(fe, new RegExp(name), name);
+  assert.match(fe, /check on the npm registry and its documentation that the package exists under that exact name/);
+});
+
+test("expressive pages: one weight carrier, devices with a job, one world, the task first", () => {
+  // owner trials T3 to T9, 2026-10-31: plain pages, a repeated ruler, a carried-over render, a timid fix
+  const files = renderBundle();
+  const img = files["knowledge/imagery.md"].replace(/\s+/g, " ");
+  for (const id of ["RX-UI-27", "RX-UI-28", "RX-UI-29", "RX-UI-32"]) assert.match(img, new RegExp(`### ${id} `), id);
+  assert.match(img, /drop the one any product in the category would draw first/);
+  assert.match(img, /at most two same-skeleton sections in a row/);
+  assert.match(img, /visible on the first screen at desktop and at 390 by 844/);
+  assert.match(img, /cut only when it cannot be/);
+  // landing-gold round 5: the same jar as the focal visual of four sections read as monotonous
+  assert.match(img, /The system repeats, the subject does not/);
+  assert.match(img, /focal visual of two sections at most/);
+  assert.match(img, /\*\*Making images\.\*\*/);
+  // owner review 2026-11-02 of trial T11: renders, flat phones, and a flat edge read as undecided between 3D and 2D
+  assert.match(img, /one named mix with its binding/);
+  assert.match(img, /photo and vector: the photo cut out and graded to the palette/);
+  assert.match(img, /each naming the part of the inventory it comes from/);
+  assert.match(img, /\*\*A set is one family\*\*/);
+  const ill = files["knowledge/illustration.md"].replace(/\s+/g, " ");
+  assert.match(ill, /### RX-UI-30 /);
+  assert.match(ill, /seven checks/);
+  assert.match(ill, /write one asset spec for the page in the direction block, so the subjects change and the treatment does not/);
+  assert.match(files["knowledge/frontend.md"].replace(/\s+/g, " "), /### RX-FE-17 /);
+});
