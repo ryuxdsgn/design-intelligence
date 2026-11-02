@@ -135,6 +135,7 @@ outputs. Counts come from a few runs on one model: what those runs did, not rate
 
 | Benchmark | The question it answers | RYUX | Runs |
 | --- | --- | --- | --- |
+| [Gold savings landing page](docs/benchmarks/landing-gold/) | A landing page in Figma against Impeccable, rated blind by the owner: does RYUX read as less generic? Not yet: below Impeccable on slop resistance and originality, ahead on consistency and hierarchy | 2.21.0 and the 2.22.0 work before trials T10 to T12 | 3 + 3 per round, four rounds |
 | [Food delivery in Figma](docs/benchmarks/food-delivery-figma/) | Designed in Figma instead of code: is it cheaper, and does the difference still show in the frames? A pilot | 2.19.4 | 1 + 1 |
 | [Illustration](docs/benchmarks/illustration/) | Icons, empty states, a mascot, an editorial picture: do they say what they mean, in one style? Rated blind by an AI rater the owner approved | 2.20.0, 2.21.0 | 8 + 8 + 8 |
 | [Food delivery, DESIGN.md by RYUX](docs/benchmarks/food-delivery-designmd/) | With no DESIGN.md given, does RYUX write one from a brief and references that answers the five questions, then build that direction without inventing policy? Three rounds | main before 2.19.4, 2.19.4 | 1 + 1 + 1 new + 3 |
@@ -179,7 +180,7 @@ report a vulnerability, see [SECURITY.md](./SECURITY.md).
 
 ## Status and license
 
-RYUX 2.21, early access. Available now: the skill, the CLI with `scan`, skills.sh, and the Claude Code
+RYUX 2.22, early access. Available now: the skill, the CLI with `scan`, skills.sh, and the Claude Code
 plugin. Coming: an optional MCP with reference screens from real products. RYUX works fully without it; the
 reference data is private and not in this repository.
 
