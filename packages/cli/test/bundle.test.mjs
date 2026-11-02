@@ -211,7 +211,8 @@ test("design rationale: every shaping decision has a reason, and a design-tool c
   assert.match(design, /decision → because \(user, brief, or evidence, with its strength\) → principle/);
   assert.match(design, /Figma, pen\.dev, Penpot, Framer, or another\), annotate three to five of those decisions beside the frames/);
   assert.match(files["SKILL.md"], /rationale <n> lines, annotations <n> \| none/);
-  // owner review 2026-11-02 of trial T12: 16 native annotations were made, but the reply never said where
+  // owner review 2026-11-02 of trial T12: a notes frame first; native annotations only after the owner asked
+  assert.match(design, /in Figma, native annotations in a "Design rationale" category/);
   assert.match(design, /The final message says how many annotations there are, on which frames, and how to see them/);
 });
 
