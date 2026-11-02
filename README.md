@@ -78,7 +78,7 @@ confirmed, a promise the product never made. RYUX makes it sort what it has firs
 - **Facts, policies, and claims**: fees, refund times, guarantees. Never invented.
 
 The next step for Raja Emas, the app's home and buy flow in Figma, with and without RYUX. Both got the same
-prompt; one run each, not edited after:
+prompt, one run each:
 
 ```
 Design the phone app for Raja Emas, a gold savings app for Indonesia: people buy and save gold in small
@@ -86,7 +86,7 @@ amounts from their phone. Design the home screen and the flow to buy gold, from 
 result. Write the copy in English. Design it in Figma, on a new page in this file: <Figma link>
 ```
 
-<img src="https://github.com/ryuxdsgn/design-intelligence/releases/download/media/showcase--raja-emas-app.png" alt="Two rows of four phone screens: home, choose an amount, review, and result. Top row, without a skill: a minimum of Rp 10.000, no service fee, a price held on a countdown, an insured vault, 24K gold at 99.99%, a virtual account confirmed in about a minute. Bottom row, with RYUX in the Ilmu Padi direction: faint terrace contours on the green band, the minimum and the fee tagged Prototype rule, not decided yet, the price checked again at payment, and a row of grains that ripens toward the savings goal." width="100%">
+<img src="https://github.com/ryuxdsgn/design-intelligence/releases/download/media/showcase--raja-emas-app.png" alt="Two rows of four phone screens: home, choose an amount, review, and result. Top row, without a skill: a minimum of Rp 10.000, no service fee, a price held on a countdown, an insured vault, 24K gold at 99.99%, a virtual account confirmed in about a minute. Bottom row, with RYUX in the Ilmu Padi direction: a deep green band with terrace contours and a warm gold light, gram figures in a serif, the minimum and the fee tagged Prototype rule, not decided yet, the price checked again at payment, and a row of grains that ripens toward the savings goal." width="100%">
 
 - **Without a skill**, the agent asked nothing and showed eight things as fact that nobody had decided: a
   minimum of Rp 10.000, no service fee, a price held on a countdown, an insured vault, 24K gold at 99.99%,
@@ -100,7 +100,9 @@ result. Write the copy in English. Design it in Figma, on a new page in this fil
 
 Not a level start: RYUX worked from the DESIGN.md it wrote in the landing step; the agent without a skill had
 the prompt alone. The RYUX row is from 2.22.1, whose check for undecided rules and app rules came from earlier
-runs of this same brief.
+runs of this same brief. Its visuals were then refined once by hand after the owner's review (gradient band,
+serif figures, layered cards) and a tag added to the fee inside the paid total, which the run had missed; the
+questions and the screens are the run's own. The row without a skill is not edited.
 
 ## Use it
 
