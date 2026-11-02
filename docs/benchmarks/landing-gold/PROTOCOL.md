@@ -147,3 +147,165 @@ Written before the restarted runs; the four earlier round 2 runs are discarded, 
   limit before its first tool call (nothing drawn) and runs again, with R3, on the first account. A check session
   on the first account before I3 listed no `anthropic-skills:ryux`, only document skills, the same set as the
   second account, and could read `New Test`.
+
+## Amendment, 2026-10-30: round 3, RYUX with RX-UI-26 vs Impeccable
+
+Written before the first round 3 run; nothing above changes.
+
+**Why:** round 2 held a gap on AI-Slop Resistance (RYUX 1.33 v Impeccable 4.00) and showed one on Originality
+(1.67 v 4.33). Reading both skills' runs: Impeccable assigns one grounded direction by a dice roll that refuses
+the model's top-ranked pick, then commits to it; RYUX's RX-UI-10 said a page with no direction "will look plain",
+and all three RYUX runs built the calm default. RX-UI-26 (branch `ryux/rx-ui-26`, commit 8d61fd5, still versioned
+2.21.0) asks for three grounded directions, names the category default and does not build it, commits to one
+direction as a labeled assumption, and keeps the purpose gate and the factual rules. The owner chose a rule alone,
+with no dice tool, before adding any mechanism (2026-10-30).
+
+**Arms:** R′, RYUX at 8d61fd5, installed the same way as R; and I, Impeccable 4.8.0 as in round 2, run again so
+both are rated in one sitting. The same brief with the skill's name in front (`/ryux `, `/impeccable `), reply
+rule, model, harness, isolation, and transcript check as round 2.
+
+**Runs:** three per arm, six runs, one at a time in the order I1, R′1, I2, R′2, I3, R′3, in a new empty Figma file
+so no run sees round 1 or round 2: the owner's `Untitled` (Fl5n1GE7IhRWwzMRezxz4N, checked empty), brief
+[`prompt-r3.txt`](prompt-r3.txt), round 2's with only the file link changed. Letters drawn again and sealed in `~/bench-runs/landing-gold/r3/mapping.txt`.
+
+**Rating:** the same eight areas, 1–5, blind, in one sitting, on one page "Uji" with the same brief and form.
+
+**What counts as RX-UI-26 working,** all four:
+
+1. R′'s AI-Slop Resistance mean is at least Impeccable's minus 0.33 (within one point over three runs).
+2. R′'s Originality mean is at least 3.00 (round 2 RYUX: 1.67).
+3. R′'s Restraint mean is at least 3.00 (round 2 RYUX: 3.00).
+4. No R′ run shows a fact the brief never gave.
+
+Also counted, as in round 2: typeface families per run (whether R′ still converges on one), whether each R′ run
+names the default it declined and a signature element, cost, minutes, Figma craft.
+
+**Then:** if all four hold, RX-UI-26 goes into the next release and the README states the round 3 result. If 1 or
+2 fails, the next step is the dice mechanism (option B), tested the same way. If 3 or 4 fails, RX-UI-26 is revised
+before anything else.
+
+### Round 3, amendment: P1 cut by the account limit
+
+I1 finished. P1 asked first, then hit the 5-hour account limit in turn 2 (21:47) after five Figma calls. Its partial
+page "Uji R", its variable collection, and its nine text styles were deleted (none were used by "Uji F"), its folder
+moved aside, and P1 rerun from the start with the same page name after the limit reset, followed by I2, P2, I3, P3.
+Instead of waiting for the reset, the owner switched the CLI to the second account (the team org, Figma connected,
+no RYUX in its synced skills) at 00:2x, so P1 to P3 run there; I1 ran on the first account. Google Drive, connected
+on that account, is denied like the other connectors.
+P1 finished there. I2 then hit that account's limit at 00:49 after about 14 minutes; its partial page "Uji L" (no
+styles or variables of its own) was deleted and I2 rerun from the start after the 04:00 reset, followed by P2, I3, P3.
+
+## Round 4: RYUX with Direction Discovery (P0), four runs, against round 3
+
+Locked 2026-10-31, before the first run.
+
+**Why:** round 3 failed criteria 1 and 2: a rule that tells the model to commit to a grounded direction moved all
+three runs to one new default. The owner approved Design Direction Intelligence (spec in the platform repo):
+with no direction given, RYUX writes a product profile, offers three directions (conventional, grounded,
+stretching) as style tiles, and the user chooses. P0 is the new RX-UI-26, the direction grammar in
+knowledge/ui.md, and the Understand-stage change, on branch `ryux/direction-discovery`.
+
+**Arms and runs:** RYUX P0 only, four runs (Q1–Q4), one at a time, `/ryux` in front of the same brief
+([`prompt-r4.txt`](prompt-r4.txt): round 3's brief, a new empty Figma file). No new Impeccable runs: the owner
+chose to compare against round 3's Impeccable means (owner decision 2026-10-31, option A).
+
+**The reply:** a run that asks first gets one fixed reply ([`reply-r4.txt`](reply-r4.txt)) naming an option
+number for the visual direction, drawn at random per run before the runs and sealed with the letter mapping, so
+the choice stands in for different users. A run that asks no direction question gets no reply and is recorded as
+Autonomous.
+
+**Anchors:** two round 3 designs are added to the rating page under new letters, one Impeccable and one RYUX′,
+drawn at random and sealed, as screenshots (Figma cannot copy frames between files). They check whether the
+owner's scale moved since round 3.
+
+**Rating:** the same eight areas, 1–5, blind, in one sitting, six letters. Separately, after the eight areas, the
+owner rates the three directions each run offered (fit, real difference, clarity), 1–5 per run.
+
+**What counts as P0 working,** all six:
+
+1. RYUX P0's AI-Slop Resistance mean is at least 3.33 (round 3 Impeccable 3.67 minus 0.33).
+2. Its Originality mean is at least 3.00.
+3. Its Restraint mean is at least 3.00.
+4. No run shows a product fact the brief never gave.
+5. No two runs build a direction with the same philosophy and grounding.
+6. The owner's mean rating of the offered directions is at least 3.5.
+
+**Anchor check:** if an anchor's eight-area mean moves by more than 0.5 from its round 3 score, the result is
+reported with that drift and criteria 1–3 are read as uncertain.
+
+**Then:** if all six hold, P1 (visual style tiles, the foundation contract in DESIGN.md, illustration direction)
+is next and P0 goes into a release. If 5 fails, the rotation fallback (spec decision 1) is built and tested. If 1
+or 2 fails with 5 holding, the directions are distinct but not good enough: the grammar and the grounded and
+stretching roles are revised. If 4 fails, that is fixed before anything else.
+
+### Round 4, amendment: restarted after a P0 defect
+
+Q1 never asked: it read "with nobody to ask" in the new RX-UI-26 as "no question tool in this session", chose a
+direction itself (a gold-shop counter look in Plus Jakarta Sans, close to round 3's), and marked it provisional.
+The owner stopped the series during Q2 and asked for a fix. RX-UI-26 and the Understand stage now say that a
+session without a question tool still asks, as numbered text, and ends the turn; the agent chooses only when the
+user hands the choice back or the task says to run without questions. Q1 and Q2 were discarded (pages, variables,
+and styles deleted; folders kept aside as evidence), and the four runs restarted with the same sealed letters and
+option numbers. Criteria unchanged.
+
+### Round 4, amendment: stopped
+
+After the restart, Q1 and Q2 were offered nearly the same three directions (option 1 was "The Gold Shop Receipt" in
+both) and both drew option 1, so they built the same direction. With four runs and one converged set of three
+options, criterion 5 could not hold by construction (a protocol design error). The owner stopped the series to
+change the protocol, then ended round 4. One run completed (Q1, page "Uji M"); nothing was rated.
+
+## Round 5: RYUX after the owner trials vs Impeccable, three runs each
+
+Locked 2026-10-31, before the first run; nothing above changes.
+
+**Why:** round 4 was stopped (a protocol flaw: identical option sets and one drawn number). The owner then ran nine
+interactive trials (T1–T9, Figma file Fl5n1GE7IhRWwzMRezxz4N, pages Uji T1–T9) and RYUX changed after each:
+Product Discovery (RX-PR-13), three directions that differ in visual language (RX-UI-26), the concept as a system
+(RX-UI-27), official marks (RX-UI-28), a weight carrier (RX-UI-29), made imagery (RX-UI-30), palettes from roles
+(RX-UI-31), and one world per page (RX-UI-32). The owner rated T7 "near final"; those ratings were one run each and
+not blind. This round checks the gap to Impeccable blind.
+
+**Arms:** R5, RYUX at branch `ryux/direction-discovery` commit 389fc08 (template `Rv`, still versioned 2.21.0);
+and I, Impeccable 4.8.0 as in rounds 2 and 3 (template `I`). The skill's name goes in front of the brief
+(`/ryux `, `/impeccable `). Same model, harness, isolation, connectors, and deny list as round 3; Blender is
+allowed (local renders, RX-UI-30) for both arms.
+
+**Brief:** [`prompt-r5.txt`](prompt-r5.txt), round 3's brief plus the product facts the trials established (audience,
+why, what people do, confirmed facts, no numbers), so both arms start with the same facts and the round measures
+the visual result, not who asked more. The owner's `New-Test` file (cXIhgEtqrC8lG7sEYCSEZP, round 2's file): its pages were empty, and the 8 variable collections and 26 text styles round 2 left were deleted before the first run, with the owner's approval (2026-11-01).
+
+**Replies:** a run that ends a turn without building the 1440 page gets [`reply-r5.txt`](reply-r5.txt), at most twice,
+with an option number for the visual direction. The three R5 runs get the numbers 1, 2, and 3 in a sealed random
+order, so no two runs take the same option; the I runs get the same draw rule if they ask. A run that never asks is
+recorded as Autonomous.
+
+**Runs:** six, one at a time, in the order I1, R1, I2, R2, I3, R3. Letters drawn and sealed in
+`~/bench-runs/landing-gold/r5/mapping.txt`.
+
+**Rating:** the same eight areas, 1–5, blind, in one sitting, six letters.
+
+**What counts as RYUX catching up,** all five:
+
+1. R5's AI-Slop Resistance mean is at least Impeccable's minus 0.33.
+2. R5's Originality mean is at least Impeccable's minus 0.33.
+3. R5's Restraint mean is at least 3.00.
+4. No R5 run shows a product fact the brief never gave.
+5. In every R5 run the store badges are on the first screen at 1440 and at 390 by 844 (the UI does not cost the task).
+
+Also counted: whether the three R5 runs differ in base surface and material (RX-UI-26), made assets per run, cost,
+minutes, and the words the skill loads.
+
+**Then:** if all five hold, the branch is merged and released, and the README states the round 5 result. If 1 or 2
+fails, the README keeps the round 3 claim and the gap is read from the transcripts before any new rule. If 4 or 5
+fails, that is fixed first.
+
+**Run log.** I1, R1, and I2 ran without a break (2026-11-01, 04:35 to 05:37). R2's first turn finished (questions
+plus three style tiles on its page); its reply turn hit the account's 5-hour limit after 75 seconds, with no Figma
+writes. Per the bench rule for a cut run, the run folder was set aside (`R2-cut-limit`), its page was deleted (it made
+no styles or variables), and R2 reran from the start under the same page letter and reply option. The owner switched to a second Claude account
+with limit left (same model, claude-opus-5-5), so R2, I3, and R3 ran on it from 05:59 instead of waiting for the reset.
+
+**Decision after round 5 (owner, 2026-11-02):** criteria 1 and 2 failed, so by this protocol the branch would wait.
+After owner trials T10 to T12 the owner chose to release it in 2.22.0 anyway, with the README's comparison claim
+left at the round 5 result and a blind round 6 to follow.
