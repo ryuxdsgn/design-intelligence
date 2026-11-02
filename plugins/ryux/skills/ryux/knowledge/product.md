@@ -2,7 +2,7 @@
 
 Turns a vague request into a clear product decision: who it is for, the one job, what is assumed, and which pattern wins, backed by evidence.
 
-> Group Foundation · Delivery Gate area PRODUCT · RYUX 2.22.0. Levels are defined in `SKILL.md`.
+> Group Foundation · Delivery Gate area PRODUCT · RYUX 2.22.1. Levels are defined in `SKILL.md`.
 
 Answer these before any layout exists. Write the answers down; they are the brief.
 
@@ -76,7 +76,7 @@ How comparable products frame the same task and offer: `search_screens` (categor
 - Do not: Invent business rules, policies, guarantees, metrics, user data, permissions, pricing, requirements, or API behavior, or name a tool, command, integration, platform, or page the product does not have. Do not present an unconfirmed capability as a confirmed one. Do not show an undecided rule as a plain sentence on screen because it is listed as an assumption somewhere else.
 - Why: Invented facts turn into promises and bugs that someone has to unwind; a screen trimmed to the brief's literal words reads unfinished and hides what still needs confirming. (ryux run 2026-10-02: an unconstrained agent invented a 30-day trial and user counts; ryux visual benchmark 2.6 human rater, 2026-10-13: RYUX screens lost on a missing receipt action; NNGroup proto-personas and synthetic users (AI output is hypotheses, not research); owner review 2026-10-27, ryux run: food-delivery benchmark rounds 1 and 2, the no-answer rule for an unavailable item labelled an assumption only in DESIGN.md and the reply, read as fact on the screen)
 - Not when: This rule is not a reason to drop content the brief implies or to leave a screen looking unfinished: sample content is RX-AS-03, design assumptions are yours to make.
-- Check: compare every product fact on the screen (features, prices, fees, policies, names, integrations) with the brief, DESIGN.md, docs, or repo; each is sourced, or labelled as an assumption on the same screen; fails on one shown as fact without a source, or labelled only outside the screen
+- Check: compare every product fact on the screen (features, prices, fees, policies, names, integrations) with the brief, DESIGN.md, docs, or repo; each is sourced, or labelled as an assumption on the same screen; then sweep: list every undecided rule and number (Assumptions, open questions, DESIGN.md), search the text of every screen for each, and count the ones shown without a label on that screen; report open rules on screen <tagged>/<shown>; fails on one shown as fact without a source, or labelled only outside the screen (a read-me board or notes frame counts as outside)
 
 ### RX-PR-03 [Required] [Hard Gate] One clear goal; one primary action when the task has one
 
