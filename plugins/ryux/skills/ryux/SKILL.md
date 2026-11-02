@@ -5,7 +5,7 @@ description: "RYUX - design intelligence for AI agents and designers. Tell it wh
 
 # RYUX
 
-> Design intelligence for AI agents and designers. RYUX 2.21.0, MIT licensed.
+> Design intelligence for AI agents and designers. RYUX 2.22.0, MIT licensed.
 
 RYUX is a design intelligence layer for AI and designers. It helps understand, reason, design,
 build, critique, and verify interfaces using design knowledge and evidence. It is not a UI
@@ -140,10 +140,10 @@ A small change (a copy fix, one component, one state) reads only the module it t
 End UI, UX, copy, or frontend work with this report:
 
 ```
-PRODUCT        PASS | FAIL | NOT VERIFIED | N/A  · one-line reason · evidence Strong | Thin | None
+PRODUCT        PASS | FAIL | NOT VERIFIED | N/A  · one-line reason · evidence Strong | Thin | None · rationale <n> lines, annotations <n> | none
 UX             PASS | FAIL | NOT VERIFIED | N/A  · one-line reason
 CONTENT        PASS | FAIL | NOT VERIFIED | N/A  · one-line reason
-UI             PASS | FAIL | NOT VERIFIED | N/A  · one-line reason · point of view: <concept> | task UI, signature: <signature> · illustration style: <where written> | none
+UI             PASS | FAIL | NOT VERIFIED | N/A  · one-line reason · point of view: <concept> | task UI, signature: <signature> · concept sections <n>/<total>, devices <n>, focal subjects <n>/<sections>, carrier <kind>, made assets <n>/<planned> · illustration style: <where written> | none
 DESIGN SYSTEM  PASS | FAIL | NOT VERIFIED | N/A  · one-line reason
 ACCESSIBILITY  PASS | FAIL | NOT VERIFIED | N/A  · one-line reason
 RESPONSIVE     PASS | FAIL | NOT VERIFIED | N/A  · one-line reason

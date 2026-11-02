@@ -2,7 +2,7 @@
 
 Directs what a screen shows beyond its system: art direction, composition, expressive surfaces, motion, asset sourcing, and delight.
 
-> Group UI · Delivery Gate area UI · RYUX 2.21.0. Levels are defined in `SKILL.md`.
+> Group UI · Delivery Gate area UI · RYUX 2.22.0. Levels are defined in `SKILL.md`.
 
 **What a screen shows beyond its system.** Read this with `knowledge/ui.md` when the work has photos,
 illustration, 3D, motion, or an expressive surface (hero, landing, onboarding, empty state, brand
@@ -19,21 +19,36 @@ focal point, hierarchy, negative space, relation to the copy, and balance (RX-UI
 
 **Expressive surfaces** (hero, landing, onboarding, empty states, brand moments). Restraint keeps
 task UI usable; on expressive surfaces it is only the floor. Work concept, then signature, then
-system:
-1. **Concept**: explore two or three alternatives first (name, concept, signature; capabilities/design.md, stage 3), then choose one. The idea
-   comes from the product itself, not from the category: a tool about evidence might use receipts,
-   citations, and marks of proof; a calm finance app might use the ledger. The category default
-   (a terminal panel for developer tools, a dashboard screenshot for SaaS) is never the signature.
-2. **Signature**: one element that carries the concept and that people would remember. Choose the
-   lever: type (scale contrast, a distinctive face), composition (a broken grid, an unexpected
-   crop, a large number), art direction, color temperature, motion personality, or copy voice.
-3. **System**: everything else stays quiet and consistent so the signature reads.
+system, in one world (RX-UI-32):
+1. **Concept**: two or three alternatives first (capabilities/design.md, stage 3), then one. The idea
+   comes from the product's world, not the category: its mechanic, the audience's objects and rituals,
+   or their culture and place (RX-UI-26); it can be an object, an atmosphere, a material, or a
+   movement. The category default (a terminal panel, a dashboard screenshot) is never the signature.
+2. **Inventory** (RX-UI-27): the concept in one sentence ("this page is a boarding pass") and the parts
+   the real thing has (a tear line, a barcode, a seat block, a gate time, a stub). The visitor's
+   questions set the sections (RX-UX-13); the inventory gives each its form, down to the dividers.
+3. **The hero does the job**: the concept object performs the core job with sample data (a boarding
+   pass that turns a booking into a seat and a gate time).
+4. **Signature and devices** (RX-UI-27): one element people remember, and two or three devices that do
+   a job where they appear. The system repeats, the subject does not: a pattern, ground, or divider
+   returns, and each section's focal visual has its own subject, two sections at most per subject.
+   Devices are more than lines: data chips around the product (confirmed
+   features, labeled sample data), annotations with leader lines, a stamp, shapes cut from the concept,
+   a pattern, light and grain. Write their style like any illustration (RX-UI-17).
+5. **Weight carrier** (RX-UI-29): make its asset first, read it alone (RX-UI-30), and build around it;
+   one decisive type move and one dominant colour field from the concept. Cream or white with ink is
+   a choice that needs a reason, never the fallback.
+6. **Copy in the concept's language**: "Your seat is waiting at gate 4", not "Book your next trip
+   today". Unknown facts go to the handoff notes, never a section of "to confirm" chips (RX-AS-03).
+7. **System**: everything else stays consistent so the concept reads. Restraint means every element
+   has a job, not that there are few: wide empty bands, small grey text, and no visual is unfinished.
 The Liveliness you set (Design Direction) turns into these levers: one focal point per screen,
-contrast in size and weight that builds the hierarchy, whitespace that groups, one deliberate
-accent, and a motif the signature repeats. Low energy uses the same levers, quietly.
-Then run the swap test (RX-AS-09): with a competitor's name and logo, would anything need to change?
-If not, the surface has no point of view yet. Stay honest while being bold: a strong idea never
-needs invented numbers, people, or logos.
+contrast in size and weight, whitespace that groups, one deliberate accent, and a motif the signature
+repeats. Then three tests on the render. **Swap** (RX-AS-09): with a competitor's name and logo, would
+anything need to change? **Skeleton**: without colour, type, and devices, is it the template order or
+a stack of alternating splits (more than two same-skeleton sections in a row, or fewer than two
+composition moves)? **Thumbnail**: shrunk to icon size, is the shape still recognisable? A strong
+idea never needs invented numbers, people, or logos.
 
 **2. Motion.** Start from purpose: what the motion communicates; with no purpose, no motion.
 Then ask how often someone will see it. The more often, the shorter and quieter it is, not absent:
@@ -92,6 +107,32 @@ or a cut (RX-A11Y-08).
 
 Label every asset's provenance: observed (from the real product), sourced (licensed, with its
 source), illustrative, generated, or inferred (a stand-in). See the evidence model in the router.
+
+**Making images.** Use the first tool that can make the asset well, and say which:
+1. the design tool: vector paths (in Figma, SVG through createNodeFromSvg), image fills with their
+   filters, blend modes, and masks, and its image generation when it has credits
+2. a local render, free: Blender from the command line for objects in light (metal, glass, packaging);
+   Three.js in a headless browser for simple objects, gradients, and particles; export PNG at 2x and upload
+3. an image API whose key the user gives (an environment variable, never in the repo): for photo-real
+   scenes and heavy retouching; say the count and ask before paid generation
+4. a licensed photo or the user's own, retouched
+Recipes:
+- **3D render**: subject with its defining parts; material (gold: high metallic, low roughness, warm
+  reflections); one key light, a fill, and a rim; a camera at a named lens and angle; a background in the
+  palette's colour, so the render sits on the page; a set shares light and camera.
+- **Retouched photo**: cut out the subject (a background-removal model, or a mask); grade it to the
+  palette (duotone, tint, or temperature, then contrast); add grain or the material's texture so it
+  matches the page; never change what the product is, and label it retouched.
+- **UI composite**: the product's screen with labeled sample data, large, at an angle or overlapped,
+  with depth from the material (a soft shadow or glow), never invented features.
+- **Photo and vector**: a real or licensed photo, cut out and graded to the palette, with drawn vector
+  in one line weight and colour that touches it: a line that wraps the subject, a shape behind it, an
+  annotation that points into it. The same pairing in every section.
+**A set is one family** (RX-UI-18, RX-UI-30): write the asset spec first (medium, camera, light, scale,
+staging, crop, grade), make the assets together, and lay them side by side before the page; the
+subjects change, the treatment does not. Ornaments, dividers, and icons take the page's medium or
+named mix (RX-UI-32).
+Generated people never stand for customers (RX-AS-02).
 
 RYUX directs the generator; it is not the generator. Work context, goal,
 audience, role, art direction, composition, then generate, critique the result against the brief,
@@ -179,20 +220,82 @@ How comparable products use imagery and motion: `search_screens` by pattern, `ex
   - On task UI: the alternatives are structure hypotheses and the conventions that must hold stay fixed. A new product's brand layer must carry one signature from its own domain (a mark, the type voice, a colour temperature, or one brand moment in the flow), never a layout change and never decoration without a job (RX-AS-05). Record it in the Delivery Gate UI line.
   - When the brief names reference products, read each one before it shapes the alternatives: the principle you borrow, what stays theirs (colours, mascot, signature features), and where you use it. Carry the borrowed character at the strength the brief asks for: when it asks for a reference's feel (playful, chunky, gamified), the feel shows on every main screen, in type weight, shape, colour energy, and one brand moment, not only in a button detail. A reference's signature mechanics (a streak, a daily goal, a score) are unconfirmed capabilities: propose them, never show them as facts.
 - Do not: Show alternatives that differ only in colour or copy, choose for the user without showing them, or let the signature be the category's default (for developer tools a terminal or agent-session panel; for SaaS a dashboard screenshot; copy on the left and product on the right), or relabel that default as a concept. A product screen can support the signature, not be it. Turn a named reference into adjectives ("calm, white, soft") or copy what belongs to its brand.
-- Why: Users remember a product by its idea; a correct but generic surface is forgotten and could belong to any competitor. (brand and art direction practice; RX-UI-05 layout from content; rendered variants on named axes, compared side by side, chosen by the user: pattern also in emilkowalski/skills (MIT) prototype; fit first with craft as tie-break, pairwise with a runner-up: ryux owner blind ratings 2026-10-18 (judge round 1: weighting distinctiveness picked against the designer); written for RYUX; owner review of a no-skill vs RYUX run (2026-10-20): RYUX kept the reference's feel to one button detail)
+- Why: Users remember a product by its idea; a correct but generic surface is forgotten and could belong to any competitor. (brand and art direction practice; RX-UI-05 layout from content; rendered variants on named axes, compared side by side, chosen by the user: pattern also in emilkowalski/skills (MIT) prototype; fit first with craft as tie-break, pairwise with a runner-up: ryux owner blind ratings 2026-10-18 (judge round 1: weighting distinctiveness picked against the designer); written for RYUX; owner review of a no-skill vs RYUX run (2026-10-20): RYUX kept the reference's feel to one button detail; aesthetic-usability effect (Kurosu and Kashimura 1995): people judge a better-looking interface as easier to use, which can also hide its problems in a test)
 - Not when: an existing product whose brand system already sets the brand layer, or a small change inside a fixed design system; follow it
 - Trade-off: a strong idea takes a decision someone may disagree with; keep it honest and on brand
 - Check: the swap test (RX-AS-09); review
 
+### RX-UI-27 [Preferred] On an expressive surface, the concept shapes the page, not one card
+
+- When: an expressive surface (a landing page, onboarding, a brand moment) with a chosen concept
+- Do: Sections and their order come from the visitor's questions (RX-UX-13); the concept gives each its form from the concept's inventory (the parts the real thing has), and a generic section form needs a reason (knowledge/imagery.md, Expressive surfaces).
+  - The hero's concept object does the product's core job with sample data, not a sample on display.
+  - Devices: write three from the inventory, drop the one any product in the category would draw first (for gold: a coin, a bar, a scale, a ruler), and keep two or three, each naming the part of the inventory it comes from (one that names none is cut); each appears in three or more sections where it does a job (shows data, marks structure, leads to the next step); a decorative repeat counts once, and none sits between a message and its action.
+  - The system repeats, the subject does not: what returns across sections is a pattern, a ground, a divider with meaning, a data form, or a rhythm, changing its role or form each time; each section's focal visual has its own subject (a scene, a figure, a moment of use), and one subject is the focal visual of two sections at most (a new angle or state of the same object counts as the same subject).
+  - One decisive type move and one dominant colour field come from the concept.
+  - Compose, do not stack: at most two same-skeleton sections in a row (text one side, a visual the other), and two or more composition moves (knowledge/ui.md, Direction grammar, Layout), each keeping the reading order and the path to the action.
+  - Headlines in the concept's language; unknown facts go to the handoff notes, never a section of placeholders.
+  - Before the gate, run the skeleton, swap, and thumbnail tests, with fresh eyes when a subagent is available (capabilities/design.md, stage 5).
+- Do not: Let the concept add sections or set their order, put the concept in one hero card and build the rest from the template order, leave the page empty and call it restraint, repeat a device as a divider to reach a count, redraw the hero object as the focal visual of section after section, alternate text-left and text-right splits down the page, fill a section with "to confirm" chips or dashed boxes, or let a device or the concept invent a product fact (RX-AS-01, RX-PR-02).
+- Why: A concept that lives in one card is decoration: the rest of the page is the same template every generated page uses, and that is what reads as AI-made. (Art direction practice (a concept carried as a system of forms and devices); landing-gold round 3 side-by-side read and owner trials T7 and T8, 2026-10-31: RYUX pages kept the concept in one card over a template order, then repeated one device as a divider and alternated split sections; owner review; landing-gold round 5, 2026-11-01: the same jar or ruler was the focal visual of three or four sections and read as monotonous (owner review), while the peer repeated a pattern or a scene break and changed the subject)
+- Not when: task UI, where the structure stays familiar (RX-AS-09); a brand system that already defines the page
+- Trade-off: a concept-shaped page takes longer and can overreach; each device still passes the purpose gate (RX-AS-05)
+- Check: sections whose form comes from the concept (at least half), devices doing a job in three or more sections (decorative repeats counted once), the category's first-idea device dropped, same-skeleton sections in a row (two at most), composition moves (two or more), focal subjects per section listed (none focal in more than two sections), sections that are mostly placeholders (none), and the skeleton, swap, and thumbnail tests; report them in the Delivery Gate UI line
+
+### RX-UI-29 [Preferred] An expressive page has one weight carrier, made at full strength
+
+- When: an expressive surface (a landing page, onboarding, a brand moment)
+- Do: Name what carries the page's visual weight and make it at full strength, its asset first and read alone (RX-UI-30): atmosphere (a colour field or mesh made as an asset), a photo or render (labeled when not real), the product's UI (half the hero width or more, layered, with depth), illustration (a set for this product, in the hero and two more sections), or display type (80px or more on desktop over a colour block).
+  - Floor: the hero holds the carrier, not only text and buttons; a full-bleed non-neutral band or a dark and light switch (the base surface counts: coloured bands over a cream page are still a cream page); a named depth system; at most one text-only section; images in one family, each section with its own subject (a new angle of the same object is not a new subject, RX-UI-27).
+  - The carrier never costs the task: the primary action visible on the first screen at desktop and at 390 by 844; nothing decorative between a message and its action; on mobile the hero visual pushes the next section at most one screen down; sample-data labels next to their figures; decorative layers hidden from assistive technology.
+  - Write the carrier and the depth system into the direction block in DESIGN.md (capabilities/design.md, stage 1); all of it speaks the direction's world (RX-UI-32).
+- Do not: Ship a hero of text and buttons with a small card beside it, set every band on one neutral surface, name a carrier and then draw it small or leave it out, or fall back to text because making an image or a vector takes longer.
+- Why: A page with no weight carrier has nothing for the eye to land on; the reader sees layout and text, which is the look of every generated page, however correct its rules are. (Art direction practice; published design-language descriptions of five marketing sites (VoltAgent awesome-design-md, MIT): each puts its weight in one medium made at full strength; owner review 2026-10-31 of RYUX trials T1 to T4, all on cream or white with text and small cards, read as plain and AI-made)
+- Not when: task UI; a brand system that already sets the page's look
+- Trade-off: making the carrier's asset takes time and tool calls before the page, and a strong carrier can crowd the message if its focal point fights the headline
+- Check: the primary action on the first screen at 1440 and 390 by 844; no decoration between a message and its action; sample-data labels next to their figures; no image used twice; the carrier named and present in the hero; full-bleed non-neutral bands or a mode switch (count); depth system named; text-only sections (at most one); report the carrier in the Delivery Gate UI line
+
+### RX-UI-32 [Required] One page, one world
+
+- When: an expressive surface built from a chosen direction
+- Do: Hold the page to the direction's world:
+  - every asset, device, and section shares the direction's material and light; an asset from another direction is reused only when its material matches, and a changed direction rebuilds from its new direction block
+  - one medium for the page: flat 2D, 3D render, retouched photo, or UI composite, or one named mix with its binding, chosen with the direction:
+    - photo and vector: the photo cut out and graded to the palette; the vector in one line weight and colour that touches, wraps, or annotates the photo, never floating beside it; the same pairing in every section
+    - render and UI: the product's screens set into rendered devices as their textures, not flat vector phones beside renders
+    - render and flat shapes: flat shapes only as ground and background, every object rendered, the render's light and shadow falling on the flat ground
+    - ornaments, dividers, and icons take the page's medium; a mix without a name and a binding is two pages
+  - plan the backgrounds as a rhythm before building: two or three surfaces in a repeating pattern, with the transitions designed
+  - the concept runs through the page, not only the first and last section, as a system (material, pattern, ground, rhythm) while each section's focal subject changes (RX-UI-27)
+  - the counts in RX-UI-27, RX-UI-29, and RX-UI-30 are minimums that serve the concept: an idea that fights unity is translated into the world's material, light, and shapes, and cut only when it cannot be; unity never lowers the carrier or the boldness the user chose
+  - Before the gate, fresh eyes list the elements that look as if they came from another page; fix them.
+- Do not: Make the page neat by making it timid, tick each rule with a different idea, carry a render from a rejected direction into the chosen one, set photoreal renders beside flat vector devices with nothing binding them, change the background world every section, or add a composition move only to reach a count.
+- Why: A page that satisfies every rule with a different idea reads as a collage; people read unity as care and a collage as unfinished, however good each part is. (Art direction practice (unity of one surface); owner review 2026-10-31 of trial T8 (a render from the rejected direction and a new background world every section, read as disconnected) and trial T9 (with a cut-first version of this rule, neat but less creative); owner review 2026-11-02 of trial T11: renders, flat vector phones, and a flat roof-tile edge on one page read as undecided between 3D and 2D; a photo edited and paired with vector is a combination that holds when it is chosen and bound)
+- Not when: task UI; a page that is deliberately a collage, where that is the chosen concept
+- Trade-off: unity narrows choices and can cut an idea that is good on its own
+- Check: the page's medium or named mix, with its binding, in the direction block; fresh-eyes list of elements from another page (none left); every asset's material and light matching the direction block; the background rhythm written before the build
+
 ### RX-UI-13 [Contextual] Source assets on purpose
 
 - When: the design needs photos, illustration, 3D, icons, logos, or video
-- Do: Pick each asset's source in this order: real product screens or the brand's own assets; a licensed library (one icon set, photos whose license you can name); a custom or generated asset made from the Visual Brief and labeled illustrative; otherwise a placeholder that looks like one (RX-AS-03). Record where each asset came from.
-- Do not: Draw or imitate another company's logo, invent the product's own mark (RX-AS-11), mix icon sets, use a photo you cannot license, or fill a gap with a generic stock scene.
+- Do: Pick each asset's source in this order: real product screens or the brand's own assets; standard marks of a confirmed fact, from their official source (RX-UI-28); a licensed library (one icon set, photos whose license you can name); a custom or generated asset made from the Visual Brief (the design tool's image generation when it has one) and labeled illustrative; otherwise a placeholder that looks like one (RX-AS-03). Record where each asset came from.
+- Do not: Draw or imitate another company's logo (use its official file, RX-UI-28), invent the product's own mark (RX-AS-11), mix icon sets, use a photo you cannot license, or fill a gap with a generic stock scene.
 - Why: Assets carry claims about the product and its users; an unsourced or borrowed asset is a claim nobody can back. (licensing and trademark practice; RX-UI-07; RX-AS-02)
 - Not when: a wireframe or internal prototype where placeholders are expected
 - Trade-off: real or licensed assets take longer than a stock search
 - Check: asset list with sources; review
+
+### RX-UI-28 [Preferred] Standard marks are used as they are, when their fact is confirmed
+
+- When: the design shows where to get the app, how to pay, or who stands behind the product, and the brief, DESIGN.md, or the user confirms the fact
+- Do: Use the official mark of a confirmed fact, from its owner, at its guideline size and clear space: store badges (App Store, Google Play) in the page's language; accepted payment marks (QRIS, confirmed banks, e-wallets, cards); a confirmed partner's or regulator's mark, with a handoff note that it needs the owner's permission; real platform chrome on device screens.
+  - Ask for the files with the fact questions (RX-PR-13). Get each in this order: the user's file; the owner's brand or media kit page (found by searching, not guessed URLs); the platform's component library; a public archive that names source and license (Wikimedia Commons), noted in the handoff. Upload it as it is.
+  - When none works, ask the user before the build; only if they hand it back, a slot with the mark's exact shape, named for the file and listed in the open tasks with its source. Never a text lookalike or a silent placeholder.
+- Do not: Draw a text button in place of a store badge, redraw or recolour an official mark, or show a mark whose fact is not confirmed (a store the app is not on, a bank that is not a partner): that is an invented claim (RX-PR-02).
+- Why: People recognise standard marks faster than any label, and their absence makes a page look unfinished; drawn lookalikes read as fake. (App Store and Google Play badge guidelines; licensing and trademark practice (use the owner's file as provided); owner review 2026-10-31 of RYUX trials T1 and T2: store badges drawn as text pills, then partner logos left as empty slots after guessed URLs failed)
+- Not when: a wireframe; a fact that is not confirmed
+- Trade-off: official files take a download and their rules (size, clear space, no recolouring) limit the layout
+- Check: review: each mark tied to a confirmed fact and an official source; no drawn lookalikes; every slot left has a source to get it from and was asked for
 
 ### RX-UI-16 [Contextual] Delight stands on three legs
 

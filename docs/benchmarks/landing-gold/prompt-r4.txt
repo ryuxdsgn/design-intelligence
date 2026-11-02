@@ -1,0 +1,1 @@
+Design a one-page marketing landing page for a gold savings app, in two versions: desktop and mobile. The app is for Indonesia: people buy and save gold in small amounts from their phone. Write the copy in English. Design it in Figma, on a new page named "{PAGE}" in this file: https://www.figma.com/design/WpyEomFA0iRghrqkHPoxqJ/Untitled

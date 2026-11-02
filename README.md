@@ -44,6 +44,52 @@ The video shows RYUX's frames after four rounds of owner feedback on a copy; the
 they left them. One run per side, not yet rated by designers. Brief, method, every frame, and the numbers:
 [food delivery in Figma](docs/benchmarks/food-delivery-figma/).
 
+## From one prompt to a Figma page, with its reasons
+
+A landing page for Raja Emas, a gold savings app for Indonesia, made in Claude Code with RYUX and the Figma
+connector. The prompt:
+
+```
+/ryux Design a one-page marketing landing page for a gold savings app, in two versions: desktop and mobile.
+The app is for Indonesia: people buy and save gold in small amounts from their phone. Write the copy in
+English. Design it in Figma, on a new page in this file: <Figma link>
+```
+
+1. **It reads what is already known.** The project's DESIGN.md held the product context from earlier sessions:
+   who it is for (first-job savers who find gold shops intimidating), why they would choose it, what the app
+   does, and that no price, fee, or minimum is confirmed.
+2. **It offers three directions, drawn in Figma, and asks which one.** Each idea comes from a different place:
+   an Indonesian proverb (*ilmu padi*, "the fuller the rice, the lower it bows"), the product itself (a gram
+   counter), and a family habit (gold kept in a drawer). Each tile shows its type, palette, medium, signature,
+   and the risk it carries.
+
+<img src="https://github.com/ryuxdsgn/design-intelligence/releases/download/media/showcase--raja-emas-directions.png" alt="Three style tiles side by side: 1 Ilmu Padi, deep green with rendered rice terraces ripening to gold, marked recommended; 2 Gram by Gram, a light page with an app screen and a gram ring; 3 Mum's Drawer, plum with a rendered gold bangle and a phone. Each lists type, palette, medium, signature, motion, and risk." width="100%">
+
+3. **It asks how the page should be laid out:** a page that steps down like a terraced hillside, or a phone that
+   stays in place while the story scrolls. The owner picked direction 1 and the hillside.
+4. **It designs both widths.** Seven images rendered in Blender with one light and one ground, app screens with
+   labeled sample data, the official store badges on the first screen, and no number, rating, or logo the
+   brief did not confirm.
+
+<img src="https://github.com/ryuxdsgn/design-intelligence/releases/download/media/showcase--raja-emas-page.png" alt="The top of the Raja Emas page at desktop and mobile: a dark green hero, 'Gold that ripens, row by row.', store badges, a phone with the app's home screen over rendered rice terraces; below, a young green rice stalk beside a ripe gold one, 'Start small. No gold shop needed.', and the ilmu padi proverb." width="100%">
+
+5. **It says why.** From the final message, four of its six lines, word for word:
+
+```
+Rice terrace instead of coins, bars or a price chart. It fits your warm, steady, proud character and
+  stays away from trading-app or pawn-shop looks. It would be wrong if users read the landscape as
+  travel or farming.
+Download is the only action, at the top and the end. The two badges sit in one row as one action for
+  two platforms.
+Section order follows the visitor's questions, not a template. I took the questions from DESIGN.md's
+  audience, not from research, so this is the main thing to test.
+Cut: a QR code, numbers, and partner or regulator logos, because none of them is confirmed.
+```
+
+The same reasons are attached to the frames as Figma annotations, so whoever opens the file reads them too.
+One run, two answers from the owner; the annotations were added when the owner asked, and 2.22.0 makes them
+part of the design step.
+
 ## Made with RYUX
 
 Mancing, an app for finding fishing spots and logging catches, designed with RYUX in Figma after a few rounds of
@@ -179,7 +225,7 @@ report a vulnerability, see [SECURITY.md](./SECURITY.md).
 
 ## Status and license
 
-RYUX 2.21, early access. Available now: the skill, the CLI with `scan`, skills.sh, and the Claude Code
+RYUX 2.22, early access. Available now: the skill, the CLI with `scan`, skills.sh, and the Claude Code
 plugin. Coming: an optional MCP with reference screens from real products. RYUX works fully without it; the
 reference data is private and not in this repository.
 
