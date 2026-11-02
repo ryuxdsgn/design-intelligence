@@ -140,3 +140,140 @@ back; the slop gap did, and wider.
 **Scope:** three runs per arm on one brief and one model; one rater, the owner, who leads RYUX and had seen round
 1's mapping. Round 1 and round 2 scores are not compared with each other: the owner rated round 2 against a
 different set. Round 2 ran on two claude.ai accounts (see the protocol).
+
+## Round 3: Impeccable vs RYUX′ (RYUX with RX-UI-26), three runs each
+
+Protocol: the round 3 amendments in [`PROTOCOL.md`](PROTOCOL.md). RYUX′ is RYUX at branch `ryux/rx-ui-26` (8d61fd5):
+RX-UI-26 ("with no direction given, commit to a grounded one, not the safe one") and the revised RX-UI-10. Same
+brief, skills called by name, checked in every transcript, a new empty Figma file, letters drawn again, rated blind by
+the owner in one sitting. The success criteria were locked before the runs.
+
+| Area | I1 | I2 | I3 | **Impeccable mean** | P1 | P2 | P3 | **RYUX′ mean** |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Context Fit | 3 | 3 | 1 | **2.33** | 3 | 3 | 2 | **2.67** |
+| Originality | 4 | 5 | 4 | **4.33** | 2 | 3 | 2 | **2.33** |
+| Restraint | 2 | 2 | 2 | **2.00** | 3 | 3 | 3 | **3.00** |
+| Visual Hierarchy | 4 | 3 | 3 | **3.33** | 3 | 4 | 4 | **3.67** |
+| Consistency | 4 | 4 | 4 | **4.00** | 4 | 4 | 4 | **4.00** |
+| Production Plausibility | 3 | 3 | 3 | **3.00** | 3 | 3 | 3 | **3.00** |
+| AI-Slop Resistance | 4 | 4 | 3 | **3.67** | 2 | 3 | 1 | **2.00** |
+| Intentionality | 3 | 3 | 3 | **3.00** | 3 | 4 | 3 | **3.33** |
+
+Blind letters: I1 F, I2 L, I3 H, P1 R, P2 J, P3 D.
+
+**The locked criteria:**
+
+1. RYUX′ slop resistance at least Impeccable's minus 0.33 (3.33): **fails**, 2.00.
+2. RYUX′ originality at least 3.00: **fails**, 2.33.
+3. RYUX′ restraint at least 3.00: holds, 3.00.
+4. No RYUX′ run shows a fact the brief never gave: holds, none found in three of three.
+
+Against round 2 (same rater, a different set, so read as direction only): RYUX slop resistance 1.33 → 2.00,
+originality 1.67 → 2.33, intentionality 2.67 → 3.33; Impeccable 4.00 → 3.67 and 4.33 → 4.33. The slop gap narrowed
+from 2.67 to 1.67 points but did not close. The best RYUX′ run (P2, 3) only matches the weakest Impeccable run (I3).
+
+| | I1 | I2 | I3 | P1 | P2 | P3 |
+| --- | --- | --- | --- | --- | --- | --- |
+| Asked first | no | no | no | yes | yes | yes |
+| Cost | $6.96 | $5.90 | $6.97 | $4.26 | $4.44 | $3.63 |
+| Minutes | ~23 | ~19.5 | ~20 | ~13 | ~12.5 | ~11.5 |
+| Concept | *mahar* dowry frame | *nota emas* carbon-copy receipt | batik prada, 100 dots = 1 g | gold-shop receipts stacking to grams | gold shop + savings passbook | gold-shop receipt + gram ruler |
+| Fonts | Gloock, Hanken Grotesk, Marcellus SC | Big Shoulders Display, Public Sans, Kalam | Gloock, Hanken Grotesk, Geist Mono | Fraunces, Plus Jakarta Sans | Gloock, Public Sans | Gloock, Archivo |
+| Named the declined default and a signature | — | — | — | yes | yes | yes |
+| Facts shown as given | many: vault in your name, sell back, minted bar delivered, no minimum bar size | few: weighed to the milligram (flagged on the page) | some: backed by physical gold, bars and sell-back as features (details bracketed) | none | none | none |
+
+**What this says about RYUX:**
+
+- **RX-UI-26 changed the behaviour, not enough of the result.** Every RYUX′ run named the default it declined
+  (the quiet off-white fintech look) and a signature element, and Plus Jakarta Sans as the only family is gone. But
+  all three landed on the same direction: an Indonesian gold shop, cream paper and lacquer red, a display serif, a
+  receipt or passbook, near-identical hero copy ("Gold, a little at a time." twice). The rule moved RYUX off the
+  category default onto one new default. Impeccable's three runs had three concepts.
+- **Two of the three RYUX′ runs still recommended the safe look** in their first-turn questions and committed to a
+  bold one only after the "use your own judgment" reply.
+- **RYUX kept:** no fact made up in three of three (Impeccable made up some in all three), more restraint, about
+  62% of the cost and time.
+- **Next, per the protocol:** criteria 1 and 2 failed, so RX-UI-26 does not go into a release as is, and the next
+  step is option B: a mechanism that varies the direction between runs instead of a rule the model applies the same
+  way each time. Tested the same way, in a round 4.
+
+**Scope:** three runs per arm on one brief and one model; one rater, the owner, who leads RYUX. I1 ran on the first
+claude.ai account and the other five on the second; two runs were cut by the account limit and rerun from the start
+(see the protocol).
+
+## Round 5: Impeccable vs RYUX after the owner trials, three runs each
+
+Protocol: the round 5 section in [`PROTOCOL.md`](PROTOCOL.md). RYUX is branch `ryux/direction-discovery` at 389fc08:
+direction discovery with style tiles (RX-PR-13, RX-UI-26), concept as a system (RX-UI-27), official marks
+(RX-UI-28), the craft floor (RX-UI-29), made imagery (RX-UI-30), palette roles (RX-UI-31), and one page, one world
+(RX-UI-32), written over nine owner trials. Impeccable 4.8.0. Same brief with the product facts the RYUX trials asked
+for ([`prompt-r5.txt`](prompt-r5.txt)); a run that stopped to ask got one fixed reply naming a sealed option number
+([`reply-r5.txt`](reply-r5.txt)). Skills called by name and checked in every transcript, letters drawn before the
+runs, rated blind by the owner in one sitting, criteria locked before the runs.
+
+| Area | I1 | I2 | I3 | **Impeccable mean** | R1 | R2 | R3 | **RYUX mean** |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Context Fit | 4 | 3 | 1 | **2.67** | 2 | 4 | 4 | **3.33** |
+| Originality | 5 | 4 | 4 | **4.33** | 4 | 3 | 3 | **3.33** |
+| Restraint | 3 | 3 | 3 | **3.00** | 3 | 3 | 3 | **3.00** |
+| Visual Hierarchy | 3 | 3 | 2 | **2.67** | 3 | 4 | 4 | **3.67** |
+| Consistency | 2 | 2 | 3 | **2.33** | 4 | 4 | 4 | **4.00** |
+| Production Plausibility | 3 | 3 | 2 | **2.67** | 3 | 4 | 3 | **3.33** |
+| AI-Slop Resistance | 4 | 4 | 3 | **3.67** | 2 | 3 | 3 | **2.67** |
+| Intentionality | 3 | 3 | 2 | **2.67** | 3 | 3 | 3 | **3.00** |
+
+Blind letters: I1 K, I2 L, I3 H, R1 V, R2 S, R3 Y.
+
+**The locked criteria:**
+
+1. RYUX slop resistance at least Impeccable's minus 0.33 (3.34): **fails**, 2.67.
+2. RYUX originality at least Impeccable's minus 0.33 (4.00): **fails**, 3.33.
+3. RYUX restraint at least 3.00: holds, 3.00.
+4. No RYUX run shows a fact the brief never gave: holds, none found in three of three (sample figures labeled).
+5. Store badges on the first screen at 1440 and at 390 by 844 in every RYUX run: holds (badge tops at y 496–612 on
+   desktop, 328–390 on mobile). Every Impeccable run held it too.
+
+Against round 3 (same rater, a different set, so read as direction only): RYUX slop resistance 2.00 → 2.67,
+originality 2.33 → 3.33; Impeccable 3.67 → 3.67 and 4.33 → 4.33. Both gaps narrowed to one point and neither closed.
+By pair, slop resistance: I1–R1 4 v 2, I2–R2 4 v 3, I3–R3 3 v 3. RYUX now rates higher in context fit, hierarchy,
+consistency, production plausibility, and intentionality.
+
+| | I1 | I2 | I3 | R1 | R2 | R3 |
+| --- | --- | --- | --- | --- | --- | --- |
+| Asked first | no | no | no | yes, style tiles | yes, style tiles | yes, style tiles |
+| Cost | $5.34 | $5.98 | $4.77 | $7.53 | $9.28 | $7.97 |
+| Minutes | ~22.5 | ~22.5 | ~18 | ~16.5 | ~25 | ~20 |
+| Concept | kawung batik, one motif per 0.25 g | wayang gunungan and a phone puppet | yellow receipt and download coupon | celengan filled in layers | celengan grown up, cut-away jar | gram by gram, cobalt, gram ruler |
+| Base surface | dark indigo | pale grey-green | saturated yellow | warm blush | warm blush | cobalt |
+| Fonts | Bricolage Grotesque, Figtree | Kalnia, Hanken Grotesk | Martian Mono, Schibsted Grotesk | Fraunces, Figtree | Fraunces, Nunito Sans | Bricolage Grotesque, Instrument Sans |
+| Facts shown as given | none | none | none | none | none | none |
+
+Costs are the sum of a run's turns; R2's cost leaves out the first attempt cut by the limit (about $5).
+
+**What this says about RYUX:**
+
+- **The trials moved the page, not the slop read.** Blind, RYUX's pages are now the more coherent and plausible
+  ones (consistency 4.00 v 2.33, hierarchy 3.67 v 2.67), but the rater still reads them as more generic, and the
+  best RYUX run on slop (3) only matches the weakest Impeccable one.
+- **The convergence moved up one level.** All three RYUX runs offered nearly the same three directions (a calm
+  ledger or fintech look, a celengan, "Gram by Gram"), and two of the three built the celengan, with the same serif
+  (Fraunces) and a warm blush base. Impeccable's three runs had three unrelated concepts.
+- **A rule was missed.** R3's chosen direction made the gram ruler its signature, a first idea RX-UI-27 tells the
+  model to drop for gold.
+- **R1's options were numbered two ways.** Its message listed the celengan as 1, while its own question and the
+  Figma tiles called it 2; the reply "option 1" was read as the celengan. Option text must use one numbering.
+- **Impeccable no longer made facts up** in this round, with the product facts in the brief; RYUX cost about 54%
+  more, mostly the extra turn.
+- **Next, per the protocol:** criteria 1 and 2 failed, so the branch is not merged or released, the README's claim
+  stays as round 3 states it, and the gap is read from the transcripts before any new rule.
+
+**Scope:** three runs per arm on one brief and one model; one rater, the owner, who leads RYUX and ran the nine
+trials that shaped this branch. I1, R1, and I2 ran on the first claude.ai account; R2 was cut by the account limit and
+rerun from the start, and R2, I3, and R3 ran on the second (see the protocol).
+
+**After round 5:** the transcripts and the owner's read led to four more changes, tried in owner trials T10 to T12
+(2026-11-02, one run each, rated by the owner, not blind): ideas from three sources, one from the audience's
+culture and place; one focal subject per section at most twice; one medium or a named mix per page with an asset
+spec; and design rationale, annotated on the canvas. The owner's read of T12: "jauh lebih baik". On the owner's
+decision these shipped in 2.22.0 without a blind round; the comparison with Impeccable above still stands as the
+latest blind result, and a round 6 is planned.
