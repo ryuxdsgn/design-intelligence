@@ -159,18 +159,15 @@ outputs. Counts come from a few runs on one model: what those runs did, not rate
 | Benchmark | The question it answers | RYUX | Runs |
 | --- | --- | --- | --- |
 | [Food delivery in Figma](docs/benchmarks/food-delivery-figma/) | Designed in Figma instead of code: is it cheaper, and does the difference still show in the frames? A pilot | 2.19.4 | 1 + 1 |
-| [Illustration](docs/benchmarks/illustration/) | Icons, empty states, a mascot, an editorial picture: do they say what they mean, in one style? Rated blind by an AI rater the owner approved | 2.20.0, 2.21.0 | 8 + 8 + 8 |
+| [Illustration](docs/benchmarks/illustration/) | Icons, empty states, a mascot, an editorial picture: do they say what they mean, in one style? Rated blind by an AI rater the owner approved; before the 2.22.0 rules for one medium per set | 2.20.0, 2.21.0 | 8 + 8 + 8 |
 | [Food delivery, DESIGN.md by RYUX](docs/benchmarks/food-delivery-designmd/) | With no DESIGN.md given, does RYUX write one from a brief and references that answers the five questions, then build that direction without inventing policy? Three rounds | main before 2.19.4, 2.19.4 | 1 + 1 + 1 new + 3 |
 | [Billing page in an existing repo](docs/benchmarks/billing-dashboard/) | Does a new page fit a real repo, keep checks passing, and invent no billing rule? | 2.19.3 | 3 + 3 |
 | [Wallet, expressive direction](docs/benchmarks/wallet-expressive/) | With a DESIGN.md that asks for character and motion, does it build that direction and still ask first and invent no money rule? | 2.19.3 | 3 new + 3 |
 | [Wallet transaction detail](docs/benchmarks/wallet-detail/) | Does it ask what changes the build, keep open money rules open, and build the states a money screen needs? | 2.19.2 | 3 + 3 |
 | [Order tracking](docs/benchmarks/order-tracking/) | Does the agent invent policies the brief left open, and build the states for when things go wrong? | 2.19.0 | 3 + 3 |
-| [Personal finance app](docs/benchmarks/hero-finance/) | Does it ask first, invent facts, and cover states? | 2.9.3 | 3 + 3 |
-| [Explore, judge, critique](docs/benchmarks/explore-judge/) | Does it offer real alternatives first, and does Critique find planted problems? Rated blind | 2.8 vs 2.9 | 3–6 per condition |
-| [Typography](docs/benchmarks/typo-craft/) | Does a craft rule change the built result? Measured by a script | 2.9.1 vs 2.9.2 | 3 + 3 |
 
-Every run so far uses Claude Code; the other supported agents are not benchmarked yet. Older and historical runs
-are listed in [`docs/benchmarks/`](docs/benchmarks/).
+Every run so far uses Claude Code; the other supported agents are not benchmarked yet. Older runs from RYUX 2.6 to
+2.9 (personal finance, explore and judge, typography) are listed as historical in [`docs/benchmarks/`](docs/benchmarks/).
 
 </details>
 

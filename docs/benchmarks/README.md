@@ -10,16 +10,14 @@ repo small: `docs/benchmarks/x/y.png` is the asset `benchmarks--x--y.png`.
 
 | Benchmark | The question it answers | RYUX | Runs |
 | --- | --- | --- | --- |
-| [Gold savings landing page](landing-gold/) | Round 1: one brief, sent once to no skill, antislop, and RYUX (its Impeccable arm ran an old RYUX router instead). Round 2: Impeccable vs RYUX, three runs each, rated blind; RYUX held below on AI-slop resistance and originality: a landing page in desktop and mobile in Figma, rated blind by the owner per area, with facts made up and Figma craft counted | 2.21.0 | 1 + 1 + 1 + 1, then 3 + 3 |
+| [Gold savings landing page](landing-gold/) | One brief for a landing page in desktop and mobile in Figma, rated blind by the owner per area, with facts made up and Figma craft counted. Round 1: no skill, antislop, and RYUX (its Impeccable arm ran an old RYUX router instead). Rounds 2, 3, and 5: Impeccable vs RYUX, three runs each; round 5 ran the direction rules that shipped in 2.22.0 | 2.21.0, then a branch before 2.22.0 | 1 + 1 + 1 + 1, then 3 + 3 per round |
 | [Food delivery in Figma](food-delivery-figma/) | The food-delivery brief designed in Figma instead of built in code, through the Figma connector: is it cheaper, and does the difference still show in the frames? A pilot, one run per side | 2.19.4 | 1 + 1 |
+| [Illustration](illustration/) | Icons, empty states, a mascot, an editorial picture: do they say what they mean, in one style? Rated blind by an AI rater the owner approved. Ran before the 2.22.0 rules for one medium and one asset family per set | 2.20.0, 2.21.0 | 8 + 8 + 8 |
 | [Food delivery, DESIGN.md by RYUX](food-delivery-designmd/) | With no DESIGN.md given, does RYUX write one from the brief that answers who, which job, what evidence, which patterns, and how to evaluate, then build without inventing policy? Round 2 adds two references (Airbnb's look, a ride-hailing motion study). One RYUX run per round against order-tracking's no-skill runs | main before 2.19.4 | 1 + 1 new + 3 |
 | [Billing page in an existing repo](billing-dashboard/) | Does a new page fit a real repo: reuse, tokens, checks passing, states covered, no invented billing rule? A React + TS fixture, no skill vs RYUX + DESIGN.md, measured from each run's diff | 2.19.3 | 3 + 3 |
 | [Wallet, expressive direction](wallet-expressive/) | With a DESIGN.md that asks for character and motion, does RYUX build that direction and still ask first, invent no money rule, and cover the states? Three new RYUX runs against wallet-detail's no-skill runs, with motion counted per event | 2.19.3 | 3 new + 3 |
 | [Wallet transaction detail](wallet-detail/) | Does the agent ask what changes the build, keep open money rules open, and build the states a money screen needs? One HTML file, no skill vs RYUX + DESIGN.md, with `ryux scan` and cost per run | 2.19.2 | 3 + 3 |
 | [Order tracking](order-tracking/) | Does the agent invent policies the brief left open, and build the states for when things go wrong? A working prototype, no skill vs RYUX + DESIGN.md, with `ryux scan` | 2.19.0 | 3 + 3 |
-| [Personal finance app](hero-finance/) | Does the agent ask first, invent facts, and cover states? Designed in pen.dev, no skill vs RYUX; the README demo | 2.9.3 | 3 + 3 |
-| [Explore, judge, critique](explore-judge/) | Does it offer real alternatives before one design, and does Critique find planted problems? Rated blind by a designer | 2.8 vs 2.9 | 3–6 per condition |
-| [Typography](typo-craft/) | Does a craft rule change the built result? One rule measured by a script, one blind designer rating | 2.9.1 vs 2.9.2 | 3 + 3 |
 
 ### What each one measures
 
@@ -28,16 +26,15 @@ striking screen built on invented facts.
 
 | | Context understanding | UX correctness | Visual quality | Creative range | Reliability |
 | --- | :-: | :-: | :-: | :-: | :-: |
-| Gold savings landing page | facts made up, counted | — | blind, one rater, four arms | — | text styles, variables, cost |
+| Gold savings landing page | facts made up, counted | — | blind, one rater, per area | — | text styles, variables, cost |
+| Food delivery in Figma | asked first, traps counted | states counted | frames compared, not scored | — | cost |
+| Illustration | — | — | blind AI rater, owner approved | — | technical floor, cost |
 | Billing page in an existing repo | traps counted | scenarios reached | not scored | — | typecheck, tests, build, reuse, tokens, `ryux scan`, cost |
 | Wallet, expressive direction | asked first, traps counted | states counted | not scored yet; motion events and direction counted | — | `ryux scan`, cost |
 | Wallet transaction detail | asked first, traps counted | statuses and states counted | not scored | — | `ryux scan`, assumptions listed, cost |
 | Order tracking | traps counted | states counted | not scored | — | `ryux scan`, assumptions listed |
-| Personal finance app | asked first, traps counted | states counted, comprehension | not scored | — | assumptions listed |
-| Explore, judge, critique | — | Critique on planted problems | blind, one designer | three directions | — |
-| Typography | — | — | script, blind, one designer | — | — |
 
-Not measured yet: creative range with no skill vs RYUX, visual quality on more than one run per arm, more than one rater, and agents other than Claude Code.
+Not measured yet: creative range with no skill vs RYUX, visual quality from more than one human rater, the 2.22.0 design rationale and annotations, and agents other than Claude Code.
 
 ## Historical
 
@@ -46,6 +43,9 @@ benchmarks above.
 
 | Benchmark | What it showed then | RYUX | Runs |
 | --- | --- | --- | --- |
+| [Personal finance app](hero-finance/) | Designed in pen.dev: RYUX asked first in 3 of 3 runs and showed no fact the brief left out, no skill 7 to 9 kinds per run; covered since by the 2.19 benchmarks | 2.9.3 | 3 + 3 |
+| [Explore, judge, critique](explore-judge/) | Real alternatives before one design, and Critique finding planted problems, rated blind by a designer; the way RYUX offers directions was replaced in 2.22.0 | 2.8 vs 2.9 | 3–6 per condition |
+| [Typography](typo-craft/) | Whether one craft rule changed the built result, measured by a script and one blind designer rating; the UI rules have been revised since | 2.9.1 vs 2.9.2 | 3 + 3 |
 | [Lumo transaction detail](lumo-td-2.6/) | More states; no added action or promise shown as fact | 2.6.3 | 3 + 3 |
 | [Five steps on one screen](case-td-2.6/) | Analyze, Critique, Design, Build, and QA in one session; a case study | 2.6.2 | 1 |
 
