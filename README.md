@@ -77,18 +77,29 @@ confirmed, a promise the product never made. RYUX makes it sort what it has firs
 - **Unconfirmed capabilities**: actions products like yours usually have, proposed and labeled unconfirmed.
 - **Facts, policies, and claims**: fees, refund times, guarantees. Never invented.
 
-The same brief with and without RYUX, food delivery order tracking designed in Figma:
+The next step for Raja Emas, the app's home and buy flow in Figma, with and without RYUX. Both got the same
+prompt; one run each, not edited after:
 
-<a href="docs/benchmarks/food-delivery-figma/"><img src="https://github.com/ryuxdsgn/design-intelligence/releases/download/media/benchmarks--food-delivery-figma--see-the-difference.gif" alt="Animation: the brief; the no-skill agent designs straight away while RYUX writes DESIGN.md, asks, and explores three layouts; two Android phones play both Figma pages through an unavailable item, a late order, and the way to the door, the left showing a reply timer with an auto-pick, an instant refund, a late voucher, tips, and a rating, the right waiting for the customer's choice, keeping it after a failed send, and tagging every undecided rule on screen; then the numbers" width="100%"></a>
+```
+Design the phone app for Raja Emas, a gold savings app for Indonesia: people buy and save gold in small
+amounts from their phone. Design the home screen and the flow to buy gold, from choosing an amount to the
+result. Write the copy in English. Design it in Figma, on a new page in this file: <Figma link>
+```
 
-- **Without a skill**, the agent invented 8 policies (a late voucher, automatic refunds, an auto-pick if you
-  don't answer in time, tips) and showed them as real. **With RYUX**, it invented 1 and tagged the rest
-  "Prototype rule, not decided yet".
-- RYUX asked first, and designed for when things go wrong: no courier, offline, a map that failed to load.
-- It cost about four times as much.
+<img src="https://github.com/ryuxdsgn/design-intelligence/releases/download/media/showcase--raja-emas-app.png" alt="Two rows of four phone screens: home, choose an amount, review, and result. Top row, without a skill: a minimum of Rp 10.000, no service fee, a price held on a countdown, an insured vault, 24K gold at 99.99%, a virtual account confirmed in about a minute. Bottom row, with RYUX in the Ilmu Padi direction: the fee and the price hold tagged Prototype, not decided yet, the total shown as Rp100.000 + fee, and a rice row that ripens toward the savings goal." width="100%">
 
-One run per side; the video shows RYUX's frames after four rounds of owner feedback. Brief, method, and every
-frame: [food delivery in Figma](docs/benchmarks/food-delivery-figma/).
+- **Without a skill**, the agent asked nothing and showed eight things as fact that nobody had decided: a
+  minimum of Rp 10.000, no service fee, a price held on a countdown, an insured vault, 24K gold at 99.99%,
+  a virtual account confirmed in about a minute, auto-save from Rp 10.000 a week, and a Send feature. Five
+  screens, each filled.
+- **With RYUX**, it read the DESIGN.md it had written for the landing page and asked three questions first: how
+  people pay, what happens to the price before they pay, and whether there is a fee or a minimum. The owner left
+  the fee and the price hold undecided, so RYUX tagged them on screen. It drew three home layouts to choose
+  from, then 16 screens, including loading, first use, a price that failed to load, a price that changed, and a
+  payment that never arrived.
+
+Not a level start: RYUX worked from the DESIGN.md it wrote in the landing step; the agent without a skill had
+the prompt alone.
 
 ## Use it
 
