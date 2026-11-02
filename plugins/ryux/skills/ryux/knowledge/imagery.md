@@ -125,6 +125,13 @@ Recipes:
   matches the page; never change what the product is, and label it retouched.
 - **UI composite**: the product's screen with labeled sample data, large, at an angle or overlapped,
   with depth from the material (a soft shadow or glow), never invented features.
+- **Photo and vector**: a real or licensed photo, cut out and graded to the palette, with drawn vector
+  in one line weight and colour that touches it: a line that wraps the subject, a shape behind it, an
+  annotation that points into it. The same pairing in every section.
+**A set is one family** (RX-UI-18, RX-UI-30): write the asset spec first (medium, camera, light, scale,
+staging, crop, grade), make the assets together, and lay them side by side before the page; the
+subjects change, the treatment does not. Ornaments, dividers, and icons take the page's medium or
+named mix (RX-UI-32).
 Generated people never stand for customers (RX-AS-02).
 
 RYUX directs the generator; it is not the generator. Work context, goal,
@@ -223,7 +230,7 @@ How comparable products use imagery and motion: `search_screens` by pattern, `ex
 - When: an expressive surface (a landing page, onboarding, a brand moment) with a chosen concept
 - Do: Sections and their order come from the visitor's questions (RX-UX-13); the concept gives each its form from the concept's inventory (the parts the real thing has), and a generic section form needs a reason (knowledge/imagery.md, Expressive surfaces).
   - The hero's concept object does the product's core job with sample data, not a sample on display.
-  - Devices: write three from the inventory, drop the one any product in the category would draw first (for gold: a coin, a bar, a scale, a ruler), and keep two or three; each appears in three or more sections where it does a job (shows data, marks structure, leads to the next step); a decorative repeat counts once, and none sits between a message and its action.
+  - Devices: write three from the inventory, drop the one any product in the category would draw first (for gold: a coin, a bar, a scale, a ruler), and keep two or three, each naming the part of the inventory it comes from (one that names none is cut); each appears in three or more sections where it does a job (shows data, marks structure, leads to the next step); a decorative repeat counts once, and none sits between a message and its action.
   - The system repeats, the subject does not: what returns across sections is a pattern, a ground, a divider with meaning, a data form, or a rhythm, changing its role or form each time; each section's focal visual has its own subject (a scene, a figure, a moment of use), and one subject is the focal visual of two sections at most (a new angle or state of the same object counts as the same subject).
   - One decisive type move and one dominant colour field come from the concept.
   - Compose, do not stack: at most two same-skeleton sections in a row (text one side, a visual the other), and two or more composition moves (knowledge/ui.md, Direction grammar, Layout), each keeping the reading order and the path to the action.
@@ -253,15 +260,20 @@ How comparable products use imagery and motion: `search_screens` by pattern, `ex
 - When: an expressive surface built from a chosen direction
 - Do: Hold the page to the direction's world:
   - every asset, device, and section shares the direction's material and light; an asset from another direction is reused only when its material matches, and a changed direction rebuilds from its new direction block
+  - one medium for the page: flat 2D, 3D render, retouched photo, or UI composite, or one named mix with its binding, chosen with the direction:
+    - photo and vector: the photo cut out and graded to the palette; the vector in one line weight and colour that touches, wraps, or annotates the photo, never floating beside it; the same pairing in every section
+    - render and UI: the product's screens set into rendered devices as their textures, not flat vector phones beside renders
+    - render and flat shapes: flat shapes only as ground and background, every object rendered, the render's light and shadow falling on the flat ground
+    - ornaments, dividers, and icons take the page's medium; a mix without a name and a binding is two pages
   - plan the backgrounds as a rhythm before building: two or three surfaces in a repeating pattern, with the transitions designed
   - the concept runs through the page, not only the first and last section, as a system (material, pattern, ground, rhythm) while each section's focal subject changes (RX-UI-27)
   - the counts in RX-UI-27, RX-UI-29, and RX-UI-30 are minimums that serve the concept: an idea that fights unity is translated into the world's material, light, and shapes, and cut only when it cannot be; unity never lowers the carrier or the boldness the user chose
   - Before the gate, fresh eyes list the elements that look as if they came from another page; fix them.
-- Do not: Make the page neat by making it timid, tick each rule with a different idea, carry a render from a rejected direction into the chosen one, change the background world every section, or add a composition move only to reach a count.
-- Why: A page that satisfies every rule with a different idea reads as a collage; people read unity as care and a collage as unfinished, however good each part is. (Art direction practice (unity of one surface); owner review 2026-10-31 of trial T8 (a render from the rejected direction and a new background world every section, read as disconnected) and trial T9 (with a cut-first version of this rule, neat but less creative))
+- Do not: Make the page neat by making it timid, tick each rule with a different idea, carry a render from a rejected direction into the chosen one, set photoreal renders beside flat vector devices with nothing binding them, change the background world every section, or add a composition move only to reach a count.
+- Why: A page that satisfies every rule with a different idea reads as a collage; people read unity as care and a collage as unfinished, however good each part is. (Art direction practice (unity of one surface); owner review 2026-10-31 of trial T8 (a render from the rejected direction and a new background world every section, read as disconnected) and trial T9 (with a cut-first version of this rule, neat but less creative); owner review 2026-11-02 of trial T11: renders, flat vector phones, and a flat roof-tile edge on one page read as undecided between 3D and 2D; a photo edited and paired with vector is a combination that holds when it is chosen and bound)
 - Not when: task UI; a page that is deliberately a collage, where that is the chosen concept
 - Trade-off: unity narrows choices and can cut an idea that is good on its own
-- Check: fresh-eyes list of elements from another page (none left); every asset's material and light matching the direction block; the background rhythm written before the build
+- Check: the page's medium or named mix, with its binding, in the direction block; fresh-eyes list of elements from another page (none left); every asset's material and light matching the direction block; the background rhythm written before the build
 
 ### RX-UI-13 [Contextual] Source assets on purpose
 

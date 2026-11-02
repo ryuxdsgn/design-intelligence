@@ -849,6 +849,13 @@ Recipes:
   matches the page; never change what the product is, and label it retouched.
 - **UI composite**: the product's screen with labeled sample data, large, at an angle or overlapped,
   with depth from the material (a soft shadow or glow), never invented features.
+- **Photo and vector**: a real or licensed photo, cut out and graded to the palette, with drawn vector
+  in one line weight and colour that touches it: a line that wraps the subject, a shape behind it, an
+  annotation that points into it. The same pairing in every section.
+**A set is one family** (RX-UI-18, RX-UI-30): write the asset spec first (medium, camera, light, scale,
+staging, crop, grade), make the assets together, and lay them side by side before the page; the
+subjects change, the treatment does not. Ornaments, dividers, and icons take the page's medium or
+named mix (RX-UI-32).
 Generated people never stand for customers (RX-AS-02).
 
 RYUX directs the generator; it is not the generator. Work context, goal,
