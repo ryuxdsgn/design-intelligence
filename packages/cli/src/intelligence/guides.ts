@@ -367,6 +367,9 @@ minimal"), not a specification; translate it into concrete decisions (restrained
 hierarchy, little decoration, clear status) instead of swapping in a style you prefer. Character
 words are not a recipe: "trustworthy" does not mean blue and "premium" does not mean serif. Choose
 color, type, spacing, and components from the brand, the design system, and evidence, and say which.
+A direction written for another surface (a landing page's direction, used now for the app) carries its
+brand layer, not its mockups: decide the new surface's structure again and give its own moments the
+direction's medium (RX-UI-33).
 
 **Decision Receipt.** Write one for each major decision: the navigation model, payment method
 priority, information hierarchy, checkout structure, interaction model, or responsive strategy.

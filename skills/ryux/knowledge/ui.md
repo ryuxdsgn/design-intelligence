@@ -148,7 +148,7 @@ A design direction from comparable screens: `extract_design_direction` (patterns
   - Choose yourself only when the user hands this choice back or the task runs without questions (a pipeline, a batch job); "up to you" on another question hands back only that question. Then pick one with a reason, marked provisional in the Assumptions, and offer the other two in a line each.
 - Do not: Build the directions from the category alone, draw all three ideas from the product and the transaction, number the options differently in two places, pick three style keywords from a list, offer three palettes of one layout, put all three on light warm surfaces, describe a carrier in the tile instead of making it, offer a conventional direction with no signature or visual anchor, recommend the category default because it feels safer, ask an open "what look do you want?" with no options, or let a direction change the facts: assumptions about the look are allowed, assumptions about the product are not (RX-AS-01, RX-PR-02).
 - Why: With no direction, an agent ranks the familiar look first and ships it, and a rule that tells it to be bold moves it to the next familiar look; the variety has to come from the user's choice among directions that fit. (Art direction practice (style tiles; a direction as a set of reasoned visual decisions); landing-gold rounds 2 to 4 and owner trials T1 to T9, 2026-10-30/31 (docs/benchmarks/landing-gold): with a direction assigned or chosen by the agent, RYUX runs converged on one look and rated below a peer for slop resistance; owner decision 2026-10-31 (Design Direction Intelligence); landing-gold round 5, 2026-11-01, and owner review: all three RYUX runs drew their ideas from the product and the saving habit and offered nearly the same three directions, while the peer drew on Indonesian textile, theatre, and shop culture)
-- Not when: the prompt or DESIGN.md sets the direction, or an existing brand system defines it; follow it. A small change inside an existing product
+- Not when: the prompt or DESIGN.md sets the direction, or an existing brand system defines it; follow it, and on a surface it was not written for, carry it by RX-UI-33. A small change inside an existing product
 - Trade-off: one more question and three tiles before the design starts
 - Check: the Delivery Gate names the three directions offered, the answer each rests on, the one used, and whether the user chose it or it is provisional; the three differ on at least three grammar dimensions; three base surface families, warm off-white at most one, one cool or neutral direction; flat with flat vectors at most one, a render, retouched photo, or UI composite in at least one; three idea sources, one from the audience's culture or place, its meaning named; one numbering for the options; a made asset in each tile
 
@@ -167,6 +167,21 @@ A design direction from comparable screens: `extract_design_direction` (patterns
 - Not when: a brand or design system that already defines the palette; then follow it
 - Trade-off: tinted neutrals tie the page to one hue and make a later change of the dominant colour touch every surface
 - Check: the scheme named; the light neutral's hue within 30 degrees of the dominant hue, or a written reason; hues besides neutrals four or fewer; the strongest colour on the primary action; text pairs measured
+
+### RX-UI-33 [Required] A direction moves to a new surface by its brand layer, not its mockups
+
+- When: a direction chosen for one surface (a landing page, a campaign, a marketing image) is used on another (the product app, a dashboard, an email)
+- Do: Carry the brand layer and decide the rest again for the new surface:
+  - carry: the type pair, the colour roles, shape, voice, the signature as a motif, and the medium where the new surface has room for it
+  - decide again for the surface's job: density, components, navigation, hierarchy, and motion, with Frame and Explore for that surface (capabilities/design.md, stages 2 and 3)
+  - a device mockup inside a marketing image is illustrative, a stand-in for screens nobody had designed; never trace the real screens from it
+  - map the medium to the surface's own moments, neither dropped nor spread over every screen: in a product app, first run, empty states, a goal or progress view, success and milestones get assets made in the direction's medium and asset spec (RX-UI-30); routine task screens stay quiet in the same type and colour
+  - write a surface entry in the DESIGN.md direction block: what carries, what changes, and which moments hold the medium
+- Do not: Rebuild the marketing page's phone mockup as the app, read a direction written for a page as the spec for task screens, drop every asset because the new surface is task UI, or put a hero render on every screen.
+- Why: A direction is chosen for the surface in front of the user; copied onto another, an app replays its own advertisement, flat where it has room to feel and dressed up where it has work to do. (Art direction practice (a brand carried across surfaces); owner review 2026-11-02 of the Raja Emas app (App 3): the landing direction applied to the app read as flat and as the landing's phone mockup built again)
+- Not when: the direction block already has an entry for this surface; a small change inside an existing app
+- Trade-off: deciding the surface again costs a Frame and Explore round that the user may think is already done
+- Check: the surface entry in the direction block (carry, change, moments); screens not traced from a marketing mockup; each named moment holding an asset made in the direction's medium; routine screens without hero assets
 
 ### RX-UI-14 [Preferred] [Quality Lock] Type that is set, not only sized
 
