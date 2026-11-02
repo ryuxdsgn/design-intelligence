@@ -237,6 +237,11 @@ The six stages of the core workflow (SKILL.md), as Design runs them.
 6. **Verify and deliver.**
    - Facts: check every product fact on the canvas (tool and command names, integrations,
      platforms, pages, numbers) against the brief or the repo (RX-PR-02).
+   - Open-rule sweep (RX-PR-02): list every rule and number nobody decided (a fee, a minimum, a
+     time limit, a deadline), from the Assumptions, the open questions, and DESIGN.md. Search the text
+     of every screen for each one; in Figma, read every text node of the page. Each one shown gets its
+     label on that same screen ("Prototype rule, not decided yet") or leaves the screen; a read-me
+     board, a notes frame, or the final message does not count. Report it in the gate's CONTENT line.
    - Canvas copy is for the team, not for RYUX: annotations, state captions, and labels use plain
      language ("Shown while prices load; button disabled"). Rule IDs, gate results, and Decision
      Receipts go in the Design Direction or the final message, never in frames meant for review or
@@ -367,6 +372,9 @@ minimal"), not a specification; translate it into concrete decisions (restrained
 hierarchy, little decoration, clear status) instead of swapping in a style you prefer. Character
 words are not a recipe: "trustworthy" does not mean blue and "premium" does not mean serif. Choose
 color, type, spacing, and components from the brand, the design system, and evidence, and say which.
+A direction written for another surface (a landing page's direction, used now for the app) carries its
+brand layer, not its mockups: decide the new surface's structure again and give its own moments the
+direction's medium (RX-UI-33).
 
 **Decision Receipt.** Write one for each major decision: the navigation model, payment method
 priority, information hierarchy, checkout structure, interaction model, or responsive strategy.
@@ -1033,6 +1041,10 @@ Card radius | 16px                 | 8px            | half the radius | minor   
 
 **Without a reference**, check the build against its own intent, the rules below, and the measured
 Laws of UX checks in knowledge/ux.md.
+
+**Open rules** (with or without a reference): search the text of every screen and state for each
+rule and number nobody decided (fees, minimums, time limits, deadlines); each one shown carries its
+label on that screen (RX-PR-02). Report open rules on screen <tagged>/<shown> in the CONTENT line.
 
 **Illustration** (when the build has any): with its label covered, each asset says its concept
 line (RX-UI-24); it matches the written style (RX-UI-17), a set reads as one family side by side (RX-UI-18), it reads at its real displayed size including the smallest width, it

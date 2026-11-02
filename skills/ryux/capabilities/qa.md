@@ -2,7 +2,7 @@
 
 Verifies the build against the intended design: render it, list every deviation, fix, and render again.
 
-> Group Quality · Delivery Gate area VISUAL QA · RYUX 2.22.0. Levels are defined in `SKILL.md`.
+> Group Quality · Delivery Gate area VISUAL QA · RYUX 2.22.1. Levels are defined in `SKILL.md`.
 
 As an entry point, Visual QA is the Verify and deliver stage of the core workflow (SKILL.md)
 for a build; Design and Build also use its loop in Build and critique. It asks one question: **did the implementation match the intended design?** Whether the
@@ -22,6 +22,10 @@ Card radius | 16px                 | 8px            | half the radius | minor   
 
 **Without a reference**, check the build against its own intent, the rules below, and the measured
 Laws of UX checks in knowledge/ux.md.
+
+**Open rules** (with or without a reference): search the text of every screen and state for each
+rule and number nobody decided (fees, minimums, time limits, deadlines); each one shown carries its
+label on that screen (RX-PR-02). Report open rules on screen <tagged>/<shown> in the CONTENT line.
 
 **Illustration** (when the build has any): with its label covered, each asset says its concept
 line (RX-UI-24); it matches the written style (RX-UI-17), a set reads as one family side by side (RX-UI-18), it reads at its real displayed size including the smallest width, it
