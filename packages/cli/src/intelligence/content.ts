@@ -1645,6 +1645,19 @@ export const RULES: Rule[] = [
       tradeoff: "a choice to make before building, and the lightest option may limit the effect",
       check: "options offered with weight, license, fallback, and reduced-motion behaviour; one library per job; static fallback renders",
     },
+    {
+      num: 18,
+      title: "A hard job gets a proven library, offered as a choice",
+      level: "preferred",
+      when: "the build needs a job that is hard to get right by hand (an accessible dialog, menu, combobox, or tabs; a form with validation; data from a server; a large table or list; dates; a chart; tests), and the platform and the repo do not cover it",
+      do: "Choose in this order: the platform (<dialog>, <details>, the popover attribute, Intl.NumberFormat for Rupiah, Intl.DateTimeFormat, CSS), then a library the repo already has, then two or three options for the repo's framework, each with its size, license, last release, accessibility support, and framework fit:\n  - accessible components: Radix UI, React Aria, or Base UI (React); Reka UI (Vue); Bits UI or Melt UI (Svelte); Kobalte (Solid); Angular CDK (Angular); Ark UI on Zag.js across React, Vue, Solid, and Svelte; shadcn/ui and its Vue and Svelte ports when the team wants to own the component code\n  - forms and validation: TanStack Form (most frameworks), React Hook Form (React), VeeValidate (Vue), Superforms (SvelteKit), Angular's reactive forms; a schema in Zod or Valibot shared with the server\n  - server data: TanStack Query (React, Vue, Svelte, Solid, Angular), SWR (React)\n  - tables and long lists: TanStack Table and TanStack Virtual, across frameworks\n  - dates: date-fns or Day.js; money and numbers with Intl, no library\n  - charts: ECharts or Chart.js in any framework; Recharts or visx in React\n  - icons: Lucide, with a package per framework; toasts: Sonner (React) or its Vue and Svelte ports\n  - tests: Vitest, Testing Library for the framework, Playwright, and axe-core\n  - Before adding one, check on the npm registry and its documentation that the package exists under that exact name, is maintained, fits the framework version, and has the API you will call; this list is a starting point, not a source of truth.\n  - Ask before adding it (a dependency is a long-term choice), one library per job, and record the choice with its reason (RX-PR-14).",
+      dont: "Hand-roll a focus trap, a combobox, or date arithmetic the platform or a proven library does correctly; add a library the platform covers; add a second library for a job the repo already solves; install a package name from memory without checking it exists; or call an API you have not read in its documentation (RX-FE-02).",
+      why: "The hard parts of these jobs are keyboard, focus, screen readers, time zones, caching, and edge cases; hand-written versions usually miss them, and an unchecked package name can be one that does not exist or that someone registered to catch exactly that mistake.",
+      basis: "W3C WAI-ARIA Authoring Practices (dialog, menu, combobox, and tabs patterns); each library's documentation; software supply chain practice (verify a package before installing it); owner request 2026-11-02 that RYUX recommend frontend libraries across frameworks",
+      notWhen: "the repo already uses a library for the job: use it; a prototype the user says will be thrown away",
+      tradeoff: "a question and a check before the build; a dependency to keep up to date",
+      check: "review: the platform and the repo checked first; two or three options with size, license, last release, accessibility, and framework fit; each package verified on the registry and its docs before use; one library per job; the choice recorded with its reason",
+    },
   ]),
 
   ...skill("visual-qa", [

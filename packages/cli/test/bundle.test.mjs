@@ -213,6 +213,15 @@ test("design rationale: every shaping decision has a reason, and a design-tool c
   assert.match(files["SKILL.md"], /rationale <n> lines, annotations <n> \| none/);
 });
 
+test("frontend libraries: platform first, then the repo's, then verified options across frameworks", () => {
+  // owner request 2026-11-02: library recommendations for proper frontend code, across frameworks
+  const fe = renderBundle()["knowledge/frontend.md"].replace(/\s+/g, " ");
+  assert.match(fe, /### RX-FE-18 /);
+  assert.match(fe, /Choose in this order: the platform/);
+  for (const name of ["Radix UI", "Reka UI", "Bits UI", "Kobalte", "Angular CDK", "Ark UI", "TanStack Query", "VeeValidate"]) assert.match(fe, new RegExp(name), name);
+  assert.match(fe, /check on the npm registry and its documentation that the package exists under that exact name/);
+});
+
 test("expressive pages: one weight carrier, devices with a job, one world, the task first", () => {
   // owner trials T3 to T9, 2026-10-31: plain pages, a repeated ruler, a carried-over render, a timid fix
   const files = renderBundle();
