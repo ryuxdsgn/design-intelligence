@@ -235,8 +235,14 @@ test("expressive pages: one weight carrier, devices with a job, one world, the t
   assert.match(img, /The system repeats, the subject does not/);
   assert.match(img, /focal visual of two sections at most/);
   assert.match(img, /\*\*Making images\.\*\*/);
+  // owner review 2026-11-02 of trial T11: renders, flat phones, and a flat edge read as undecided between 3D and 2D
+  assert.match(img, /one named mix with its binding/);
+  assert.match(img, /photo and vector: the photo cut out and graded to the palette/);
+  assert.match(img, /each naming the part of the inventory it comes from/);
+  assert.match(img, /\*\*A set is one family\*\*/);
   const ill = files["knowledge/illustration.md"].replace(/\s+/g, " ");
   assert.match(ill, /### RX-UI-30 /);
   assert.match(ill, /seven checks/);
+  assert.match(ill, /write one asset spec for the page in the direction block, so the subjects change and the treatment does not/);
   assert.match(files["knowledge/frontend.md"].replace(/\s+/g, " "), /### RX-FE-17 /);
 });
