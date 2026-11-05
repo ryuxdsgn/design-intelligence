@@ -1,0 +1,8 @@
+Answers to your questions (the same answers are given to every run):
+- Product: Lipatan, a laundry pickup and delivery app in Indonesia. This work is ordering and following one order.
+- Users: adults in Indonesian cities, on mobile, often one-handed.
+- Brand and design system: only the name is decided. Propose what you need and label it.
+- Services, prices per kilo or per item, minimum weight, turnaround times, express, fees, payment methods, and the policy for damaged or lost items: not decided.
+- Width: 390.
+- Look: fresh and friendly, with illustrated touches.
+- Anything else: not decided; decide and state it as an assumption.

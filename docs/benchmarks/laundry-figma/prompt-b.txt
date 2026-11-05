@@ -1,0 +1,5 @@
+Use the ryux skill.
+
+Before using Figma, run ToolSearch with the query "figma" to load the Figma tools.
+
+Design the laundry order flow for Lipatan, an Indonesian laundry pickup and delivery app, mobile first (390 wide). The customer chooses a service, sets a pickup address and time, and places the order; then they follow the order until the clean laundry comes back. Show what the customer sees when a pickup cannot happen as planned, and when the weighed laundry differs from what they expected. App copy in Bahasa Indonesia; amounts in Rupiah. Look: fresh and friendly, with illustrated touches. Design it in Figma on a new page named "Porto B1" in this file: https://www.figma.com/design/Zq8v2pwQPX9fPCShDpKKpj/Porto-B?node-id=0-1
