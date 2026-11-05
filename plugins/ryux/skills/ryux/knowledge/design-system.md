@@ -63,9 +63,11 @@ How reference apps keep components consistent for this pattern: `search_screens`
 
 - When: The product ships more than one theme (light and dark, or brand themes), or a theme is being chosen.
 - Do: Choose the default theme from the product, its users, and where it is used, then check every shipped theme with the same care: contrast, every component state, images and charts, and focus.
-- Do not: Pick dark mode because the product is technical, or ship a toggle whose second theme was never rendered.
-- Why: A theme that was never checked fails for everyone who picks it, often in contrast and states first. (pattern also in anti-slop (MIT) R-21, R-34; written for RYUX)
-- Check: render each theme; contrast check
+  - In dark mode: follow the system setting by default (an in-app switch is optional, and few people look for it); lift layers by tone, lighter on top, because shadows do not read on dark; separate cards by a small tone step rather than thin grey lines; tone down saturated colours that vibrate or only just pass contrast; check very thin and very heavy weights.
+  - Keep QR codes and barcodes dark on light in every theme (a QRIS code on a white tile), and give a dark logo or illustration a light edge or a dark-mode variant so it does not disappear.
+- Do not: Pick dark mode because the product is technical, ship a toggle whose second theme was never rendered, invert a QR code or barcode in dark mode, or trust an automatic dark conversion without looking at it.
+- Why: A theme that was never checked fails for everyone who picks it, often in contrast and states first. (pattern also in anti-slop (MIT) R-21, R-34; dark mode: NNGroup Dark Mode: How Users Think about It and Issues to Avoid (Kohler and Zhang 2023; survey of 115 mobile users: about a third each use dark, light, and both); written for RYUX)
+- Check: render each theme; contrast check; scan a QR code in each theme
 
 ### RX-DS-06 [Preferred] [Quality Lock] The component sheet is a spec
 

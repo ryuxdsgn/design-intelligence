@@ -67,8 +67,8 @@ Standards are the main evidence (WCAG 2.2 success criteria); reference screens s
 
 - Do: Pair color with text or an icon when it carries meaning (errors, status, selection).
 - Do not: Signal an error or a selected state with color only.
-- Why: Color-blind users and grayscale screens miss color-only signals. (WCAG 2.2 SC 1.4.1)
-- Check: review
+- Why: Color-blind users and grayscale screens miss color-only signals. (WCAG 2.2 SC 1.4.1; grayscale check: NNGroup 5 Visual Treatments that Improve Accessibility (Gordon 2022))
+- Check: review; render in grayscale and confirm every meaning survives
 
 ### RX-A11Y-07 [Required] Errors announced and tied to fields
 
@@ -79,8 +79,11 @@ Standards are the main evidence (WCAG 2.2 success criteria); reference screens s
 
 ### RX-A11Y-08 [Required] Respect reduced motion
 
-- Do: When reduced motion is requested, replace large movement with a fade or a cut.
-- Do not: Ignore the system reduced-motion setting.
-- Why: Large motion can cause discomfort for people with vestibular disorders. (WCAG 2.2 SC 2.3.3; prefers-reduced-motion; Apple HIG)
+- Do: When reduced motion is requested, replace large movement with a fade or a cut, and turn off parallax, scroll-jacking, and carousels that advance on their own.
+  - Anything that moves, blinks, or scrolls on its own for more than 5 seconds beside other content (a carousel, a ticker, a looping animation) can be paused, stopped, or hidden; a loading indicator is exempt while the wait lasts.
+  - A long intro or onboarding animation can be skipped, and nothing repeats to win attention.
+  - Nothing flashes more than three times in one second.
+- Do not: Ignore the system reduced-motion setting, loop an animation with no way to stop it, or make people sit through an animation to reach the content.
+- Why: Large motion can cause discomfort for people with vestibular disorders, motion that never stops pulls attention away from reading, and flashing can trigger seizures. (WCAG 2.2 SC 2.3.3 (animation from interactions), SC 2.2.2 (pause, stop, hide), SC 2.3.1 (three flashes); prefers-reduced-motion; Apple HIG; NNGroup Animation Duration and Motion Characteristics (Laubheimer 2020): parallax, auto-advancing carousels, and scroll-jacking affect people with vestibular disorders; NNGroup Animation for Attention and Comprehension (Harley 2014): repeated animation, and a skip for long ones)
 - Check: review
-- Machine check: `ryux scan` flags animation in a folder where nothing handles prefers-reduced-motion (warn)
+- Machine check: `ryux scan` flags animation in a folder where nothing handles prefers-reduced-motion (warn); an animation that repeats forever and is not a loading indicator, with no way to pause it (warn)

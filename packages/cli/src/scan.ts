@@ -22,7 +22,15 @@ export interface ScanContext {
   /** Some scanned file is Indonesian (lang id, id-ID, Rupiah, or common Indonesian words). Undefined
    *  when single files were scanned; locale detectors then read the file itself. */
   indonesian?: boolean;
+  /** Some scanned file handles prefers-reduced-transparency or prefers-contrast. Undefined when single
+   *  files were scanned. */
+  reducedTransparency?: boolean;
 }
+
+/** A loading indicator may loop while the wait lasts (WCAG 2.2.2 exempts it). */
+const LOADER = /spin|load|skeleton|shimmer|progress|pulse|busy|pending/i;
+/** Layout properties: animating them makes the browser lay the page out again on every frame. */
+const LAYOUT_PROPS = /^(?:width|height|top|left|right|bottom|margin(?:-\w+)?|padding(?:-\w+)?|max-height|max-width)$/;
 
 const INDONESIAN = /\blang=["']id\b|\bid-ID\b|\blocale\s*[:=]\s*["'`]id\b|\bRp\.?\s?\d|\b(?:yang|untuk|tidak|silakan|pesanan|belum)\b/;
 const TEST_FILE = /(?:^|\/)(?:tests?|__tests__)\/|\.(?:test|spec)\.[cm]?[jt]sx?$/;
@@ -311,6 +319,76 @@ export const DETECTORS: Detector[] = [
     },
   },
   {
+    rule: "RX-A11Y-08",
+    level: "warn",
+    looksFor: "an animation that repeats forever and is not a loading indicator, with no way to pause it",
+    exts: [...MARKUP, ...STYLE, ...SCRIPT],
+    find: ({ text }) => {
+      const hits: Hit[] = [];
+      for (const m of text.matchAll(/\banimation(?:-iteration-count)?\s*:[^;}\n]*\binfinite\b|\brepeat\s*:\s*Infinity\b|\banimate-(?:bounce|ping)\b/g)) {
+        // Look at the rule or element around it: a spinner or skeleton may loop while the wait lasts.
+        const around = text.slice(Math.max(0, m.index! - 160), m.index! + m[0].length + 40);
+        if (LOADER.test(around)) continue;
+        hits.push({ index: m.index!, length: m[0].length, message: `"${m[0].trim()}" repeats forever: give it a pause or stop control, stop it after a few cycles, or keep looping only for a loading indicator` });
+      }
+      return hits;
+    },
+  },
+  {
+    rule: "RX-UI-11",
+    level: "warn",
+    looksFor: "a transition on all properties or on layout properties (width, height, top, left, margin, padding)",
+    exts: [...MARKUP, ...STYLE, ...SCRIPT],
+    find: ({ text }) => {
+      const hits: Hit[] = [];
+      for (const m of text.matchAll(/\btransition(?:-property)?\s*:\s*([^;}"'`\n]+)|\btransition-all\b/g)) {
+        if (m[0] === "transition-all") {
+          hits.push({ index: m.index!, length: m[0].length, message: "transition-all animates every property: name the ones that move, transform and opacity where you can" });
+          continue;
+        }
+        const props = m[1].split(",").map((part) => part.trim().split(/\s+/)[0]);
+        const bad = props.filter((prop) => prop === "all" || LAYOUT_PROPS.test(prop));
+        if (!bad.length) continue;
+        hits.push({ index: m.index!, length: m[0].length, message: bad.includes("all") ? "a transition on all properties: name the ones that move, transform and opacity where you can" : `a transition on ${bad.join(", ")}: animate transform or opacity instead, so the page is not laid out again every frame` });
+      }
+      return hits;
+    },
+  },
+  {
+    rule: "RX-UI-11",
+    level: "warn",
+    looksFor: "a UI transition longer than 500 ms",
+    exts: [...MARKUP, ...STYLE, ...SCRIPT],
+    find: ({ text }) => {
+      const hits: Hit[] = [];
+      const ms = (v: string, unit: string) => (unit === "s" ? Number(v) * 1000 : Number(v));
+      for (const m of text.matchAll(/\btransition(?:-duration)?\s*:\s*([^;}"'`\n]+)/g)) {
+        // In each comma part the first time is the duration; a second one is the delay.
+        const longest = Math.max(0, ...m[1].split(",").map((part) => {
+          const t = /(?<![\w.-])(\d*\.?\d+)(ms|s)\b/.exec(part);
+          return t ? ms(t[1], t[2]) : 0;
+        }));
+        if (longest > 500) hits.push({ index: m.index!, length: m[0].length, message: `a ${Math.round(longest)} ms transition: task UI reads anything near 500 ms as waiting; about 100 to 300 ms, 400 ms for a large move` });
+      }
+      for (const m of text.matchAll(/\bduration-(\d{3,4})\b/g)) {
+        if (Number(m[1]) > 500) hits.push({ index: m.index!, length: m[0].length, message: `${m[0]}: task UI reads anything near 500 ms as waiting; about 100 to 300 ms, 400 ms for a large move` });
+      }
+      return hits;
+    },
+  },
+  {
+    rule: "RX-UI-35",
+    level: "warn",
+    looksFor: "a backdrop blur in a folder where nothing handles prefers-reduced-transparency or prefers-contrast",
+    exts: [...MARKUP, ...STYLE, ...SCRIPT],
+    folder: true,
+    find: ({ text }, ctx) => {
+      if (ctx.reducedTransparency !== false) return [];
+      const m = /\bbackdrop-filter\s*:|\bbackdrop-blur\b|\bbackdropFilter\s*:/.exec(text);
+      return m ? [{ index: m.index, length: m[0].length, message: `"${m[0]}" and nothing in the scanned folder handles prefers-reduced-transparency or prefers-contrast: fall back to a solid surface when either is set, and check text contrast over the busiest background` }] : [];
+    },
+  },
+  {
     rule: "RX-DS-03",
     level: "warn",
     looksFor: "three or more one-off hex colors in a file that is not a token or theme file",
@@ -418,6 +496,7 @@ export function scanSources(sources: Source[], opts: ScanOptions): ScanFinding[]
     ? {
         reducedMotion: sources.some((s) => /prefers-reduced-motion|motion-(?:reduce|safe):|useReducedMotion|reducedMotion/.test(s.text)),
         indonesian: sources.some((s) => !TEST_FILE.test(s.path) && INDONESIAN.test(s.text)),
+        reducedTransparency: sources.some((s) => /prefers-reduced-transparency|prefers-contrast|contrast-more:|useReducedTransparency/.test(s.text)),
       }
     : {};
   const findings: ScanFinding[] = [];
