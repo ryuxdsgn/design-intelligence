@@ -29,8 +29,8 @@ test("Build with no design asks Design's stage 1 questions, even for a prototype
   assert.match(build, /even when the request is a quick build or a working prototype/);
 });
 
-test("a brief with no market gets no default market, and sample data names no real brand", () => {
-  // wallet-detail benchmark, 2.19.2: 3 of 3 runs proposed Indonesia and IDR, and 3 of 3 showed Visa
+test("a brief with no market gets no default market, and a real brand is asked about or shown with its own logo", () => {
+  // wallet-detail benchmark, 2.19.2: 3 of 3 runs proposed Indonesia and IDR; owner decision 2026-11-06: real brand logos, or ask
   const files = renderBundle();
   const product = files["knowledge/product.md"].replace(/\s+/g, " ");
   assert.match(product, /propose no market as your default/);
@@ -38,7 +38,8 @@ test("a brief with no market gets no default market, and sample data names no re
   assert.match(design, /name no market, ask with no market as the recommended default/);
   assert.match(files["capabilities/build.md"].replace(/\s+/g, " "), /no default market when nothing names one/);
   const antiSlop = files["knowledge/anti-slop.md"].replace(/\s+/g, " ");
-  assert.match(antiSlop, /Names are made up, including merchants, banks, and card networks/);
+  assert.match(antiSlop, /ask once, with the fact questions, whether to show the real brands with their official logos or made-up names/);
+  assert.match(antiSlop, /Never a made-up brand with a drawn logo, or a real brand set as plain text where its logo belongs/);
 });
 
 test("validation catches a missing module, a broken reference, and 1.x names", () => {
@@ -142,6 +143,13 @@ test("an undecided rule shown on screen is labelled on that screen", () => {
   assert.match(design, /a read-me board, a notes frame, or the final message does not count/);
   assert.match(files["SKILL.md"], /open rules on screen <tagged>\/<shown> \| none/);
   assert.match(files["capabilities/qa.md"].replace(/\s+/g, " "), /\*\*Open rules\*\*/);
+  // laundry and Pasarku Figma runs, 2026-11-05/06: counts recalled, then a label naming another fee judged as labelled
+  assert.match(design, /the listing decides "labelled", not you/);
+  assert.match(design, /The unit is one rule on one screen/);
+  assert.match(design, /the listing is the last use_figma call before the gate/);
+  assert.match(design, /const RULES = \[/);
+  assert.match(design, /r\.label === null \|\| |b\.includes\(r\.label\.toLowerCase\(\)\)/);
+  assert.match(design, /native annotation in a "Placeholder" category/);
 });
 
 test("builds keep their cost down: fresh session, contact sheets, targeted tests", () => {

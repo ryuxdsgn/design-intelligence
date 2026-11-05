@@ -243,40 +243,65 @@ The six stages of the core workflow (SKILL.md), as Design runs them.
      label on that same screen ("Prototype rule, not decided yet") or leaves the screen; a read-me
      board, a notes frame, or the final message does not count. Report it in the gate's CONTENT line.
    - Count it, do not recall it: the CONTENT numbers come from a listing of the canvas, not from
-     memory. A value repeated on later screens (a fee in every summary) needs its label on each of
-     them. A label counts for a value when it sits beside it (same card or row) and names what it
-     covers ("Fee: sample, not decided"); a generic label elsewhere on the screen does not. In Figma,
-     run this read-only listing with use_figma, set its first five lines, and give each row a verdict
-     (labelled, not a rule, or unlabelled); <shown> is every row except "not a rule", and every
-     unlabelled row is fixed before the gate. TERMS holds at least one word for each rule on the open-rule
-     list, not only the prices (a payment rule needs "pay" or its local word). Run it after the last edit to
-     the canvas, and again after fixing what it found. Elsewhere, list the same from the rendered text.
+     memory, and the listing decides "labelled", not you. Every amount on a screen is a rule to place:
+     an open rule (a fee, a price, a deadline), a fact the brief sets, or sample data that is not a rule;
+     a fee the brief does not set (delivery, service, admin) is an open rule even when it reads like
+     cart data. In Figma, write RULES in this read-only listing, one entry per open rule: words that find
+     it in a row ("ongkos kirim") and a word its label must contain ("kirim"); facts and sample data get
+     label: null. A rule on a screen counts as labelled only when a label beside it (in its card or row,
+     or within NEAR px) contains that word; a label naming another rule does not count. The unit is one
+     rule on one screen: <tagged>/<shown> is the listing's count, so a repeated value needs its label on
+     each screen. Fix every unlabelled pair and every amount without a rule, then run it again: the
+     listing is the last use_figma call before the gate, and any later edit means running it again.
+     Elsewhere, list the same from the rendered text.
 
 \`\`\`js
-const PAGE = "Page name", TAG = "Open-rule tag component name", WIDTH = 390;
-const TERMS = ["/kg", "days", "free", "fee", "pay"]; // one or more words for EACH open rule on your list, in the app's language
+const PAGE = "Page name", TAG = "Open-rule label component name", WIDTHS = [390, 360], NEAR = 48, SKIP = /^(caption|notes?)\\b/i;
+// One entry per open rule: words that find it in a row's text, and a word its label must contain.
+// A fact the brief sets, or sample data that is not a rule, gets label: null.
+const RULES = [
+  { rule: "delivery fee", find: ["delivery fee", "shipping"], label: "delivery" },
+  { rule: "payment deadline", find: ["pay before", "expires"], label: "deadline" },
+  { rule: "sample amounts", find: ["subtotal", "total"], label: null },
+];
 const MONEY = /(Rp|IDR|US\\$|\\$|€|£|¥)\\s?\\d|\\d\\s?(%|IDR|USD|EUR)\\b/i;
 const page = figma.root.children.find((p) => p.name === PAGE); await page.loadAsync();
-const tagIds = new Set();
-for (const n of page.findAll((x) => x.type === "INSTANCE")) { // findAll: findAllWithCriteria skips instances nested in instances
+const tagIds = new Set(); // findAll, not findAllWithCriteria: that one skips instances nested in instances
+for (const n of page.findAll((x) => x.type === "INSTANCE")) {
   const mc = await n.getMainComponentAsync();
   if ((mc?.parent?.type === "COMPONENT_SET" ? mc.parent.name : mc?.name) === TAG) tagIds.add(n.id);
 }
 const up = (n, f) => { for (let p = n; p && p.type !== "PAGE"; p = p.parent) if (f(p)) return true; return false; };
-const gap = (a, b) => Math.round(Math.hypot(Math.max(0, a.x - b.x - b.width, b.x - a.x - a.width), Math.max(0, a.y - b.y - b.height, b.y - a.y - a.height)));
-const screens = page.findAll((n) => n.type === "FRAME" && Math.round(n.width) === WIDTH && n.height >= 600 && !up(n.parent, (p) => p.type === "FRAME" && Math.round(p.width) === WIDTH));
-const rows = [];
+const gap = (a, b) => Math.hypot(Math.max(0, a.x - b.x - b.width, b.x - a.x - a.width), Math.max(0, a.y - b.y - b.height, b.y - a.y - a.height));
+const texts = (n) => n.findAll((t) => t.type === "TEXT");
+const isScreen = (n) => n.type === "FRAME" && WIDTHS.includes(Math.round(n.width)) && n.height >= 100 && !SKIP.test(n.name);
+const screens = page.findAll((n) => isScreen(n) && !up(n.parent, isScreen));
+const pairs = new Map(), noRule = [];
 for (const s of screens) {
-  const tags = s.findAll((n) => tagIds.has(n.id) && !up(n, (p) => p.visible === false)).map((n) => ({ box: n.absoluteBoundingBox, text: n.findAll((t) => t.type === "TEXT").map((t) => t.characters).join(" ") }));
-  for (const t of s.findAll((x) => x.type === "TEXT")) {
+  const tags = s.findAll((n) => tagIds.has(n.id) && !up(n, (p) => p.visible === false));
+  for (const t of texts(s)) {
     if (up(t, (p) => p.visible === false || tagIds.has(p.id))) continue;
-    const text = t.characters.replace(/\\s+/g, " ");
-    if (!MONEY.test(text) && !TERMS.some((w) => text.toLowerCase().includes(w))) continue;
-    const near = tags.map((g) => ({ ...g, d: gap(t.absoluteBoundingBox, g.box) })).sort((a, b) => a.d - b.d)[0];
-    rows.push(s.name + " | " + text.slice(0, 60) + " | " + (near ? near.text + " (" + near.d + " px)" : "no label on this screen"));
+    const sib = t.parent && t.parent !== s ? texts(t.parent) : [];
+    const row = (sib.length && sib.length <= 4 ? sib.map((x) => x.characters).join(" ") : t.characters).toLowerCase();
+    const hit = RULES.filter((r) => r.find.some((w) => row.includes(w.toLowerCase())));
+    if (!hit.length) { if (MONEY.test(t.characters)) noRule.push(s.name + " | " + t.characters.slice(0, 40)); continue; }
+    // Labels beside it: in the smallest group around it that holds a label, or within NEAR px.
+    let group = null;
+    for (let p = t.parent; p && p !== s; p = p.parent) if (tags.some((g) => up(g, (q) => q === p))) { group = p; break; }
+    const beside = tags.filter((g) => (group && up(g, (q) => q === group)) || gap(t.absoluteBoundingBox, g.absoluteBoundingBox) <= NEAR)
+      .map((g) => texts(g).map((x) => x.characters).join(" ").toLowerCase());
+    for (const r of hit) {
+      if (r.label === null) continue;
+      const key = s.name + " | " + r.rule, ok = beside.some((b) => b.includes(r.label.toLowerCase()));
+      const p = pairs.get(key) || { ok: false, seen: [] };
+      p.ok = p.ok || ok; if (!ok && p.seen.length < 2) p.seen.push(t.characters.slice(0, 40) + " ← " + (beside.join(" / ").slice(0, 60) || "no label beside"));
+      pairs.set(key, p);
+    }
   }
 }
-return { screens: screens.length, rows };
+// Unit: one rule on one screen. Labelled when a label naming it sits beside it there.
+const all = [...pairs], ok = all.filter(([, p]) => p.ok).length;
+return { screens: screens.length, count: ok + "/" + all.length, unlabelled: all.filter(([, p]) => !p.ok).map(([k, p]) => k + " · " + p.seen.join(" · ")), amountsWithoutRule: noRule };
 \`\`\`
    - Canvas copy is for the team, not for RYUX: annotations, state captions, and labels use plain
      language ("Shown while prices load; button disabled"). Rule IDs, gate results, and Decision
@@ -303,6 +328,12 @@ return { screens: screens.length, rows };
      evidence codes, or gate results in them. The final message says how many annotations there
      are, on which frames, and how to see them (in Figma, native annotations show in Dev Mode,
      Shift+D: select a frame or layer).
+   - Placeholders: every stand-in for a real asset (a sample QR code, a map, a product photo, a logo
+     slot, a barcode, an avatar) carries a native annotation in a "Placeholder" category, attached to
+     that node: what it stands for, what replaces it, and where that comes from ("Sample QR. Replace with
+     the code the payment provider returns for this order"). The note lives in the annotation, not as
+     text inside the UI; the screen shows the asset as it will look. In another tool, use its annotation
+     or comment feature. List the placeholders in the final message.
    - Close with the Delivery Gate, saying what was not designed, such as other widths or states. If
      you wrote DESIGN.md, say so in the final message: which file and which fields.
 
@@ -1082,9 +1113,10 @@ Laws of UX checks in knowledge/ux.md.
 **Open rules** (with or without a reference): search the text of every screen and state for each
 rule and number nobody decided (fees, minimums, time limits, deadlines); each one shown carries its
 label on that screen (RX-PR-02). Report open rules on screen <tagged>/<shown> in the CONTENT line,
-counted from a listing of the screens' text (in Figma, the listing in capabilities/design.md, stage 6),
-never recalled: a repeated value needs its label on each screen, and a label counts only beside the
-value and naming it.
+counted by the listing in capabilities/design.md, stage 6 (in Figma), never recalled: one rule on one
+screen is the unit, every amount is placed as an open rule, a fact, or sample data, and a rule counts as
+labelled only when a label beside it contains the rule's word. Placeholders carry a "Placeholder"
+annotation (capabilities/design.md, stage 6).
 
 **Illustration** (when the build has any): with its label covered, each asset says its concept
 line (RX-UI-24); it matches the written style (RX-UI-17), a set reads as one family side by side (RX-UI-18), it reads at its real displayed size including the smallest width, it
