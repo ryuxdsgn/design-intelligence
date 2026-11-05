@@ -183,6 +183,40 @@ The six stages of the core workflow (SKILL.md), as Design runs them.
      of every screen for each one; in Figma, read every text node of the page. Each one shown gets its
      label on that same screen ("Prototype rule, not decided yet") or leaves the screen; a read-me
      board, a notes frame, or the final message does not count. Report it in the gate's CONTENT line.
+   - Count it, do not recall it: the CONTENT numbers come from a listing of the canvas, not from
+     memory. A value repeated on later screens (a fee in every summary) needs its label on each of
+     them. A label counts for a value when it sits beside it (same card or row) and names what it
+     covers ("Fee: sample, not decided"); a generic label elsewhere on the screen does not. In Figma,
+     run this read-only listing with use_figma, set its first five lines, and give each row a verdict
+     (labelled, not a rule, or unlabelled); <shown> is every row except "not a rule", and every
+     unlabelled row is fixed before the gate. Elsewhere, list the same from the rendered text.
+
+```js
+const PAGE = "Page name", TAG = "Open-rule tag component name", WIDTH = 390;
+const TERMS = ["/kg", "days", "free", "fee"]; // words from your open-rule list, in the app's language
+const MONEY = /(Rp|IDR|US\$|\$|€|£|¥)\s?\d|\d\s?(%|IDR|USD|EUR)\b/i;
+const page = figma.root.children.find((p) => p.name === PAGE); await page.loadAsync();
+const tagIds = new Set();
+for (const n of page.findAllWithCriteria({ types: ["INSTANCE"] })) {
+  const mc = await n.getMainComponentAsync();
+  if ((mc?.parent?.type === "COMPONENT_SET" ? mc.parent.name : mc?.name) === TAG) tagIds.add(n.id);
+}
+const up = (n, f) => { for (let p = n; p && p.type !== "PAGE"; p = p.parent) if (f(p)) return true; return false; };
+const gap = (a, b) => Math.round(Math.hypot(Math.max(0, a.x - b.x - b.width, b.x - a.x - a.width), Math.max(0, a.y - b.y - b.height, b.y - a.y - a.height)));
+const screens = page.findAll((n) => n.type === "FRAME" && Math.round(n.width) === WIDTH && n.height >= 600 && !up(n.parent, (p) => p.type === "FRAME" && Math.round(p.width) === WIDTH));
+const rows = [];
+for (const s of screens) {
+  const tags = s.findAll((n) => tagIds.has(n.id) && !up(n, (p) => p.visible === false)).map((n) => ({ box: n.absoluteBoundingBox, text: n.findAllWithCriteria({ types: ["TEXT"] }).map((t) => t.characters).join(" ") }));
+  for (const t of s.findAllWithCriteria({ types: ["TEXT"] })) {
+    if (up(t, (p) => p.visible === false || tagIds.has(p.id))) continue;
+    const text = t.characters.replace(/\s+/g, " ");
+    if (!MONEY.test(text) && !TERMS.some((w) => text.toLowerCase().includes(w))) continue;
+    const near = tags.map((g) => ({ ...g, d: gap(t.absoluteBoundingBox, g.box) })).sort((a, b) => a.d - b.d)[0];
+    rows.push(s.name + " | " + text.slice(0, 60) + " | " + (near ? near.text + " (" + near.d + " px)" : "no label on this screen"));
+  }
+}
+return { screens: screens.length, rows };
+```
    - Canvas copy is for the team, not for RYUX: annotations, state captions, and labels use plain
      language ("Shown while prices load; button disabled"). Rule IDs, gate results, and Decision
      Receipts go in the Design Direction or the final message, never in frames meant for review or

@@ -25,7 +25,10 @@ Laws of UX checks in knowledge/ux.md.
 
 **Open rules** (with or without a reference): search the text of every screen and state for each
 rule and number nobody decided (fees, minimums, time limits, deadlines); each one shown carries its
-label on that screen (RX-PR-02). Report open rules on screen <tagged>/<shown> in the CONTENT line.
+label on that screen (RX-PR-02). Report open rules on screen <tagged>/<shown> in the CONTENT line,
+counted from a listing of the screens' text (in Figma, the listing in capabilities/design.md, stage 6),
+never recalled: a repeated value needs its label on each screen, and a label counts only beside the
+value and naming it.
 
 **Illustration** (when the build has any): with its label covered, each asset says its concept
 line (RX-UI-24); it matches the written style (RX-UI-17), a set reads as one family side by side (RX-UI-18), it reads at its real displayed size including the smallest width, it
