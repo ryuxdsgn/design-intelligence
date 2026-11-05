@@ -189,15 +189,17 @@ The six stages of the core workflow (SKILL.md), as Design runs them.
      covers ("Fee: sample, not decided"); a generic label elsewhere on the screen does not. In Figma,
      run this read-only listing with use_figma, set its first five lines, and give each row a verdict
      (labelled, not a rule, or unlabelled); <shown> is every row except "not a rule", and every
-     unlabelled row is fixed before the gate. Elsewhere, list the same from the rendered text.
+     unlabelled row is fixed before the gate. TERMS holds at least one word for each rule on the open-rule
+     list, not only the prices (a payment rule needs "pay" or its local word). Run it after the last edit to
+     the canvas, and again after fixing what it found. Elsewhere, list the same from the rendered text.
 
 ```js
 const PAGE = "Page name", TAG = "Open-rule tag component name", WIDTH = 390;
-const TERMS = ["/kg", "days", "free", "fee"]; // words from your open-rule list, in the app's language
+const TERMS = ["/kg", "days", "free", "fee", "pay"]; // one or more words for EACH open rule on your list, in the app's language
 const MONEY = /(Rp|IDR|US\$|\$|€|£|¥)\s?\d|\d\s?(%|IDR|USD|EUR)\b/i;
 const page = figma.root.children.find((p) => p.name === PAGE); await page.loadAsync();
 const tagIds = new Set();
-for (const n of page.findAllWithCriteria({ types: ["INSTANCE"] })) {
+for (const n of page.findAll((x) => x.type === "INSTANCE")) { // findAll: findAllWithCriteria skips instances nested in instances
   const mc = await n.getMainComponentAsync();
   if ((mc?.parent?.type === "COMPONENT_SET" ? mc.parent.name : mc?.name) === TAG) tagIds.add(n.id);
 }
@@ -206,8 +208,8 @@ const gap = (a, b) => Math.round(Math.hypot(Math.max(0, a.x - b.x - b.width, b.x
 const screens = page.findAll((n) => n.type === "FRAME" && Math.round(n.width) === WIDTH && n.height >= 600 && !up(n.parent, (p) => p.type === "FRAME" && Math.round(p.width) === WIDTH));
 const rows = [];
 for (const s of screens) {
-  const tags = s.findAll((n) => tagIds.has(n.id) && !up(n, (p) => p.visible === false)).map((n) => ({ box: n.absoluteBoundingBox, text: n.findAllWithCriteria({ types: ["TEXT"] }).map((t) => t.characters).join(" ") }));
-  for (const t of s.findAllWithCriteria({ types: ["TEXT"] })) {
+  const tags = s.findAll((n) => tagIds.has(n.id) && !up(n, (p) => p.visible === false)).map((n) => ({ box: n.absoluteBoundingBox, text: n.findAll((t) => t.type === "TEXT").map((t) => t.characters).join(" ") }));
+  for (const t of s.findAll((x) => x.type === "TEXT")) {
     if (up(t, (p) => p.visible === false || tagIds.has(p.id))) continue;
     const text = t.characters.replace(/\s+/g, " ");
     if (!MONEY.test(text) && !TERMS.some((w) => text.toLowerCase().includes(w))) continue;
