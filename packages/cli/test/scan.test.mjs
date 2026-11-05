@@ -82,6 +82,32 @@ test("small text, one-off colors, and reduced motion", () => {
   assert.deepEqual(scanSources([toSource("a.css", ".x { animation: spin 1s }"), toSource("b.css", "@media (prefers-reduced-motion: reduce) {}")], { folder: true }), []);
 });
 
+test("motion: endless loops, transition properties and length, and translucency", () => {
+  assert.deepEqual(rules(scan("a.css", ".hero { animation: float 3s ease-in-out infinite }")), ["warn RX-A11Y-08"]);
+  assert.deepEqual(rules(scan("a.tsx", '<div className="animate-bounce" />')), ["warn RX-A11Y-08"]);
+  assert.deepEqual(rules(scan("a.tsx", "animate={{ y: 4 }} transition={{ repeat: Infinity }}")), ["warn RX-A11Y-08"]);
+  // a loading indicator may loop while the wait lasts
+  assert.deepEqual(scan("a.css", ".spinner { animation: spin 1s linear infinite }"), []);
+  assert.deepEqual(scan("a.tsx", '<div className="skeleton animate-pulse" />'), []);
+  assert.deepEqual(scan("a.css", ".toast { animation: in 200ms ease-out }"), []);
+
+  assert.deepEqual(rules(scan("a.css", ".x { transition: all 0.2s }")), ["warn RX-UI-11"]);
+  assert.deepEqual(rules(scan("a.tsx", '<div className="transition-all" />')), ["warn RX-UI-11"]);
+  assert.deepEqual(rules(scan("a.css", ".x { transition: height 200ms, opacity 200ms }")), ["warn RX-UI-11"]);
+  assert.deepEqual(scan("a.css", ".x { transition: transform 200ms ease-out, opacity 150ms }"), []);
+
+  assert.deepEqual(rules(scan("a.css", ".x { transition: transform 0.8s ease }")), ["warn RX-UI-11"]);
+  assert.deepEqual(rules(scan("a.tsx", '<div className="transition-opacity duration-700" />')), ["warn RX-UI-11"]);
+  // the second time in a part is the delay, not the duration
+  assert.deepEqual(scan("a.css", ".x { transition: opacity 200ms ease 600ms }"), []);
+  assert.deepEqual(scan("a.tsx", '<div className="transition-opacity duration-300" />'), []);
+
+  const folder = (files) => rules(scanSources(files.map(([p, raw]) => toSource(p, raw)), { folder: true }));
+  assert.deepEqual(folder([["a.css", ".bar { backdrop-filter: blur(20px) }"]]), ["warn RX-UI-35"]);
+  assert.deepEqual(folder([["a.css", ".bar { backdrop-filter: blur(20px) }"], ["b.css", "@media (prefers-reduced-transparency: reduce) { .bar { background: #fff } }"]]), []);
+  assert.deepEqual(scan("a.css", ".bar { backdrop-filter: blur(20px) }"), [], "single files skip folder checks");
+});
+
 test("comments are not scanned, and ryux-ignore switches a rule off", () => {
   assert.deepEqual(scan("a.tsx", "{/* Rp 99 */}\n// Rp 99\n<p>x</p>"), []);
   assert.deepEqual(scan("a.tsx", "<p>Rp 99</p> {/* ryux-ignore RX-CD-02 */}"), []);

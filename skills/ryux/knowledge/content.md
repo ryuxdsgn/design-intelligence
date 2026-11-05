@@ -159,3 +159,12 @@ Real labels, errors, and how money, dates, and times are written in the product'
 - Why: Help is read only at the moment of doubt; help elsewhere is help nobody finds. (Nielsen heuristic 10 (help and documentation); NNGroup 10 usability heuristics; paradox of the active user (Carroll and Rosson 1987): people start using a product before reading any instructions, so help sits where the question comes up)
 - Trade-off: help in context adds text to the screen; keep it to the steps that need it
 - Check: heuristic_eval H-10
+
+### RX-CD-17 [Required] Choices are framed honestly
+
+- Do: Write each option as the person's own intent in plain words ("Lewati", "Tidak, terima kasih"), say what each one costs or gives, and leave paid add-ons unchecked: insurance, protection, a tip, a donation, or a subscription is opted into, not out of.
+  - Show the options with equal clarity; the option the business prefers is primary only when it is also the user's likely goal (RX-PR-03).
+  - Make the copy match what the interface does: "Gratis" is free, and "Batalkan kapan saja" is a tap away.
+- Do not: Shame the decline ("Tidak, saya tidak mau hemat"), push with a loss ("Kamu akan kehilangan semua keuntungan") when nothing real is lost, pre-check a paid add-on, or hide the decline as a faint link.
+- Why: Framing changes what people choose; a choice won by pressure costs trust and comes back as complaints, refunds, and churn. (NNGroup Interface Copy Impacts Decision Making; Thaler and Sunstein, Nudge (2008): choice architecture; RX-AS-04 (no fake urgency); RX-IX-05 (full cost before commitment); written for RYUX)
+- Check: review every choice screen: the labels, the defaults, and the way to decline
