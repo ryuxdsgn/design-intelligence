@@ -219,3 +219,16 @@ A design direction from comparable screens: `extract_design_direction` (patterns
 - Not when: a dense expert tool whose users learn the set; then a tooltip plus an accessible name
 - Trade-off: labels take space, especially in toolbars and tab bars
 - Check: review: list each icon with its meaning and flag duplicates; heuristic_eval H-04
+
+### RX-UI-35 [Contextual] Translucent surfaces stay readable
+
+- When: a surface is translucent or blurred over other content (glass, frosted panels, bars or sheets over images, video, or a scrolling page)
+- Do: Check the text and icons on it against every background it can sit over (photos, video, the busiest part of a scrolling page), not only the calm one in the mockup, and raise the blur and the opacity of the fill until they pass (RX-A11Y-01).
+  - Give the edge a faint stroke or a tone step so the panel keeps its shape over a similar background.
+  - Fall back to a solid surface when the user asks for less transparency or more contrast (prefers-reduced-transparency, prefers-contrast, and the platform settings); where the platform has its own material (Apple materials, Windows Acrylic), use it.
+  - Keep it to a few surfaces with a reason (navigation layered over content), not the look of every card.
+- Do not: Check glass contrast only over the mockup's background, set body text on a thin blur over a photo, or make every card glass.
+- Why: Text on a translucent surface loses contrast over busy content, and the content behind it changes as people scroll, so a panel that passes in the mockup can fail in use. (NNGroup Glassmorphism: Definition and Best Practices (Brown 2024); WCAG 2.2 SC 1.4.3 and 1.4.11; Apple HIG materials and Reduce Transparency; RX-UI-33 (glass only when the direction calls for it); written for RYUX)
+- Trade-off: more blur and opacity make the effect quieter
+- Check: render over the busiest background it can meet; contrast check; turn on reduced transparency
+- Machine check: `ryux scan` flags a backdrop blur in a folder where nothing handles prefers-reduced-transparency or prefers-contrast (warn)

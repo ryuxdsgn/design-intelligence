@@ -138,6 +138,7 @@ const RUN = "ryux run 2026-10-02";
 const AS = "anti-slop (MIT)";
 const EK = "emilkowalski/skills (MIT)";
 const AP = "appllama-app-design-skill (MIT)";
+const OL = "owl-listener/designer-skills (MIT)";
 const DS_LIBRARY = "Building or changing reusable components or variables in a design tool (Figma, pen.dev) or a component library, meant to be used by designers and in code.";
 
 export const RULES: Rule[] = [
@@ -662,6 +663,19 @@ export const RULES: Rule[] = [
       check: "review",
       formerly: ["RX-L-10"],
     },
+    {
+      num: 11,
+      title: "Names as people write them",
+      level: "contextual",
+      when: "a form asks for a person's name",
+      do: "Use one full-name field unless a document or a regulation needs the parts, and then say which one.\n  - Accept a single name (many Indonesians have one), long names, spaces, apostrophes, hyphens, periods, and accented letters; trim spaces instead of rejecting them.\n  - When the product addresses people by name, ask what to call them instead of guessing from the first word.\n  - When a real limit applies (a bank's character limit, the name exactly as on the KTP), say so at the field, before the user types.",
+      dont: "Require a first and a last name, reject an apostrophe or a hyphen, cap the length below real names without saying why, or make a person with one name type it twice.",
+      why: "A form that rejects a real name tells the person they do not fit; they type a false name or leave.",
+      basis: "NNGroup Inclusive Design (Kendrick 2022): name fields that reject real names; W3C Internationalization: Personal names around the world; Indonesian naming practice (single names are common); written for RYUX",
+      notWhen: "the field must match a document exactly; then say so and follow the document",
+      tradeoff: "one field makes sorting by family name harder; store parts only when a real need asks for them",
+      check: "type a single name, a long name, and names with an apostrophe and a hyphen",
+    },
   ]),
 
   ...skill("edge-cases", [
@@ -873,6 +887,16 @@ export const RULES: Rule[] = [
       tradeoff: "help in context adds text to the screen; keep it to the steps that need it",
       check: "heuristic_eval H-10",
     },
+    {
+      num: 17,
+      title: "Choices are framed honestly",
+      level: "required",
+      do: "Write each option as the person's own intent in plain words (\"Lewati\", \"Tidak, terima kasih\"), say what each one costs or gives, and leave paid add-ons unchecked: insurance, protection, a tip, a donation, or a subscription is opted into, not out of.\n  - Show the options with equal clarity; the option the business prefers is primary only when it is also the user's likely goal (RX-PR-03).\n  - Make the copy match what the interface does: \"Gratis\" is free, and \"Batalkan kapan saja\" is a tap away.",
+      dont: "Shame the decline (\"Tidak, saya tidak mau hemat\"), push with a loss (\"Kamu akan kehilangan semua keuntungan\") when nothing real is lost, pre-check a paid add-on, or hide the decline as a faint link.",
+      why: "Framing changes what people choose; a choice won by pressure costs trust and comes back as complaints, refunds, and churn.",
+      basis: "NNGroup Interface Copy Impacts Decision Making; Thaler and Sunstein, Nudge (2008): choice architecture; RX-AS-04 (no fake urgency); RX-IX-05 (full cost before commitment); written for RYUX",
+      check: "review every choice screen: the labels, the defaults, and the way to decline",
+    },
   ]),
 
   ...skill("ui", [
@@ -1018,6 +1042,18 @@ export const RULES: Rule[] = [
       tradeoff: "labels take space, especially in toolbars and tab bars",
       check: "review: list each icon with its meaning and flag duplicates; heuristic_eval H-04",
     },
+    {
+      num: 35,
+      title: "Translucent surfaces stay readable",
+      level: "contextual",
+      when: "a surface is translucent or blurred over other content (glass, frosted panels, bars or sheets over images, video, or a scrolling page)",
+      do: "Check the text and icons on it against every background it can sit over (photos, video, the busiest part of a scrolling page), not only the calm one in the mockup, and raise the blur and the opacity of the fill until they pass (RX-A11Y-01).\n  - Give the edge a faint stroke or a tone step so the panel keeps its shape over a similar background.\n  - Fall back to a solid surface when the user asks for less transparency or more contrast (prefers-reduced-transparency, prefers-contrast, and the platform settings); where the platform has its own material (Apple materials, Windows Acrylic), use it.\n  - Keep it to a few surfaces with a reason (navigation layered over content), not the look of every card.",
+      dont: "Check glass contrast only over the mockup's background, set body text on a thin blur over a photo, or make every card glass.",
+      why: "Text on a translucent surface loses contrast over busy content, and the content behind it changes as people scroll, so a panel that passes in the mockup can fail in use.",
+      basis: "NNGroup Glassmorphism: Definition and Best Practices (Brown 2024); WCAG 2.2 SC 1.4.3 and 1.4.11; Apple HIG materials and Reduce Transparency; RX-UI-33 (glass only when the direction calls for it); written for RYUX",
+      tradeoff: "more blur and opacity make the effect quieter",
+      check: "render over the busiest background it can meet; contrast check; turn on reduced transparency",
+    },
   ]),
 
   ...skill("imagery", [
@@ -1053,13 +1089,13 @@ export const RULES: Rule[] = [
       level: "contextual",
       gate: "lock",
       when: "the design adds motion or transitions",
-      do: "Classify each motion: L1 state feedback, L2 component transition, L3 page transition, L4 storytelling, L5 decorative; the higher the level, the stronger the reason it needs.\n  - Weigh how often people see it: a surface opened many times a day (menu, dropdown, tabs, list selection) gets a short transition that can be interrupted, about 150 to 250 ms of opacity with a small scale or a few pixels of movement from its trigger, and only a keyboard-opened command palette or shortcut appears at once; standard transitions belong to occasional surfaces (modal, drawer, toast), and expression to rare or first-time moments, where a completed payment or a first success may celebrate once without moving the amount.\n  - When a control changes what is shown (tabs, segmented control, filter), the content moves with it: the indicator slides by transform and the panels cross-fade with a few pixels of travel in the same direction, together.\n  - Take timing and easing from one motion personality, define them once as motion tokens, animate transform and opacity rather than layout properties, and honor reduced motion (RX-A11Y-08).\n  - Anything that opens and closes (menu, popover, dialog, drawer) uses transitions that can reverse halfway, so a close or reopen mid-animation turns back from where it is, and it closes no slower than it opened.",
-      dont: "Animate everything, give a surface people open many times a day an entrance longer than about 250 ms or one they must wait for, move a tab indicator while the panel content snaps, freeze it with no transition at all when a short one would show where it came from, repeat a celebration, play an open-only keyframe animation on something people can close or reopen at any moment, use one generic duration and easing (transition: all 0.3s) everywhere, let decorative motion delay content or input, or move data the user is reading (a balance, an amount, a table value) for effect.",
+      do: "Classify each motion: L1 state feedback, L2 component transition, L3 page transition, L4 storytelling, L5 decorative; the higher the level, the stronger the reason it needs.\n  - Weigh how often people see it: a surface opened many times a day (menu, dropdown, tabs, list selection) gets a short transition that can be interrupted, about 150 to 250 ms of opacity with a small scale or a few pixels of movement from its trigger, and only a keyboard-opened command palette or shortcut appears at once; standard transitions belong to occasional surfaces (modal, drawer, toast), and expression to rare or first-time moments, where a completed payment or a first success may celebrate once without moving the amount.\n  - When a control changes what is shown (tabs, segmented control, filter), the content moves with it: the indicator slides by transform and the panels cross-fade with a few pixels of travel in the same direction, together.\n  - Take timing and easing from one motion personality, define them once as motion tokens, animate transform and opacity rather than layout properties, and honor reduced motion (RX-A11Y-08).\n  - Anything that opens and closes (menu, popover, dialog, drawer) uses transitions that can reverse halfway, so a close or reopen mid-animation turns back from where it is, and it closes no slower than it opened.\n  - Time each motion by its size and the distance it travels, then tune it to the motion personality: simple feedback (a toggle, a checkbox) about 100 ms; a component or a modal entering about 200 to 300 ms; 400 ms only for a large move across a large screen; near 500 ms, task UI reads as waiting. What leaves takes a little less than it took to enter. Ease out what enters; ease in or in-out can suit what leaves; linear only for loops and progress.\n  - Match the motion to who started the change: a change the user made and is watching moves fast and short; a change they did not ask for (a new message, a background update) arrives slowly with little or no change of position, as a fade; only something they must act on now may move to catch the eye. Never shift text someone is reading.\n  - One movement holds attention at a time: no two animations compete on screen. Items that enter together stagger by about 30 to 50 ms, the most important first, and the whole sequence stays within about 500 ms on task UI.\n  - Animate a change the user would otherwise miss (a cart count far from the button they pressed), and let direction carry meaning: slide for forward and back in a process, zoom in to go deeper and out to go up a level, a sheet that rises can be pulled down. Motion never stands in for a visible label.\n  - Hand motion off as a spec: per element, the trigger, the properties that change, the duration in ms (not frames), the delay, the easing in the platform's form (cubic-bezier for CSS, named curves on iOS and Android), and what reduced motion shows instead; a video supports the spec, it does not replace it.",
+      dont: "Animate everything, give a surface people open many times a day an entrance longer than about 250 ms or one they must wait for, move a tab indicator while the panel content snaps, freeze it with no transition at all when a short one would show where it came from, repeat a celebration, play an open-only keyframe animation on something people can close or reopen at any moment, use one generic duration and easing (transition: all 0.3s) everywhere, let decorative motion delay content or input, move data the user is reading (a balance, an amount, a table value) for effect, run two animations at once that compete for attention, slide or bounce in a change the user did not ask for, or hand off motion as a video alone.",
       why: "Motion directs attention; unearned motion steals it from the task and can make some people unwell.",
-      basis: `NNGroup animation and usability guidance; WCAG 2.3.3 animation from interactions; frequency check: pattern also in ${EK} find-animation-opportunities; reversible open and close: pattern also in ${EK} animate; default timing, press state, and still data: pattern also in ${AP}; short transitions on frequent surfaces, content that moves with its control, and one celebration on rare moments: ryux owner blind ratings 2026-10-18 (explore-judge Part C, motion-loosen round 1) and hero-finance follow-up; all written for RYUX`,
+      basis: `NNGroup animation and usability guidance; WCAG 2.3.3 animation from interactions; frequency check: pattern also in ${EK} find-animation-opportunities; reversible open and close: pattern also in ${EK} animate; default timing, press state, and still data: pattern also in ${AP}; short transitions on frequent surfaces, content that moves with its control, and one celebration on rare moments: ryux owner blind ratings 2026-10-18 (explore-judge Part C, motion-loosen round 1) and hero-finance follow-up; durations by size and distance, shorter exits, easing, motion matched to who started the change, one movement at a time, change blindness, direction as meaning, and the motion spec in ms: NNGroup Animation Duration and Motion Characteristics (Laubheimer 2020), The Role of Animation and Motion in UX (Laubheimer 2020), and Animation for Attention and Comprehension (Harley 2014; motion captures attention: Pratt et al. 2010); stagger timing: Material motion, pattern also in ${OL} motion-system; all written for RYUX`,
       notWhen: "L1 feedback on standard controls that follows the platform defaults",
       tradeoff: "fewer flourishes on marketing pages",
-      check: "review; reduced-motion test",
+      check: "review; reduced-motion test; for a handoff, the motion spec per element",
     },
     {
       num: 12,
@@ -1165,6 +1201,19 @@ export const RULES: Rule[] = [
       tradeoff: "three vector directions take longer than one generated image",
       check: "the renders at 16, 32, and 256 px, light and dark, in one colour, inspected before handoff; review",
     },
+    {
+      num: 34,
+      title: "An animated scene tells one story",
+      level: "contextual",
+      when: "the design animates a scene: a hero, a banner, an intro, an explainer, or an animated illustration (L4 in RX-UI-11)",
+      do: "Let the concept choose the motion: write what the scene says in one line, then pick the movement that shows that idea, not a device reused from another piece (something growing, things floating up).\n  - Tie cause to effect at one spot: when something lands, the change happens where it landed, so the eye follows one chain instead of parallel events.\n  - Use fewer elements than the still version would. Light the actor of each beat and quiet the rest; the actor stands in front, never behind the scenery.\n  - Stage it as a story: the action resolves, a beat of stillness, then the message. Text never appears while things still move.\n  - Keep the physical world honest: a held object sits in a hand with a pose that holds it, nothing floats; a character faces whoever they deal with and looks at the object in use; a seated figure has the chair back behind them and the desk in front along the way they face; people in conversation face each other.\n  - Hold the moment of contact: a handover, a tap, or a catch rests about 0.2 to 0.3 s with the object in both hands before anything moves on, so it can be read.\n  - One continuous movement (the sun crossing the sky, a vehicle along a road) is one segment with one easing; split into segments that each ease, it stalls at every joint.\n  - A character leaves by an action the scene can show (walks back inside, the door closes), never by fading out in an open doorway.\n  - Paths of moving elements stay clear of the controls on the piece (a pause button); place the controls where nothing passes.\n  - A loop ends where it starts: the last frame flows into the first (an exit that wraps around, a staggered tidy-up), with no hard cut.\n  - Step through the frames, or a recording, before handoff, and fix any floating object, wrong gaze, depth error, stall, collision with a control, or seam.",
+      dont: "Reuse one motion device across unrelated concepts, run several unrelated movements at once, show the closing line while the scene still moves, leave a held object floating, turn a character away from what they use, hide the beat's actor behind scenery, let a handover pass in a blink, split one continuous movement into eased segments, fade a character out of an open doorway, drive an element across a control, or cut a loop back to its start.",
+      why: "A scene is read as a story in a few seconds: one chain of cause and effect is followed, parallel motion reads as noise, and one physical error (a floating sheet of paper, a wrong gaze) is what people remember.",
+      basis: "owner review 2026-11-02 of the README banner animation (held objects in a hand, gaze on the object, a seamless loop, furniture order in an isometric scene, the beat's actor in front); owner review 2026-11-05 of the Antar banner light test (a handover held about 0.05 s, the sun stalling between two eased segments, the customer fading out in an open doorway, the scooter passing over the pause button); NNGroup Animation for Attention and Comprehension (Harley 2014): motion captures attention, so one movement at a time; concept-led motion, cause at one spot, restraint, and resolve-pause-message: general motion-design and film staging practice, ideas also in iart-ai/generative-illustration-skills (no license given; no text or structure used); written for RYUX",
+      notWhen: "UI transitions and feedback (RX-UI-11); a still illustration (RX-UI-24)",
+      tradeoff: "checking frame by frame takes longer than watching the loop once",
+      check: "step through the frames or a recording; play the loop twice across the seam",
+    },
   ]),
 
   ...skill("illustration", [
@@ -1186,10 +1235,10 @@ export const RULES: Rule[] = [
       title: "A set reads as one family",
       level: "contextual",
       when: "the product uses more than one illustration (empty states, onboarding steps, errors)",
-      do: "Make the set together: same canvas and framing, same stroke and palette, same subject scale and footprint (an added badge stays inside it), viewpoint, and level of detail.\n  - Tie each subject to the screen's job: an empty state shows what will appear there, drawn empty (RX-UI-24), not a mascot shrugging.\n  - Put the set side by side before handoff and fix the one that stands out.",
-      dont: "Make each illustration in a separate prompt and hand them off without comparing them, or give one more detail or colour than the rest.",
+      do: "Make the set together: same canvas and framing, same stroke and palette, same subject scale and footprint (an added badge stays inside it), viewpoint, and level of detail.\n  - Tie each subject to the screen's job: an empty state shows what will appear there, drawn empty (RX-UI-24), not a mascot shrugging.\n  - Put the set side by side before handoff and fix the one that stands out.\n  - People in the set look like the product's users: skin tones, ages, bodies, and dress (a hijab, glasses, a wheelchair) chosen from who uses it, not one default figure; an outline figure with no skin tone is often read as white, so give each figure a tone on purpose.",
+      dont: "Make each illustration in a separate prompt and hand them off without comparing them, give one more detail or colour than the rest, or draw every person as the same default figure.",
       why: "Users read a mismatched set as a mistake or a different product, and a generator drifts in style from prompt to prompt.",
-      basis: "Design-system practice (one illustration family); RX-DS-02 consistency; owner review 2026-10-22: request for illustration guidance",
+      basis: "Design-system practice (one illustration family); RX-DS-02 consistency; owner review 2026-10-22: request for illustration guidance; people who look like the users: NNGroup Inclusive Design (Kendrick 2022)",
       notWhen: "a single illustration",
       tradeoff: "the whole set is redone when the style changes",
       check: "render, side by side",
@@ -1300,11 +1349,11 @@ export const RULES: Rule[] = [
       title: "Every theme you ship works",
       level: "contextual",
       when: "The product ships more than one theme (light and dark, or brand themes), or a theme is being chosen.",
-      do: "Choose the default theme from the product, its users, and where it is used, then check every shipped theme with the same care: contrast, every component state, images and charts, and focus.",
-      dont: "Pick dark mode because the product is technical, or ship a toggle whose second theme was never rendered.",
+      do: "Choose the default theme from the product, its users, and where it is used, then check every shipped theme with the same care: contrast, every component state, images and charts, and focus.\n  - In dark mode: follow the system setting by default (an in-app switch is optional, and few people look for it); lift layers by tone, lighter on top, because shadows do not read on dark; separate cards by a small tone step rather than thin grey lines; tone down saturated colours that vibrate or only just pass contrast; check very thin and very heavy weights.\n  - Keep QR codes and barcodes dark on light in every theme (a QRIS code on a white tile), and give a dark logo or illustration a light edge or a dark-mode variant so it does not disappear.",
+      dont: "Pick dark mode because the product is technical, ship a toggle whose second theme was never rendered, invert a QR code or barcode in dark mode, or trust an automatic dark conversion without looking at it.",
       why: "A theme that was never checked fails for everyone who picks it, often in contrast and states first.",
-      basis: `pattern also in ${AS} R-21, R-34; written for RYUX`,
-      check: "render each theme; contrast check",
+      basis: `pattern also in ${AS} R-21, R-34; dark mode: NNGroup Dark Mode: How Users Think about It and Issues to Avoid (Kohler and Zhang 2023; survey of 115 mobile users: about a third each use dark, light, and both); written for RYUX`,
+      check: "render each theme; contrast check; scan a QR code in each theme",
     },
     {
       num: 6,
@@ -1444,8 +1493,8 @@ export const RULES: Rule[] = [
       do: "Pair color with text or an icon when it carries meaning (errors, status, selection).",
       dont: "Signal an error or a selected state with color only.",
       why: "Color-blind users and grayscale screens miss color-only signals.",
-      basis: "WCAG 2.2 SC 1.4.1",
-      check: "review",
+      basis: "WCAG 2.2 SC 1.4.1; grayscale check: NNGroup 5 Visual Treatments that Improve Accessibility (Gordon 2022)",
+      check: "review; render in grayscale and confirm every meaning survives",
     },
     {
       num: 7,
@@ -1461,10 +1510,10 @@ export const RULES: Rule[] = [
       num: 8,
       title: "Respect reduced motion",
       level: "required",
-      do: "When reduced motion is requested, replace large movement with a fade or a cut.",
-      dont: "Ignore the system reduced-motion setting.",
-      why: "Large motion can cause discomfort for people with vestibular disorders.",
-      basis: "WCAG 2.2 SC 2.3.3; prefers-reduced-motion; Apple HIG",
+      do: "When reduced motion is requested, replace large movement with a fade or a cut, and turn off parallax, scroll-jacking, and carousels that advance on their own.\n  - Anything that moves, blinks, or scrolls on its own for more than 5 seconds beside other content (a carousel, a ticker, a looping animation) can be paused, stopped, or hidden; a loading indicator is exempt while the wait lasts.\n  - A long intro or onboarding animation can be skipped, and nothing repeats to win attention.\n  - Nothing flashes more than three times in one second.",
+      dont: "Ignore the system reduced-motion setting, loop an animation with no way to stop it, or make people sit through an animation to reach the content.",
+      why: "Large motion can cause discomfort for people with vestibular disorders, motion that never stops pulls attention away from reading, and flashing can trigger seizures.",
+      basis: "WCAG 2.2 SC 2.3.3 (animation from interactions), SC 2.2.2 (pause, stop, hide), SC 2.3.1 (three flashes); prefers-reduced-motion; Apple HIG; NNGroup Animation Duration and Motion Characteristics (Laubheimer 2020): parallax, auto-advancing carousels, and scroll-jacking affect people with vestibular disorders; NNGroup Animation for Attention and Comprehension (Harley 2014): repeated animation, and a skip for long ones",
       check: "review",
     },
   ]),

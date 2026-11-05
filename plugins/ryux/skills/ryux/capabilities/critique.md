@@ -33,7 +33,9 @@ findings
    not tested, and lower the confidence of anything inferred. Missing from the artifact is not
    missing from the product: a frame without a loading state shows the frame, not the build.
 5. **Concise and prioritized.** At most 12 findings; the ones that hurt users most come first.
-   At equal severity, the higher layer (step 5) comes first: a flow problem before a spacing one.
+   At equal severity, the one people meet more often and nearer their goal comes first (a problem
+   in the payment step before one in settings), then the higher layer (step 5): a flow problem
+   before a spacing one.
 6. **A preference is not a defect.** A taste (rounder corners, another typeface, more white space)
    becomes a finding only when the brief, evidence, a requirement, or a stated context reason makes
    it one; otherwise list it under "Optional ideas" or leave it out.
@@ -271,6 +273,28 @@ and 7 above still apply; the mode replaces steps 3 to 5 and changes the report.
    - the debrief: where evaluators agreed and disagreed, which problems hurt the experience most,
      which threaten the business goal, and which need a usability test to settle
    - the limit, in one line: "AI heuristic evaluation by n evaluators; not user research"
+
+## Cognitive walkthrough mode
+
+Run this mode when the request asks whether new users can learn a flow ("cognitive walkthrough",
+"bisakah pengguna baru", a first-time flow), or when a new or unusual flow is being critiqued. It
+checks learnability by exploration, not general usability; a standard pattern (a basic checkout)
+gets the heuristic evaluation instead. It follows the method of Wharton et al. (1994) as NN/g
+describes it. Steps 1, 2, 6, and 7 above still apply.
+
+1. **Task, user, steps.** Name one task, a first-time user of this product (their goal and what they
+   already know), and the correct steps, decided before walking: one step per screen or discrete
+   action, small actions that always go together counted as one.
+2. **Four questions at every step.** Answer each with yes or no and the reason, from the capture:
+   - Will the user be trying to do this step, given their goal?
+   - Will they notice that the right control is there?
+   - Will they connect that control's label or look with what they want?
+   - After acting, will they see that they moved toward their goal?
+3. **A no fails the step.** Record the question it fails, what in the capture shows it, and the
+   smallest change that would turn it into a yes.
+4. **Report.** A table of steps × the four questions; then each failed step in the step 8 schema,
+   most severe first; then the limit, in one line: "AI cognitive walkthrough; not user research".
+   Suggest a usability test with first-time users for the failures it cannot settle (RX-UX-12).
 
 ## Don'ts
 

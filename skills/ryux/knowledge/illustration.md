@@ -76,8 +76,9 @@ How comparable products illustrate the same moment: `search_screens` by pattern 
 - Do: Make the set together: same canvas and framing, same stroke and palette, same subject scale and footprint (an added badge stays inside it), viewpoint, and level of detail.
   - Tie each subject to the screen's job: an empty state shows what will appear there, drawn empty (RX-UI-24), not a mascot shrugging.
   - Put the set side by side before handoff and fix the one that stands out.
-- Do not: Make each illustration in a separate prompt and hand them off without comparing them, or give one more detail or colour than the rest.
-- Why: Users read a mismatched set as a mistake or a different product, and a generator drifts in style from prompt to prompt. (Design-system practice (one illustration family); RX-DS-02 consistency; owner review 2026-10-22: request for illustration guidance)
+  - People in the set look like the product's users: skin tones, ages, bodies, and dress (a hijab, glasses, a wheelchair) chosen from who uses it, not one default figure; an outline figure with no skin tone is often read as white, so give each figure a tone on purpose.
+- Do not: Make each illustration in a separate prompt and hand them off without comparing them, give one more detail or colour than the rest, or draw every person as the same default figure.
+- Why: Users read a mismatched set as a mistake or a different product, and a generator drifts in style from prompt to prompt. (Design-system practice (one illustration family); RX-DS-02 consistency; owner review 2026-10-22: request for illustration guidance; people who look like the users: NNGroup Inclusive Design (Kendrick 2022))
 - Not when: a single illustration
 - Trade-off: the whole set is redone when the style changes
 - Check: render, side by side

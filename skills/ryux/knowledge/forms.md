@@ -98,3 +98,16 @@ Real Indonesian forms for the same data (address, OTP, e-KYC): `search_screens`,
 - Not when: a returning user who has already been verified
 - Trade-off: an extra screen before the camera
 - Check: review
+
+### RX-FM-11 [Contextual] Names as people write them
+
+- When: a form asks for a person's name
+- Do: Use one full-name field unless a document or a regulation needs the parts, and then say which one.
+  - Accept a single name (many Indonesians have one), long names, spaces, apostrophes, hyphens, periods, and accented letters; trim spaces instead of rejecting them.
+  - When the product addresses people by name, ask what to call them instead of guessing from the first word.
+  - When a real limit applies (a bank's character limit, the name exactly as on the KTP), say so at the field, before the user types.
+- Do not: Require a first and a last name, reject an apostrophe or a hyphen, cap the length below real names without saying why, or make a person with one name type it twice.
+- Why: A form that rejects a real name tells the person they do not fit; they type a false name or leave. (NNGroup Inclusive Design (Kendrick 2022): name fields that reject real names; W3C Internationalization: Personal names around the world; Indonesian naming practice (single names are common); written for RYUX)
+- Not when: the field must match a document exactly; then say so and follow the document
+- Trade-off: one field makes sorting by family name harder; store parts only when a real need asks for them
+- Check: type a single name, a long name, and names with an apostrophe and a hyphen

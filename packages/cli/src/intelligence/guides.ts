@@ -246,8 +246,9 @@ The six stages of the core workflow (SKILL.md), as Design runs them.
      language ("Shown while prices load; button disabled"). Rule IDs, gate results, and Decision
      Receipts go in the Design Direction or the final message, never in frames meant for review or
      handoff.
-   - Handoff: a handoff frame annotates, in plain language, the interaction behaviour, the
-     truncation rule for each text that can overflow, and each component's code name.
+   - Handoff: a handoff frame annotates, in plain language, the interaction behaviour, any motion
+     as a spec (RX-UI-11: trigger, properties, duration in ms, easing, what reduced motion shows),
+     the truncation rule for each text that can overflow, and each component's code name.
    - Test plan: for a new flow or a consequential change, write the usability test plan (RX-UX-12);
      skip it for a small change or when the user says so. Suggest that the team watch the sessions,
      so what users show becomes shared knowledge rather than one person's report.
