@@ -25,7 +25,11 @@ Laws of UX checks in knowledge/ux.md.
 
 **Open rules** (with or without a reference): search the text of every screen and state for each
 rule and number nobody decided (fees, minimums, time limits, deadlines); each one shown carries its
-label on that screen (RX-PR-02). Report open rules on screen <tagged>/<shown> in the CONTENT line.
+label on that screen (RX-PR-02). Report open rules on screen <tagged>/<shown> in the CONTENT line,
+counted by the listing in capabilities/design.md, stage 6 (in Figma), never recalled: one rule on one
+screen is the unit, every amount is placed as an open rule, a fact, or sample data, and a rule counts as
+labelled only when a label beside it contains the rule's word. Placeholders carry a "Placeholder"
+annotation (capabilities/design.md, stage 6).
 
 **Illustration** (when the build has any): with its label covered, each asset says its concept
 line (RX-UI-24); it matches the written style (RX-UI-17), a set reads as one family side by side (RX-UI-18), it reads at its real displayed size including the smallest width, it

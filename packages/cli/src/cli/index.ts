@@ -533,7 +533,7 @@ const CONTEXT_FIELDS: ContextField[] = [
 const ASKED_FIELDS = CONTEXT_FIELDS.filter((f) => f.ask);
 
 /** The sections a full DESIGN.md has (capabilities/design.md, Write or update DESIGN.md; RX-PR-12). */
-const DESIGN_SECTIONS = ["Users and needs", "Jobs to be done", "Evidence", "Interaction patterns", "Visual and motion language", "Voice and tone", "How we evaluate", "Open questions"];
+const DESIGN_SECTIONS = ["Users and needs", "Jobs to be done", "Evidence", "Interaction patterns", "Visual and motion language", "Voice and tone", "Business rules", "How we evaluate", "Open questions"];
 const AGENT_DESIGN_HINT = 'To fill the rest (users, jobs, evidence, patterns, how to evaluate), ask your agent: "Write our DESIGN.md from this brief", with the brief or links attached.';
 const designSections = (content: string | null): number =>
   DESIGN_SECTIONS.filter((h) => new RegExp(`^## ${h}\\b`, "m").test(content ?? "")).length;
