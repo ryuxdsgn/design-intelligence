@@ -175,7 +175,8 @@ The six stages of the core workflow (SKILL.md), as Design runs them.
 4. **Evaluate and select.** Rate each alternative against the Frame criteria, Strong, Adequate, or
    Weak with one reason each, fit first: the user's main task (can it be done fast, where the hand
    is), what must be seen first, how much space the layout spends on what matters, and the
-   conventions that must hold. Fit decides. Craft (hierarchy at a glance, type and spacing,
+   conventions that must hold. Fit decides; when two alternatives fit equally, the design principles in
+   DESIGN.md decide, named in the Decision Receipt. Craft (hierarchy at a glance, type and spacing,
    distinctiveness by the swap test, RX-AS-09) only breaks a tie between alternatives equally strong
    on fit; a more distinctive alternative never wins over one that is easier to use or wastes less
    space. Compare in pairs ("A beats B on reach because …"), rate the evidence (RX-PR-10), recommend
@@ -333,7 +334,9 @@ return { screens: screens.length, count: ok + "/" + all.length, unlabelled: all.
      decision per step, so the service comes before the time slot"): a law of UX (the table in
      knowledge/ux.md), a Nielsen heuristic, a Gestalt principle, or the platform's convention;
      say where it stops applying when that matters. A RYUX rule ID alone is not a principle; put it after
-     the name. It goes in the final message, before the gate.
+     the name. When the decision trades one value for another (speed against clarity, density against
+     calm), name the design principle in DESIGN.md that decided it; with none written, say so and call it
+     a judgment call (evidence None). It goes in the final message, before the gate.
    - Annotations on the canvas: when the design is made in a design tool (Figma, pen.dev, Penpot,
      Framer, or another), annotate three to five of those decisions beside the frames, in plain
      language, one or two sentences each: what was decided, why, and the UX principle behind it by
@@ -370,7 +373,8 @@ placeholder or invented content.
 When the user asks to write, set up, or update DESIGN.md, or gives a brief or references and asks for the
 project's direction, the deliverable is the file, not a screen (RX-PR-12). It answers five questions: who the
 users are and what they need, which job they want done, what evidence supports the decisions, which interaction
-patterns fit the context, and how the result is evaluated.
+patterns fit the context, and how the result is evaluated. It also holds the product's design principles,
+the values that decide a trade-off between two good options.
 
 1. **Gather and name the sources:** the brief, the product docs (stage 1), DESIGN.md if it exists, and the
    references given (URLs, screenshots, files). Ambient sources the user points to (support tickets, analytics
@@ -405,6 +409,11 @@ patterns fit the context, and how the result is evaluated.
 
 ## Users and needs            who, their context (device, moment, constraints), what they need; a source per line
 ## Jobs to be done            the primary job, related jobs, what done looks like for the user
+## Design principles          three to five value statements for this product, each "X over Y" with why it
+                              matters to its users and where it gives way ("Clear price over fewer taps: a
+                              booking people regret costs more than a slower one"); from the user, the brief,
+                              or research, else "proposed" until the team confirms them. Rationale and
+                              Critique cite them when two good options pull apart
 ## Evidence                   decision or claim · source (observed, inferred, knowledge; reference) ·
                               strength (Strong, Thin, None)
 ## Interaction patterns       patterns that fit this context (platform conventions, confirmation before
@@ -666,6 +675,9 @@ Miller's limit is about holding things in memory, not a cap on menu items.
 | Selective attention | how the key message is styled | not like an ad or a banner, not only in a rotating carousel | RX-AS-05 |
 | Paradox of the active user | where help sits | inline at the point of need; no tutorial blocking first use | RX-CD-16 |
 | Prägnanz | icons and marks at their smallest size | recognisable at 16 to 24 px | RX-UI-20 |
+| Visual hierarchy, squint test | the render blurred (about 8 px) or seen at a quarter of its size | the three things that still stand out are Frame's "seen first", in that order | RX-UI-01 |
+| Similarity | elements that share a colour, a shape, or a style | one meaning per shared colour or shape: a group's colour is not reused for something unrelated, and a picture wears the colour of the text it belongs to | RX-UI-04 |
+| Natural mapping | each control's layout against what it changes | minus left of plus, earlier left of later, a slider or stepper moving the way its value grows, each control beside the thing it changes | RX-DS-02 |
 | Cognitive bias | defaults, anchors, scarcity | no pre-ticked add-on, no invented anchor price, no invented scarcity | RX-AS-04 |
 | Aesthetic-usability, Pareto | the test plan | judged on task success and time, not on liking the look; the top tasks tested first | RX-UX-12 |
 

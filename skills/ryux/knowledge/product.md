@@ -140,11 +140,12 @@ How comparable products frame the same task and offer: `search_screens` (categor
   - what evidence supports each design decision, with its strength (Strong, Thin, None)
   - which interaction patterns fit the context, and why
   - how the result is evaluated: success criteria, machine checks, the riskiest assumption and its cheapest test
+  - and, apart from the five, the product's design principles: three to five value statements, each "X over Y" with why it matters to these users and where it gives way, so a trade-off is decided by a stated value, not by taste. They come from the user, the brief, or research; ones you propose are marked proposed until the team confirms them.
   - Ask in rounds of at most three questions until each has an answer or a recorded Unknown; values you choose (colors, type, timing) are tokens with a one-line reason, marked proposed until the team confirms them. When updating, keep the lines the user wrote.
-- Do not: Fill a DESIGN.md with personas, research, metrics, or policies nobody gave, present your chosen values as the team's, or rewrite lines the user wrote without asking.
-- Why: DESIGN.md is what every later task reads first: an invented user or rule there spreads into every screen, and a file that only lists colors leaves the next agent to guess the user and the job. (owner review 2026-10-27; ryux run: wallet-expressive benchmark rounds 2 and 3 (a DESIGN.md that dictated values tested spec-following; one that named only character left the values unexplained); RX-PR-02, RX-PR-10)
+- Do not: Fill a DESIGN.md with personas, research, metrics, or policies nobody gave, present your chosen values as the team's, rewrite lines the user wrote without asking, or write a design principle that takes no side ("simple and powerful"), or one you made up, as the team's.
+- Why: DESIGN.md is what every later task reads first: an invented user or rule there spreads into every screen, and a file that only lists colors leaves the next agent to guess the user and the job. (owner review 2026-10-27; ryux run: wallet-expressive benchmark rounds 2 and 3 (a DESIGN.md that dictated values tested spec-following; one that named only character left the values unexplained); RX-PR-02, RX-PR-10; design principles as value statements that take a side and decide trade-offs: NNGroup, Crafting Product-Specific Design Principles (Rosala 2020); owner decision 2026-11-06)
 - Trade-off: takes a few rounds of questions before the first screen
-- Check: review: the five questions each answered with a source or listed under Open questions; chosen tokens marked proposed with a reason
+- Check: review: the five questions each answered with a source or listed under Open questions; three to five design principles that each take a side, sourced or marked proposed; chosen tokens marked proposed with a reason
 
 ### RX-PR-13 [Preferred] Before a direction, learn what makes this product specific
 
@@ -169,7 +170,7 @@ How comparable products frame the same task and offer: `search_screens` (categor
 
 - When: a design, a direction, or a page is delivered
 - Do: Write the design rationale before the Delivery Gate: the five to seven decisions that shape the result (the direction and concept, the weight carrier, the section order, the palette, the type, where the primary action sits, and what was cut), one line each:
-  - **Decision** → **because**: the user, the brief, or the evidence it answers, with its source and strength (Strong, Thin, None) → **principle**: the UX principle it applies, by name, and how it works here (a law of UX, a Nielsen heuristic, a Gestalt principle, or the platform's convention), with where it stops applying when that matters; a RYUX rule ID alone is not a principle → **cost**: what it gives up → **would change if**: the result or fact that would reverse it
+  - **Decision** → **because**: the user, the brief, or the evidence it answers, with its source and strength (Strong, Thin, None) → **principle**: the UX principle it applies, by name, and how it works here (a law of UX, a Nielsen heuristic, a Gestalt principle, or the platform's convention), with where it stops applying when that matters; a RYUX rule ID alone is not a principle. When the decision trades one value for another, also name the design principle in DESIGN.md that decided it, or say none is written (a judgment call) → **cost**: what it gives up → **would change if**: the result or fact that would reverse it
   - Name the alternative that lost and why, in the line or right after it.
   - A reason points to a person, a task, or a fact ("first-job savers distrust gold shops, so trust comes second, before how it works"), never to a taste word: modern, clean, premium, elegant, and sleek are not reasons.
   - A choice made on judgment says so (evidence None); a cultural or visual reference names what it means and why it fits.
