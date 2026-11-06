@@ -85,8 +85,8 @@ The six stages of the core workflow (SKILL.md), as Design runs them.
    direction, the next message offers three directions as style tiles and waits; the motion direction
    rides with it. Show the tiles as one static HTML page (\`directions.html\` in the project folder; no server,
    no scripts, Google Fonts allowed): per direction its palette swatches, type pairing, one card, one primary
-   button, and its signature, numbered as in the message. Render it once to check it, give the user the path,
-   and ask; one round of choice, and revisions after the choice belong to the build. No DESIGN.md, no product docs, and no question tool are never reasons to skip it:
+   button, and its signature, numbered as in the message. Render it once to check it, open it in the user's browser (\`open\` on macOS,
+   \`xdg-open\` on Linux, \`start\` on Windows; when no command can open it, give the path), and ask; one round of choice, and revisions after the choice belong to the build. No DESIGN.md, no product docs, and no question tool are never reasons to skip it:
    write numbered options and end the turn. Structural alternatives (stage 3) come after, inside the
    chosen direction. Complete context means no questions.
    **Voice and tone** is not asked by default: when the field is blank, infer it from the product's
