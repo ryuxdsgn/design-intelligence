@@ -323,12 +323,18 @@ return { screens: screens.length, count: ok + "/" + all.length, unlabelled: all.
      so what users show becomes shared knowledge rather than one person's report.
    - Rationale (RX-PR-14): five to seven lines, one per shaping decision (direction and concept,
      weight carrier, section order, palette, type, where the primary action sits, what was cut):
-     decision → because (user, brief, or evidence, with its strength) → principle (a RYUX rule or a
-     law of UX) → cost → would change if. It goes in the final message, before the gate.
+     decision → because (user, brief, or evidence, with its strength) → principle → cost → would change
+     if. The principle is a UX principle by name and how it works on this screen ("Hick's law: one
+     decision per step, so the service comes before the time slot"): a law of UX (the table in
+     knowledge/ux.md), a Nielsen heuristic, a Gestalt principle, or the platform's convention;
+     say where it stops applying when that matters. A RYUX rule ID alone is not a principle; put it after
+     the name. It goes in the final message, before the gate.
    - Annotations on the canvas: when the design is made in a design tool (Figma, pen.dev, Penpot,
      Framer, or another), annotate three to five of those decisions beside the frames, in plain
-     language, one or two sentences each: what was decided and why, for the person who opens the
-     file without the chat. Use the tool's own annotations, attached to the node each note explains:
+     language, one or two sentences each: what was decided, why, and the UX principle behind it by
+     name ("The main button sits low, in thumb reach: Fitts's law, a large target close to the thumb
+     is quicker to press"), in the language of the design's copy, for the person who opens the file
+     without the chat. Use the tool's own annotations, attached to the node each note explains:
      in Figma, native annotations in a "Design rationale" category
      (figma.annotations.addAnnotationCategoryAsync, then node.annotations); in another tool, look
      for its annotation or comment feature first. Only when the tool has none, a "Why it looks like
@@ -450,7 +456,7 @@ Assumptions    kept apart, all visible:
                unconfirmed capabilities (actions or features on the canvas the brief did not
                confirm; proposed, not requirements); sample data (realistic mockup content,
                never a fact, RX-AS-03)
-Rationale      five to seven lines: decision → because → principle → cost → would change if (RX-PR-14)
+Rationale      five to seven lines: decision → because → UX principle, named and applied → cost → would change if (RX-PR-14)
 Decisions      one Decision Receipt per major decision (below)
 \`\`\`
 

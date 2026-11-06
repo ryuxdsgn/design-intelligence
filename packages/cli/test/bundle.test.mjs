@@ -228,6 +228,11 @@ test("design rationale: every shaping decision has a reason, and a design-tool c
   // owner review 2026-11-02 of trial T12: a notes frame first; native annotations only after the owner asked
   assert.match(design, /in Figma, native annotations in a "Design rationale" category/);
   assert.match(design, /The final message says how many annotations there are, on which frames, and how to see them/);
+  // owner request 2026-11-06: the rationale and the annotations explain each decision with a UX principle
+  assert.match(design, /The principle is a UX principle by name and how it works on this screen/);
+  assert.match(design, /A RYUX rule ID alone is not a principle/);
+  assert.match(design, /what was decided, why, and the UX principle behind it by name/);
+  assert.match(product, /a RYUX rule ID alone is not a principle/);
 });
 
 test("frontend libraries: platform first, then the repo's, then verified options across frameworks", () => {
