@@ -175,7 +175,7 @@ PRODUCT        PASS | FAIL | NOT VERIFIED | N/A  · one-line reason · evidence 
 UX             PASS | FAIL | NOT VERIFIED | N/A  · one-line reason
 CONTENT        PASS | FAIL | NOT VERIFIED | N/A  · one-line reason · open rules on screen <tagged>/<shown> | none
 UI             PASS | FAIL | NOT VERIFIED | N/A  · one-line reason · point of view: <concept> | task UI, signature: <signature> · concept sections <n>/<total>, devices <n>, focal subjects <n>/<sections>, carrier <kind>, made assets <n>/<planned> · illustration style: <where written> | none
-DESIGN SYSTEM  PASS | FAIL | NOT VERIFIED | N/A  · one-line reason
+DESIGN SYSTEM  PASS | FAIL | NOT VERIFIED | N/A  · one-line reason · icon strokes <n>, icon colours <n> (<unbound> unbound), uneven sets <n>, missing variants <n> | not drawn
 ACCESSIBILITY  PASS | FAIL | NOT VERIFIED | N/A  · one-line reason
 RESPONSIVE     PASS | FAIL | NOT VERIFIED | N/A  · one-line reason
 EDGE CASES     PASS | FAIL | NOT VERIFIED | N/A  · one-line reason · then the view × state matrix (RX-EC-01)
@@ -209,11 +209,11 @@ line below for its exact source.
 | --- | --- | --- |
 | Public standard or research | 86 | 58 |
 | Industry practice | 28 | 8 |
-| Observed in a RYUX run | 17 | 8 |
+| Observed in a RYUX run | 17 | 7 |
 | Pattern also in another MIT ruleset (text written for RYUX) | 4 | 3 |
-| RYUX principle, taxonomy, or review | 59 | 22 |
+| RYUX principle, taxonomy, or review | 60 | 22 |
 
-All 144 rules cite a source; 45 cite more than one kind, so the "Rules citing it" column adds up to more than 144.
+All 144 rules cite a source; 46 cite more than one kind, so the "Rules citing it" column adds up to more than 144.
 <!-- provenance:end -->
 
 ## Rules
@@ -342,7 +342,7 @@ Gate area PRODUCT. Covers user, task, goal, primary action, constraints, assumpt
 
 - When: a design, a direction, or a page is delivered
 - Do: Write the design rationale before the Delivery Gate: the five to seven decisions that shape the result (the direction and concept, the weight carrier, the section order, the palette, the type, where the primary action sits, and what was cut), one line each:
-  - **Decision** → **because**: the user, the brief, or the evidence it answers, with its source and strength (Strong, Thin, None) → **principle**: the UX principle it applies, by name, and how it works here (a law of UX, a Nielsen heuristic, a Gestalt principle, or the platform's convention), with where it stops applying when that matters; a RYUX rule ID or rule name alone is not a principle, so name the principle behind it; the line on what was cut names one too. A line with a cost trades one value for another: also name the design principle, from DESIGN.md or the brief, that decided it, or say none is written (a judgment call) → **cost**: what it gives up → **would change if**: the result or fact that would reverse it
+  - **Decision** → **because**: the user, the brief, or the evidence it answers, with its source and strength (Strong, Thin, None) → **principle**: the UX principle it applies, by name, and how it works here (a law of UX, a Nielsen heuristic, a Gestalt principle, or the platform's convention), with where it stops applying when that matters; a RYUX rule ID, name, or title is not a principle, so name the principle behind it; the line on what was cut names one too. A line with a cost trades one value for another: also name the design principle, from DESIGN.md or the brief, that decided it; a cost a decided fact forced names that fact; else say none is written (a judgment call) → **cost**: what it gives up → **would change if**: the result or fact that would reverse it
   - Name the alternative that lost and why, in the line or right after it.
   - A reason points to a person, a task, or a fact ("first-job savers distrust gold shops, so trust comes second, before how it works"), never to a taste word: modern, clean, premium, elegant, and sleek are not reasons.
   - A choice made on judgment says so (evidence None); a cultural or visual reference names what it means and why it fits.
@@ -1003,10 +1003,10 @@ Gate area UI. Covers the visual system of a product: hierarchy, type, layout, de
 
 #### RX-UI-15 [Preferred] [Quality Lock] Detail craft
 
-- Do: Center icons on the optical middle of the text beside them and size them to its line-height; take every icon from one set and match its stroke to the type weight; right-align (or decimal-align) number columns; take borders, dividers, radii, and shadows from a small token set; truncate long text on purpose, with the full value still reachable (a tooltip, a detail view, or wrapping).
-- Do not: Let icons sit high or low against their labels, mix icon sets or stroke weights, center amounts in a table, or invent a one-off shadow for one card.
-- Why: Each detail is small; together they are what makes a screen look made rather than generated. (Bringhurst (figures and alignment); Apple HIG and Material iconography (optical size and alignment); owner review 2026-10-17: wrong tab icons in withryux.pen)
-- Check: render inspection at 390 and 1280: icon center within 2 px of the text center; column alignment
+- Do: Center icons on the optical middle of the text beside them and size them to its line-height; take every icon from one set and match its stroke to the type weight, the same stroke at every icon size (resize an icon, never scale it, or draw a master per size), in colours from the palette's roles; right-align (or decimal-align) number columns; take borders, dividers, radii, and shadows from a small token set; truncate long text on purpose, with the full value still reachable (a tooltip, a detail view, or wrapping).
+- Do not: Let icons sit high or low against their labels, mix icon sets or stroke weights (a scaled icon changes its stroke), give icons near-duplicate colours, center amounts in a table, or invent a one-off shadow for one card.
+- Why: Each detail is small; together they are what makes a screen look made rather than generated. (Bringhurst (figures and alignment); Apple HIG and Material iconography (optical size and alignment); owner review 2026-10-17: wrong tab icons in withryux.pen; owner review 2026-11-06 (Figma, Sejuk rerun): icon strokes 1.17 to 2.04 from scaled instances and eight icon colours, two of them near-identical greys)
+- Check: render inspection at 390 and 1280: icon center within 2 px of the text center; column alignment; in Figma, the design system listing (capabilities/design.md, stage 6): icon strokes and icon colours
 
 #### RX-UI-20 [Preferred] An icon means one thing, and says it
 
@@ -1372,11 +1372,11 @@ Gate area DESIGN SYSTEM. Covers search before create, tokens, component states, 
 
 - Do: Lay out each component as a labeled grid: one row per property, one column per state (default, hover on web, pressed, disabled, loading, error), each cell labeled with its variant name, and one line of usage under each component; no overlapping or clipped variants. Render and inspect the sheet like a screen.
   - When the component ships to code, put its contract beside the grid: one row per property with its design-tool type, values, default, the code prop it maps to (or "none: CSS state"), and a note. Designers and developers read the same table.
-- Do not: Leave variants scattered, unlabeled, or cut off at the frame edge.
-- Why: Developers build from the component sheet; a variant they cannot find or read gets rebuilt or guessed. (ryux run: blind review of a delivery flow 2026-10-20; design-system practice; written for RYUX)
+- Do not: Leave variants scattered, unlabeled, or cut off at the frame edge, let a variant change size with its state (a picked card 2 px taller moves the layout), or leave a property combination undrawn without a reason.
+- Why: Developers build from the component sheet; a variant they cannot find or read gets rebuilt or guessed. (ryux run: blind review of a delivery flow 2026-10-20; owner review 2026-11-06 (Figma, Sejuk rerun): variants 78/80 and 68/70/72 px by state, a button kind with one state of three, the gate passed it unmeasured; design-system practice; written for RYUX)
 - Not when: a single screen with no shared components
 - Trade-off: takes time to lay out; pays back at handoff
-- Check: render the sheet; every variant visible and labeled
+- Check: render the sheet; every variant visible and labeled; in Figma, the design system listing (capabilities/design.md, stage 6): no uneven set, no missing variant
 
 #### RX-DS-07 [Contextual] [Quality Lock] Property names are the code's props
 
