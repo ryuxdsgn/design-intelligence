@@ -105,6 +105,7 @@ install chromium`); RYUX does not install it for you.
 npx @ryuxdsgn/design-intelligence scan src                               # scan a folder
 npx @ryuxdsgn/design-intelligence scan http://localhost:3000             # measure a running page
 npx @ryuxdsgn/design-intelligence scan --json                            # for agents and CI
+npx @ryuxdsgn/design-intelligence scan src --design                      # code that strays from DESIGN.md's direction
 npx @ryuxdsgn/design-intelligence install --agent claude --hook          # scan each file Claude Code edits
 ```
 

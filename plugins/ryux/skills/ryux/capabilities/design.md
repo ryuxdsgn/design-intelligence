@@ -57,7 +57,8 @@ The six stages of the core workflow (SKILL.md), as Design runs them.
    contrast pairs, band colours; RX-UI-31), shape, depth, spacing and layout, background rhythm
    (RX-UI-32), material, imagery (assets and sources), motion, signature and devices, avoid, and
    trade-offs. The user's choice makes it a decision. Summarise it in the reply and build from the file;
-   later changes go into the file first. An existing `direction:` block is the direction: deviating
+   later changes go into the file first, then `scan --design` over the code lists what still follows the old
+   values. Give radius and durations as `radius: [..]` and `durations: [..]` so the scan can read them. An existing `direction:` block is the direction: deviating
    needs a Decision Receipt.
    **What exists.** When there is a screen, product, or design system already, read its
    analysis or run Analyze first (capabilities/analyze.md). Existing screens, components, and any

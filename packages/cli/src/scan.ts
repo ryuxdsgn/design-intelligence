@@ -3,6 +3,8 @@
 // rule text stays in intelligence/content.ts. "fail" is for a pattern that is wrong wherever it
 // appears; "warn" is for a signal a person or agent should look at.
 
+import { driftColours, driftDurations, driftFonts, driftRadius, type Direction } from "./drift.js";
+
 export type ScanLevel = "fail" | "warn";
 
 export interface Source {
@@ -25,6 +27,8 @@ export interface ScanContext {
   /** Some scanned file handles prefers-reduced-transparency or prefers-contrast. Undefined when single
    *  files were scanned. */
   reducedTransparency?: boolean;
+  /** The direction read from DESIGN.md (scan --design). Undefined without --design: drift stays quiet. */
+  design?: Direction;
 }
 
 /** A loading indicator may loop while the wait lasts (WCAG 2.2.2 exempts it). */
@@ -129,6 +133,13 @@ const RUPIAH_FIX = "write Rp1.250.000 (Rp right before the number, dots for thou
 const px = (v: string): number => Number.parseFloat(v);
 
 export const DETECTORS: Detector[] = [
+  {
+    rule: "RX-DS-03",
+    level: "warn",
+    looksFor: "with --design: a colour, font family, corner radius, or CSS duration the DESIGN.md direction does not have (design drift)",
+    exts: [...STYLE, ...CODE, "svg"],
+    find: (src, ctx) => (ctx.design ? [...driftColours(src.text, src.ext, ctx.design), ...driftFonts(src.text, ctx.design), ...driftRadius(src.text, ctx.design), ...driftDurations(src.text, ctx.design)] : []),
+  },
   {
     rule: "RX-CD-02",
     level: "fail",
@@ -488,6 +499,8 @@ export interface ScanOptions {
   folder: boolean;
   /** Rule IDs to skip. */
   skip?: Set<string>;
+  /** The DESIGN.md direction, for the drift check. */
+  design?: Direction;
 }
 
 /** Run every detector over the sources. Findings are ordered by file, then line. */
@@ -499,6 +512,7 @@ export function scanSources(sources: Source[], opts: ScanOptions): ScanFinding[]
         reducedTransparency: sources.some((s) => /prefers-reduced-transparency|prefers-contrast|contrast-more:|useReducedTransparency/.test(s.text)),
       }
     : {};
+  if (opts.design) ctx.design = opts.design;
   const findings: ScanFinding[] = [];
   for (const src of sources) {
     const ign = ignores(src.raw);
