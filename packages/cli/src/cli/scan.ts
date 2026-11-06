@@ -7,6 +7,7 @@ import { join, relative } from "node:path";
 import pc from "picocolors";
 import { RULES } from "../intelligence/content.js";
 import { VERSION } from "../product.js";
+import { readDirection, unusedTokens, type Direction } from "../drift.js";
 import { DETECTORS, RENDER_CHECKS, SCAN_EXTS, scanSources, toSource, type ScanFinding } from "../scan.js";
 import { scanPages } from "./page-scan.js";
 
@@ -28,7 +29,7 @@ async function walk(dir: string, out: string[]): Promise<void> {
   }
 }
 
-async function scanPaths(paths: string[], skip: Set<string>): Promise<{ files: number; findings: ScanFinding[] }> {
+async function scanPaths(paths: string[], skip: Set<string>, design?: Direction): Promise<{ files: number; findings: ScanFinding[]; texts: string[] }> {
   const files: string[] = [];
   let folder = false;
   for (const p of paths) {
@@ -42,7 +43,7 @@ async function scanPaths(paths: string[], skip: Set<string>): Promise<{ files: n
     if (statSync(f).size > MAX_BYTES) continue;
     sources.push(toSource(relative(process.cwd(), f) || f, await readFile(f, "utf8")));
   }
-  return { files: sources.length, findings: scanSources(sources, { folder, skip }) };
+  return { files: sources.length, findings: scanSources(sources, { folder, skip, design }), texts: sources.map((s) => s.text) };
 }
 
 const title = (id: string): string => RULES.find((r) => r.id === id)?.title ?? "";
@@ -93,12 +94,14 @@ export async function runScan(argv: string[]): Promise<void> {
   const paths: string[] = [];
   const skip = new Set<string>();
   const opts = { json: false, hook: false, list: false };
+  let designFile: string | null = null;
   let widths = DEFAULT_WIDTHS;
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
     if (a === "--json") opts.json = true;
     else if (a === "--hook") opts.hook = true;
     else if (a === "--list-rules") opts.list = true;
+    else if (a === "--design") designFile = argv[i + 1]?.endsWith(".md") ? argv[++i] : "DESIGN.md";
     else if (a === "--widths") {
       widths = (argv[++i] ?? "").split(",").map(Number);
       if (!widths.length || widths.some((w) => !Number.isInteger(w) || w < 200 || w > 3840)) {
@@ -115,11 +118,25 @@ export async function runScan(argv: string[]): Promise<void> {
   }
   if (opts.list) return listRules(opts.json);
 
+  // --design: read the direction once; a missing file or block is an error, not a silent pass
+  let design: Direction | undefined;
+  if (designFile) {
+    const md = existsSync(designFile) ? await readFile(designFile, "utf8") : null;
+    const dir = md === null ? null : readDirection(md);
+    if (!dir) {
+      if (opts.hook) return;
+      console.error(md === null ? `Not found: ${designFile}` : `${designFile} has no direction: block under "## Visual and motion language", so there is nothing to compare the code with.`);
+      process.exitCode = 2;
+      return;
+    }
+    design = dir;
+  }
+
   if (opts.hook) {
     // A hook must never block an edit by crashing: anything unexpected ends quietly with exit 0.
     const file = await hookFile();
     if (!file || !existsSync(file) || !scannable(file)) return;
-    const { findings } = await scanPaths([file], skip);
+    const { findings } = await scanPaths([file], skip, design);
     if (!findings.length) return;
     console.error(`RYUX scan found ${findings.length} issue${findings.length === 1 ? "" : "s"} in the file you just edited. Fix each fail; for each warn, fix it or add a ryux-ignore comment with the reason.\n${report(findings, 1)}`);
     process.exitCode = 2;
@@ -135,7 +152,8 @@ export async function runScan(argv: string[]): Promise<void> {
     process.exitCode = 2;
     return;
   }
-  const { files, findings } = targets.length ? await scanPaths(targets, skip) : { files: 0, findings: [] };
+  const { files, findings, texts } = targets.length ? await scanPaths(targets, skip, design) : { files: 0, findings: [], texts: [] as string[] };
+  const drift = design && designFile ? { file: designFile, read: { colours: design.colours.length, fonts: design.fonts, radius: design.radius, durations: design.durations }, notRead: design.unread, unused: unusedTokens(texts, design) } : undefined;
   if (urls.length) {
     try {
       findings.push(...(await scanPages(urls, widths)).filter((f) => !skip.has(f.rule)));
@@ -148,8 +166,15 @@ export async function runScan(argv: string[]): Promise<void> {
   const ok = !findings.some((f) => f.level === "fail");
   if (!ok) process.exitCode = 1;
   if (opts.json) {
-    console.log(JSON.stringify({ ok, cli: VERSION, files, pages: urls.length, widths: urls.length ? widths : [], findings }, null, 2));
+    console.log(JSON.stringify({ ok, cli: VERSION, files, pages: urls.length, widths: urls.length ? widths : [], ...(drift ? { design: drift } : {}), findings }, null, 2));
     return;
   }
   console.log(report(findings, files, urls.length));
+  if (drift) {
+    const r = drift.read;
+    const lines = [`\nDesign drift against ${drift.file}: ${r.colours} colours, ${r.fonts.length} type families${r.radius ? `, radius ${r.radius.join("/")}` : ""}${r.durations ? `, durations ${r.durations.join("/")}ms` : ""}.`];
+    if (drift.notRead.length) lines.push(`Not checked: ${drift.notRead.join("; ")}.`);
+    if (drift.unused.colours.length || drift.unused.fonts.length) lines.push(`In DESIGN.md but used by no scanned file: ${[...drift.unused.colours, ...drift.unused.fonts].join(", ")}.`);
+    console.log(lines.join("\n"));
+  }
 }

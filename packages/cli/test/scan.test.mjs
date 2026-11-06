@@ -229,3 +229,54 @@ test("SVG art: no viewBox fails; fixed size, raster, text, and editor metadata w
 test("SVG art: stroke-width is not a fixed size, and a comment naming an editor is not metadata", () => {
   assert.deepEqual(scan("a.svg", '<svg viewBox="0 0 8 8" stroke-width="3"><!-- drawn for Inkscape users --><path d="M0 0h4"/></svg>'), []);
 });
+
+// Design drift (scan --design): the direction block in DESIGN.md against the code.
+const { readDirection } = await import("../dist/drift.js");
+const DESIGN = [
+  "# DESIGN.md", "", "## Visual and motion language", "", "```yaml", "direction:", "  name: Test",
+  "  grammar:", "    motion: balanced", "  type:", "    display: Fraunces SemiBold (H1 72/75)", "    body: Plus Jakarta Sans 400/700, 16/24",
+  "    figures: tabular", "  colour:", '    roles: {dominant: "#9E3B22", ink: "#3a1a10", action: "#F4C"}', "  shape:", "    radius: [8, 16]",
+  "  motion: one layer settles once (L4, 240ms)", "```", "", "## Voice and tone", "", "Warm.",
+].join("\n");
+const drift = (path, raw) => scanSources([toSource(path, raw)], { folder: false, design: readDirection(DESIGN) }).filter((f) => f.rule === "RX-DS-03");
+
+test("drift: reads colours, families, radius, and durations from the direction block", () => {
+  const d = readDirection(DESIGN);
+  assert.deepEqual(d.colours, ["#9e3b22", "#3a1a10", "#ff44cc"]);
+  assert.deepEqual(d.fonts, ["Fraunces", "Plus Jakarta Sans"]);
+  assert.deepEqual(d.radius, [8, 16]);
+  assert.deepEqual(d.durations, [240]); // from the top-level motion line, not grammar.motion
+  assert.deepEqual(d.unread, []);
+  assert.equal(readDirection("# DESIGN.md\n\n## Visual and motion language\n\nCalm and warm."), null);
+});
+
+test("drift: flags values the direction does not have, and nothing else", () => {
+  assert.equal(drift("a.css", ".a { color: #9e3b22; background: #fff; border-radius: 8px; transition: opacity 240ms ease; font-family: 'Fraunces', serif; }").length, 0);
+  assert.equal(drift("a.css", "#add { color: #3A1A10 }").length, 0, "an id selector is not a colour");
+  assert.equal(drift("a.tsx", '<a href="#add">x</a><div className="bg-[#9E3B22]" />').length, 0, "a link target is not a colour");
+  const css = drift("b.css", ".b { color: #123456; border-radius: 12px; transition: transform 300ms, opacity 240ms 100ms; font-family: Inter, sans-serif; }");
+  assert.deepEqual(css.map((f) => f.message.split(" ")[0]).sort(), ["#123456", "duration", "font", "radius"]);
+  assert.ok(css.some((f) => /duration 300ms/.test(f.message)) && !css.some((f) => /100ms/.test(f.message)), "a delay is not a duration");
+  assert.equal(drift("c.tsx", '<div style={{ color: "#00ff00", fontFamily: "Roboto" }} />').length, 2);
+  assert.equal(scanSources([toSource("b.css", ".b { color: #123456 }")], { folder: false }).filter((f) => f.rule === "RX-DS-03").length, 0, "quiet without --design");
+});
+
+test("drift: scan --design reports what it read and what it could not check", () => {
+  const dir = mkdtempSync(join(tmpdir(), "ryux-drift-"));
+  try {
+    writeFileSync(join(dir, "DESIGN.md"), DESIGN);
+    writeFileSync(join(dir, "a.css"), ".a { color: #9e3b22; font-family: Fraunces; }");
+    const text = run(dir, ["scan", "--design"]);
+    assert.equal(text.code, 0);
+    assert.match(text.out, /Design drift against DESIGN\.md: 3 colours, 2 type families, radius 8\/16, durations 240ms\./);
+    assert.match(text.out, /used by no scanned file: #3a1a10, #ff44cc, Plus Jakarta Sans/);
+    const json = JSON.parse(run(dir, ["scan", "--design", "--json"]).out);
+    assert.deepEqual(json.design.notRead, []);
+    writeFileSync(join(dir, "DESIGN.md"), "# DESIGN.md\n\n## Visual and motion language\n\nCalm.\n");
+    const none = run(dir, ["scan", "--design"]);
+    assert.equal(none.code, 2);
+    assert.match(none.out, /has no direction: block/);
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});

@@ -833,6 +833,7 @@ Options:
   --json               print check's or scan's findings as JSON (for agents and CI)
   --hook               install: run ryux scan after each Claude Code edit (opt-in)
   --list-rules         scan: list what each check looks for
+  --design [file]      scan: compare colours, fonts, radius, and durations with DESIGN.md's direction
   --ignore <ids>       scan: skip rules, e.g. RX-DS-03 (or a ryux-ignore RX-.. comment in the file)
   --widths <list>      scan <url>: viewport widths in CSS px (default 320,390,1280)
   --product, --work, --audience, --market, --constraints, --intent, --ux, --ui, --voice, --motion <text>

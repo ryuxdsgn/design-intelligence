@@ -116,7 +116,8 @@ The six stages of the core workflow (SKILL.md), as Design runs them.
    contrast pairs, band colours; RX-UI-31), shape, depth, spacing and layout, background rhythm
    (RX-UI-32), material, imagery (assets and sources), motion, signature and devices, avoid, and
    trade-offs. The user's choice makes it a decision. Summarise it in the reply and build from the file;
-   later changes go into the file first. An existing \`direction:\` block is the direction: deviating
+   later changes go into the file first, then \`scan --design\` over the code lists what still follows the old
+   values. Give radius and durations as \`radius: [..]\` and \`durations: [..]\` so the scan can read them. An existing \`direction:\` block is the direction: deviating
    needs a Decision Receipt.
    **What exists.** When there is a screen, product, or design system already, read its
    analysis or run Analyze first (capabilities/analyze.md). Existing screens, components, and any
@@ -529,7 +530,8 @@ workflow (SKILL.md); Frame, Explore, and Evaluate happen in Design.
    RX-AS-10 on the render and report them in the gate.
 7. **Close with the Delivery Gate.** CODE QUALITY and VISUAL QA need real checks (typecheck,
    tests, render), or say what was not run. Run \`npx @ryuxdsgn/design-intelligence scan <changed
-   paths>\` as well: fix every fail, and fix each warn or give the reason it stays. For a new flow or a consequential change, add the
+   paths>\` as well (add \`--design\` when DESIGN.md has a \`direction:\` block, so code that strays from its
+   colours, type, radius, or durations shows as drift): fix every fail, and fix each warn or give the reason it stays. For a new flow or a consequential change, add the
    usability test plan (RX-UX-12) unless the design already has one.`;
 
 export const CORE_EVIDENCE = `Say where every claim comes from:
