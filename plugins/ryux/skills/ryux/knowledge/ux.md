@@ -40,6 +40,9 @@ Miller's limit is about holding things in memory, not a cap on menu items.
 | Selective attention | how the key message is styled | not like an ad or a banner, not only in a rotating carousel | RX-AS-05 |
 | Paradox of the active user | where help sits | inline at the point of need; no tutorial blocking first use | RX-CD-16 |
 | Prägnanz | icons and marks at their smallest size | recognisable at 16 to 24 px | RX-UI-20 |
+| Visual hierarchy, squint test | the render blurred (about 8 px) or seen at a quarter of its size | the three things that still stand out are Frame's "seen first", in that order | RX-UI-01 |
+| Similarity | elements that share a colour, a shape, or a style | one meaning per shared colour or shape: a group's colour is not reused for something unrelated, and a picture wears the colour of the text it belongs to | RX-UI-04 |
+| Natural mapping | each control's layout against what it changes | minus left of plus, earlier left of later, a slider or stepper moving the way its value grows, each control beside the thing it changes | RX-DS-02 |
 | Cognitive bias | defaults, anchors, scarcity | no pre-ticked add-on, no invented anchor price, no invented scarcity | RX-AS-04 |
 | Aesthetic-usability, Pareto | the test plan | judged on task success and time, not on liking the look; the top tasks tested first | RX-UX-12 |
 
