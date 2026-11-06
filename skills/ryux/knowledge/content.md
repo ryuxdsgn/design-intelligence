@@ -113,8 +113,9 @@ Real labels, errors, and how money, dates, and times are written in the product'
   - Make a link meaningful on its own, as if it is the only thing read: specific ("Lihat syarat promo", not "Selengkapnya"), front-loaded, and sincere: the screen it opens is the one it promised.
   - Keep a label and the title of the screen or dialog it opens the same words (RX-CD-05).
 - Do not: Use "Submit", "OK", "Klik di sini", "Selengkapnya", or "Get started" when a specific action exists, or a label that promises one thing and opens another ("Lihat detail & pesan" that opens a contact form).
-- Why: Users read the label, not the text around it; a label that breaks its promise costs trust on the next tap. (NNGroup better link labels (4Ss: specific, sincere, substantial, succinct); NNGroup UI copy guidance on command names; NNGroup button and link-label guidance)
+- Why: Users read the label, not the text around it; a label that breaks its promise costs trust on the next tap. (NNGroup better link labels (4Ss: specific, sincere, substantial, succinct); information scent (Pirolli and Card 1999; NNGroup): people follow the label that seems to lead to their goal; NNGroup UI copy guidance on command names; NNGroup button and link-label guidance)
 - Check: audit_copy
+- Machine check: `ryux scan` flags a link or button whose whole text is generic (Selengkapnya, Klik di sini, Learn more, Read more, Click here, Submit), with no information scent (warn)
 
 ### RX-CD-13 [Required] Empty states teach and lead
 

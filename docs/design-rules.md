@@ -207,13 +207,13 @@ line below for its exact source.
 <!-- provenance:start -->
 | Source cited | Rules citing it | Rules citing only this |
 | --- | --- | --- |
-| Public standard or research | 85 | 57 |
+| Public standard or research | 86 | 58 |
 | Industry practice | 28 | 8 |
 | Observed in a RYUX run | 17 | 8 |
 | Pattern also in another MIT ruleset (text written for RYUX) | 4 | 3 |
 | RYUX principle, taxonomy, or review | 59 | 22 |
 
-All 143 rules cite a source; 45 cite more than one kind, so the "Rules citing it" column adds up to more than 143.
+All 144 rules cite a source; 45 cite more than one kind, so the "Rules citing it" column adds up to more than 144.
 <!-- provenance:end -->
 
 ## Rules
@@ -221,7 +221,7 @@ All 143 rules cite a source; 45 cite more than one kind, so the "Rules citing it
 Generated from `packages/cli/src/content.ts` by `pnpm sync:skills`. Edit the rules there, not here.
 
 <!-- rules:start -->
-143 rules across 15 modules: 65 Required, 30 Preferred, 48 Contextual; 18 Hard Gates and 13 Quality Locks.
+144 rules across 15 modules: 65 Required, 31 Preferred, 48 Contextual; 18 Hard Gates and 13 Quality Locks.
 
 ### Product thinking (RX-PR) · `knowledge/product.md`
 
@@ -457,6 +457,18 @@ Gate area UX. Covers information architecture, navigation, flows, grouping, disc
 - Trade-off: the order can differ from what the team expects to see; show the question list with the layout
 - Check: review: the question list in Frame, and each section mapped to one question
 
+#### RX-UX-14 [Preferred] Options show what sets them apart
+
+- When: the user picks between two or more peer options: services, plans, tiers, delivery or payment methods, design directions
+- Do: Put the attributes that differ first and make them visible at a glance (price, what is included, time, the one limit); keep what every option shares in one line above the options, not repeated in each.
+  - Show the same attributes in the same order on every option, so they compare row by row.
+  - Mark a recommended option only when the brief or the evidence names one, and say why.
+- Do not: Repeat the same feature list in every card so the differences hide in the middle, or make options look identical except for a name.
+- Why: People weigh every trade-off only when the options are few and the differences are easy to see; when they have to hunt for the difference, they take the first option that seems good enough. (NNGroup psychology study guide: explicit differences, compensatory and noncompensatory decisions, satisficing; Hick's law and choice overload (RX-PR-03); written for RYUX)
+- Not when: a single option, or options that differ only in one value the control already shows (a size picker, a time slot)
+- Trade-off: shared details move out of the cards; a reader who reads only one card sees less
+- Check: review: list each option's attributes; the differing ones come first and in the same order on every option
+
 ---
 
 ### Interaction design (RX-IX) · `knowledge/interaction.md`
@@ -475,8 +487,9 @@ Gate area UX. Covers before, during, result, recovery; feedback, confirmation, n
 #### RX-IX-02 [Required] Feedback that matches the wait
 
 - Do: Give an immediate pressed state; past about 1 second show a loading indicator; past about 10 seconds show progress with an estimate or let the user leave and come back. A loading skeleton has the shape of the layout it stands in for: the same blocks in the same places, so nothing jumps when the content arrives.
-- Do not: Let a payment or save run with no visible status.
-- Why: Silence during a wait reads as failure and invites double taps. (Nielsen response-time limits (0.1 / 1 / 10 s); Nielsen heuristic 1; Doherty threshold (Doherty and Thadani 1982): responses under about 400 ms keep people engaged; skeleton shape: pattern also in appllama-app-design-skill (MIT); written for RYUX; flow (Csikszentmihalyi 1990): a task without interruptions or unexplained waits keeps people absorbed in it)
+  - When an action changes a value outside the element that was touched (a total in a bottom bar, a cart count, a badge), mark the change where it lands: a short highlight or a number transition, or keep the value next to the control.
+- Do not: Let a payment or save run with no visible status, or change a total away from where the user is looking with no sign that it changed.
+- Why: Silence during a wait reads as failure and invites double taps. (Nielsen response-time limits (0.1 / 1 / 10 s); Nielsen heuristic 1; Doherty threshold (Doherty and Thadani 1982): responses under about 400 ms keep people engaged; skeleton shape: pattern also in appllama-app-design-skill (MIT); written for RYUX; flow (Csikszentmihalyi 1990): a task without interruptions or unexplained waits keeps people absorbed in it; change blindness (NNGroup psychology study guide): people miss changes outside their focus)
 - Not when: instant actions under about 0.1 s; a spinner that flashes is noise
 - Trade-off: progress indicators need real progress data; a fake bar misleads
 - Check: heuristic_eval H-01
@@ -804,8 +817,9 @@ Gate area CONTENT. Covers specific copy, action labels, error messages, terminol
   - Make a link meaningful on its own, as if it is the only thing read: specific ("Lihat syarat promo", not "Selengkapnya"), front-loaded, and sincere: the screen it opens is the one it promised.
   - Keep a label and the title of the screen or dialog it opens the same words (RX-CD-05).
 - Do not: Use "Submit", "OK", "Klik di sini", "Selengkapnya", or "Get started" when a specific action exists, or a label that promises one thing and opens another ("Lihat detail & pesan" that opens a contact form).
-- Why: Users read the label, not the text around it; a label that breaks its promise costs trust on the next tap. (NNGroup better link labels (4Ss: specific, sincere, substantial, succinct); NNGroup UI copy guidance on command names; NNGroup button and link-label guidance)
+- Why: Users read the label, not the text around it; a label that breaks its promise costs trust on the next tap. (NNGroup better link labels (4Ss: specific, sincere, substantial, succinct); information scent (Pirolli and Card 1999; NNGroup): people follow the label that seems to lead to their goal; NNGroup UI copy guidance on command names; NNGroup button and link-label guidance)
 - Check: audit_copy
+- Machine check: `ryux scan` flags a link or button whose whole text is generic (Selengkapnya, Klik di sini, Learn more, Read more, Click here, Submit), with no information scent (warn)
 
 #### RX-CD-13 [Required] Empty states teach and lead
 

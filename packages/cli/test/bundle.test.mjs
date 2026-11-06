@@ -128,6 +128,13 @@ test("Design can write or update a full DESIGN.md that answers five questions", 
   assert.match(flat("capabilities/analyze.md"), /Write or update DESIGN\.md, RX-PR-12/);
   assert.match(flat("knowledge/product.md"), /RX-PR-12/);
   assert.match(flat("knowledge/product.md"), /A DESIGN\.md answers five questions or names what is unknown/);
+  // owner decision 2026-11-06 (NNGroup psychology study guide): information scent, change blindness, explicit differences
+  assert.match(flat("knowledge/ux.md"), /\| Information scent \| the words on each link and button \|/);
+  assert.match(flat("knowledge/ux.md"), /\| Change blindness \| values that change outside the element touched/);
+  assert.match(flat("knowledge/ux.md"), /\| Explicit differences \| the attributes of peer options/);
+  assert.match(flat("knowledge/ux.md"), /### RX-UX-14 \[Preferred\] Options show what sets them apart/);
+  assert.match(flat("knowledge/interaction.md"), /mark the change where it lands: a short highlight or a number transition/);
+  assert.match(flat("knowledge/content.md"), /information scent \(Pirolli and Card 1999; NNGroup\)/);
   // owner decision 2026-11-06 (NNGroup, Rosala 2020): product design principles take a side and decide trade-offs
   assert.match(flat("knowledge/product.md"), /the product's design principles: three to five value statements, each "X over Y"/);
   assert.match(flat("capabilities/design.md"), /name the design principle, from DESIGN\.md or the brief, that decided it; with none written, say so and call it a judgment call/);

@@ -175,6 +175,19 @@ export const DETECTORS: Detector[] = [
       ]),
   },
   {
+    rule: "RX-CD-12",
+    level: "warn",
+    looksFor: "a link or button whose whole text is generic (Selengkapnya, Klik di sini, Learn more, Read more, Click here, Submit), with no information scent",
+    exts: MARKUP,
+    find: ({ text }) =>
+      matches(text, [
+        [
+          />\s*((?:baca |lihat )?selengkapnya|klik di ?sini|learn more|read more|click here|submit)\s*<\/(?:a|button|Link|NavLink|Button)\s*>/i,
+          (m) => `"${m[1]}": a label that does not say where it leads or what it does; name the destination or the result ("Lihat syarat promo", "Kirim laporan")`,
+        ],
+      ]),
+  },
+  {
     rule: "RX-AS-03",
     level: "fail",
     looksFor: "lorem ipsum filler",

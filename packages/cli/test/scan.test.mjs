@@ -116,6 +116,15 @@ test("comments are not scanned, and ryux-ignore switches a rule off", () => {
   assert.deepEqual(scan("a.tsx", "// ryux-ignore-file RX-CD-02\n\n\n<p>Rp 99</p>"), []);
 });
 
+test("RX-CD-12: generic link and button text warns; a specific label or plain text does not", () => {
+  assert.deepEqual(rules(scan("a.tsx", "<a href=\"/promo\">Selengkapnya</a>")), ["warn RX-CD-12"]);
+  assert.deepEqual(rules(scan("a.tsx", "<Button onClick={() => go()}> Learn more </Button>")), ["warn RX-CD-12"]);
+  assert.deepEqual(rules(scan("a.html", "<button>Klik di sini</button>")), ["warn RX-CD-12"]);
+  assert.deepEqual(scan("a.tsx", "<a href=\"/promo\">Lihat syarat promo</a>"), []);
+  assert.deepEqual(scan("a.tsx", "<p>Selengkapnya</p>"), []);
+  assert.deepEqual(scan("a.ts", "const label = \"<a>Selengkapnya</a>\";"), []);
+});
+
 test("scan CLI: exit 1 on a fail, 0 on warnings only, 2 on a missing path; --json and --list-rules", () => {
   const dir = mkdtempSync(join(tmpdir(), "ryux-scan-"));
   mkdirSync(join(dir, "src"));
