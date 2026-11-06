@@ -130,7 +130,7 @@ test("Design can write or update a full DESIGN.md that answers five questions", 
   assert.match(flat("knowledge/product.md"), /A DESIGN\.md answers five questions or names what is unknown/);
   // owner decision 2026-11-06 (NNGroup, Rosala 2020): product design principles take a side and decide trade-offs
   assert.match(flat("knowledge/product.md"), /the product's design principles: three to five value statements, each "X over Y"/);
-  assert.match(flat("capabilities/design.md"), /name the design principle in DESIGN\.md that decided it; with none written, say so and call it a judgment call/);
+  assert.match(flat("capabilities/design.md"), /name the design principle, from DESIGN\.md or the brief, that decided it; with none written, say so and call it a judgment call/);
   assert.match(flat("capabilities/design.md"), /when two alternatives fit equally, the design principles in DESIGN\.md decide/);
   assert.match(flat("capabilities/critique.md"), /DESIGN\.md, its design principles, an earlier Design Direction/);
   // NNGroup visual design heuristics posters (Gordon 2021): squint test, similarity, natural mapping
@@ -240,9 +240,12 @@ test("design rationale: every shaping decision has a reason, and a design-tool c
   assert.match(design, /The final message says how many annotations there are, on which frames, and how to see them/);
   // owner request 2026-11-06: the rationale and the annotations explain each decision with a UX principle
   assert.match(design, /The principle is a UX principle by name and how it works on this screen/);
-  assert.match(design, /A RYUX rule ID alone is not a principle/);
+  // rationale test 2026-11-06: the cut line had no principle, a rule name was cited as one, a cost line named no design principle
+  assert.match(design, /The line on what was cut names a principle too/);
+  assert.match(design, /A line with a cost trades one value for another/);
+  assert.match(design, /A RYUX rule ID or rule name alone \("one-way door"\) is not a principle: name the principle behind it/);
   assert.match(design, /what was decided, why, and the UX principle behind it by name/);
-  assert.match(product, /a RYUX rule ID alone is not a principle/);
+  assert.match(product, /a RYUX rule ID or rule name alone is not a principle, so name the principle behind it; the line on what was cut names one too/);
 });
 
 test("frontend libraries: platform first, then the repo's, then verified options across frameworks", () => {

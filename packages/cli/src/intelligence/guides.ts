@@ -333,10 +333,13 @@ return { screens: screens.length, count: ok + "/" + all.length, unlabelled: all.
      if. The principle is a UX principle by name and how it works on this screen ("Hick's law: one
      decision per step, so the service comes before the time slot"): a law of UX (the table in
      knowledge/ux.md), a Nielsen heuristic, a Gestalt principle, or the platform's convention;
-     say where it stops applying when that matters. A RYUX rule ID alone is not a principle; put it after
-     the name. When the decision trades one value for another (speed against clarity, density against
-     calm), name the design principle in DESIGN.md that decided it; with none written, say so and call it
-     a judgment call (evidence None). It goes in the final message, before the gate.
+     say where it stops applying when that matters. A RYUX rule ID or rule name alone ("one-way door")
+     is not a principle: name the principle behind it (Nielsen's user control and freedom) and put the ID
+     after. The line on what was cut names a principle too (aesthetic and minimalist design, or the design
+     principle that ruled it out). A line with a cost trades one value for another (speed against clarity,
+     density against calm): name the design principle, from DESIGN.md or the brief, that decided it; with
+     none written, say so and call it a judgment call (evidence None). It goes in the final message,
+     before the gate.
    - Annotations on the canvas: when the design is made in a design tool (Figma, pen.dev, Penpot,
      Framer, or another), annotate three to five of those decisions beside the frames, in plain
      language, one or two sentences each: what was decided, why, and the UX principle behind it by
