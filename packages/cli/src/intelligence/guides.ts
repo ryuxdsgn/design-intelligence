@@ -389,7 +389,8 @@ return { iconStrokes: strokes, iconColours: colours, unbound: [...unbound], mixe
      and freedom, visibility of system status) and put the ID after. The line on what was cut names a principle too (aesthetic and minimalist design, or the design
      principle that ruled it out). A line with a cost trades one value for another (speed against clarity,
      density against calm): name the design principle, from DESIGN.md or the brief, that decided it. A cost
-     that a decided fact forced (a price known only after the check) names that fact instead; with neither,
+     that a decided fact forced (a price known only after the check) names that fact in place of the
+     design principle; the UX principle stays on the line. With neither,
      say so and call it a judgment call (evidence None). It goes in the final message,
      before the gate.
    - Annotations on the canvas: when the design is made in a design tool (Figma, pen.dev, Penpot,
