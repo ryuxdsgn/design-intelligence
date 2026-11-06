@@ -317,6 +317,57 @@ for (const s of screens) {
 const all = [...pairs], ok = all.filter(([, p]) => p.ok).length;
 return { screens: screens.length, count: ok + "/" + all.length, unlabelled: all.filter(([, p]) => !p.ok).map(([k, p]) => k + " · " + p.seen.join(" · ")), amountsWithoutRule: noRule };
 \`\`\`
+   - Design system listing (RX-UI-15, RX-DS-06): in Figma, the DESIGN SYSTEM numbers also come from a
+     read-only listing, not from memory. It measures what a look at the render misses: the stroke an icon
+     ends up with after it was scaled (a 24 px icon at 1.75 scaled to 16 px draws 1.17), every icon
+     colour, an icon whose colour changes in the same place (a row's icons grey, one ink), a variant that
+     changes size with its state (78 against 80 px moves the layout when it is picked), and property
+     combinations with no variant. Fix, then run
+     it again before the gate: resize icons, never scale them (or draw a master per size); give icons
+     colours from variables only; make the variants of one set the same size; draw each missing
+     combination or write why it is not needed. Elsewhere, measure the same from the code or the render.
+
+\`\`\`js
+const PAGE = "Page name", ICON = /^icons?[\\/ ]/i, STATE = /state|status|selected|checked|active|pressed|disabled/i;
+const page = figma.root.children.find((p) => p.name === PAGE); await page.loadAsync();
+const hex = (c) => "#" + [c.r, c.g, c.b].map((v) => Math.round(v * 255).toString(16).padStart(2, "0")).join("");
+const strokes = {}, colours = {}, unbound = new Set(), byPlace = new Map();
+for (const n of page.findAll((x) => x.type === "INSTANCE")) {
+  const mc = await n.getMainComponentAsync();
+  const name = mc?.parent?.type === "COMPONENT_SET" ? mc.parent.name : mc?.name;
+  if (!name || !ICON.test(name)) continue;
+  const own = new Set();
+  for (const v of n.findAll((x) => "strokes" in x && x.visible)) {
+    if (v.strokes.length && typeof v.strokeWeight === "number") { const w = +v.strokeWeight.toFixed(2); strokes[w] = (strokes[w] || 0) + 1; }
+    for (const p of [...v.strokes, ...(v.fills || [])]) if (p.type === "SOLID" && p.visible !== false) {
+      const h = hex(p.color); colours[h] = (colours[h] || 0) + 1; own.add(h); if (!p.boundVariables?.color) unbound.add(h);
+    }
+  }
+  // Where the icon sits: the variant of the nearest component around it, and its parent layer.
+  let place = n.parent.name;
+  for (let p = n.parent; p && p.type !== "PAGE"; p = p.parent) if (p.type === "INSTANCE" || p.type === "COMPONENT") { place = (p.type === "INSTANCE" ? (await p.getMainComponentAsync())?.name : p.name) || place; break; }
+  const k = place + " · " + n.parent.name; if (!byPlace.has(k)) byPlace.set(k, new Set()); byPlace.get(k).add([...own].sort().join("+"));
+}
+const mixed = [...byPlace].filter(([, s]) => s.size > 1).map(([k, s]) => k + ": " + [...s].join(" / "));
+const uneven = [], missing = [];
+for (const set of page.findAll((x) => x.type === "COMPONENT_SET")) {
+  const props = Object.entries(set.variantGroupProperties || {});
+  const val = (v) => Object.fromEntries(v.name.split(", ").map((kv) => kv.split("=")));
+  // A state property: named like one, or true/false. Variants equal in every other property must be the same size.
+  for (const [prop] of props.filter(([k, { values }]) => STATE.test(k) || values.every((x) => /^(true|false)$/.test(x)))) {
+    const groups = new Map();
+    for (const v of set.children) { const o = val(v); delete o[prop]; const g = JSON.stringify(o); if (!groups.has(g)) groups.set(g, []); groups.get(g).push(v); }
+    for (const vs of groups.values()) for (const k of ["width", "height"]) { const z = [...new Set(vs.map((v) => Math.round(v[k])))]; if (z.length > 1) uneven.push(set.name + " " + k + " " + z.join("/") + " across " + prop); }
+  }
+  const have = new Set(set.children.map((v) => v.name.split(", ").sort().join(", ")));
+  const combos = props.reduce((acc, [k, { values }]) => acc.flatMap((c) => values.map((v) => [...c, k + "=" + v])), [[]]);
+  for (const c of combos) if (!have.has([...c].sort().join(", "))) missing.push(set.name + ": " + c.join(", "));
+}
+return { iconStrokes: strokes, iconColours: colours, unbound: [...unbound], mixedInOnePlace: mixed, unevenSets: uneven, missingVariants: missing };
+\`\`\`
+   - Passes when: one icon stroke (or one per drawn master size, written down), every icon colour on a
+     variable and one colour per role (no two greys doing one job), one colour for the icons in one
+     place unless the state changes it, no uneven set, and every missing variant drawn or written off. Report it in the DESIGN SYSTEM line.
    - Canvas copy is for the team, not for RYUX: annotations, state captions, and labels use plain
      language ("Shown while prices load; button disabled"). Rule IDs, gate results, and Decision
      Receipts go in the Design Direction or the final message, never in frames meant for review or
@@ -333,12 +384,13 @@ return { screens: screens.length, count: ok + "/" + all.length, unlabelled: all.
      if. The principle is a UX principle by name and how it works on this screen ("Hick's law: one
      decision per step, so the service comes before the time slot"): a law of UX (the table in
      knowledge/ux.md), a Nielsen heuristic, a Gestalt principle, or the platform's convention;
-     say where it stops applying when that matters. A RYUX rule ID or rule name alone ("one-way door")
-     is not a principle: name the principle behind it (Nielsen's user control and freedom) and put the ID
-     after. The line on what was cut names a principle too (aesthetic and minimalist design, or the design
+     say where it stops applying when that matters. A RYUX rule ID, name, or title ("one-way door", "full
+     cost before commitment") is not a principle: name the principle behind it (Nielsen's user control
+     and freedom, visibility of system status) and put the ID after. The line on what was cut names a principle too (aesthetic and minimalist design, or the design
      principle that ruled it out). A line with a cost trades one value for another (speed against clarity,
-     density against calm): name the design principle, from DESIGN.md or the brief, that decided it; with
-     none written, say so and call it a judgment call (evidence None). It goes in the final message,
+     density against calm): name the design principle, from DESIGN.md or the brief, that decided it. A cost
+     that a decided fact forced (a price known only after the check) names that fact instead; with neither,
+     say so and call it a judgment call (evidence None). It goes in the final message,
      before the gate.
    - Annotations on the canvas: when the design is made in a design tool (Figma, pen.dev, Penpot,
      Framer, or another), annotate three to five of those decisions beside the frames, in plain
