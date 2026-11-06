@@ -29,8 +29,8 @@ test("Build with no design asks Design's stage 1 questions, even for a prototype
   assert.match(build, /even when the request is a quick build or a working prototype/);
 });
 
-test("a brief with no market gets no default market, and sample data names no real brand", () => {
-  // wallet-detail benchmark, 2.19.2: 3 of 3 runs proposed Indonesia and IDR, and 3 of 3 showed Visa
+test("a brief with no market gets no default market, and a real brand is asked about or shown with its own logo", () => {
+  // wallet-detail benchmark, 2.19.2: 3 of 3 runs proposed Indonesia and IDR; owner decision 2026-11-06: real brand logos, or ask
   const files = renderBundle();
   const product = files["knowledge/product.md"].replace(/\s+/g, " ");
   assert.match(product, /propose no market as your default/);
@@ -38,7 +38,8 @@ test("a brief with no market gets no default market, and sample data names no re
   assert.match(design, /name no market, ask with no market as the recommended default/);
   assert.match(files["capabilities/build.md"].replace(/\s+/g, " "), /no default market when nothing names one/);
   const antiSlop = files["knowledge/anti-slop.md"].replace(/\s+/g, " ");
-  assert.match(antiSlop, /Names are made up, including merchants, banks, and card networks/);
+  assert.match(antiSlop, /ask once, with the fact questions, whether to show the real brands with their official logos or made-up names/);
+  assert.match(antiSlop, /Never a made-up brand with a drawn logo, or a real brand set as plain text where its logo belongs/);
 });
 
 test("validation catches a missing module, a broken reference, and 1.x names", () => {
@@ -118,7 +119,7 @@ test("Design can write or update a full DESIGN.md that answers five questions", 
   const flat = (f) => files[f].replace(/\s+/g, " ");
   const design = files["capabilities/design.md"];
   assert.match(design, /## Write or update DESIGN\.md/);
-  for (const h of ["Users and needs", "Jobs to be done", "Evidence", "Interaction patterns", "Visual and motion language", "Voice and tone", "How we evaluate", "Open questions"]) {
+  for (const h of ["Users and needs", "Jobs to be done", "Evidence", "Interaction patterns", "Visual and motion language", "Voice and tone", "Business rules", "How we evaluate", "Open questions"]) {
     assert.match(design, new RegExp(`## ${h}`), h);
   }
   assert.match(flat("capabilities/design.md"), /At most three questions per message/);
@@ -142,6 +143,13 @@ test("an undecided rule shown on screen is labelled on that screen", () => {
   assert.match(design, /a read-me board, a notes frame, or the final message does not count/);
   assert.match(files["SKILL.md"], /open rules on screen <tagged>\/<shown> \| none/);
   assert.match(files["capabilities/qa.md"].replace(/\s+/g, " "), /\*\*Open rules\*\*/);
+  // laundry and Pasarku Figma runs, 2026-11-05/06: counts recalled, then a label naming another fee judged as labelled
+  assert.match(design, /the listing decides "labelled", not you/);
+  assert.match(design, /The unit is one rule on one screen/);
+  assert.match(design, /the listing is the last use_figma call before the gate/);
+  assert.match(design, /const RULES = \[/);
+  assert.match(design, /r\.label === null \|\| |b\.includes\(r\.label\.toLowerCase\(\)\)/);
+  assert.match(design, /native annotation in a "Placeholder" category/);
 });
 
 test("builds keep their cost down: fresh session, contact sheets, targeted tests", () => {
@@ -266,4 +274,23 @@ test("expressive pages: one weight carrier, devices with a job, one world, the t
   assert.match(ill, /seven checks/);
   assert.match(ill, /write one asset spec for the page in the direction block, so the subjects change and the treatment does not/);
   assert.match(files["knowledge/frontend.md"].replace(/\s+/g, " "), /### RX-FE-17 /);
+});
+
+test("context stays scoped, visible, and honest about failed sources", () => {
+  // NN/g context libraries (2026): context bleeding, stale context, unchecked agent edits, system decay
+  const files = renderBundle();
+  const skill = files["SKILL.md"].replace(/\s+/g, " ");
+  assert.match(skill, /context from elsewhere \(another project, file pages the task does not name, an earlier run\) is not direction at all/);
+  assert.match(skill, /list every change to DESIGN\.md as old → new/);
+  assert.match(skill, /a business rule moves to Decided only on the user's own words/);
+  assert.match(skill, /A source that fails \(the MCP answers 401 or 429, a file does not load\) is NOT VERIFIED in the gate/);
+  const design = files["capabilities/design.md"].replace(/\s+/g, " ");
+  assert.match(design, /## Business rules two lists\. Decided/);
+  assert.match(design, /Start from Business rules in DESIGN\.md/);
+  assert.match(design, /Ambient sources the user points to/);
+  assert.match(design, /another page's components and variables are this product's library only when DESIGN\.md or the user says so/);
+  assert.match(design, /a correction the user makes for this product/);
+  assert.match(design, /Cite each item you use by its id and date/);
+  assert.match(design, /an added line is "\(none\) → the new line"/);
+  assert.match(files["knowledge/imagery.md"].replace(/\s+/g, " "), /list every mark in the handoff: the mark, the file's source URL, its licence or terms/);
 });
