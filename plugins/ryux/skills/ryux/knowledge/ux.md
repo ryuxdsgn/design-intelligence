@@ -59,6 +59,25 @@ Trade-off:  higher visual density
 Reason:     less memory burden in a repeated workflow
 ```
 
+**Research methods, by question** (NNGroup). RYUX plans research; people run it. Pick the method from
+the question, not from habit: what people do (behavioral) over what they say (attitudinal) for
+usability; qualitative for why and how to fix, quantitative for how many and how much.
+
+| Question | Phase | Method |
+| --- | --- | --- |
+| What problem do people have, in their own setting? | discover | field study, contextual inquiry, diary study, user interview |
+| What does the business need, and what limits it? | discover | stakeholder interview, requirements and constraints |
+| Is the core idea worth building? | discover | concept test |
+| How do people group and name this content? | design | card sort (open: they name the groups; closed: yours) |
+| Can people find things in this structure? | design | tree test (text-only hierarchy: success, directness, time) |
+| Can people do the task with this design, and why do they fail? | design | qualitative usability test, moderated or unmoderated (RX-UX-12) |
+| Which look fits the brand words? | design | desirability study (pick attributes for each alternative) |
+| How good is it, against before or a competitor? | assess | usability benchmark (time, success, errors) |
+| Which variant performs better in real use? | assess | A/B test, analytics, clickstream |
+| How do many people feel about it? | assess | survey, customer feedback |
+
+Most projects need more than one method. A single method, or none, is a choice to write down.
+
 Does not cover: per-action behavior (see `knowledge/interaction.md`), forms (see `knowledge/forms.md`), or states
 (see `knowledge/edge-cases.md`).
 
@@ -144,7 +163,7 @@ How Indonesian apps sequence and structure this flow: `get_flow` for a reference
 ### RX-UX-12 [Contextual] A test plan travels with the design
 
 - When: the work is a new flow, a consequential change (payment, sign-up, navigation, a core task), or a recommendation on an open brief
-- Do: Close the design or build with a usability test plan a person can run; RYUX prepares it, people run it:
+- Do: Close the design or build with a usability test plan a person can run; RYUX prepares it, people run it. When the open question is not usability, name the method that answers it instead (a tree test for a navigation change, a concept test for an open idea, a desirability study for a look; knowledge/ux.md, research methods):
   - research questions: the open unknowns, the Frame success criteria, and the heuristic evaluation findings marked as needing a test
   - three to five task scenarios that are realistic, ask the participant to do something rather than describe it, and use none of the interface's labels or steps ("Kamu ingin membayar pesanan makan siang dengan saldo e-wallet", not "Ketuk Bayar lalu pilih GoPay")
   - participants: five per user group for a qualitative test; at least twenty when the goal is a number
@@ -153,7 +172,7 @@ How Indonesian apps sequence and structure this flow: `get_flow` for a reference
   - Plan at least two rounds of test and fix; a result that changes the context or the criteria sends the work back to Understand or Frame.
   - Before a full design exists (a proposal or a direction), the Decision Receipt's Test field is the minimum plan: never close a recommendation without it.
 - Do not: Claim the design was tested with users, present AI-simulated users as participants, or write tasks that name the buttons to tap.
-- Why: Rules and heuristics find likely problems; only people using the design show which ones are real, and a baseline is what makes the after-launch number mean something. (NNGroup usability testing 101; NNGroup how many test users (5 per group, 20 for quantitative); NNGroup task scenarios; NNGroup iterative design (at least three versions); NNGroup establishing baselines; NNGroup design thinking (test and implement))
+- Why: Rules and heuristics find likely problems; only people using the design show which ones are real, and a baseline is what makes the after-launch number mean something. (NNGroup when to use which UX research methods (Rohrer 2022) and UX research cheat sheet (Farrell 2017): the method follows the question; NNGroup usability testing 101; NNGroup how many test users (5 per group, 20 for quantitative); NNGroup task scenarios; NNGroup iterative design (at least three versions); NNGroup establishing baselines; NNGroup design thinking (test and implement))
 - Not when: a small change (a colour, one label, spacing) or when the user says no test plan
 - Trade-off: a plan nobody runs is only a list; say who should run it and when
 - Check: review

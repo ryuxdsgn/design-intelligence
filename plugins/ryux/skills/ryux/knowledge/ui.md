@@ -60,10 +60,54 @@ screens keeps the status colours readable. A keyword is not a recipe: swiss is n
 editorial is not always a big serif, minimal is not always cream and white space, playful is not
 always pastel and round.
 
+**Named styles, and what each costs** (NNGroup). A style name is shorthand for a set of choices; say
+which name you mean, then check its known cost on the render:
+
+| Style | What it is | Known cost | Check |
+| --- | --- | --- | --- |
+| Flat | no gloss, 3D, or texture | clickable things lose their signifiers | every control still looks tappable: shape, underline, or label |
+| Flat 2.0 (semi-flat) | mostly flat, with subtle shadows, highlights, and layers | little, when the depth marks what can be pressed | depth is used for controls and layers, not for decoration |
+| Skeuomorphism | real-world cues: as a learning aid (a trash can, a folder) or as a look (textures, realistic shadows) | heavy realism clutters, slows rendering, dates fast; physical metaphors make odd gestures | keep the metaphor where it teaches, drop the texture where it only decorates |
+| Neumorphism | soft embossed depth from paired light and dark shadows | low contrast; controls and plain surfaces look the same | contrast 3:1 or more on every control edge; pressed and static states differ |
+| Glassmorphism | translucent, frosted layers over a background | text passes on one background and fails on another | contrast over the busiest background it can sit on; blur that handles all of them; reduced transparency respected (RX-UI-35) |
+| Minimalism | only what the task needs: flat surfaces, a limited palette, few elements, negative space, dramatic type | hidden features and weak signifiers when cut too far | nothing the task needs is hidden; hierarchy holds with fewer elements |
+| Neobrutalism | saturated colour, thick borders, hard offset shadows, expressive type, retro nods | overwhelms, and some bold pairs fail contrast | two or three bold colours, contrast measured, controls and state changes still signalled, the call to action still leads |
+
+A style is a visual layer: it never changes the hierarchy, navigation, or interaction model it sits on.
+Minimalism is a layout and content strategy; flat is a surface treatment: a screen can be flat without being
+minimal.
+
 **Craft is the last 10 percent people notice first** (RX-UI-15). Icons sit on the optical center of
 their text, sized to its line-height, with a stroke that matches the type weight. Number columns align
 right or on the decimal. Borders, dividers, and shadows come from one small token set. Long text
 truncates on purpose, with the full value still reachable.
+
+**Icons: kind, style, meaning** (RX-UI-15, RX-UI-20). Three questions for every icon:
+- **Kind** (NNGroup icon classification): **resemblance** (a picture of the object itself: a camera for
+  photo) reads best but is hard to draw clearly small, and objects differ by country; **reference** (an
+  object that stands for the idea: a clock for history) works only when users already link the two, and a
+  stretched link fails; **arbitrary** (meaning by convention: a question mark for help) works only for
+  conventions everyone knows, so never invent a new one. A kind drifts over time (the floppy disk for save).
+- **Style**, by role. One style per role across the product, and one set within it: same stroke, size,
+  corner, and fill.
+
+| Style | Use for | Notes |
+| --- | --- | --- |
+| Outline | system icons: navigation, actions, 16 to 24 pt | stroke matches the type weight; the same stroke at every size |
+| Filled | system icons, often the selected state of an outline set | outline for rest and filled for selected is one set, not two |
+| Duotone | system or feature icons that need a second level | the second colour is a lighter tint of the first, never a new hue |
+| Two-tone | feature icons | outline plus a partial fill; keep the fill colour one role |
+| 3D, clay, glassy, gradient | feature icons and spot illustrations, 48 pt and up | detail disappears below 48 pt; made as images (RX-UI-30), one light and camera for the set |
+| Illustrated (hand-drawn) | spot illustrations, empty states | the illustration style rules apply (knowledge/illustration.md) |
+| Skeuomorphic | rare: a metaphor that teaches (a folder, a trash can) | detailed realism ages fast and clutters |
+
+  NNGroup names outline and filled sets, flat, and skeuomorphic icons; the other names are working
+  vocabulary for common styles, judged by the same rules (consistency, legible at the size used).
+- **Meaning**: a visible text label beside every icon except the few everyone knows (home, search, print),
+  and beside any standard icon used in a non-standard way; never a label shown only on hover. If you
+  cannot think of an icon for the idea in five seconds, users will not read it either: use a word. Keep
+  icons simple and schematic; fine detail is lost small. In the test plan, ask people what each new icon
+  means before they use it.
 
 Does not cover: component reuse and tokens (see `knowledge/design-system.md`), or imagery, motion, and
 assets (see knowledge/imagery.md).
@@ -203,7 +247,7 @@ A design direction from comparable screens: `extract_design_direction` (patterns
 
 - Do: Center icons on the optical middle of the text beside them and size them to its line-height; take every icon from one set and match its stroke to the type weight, the same stroke at every icon size (resize an icon, never scale it, or draw a master per size), in colours from the palette's roles; right-align (or decimal-align) number columns; take borders, dividers, radii, and shadows from a small token set; truncate long text on purpose, with the full value still reachable (a tooltip, a detail view, or wrapping).
 - Do not: Let icons sit high or low against their labels, mix icon sets or stroke weights (a scaled icon changes its stroke), give icons near-duplicate colours, center amounts in a table, or invent a one-off shadow for one card.
-- Why: Each detail is small; together they are what makes a screen look made rather than generated. (Bringhurst (figures and alignment); Apple HIG and Material iconography (optical size and alignment); owner review 2026-10-17: wrong tab icons in withryux.pen; owner review 2026-11-06 (Figma, Sejuk rerun): icon strokes 1.17 to 2.04 from scaled instances and eight icon colours, two of them near-identical greys)
+- Why: Each detail is small; together they are what makes a screen look made rather than generated. (Bringhurst (figures and alignment); Apple HIG and Material iconography (optical size and alignment); NNGroup icon usability (Harley 2014), icon classification (Nielsen 2014), imagery in visual design (Krause 2023): one stroke, size, corner, and fill per set; owner review 2026-10-17: wrong tab icons in withryux.pen; owner review 2026-11-06 (Figma, Sejuk rerun): icon strokes 1.17 to 2.04 from scaled instances and eight icon colours, two of them near-identical greys)
 - Check: render inspection at 390 and 1280: icon center within 2 px of the text center; column alignment; in Figma, the design system listing (capabilities/design.md, stage 6): icon strokes and icon colours
 
 ### RX-UI-20 [Preferred] An icon means one thing, and says it
