@@ -119,7 +119,7 @@ test("Design can write or update a full DESIGN.md that answers five questions", 
   const flat = (f) => files[f].replace(/\s+/g, " ");
   const design = files["capabilities/design.md"];
   assert.match(design, /## Write or update DESIGN\.md/);
-  for (const h of ["Users and needs", "Jobs to be done", "Evidence", "Interaction patterns", "Visual and motion language", "Voice and tone", "How we evaluate", "Open questions"]) {
+  for (const h of ["Users and needs", "Jobs to be done", "Evidence", "Interaction patterns", "Visual and motion language", "Voice and tone", "Business rules", "How we evaluate", "Open questions"]) {
     assert.match(design, new RegExp(`## ${h}`), h);
   }
   assert.match(flat("capabilities/design.md"), /At most three questions per message/);
@@ -274,4 +274,20 @@ test("expressive pages: one weight carrier, devices with a job, one world, the t
   assert.match(ill, /seven checks/);
   assert.match(ill, /write one asset spec for the page in the direction block, so the subjects change and the treatment does not/);
   assert.match(files["knowledge/frontend.md"].replace(/\s+/g, " "), /### RX-FE-17 /);
+});
+
+test("context stays scoped, visible, and honest about failed sources", () => {
+  // NN/g context libraries (2026): context bleeding, stale context, unchecked agent edits, system decay
+  const files = renderBundle();
+  const skill = files["SKILL.md"].replace(/\s+/g, " ");
+  assert.match(skill, /context from elsewhere \(another project, file pages the task does not name, an earlier run\) is not direction at all/);
+  assert.match(skill, /list every change to DESIGN\.md as old → new/);
+  assert.match(skill, /a business rule moves to Decided only on the user's own words/);
+  assert.match(skill, /A source that fails \(the MCP answers 401 or 429, a file does not load\) is NOT VERIFIED in the gate/);
+  const design = files["capabilities/design.md"].replace(/\s+/g, " ");
+  assert.match(design, /## Business rules two lists\. Decided/);
+  assert.match(design, /Start from Business rules in DESIGN\.md/);
+  assert.match(design, /Ambient sources the user points to/);
+  assert.match(design, /another page's components and variables are this product's library only when DESIGN\.md or the user says so/);
+  assert.match(design, /a correction the user makes for this product/);
 });

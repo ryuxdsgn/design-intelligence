@@ -44,7 +44,7 @@ One workflow, six stages; each entry point runs the stages it needs.
    context in DESIGN.md, then the product docs (Product docs paths, else PRD.md, docs/prd*,
    docs/product*, README), and name what you read. Separate facts, assumptions, and unknowns
    (RX-PR-02); ask and record direction as in capabilities/design.md, stage 1. DESIGN.md is
-   direction, not evidence. Read the entry point's file and only the modules the task table lists.
+   direction, not evidence; context from elsewhere (another project, file pages the task does not name, an earlier run) is not direction at all. Read the entry point's file and only the modules the task table lists.
 2. **Frame**: the user's task, the flow, what must be seen first, the primary action, and three to
    five success criteria from the brief, written before any alternative exists.
 3. **Explore**: on a new or complex surface, two or three alternatives that differ in hypothesis and
@@ -92,7 +92,7 @@ compliance, product or competitor facts, screenshots, or references (RX-PR-02, R
 
 Record a source as `{ type: observed | inferred | knowledge, origin, reference }`, for example
 `{ knowledge, ryux-knowledge, scr_123 }` from the ryux MCP, or `{ observed, screenshot, hero.png }`.
-Optional sources (the ryux MCP, Figma, a browser, screenshots, other reference libraries) add evidence when connected; none is required.
+Optional sources (the ryux MCP, Figma, a browser, screenshots, other reference libraries) add evidence when connected; none is required. A source that fails (the MCP answers 401 or 429, a file does not load) is NOT VERIFIED in the gate, with the reason, never filled by judgment.
 
 ## Levels
 
@@ -163,8 +163,8 @@ FINAL          PASS | FAIL | NOT VERIFIED
 
 ## Honest claims
 
-Report what was checked, how, and what was not available. Do not claim "pixel perfect",
-"fully accessible", "production ready", "senior-level", or "UX optimized" without evidence. Say
+Report what was checked, how, and what was not available; list every change to DESIGN.md as old → new (a business rule moves to Decided only on the user's own words).
+Do not claim "pixel perfect", "fully accessible", "production ready", "senior-level", or "UX optimized" without evidence. Say
 "Keyboard and focus checked by hand; no automated accessibility test was available" instead.
 Rule IDs and gate results belong in your report, never on the design itself.
 
