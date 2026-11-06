@@ -127,7 +127,7 @@ Then run the measured Laws of UX checks (knowledge/ux.md) and report each fail w
 | Content | ryux-content | specific labels, errors, terminology, Rupiah, dates and numbers |
 | UI | ryux-ui | hierarchy, scale, color roles, density, icons |
 | Imagery and motion | ryux-imagery | each visual's job, composition around the copy, motion level; the result against its Visual Brief when there is one |
-| Illustration | ryux-illustration | with the label covered, whether each asset says its meaning (an empty state drawn empty); the written style; one family; the themed SVG |
+| Illustration | ryux-illustration | with the label covered, whether each asset says its meaning (an empty state drawn empty); the written style; one family; the method fits the job (generated or SVG) and the asset follows the theme |
 | Design system | ryux-design-system | consistency, tokens, component states |
 | Accessibility | ryux-accessibility | contrast, targets, focus, names, color alone |
 | Responsive | ryux-responsive | what changes, stays, disappears, or stacks across widths |

@@ -1151,7 +1151,16 @@ you can check.
 2. **Concepts.** Two or three concepts per asset, a line each, from the product's own world rather
    than the category's; pick the one that reads fastest without its label. Write the style before the
    first drawing (RX-UI-17); a set shares it (RX-UI-18). Only the chosen concept is drawn.
-3. **Construction.** Silhouette first: the subject reads as one flat shape at display size before
+3. **Make it.** Pick the method from the job (RX-UI-21). With an image tool (in Figma,
+   generate_image), RYUX directs and the model draws: the default for feature icons at 48 pt and up and
+   for spot, empty-state, success, and onboarding illustration. Write the concept line per asset and one
+   style block for the set (type such as clay, 3D, duotone, or flat; palette as hex; light; camera;
+   background, matched to where the asset sits; level of detail), paste the same block into every
+   prompt, and keep text out of the image. Say how many images before generating. Read each result at
+   display size, regenerate at most twice, then change the concept or the method; label each one
+   generated. Draw vectors for system icons, and for art that must follow the theme by itself, animate,
+   or stay editable; then build it as below.
+   **Drawing vectors.** Silhouette first: the subject reads as one flat shape at display size before
    any detail. Then the relations between parts (what touches, what overlaps, where the light comes
    from), then detail. Name layers for what they are (\`recipe-box\`, \`steam\`, not \`path-12\` or a
    coordinate). Pick the method from the asset's job (RX-UI-21) and ship it themed (RX-UI-19).
