@@ -135,7 +135,7 @@ test("Design can write or update a full DESIGN.md that answers five questions", 
   assert.match(flat("SKILL.md"), /DESIGN SYSTEM +PASS \| FAIL \| NOT VERIFIED \| N\/A +· one-line reason · icon strokes <n>, icon colours <n>/);
   assert.match(flat("knowledge/ui.md"), /the same stroke at every icon size \(resize an icon, never scale it, or draw a master per size\)/);
   assert.match(flat("capabilities/design.md"), /A RYUX rule ID, name, or title \("one-way door", "full cost before commitment"\) is not a principle/);
-  assert.match(flat("capabilities/design.md"), /A cost that a decided fact forced \(a price known only after the check\) names that fact instead/);
+  assert.match(flat("capabilities/design.md"), /A cost that a decided fact forced \(a price known only after the check\) names that fact in place of the design principle; the UX principle stays on the line/);
   // owner decision 2026-11-06 (NNGroup psychology study guide): information scent, change blindness, explicit differences
   assert.match(flat("knowledge/ux.md"), /\| Information scent \| the words on each link and button \|/);
   assert.match(flat("knowledge/ux.md"), /\| Change blindness \| values that change outside the element touched/);
