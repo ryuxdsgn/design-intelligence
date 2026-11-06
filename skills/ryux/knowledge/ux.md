@@ -27,11 +27,14 @@ Miller's limit is about holding things in memory, not a cap on menu items.
 | --- | --- | --- | --- |
 | Fitts | the primary action's size, and its distance from what it acts on | 44 by 44 pt or more (48 dp on Android), every target 24 px or more; next to its content; on a phone, in thumb reach or a sticky bar | RX-A11Y-02, RX-RD-03 |
 | Hick, choice overload | options in one decision, visible at once | one primary action; seven or fewer peer options, or grouped under labels | RX-PR-03 |
+| Explicit differences | the attributes of peer options (services, plans, methods) | the attributes that differ come first, in the same order on every option; shared details in one line above | RX-UX-14 |
 | Von Restorff | elements wearing the action colour or the strongest contrast | only the primary action, one per view | RX-UI-01, RX-UI-04 |
 | Serial position | where the primary action and the key fact sit | on the first screen, and again at the end of a long page or list | RX-UX-13 |
 | Proximity, common region, uniform connectedness | the gap inside a group against the gap between groups | the inside gap half the outside gap or less; a label closer to its own field than to the next | RX-UX-01, RX-FM-01 |
 | Miller, chunking, working memory | long strings, and what the user must carry between screens | numbers grouped in threes or fours (a virtual account, a phone number); nothing carried in memory from one screen to the next | RX-UX-08 |
+| Change blindness | values that change outside the element touched (a total, a count, a badge) | each one is next to its control, or marked where it lands (a short highlight or a number transition) | RX-IX-02 |
 | Doherty, flow | time to visible feedback; interruptions | feedback under 400 ms, progress after about 1 s; no dialog interrupting a task that does not need it | RX-IX-02 |
+| Information scent | the words on each link and button | each names where it leads or what it does; no "Selengkapnya", "Learn more", "Klik di sini", or a bare "Lanjut" when a specific action exists | RX-CD-12 |
 | Jakob | where the logo, navigation, search, cart, and back sit | where the platform and the category put them, or a written reason | RX-DS-02 |
 | Goal-gradient, Zeigarnik | progress in a multi-step task | steps done and steps left are shown | RX-UX-02 |
 | Peak-end | the success and the failure ends | both designed: what happened and what to do next | RX-IX-01, RX-EC-01 |
@@ -167,3 +170,15 @@ How Indonesian apps sequence and structure this flow: `get_flow` for a reference
 - Not when: task UI (a list, a form, a dashboard), where the user's task sets the structure (RX-UX-01)
 - Trade-off: the order can differ from what the team expects to see; show the question list with the layout
 - Check: review: the question list in Frame, and each section mapped to one question
+
+### RX-UX-14 [Preferred] Options show what sets them apart
+
+- When: the user picks between two or more peer options: services, plans, tiers, delivery or payment methods, design directions
+- Do: Put the attributes that differ first and make them visible at a glance (price, what is included, time, the one limit); keep what every option shares in one line above the options, not repeated in each.
+  - Show the same attributes in the same order on every option, so they compare row by row.
+  - Mark a recommended option only when the brief or the evidence names one, and say why.
+- Do not: Repeat the same feature list in every card so the differences hide in the middle, or make options look identical except for a name.
+- Why: People weigh every trade-off only when the options are few and the differences are easy to see; when they have to hunt for the difference, they take the first option that seems good enough. (NNGroup psychology study guide: explicit differences, compensatory and noncompensatory decisions, satisficing; Hick's law and choice overload (RX-PR-03); written for RYUX)
+- Not when: a single option, or options that differ only in one value the control already shows (a size picker, a time slot)
+- Trade-off: shared details move out of the cards; a reader who reads only one card sees less
+- Check: review: list each option's attributes; the differing ones come first and in the same order on every option
