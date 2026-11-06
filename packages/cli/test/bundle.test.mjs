@@ -128,6 +128,14 @@ test("Design can write or update a full DESIGN.md that answers five questions", 
   assert.match(flat("capabilities/analyze.md"), /Write or update DESIGN\.md, RX-PR-12/);
   assert.match(flat("knowledge/product.md"), /RX-PR-12/);
   assert.match(flat("knowledge/product.md"), /A DESIGN\.md answers five questions or names what is unknown/);
+  // owner request 2026-11-06 (NNGroup): named UI styles, icon kind/style/meaning, research methods by question
+  assert.match(flat("knowledge/ui.md"), /\*\*Named styles, and what each costs\*\* \(NNGroup\)/);
+  assert.match(flat("knowledge/ui.md"), /\| Neumorphism \| soft embossed depth/);
+  assert.match(flat("knowledge/ui.md"), /\*\*resemblance\*\*.*\*\*reference\*\*.*\*\*arbitrary\*\*/);
+  assert.match(flat("knowledge/ui.md"), /\| 3D, clay, glassy, gradient \| feature icons and spot illustrations, 48 pt and up \|/);
+  assert.match(flat("knowledge/ux.md"), /\*\*Research methods, by question\*\* \(NNGroup\)/);
+  assert.match(flat("knowledge/ux.md"), /\| Can people find things in this structure\? \| design \| tree test/);
+  assert.match(flat("knowledge/ux.md"), /name the method that answers it instead \(a tree test for a navigation change/);
   // owner review 2026-11-06 (Sejuk rerun in Figma): scaled icon strokes, icon colours, uneven variants went unmeasured
   assert.match(flat("capabilities/design.md"), /Design system listing \(RX-UI-15, RX-DS-06\)/);
   assert.match(flat("capabilities/design.md"), /resize icons, never scale them/);
