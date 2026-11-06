@@ -290,4 +290,7 @@ test("context stays scoped, visible, and honest about failed sources", () => {
   assert.match(design, /Ambient sources the user points to/);
   assert.match(design, /another page's components and variables are this product's library only when DESIGN\.md or the user says so/);
   assert.match(design, /a correction the user makes for this product/);
+  assert.match(design, /Cite each item you use by its id and date/);
+  assert.match(design, /an added line is "\(none\) → the new line"/);
+  assert.match(files["knowledge/imagery.md"].replace(/\s+/g, " "), /list every mark in the handoff: the mark, the file's source URL, its licence or terms/);
 });
