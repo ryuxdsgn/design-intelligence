@@ -75,6 +75,8 @@ export function deliveryGateTemplate(): string {
         ? `${a.padEnd(width)}PASS | FAIL | NOT VERIFIED | N/A  · one-line reason · evidence Strong | Thin | None · rationale <n> lines, annotations <n> | none`
         : a === "CONTENT"
         ? `${a.padEnd(width)}PASS | FAIL | NOT VERIFIED | N/A  · one-line reason · open rules on screen <tagged>/<shown> | none`
+        : a === "DESIGN SYSTEM"
+        ? `${a.padEnd(width)}PASS | FAIL | NOT VERIFIED | N/A  · one-line reason · icon strokes <n>, icon colours <n> (<unbound> unbound), uneven sets <n>, missing variants <n> | not drawn`
         : a === "EDGE CASES"
         ? `${a.padEnd(width)}PASS | FAIL | NOT VERIFIED | N/A  · one-line reason · then the view × state matrix (RX-EC-01)`
         : `${a.padEnd(width)}PASS | FAIL | NOT VERIFIED | N/A  · one-line reason`,
