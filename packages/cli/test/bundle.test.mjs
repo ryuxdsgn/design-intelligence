@@ -187,6 +187,9 @@ test("direction discovery: the user chooses among three directions that differ i
   assert.match(product, /What people do in it, Numbers that may be shown/);
   const ui = flat("knowledge/ui.md");
   assert.match(ui, /### RX-UI-26 /);
+  // owner decision 2026-11-06: an existing product's screens and code are its direction
+  assert.match(ui.replace(/\s+/g, " "), /or the product already has screens, code, or a design file: their visual language is the direction/);
+  assert.match(files["capabilities/design.md"].replace(/\s+/g, " "), /A product that exists already has a direction\./);
   assert.match(ui, /cream, ivory, warm white, and paper are one family, used once at most/);
   assert.match(ui, /flat with flat vectors once at most/);
   assert.match(ui, /hands back only that question/);

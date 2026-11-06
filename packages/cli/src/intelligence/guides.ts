@@ -81,8 +81,13 @@ The six stages of the core workflow (SKILL.md), as Design runs them.
    **Product Discovery first** (RX-PR-13): for a new product or a new look, ask what the context
    does not answer (who, why, character, taste, goal, what the page can say) before anything visual,
    in one message of choices; record the answers in DESIGN.md.
-   **Direction is the user's call** (RX-UI-26): when neither the prompt nor DESIGN.md sets the UI
-   direction, the next message offers three directions as style tiles and waits; the motion direction
+   **A product that exists already has a direction.** When there are screens, code, or a design file
+   and no \`direction:\` block, read their visual language first (capabilities/analyze.md), write it as
+   the \`direction:\` block with status observed and the files it came from, tell the user in one line,
+   and build on it. Offer new directions only when the user asks for a new look, and then keep what
+   works (RX-UX-10).
+   **Direction is the user's call** (RX-UI-26): when neither the prompt, DESIGN.md, nor a product that
+   exists sets the UI direction, the next message offers three directions as style tiles and waits; the motion direction
    rides with it. Show the tiles as one static HTML page (\`directions.html\` in the project folder; no server,
    no scripts, Google Fonts allowed): per direction its palette swatches, type pairing, one card, one primary
    button, and its signature, numbered as in the message. Render it once to check it, open it in the user's browser (\`open\` on macOS,
@@ -110,7 +115,7 @@ The six stages of the core workflow (SKILL.md), as Design runs them.
    assumptions do not go into DESIGN.md.
    **Write the foundation.** When the user chooses or combines a direction (RX-UI-26), write it before
    building as one \`direction:\` YAML block under \`## Visual and motion language\` in DESIGN.md (replace
-   an earlier block, keep the rest): id, name, status (chosen, combined, provisional), philosophy,
+   an earlier block, keep the rest): id, name, status (chosen, combined, provisional, observed), philosophy,
    grammar, the answers it rests on, the category default declined, the weight carrier and its asset
    (RX-UI-29), type (families, scale, figures), colour (scheme, neutrals' source, hex per role, passing
    contrast pairs, band colours; RX-UI-31), shape, depth, spacing and layout, background rhythm
