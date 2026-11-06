@@ -77,7 +77,7 @@ Rate each dimension **Strong**, **Adequate**, or **Weak**, with one sentence of 
 | --- | --- |
 | Clarity | Can the user understand what this screen is for? |
 | Hierarchy | Can the user identify what matters first? |
-| Coherence | Does it feel like part of the same product, and does it keep the decisions already stated (DESIGN.md, an earlier Design Direction)? |
+| Coherence | Does it feel like part of the same product, and does it keep the decisions already stated (DESIGN.md, its design principles, an earlier Design Direction)? |
 | Density | Is the information density right for how often and how carefully it is used? |
 | Confidence | Does the user have enough information to act safely (cost, consequence, status)? |
 | Efficiency | Can the task be done without unnecessary work? |

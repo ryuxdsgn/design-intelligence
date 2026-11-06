@@ -85,7 +85,9 @@ Update DESIGN.md with this reference: <link or screenshot>.
 RYUX (Design) asks in rounds, at most three questions at a time, until it can answer five questions: who the
 users are and what they need, which job they want done, what evidence supports each decision, which interaction
 patterns fit, and how the result is evaluated. The file gets these sections: Users and needs, Jobs to be done,
-Evidence, Interaction patterns, Visual and motion language, Voice and tone, How we evaluate, and Open questions.
+Design principles, Evidence, Interaction patterns, Visual and motion language, Voice and tone, Business rules,
+How we evaluate, and Open questions. Design principles are three to five values that take a side ("clear price
+over fewer taps"); the design rationale and Critique cite them when two good options pull apart.
 Nothing is invented: what no source answers goes under Open questions, and values RYUX chooses (colors, type,
 timing) are marked proposed, each with its reason. An update keeps the lines you wrote and lists what changed.
 
