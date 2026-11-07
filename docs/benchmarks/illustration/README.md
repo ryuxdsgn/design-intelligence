@@ -50,5 +50,11 @@ Each one is shown at real size on a 390-wide screen. The style is each run's own
 | **No skill 2** | **RYUX 2** |
 | ![No skill, run 2: home, empty, success screens](https://github.com/ryuxdsgn/design-intelligence/releases/download/media/benchmarks--illustration--no-skill-2.jpg) | ![RYUX, run 2: home, empty, success screens](https://github.com/ryuxdsgn/design-intelligence/releases/download/media/benchmarks--illustration--ryux-2.jpg) |
 
+**Earlier test:** before 2.22.5, the same brief was run with the image-model rule on a branch. That RYUX run drew
+with Figma's `generate_image` and scored higher than no skill (owner-rated, not fully blind, one run per arm). It is
+archived at
+[`archive/illustration-direction-a-2.22.4`](https://github.com/ryuxdsgn/design-intelligence/tree/archive/illustration-direction-a-2.22.4/docs/benchmarks/illustration).
+In this 2.22.5 benchmark the image model was never used.
+
 **Next:** find out why the image-model rule does not trigger on its own, and fix the icon concept check (one object
 per service). Then run this benchmark again.
