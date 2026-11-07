@@ -1,0 +1,17 @@
+{
+  "ok": true,
+  "cli": "2.22.5",
+  "files": 10,
+  "pages": 0,
+  "widths": [],
+  "findings": [
+    {
+      "level": "warn",
+      "rule": "RX-DS-03",
+      "file": "OR2/prototype/qa/contrast.mjs",
+      "line": 6,
+      "column": 18,
+      "message": "17 one-off colors (#2b1d16, #fbf6f1, #6a574c, ...): use the color tokens, or define them by role"
+    }
+  ]
+}
