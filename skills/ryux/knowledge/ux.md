@@ -201,3 +201,15 @@ How Indonesian apps sequence and structure this flow: `get_flow` for a reference
 - Not when: a single option, or options that differ only in one value the control already shows (a size picker, a time slot)
 - Trade-off: shared details move out of the cards; a reader who reads only one card sees less
 - Check: review: list each option's attributes; the differing ones come first and in the same order on every option
+
+### RX-UX-15 [Preferred] A running total sits with the action it pays for
+
+- When: a screen sums what the user picks (a cart, a booking, an order with quantities or add-ons) and ends in an action that commits to that sum
+- Do: Show the total in the bar that holds the primary action, pinned to the bottom on a phone, and update it as the user picks; the line items and fees stay on the review screen or open from the total.
+  - Say what the total covers when part of it is unknown ("+ biaya perbaikan setelah dicek"), next to the figure.
+  - A summary above the list may repeat the choice, never the only place the total lives.
+- Do not: Put the only total above the list it sums, where it moves as items are added and scrolls away from the button that commits to it.
+- Why: People check the price at the moment they commit; a total next to the button is read with it, and one at the top must be remembered or scrolled back to, and loses its context as the list grows. (Gestalt proximity; Nielsen heuristics 1 (visibility of system status) and 6 (recognition rather than recall); Fitts's law (a pinned bar keeps the action in thumb reach, RX-RD-03); written for RYUX)
+- Not when: one fixed price with no choices; a long statement or invoice read top to bottom
+- Trade-off: a pinned bar takes vertical space on every scroll position
+- Check: render at 390 with the most items the brief allows: the total and the primary action are visible together without scrolling
