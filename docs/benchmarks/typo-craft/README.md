@@ -47,7 +47,7 @@ good page (9 of 9) and a planted bad page (0 of 9).
 - Every run built all sections, rendered its page before reporting, and said what it had not tested.
 
 **Blind rating.** A product designer with nine years of experience compared each pair, desktop and
-mobile, with the sides shuffled ([pair images](survey/)). They shipped the 2.9.2 page in 2 of 3
+mobile, with the sides shuffled (pair images in the [media release](https://github.com/ryuxdsgn/design-intelligence/releases/tag/media), `benchmarks--typo-craft--survey--*`). They shipped the 2.9.2 page in 2 of 3
 pairs, naming line length, hierarchy, and alignment as reasons.
 
 ## Run it yourself

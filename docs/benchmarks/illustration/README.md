@@ -1,4 +1,4 @@
-# Illustration baseline: no skill vs RYUX 2.20.0
+# Illustration: no skill vs RYUX (2.20.0, 2.21.0, direction A)
 
 Protocol: [PROTOCOL.md](PROTOCOL.md), locked before the first run (commit 1f3a197). Four asset families, two runs
 per arm, 16 runs, 49 SVGs, 2026-10-29.
@@ -11,6 +11,11 @@ low score was an art-direction failure; none was a construction failure.
 **Rerun (below):** with the illustration module and RX-UI-24, the gap to no skill narrowed from −0.32 to
 −0.08 and no side scored low; empty states and the mascot moved ahead of no skill; Art direction did not
 move, and the editorial got worse. See [Rerun: B′](#rerun-b).
+
+**Direction A (below, 2026-11-07):** RYUX writes the concept and art direction, an image model draws, and RYUX checks
+the result at display size. Owner-rated, this beat no skill in both runs: mean 4.18 against 2.82, then 4.18 against
+3.12 with the shipped rule alone. Craft, the gap that stopped the vector approach, led 4.67 and 4.33 against 1.67 and
+2.67. It shipped in 2.22.5 (RX-UI-21). See [Direction A in Figma](#direction-a-in-figma).
 
 ## Deviation from the protocol
 
@@ -179,3 +184,70 @@ remains the missing evidence.
 Raw B′ runs: `~/bench-runs/illustration/<task>/C1`, `C2`; sheets and the unsealed mapping in
 `knowledge/benchmarks/illustration-rerun/` (local). Mapping (X/Y): pair-1 C1/A1, pair-2 C2/A2, pair-3
 A1/C1, pair-4 C2/A2, pair-5 A1/C1, pair-6 C2/A2, pair-7 C1/A1, pair-8 C2/A2.
+
+## Direction A in Figma
+
+After B′, illustration stopped improving through rules for hand-drawn vectors: Art direction and craft did not
+move. Direction A changes who draws. RYUX directs: one concept line per asset and one written style block pasted
+into every prompt. An image model draws, through Figma's `generate_image`. RYUX then reads each image at display
+size, with at most two regenerations. Criteria were locked before the first run (2026-11-06).
+
+**Setup:**
+- Product: "Sejuk", an iOS app for booking an AC technician in Jakarta. One empty Figma file per arm, global skill
+  moved aside, arms run serially, each arm proposes its own style.
+- Tasks: T1, three service icons as one set at 64 pt; T2, the empty state "Belum ada pesanan"; T3, the success state
+  "Teknisi sedang menuju rumahmu".
+- Arms: X, RYUX 2.22.4 plus one paragraph describing direction A (the rule did not exist yet); Y, no skill.
+- Rerun X2: the rule itself (RX-UI-21 and a "Make it" stage) on a branch, with no extra paragraph, against the same Y.
+- Rating: **by the owner**, 1 to 5 per asset, letters re-randomized for each round. Not fully blind: the owner
+  ran both arms, and raster against vector is visible.
+
+**Owner rating, mean of the three tasks:**
+
+| Dimension | X (RYUX + paragraph) | X2 (rule only) | Y (no skill), round 1 | Y, round 2 |
+| --- | --- | --- | --- | --- |
+| Concept | 4.00 | 4.00 | 3.33 | 3.33 |
+| Originality | 3.67 | 4.33 | 2.33 | 3.00 |
+| Art direction | 4.33 | 4.00 | 2.67 | 2.33 |
+| Craft | 4.67 | 4.33 | 1.67 | 2.67 |
+| Fit at real size | 4.00 | 4.00 | 4.00 | 4.00 |
+| Cohesion: icon set / one product | 4 / 5 | 4 / 5 | 3 / 3 | 3 / 4 |
+| **Mean of all 17 scores** | **4.18** | **4.18** | 2.82 | 3.12 |
+
+Y was rated twice, once against X and once against X2. The second time it scored higher on T1 and T2, which is
+drift in one rater; RYUX still led.
+
+**Against the criteria, both rounds:**
+- RYUX mean at or above no skill: met.
+- RYUX Craft at or above no skill: met.
+- No RYUX Craft or Fit score of 2 or lower: met (lowest 4).
+- RYUX Cohesion at or above no skill: met.
+
+**What the runs show:**
+- The owner on round 1: "X jauh lebih baik", while Y was stiff, poorly drawn, and used bold colour in too many
+  hues, off the brand.
+- Y's success screen invented an arrival time and same-day service. X's said no time is shown because none is
+  confirmed.
+- The empty-state concept is the repeated weak spot: no skill led on Concept for T2 in both rounds (4 against 3),
+  though X2's T2 Craft was 5.
+- Trade-off: generated images are raster, so they cannot be edited as vectors or re-themed by changing a colour
+  variable. RX-UI-21 keeps SVG for system icons and for theme, animation, or editability needs. RX-UI-19 asks for a
+  transparent background or one image per theme.
+
+**Cost:**
+
+| Run | Agent cost | API time | Images |
+| --- | --- | --- | --- |
+| X | $2.42 | 6 min | 8 Figma AI images |
+| X2 | $2.49 | 6 min | Figma AI images |
+| Y | $1.90 | 5 min | none; vector |
+
+The X runs also used Figma AI credits.
+
+**Deviations:**
+- Y's agent used a mistyped file key. The owner sent "Continue", pasted the file URL again, and set a goal to
+  continue; X got the prompt only. This is unequal in Y's favour.
+- One run per arm per round, so the evidence is thin.
+
+Raw outputs are in the Figma files and local rating pages, not in this repository.
+

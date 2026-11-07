@@ -11,7 +11,7 @@ video. Both sides get the same platform motion (a press and ripple under the fin
 RYUX side also gets the motion its DESIGN.md specifies (times that roll, the courier moving with the food, the home
 pin pulsing, illustrations that spring in). No Skill's design specified none. B's frames are from "Pilot B1 fixed" (see After the pilot).
 
-## Cost: about the same for RYUX, faster
+## Cost: RYUX in Figma about 10% cheaper than in code, about 4 times no skill
 
 | | No skill | RYUX + DESIGN.md |
 | --- | --- | --- |

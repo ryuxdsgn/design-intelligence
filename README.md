@@ -158,23 +158,22 @@ every check.
 </details>
 
 <details>
-<summary><b>All benchmarks</b></summary>
+<summary><b>Benchmarks: where RYUX helps, and where it doesn't</b></summary>
 
-Each benchmark fixes its criteria before the first run, uses a fresh agent per run, and publishes the raw
-outputs. Counts come from a few runs on one model: what those runs did, not rates.
+Each benchmark locks its criteria before the first run and gives every run a fresh agent. One to three runs per
+side, on one model, in Claude Code: counts are what those runs did, not rates.
 
-| Benchmark | The question it answers | RYUX | Runs |
-| --- | --- | --- | --- |
-| [Food delivery in Figma](docs/benchmarks/food-delivery-figma/) | Designed in Figma instead of code: is it cheaper, and does the difference still show in the frames? A pilot | 2.19.4 | 1 + 1 |
-| [Illustration](docs/benchmarks/illustration/) | Icons, empty states, a mascot, an editorial picture: do they say what they mean, in one style? Rated blind by an AI rater the owner approved; before the 2.22.0 rules for one medium per set | 2.20.0, 2.21.0 | 8 + 8 + 8 |
-| [Food delivery, DESIGN.md by RYUX](docs/benchmarks/food-delivery-designmd/) | With no DESIGN.md given, does RYUX write one from a brief and references that answers the five questions, then build that direction without inventing policy? Three rounds | main before 2.19.4, 2.19.4 | 1 + 1 + 1 new + 3 |
-| [Billing page in an existing repo](docs/benchmarks/billing-dashboard/) | Does a new page fit a real repo, keep checks passing, and invent no billing rule? | 2.19.3 | 3 + 3 |
-| [Wallet, expressive direction](docs/benchmarks/wallet-expressive/) | With a DESIGN.md that asks for character and motion, does it build that direction and still ask first and invent no money rule? | 2.19.3 | 3 new + 3 |
-| [Wallet transaction detail](docs/benchmarks/wallet-detail/) | Does it ask what changes the build, keep open money rules open, and build the states a money screen needs? | 2.19.2 | 3 + 3 |
-| [Order tracking](docs/benchmarks/order-tracking/) | Does the agent invent policies the brief left open, and build the states for when things go wrong? | 2.19.0 | 3 + 3 |
+**It helped:** open policies shown as fact fell from 25 to 2 across three
+[order-tracking](docs/benchmarks/order-tracking/) runs, and from 25 to 3 in
+[wallet detail](docs/benchmarks/wallet-detail/). Loading, error, and offline states appeared in 3 of 3 RYUX runs,
+0 of 3 without. Every RYUX run in wallet detail asked first; none without a skill did.
 
-Every run so far uses Claude Code; the other supported agents are not benchmarked yet. Older runs from RYUX 2.6 to
-2.9 (personal finance, explore and judge, typography) are listed as historical in [`docs/benchmarks/`](docs/benchmarks/).
+**It didn't:** in the one blind visual comparison, a [gold savings landing page](docs/benchmarks/landing-gold/)
+against Impeccable rated by the owner, RYUX's pages were more consistent but read as more generic (AI-slop
+resistance 2.67 against 3.67, originality 3.33 against 4.33). A RYUX run costs about 1.5 to 4 times a run without a
+skill. Visual quality has been rated by the owner or an AI rater since 2.9, not by an independent designer.
+
+The full table, who rated what, the raw outputs, and how to run one yourself: [`docs/benchmarks/`](docs/benchmarks/).
 
 </details>
 
@@ -191,7 +190,7 @@ numbers and no missing critical states. Browse them in [`skills/ryux/`](./skills
 ```
 packages/cli/     the ryux CLI (npx @ryuxdsgn/design-intelligence)
 skills/ryux/      the RYUX skill, generated from packages/cli/src
-docs/             design rules, showcase, benchmarks
+docs/             design rules, benchmarks
 ```
 
 ```bash
