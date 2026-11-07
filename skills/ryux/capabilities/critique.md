@@ -139,7 +139,7 @@ Then run the measured Laws of UX checks (knowledge/ux.md) and report each fail w
 | Content | `knowledge/content.md` | specific labels, errors, terminology, Rupiah, dates and numbers |
 | UI | `knowledge/ui.md` | hierarchy, scale, color roles, density, icons |
 | Imagery and motion | `knowledge/imagery.md` | each visual's job, composition around the copy, motion level; the result against its Visual Brief when there is one |
-| Illustration | `knowledge/illustration.md` | with the label covered, whether each asset says its meaning (an empty state drawn empty); the written style; one family; the themed SVG |
+| Illustration | `knowledge/illustration.md` | with the label covered, whether each asset says its meaning (an empty state drawn empty); the written style; one family; the method fits the job (generated or SVG) and the asset follows the theme |
 | Design system | `knowledge/design-system.md` | consistency, tokens, component states |
 | Accessibility | `knowledge/accessibility.md` | contrast, targets, focus, names, color alone |
 | Responsive | `knowledge/responsive.md` | what changes, stays, disappears, or stacks across widths |
