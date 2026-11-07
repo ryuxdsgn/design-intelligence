@@ -207,13 +207,13 @@ line below for its exact source.
 <!-- provenance:start -->
 | Source cited | Rules citing it | Rules citing only this |
 | --- | --- | --- |
-| Public standard or research | 86 | 58 |
+| Public standard or research | 89 | 61 |
 | Industry practice | 28 | 8 |
 | Observed in a RYUX run | 17 | 7 |
 | Pattern also in another MIT ruleset (text written for RYUX) | 4 | 3 |
 | RYUX principle, taxonomy, or review | 60 | 22 |
 
-All 144 rules cite a source; 46 cite more than one kind, so the "Rules citing it" column adds up to more than 144.
+All 147 rules cite a source; 46 cite more than one kind, so the "Rules citing it" column adds up to more than 147.
 <!-- provenance:end -->
 
 ## Rules
@@ -221,7 +221,7 @@ All 144 rules cite a source; 46 cite more than one kind, so the "Rules citing it
 Generated from `packages/cli/src/content.ts` by `pnpm sync:skills`. Edit the rules there, not here.
 
 <!-- rules:start -->
-144 rules across 15 modules: 65 Required, 31 Preferred, 48 Contextual; 18 Hard Gates and 13 Quality Locks.
+147 rules across 15 modules: 65 Required, 34 Preferred, 48 Contextual; 18 Hard Gates and 13 Quality Locks.
 
 ### Product thinking (RX-PR) · `knowledge/product.md`
 
@@ -468,6 +468,18 @@ Gate area UX. Covers information architecture, navigation, flows, grouping, disc
 - Not when: a single option, or options that differ only in one value the control already shows (a size picker, a time slot)
 - Trade-off: shared details move out of the cards; a reader who reads only one card sees less
 - Check: review: list each option's attributes; the differing ones come first and in the same order on every option
+
+#### RX-UX-15 [Preferred] A running total sits with the action it pays for
+
+- When: a screen sums what the user picks (a cart, a booking, an order with quantities or add-ons) and ends in an action that commits to that sum
+- Do: Show the total in the bar that holds the primary action, pinned to the bottom on a phone, and update it as the user picks; the line items and fees stay on the review screen or open from the total.
+  - Say what the total covers when part of it is unknown ("+ biaya perbaikan setelah dicek"), next to the figure.
+  - A summary above the list may repeat the choice, never the only place the total lives.
+- Do not: Put the only total above the list it sums, where it moves as items are added and scrolls away from the button that commits to it.
+- Why: People check the price at the moment they commit; a total next to the button is read with it, and one at the top must be remembered or scrolled back to, and loses its context as the list grows. (Gestalt proximity; Nielsen heuristics 1 (visibility of system status) and 6 (recognition rather than recall); Fitts's law (a pinned bar keeps the action in thumb reach, RX-RD-03); written for RYUX)
+- Not when: one fixed price with no choices; a long statement or invoice read top to bottom
+- Trade-off: a pinned bar takes vertical space on every scroll position
+- Check: render at 390 with the most items the brief allows: the total and the primary action are visible together without scrolling
 
 ---
 
@@ -1034,6 +1046,29 @@ Gate area UI. Covers the visual system of a product: hierarchy, type, layout, de
 - Trade-off: more blur and opacity make the effect quieter
 - Check: render over the busiest background it can meet; contrast check; turn on reduced transparency
 - Machine check: `ryux scan` flags a backdrop blur in a folder where nothing handles prefers-reduced-transparency or prefers-contrast (warn)
+
+#### RX-UI-36 [Preferred] A selected option looks chosen, not pressable
+
+- When: the user picks from options shown as chips, tiles, or cards (a time slot, a day, a service, a size) on a screen that also has buttons
+- Do: Mark the selected option as a state: a check or radio mark, a stroke, and a tint of the action colour, with the label still dark on it; keep the solid action fill for buttons only.
+  - Selected, unselected, and unavailable read apart in greyscale, and unavailable says why in words (RX-A11Y-06: not colour alone).
+  - Name the state once in the component (selected: true or false) so every option set on every screen marks it the same way (RX-DS-02).
+- Do not: Fill the selected chip or slot with the primary button's solid colour and white text, so it reads as a second button next to the real one.
+- Why: A shape filled like the primary button signals an action; when a choice looks the same, people hesitate over which control commits and the screen seems to have two primary actions. (NNGroup signifiers; Nielsen heuristic 4 (consistency and standards); Gestalt similarity: what looks alike is read as alike; Material filter and choice chips (selected shown with a check and a tonal fill); RX-PR-03; written for RYUX)
+- Not when: a segmented control or tab bar, whose filled segment is the platform's own selected state
+- Trade-off: a tinted selection is quieter than a solid fill; the mark and the stroke must carry it
+- Check: render the option set with one selected next to the primary button, in greyscale: the selected option and the button do not share fill, text colour, and shape
+
+#### RX-UI-37 [Preferred] The step indicator stays quiet
+
+- When: a multi-step flow shows progress (a stepper, step dots, a progress bar)
+- Do: Show the current step and how many are left in a plain, small form ("Langkah 2 dari 3", a thin bar, simple dots) that sits above the task and takes less weight than the screen's title and its options (RX-UX-02).
+  - The brand's signature goes where there is room for it (a success screen, an empty state, the brand band, RX-UI-33), not into a control people read at every step.
+- Do not: Turn the stepper into the screen's decoration (waves, illustrated tracks, large numbered badges) so it pulls the eye before the task does.
+- Why: The indicator answers "how far am I" at a glance and is read on every step; decoration there competes with the choice the screen exists for and is seen so often it becomes noise. (Nielsen heuristics 1 (visibility of system status) and 8 (aesthetic and minimalist design); NNGroup wizards (show the steps and where the user is); visual hierarchy (RX-UI-01); written for RYUX)
+- Not when: a single-step task; an onboarding where the progress itself is the story
+- Trade-off: the brand shows less on the task screens
+- Check: squint test on each step: the eye lands on the title or the options before the step indicator
 
 ---
 
