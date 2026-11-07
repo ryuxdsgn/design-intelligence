@@ -166,7 +166,7 @@ outputs. Counts come from a few runs on one model: what those runs did, not rate
 | Benchmark | The question it answers | RYUX | Runs |
 | --- | --- | --- | --- |
 | [Food delivery in Figma](docs/benchmarks/food-delivery-figma/) | Designed in Figma instead of code: is it cheaper, and does the difference still show in the frames? A pilot | 2.19.4 | 1 + 1 |
-| [Illustration](docs/benchmarks/illustration/) | Icons, empty states, a mascot, an editorial picture: do they say what they mean, in one style? Rated blind by an AI rater the owner approved; before the 2.22.0 rules for one medium per set | 2.20.0, 2.21.0 | 8 + 8 + 8 |
+| [Illustration](docs/benchmarks/illustration/) | Icons, empty states, a mascot, an editorial picture: do they say what they mean, in one style? Hand-drawn vectors, rated by an AI rater the owner approved; then direction A in Figma (RYUX directs, an image model draws): owner-rated, not fully blind, one run per arm, 4.18 against 2.82 and 3.12 for no skill | 2.20.0, 2.21.0, 2.22.4 + rule | 8 + 8 + 8, then 1 + 1 + 1 |
 | [Food delivery, DESIGN.md by RYUX](docs/benchmarks/food-delivery-designmd/) | With no DESIGN.md given, does RYUX write one from a brief and references that answers the five questions, then build that direction without inventing policy? Three rounds | main before 2.19.4, 2.19.4 | 1 + 1 + 1 new + 3 |
 | [Billing page in an existing repo](docs/benchmarks/billing-dashboard/) | Does a new page fit a real repo, keep checks passing, and invent no billing rule? | 2.19.3 | 3 + 3 |
 | [Wallet, expressive direction](docs/benchmarks/wallet-expressive/) | With a DESIGN.md that asks for character and motion, does it build that direction and still ask first and invent no money rule? | 2.19.3 | 3 new + 3 |

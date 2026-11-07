@@ -12,7 +12,7 @@ repo small: `docs/benchmarks/x/y.png` is the asset `benchmarks--x--y.png`.
 | --- | --- | --- | --- |
 | [Gold savings landing page](landing-gold/) | One brief for a landing page in desktop and mobile in Figma, rated blind by the owner per area, with facts made up and Figma craft counted. Round 1: no skill, antislop, and RYUX (its Impeccable arm ran an old RYUX router instead). Rounds 2, 3, and 5: Impeccable vs RYUX, three runs each; round 5 ran the direction rules that shipped in 2.22.0 | 2.21.0, then a branch before 2.22.0 | 1 + 1 + 1 + 1, then 3 + 3 per round |
 | [Food delivery in Figma](food-delivery-figma/) | The food-delivery brief designed in Figma instead of built in code, through the Figma connector: is it cheaper, and does the difference still show in the frames? A pilot, one run per side | 2.19.4 | 1 + 1 |
-| [Illustration](illustration/) | Icons, empty states, a mascot, an editorial picture: do they say what they mean, in one style? Rated blind by an AI rater the owner approved. Ran before the 2.22.0 rules for one medium and one asset family per set | 2.20.0, 2.21.0 | 8 + 8 + 8 |
+| [Illustration](illustration/) | Icons, empty states, a mascot, an editorial picture: do they say what they mean, in one style? Hand-drawn vectors rated blind by an AI rater the owner approved (2.20.0, 2.21.0). Then direction A in Figma, where RYUX directs and an image model draws, owner-rated, not fully blind, one run per arm: 4.18 against no skill's 2.82 and 3.12 | 2.20.0, 2.21.0, 2.22.4 + rule (shipped in 2.22.5) | 8 + 8 + 8, then 1 + 1 + 1 |
 | [Food delivery, DESIGN.md by RYUX](food-delivery-designmd/) | With no DESIGN.md given, does RYUX write one from the brief that answers who, which job, what evidence, which patterns, and how to evaluate, then build without inventing policy? Round 2 adds two references (Airbnb's look, a ride-hailing motion study). One RYUX run per round against order-tracking's no-skill runs | main before 2.19.4 | 1 + 1 new + 3 |
 | [Billing page in an existing repo](billing-dashboard/) | Does a new page fit a real repo: reuse, tokens, checks passing, states covered, no invented billing rule? A React + TS fixture, no skill vs RYUX + DESIGN.md, measured from each run's diff | 2.19.3 | 3 + 3 |
 | [Wallet, expressive direction](wallet-expressive/) | With a DESIGN.md that asks for character and motion, does RYUX build that direction and still ask first, invent no money rule, and cover the states? Three new RYUX runs against wallet-detail's no-skill runs, with motion counted per event | 2.19.3 | 3 new + 3 |
@@ -28,7 +28,7 @@ striking screen built on invented facts.
 | --- | :-: | :-: | :-: | :-: | :-: |
 | Gold savings landing page | facts made up, counted | — | blind, one rater, per area | — | text styles, variables, cost |
 | Food delivery in Figma | asked first, traps counted | states counted | frames compared, not scored | — | cost |
-| Illustration | — | — | blind AI rater, owner approved | — | technical floor, cost |
+| Illustration | — | — | blind AI rater, owner approved; direction A rated by the owner | — | technical floor, cost |
 | Billing page in an existing repo | traps counted | scenarios reached | not scored | — | typecheck, tests, build, reuse, tokens, `ryux scan`, cost |
 | Wallet, expressive direction | asked first, traps counted | states counted | not scored yet; motion events and direction counted | — | `ryux scan`, cost |
 | Wallet transaction detail | asked first, traps counted | statuses and states counted | not scored | — | `ryux scan`, assumptions listed, cost |
