@@ -201,6 +201,8 @@ from 2.67 to 1.67 points but did not close. The best RYUX′ run (P2, 3) only ma
 claude.ai account and the other five on the second; two runs were cut by the account limit and rerun from the start
 (see the protocol).
 
+Round 4 was stopped after one unrated run; the protocol says why.
+
 ## Round 5: Impeccable vs RYUX after the owner trials, three runs each
 
 Protocol: the round 5 section in [`PROTOCOL.md`](PROTOCOL.md). RYUX is branch `ryux/direction-discovery` at 389fc08:
@@ -264,8 +266,8 @@ Costs are the sum of a run's turns; R2's cost leaves out the first attempt cut b
   Figma tiles called it 2; the reply "option 1" was read as the celengan. Option text must use one numbering.
 - **Impeccable no longer made facts up** in this round, with the product facts in the brief; RYUX cost about 54%
   more, mostly the extra turn.
-- **Next, per the protocol:** criteria 1 and 2 failed, so the branch is not merged or released, the README's claim
-  stays as round 3 states it, and the gap is read from the transcripts before any new rule.
+- **Next, per the protocol:** criteria 1 and 2 failed, so this branch was not merged as it was; what came next is
+  under *After round 5* below.
 
 **Scope:** three runs per arm on one brief and one model; one rater, the owner, who leads RYUX and ran the nine
 trials that shaped this branch. I1, R1, and I2 ran on the first claude.ai account; R2 was cut by the account limit and

@@ -214,8 +214,8 @@ The steps work best in order, one prompt each, in the same session:
 5. QA the build against the design at 390, 375, and 320 wide.
 ```
 
-The [five-step case study](docs/benchmarks/case-td-2.6/) shows every turn of a real session like
-this one.
+The [five-step case study](https://github.com/ryuxdsgn/design-intelligence/tree/archive/docs-2.9/docs/benchmarks/case-td-2.6/)
+(RYUX 2.6, archived) shows every turn of a real session like this one.
 
 ### Naming the step
 
@@ -311,5 +311,4 @@ Understand → Frame → Explore → Evaluate and select → Build and critique 
 ## More
 
 - [`docs/design-rules.md`](./docs/design-rules.md): every rule, level, and gate
-- [`docs/showcase.md`](./docs/showcase.md): the latest case, one moment up close
 - [`docs/benchmarks/`](./docs/benchmarks/): raw runs, and how to run one yourself

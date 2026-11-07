@@ -42,7 +42,7 @@ The other planted defects (contrast, fake urgency, number format, an unlabeled i
 and close fast, and the same with reduced motion, reading the animations instead of the code.
 
 Five components (menu, dialog, toast, tabs, drawer) were built three times each without RYUX, with
-2.8, and with the candidate, and recorded ([clips](survey/motion/)). On the measured criteria RYUX
+2.8, and with the candidate, and recorded (clips in the [media release](https://github.com/ryuxdsgn/design-intelligence/releases/tag/media), `benchmarks--explore-judge--survey--motion--*`). On the measured criteria RYUX
 was ahead of the plain agent (reversible dialogs and drawers 9 of 9 against 5 of 9, no layout-property
 animation 15 of 15 against 11 of 15). The designer, watching the clips, preferred the plain agent's
 motion in all five, for its easing and its sense of purpose. That is the next change: RYUX keeps
@@ -51,7 +51,7 @@ there. The rule is being loosened and will be re-rated before it ships.
 
 ## Rating images
 
-Everything the designer saw is in [`survey/`](survey/): wallet pairs and direction sets, and the
+Everything the designer saw is in the [media release](https://github.com/ryuxdsgn/design-intelligence/releases/tag/media) as `benchmarks--explore-judge--survey--*`: wallet pairs and direction sets, and the
 motion clips at normal and half speed. Sides and order were shuffled per item.
 
 Three to six runs per condition, one model, one rater. Read the numbers as what happened in these
