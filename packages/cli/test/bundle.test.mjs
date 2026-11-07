@@ -128,6 +128,12 @@ test("Design can write or update a full DESIGN.md that answers five questions", 
   assert.match(flat("capabilities/analyze.md"), /Write or update DESIGN\.md, RX-PR-12/);
   assert.match(flat("knowledge/product.md"), /RX-PR-12/);
   assert.match(flat("knowledge/product.md"), /A DESIGN\.md answers five questions or names what is unknown/);
+  // illustration direction A, passed 2026-11-07 (Sejuk, one run): RYUX directs, an image model draws, RYUX reads
+  assert.match(flat("knowledge/illustration.md"), /Generated raster, RYUX directing: the default for feature icons at 48 pt and up/);
+  assert.match(flat("knowledge/illustration.md"), /SVG, drawn or procedural: system icons always/);
+  assert.match(flat("knowledge/illustration.md"), /3\. \*\*Make it\.\*\* Pick the method from the job \(RX-UI-21\)/);
+  assert.match(flat("knowledge/illustration.md"), /paste the same block into every\s+prompt/);
+  assert.match(flat("knowledge/illustration.md"), /craft 4\.67 against 1\.67 for drawn vectors/);
   // owner request 2026-11-06 (NNGroup): named UI styles, icon kind/style/meaning, research methods by question
   assert.match(flat("knowledge/ui.md"), /\*\*Named styles, and what each costs\*\* \(NNGroup\)/);
   assert.match(flat("knowledge/ui.md"), /\| Neumorphism \| soft embossed depth/);

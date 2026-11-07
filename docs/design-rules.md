@@ -209,7 +209,7 @@ line below for its exact source.
 | --- | --- | --- |
 | Public standard or research | 86 | 58 |
 | Industry practice | 28 | 8 |
-| Observed in a RYUX run | 17 | 7 |
+| Observed in a RYUX run | 18 | 7 |
 | Pattern also in another MIT ruleset (text written for RYUX) | 4 | 3 |
 | RYUX principle, taxonomy, or review | 60 | 22 |
 
@@ -1259,7 +1259,7 @@ Gate area UI. Covers each asset's concept and meaning, the written style, one fa
 
 - When: illustration goes into a build, or into a design file that will be built
 - Do: Flat and line art as SVG: colours from tokens (currentColor or CSS variables) so dark mode follows (RX-DS-05), a viewBox with no fixed size, no embedded raster, no text inside the art; text stays in the HTML so it can be translated and scaled.
-  - Raster art (generated or 3D) at 2x the displayed size, compressed, with width and height set so the layout does not jump.
+  - Raster art (generated or 3D) at 2x the displayed size, compressed, with width and height set so the layout does not jump; a transparent background, or one image per theme when its background shows (a tile colour, dark mode).
   - Decorative art gets aria-hidden or an empty alt; art that carries meaning gets alt text that says the meaning, not the drawing (RX-A11Y-04).
 - Do not: Hard-code colours that vanish on dark, bake words into the image, ship an export with editor metadata, or write alt text that describes the picture ("a woman holding a box") instead of what it means.
 - Why: Art that ignores tokens breaks in other themes, text inside an image cannot be read, translated, or zoomed, and alt text that only describes the drawing says nothing. (WCAG 2.2 SC 1.1.1 (non-text content); RX-DS-03; RX-DS-05; RX-A11Y-04; owner review 2026-10-22: request for illustration guidance)
@@ -1272,15 +1272,15 @@ Gate area UI. Covers each asset's concept and meaning, the written style, one fa
 
 - When: the design makes illustration, 3D, or a generated visual rather than sourcing one (RX-UI-13)
 - Do: Choose the method from what the asset must do later, and write it on the Visual Brief's Method line:
-  - SVG, drawn or procedural: art that must follow the theme, scale, animate, or stay editable; the default for spot and empty-state illustration (RX-UI-19).
-  - Generated raster: painterly, photographic, or richly textured art for onboarding and hero moments. Lock the style with the written style (RX-UI-17) and reference images, then refine in steps (sketch, mask, edit), not by re-rolling the prompt.
+  - Generated raster, RYUX directing: the default for feature icons at 48 pt and up, spot, empty-state, success, and onboarding illustration when an image tool is available (in Figma, generate_image). RYUX writes the concept line per asset and one art direction for the set (type, palette as hex, light, camera, background, detail); the model draws; RYUX reads the result at display size. The same style block goes into every prompt of a set, no text inside the image, at most two regenerations per asset before the concept or the method changes, then refine in steps (mask, edit), not by re-rolling.
+  - SVG, drawn or procedural: system icons always; and art that must follow the theme by itself, animate, stay editable as vectors, or be made with no image tool (RX-UI-19).
   - 3D render: when form, material, and light carry the meaning, or the same object appears from several angles or in motion. One scene per set: the same camera, lights, and materials, coloured from tokens.
   - Combined: for example a 3D render with an SVG overlay; text stays in the HTML either way.
   - Name the tool you actually have. With no generator or 3D tool available, hand off the brief with SVG or a placeholder that looks like one (RX-AS-03), and never claim a render you did not make.
-- Do not: Use whichever generator is at hand, make an empty state that must follow dark mode as a raster, re-roll a prompt until something looks good, or mix 3D and flat art in one set without a rule for it.
-- Why: The method decides what the asset can do later (theme, scale, animate, edit) and how far its style drifts from one image to the next. (Art direction practice (choosing a production method); RX-UI-19; owner review 2026-10-23: request for illustration production methods)
+- Do not: Hand-draw detailed illustration as vectors when an image tool is available and nothing needs the vectors, give a generator a vague prompt instead of the written art direction, make an empty state that must follow dark mode as one raster (make one per mode, or SVG), re-roll a prompt until something looks good, or mix 3D and flat art in one set without a rule for it.
+- Why: The method decides what the asset can do later (theme, scale, animate, edit) and how far its style drifts from one image to the next. (Art direction practice (choosing a production method); RX-UI-19; owner review 2026-10-23: request for illustration production methods; ryux illustration trials 2026-10-29 to 31: drawn vectors trailed on craft in every pass; ryux run 2026-11-07 (Sejuk, one run, owner-rated): a generated set directed by one written style block rated craft 4.67 against 1.67 for drawn vectors, mean 4.18 against 2.82)
 - Not when: the brand's illustration system already sets the method; follow it
-- Trade-off: the best method for the job may be slower than the generator at hand
+- Trade-off: a generated raster cannot be edited as vectors or follow the theme by itself, and paid generation costs credits; say how many images before generating
 - Check: the Visual Brief's Method line; review
 
 #### RX-UI-22 [Contextual] Texture has a source and a limit
