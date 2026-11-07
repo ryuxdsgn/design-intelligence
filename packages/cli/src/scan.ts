@@ -188,6 +188,45 @@ export const DETECTORS: Detector[] = [
       ]),
   },
   {
+    rule: "RX-CD-12",
+    level: "warn",
+    looksFor: "a heading that opens with a stock phrase (Selamat datang di, Yuk, Ayo, Welcome to, Introducing), so its first two words carry no meaning",
+    exts: MARKUP,
+    find: ({ text }) =>
+      matches(text, [
+        [
+          /<h[1-6]\b[^>]*>\s*(selamat datang di|yuk|ayo|welcome to|introducing)(?![\p{L}\d])/iu,
+          (m) => `"${m[1]}": the first two words of a heading are what a scanning eye reads; start with what the section is about`,
+        ],
+      ]),
+  },
+  {
+    rule: "RX-CD-18",
+    level: "warn",
+    looksFor: "filler phrases in visible text (memungkinkan Anda, kami memahami bahwa, perlu diketahui bahwa, allows you to, enables you to, we understand that)",
+    exts: MARKUP,
+    find: ({ text }) =>
+      matches(text, [
+        [
+          />[^<>{}]*?(memungkinkan (?:anda|kamu)|kami memahami bahwa|perlu diketahui bahwa|allows you to|enables you to|we understand that)(?![\p{L}\d])[^<>{}]*</iu,
+          (m) => `"${m[1]}": filler that adds words, not meaning; say what the user can do ("Bayar dengan QRIS", not "memungkinkan Anda membayar dengan QRIS")`,
+        ],
+      ]),
+  },
+  {
+    rule: "RX-CD-19",
+    level: "warn",
+    looksFor: "superlative claims in visible text (terbaik, tercepat, termurah, nomor 1, #1, the best, fastest, cheapest, world-class)",
+    exts: MARKUP,
+    find: ({ text }) =>
+      matches(text, [
+        [
+          />[^<>{}]*?(?<![\p{L}\d#-])(terbaik|tercepat|termurah|nomor 1|#1|the best|fastest|cheapest|world[- ]class|best[- ]in[- ]class)(?![\p{L}\d])[^<>{}]*</iu,
+          (m) => `"${m[1]}": a superlative needs a source from the brief; otherwise write the fact that would earn it`,
+        ],
+      ]),
+  },
+  {
     rule: "RX-AS-03",
     level: "fail",
     looksFor: "lorem ipsum filler",

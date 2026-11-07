@@ -57,17 +57,20 @@ Real labels, errors, and how money, dates, and times are written in the product'
 ### RX-CD-03 [Preferred] Specific, plain copy
 
 - Do: Lead with the point and cut words that add length without meaning; write labels as RX-CD-12 says; use sentence case and plain lists, with at most one emoji where the channel expects it.
+  - Generated text (an AI answer, a summary, a draft) answers first, sized to the question: the first sentence carries the answer, details follow in a real list, and nothing the user did not ask about (no cross-sell, no recap of the question).
   - When numbers are compared and lower is better (errors, invented policies, cost), say so beside the label ("fewer is better").
 - Do not: Use vague labels ("Submit", "Learn more", "Get started" when a specific action exists), hype words ("unlock", "elevate", "seamlessly", "revolutionary", "next-generation"), emoji bullets, ALL CAPS, or stacked exclamation marks.
-- Why: Specific, plain copy tells users what happens next; decoration on every line buries it and reads as generated. (NNGroup 3 C's of informational microcopy (clarity, concision, character); NNGroup button and link-label guidance; ryux run 2026-10-02: unconstrained WhatsApp copy; owner review of a benchmark video 2026-10-28: "8 vs 0, why does 0 look better?")
+- Why: Specific, plain copy tells users what happens next; decoration on every line buries it and reads as generated. (NNGroup 3 C's of informational microcopy (clarity, concision, character); NNGroup button and link-label guidance; NNGroup Product-Specific GenAI Needs to Write for the Web (Dykes 2025): generated answers run long, bury the answer, and ignore what was asked; ryux run 2026-10-02: unconstrained WhatsApp copy; owner review of a benchmark video 2026-10-28: "8 vs 0, why does 0 look better?")
 - Check: audit_copy
 
 ### RX-CD-04 [Required] Errors: what, why, how to recover
 
 - Do: Say what happened, why when it helps the user act, and how to recover, next to where it happened, without blaming the user.
-- Do not: Show codes like TXN_0x8004 or "Something went wrong" on their own.
-- Why: Users can only recover from what they understand. (NNGroup error-message guidelines)
-- Check: audit_copy C-04
+  - Keep what the user entered, even when it is wrong, and point to it; never clear the field or the form.
+  - Show a field's error after the user has finished with it (on leaving the field or on submit), not while they are still typing; check as they type only an input they are likely to get wrong, and then with guidance, not an error.
+- Do not: Show codes like TXN_0x8004 or "Something went wrong" on their own, clear the user's input after an error, or mark a field wrong before the user has finished typing.
+- Why: Users can only recover from what they understand. (NNGroup error-message guidelines; NNGroup An Error Messages Scoring Rubric (Neusesser and Sunwall 2023): preserve user input, avoid showing errors too early)
+- Check: audit_copy C-04; for each error state: the input is still there, and the error appears only after the field was left or the form sent
 
 ### RX-CD-05 [Required] [Quality Lock] One name per thing
 
@@ -111,11 +114,12 @@ Real labels, errors, and how money, dates, and times are written in the product'
 
 - Do: Start a button with a verb and name the result ("Bayar Rp45.000", "Simpan alamat", "Lanjut ke pembayaran"), in about four words or fewer.
   - Make a link meaningful on its own, as if it is the only thing read: specific ("Lihat syarat promo", not "Selengkapnya"), front-loaded, and sincere: the screen it opens is the one it promised.
+  - Front-load headings, list items, and notification titles too: the first two words (about 11 characters) carry the meaning, so a scanning eye that reads only them still knows what the line is about; no stock openers ("Selamat datang di", "Yuk", "Ayo", "Introducing", "Welcome to").
   - Keep a label and the title of the screen or dialog it opens the same words (RX-CD-05).
 - Do not: Use "Submit", "OK", "Klik di sini", "Selengkapnya", or "Get started" when a specific action exists, or a label that promises one thing and opens another ("Lihat detail & pesan" that opens a contact form).
-- Why: Users read the label, not the text around it; a label that breaks its promise costs trust on the next tap. (NNGroup better link labels (4Ss: specific, sincere, substantial, succinct); information scent (Pirolli and Card 1999; NNGroup): people follow the label that seems to lead to their goal; NNGroup UI copy guidance on command names; NNGroup button and link-label guidance)
-- Check: audit_copy
-- Machine check: `ryux scan` flags a link or button whose whole text is generic (Selengkapnya, Klik di sini, Learn more, Read more, Click here, Submit), with no information scent (warn)
+- Why: Users read the label, not the text around it; a label that breaks its promise costs trust on the next tap. (NNGroup better link labels (4Ss: specific, sincere, substantial, succinct); information scent (Pirolli and Card 1999; NNGroup): people follow the label that seems to lead to their goal; NNGroup UI copy guidance on command names; NNGroup button and link-label guidance; NNGroup First 2 Words: A Signal for the Scanning Eye (Nielsen 2009))
+- Check: audit_copy; read only the first two words of each heading, list item, and link: each still says what it is about
+- Machine check: `ryux scan` flags a link or button whose whole text is generic (Selengkapnya, Klik di sini, Learn more, Read more, Click here, Submit), with no information scent (warn); a heading that opens with a stock phrase (Selamat datang di, Yuk, Ayo, Welcome to, Introducing), so its first two words carry no meaning (warn)
 
 ### RX-CD-13 [Required] Empty states teach and lead
 
@@ -169,3 +173,27 @@ Real labels, errors, and how money, dates, and times are written in the product'
 - Do not: Shame the decline ("Tidak, saya tidak mau hemat"), push with a loss ("Kamu akan kehilangan semua keuntungan") when nothing real is lost, pre-check a paid add-on, or hide the decline as a faint link.
 - Why: Framing changes what people choose; a choice won by pressure costs trust and comes back as complaints, refunds, and churn. (NNGroup Interface Copy Impacts Decision Making; Thaler and Sunstein, Nudge (2008): choice architecture; RX-AS-04 (no fake urgency); RX-IX-05 (full cost before commitment); written for RYUX)
 - Check: review every choice screen: the labels, the defaults, and the way to decline
+
+### RX-CD-18 [Preferred] Every line earns its words
+
+- Do: Give each line one job (inform, influence, or interact) and cut the line that has none; then cut the words that do not serve that job.
+  - Helper text adds what the label cannot say: a format, a limit, a reason, or a consequence; text that restates the label in more words is cut ("Jumlah AC" needs no "Masukkan jumlah AC yang ingin diservis").
+  - Cut filler: favour-granting verbs ("memungkinkan Anda", "allows you to"), stock openers ("Kami memahami bahwa", "Perlu diketahui bahwa", "We understand that"), empty intensifiers ("sangat", "benar-benar", "very", "really"), and fancy words where a plain one exists.
+  - Budget the words on a task screen: a helper line about 12 words or fewer, a block about 50 words or fewer on a phone; longer text goes behind a named disclosure (RX-UX-16).
+  - Plain words are not more words: a simpler sentence is also a shorter one.
+- Do not: Explain every label, open with a courtesy sentence, or stack two lines that say the same thing in different words.
+- Why: People read about a fifth of the words on a page and more text lowers how much of it they read; concise copy made a site measurably easier to use, so every extra word costs the one that matters. (NNGroup How Little Do Users Read? (Nielsen 2008); NNGroup Concise, SCANNABLE, and Objective (Morkes and Nielsen 1997: concise text 58% more usable); NNGroup Cringeworthy Words to Cut from Online Copy (Loranger 2016); NNGroup The 3 I's of Microcopy (Dykes, Moran, and Kaley 2025); owner review of the Sejuk bland test 2026-11-07 ("terlalu wordy"))
+- Trade-off: a terse screen can leave out a reason a first-time user needed; test it with one
+- Check: for each line: name its one job; flag helper text that repeats its label's nouns and adds no format, limit, reason, or consequence; count words per helper line and per block; ryux scan warns on filler phrases
+- Machine check: `ryux scan` flags filler phrases in visible text (memungkinkan Anda, kami memahami bahwa, perlu diketahui bahwa, allows you to, enables you to, we understand that) (warn)
+
+### RX-CD-19 [Preferred] Claims the page can prove
+
+- Do: Describe the product with facts, not praise: each adjective about the product or the company is backed by a fact on the same screen ("cepat" by "teknisi datang dalam 2 jam" only when that is promised), or it is cut.
+  - Superlatives ("terbaik", "tercepat", "termurah", "nomor 1", "best", "fastest") need a source the brief gives; without one, write the fact that would have earned them.
+- Do not: Write marketing adjectives into task screens, or claim to be the best, fastest, or cheapest without a source.
+- Why: Readers discount promotional language and trust the page less for it; objective copy alone made a site measurably easier to use. (NNGroup Concise, SCANNABLE, and Objective (Morkes and Nielsen 1997: objective text 27% more usable, all three together 124%); RX-AS-07 (claims match the evidence); RX-AS-01 (no invented metrics); written for RYUX)
+- Not when: a quoted, sourced award or ranking, shown with its source
+- Trade-off: factual copy can read flatter than praise; the brand's voice carries the character (RX-CD-11)
+- Check: list each adjective about the product; each has a fact on the screen or a source in the brief; ryux scan warns on superlatives in markup
+- Machine check: `ryux scan` flags superlative claims in visible text (terbaik, tercepat, termurah, nomor 1, #1, the best, fastest, cheapest, world-class) (warn)

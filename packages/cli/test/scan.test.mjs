@@ -125,6 +125,29 @@ test("RX-CD-12: generic link and button text warns; a specific label or plain te
   assert.deepEqual(scan("a.ts", "const label = \"<a>Selengkapnya</a>\";"), []);
 });
 
+test("RX-CD-12: a heading that opens with a stock phrase warns; a front-loaded heading does not", () => {
+  assert.deepEqual(rules(scan("a.tsx", "<h1 className=\"t\">Selamat datang di Sejuk</h1>")), ["warn RX-CD-12"]);
+  assert.deepEqual(rules(scan("a.html", "<h2>Yuk, pesan teknisi</h2>")), ["warn RX-CD-12"]);
+  assert.deepEqual(scan("a.tsx", "<h1>Pesan teknisi AC</h1>"), []);
+  assert.deepEqual(scan("a.tsx", "<h2>Ayam goreng</h2>"), []);
+  assert.deepEqual(scan("a.tsx", "<p>Selamat datang di Sejuk</p>"), []);
+});
+
+test("RX-CD-18: filler phrases in visible text warn; plain copy and code do not", () => {
+  assert.deepEqual(rules(scan("a.tsx", "<p>Fitur ini memungkinkan Anda membayar dengan QRIS.</p>")), ["warn RX-CD-18"]);
+  assert.deepEqual(rules(scan("a.html", "<span>We understand that waiting is hard</span>")), ["warn RX-CD-18"]);
+  assert.deepEqual(scan("a.tsx", "<p>Bayar dengan QRIS.</p>"), []);
+  assert.deepEqual(scan("a.ts", "const t = \"memungkinkan Anda\";"), []);
+});
+
+test("RX-CD-19: superlatives in visible text warn; ordinary words do not", () => {
+  assert.deepEqual(rules(scan("a.tsx", "<p>Teknisi AC terbaik di Jakarta</p>")), ["warn RX-CD-19"]);
+  assert.deepEqual(rules(scan("a.html", "<h2>The fastest way to pay</h2>")), ["warn RX-CD-19"]);
+  assert.deepEqual(rules(scan("a.tsx", "<span>#1 di Indonesia</span>")), ["warn RX-CD-19"]);
+  assert.deepEqual(scan("a.tsx", "<p>Teknisi datang dalam 2 jam</p>"), []);
+  assert.deepEqual(scan("a.tsx", "<p>Langkah 1 dari 3</p>"), []);
+});
+
 test("scan CLI: exit 1 on a fail, 0 on warnings only, 2 on a missing path; --json and --list-rules", () => {
   const dir = mkdtempSync(join(tmpdir(), "ryux-scan-"));
   mkdirSync(join(dir, "src"));
