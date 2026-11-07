@@ -140,12 +140,13 @@ How comparable products illustrate the same moment: `search_screens` by pattern 
   - Write two or three concepts per asset, a line each, and pick the one that reads fastest without its label; draw only the chosen one.
   - The state is the meaning: an empty state is visibly empty (no cards, no full shelf), a no-results scene shows the search finding nothing, an offline scene shows the broken link.
   - A stock pictogram (a plain sailboat, two people, a sun and a cloud) is a choice: use it only when the meaning is the generic one, and say so.
+  - One picture carrying several steps or states (an order tracker, a stepper, onboarding) is one asset per step: each shows that step's own action or object (the courier taking the bag, the scale, the machine, the scooter, the doorstep), not the same token recoloured or ticked. When the steps are too small for that at display size, keep the stepper plain and give the current step its own scene.
   - After rendering, look at each asset at its display size with the label covered and write what it says. When that is not the line you wrote, or a part reads as something else (a magnifier as a pan, a vehicle lost against a same-coloured background), redraw that part and look again.
-- Do not: Draw the category's pictogram for a specific meaning, put content in an empty state, or judge the art only enlarged with its caption beside it.
-- Why: An illustration that does not show its meaning is decoration; in the illustration baseline every low score was a concept that said the wrong thing, none was broken drawing. (Art direction practice (concept before rendering; the read test without a caption); illustration baseline 2026-10-29 (docs/benchmarks/illustration): a crew-list icon with no list, empty states that read as full; AI rater approved by the owner; owner decision 2026-10-29: art direction first, no geometry engine)
+- Do not: Draw the category's pictogram for a specific meaning, mark the steps of a tracker with one repeated shape that only colour or a label tells apart, put content in an empty state, or judge the art only enlarged with its caption beside it.
+- Why: An illustration that does not show its meaning is decoration; in the illustration baseline every low score was a concept that said the wrong thing, none was broken drawing. (Art direction practice (concept before rendering; the read test without a caption); illustration baseline 2026-10-29 (docs/benchmarks/illustration): a crew-list icon with no list, empty states that read as full; AI rater approved by the owner; owner decision 2026-10-29: art direction first, no geometry engine; owner review 2026-11-05 of a laundry order tracker in Figma (RYUX 2.22.1, archived at tag archive/laundry-figma-2.22.1): five identical shirts on a clothesline, each step told apart only by colour and label)
 - Not when: the brand's illustration system already fixes the subject for this asset; follow it
 - Trade-off: a written line per asset and one more look at the render before handoff
-- Check: the concept lines; the render at display size with the label covered
+- Check: the concept lines, one per step for a multi-step picture; the render at display size with the label covered
 
 ### RX-UI-30 [Preferred] Planned imagery is made, and passes a craft read before the page uses it
 
