@@ -213,3 +213,16 @@ How Indonesian apps sequence and structure this flow: `get_flow` for a reference
 - Not when: one fixed price with no choices; a long statement or invoice read top to bottom
 - Trade-off: a pinned bar takes vertical space on every scroll position
 - Check: render at 390 with the most items the brief allows: the total and the primary action are visible together without scrolling
+
+### RX-UX-16 [Preferred] What decides is shown; details open on demand
+
+- When: a screen holds more than most users need at once: price breakdowns, terms, specifications, advanced settings, long explanations
+- Do: Show what most users need to decide on the first level: the option's price, the total before commitment (RX-IX-05), and the one limit that changes the choice.
+  - Put the rest one tap away behind a control that names what it opens ("Lihat rincian biaya", "Syarat pembatalan"), not "Selengkapnya" (RX-CD-12).
+  - Two levels at most; when a third seems needed, simplify the content first.
+  - Never hide a fee, a condition, or a cost the user will pay: disclosure postpones detail, it does not hide what decides.
+- Do not: List every price, fee, and condition on the first screen of a choice, or hide a cost behind a disclosure until after the user has committed.
+- Why: Fewer things on the first level make the important ones easier to see and the task faster; details stay available for the few who want them. (NNGroup Progressive Disclosure (Nielsen 2006): frequent needs first, two levels at most, a control labelled with what it reveals; Hick's law (more options, slower choice); owner review of the Sejuk bland test 2026-11-07 ("terlalu banyak menampilkan harga dari awal"))
+- Not when: a review or receipt screen whose job is the full breakdown
+- Trade-off: a detail behind a tap is missed by people who needed it; choose the split from what most users need
+- Check: per screen: list what is on the first level and what is behind a control; each control names its contents; no third level; nothing the user pays is only behind the control before commitment
