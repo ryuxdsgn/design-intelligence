@@ -1,4 +1,4 @@
-# Illustration baseline: no skill vs RYUX 2.20.0
+# Illustration: no skill vs RYUX (2.20.0, 2.21.0, direction A)
 
 Protocol: [PROTOCOL.md](PROTOCOL.md), locked before the first run (commit 1f3a197). Four asset families, two runs
 per arm, 16 runs, 49 SVGs, 2026-10-29.
