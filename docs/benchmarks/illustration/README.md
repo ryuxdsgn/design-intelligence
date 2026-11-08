@@ -56,5 +56,36 @@ archived at
 [`archive/illustration-direction-a-2.22.4`](https://github.com/ryuxdsgn/design-intelligence/tree/archive/illustration-direction-a-2.22.4/docs/benchmarks/illustration).
 In this 2.22.5 benchmark the image model was never used.
 
-**Next:** find out why the image-model rule does not trigger on its own, and fix the icon concept check (one object
-per service). Then run this benchmark again.
+## Rerun with the fix ([PR #36](https://github.com/ryuxdsgn/design-intelligence/pull/36), not released yet)
+
+The fix changes two rules.
+- **RX-UI-21:** look for an image tool and ask once about paid generation. If the agent cannot ask, it ends the
+  turn with the question instead of drawing vectors.
+- **RX-UI-18:** one object per icon in a set.
+
+**Setup:** 2 new RYUX runs from the PR branch, each with an empty Figma file. They were rated blind against the same 2
+no-skill runs, with letters shuffled again. The pass criteria were locked before the runs, the same as above, plus
+these:
+- each run calls `generate_image` or asks first;
+- no two icons in a set share a main object.
+
+**Reply:** a run that ended its turn with a question got one fixed reply: "Go with what you recommend and make them."
+
+| Dimension | No skill (2 runs) | RYUX with the fix (2 runs) |
+| --- | --- | --- |
+| **Mean** (5 dimensions x 3 tasks) | 3.00 | **3.97** |
+| Craft | 3.00 | **3.83** |
+| Lowest craft / fit | 2 / 3 | **3 / 3** |
+| Cohesion (icon set and product) | 2.75 | **3.75** |
+
+- **Result: passes all criteria.**
+- **Image model:** both runs asked about generation first, then used `generate_image` (5 and 9 images).
+- **Icons:** each icon keeps the AC unit and adds its own action (water or brush, gauge, wrench).
+- **Weak spot:** one empty state scored 2 on concept and art direction, the same weak spot as before.
+- **Cost:** $2.70 and $7.95. About $3.90 of the second run's cost went to resumed turns where the Figma connector was
+  missing.
+- **Evidence:** two runs per arm, so it is thin.
+
+| RYUX with the fix 1 | RYUX with the fix 2 |
+| --- | --- |
+| ![RYUX with the fix, run 1: home, empty, success screens](https://github.com/ryuxdsgn/design-intelligence/releases/download/media/benchmarks--illustration--ryux-fix-1.jpg) | ![RYUX with the fix, run 2: home, empty, success screens](https://github.com/ryuxdsgn/design-intelligence/releases/download/media/benchmarks--illustration--ryux-fix-2.jpg) |
