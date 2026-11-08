@@ -256,7 +256,10 @@ The six stages of the core workflow (SKILL.md), as Design runs them.
      new open rule under Not decided (a context change, listed in the final message). Search the text
      of every screen for each one; in Figma, read every text node of the page. Each one shown gets its
      label on that same screen ("Prototype rule, not decided yet") or leaves the screen; a read-me
-     board, a notes frame, or the final message does not count. Report it in the gate's CONTENT line.
+     board, a notes frame, or the final message does not count. On a marketing surface (a landing
+     page, a store listing, an ad), the label is a Figma annotation on that node or its row instead of
+     visible text, and nothing on the design says sample, example, or placeholder (RX-AS-03); set
+     MARKETING = true and the frame widths of that page in the listing. Report it in the gate's CONTENT line.
    - Count it, do not recall it: the CONTENT numbers come from a listing of the canvas, not from
      memory, and the listing decides "labelled", not you. Every amount on a screen is a rule to place:
      an open rule (a fee, a price, a deadline), a fact the brief sets, or sample data that is not a rule;
@@ -264,7 +267,8 @@ The six stages of the core workflow (SKILL.md), as Design runs them.
      cart data. In Figma, write RULES in this read-only listing, one entry per open rule: words that find
      it in a row ("ongkos kirim") and a word its label must contain ("kirim"); facts and sample data get
      label: null. A rule on a screen counts as labelled only when a label beside it (in its card or row,
-     or within NEAR px) contains that word; a label naming another rule does not count. The unit is one
+     or within NEAR px) contains that word (with MARKETING, an annotation on the text or its row whose label contains it); a
+     label naming another rule does not count. The unit is one
      rule on one screen: <tagged>/<shown> is the listing's count, so a repeated value needs its label on
      each screen. Fix every unlabelled pair and every amount without a rule, then run it again: the
      listing is the last use_figma call before the gate, and any later edit means running it again.
@@ -272,6 +276,7 @@ The six stages of the core workflow (SKILL.md), as Design runs them.
 
 \`\`\`js
 const PAGE = "Page name", TAG = "Open-rule label component name", WIDTHS = [390, 360], NEAR = 48, SKIP = /^(caption|notes?)\\b/i;
+const MARKETING = false; // true on a landing page, store listing, or ad: annotations label, visible text does not
 // One entry per open rule: words that find it in a row's text, and a word its label must contain.
 // A fact the brief sets, or sample data that is not a rule, gets label: null.
 const RULES = [
@@ -305,9 +310,12 @@ for (const s of screens) {
     for (let p = t.parent; p && p !== s; p = p.parent) if (tags.some((g) => up(g, (q) => q === p))) { group = p; break; }
     const beside = tags.filter((g) => (group && up(g, (q) => q === group)) || gap(t.absoluteBoundingBox, g.absoluteBoundingBox) <= NEAR)
       .map((g) => texts(g).map((x) => x.characters).join(" ").toLowerCase());
+    // On a marketing surface, an annotation on the text or a parent inside the screen labels it.
+    const notes = [];
+    if (MARKETING) for (let p = t; p && p !== s; p = p.parent) for (const a of p.annotations || []) notes.push(((a.label || "") + " " + (a.labelMarkdown || "")).toLowerCase());
     for (const r of hit) {
       if (r.label === null) continue;
-      const key = s.name + " | " + r.rule, ok = beside.some((b) => b.includes(r.label.toLowerCase()));
+      const key = s.name + " | " + r.rule, ok = beside.some((b) => b.includes(r.label.toLowerCase())) || notes.some((b) => b.includes(r.label.toLowerCase()));
       const p = pairs.get(key) || { ok: false, seen: [] };
       p.ok = p.ok || ok; if (!ok && p.seen.length < 2) p.seen.push(t.characters.slice(0, 40) + " ← " + (beside.join(" / ").slice(0, 60) || "no label beside"));
       pairs.set(key, p);
@@ -1291,7 +1299,8 @@ Laws of UX checks in knowledge/ux.md.
 
 **Open rules** (with or without a reference): search the text of every screen and state for each
 rule and number nobody decided (fees, minimums, time limits, deadlines); each one shown carries its
-label on that screen (RX-PR-02). Report open rules on screen <tagged>/<shown> in the CONTENT line,
+label on that screen (RX-PR-02); on a marketing surface the label is an annotation on the node, never visible
+text (RX-AS-03). Report open rules on screen <tagged>/<shown> in the CONTENT line,
 counted by the listing in capabilities/design.md, stage 6 (in Figma), never recalled: one rule on one
 screen is the unit, every amount is placed as an open rule, a fact, or sample data, and a rule counts as
 labelled only when a label beside it contains the rule's word. Placeholders carry a "Placeholder"

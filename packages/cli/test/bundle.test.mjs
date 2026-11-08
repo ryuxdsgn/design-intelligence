@@ -343,3 +343,18 @@ test("context stays scoped, visible, and honest about failed sources", () => {
   assert.match(design, /an added line is "\(none\) → the new line"/);
   assert.match(files["knowledge/imagery.md"].replace(/\s+/g, " "), /list every mark in the handoff: the mark, the file's source URL, its licence or terms/);
 });
+
+test("marketing surfaces: annotations instead of sample labels, the deciding number, units with money, mockups apart", () => {
+  const files = renderBundle();
+  const f = (p) => files[p].replace(/\s+/g, " ");
+  assert.match(f("knowledge/product.md"), /On a marketing surface \(a landing page, a store listing, an ad\), the label is a design-tool annotation on that node instead of visible text/);
+  assert.match(f("knowledge/anti-slop.md"), /nothing on the design says sample, example, or placeholder/);
+  assert.match(f("knowledge/imagery.md"), /a slot with the mark's exact shape and no text inside/);
+  assert.match(f("knowledge/ux.md"), /put that number first in the handoff's open questions/);
+  assert.match(f("knowledge/content.md"), /An unfamiliar unit comes with its everyday value/);
+  assert.match(f("knowledge/illustration.md"), /a mascot's or character's tone matches the stakes/);
+  assert.match(f("capabilities/qa.md"), /on a marketing surface the label is an annotation on the node, never visible text/);
+  const design = f("capabilities/design.md");
+  assert.match(design, /const MARKETING = false;/);
+  assert.match(design, /for \(const a of p\.annotations \|\| \[\]\)/);
+});

@@ -197,3 +197,16 @@ Real labels, errors, and how money, dates, and times are written in the product'
 - Trade-off: factual copy can read flatter than praise; the brand's voice carries the character (RX-CD-11)
 - Check: list each adjective about the product; each has a fact on the screen or a source in the brief; ryux scan warns on superlatives in markup
 - Machine check: `ryux scan` flags superlative claims in visible text (terbaik, tercepat, termurah, nomor 1, #1, the best, fastest, cheapest, world-class) (warn)
+
+### RX-CD-20 [Contextual] An unfamiliar unit comes with its everyday value
+
+- When: the page or screen shows a quantity in a unit the audience does not count in daily (grams of gold, units of a fund, points, kWh) to people who are new to it
+- Do: Show the unit's value in money the reader knows beside it ("2,418 g · Rp4.836.000" as sample data), in the copy's number form (RX-CD-09).
+  - Give the unit the precision a beginner reads, not the ledger's: fewer decimals in the headline number, the full precision in the history or detail where it is checked.
+  - One number is the hero of a page or screen; other sample quantities are smaller, not the same size repeated in every section.
+  - A conversion rate, price, or fee behind the money value is a fact or an open rule (RX-PR-02); sample data shows the format, not a promised rate.
+- Do not: Lead with a four-decimal unit alone (2.4180 g) for first-time users, or repeat large sample numbers in every section until none of them leads.
+- Why: A beginner cannot judge a quantity in a unit they do not use, and precise decimals read as technical and intimidating; the money value answers "how much is that?". (NNGroup: speak the users' language (match between system and the real world, heuristic 2); owner blind review 2026-11-08 of the Raja Emas landing rerun (RYUX 2.22.5, docs/benchmarks/landing-gold): a 2.4180 g hero could intimidate beginners, show the Rupiah value too; repeated large numbers (2.4180, 5.0000, 0.1000) weakened the hierarchy)
+- Not when: an expert tool whose users count in the unit (a trading desk, a lab), or a ledger or receipt where the exact value is the point
+- Trade-off: a second number beside the first; keep it quieter than the unit
+- Check: each unfamiliar unit on screen has its money value beside it; headline precision; one hero number per screen
