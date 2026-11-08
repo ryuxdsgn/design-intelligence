@@ -25,7 +25,8 @@ Laws of UX checks in knowledge/ux.md.
 
 **Open rules** (with or without a reference): search the text of every screen and state for each
 rule and number nobody decided (fees, minimums, time limits, deadlines); each one shown carries its
-label on that screen (RX-PR-02). Report open rules on screen <tagged>/<shown> in the CONTENT line,
+label on that screen (RX-PR-02); on a marketing surface the label is an annotation on the node, never visible
+text (RX-AS-03). Report open rules on screen <tagged>/<shown> in the CONTENT line,
 counted by the listing in capabilities/design.md, stage 6 (in Figma), never recalled: one rule on one
 screen is the unit, every amount is placed as an open rule, a fact, or sample data, and a rule counts as
 labelled only when a label beside it contains the rule's word. Placeholders carry a "Placeholder"
@@ -107,11 +108,12 @@ The intended design (Figma, pen.dev, DESIGN.md) is the reference; RYUX screens a
 ### RX-QA-03 [Required] No covered or colliding text
 
 - Do: Keep floating cards and mockups over empty space only, and keep navigation items clear of the logo and buttons.
+  - Device mockups (phones, laptops) do not overlap each other or get cut by a section edge, unless the cut is designed (bleeding off the page edge); check each breakpoint's render, desktop and mobile, not one.
   - Labels in a row (steps, tabs, chips) stay visibly apart at the smallest width: at least twice a word space between two labels, or show only the current one.
   - On a map, keep street and place labels clear of markers, chips, and the route.
 - Do not: Let a card cover prices or labels, or let nav items touch.
-- Why: Covered text is lost information and looks broken; labels a word space apart read as one phrase. (ryux run 2026-10-02: QRIS card over prices, colliding nav; ryux Figma pilot critique 2026-10-28: "On the way" and "Delivered" 6 pt apart at 360, a courier marker over street labels)
-- Check: screenshot
+- Why: Covered text is lost information and looks broken; labels a word space apart read as one phrase. (ryux run 2026-10-02: QRIS card over prices, colliding nav; ryux Figma pilot critique 2026-10-28: "On the way" and "Delivered" 6 pt apart at 360, a courier marker over street labels; owner blind review 2026-11-08 of the Raja Emas landing rerun (RYUX 2.22.5, docs/benchmarks/landing-gold): two hero phones overlapping and cut by a green band on desktop, and cut on mobile)
+- Check: screenshot at every breakpoint, mockups included
 - Measured: `ryux scan <url>` flags text boxes of unrelated elements that overlap (warn)
 
 ### RX-QA-04 [Required] Numbers agree
