@@ -207,13 +207,13 @@ line below for its exact source.
 <!-- provenance:start -->
 | Source cited | Rules citing it | Rules citing only this |
 | --- | --- | --- |
-| Public standard or research | 92 | 62 |
+| Public standard or research | 94 | 63 |
 | Industry practice | 28 | 7 |
 | Observed in a RYUX run | 18 | 7 |
 | Pattern also in another MIT ruleset (text written for RYUX) | 4 | 3 |
-| RYUX principle, taxonomy, or review | 63 | 22 |
+| RYUX principle, taxonomy, or review | 63 | 21 |
 
-All 150 rules cite a source; 49 cite more than one kind, so the "Rules citing it" column adds up to more than 150.
+All 151 rules cite a source; 50 cite more than one kind, so the "Rules citing it" column adds up to more than 151.
 <!-- provenance:end -->
 
 ## Rules
@@ -221,7 +221,7 @@ All 150 rules cite a source; 49 cite more than one kind, so the "Rules citing it
 Generated from `packages/cli/src/content.ts` by `pnpm sync:skills`. Edit the rules there, not here.
 
 <!-- rules:start -->
-150 rules across 15 modules: 65 Required, 37 Preferred, 48 Contextual; 18 Hard Gates and 13 Quality Locks.
+151 rules across 15 modules: 65 Required, 37 Preferred, 49 Contextual; 18 Hard Gates and 13 Quality Locks.
 
 ### Product thinking (RX-PR) · `knowledge/product.md`
 
@@ -245,10 +245,11 @@ Gate area PRODUCT. Covers user, task, goal, primary action, constraints, assumpt
   - Users: without research data, describe them as a proto-persona labelled as assumptions, with the questions to ask real users; answers from an AI-simulated user are hypotheses, never research findings.
   - Facts, claims, and policies: take them only from the brief, the repo, or the product's own docs (feature and tool names, commands, integrations, platforms, pages, fees, timings, guarantees).
   - A rule the prototype must behave by but nobody decided (what happens when the customer does not answer, a time limit, a charge): the behavior is yours to assume, but its sentence on screen is a promise. Leave the promise out of the copy, or label it on that same screen ("Prototype rule, not decided yet"); a label in DESIGN.md, the code, or your reply never reaches the user.
+  - On a marketing surface (a landing page, a store listing, an ad), the label is a design-tool annotation on that node instead of visible text, and the handoff lists it: the page is judged as it would ship. Task UI keeps the visible label.
 - Do not: Invent business rules, policies, guarantees, metrics, user data, permissions, pricing, requirements, or API behavior, or name a tool, command, integration, platform, or page the product does not have. Do not present an unconfirmed capability as a confirmed one. Do not show an undecided rule as a plain sentence on screen because it is listed as an assumption somewhere else.
 - Why: Invented facts turn into promises and bugs that someone has to unwind; a screen trimmed to the brief's literal words reads unfinished and hides what still needs confirming. (ryux run 2026-10-02: an unconstrained agent invented a 30-day trial and user counts; ryux visual benchmark 2.6 human rater, 2026-10-13: RYUX screens lost on a missing receipt action; NNGroup proto-personas and synthetic users (AI output is hypotheses, not research); owner review 2026-10-27, ryux run: food-delivery benchmark rounds 1 and 2, the no-answer rule for an unavailable item labelled an assumption only in DESIGN.md and the reply, read as fact on the screen; ryux run: laundry Figma benchmark 2026-11-05, the gate reported 22 tagged / 22 shown while a Rp10.000 fee repeated on six screens had no label naming it; reruns with the listing, 2026-11-06: B3 missed the payment rule (no listing word for it), and on a new brief (Pasarku payment) the delivery fee sat 44 px from a label naming the payment fee and was judged labelled, while the gate counted rule kinds (6/6); the listing now checks the label's word itself)
 - Not when: This rule is not a reason to drop content the brief implies or to leave a screen looking unfinished: sample content is RX-AS-03, design assumptions are yours to make.
-- Check: compare every product fact on the screen (features, prices, fees, policies, names, integrations) with the brief, DESIGN.md, docs, or repo; each is sourced, or labelled as an assumption on the same screen; then sweep: list every undecided rule and number (Assumptions, open questions, DESIGN.md), search the text of every screen for each, and count them with the listing in capabilities/design.md (one rule on one screen is the unit; every amount is placed as an open rule, a fact, or sample data; a fee the brief does not set is an open rule; labelled only when a label beside it contains the rule's word), never from memory; report open rules on screen <tagged>/<shown>; fails on one shown as fact without a source, labelled only outside the screen (a read-me board or notes frame counts as outside), or a count that the listing does not reproduce
+- Check: compare every product fact on the screen (features, prices, fees, policies, names, integrations) with the brief, DESIGN.md, docs, or repo; each is sourced, or labelled as an assumption on the same screen (on a marketing surface, by an annotation on the node); then sweep: list every undecided rule and number (Assumptions, open questions, DESIGN.md), search the text of every screen for each, and count them with the listing in capabilities/design.md (one rule on one screen is the unit; every amount is placed as an open rule, a fact, or sample data; a fee the brief does not set is an open rule; labelled only when a label beside it contains the rule's word, or on a marketing surface an annotation on it or its row does), never from memory; report open rules on screen <tagged>/<shown>; fails on one shown as fact without a source, labelled only outside the screen (a read-me board or notes frame counts as outside), or a count that the listing does not reproduce
 
 #### RX-PR-03 [Required] [Hard Gate] One clear goal; one primary action when the task has one
 
@@ -451,8 +452,9 @@ Gate area UX. Covers information architecture, navigation, flows, grouping, disc
   - Each section answers one question; a question the visitor does not have gets no section, and a section that answers none is cut.
   - The order of the questions is the order of the page; the primary action sits where the visitor is ready for it, and again at the end.
   - The visual concept gives each section its form (RX-UI-27); it never adds a section or changes the order.
+  - When the answer that decides is a number nobody confirmed (the minimum buy, a price, a fee), ask for it with the fact questions (RX-PR-13); when no answer can come, answer the question with what is confirmed and no number, and put that number first in the handoff's open questions as what the visitor needs most. Never a made-up number (RX-PR-02).
 - Do not: Start from the usual section list (hero, features, how it works, FAQ, call to action) and fill it, or let a visual idea decide which sections exist.
-- Why: A page that follows a template answers questions nobody asked and skips the one that decides; the visitor's own questions are what make the structure specific to this product. (Content strategy and conversion practice (a page as the answer to the reader's questions in order); NNGroup inverted pyramid; landing-gold concept-system trial 2026-10-31: a concept carried into every section still sat on the template order, as an independent reviewer and the owner noted; serial position effect (Ebbinghaus 1885; Murdock 1962): people recall the first and last items of a sequence best, so the action sits early and again at the end)
+- Why: A page that follows a template answers questions nobody asked and skips the one that decides; the visitor's own questions are what make the structure specific to this product. (Content strategy and conversion practice (a page as the answer to the reader's questions in order); NNGroup inverted pyramid; landing-gold concept-system trial 2026-10-31: a concept carried into every section still sat on the template order, as an independent reviewer and the owner noted; serial position effect (Ebbinghaus 1885; Murdock 1962): people recall the first and last items of a sequence best, so the action sits early and again at the end; owner blind review 2026-11-08 of the Raja Emas landing rerun (RYUX 2.22.5, docs/benchmarks/landing-gold): no run showed a minimum buy (the brief confirmed none), and the owner named it the most important missing fact for small savers in three of four pages)
 - Not when: task UI (a list, a form, a dashboard), where the user's task sets the structure (RX-UX-01)
 - Trade-off: the order can differ from what the team expects to see; show the question list with the layout
 - Check: review: the question list in Frame, and each section mapped to one question
@@ -777,9 +779,9 @@ Gate area CONTENT. Covers specific copy, action labels, error messages, terminol
 #### RX-CD-02 [Contextual] Rupiah as Rp1.250.000
 
 - When: the product shows prices in Rupiah
-- Do: Write money with Rp directly before the number, dots for thousands, and no decimals for whole Rupiah.
-- Do not: Write Rp 1.250.000, IDR 1250000, or Rp1,250,000.
-- Why: It is the common Indonesian form; mixed formats look careless next to prices. (PUEBI currency notation; ryux run 2026-10-02)
+- Do: Write money with Rp directly before the number, dots for thousands, and no decimals for whole Rupiah, in English copy too. Other numbers (grams, percentages) follow the copy's language: 1.25 g in English, 1,25 g in Bahasa Indonesia.
+- Do not: Write Rp 1.250.000, IDR 1250000, or Rp1,250,000, or mix decimal marks within one page (1,2500 g in English copy).
+- Why: It is the common Indonesian form; mixed formats look careless next to prices. (PUEBI currency notation; ryux run 2026-10-02; owner blind review 2026-11-09 of the PR #39 landing rerun: Rp100,000 in English copy should be Rp100.000, and 1,2500 g read as inconsistent with English copy)
 - Check: audit_copy C-07
 - Machine check: `ryux scan` flags Rupiah written as Rp 1.000, Rp. 1.000, Rp1,000, Rp1.000,00, Rp1000, IDR 1000, or Rp followed by a space before a value (fail)
 
@@ -926,6 +928,19 @@ Gate area CONTENT. Covers specific copy, action labels, error messages, terminol
 - Trade-off: factual copy can read flatter than praise; the brand's voice carries the character (RX-CD-11)
 - Check: list each adjective about the product; each has a fact on the screen or a source in the brief; ryux scan warns on superlatives in markup
 - Machine check: `ryux scan` flags superlative claims in visible text (terbaik, tercepat, termurah, nomor 1, #1, the best, fastest, cheapest, world-class) (warn)
+
+#### RX-CD-20 [Contextual] An unfamiliar unit comes with its everyday value
+
+- When: the page or screen shows a quantity in a unit the audience does not count in daily (grams of gold, units of a fund, points, kWh) to people who are new to it
+- Do: Show the unit's value in money the reader knows beside it ("2,418 g · Rp4.836.000" as sample data), in the copy's number form (RX-CD-09).
+  - Give the unit the precision a beginner reads, not the ledger's: fewer decimals in the headline number, the full precision in the history or detail where it is checked.
+  - One number is the hero of a page or screen; other sample quantities are smaller, not the same size repeated in every section.
+  - A conversion rate, price, or fee behind the money value is a fact or an open rule (RX-PR-02); sample data shows the format, not a promised rate.
+- Do not: Lead with a four-decimal unit alone (2.4180 g) for first-time users, or repeat large sample numbers in every section until none of them leads.
+- Why: A beginner cannot judge a quantity in a unit they do not use, and precise decimals read as technical and intimidating; the money value answers "how much is that?". (NNGroup: speak the users' language (match between system and the real world, heuristic 2); owner blind review 2026-11-08 of the Raja Emas landing rerun (RYUX 2.22.5, docs/benchmarks/landing-gold): a 2.4180 g hero could intimidate beginners, show the Rupiah value too; repeated large numbers (2.4180, 5.0000, 0.1000) weakened the hierarchy)
+- Not when: an expert tool whose users count in the unit (a trading desk, a lab), or a ledger or receipt where the exact value is the point
+- Trade-off: a second number beside the first; keep it quieter than the unit
+- Check: each unfamiliar unit on screen has its money value beside it; headline precision; one hero number per screen
 
 ---
 
@@ -1235,9 +1250,9 @@ Gate area UI. Covers art direction, composition, expressive surfaces, motion, as
 - Do: Use the official mark of a confirmed fact, from its owner, at its guideline size and clear space: store badges (App Store, Google Play) in the page's language; accepted payment marks (QRIS, confirmed banks, e-wallets, cards); a confirmed partner's or regulator's mark, with a handoff note that it needs the owner's permission; real platform chrome on device screens.
   - Ask for the files with the fact questions (RX-PR-13). Get each in this order: the user's file; the owner's brand or media kit page (found by searching, not guessed URLs); the platform's component library; a public archive that names source and license (Wikimedia Commons). Upload it as it is, and list every mark in the handoff: the mark, the file's source URL, its licence or terms, and "needs the brand owner's permission before launch" for a bank, partner, or regulator mark.
   - Brands nobody chose yet (the banks for a virtual account, the e-wallets offered): ask the user whether to show real brands with their logos or made-up names. When you cannot ask, use well-known real brands with their official logos and an open-rule label on the list (RX-AS-03); never a made-up name.
-  - When no file works, ask the user before the build; only if they hand it back, a slot with the mark's exact shape, named for the file, with a Placeholder annotation and listed in the open tasks with its source. Never a text lookalike or a silent placeholder.
+  - When no file works, ask the user before the build; only if they hand it back, a slot with the mark's exact shape, named for the file in its layer name, with a Placeholder annotation (on a marketing surface, the owner's name as plain text in the page's type instead of an empty slot, with the same annotation) and listed in the open tasks with its source. Never a text lookalike or a silent placeholder.
 - Do not: Draw a text button in place of a store badge, redraw or recolour an official mark, or show an unconfirmed mark as a fact (a store the app is not on, a bank shown as a partner without an open-rule label): that is an invented claim (RX-PR-02).
-- Why: People recognise standard marks faster than any label, and their absence makes a page look unfinished; drawn lookalikes read as fake. (App Store and Google Play badge guidelines; licensing and trademark practice (use the owner's file as provided); owner review 2026-10-31 of RYUX trials T1 and T2: store badges drawn as text pills, then partner logos left as empty slots after guessed URLs failed; owner decision 2026-11-06: QRIS and banks set as plain text in a payment run whose brief named QRIS; use the real logo, or ask the user)
+- Why: People recognise standard marks faster than any label, and their absence makes a page look unfinished; drawn lookalikes read as fake. (App Store and Google Play badge guidelines; licensing and trademark practice (use the owner's file as provided); owner review 2026-10-31 of RYUX trials T1 and T2: store badges drawn as text pills, then partner logos left as empty slots after guessed URLs failed; owner decision 2026-11-06: QRIS and banks set as plain text in a payment run whose brief named QRIS; use the real logo, or ask the user; owner blind review 2026-11-09 of the PR #39 landing rerun: an empty UBS slot in the hero and a card read as a bug; owner decision: on a marketing page, the name as text with an annotation)
 - Not when: a wireframe
 - Trade-off: official files take a download and their rules (size, clear space, no recolouring) limit the layout
 - Check: review: each mark tied to a confirmed fact and an official source; no drawn lookalikes; every slot left has a source to get it from and was asked for
@@ -1382,10 +1397,11 @@ Gate area UI. Covers each asset's concept and meaning, the written style, one fa
   - Write two or three concepts per asset, a line each, and pick the one that reads fastest without its label; draw only the chosen one.
   - The state is the meaning: an empty state is visibly empty (no cards, no full shelf), a no-results scene shows the search finding nothing, an offline scene shows the broken link.
   - A stock pictogram (a plain sailboat, two people, a sun and a cloud) is a choice: use it only when the meaning is the generic one, and say so.
+  - The product's own object looks like the product (gold as a bar or a gram reading, not a card that reads as a credit card), and a mascot's or character's tone matches the stakes: for money, gold, health, or legal matters, no cartoon clowning.
   - One picture carrying several steps or states (an order tracker, a stepper, onboarding) is one asset per step: each shows that step's own action or object (the courier taking the bag, the scale, the machine, the scooter, the doorstep), not the same token recoloured or ticked. When the steps are too small for that at display size, keep the stepper plain and give the current step its own scene.
   - After rendering, look at each asset at its display size with the label covered and write what it says. When that is not the line you wrote, or a part reads as something else (a magnifier as a pan, a vehicle lost against a same-coloured background), redraw that part and look again.
 - Do not: Draw the category's pictogram for a specific meaning, mark the steps of a tracker with one repeated shape that only colour or a label tells apart, put content in an empty state, or judge the art only enlarged with its caption beside it.
-- Why: An illustration that does not show its meaning is decoration; in the illustration baseline every low score was a concept that said the wrong thing, none was broken drawing. (Art direction practice (concept before rendering; the read test without a caption); illustration baseline 2026-10-29 (docs/benchmarks/illustration): a crew-list icon with no list, empty states that read as full; AI rater approved by the owner; owner decision 2026-10-29: art direction first, no geometry engine; owner review 2026-11-05 of a laundry order tracker in Figma (RYUX 2.22.1, archived at tag archive/laundry-figma-2.22.1): five identical shirts on a clothesline, each step told apart only by colour and label)
+- Why: An illustration that does not show its meaning is decoration; in the illustration baseline every low score was a concept that said the wrong thing, none was broken drawing. (Art direction practice (concept before rendering; the read test without a caption); illustration baseline 2026-10-29 (docs/benchmarks/illustration): a crew-list icon with no list, empty states that read as full; AI rater approved by the owner; owner decision 2026-10-29: art direction first, no geometry engine; owner review 2026-11-05 of a laundry order tracker in Figma (RYUX 2.22.1, archived at tag archive/laundry-figma-2.22.1): five identical shirts on a clothesline, each step told apart only by colour and label; owner blind review 2026-11-08 of the Raja Emas landing (first round, not published): a gold card that read as a credit card, and a playful mascot judged wrong for a gold product)
 - Not when: the brand's illustration system already fixes the subject for this asset; follow it
 - Trade-off: a written line per asset and one more look at the render before handoff
 - Check: the concept lines, one per step for a multi-step picture; the render at display size with the label covered
@@ -1769,11 +1785,12 @@ Gate area VISUAL QA. Covers did the build match the intended design: compare, li
 #### RX-QA-03 [Required] No covered or colliding text
 
 - Do: Keep floating cards and mockups over empty space only, and keep navigation items clear of the logo and buttons.
+  - Device mockups (phones, laptops) do not overlap each other or get cut by a section edge, unless the cut is designed (bleeding off the page edge); check each breakpoint's render, desktop and mobile, not one.
   - Labels in a row (steps, tabs, chips) stay visibly apart at the smallest width: at least twice a word space between two labels, or show only the current one.
   - On a map, keep street and place labels clear of markers, chips, and the route.
 - Do not: Let a card cover prices or labels, or let nav items touch.
-- Why: Covered text is lost information and looks broken; labels a word space apart read as one phrase. (ryux run 2026-10-02: QRIS card over prices, colliding nav; ryux Figma pilot critique 2026-10-28: "On the way" and "Delivered" 6 pt apart at 360, a courier marker over street labels)
-- Check: screenshot
+- Why: Covered text is lost information and looks broken; labels a word space apart read as one phrase. (ryux run 2026-10-02: QRIS card over prices, colliding nav; ryux Figma pilot critique 2026-10-28: "On the way" and "Delivered" 6 pt apart at 360, a courier marker over street labels; owner blind review 2026-11-08 of the Raja Emas landing rerun (RYUX 2.22.5, docs/benchmarks/landing-gold): two hero phones overlapping and cut by a green band on desktop, and cut on mobile)
+- Check: screenshot at every breakpoint, mockups included
 - Measured: `ryux scan <url>` flags text boxes of unrelated elements that overlap (warn)
 
 #### RX-QA-04 [Required] Numbers agree
@@ -1822,9 +1839,9 @@ Gate area ANTI-SLOP. Covers hard gates, purpose gates, quality locks, honest cla
 
 #### RX-AS-03 [Required] [Hard Gate] Sample data is realistic and labeled; placeholders only for what is missing
 
-- Do: Fill mockups with realistic sample content consistent with the brief (names, merchants, amounts in the brief's currency, dates). Names of people, merchants, and orders are made up, and listed as sample data in the output. A real brand the design needs (a bank, an e-wallet, a card network, a payment or store mark): ask once, with the fact questions, whether to show the real brands with their official logos or made-up names; when you cannot ask, use the real brand with its official logo (RX-UI-28), with an open-rule label when which brands is not decided ("Bank list: sample, not decided"). Never a made-up brand with a drawn logo, or a real brand set as plain text where its logo belongs. A stand-in asset (a sample QR code, a map, a photo, the product's own logo before it exists) carries a Placeholder annotation in the design tool, not a note inside the UI (capabilities/design.md, stage 6).
-- Do not: Put [REAL DATA], XXX, or lorem text on the canvas where sample data would do, or ship sample data or placeholder copy as final. A sample-data label does not turn a fee, policy, or claim into a fact (RX-PR-02).
-- Why: Bracketed values read as unfinished and hide the layout's real behavior; unlabeled sample data ships by accident. (ryux anti-slop principle; ryux visual benchmark 2.5, 2026-10-09: [Brand] and XXX read as unfinished; wallet-detail benchmark, 2.19.2: 3 of 3 runs showed Visa on a sample card; owner decision 2026-11-06 after the Pasarku payment run (made-up banks and QRIS as plain text, a "sample QR" note inside the screen): use the real brand's logo or ask, and mark placeholders with annotations)
+- Do: Fill mockups with realistic sample content consistent with the brief (names, merchants, amounts in the brief's currency, dates). Names of people, merchants, and orders are made up, and listed as sample data in the output. A real brand the design needs (a bank, an e-wallet, a card network, a payment or store mark): ask once, with the fact questions, whether to show the real brands with their official logos or made-up names; when you cannot ask, use the real brand with its official logo (RX-UI-28), with an open-rule label when which brands is not decided ("Bank list: sample, not decided"). Never a made-up brand with a drawn logo, or a real brand set as plain text where its logo belongs. A stand-in asset (a sample QR code, a map, a photo, the product's own logo before it exists) carries a Placeholder annotation in the design tool, not a note inside the UI (capabilities/design.md, stage 6). On a marketing surface (a landing page, a store listing, an ad), nothing on the design says sample, example, or placeholder: sample values in a device mockup carry a "Sample data" annotation, a partner's or regulator's mark still missing is its name set as plain text in the page's type (not drawn like a logo), annotated with the file it needs, and both are listed in the handoff; an empty logo slot reads as a bug.
+- Do not: Put [REAL DATA], XXX, or lorem text on the canvas where sample data would do, or ship sample data or placeholder copy as final. A sample-data label does not turn a fee, policy, or claim into a fact (RX-PR-02). On a marketing surface, set "Sample data", "Example amount", or "OJK logo" as visible text.
+- Why: Bracketed values read as unfinished and hide the layout's real behavior; unlabeled sample data ships by accident. (ryux anti-slop principle; ryux visual benchmark 2.5, 2026-10-09: [Brand] and XXX read as unfinished; wallet-detail benchmark, 2.19.2: 3 of 3 runs showed Visa on a sample card; owner decision 2026-11-06 after the Pasarku payment run (made-up banks and QRIS as plain text, a "sample QR" note inside the screen): use the real brand's logo or ask, and mark placeholders with annotations; owner blind review 2026-11-08 of the Raja Emas landing rerun (RYUX 2.22.5, docs/benchmarks/landing-gold): "Sample data" and "Example entry" labels and dashed "OJK logo" boxes on the page read as not ready for production (production 3 against 4 for no skill))
 - Check: audit_copy C-01
 - Machine check: `ryux scan` flags lorem ipsum filler (fail); placeholder content: John Doe, Jane Doe, [DATA], [TBD], XXXX (warn)
 
