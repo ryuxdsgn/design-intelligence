@@ -134,6 +134,10 @@ test("Design can write or update a full DESIGN.md that answers five questions", 
   assert.match(flat("knowledge/illustration.md"), /3\. \*\*Make it\.\*\* Pick the method from the job \(RX-UI-21\)/);
   assert.match(flat("knowledge/illustration.md"), /paste the same block into every\s+prompt/);
   assert.match(flat("knowledge/illustration.md"), /craft 4\.67 against 1\.67 for drawn vectors/);
+  // benchmark 2026-11-08: headless runs drew vectors silently when the credit question had no answer
+  assert.match(flat("knowledge/illustration.md"), /search the tools for generate_image/);
+  assert.match(flat("knowledge/illustration.md"), /end the turn with that question, as with a direction pick; do not draw vectors in its place/);
+  assert.match(flat("knowledge/illustration.md"), /two services never share one main object/);
   // owner request 2026-11-06 (NNGroup): named UI styles, icon kind/style/meaning, research methods by question
   assert.match(flat("knowledge/ui.md"), /\*\*Named styles, and what each costs\*\* \(NNGroup\)/);
   assert.match(flat("knowledge/ui.md"), /\| Neumorphism \| soft embossed depth/);

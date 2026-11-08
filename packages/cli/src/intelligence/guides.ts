@@ -1157,7 +1157,10 @@ you can check.
    for spot, empty-state, success, and onboarding illustration. Write the concept line per asset and one
    style block for the set (type such as clay, 3D, duotone, or flat; palette as hex; light; camera;
    background, matched to where the asset sits; level of detail), paste the same block into every
-   prompt, and keep text out of the image. Say how many images before generating. Read each result at
+   prompt, and keep text out of the image. A connector's image tool may load on demand: look for it
+   (in Claude Code, search the tools for generate_image) before deciding there is none. Say how many
+   images and ask once, recommending generation; when no answer can come during the run, end the turn
+   with that question instead of drawing vectors, and name the method used in the final message. Read each result at
    display size, regenerate at most twice, then change the concept or the method; label each one
    generated. Draw vectors for system icons, and for art that must follow the theme by itself, animate,
    or stay editable; then build it as below.
