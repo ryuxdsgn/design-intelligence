@@ -78,7 +78,10 @@ The six stages of the core workflow (SKILL.md), as Design runs them.
    review of it.
 2. **Frame.** Name the primary task, the flow, the one thing that must be seen first, and the
    primary action. On a page read top to bottom (a landing page, onboarding), write the visitor's
-   questions in order first: they are the sections and their order (RX-UX-13). Write three to five success criteria from the brief (the user's main task, what
+   questions in order first: they are the sections and their order (RX-UX-13). When the answer that
+   decides is a number nobody confirmed (the minimum buy, a price), the page answers without a number
+   and the handoff asks for it first. A quantity in a unit the visitor does not count in (grams of
+   gold) shows its Rupiah value beside it, at a beginner's precision (RX-CD-20). Write three to five success criteria from the brief (the user's main task, what
    must be seen first, the brief's character words, conventions that must hold) before any
    alternative exists; Explore and Evaluate use these, and they do not change after you see the
    alternatives. For consequential choices, list the two or three patterns to compare, using

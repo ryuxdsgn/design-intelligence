@@ -48,9 +48,9 @@ Real labels, errors, and how money, dates, and times are written in the product'
 ### RX-CD-02 [Contextual] Rupiah as Rp1.250.000
 
 - When: the product shows prices in Rupiah
-- Do: Write money with Rp directly before the number, dots for thousands, and no decimals for whole Rupiah.
-- Do not: Write Rp 1.250.000, IDR 1250000, or Rp1,250,000.
-- Why: It is the common Indonesian form; mixed formats look careless next to prices. (PUEBI currency notation; ryux run 2026-10-02)
+- Do: Write money with Rp directly before the number, dots for thousands, and no decimals for whole Rupiah, in English copy too. Other numbers (grams, percentages) follow the copy's language: 1.25 g in English, 1,25 g in Bahasa Indonesia.
+- Do not: Write Rp 1.250.000, IDR 1250000, or Rp1,250,000, or mix decimal marks within one page (1,2500 g in English copy).
+- Why: It is the common Indonesian form; mixed formats look careless next to prices. (PUEBI currency notation; ryux run 2026-10-02; owner blind review 2026-11-09 of the PR #39 landing rerun: Rp100,000 in English copy should be Rp100.000, and 1,2500 g read as inconsistent with English copy)
 - Check: audit_copy C-07
 - Machine check: `ryux scan` flags Rupiah written as Rp 1.000, Rp. 1.000, Rp1,000, Rp1.000,00, Rp1000, IDR 1000, or Rp followed by a space before a value (fail)
 
