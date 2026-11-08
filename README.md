@@ -154,7 +154,7 @@ on originality (4.0 v 2.0), on AI-slop resistance (3.5 v 2.0), and overall (3.69
 production plausibility: sample-data labels and logo slots showed on the design.
 
 **Illustration (Figma): fail.** In the [illustration benchmark](docs/benchmarks/illustration/), RYUX lost on concept,
-craft, and fit at real size (3.30 v 3.73). It led only on cohesion. A RYUX run costs about 1.5 to 4 times a run
+craft, and fit at real size (3.30 v 3.73). It led only on cohesion. A fix that is not released yet passed a rerun (3.97 v 3.00). A RYUX run costs about 1.5 to 4 times a run
 without a skill.
 
 Setup, raw outputs, and how to run one yourself: [`docs/benchmarks/`](docs/benchmarks/).
