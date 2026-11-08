@@ -60,8 +60,7 @@ What I left out: no minimum, fee, price, FAQ or "free" claim, because none of th
 4. **It asks what only you can answer,** first the number visitors want most: "What is the minimum buy?", then the
    partners' role, delivery terms, the store links, and the logo file.
 
-One run, unedited. In the owner's blind rating it scored 3.75 of 5, against 3.44 for RYUX 2.22.5 on the same brief.
-It still writes Rp100,000 in English copy, a format the 2.22.7 rules now correct to Rp100.000.
+One run. In the owner's blind rating it scored 3.75 of 5, against 3.44 for RYUX 2.22.5 on the same brief.
 
 ## What it changes
 
