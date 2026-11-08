@@ -1,0 +1,9 @@
+Make the illustrations for "Sejuk", an iOS app in Jakarta for booking an AC service technician to come to your home. Users: renters and young families in Jakarta apartments and houses, often booking in a hurry because the AC already stopped cooling. Product principles: calm over urgent; plain words over technical terms.
+
+Put them in this empty Figma file: FILE_URL. Work only in that file.
+
+1. Three service icons for the service tiles, shown at 64 pt: Cuci AC, Isi freon, Perbaikan. They are one set.
+2. An empty-state illustration for the order list: "Belum ada pesanan".
+3. A success illustration for the screen "Teknisi sedang menuju rumahmu".
+
+Show each one at its real size on a simple 390-wide screen mock with its Indonesian text, and also large on its own. The style is your proposal.

@@ -38,7 +38,7 @@ CI runs the same four steps on every pull request.
 packages/cli/src/   the source: CLI, scan, and every rule and skill file
 skills/ryux/        generated from packages/cli/src, do not edit by hand
 plugins/ryux/       generated plugin copy, do not edit by hand
-docs/               design rules, showcase, benchmarks
+docs/               design rules, benchmarks
 ```
 
 After changing anything in `packages/cli/src`, run `pnpm sync:skills` and commit the generated
