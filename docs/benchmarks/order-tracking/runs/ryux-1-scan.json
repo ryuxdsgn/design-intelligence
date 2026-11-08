@@ -1,0 +1,17 @@
+{
+  "ok": true,
+  "cli": "2.22.5",
+  "files": 32,
+  "pages": 0,
+  "widths": [],
+  "findings": [
+    {
+      "level": "warn",
+      "rule": "RX-DS-03",
+      "file": "OR1/app/src/styles.css",
+      "line": 145,
+      "column": 17,
+      "message": "8 one-off colors (#e9e2da, #fff, #2a2420, ...): use the color tokens, or define them by role"
+    }
+  ]
+}

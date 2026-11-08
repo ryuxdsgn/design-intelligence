@@ -27,45 +27,44 @@ Antigravity. Free, MIT.
 
 ## How it works
 
-One prompt in Claude Code with the Figma connector: a landing page for Raja Emas, a gold savings app for
-Indonesia.
+One prompt in Claude Code with the Figma connector, RYUX 2.22.5, from the [landing page benchmark](docs/benchmarks/landing-gold/):
+a landing page for Raja Emas, a made-up gold savings app for Indonesia.
 
 ```
-/ryux Design a one-page marketing landing page for a gold savings app, in two versions: desktop and mobile.
-The app is for Indonesia: people buy and save gold in small amounts from their phone. Write the copy in
-English. Design it in Figma, on a new page in this file: <Figma link>
+Design a one-page marketing landing page for a gold savings app called Raja Emas, in two versions: desktop and
+mobile. [...] It is for young first-job savers who save small amounts toward a goal and find gold shops
+intimidating. Confirmed: supervised by OJK; gold partners Antam and UBS (their role is not stated); physical gold
+delivery. No minimum, fee, or price is confirmed. [...] Design it in Figma, on a new page in this file: <Figma link>
 ```
 
-1. **It starts from what is known.** The project's DESIGN.md already held the product context: who it is for,
-   why they would choose it, what the app does, and that no price or fee is confirmed. In a new project, RYUX
-   asks these first.
-2. **It offers three directions and asks you to pick.** Drawn in Figma, each from a different idea: an
-   Indonesian proverb (*ilmu padi*, "the fuller the rice, the lower it bows"), the app's own gram counter, and
-   gold kept in a family drawer.
+1. **It offers three directions and asks you to pick.** Each starts from a different idea: the app's own gram
+   balance, read like a bank record; the clay *celengan* (piggy bank) many Indonesians saved coins in as children;
+   and a *songket* weave. Each tile names its type, colour roles with contrast, and its risk.
 
-<img src="https://github.com/ryuxdsgn/design-intelligence/releases/download/media/showcase--raja-emas-directions.png" alt="Three style tiles side by side: 1 Ilmu Padi, deep green with rendered rice terraces ripening to gold, marked recommended; 2 Gram by Gram, a light page with an app screen and a gram ring; 3 Mum's Drawer, plum with a rendered gold bangle and a phone. Each lists type, palette, medium, signature, motion, and risk." width="100%">
+<img src="https://github.com/ryuxdsgn/design-intelligence/releases/download/media/showcase--raja-emas-2.22.5-directions.jpg" alt="Three style tiles side by side: 1 On Record, mint white and forest green with a phone showing a gold balance of 2.4180 g labelled sample data, marked Recommended and Chosen; 2 Celengan, terracotta with a clay rooster piggy bank, not chosen; 3 Songket, deep red with a woven gold band, not chosen. Each lists type, colour roles with contrast ratios, a button and card, and the direction's risk." width="100%">
 
-3. **It asks one layout question, then designs both widths:** images rendered in Blender with one light, app
-   screens with labeled sample data, and no number, rating, or logo the brief did not confirm.
+2. **It asks what it cannot know,** before building: whether there are real app screens and logo files, and what
+   Antam and UBS actually do. Without answers, the app screens are labelled sample data, the OJK, Antam, and UBS
+   logos are named slots, and the partners are only "gold partners".
+3. **It designs both widths** in the chosen direction, with the official App Store and Google Play badges as the
+   only action, and no price, fee, or minimum, since none was confirmed.
 
-<img src="https://github.com/ryuxdsgn/design-intelligence/releases/download/media/showcase--raja-emas-page.png" alt="The top of the Raja Emas page at desktop and mobile: a dark green hero, 'Gold that ripens, row by row.', store badges, a phone with the app's home screen over rendered rice terraces; below, a young green rice stalk beside a ripe gold one, 'Start small. No gold shop needed.', and the ilmu padi proverb." width="100%">
+<img src="https://github.com/ryuxdsgn/design-intelligence/releases/download/media/showcase--raja-emas-2.22.5-page.jpg" alt="The top of the Raja Emas page at desktop and mobile: a mint hero, 'Real gold that's yours. Start small.', the official store badges, and two phones on a forest green band showing a gram balance labelled sample data; below, a safety section and how it works written as ledger lines." width="100%">
 
-4. **It explains its decisions,** in its final message and as Figma annotations on the frames. Four of the six
+4. **It explains its decisions,** in its final message and as Figma annotations on the frames. Three of the six
    lines, word for word:
 
 ```
-Rice terrace instead of coins, bars or a price chart. It fits your warm, steady, proud character and
-  stays away from trading-app or pawn-shop looks. It would be wrong if users read the landscape as
-  travel or farming.
-Download is the only action, at the top and the end. The two badges sit in one row as one action for
-  two platforms.
-Section order follows the visitor's questions, not a template. I took the questions from DESIGN.md's
-  audience, not from research, so this is the main thing to test.
-Cut: a QR code, numbers, and partner or regulator logos, because none of them is confirmed.
+The real app screen fills the hero. People choose Raja Emas for real gold that's theirs, so a gold balance
+  in grams is the most direct proof. [...] An illustration would win only if the screenshots turn out weak.
+Safety comes second. This audience finds gold shops intimidating, so trust is answered before how it works.
+Store badges are the only action. They appear in the hero and again at the end; there's no competing
+  "Learn more".
 ```
 
-One run; the owner answered two questions (direction 1, the hillside layout). The annotations were added when
-asked; 2.22.0 makes them part of the design step.
+One run, unedited. Nobody picked a direction, so it got one reply: "Go with the direction you recommend and build the
+page." It also changed its own headline from "in your name" to "yours", because "in your name" suggests a legal
+ownership record the brief does not confirm.
 
 ## What it changes
 
@@ -77,32 +76,14 @@ confirmed, a promise the product never made. RYUX makes it sort what it has firs
 - **Unconfirmed capabilities**: actions products like yours usually have, proposed and labeled unconfirmed.
 - **Facts, policies, and claims**: fees, refund times, guarantees. Never invented.
 
-The next step for Raja Emas, the app's home and buy flow in Figma, with and without RYUX. Both got the same
-prompt, one run each:
+The [order tracking benchmark](docs/benchmarks/order-tracking/) tests exactly this. An agent builds a working
+order-tracking prototype from a short brief that leaves policies open, three runs with no skill and three with
+RYUX 2.22.5:
 
-```
-Design the phone app for Raja Emas, a gold savings app for Indonesia: people buy and save gold in small
-amounts from their phone. Design the home screen and the flow to buy gold, from choosing an amount to the
-result. Write the copy in English. Design it in Figma, on a new page in this file: <Figma link>
-```
-
-<img src="https://github.com/ryuxdsgn/design-intelligence/releases/download/media/showcase--raja-emas-app.png" alt="Two rows of four phone screens: home, choose an amount, review, and result. Top row, without a skill: a minimum of Rp 10.000, no service fee, a price held on a countdown, an insured vault, 24K gold at 99.99%, a virtual account confirmed in about a minute. Bottom row, with RYUX in the Ilmu Padi direction: a deep green band with terrace contours and a warm gold light, gram figures in a serif, the minimum and the fee tagged Prototype rule, not decided yet, the price checked again at payment, and a row of grains that ripens toward the savings goal." width="100%">
-
-- **Without a skill**, the agent asked nothing and showed eight things as fact that nobody had decided: a
-  minimum of Rp 10.000, no service fee, a price held on a countdown, an insured vault, 24K gold at 99.99%,
-  a virtual account confirmed in about a minute, auto-save from Rp 10.000 a week, and a Send feature. Five
-  screens, each filled.
-- **With RYUX**, it read the DESIGN.md it had written for the landing page and asked three questions first: how
-  people pay, what happens if the price moves before they pay, and how to show a fee or a minimum nobody has
-  confirmed. The owner left the fee, the minimum, and the payment deadline undecided, so RYUX tagged each one on
-  the screen where it appears. It drew three home layouts to choose from, then 17 screens, including loading,
-  first use, offline, a price that changed, a payment that was declined, and a payment time that ran out.
-
-Not a level start: RYUX worked from the DESIGN.md it wrote in the landing step; the agent without a skill had
-the prompt alone. The RYUX row is from 2.22.1, whose check for undecided rules and app rules came from earlier
-runs of this same brief. Its visuals were then refined once by hand after the owner's review (gradient band,
-serif figures, layered cards) and a tag added to the fee inside the paid total, which the run had missed; the
-questions and the screens are the run's own. The row without a skill is not edited.
+- **Without a skill**, no run asked anything, and the runs showed 28 policies as fact: refund times, a $4.99
+  cancellation fee, "$5 credit added — sorry for the wait", tips, courier ratings, a late-delivery guarantee.
+- **With RYUX**, every run asked first. One policy was shown as fact across three runs; the rest were marked on
+  screen as not decided. Every RYUX run built offline, loading, and error states; no run without a skill did.
 
 ## Use it
 
@@ -158,23 +139,25 @@ every check.
 </details>
 
 <details>
-<summary><b>All benchmarks</b></summary>
+<summary><b>Benchmarks: where RYUX helps, and where it doesn't</b></summary>
 
-Each benchmark fixes its criteria before the first run, uses a fresh agent per run, and publishes the raw
-outputs. Counts come from a few runs on one model: what those runs did, not rates.
+Three benchmarks on RYUX 2.22.5. Each compares the same brief with no skill and with RYUX. Criteria were locked
+before the first run, and every run starts with a fresh agent. There were 2 to 3 runs per side, so these numbers
+describe these runs, not rates.
 
-| Benchmark | The question it answers | RYUX | Runs |
-| --- | --- | --- | --- |
-| [Food delivery in Figma](docs/benchmarks/food-delivery-figma/) | Designed in Figma instead of code: is it cheaper, and does the difference still show in the frames? A pilot | 2.19.4 | 1 + 1 |
-| [Illustration](docs/benchmarks/illustration/) | Icons, empty states, a mascot, an editorial picture: do they say what they mean, in one style? Hand-drawn vectors, rated by an AI rater the owner approved; then direction A in Figma (RYUX directs, an image model draws): owner-rated, not fully blind, one run per arm, 4.18 against 2.82 and 3.12 for no skill | 2.20.0, 2.21.0, 2.22.4 + rule | 8 + 8 + 8, then 1 + 1 + 1 |
-| [Food delivery, DESIGN.md by RYUX](docs/benchmarks/food-delivery-designmd/) | With no DESIGN.md given, does RYUX write one from a brief and references that answers the five questions, then build that direction without inventing policy? Three rounds | main before 2.19.4, 2.19.4 | 1 + 1 + 1 new + 3 |
-| [Billing page in an existing repo](docs/benchmarks/billing-dashboard/) | Does a new page fit a real repo, keep checks passing, and invent no billing rule? | 2.19.3 | 3 + 3 |
-| [Wallet, expressive direction](docs/benchmarks/wallet-expressive/) | With a DESIGN.md that asks for character and motion, does it build that direction and still ask first and invent no money rule? | 2.19.3 | 3 new + 3 |
-| [Wallet transaction detail](docs/benchmarks/wallet-detail/) | Does it ask what changes the build, keep open money rules open, and build the states a money screen needs? | 2.19.2 | 3 + 3 |
-| [Order tracking](docs/benchmarks/order-tracking/) | Does the agent invent policies the brief left open, and build the states for when things go wrong? | 2.19.0 | 3 + 3 |
+**Order tracking (code): pass.** Policies the brief left open were shown as fact 28 times in the
+[no-skill runs](docs/benchmarks/order-tracking/) and once with RYUX. Offline, loading, and error states appeared in
+every RYUX run and in none of the no-skill runs. Every RYUX run asked before building.
 
-Every run so far uses Claude Code; the other supported agents are not benchmarked yet. Older runs from RYUX 2.6 to
-2.9 (personal finance, explore and judge, typography) are listed as historical in [`docs/benchmarks/`](docs/benchmarks/).
+**Landing page (Figma): pass.** The owner rated the [pages](docs/benchmarks/landing-gold/) blind. RYUX scored higher
+on originality (4.0 v 2.0), on AI-slop resistance (3.5 v 2.0), and overall (3.69 v 3.19). It scored lower on
+production plausibility: sample-data labels and logo slots showed on the design.
+
+**Illustration (Figma): fail.** In the [illustration benchmark](docs/benchmarks/illustration/), RYUX lost on concept,
+craft, and fit at real size (3.30 v 3.73). It led only on cohesion. A fix that is not released yet passed a rerun (3.97 v 3.00). A RYUX run costs about 1.5 to 4 times a run
+without a skill.
+
+Setup, raw outputs, and how to run one yourself: [`docs/benchmarks/`](docs/benchmarks/).
 
 </details>
 
@@ -191,7 +174,7 @@ numbers and no missing critical states. Browse them in [`skills/ryux/`](./skills
 ```
 packages/cli/     the ryux CLI (npx @ryuxdsgn/design-intelligence)
 skills/ryux/      the RYUX skill, generated from packages/cli/src
-docs/             design rules, showcase, benchmarks
+docs/             design rules, benchmarks
 ```
 
 ```bash
