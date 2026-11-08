@@ -27,46 +27,41 @@ Antigravity. Free, MIT.
 
 ## How it works
 
-One prompt in Claude Code with the Figma connector, from a run during the RYUX 2.22.0 work (before the current
-release): a landing page for Raja Emas, a made-up gold savings app for Indonesia. Benchmark numbers below use
-RYUX 2.22.5.
+One prompt in Claude Code with the Figma connector, from the run that tested the RYUX 2.22.7 rules: a landing page
+for Raja Emas, a made-up gold savings app for Indonesia.
 
 ```
-/ryux Design a one-page marketing landing page for a gold savings app, in two versions: desktop and mobile.
-The app is for Indonesia: people buy and save gold in small amounts from their phone. Write the copy in
-English. Design it in Figma, on a new page in this file: <Figma link>
+Design a one-page marketing landing page for a gold savings app called Raja Emas, in two versions: desktop and
+mobile. [...] It is for young first-job savers who save small amounts toward a goal and find gold shops
+intimidating. Confirmed: supervised by OJK; gold partners Antam and UBS (their role is not stated); physical gold
+delivery. No minimum, fee, or price is confirmed. [...] Design it in Figma, on a new page in this file: <Figma link>
 ```
 
-1. **It starts from what is known.** The project's DESIGN.md already held the product context: who it is for,
-   why they would choose it, what the app does, and that no price or fee is confirmed. In a new project, RYUX
-   asks these first.
-2. **It offers three directions and asks you to pick.** Drawn in Figma, each from a different idea: an
-   Indonesian proverb (*ilmu padi*, "the fuller the rice, the lower it bows"), the app's own gram counter, and
-   gold kept in a family drawer.
+1. **It proposes three directions.** Each starts from a different idea: *Benang Emas*, the songket cloth woven
+   with gold thread, where each top-up adds a row; a goal jar filling up; and the first-salary envelope set aside
+   every payday. This run could not stop to ask, so it picked the first and marked the choice provisional.
+2. **It designs both widths** in that direction, with the official App Store and Google Play badges as the only
+   action. The gram balance shows its Rupiah value beside it. Sample data, open rules, and missing logo files are
+   Figma annotations, not labels on the page. No minimum, fee, or price appears, since none was confirmed.
 
-<img src="https://github.com/ryuxdsgn/design-intelligence/releases/download/media/showcase--raja-emas-directions.png" alt="Three style tiles side by side: 1 Ilmu Padi, deep green with rendered rice terraces ripening to gold, marked recommended; 2 Gram by Gram, a light page with an app screen and a gram ring; 3 Mum's Drawer, plum with a rendered gold bangle and a phone. Each lists type, palette, medium, signature, motion, and risk." width="100%">
+<img src="https://github.com/ryuxdsgn/design-intelligence/releases/download/media/showcase--raja-emas-2.22.7-page.jpg" alt="The top of the Raja Emas page at desktop and mobile: a deep maroon hero, 'Real gold, saved thread by thread.', the official store badges, 'Supervised by OJK', and a phone showing a wedding fund of 3.2 g with its Rupiah value and a woven gold motif filling 3 of 10 rows; below, 'No gold shop, no counter to walk up to.'" width="100%">
 
-3. **It asks one layout question, then designs both widths:** images rendered in Blender with one light, app
-   screens with labeled sample data, and no number, rating, or logo the brief did not confirm.
-
-<img src="https://github.com/ryuxdsgn/design-intelligence/releases/download/media/showcase--raja-emas-page.png" alt="The top of the Raja Emas page at desktop and mobile: a dark green hero, 'Gold that ripens, row by row.', store badges, a phone with the app's home screen over rendered rice terraces; below, a young green rice stalk beside a ripe gold one, 'Start small. No gold shop needed.', and the ilmu padi proverb." width="100%">
-
-4. **It explains its decisions,** in its final message and as Figma annotations on the frames. Four of the six
-   lines, word for word:
+3. **It explains its decisions,** in its final message and as 50 Figma annotations on the frames. Three lines,
+   word for word:
 
 ```
-Rice terrace instead of coins, bars or a price chart. It fits your warm, steady, proud character and
-  stays away from trading-app or pawn-shop looks. It would be wrong if users read the landscape as
-  travel or farming.
-Download is the only action, at the top and the end. The two badges sit in one row as one action for
-  two platforms.
-Section order follows the visitor's questions, not a template. I took the questions from DESIGN.md's
-  audience, not from research, so this is the main thing to test.
-Cut: a QR code, numbers, and partner or regulator logos, because none of them is confirmed.
+The four app actions sit in one woven panel instead of four equal cards, so they read as one product, in
+  order from first buy to cashing out.
+No duplicate download buttons. I removed a "Get the app" header button because the hero badges already do
+  that job. On phones, a sticky bar takes over once the badges scroll away.
+What I left out: no minimum, fee, price, FAQ or "free" claim, because none of those are confirmed.
 ```
 
-One run; the owner answered two questions (direction 1, the hillside layout). The annotations were added when
-asked; 2.22.0 makes them part of the design step.
+4. **It asks what only you can answer,** first the number visitors want most: "What is the minimum buy?", then the
+   partners' role, delivery terms, the store links, and the logo file.
+
+One run, unedited. In the owner's blind rating it scored 3.75 of 5, against 3.44 for RYUX 2.22.5 on the same brief.
+It still writes Rp100,000 in English copy, a format the 2.22.7 rules now correct to Rp100.000.
 
 ## What it changes
 
