@@ -53,6 +53,17 @@ The labels are Indonesian because the brief gave them.
 Owner's blind rating of these two runs: 4.06 with RYUX, 3.06 without; over both runs per side, 3.97 v 3.00
 ([illustration benchmark](docs/benchmarks/illustration/#rerun-with-the-fix-pr-36-not-released-yet)).
 
+**Motion, in a clickable prototype.** Asked for a booking flow with motion for each step, the RYUX run asked about
+price, payment, and rules first. With its defaults agreed, it labelled the price as an estimate, showed no fee or
+cancellation policy, and gave each movement a job: a slide for a step deeper, visible progress while booking, a fade
+for the finished booking.
+
+<img src="https://github.com/ryuxdsgn/design-intelligence/releases/download/media/showcase--h2h-3-motion.gif" alt="Two booking prototypes for Sejuk, recorded along the same path: pick a time slot, review, confirm. No skill: an iOS-blue flow that assigns a rated technician before booking, shows '1 slot left', and ends on 'You're booked!'. RYUX: a teal flow that starts from the request, slides to the time list, shows 'Booking…' with a spinner, and ends on 'Booking confirmed' with airflow lines around the check. Three quotes from the RYUX run explain its motion." width="100%">
+
+Owner's blind rating from the recordings: 3.83 with RYUX, 3.00 without; honesty 4 v 2, visual direction 4 v 2,
+motion 4 v 3. Craft tied at 3: in both, the button label overlaps during the confirm transition.
+[Motion benchmark](docs/benchmarks/motion/)
+
 ## Use it
 
 Say what you are doing, in your own words. RYUX picks the step and reads only the knowledge it needs.
