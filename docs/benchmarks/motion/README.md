@@ -7,7 +7,7 @@ serve the task and the platform, and does the flow stay honest about what nobody
 - **Brief** ([prompt.txt](prompt.txt)): a Sejuk booking flow (choose a time slot, review, confirmed), one `index.html`
   with no libraries or network, 390 wide, English copy, and the motion and design decisions explained at the end. The RYUX
   side gets "Use the ryux skill." before it.
-- **Agent:** Claude Code `claude -p`, Opus 5.5, an empty folder, no MCP servers, global skills moved aside. One run per
+- **Agent:** Claude Code `claude -p`, Opus 5.5, an empty folder (the RYUX side holds only its install), no MCP servers, global skills moved aside. One run per
   side (2026-11-09).
 - **Reply rule:** a turn that ends without an `.html` file gets [reply.txt](reply.txt) once ("Go with what you recommend
   and build the prototype."). The RYUX run asked first and got that reply.
@@ -32,7 +32,7 @@ serve the task and the platform, and does the flow stay honest about what nobody
 | Craft | 3 | 3 |
 | **Mean** | 3.00 | **3.83** |
 | `prefers-reduced-motion` | yes | yes (a 150 ms fade) |
-| Cost | $0.91, 4 min | $4.14 over 3 turns (one cut by a usage limit, then resumed) |
+| Cost | $0.91, 4 min | $4.13 over 3 turns (one cut by a usage limit, then resumed) |
 
 ## What the owner noted
 - **No skill:** a native-feeling push with parallax, and the best tap feedback (the button label becomes "Continue · Tue

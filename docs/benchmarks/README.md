@@ -46,7 +46,7 @@ below the checkout ran on **RYUX 2.22.5**; the checkout and motion ran on **2.22
   - Neither side used an image model. RYUX's rule to hand illustration to an image model did not trigger without
     being asked.
   - A fix ([PR #36](https://github.com/ryuxdsgn/design-intelligence/pull/36), released in 2.22.6) passed a rerun:
-    3.97 v 3.00, with the image model used in both runs ([details](illustration/#rerun-with-the-fix-pr-36-not-released-yet)).
+    3.97 v 3.00, with the image model used in both runs ([details](illustration/#rerun-with-the-fix-pr-36-released-in-2226)).
 - **Production on the landing page:** no skill scored higher on production plausibility (4.0 v 3.0) and hierarchy
   (4.0 v 3.5). RYUX left "Sample data" labels and logo slots on the design itself, and one hero had two overlapping
   phones.
