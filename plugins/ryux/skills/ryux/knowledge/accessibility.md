@@ -49,9 +49,9 @@ Standards are the main evidence (WCAG 2.2 success criteria); reference screens s
 
 ### RX-A11Y-03 [Required] [Hard Gate] Keyboard and visible focus
 
-- Do: Make actions operable from the keyboard (path-based input such as drawing excepted), show a visible focus indicator, and keep focus order the same as the visual order. When a dialog, menu, or popover closes, put focus back on the element that opened it, or on the nearest sensible element if that one is gone.
+- Do: Make actions operable from the keyboard (path-based input such as drawing excepted), show a visible focus indicator, and keep focus order the same as the visual order. Show the focus indicator for keyboard focus (CSS :focus-visible), not after a tap or click; when a screen change moves focus to its heading for screen readers, give the heading tabindex="-1" and no outline on pointer input. When a dialog, menu, or popover closes, put focus back on the element that opened it, or on the nearest sensible element if that one is gone.
 - Do not: Build pointer-only actions, or remove focus outlines without an accessible replacement.
-- Why: Keyboard and switch users navigate and act by focus. (WCAG 2.2 SC 2.1.1, 2.4.3, and 2.4.7; WAI-ARIA APG dialog pattern)
+- Why: Keyboard and switch users navigate and act by focus. (WCAG 2.2 SC 2.1.1, 2.4.3, and 2.4.7; WAI-ARIA APG dialog pattern; CSS Selectors Level 4 :focus-visible; owner blind review 2026-11-09 of the motion head-to-head (docs/benchmarks/motion): a focus ring on the title after the first tap read as a glitch)
 - Check: tab through the render from the top: every control is reached in reading order and shows a visible focus indicator (3:1 against its background); fails on a skipped control, a focus trap, or an invisible focus
 - Machine check: `ryux scan` flags a positive tabindex, which takes the element out of the visual focus order (fail); focus outlines removed on a control (a button, link, input, or :focus rule) with no focus-visible replacement (warn)
 

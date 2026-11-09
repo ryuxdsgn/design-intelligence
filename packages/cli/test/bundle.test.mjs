@@ -347,16 +347,28 @@ test("context stays scoped, visible, and honest about failed sources", () => {
 test("marketing surfaces: annotations instead of sample labels, the deciding number, units with money, mockups apart", () => {
   const files = renderBundle();
   const f = (p) => files[p].replace(/\s+/g, " ");
-  assert.match(f("knowledge/product.md"), /On a marketing surface \(a landing page, a store listing, an ad\), the label is a design-tool annotation on that node instead of visible text/);
+  assert.match(f("knowledge/product.md"), /for task UI and marketing surfaces alike/);
   assert.match(f("knowledge/anti-slop.md"), /nothing on the design says sample, example, or placeholder/);
   assert.match(f("knowledge/imagery.md"), /the owner's name as plain text in the page's type instead of an empty slot/);
   assert.match(f("knowledge/ux.md"), /put that number first in the handoff's open questions/);
   assert.match(f("knowledge/content.md"), /An unfamiliar unit comes with its everyday value/);
   assert.match(f("knowledge/illustration.md"), /a mascot's or character's tone matches the stakes/);
-  assert.match(f("capabilities/qa.md"), /on a marketing surface the label is an annotation on the node, never visible text/);
   const design = f("capabilities/design.md");
-  assert.match(design, /const MARKETING = false;/);
   assert.match(design, /for \(const a of p\.annotations \|\| \[\]\)/);
+});
+
+test("design-tool canvases label open rules with annotations; buttons keep their in-progress label; focus rings follow the keyboard", () => {
+  // owner blind review 2026-11-09 of the head-to-head runs (docs/benchmarks/checkout, docs/benchmarks/motion)
+  const files = renderBundle();
+  const f = (p) => files[p].replace(/\s+/g, " ");
+  assert.match(f("knowledge/product.md"), /On a design-tool canvas \(Figma, pen\.dev\), the label is the tool's annotation on that node or its row instead of visible text, for task UI and marketing surfaces alike/);
+  assert.match(f("knowledge/product.md"), /A built prototype or code keeps the visible label/);
+  assert.match(f("capabilities/design.md"), /On the canvas the label is a Figma annotation on that node or its row/);
+  assert.doesNotMatch(f("capabilities/design.md"), /const MARKETING/);
+  assert.match(f("capabilities/qa.md"), /in a design file the label is an annotation on the node, not a chip in the UI/);
+  assert.match(f("knowledge/anti-slop.md"), /sample values carry a "Sample data" annotation, never a chip in the UI/);
+  assert.match(f("knowledge/interaction.md"), /The in-progress label .* stays on the button until the result replaces the screen/);
+  assert.match(f("knowledge/accessibility.md"), /:focus-visible/);
 });
 
 test("design runs carry the deciding number and the unit rule without loading content or ux; Rupiah keeps dots in English", () => {
