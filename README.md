@@ -46,9 +46,10 @@ without a skill fit the AC service better (5 v 4), and copy tied (4 v 4). [Check
 
 **Illustration.** Asked for the service icons, an empty state, and a success screen, the RYUX run built one system from
 the product: the same AC unit in every icon, no steam that would read as heat, a technician on a motorbike as in Jakarta.
-The labels are Indonesian because the brief gave them.
+The brief asked for Indonesian copy; for this image it was translated to English the same way on both sides, and the art
+is unchanged.
 
-<img src="https://github.com/ryuxdsgn/design-intelligence/releases/download/media/showcase--h2h-2-illustration.jpg" alt="Three app screens per side for Sejuk, an AC service app. No skill: flat line icons, a clipboard empty state, and a success screen that names a technician, Pak Budi, with an arrival time of 14.30 and a call button. RYUX: soft clay-style icons of one AC unit with water spray, a gauge, and a wrench; a blank clipboard with a remote; a technician on a motorbike riding to an apartment block. Three numbered quotes from the RYUX run explain the choices." width="100%">
+<img src="https://github.com/ryuxdsgn/design-intelligence/releases/download/media/showcase--h2h-2-illustration.jpg" alt="Three app screens per side for Sejuk, an AC service app. No skill: flat line icons, a clipboard empty state, and a success screen that names a technician, Pak Budi, with an arrival time of 2:30 PM and a contact button. RYUX: soft clay-style icons of one AC unit with water spray, a gauge, and a wrench; a blank clipboard with a remote; a technician on a motorbike riding to an apartment block. Three numbered quotes from the RYUX run explain the choices." width="100%">
 
 Owner's blind rating of these two runs: 4.06 with RYUX, 3.06 without; over both runs per side, 3.97 v 3.00
 ([illustration benchmark](docs/benchmarks/illustration/#rerun-with-the-fix-pr-36-released-in-2226)).
