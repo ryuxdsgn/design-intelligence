@@ -1,0 +1,1 @@
+Design the checkout screen for Sejuk, an iOS app in Jakarta for booking an AC service technician to come to your home. One screen, 390 wide, in this empty Figma file: <empty Figma file link>. Work only in that file. Write the copy in English.

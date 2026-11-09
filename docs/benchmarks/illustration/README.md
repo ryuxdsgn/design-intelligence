@@ -56,7 +56,7 @@ archived at
 [`archive/illustration-direction-a-2.22.4`](https://github.com/ryuxdsgn/design-intelligence/tree/archive/illustration-direction-a-2.22.4/docs/benchmarks/illustration).
 In this 2.22.5 benchmark the image model was never used.
 
-## Rerun with the fix ([PR #36](https://github.com/ryuxdsgn/design-intelligence/pull/36), not released yet)
+## Rerun with the fix ([PR #36](https://github.com/ryuxdsgn/design-intelligence/pull/36), released in 2.22.6)
 
 The fix changes two rules.
 - **RX-UI-21:** look for an image tool and ask once about paid generation. If the agent cannot ask, it ends the
