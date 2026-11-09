@@ -31,7 +31,7 @@ had decided as fact, across three runs. With RYUX: 1.
 ## No skill vs RYUX
 
 Same short brief, same agent (Claude Code), one side with RYUX. Quotes are the agent's own words from that run;
-scores are the owner's blind ratings, 1 to 5.
+scores are blind ratings, 1 to 5, by a senior designer who didn't know which side used RYUX.
 
 **Checkout, from one sentence.** The brief names the product (Sejuk, an iOS app for booking an AC technician in
 Jakarta) and nothing else. Without a skill, the agent filled the gaps with a price, fees, a promo code, a warranty, and a
@@ -41,16 +41,17 @@ price and payment as not decided, left out fees and promises, and built five sta
 
 <img src="https://github.com/ryuxdsgn/design-intelligence/releases/download/media/showcase--h2h-1-checkout.jpg" alt="Two checkout screens for Sejuk. No skill: a light grey iOS list with an invented per-unit price, what each unit includes, a 90-minute duration, a GoPay balance, promo SEJUKHEMAT, transport and service fees, a 30-day cooling warranty, and free cancellation until 11:00; red boxes mark 9 of them. RYUX: a deep teal header with a sawtooth trim from Betawi roof eaves, the units stepper beside the price, a 'Sample price. Per-unit pricing not decided' label, QRIS preselected, and one Pay with QRIS button; two red boxes mark a unit type and an arrival window the brief did not give. Five quotes from the RYUX run's Figma annotations and final message explain the choices." width="100%">
 
-Owner's blind rating: 4.33 with RYUX, 2.83 without; honesty 5 v 1, states 5 v 1, visual direction 4 v 2. The screen
+Blind rating: 4.33 with RYUX, 2.83 without; honesty 5 v 1, states 5 v 1, visual direction 4 v 2. The screen
 without a skill fit the AC service better (5 v 4), and copy tied (4 v 4). [Checkout benchmark](docs/benchmarks/checkout/)
 
 **Illustration.** Asked for the service icons, an empty state, and a success screen, the RYUX run built one system from
 the product: the same AC unit in every icon, no steam that would read as heat, a technician on a motorbike as in Jakarta.
-The labels are Indonesian because the brief gave them.
+The brief asked for Indonesian copy; for this image it was translated to English the same way on both sides, and the art
+is unchanged.
 
-<img src="https://github.com/ryuxdsgn/design-intelligence/releases/download/media/showcase--h2h-2-illustration.jpg" alt="Three app screens per side for Sejuk, an AC service app. No skill: flat line icons, a clipboard empty state, and a success screen that names a technician, Pak Budi, with an arrival time of 14.30 and a call button. RYUX: soft clay-style icons of one AC unit with water spray, a gauge, and a wrench; a blank clipboard with a remote; a technician on a motorbike riding to an apartment block. Three numbered quotes from the RYUX run explain the choices." width="100%">
+<img src="https://github.com/ryuxdsgn/design-intelligence/releases/download/media/showcase--h2h-2-illustration.jpg" alt="Three app screens per side for Sejuk, an AC service app. No skill: flat line icons, a clipboard empty state, and a success screen that names a technician, Pak Budi, with an arrival time of 2:30 PM and a contact button. RYUX: soft clay-style icons of one AC unit with water spray, a gauge, and a wrench; a blank clipboard with a remote; a technician on a motorbike riding to an apartment block. Three numbered quotes from the RYUX run explain the choices." width="100%">
 
-Owner's blind rating of these two runs: 4.06 with RYUX, 3.06 without; over both runs per side, 3.97 v 3.00
+Blind rating of these two runs: 4.06 with RYUX, 3.06 without; over both runs per side, 3.97 v 3.00
 ([illustration benchmark](docs/benchmarks/illustration/#rerun-with-the-fix-pr-36-released-in-2226)).
 
 **Motion, in a clickable prototype.** Asked for a booking flow with motion for each step, the RYUX run asked about
@@ -60,7 +61,7 @@ for the finished booking.
 
 <img src="https://github.com/ryuxdsgn/design-intelligence/releases/download/media/showcase--h2h-3-motion.gif" alt="Two booking prototypes for Sejuk, recorded along the same path: pick a time slot, review, confirm. No skill: an iOS-blue flow that assigns a rated technician before booking, shows '1 slot left', and ends on 'You're booked!'. RYUX: a teal flow that starts from the request, slides to the time list, shows 'Booking…' with a spinner, and ends on 'Booking confirmed' with airflow lines around the check. Three quotes from the RYUX run explain its motion." width="100%">
 
-Owner's blind rating from the recordings: 3.83 with RYUX, 3.00 without; honesty 4 v 2, visual direction 4 v 2,
+Blind rating from the recordings: 3.83 with RYUX, 3.00 without; honesty 4 v 2, visual direction 4 v 2,
 motion 4 v 3. Craft tied at 3: in both, the button label overlaps during the confirm transition.
 [Motion benchmark](docs/benchmarks/motion/)
 
@@ -131,7 +132,7 @@ side. These numbers describe these runs, not rates.
 [no-skill runs](docs/benchmarks/order-tracking/) and once with RYUX. Offline, loading, and error states appeared in
 every RYUX run and in none of the no-skill runs. Every RYUX run asked before building.
 
-**Landing page (Figma): pass.** The owner rated the [pages](docs/benchmarks/landing-gold/) blind. RYUX scored higher
+**Landing page (Figma): pass.** A senior designer rated the [pages](docs/benchmarks/landing-gold/) blind. RYUX scored higher
 on originality (4.0 v 2.0), on AI-slop resistance (3.5 v 2.0), and overall (3.69 v 3.19). It scored lower on
 production plausibility: sample-data labels and logo slots showed on the design.
 

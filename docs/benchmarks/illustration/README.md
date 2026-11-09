@@ -89,3 +89,12 @@ these:
 | RYUX with the fix 1 | RYUX with the fix 2 |
 | --- | --- |
 | ![RYUX with the fix, run 1: home, empty, success screens](https://github.com/ryuxdsgn/design-intelligence/releases/download/media/benchmarks--illustration--ryux-fix-1.jpg) | ![RYUX with the fix, run 2: home, empty, success screens](https://github.com/ryuxdsgn/design-intelligence/releases/download/media/benchmarks--illustration--ryux-fix-2.jpg) |
+
+### The README image
+
+The README compares no skill run 2 with RYUX with the fix run 1 (the higher-rated run of each arm). The brief asked for
+Indonesian copy, so for the README the three screens of each run were copied to a separate page in their own Figma file
+and only the text was translated to English, meaning for meaning, with the same wording rules on both sides (for
+example "Belum ada pesanan" became "No orders yet" on both). The art, layout, and colours are unchanged. Two lines
+that ran longer in English were set to wrap instead of clip, one on each side. The ratings above were given on the
+original Indonesian screens.
