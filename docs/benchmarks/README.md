@@ -1,7 +1,7 @@
 # Benchmarks
 
-Three benchmarks, all run on **RYUX 2.22.5** (the current release). Each one compares the same brief with no skill
-and with RYUX. Older results are archived at the tag
+Each benchmark compares the same brief with no skill and with RYUX, and names the RYUX version it ran on. The three
+below the checkout ran on **RYUX 2.22.5**; the checkout ran on **2.22.7**. Older results are archived at the tag
 [`archive/benchmarks-2.22.4`](https://github.com/ryuxdsgn/design-intelligence/tree/archive/benchmarks-2.22.4/docs/benchmarks).
 
 ## How to read the numbers
@@ -19,11 +19,12 @@ and with RYUX. Older results are archived at the tag
 
 ## Results
 
-| Benchmark | Question | No skill | RYUX 2.22.5 | Locked criteria |
+| Benchmark | Question | No skill | RYUX | Locked criteria |
 | --- | --- | --- | --- | --- |
+| [Checkout](checkout/) (Figma, 1 + 1, RYUX 2.22.7) | From a one-sentence brief, what goes on the screen for what nobody said? | 16 invented facts; owner mean 2.83; no states | 2 invented facts, price and payment labelled not decided; owner mean 4.33; 5 states | **Pass** (owner mean higher) |
 | [Order tracking](order-tracking/) (code, 3 + 3) | Does it invent policies the brief left open, and build the states for when things go wrong? | 28 invented facts; 3 extra states; asked first 0/3 | 1 invented fact; 5–6 extra states; asked first 3/3 | **Pass** |
 | [Landing page](landing-gold/) (Figma, 2 + 2) | Does a landing page fit its product, or read as a template? | owner mean 3.19; originality 2.0 | owner mean 3.69; originality 4.0 | **Pass** |
-| [Illustration](illustration/) (Figma, 2 + 2) | Do icons and spot illustrations say what they mean, in one style? | owner mean 3.73 | owner mean 3.30; cohesion higher | **Fail** |
+| [Illustration](illustration/) (Figma, 2 + 2) | Do icons and spot illustrations say what they mean, in one style? | owner mean 3.73 | owner mean 3.30; cohesion higher | **Fail**; fix passed a rerun (3.97 v 3.00), released in 2.22.6 |
 
 ### Where RYUX helps
 - **Order tracking:**
@@ -43,7 +44,7 @@ and with RYUX. Older results are archived at the tag
   - RYUX lost on concept, craft, and fit at real size. One RYUX icon set drew two services as the same bottle.
   - Neither side used an image model. RYUX's rule to hand illustration to an image model did not trigger without
     being asked.
-  - A fix ([PR #36](https://github.com/ryuxdsgn/design-intelligence/pull/36), not released yet) passed a rerun:
+  - A fix ([PR #36](https://github.com/ryuxdsgn/design-intelligence/pull/36), released in 2.22.6) passed a rerun:
     3.97 v 3.00, with the image model used in both runs ([details](illustration/#rerun-with-the-fix-pr-36-not-released-yet)).
 - **Production on the landing page:** no skill scored higher on production plausibility (4.0 v 3.0) and hierarchy
   (4.0 v 3.5). RYUX left "Sample data" labels and logo slots on the design itself, and one hero had two overlapping

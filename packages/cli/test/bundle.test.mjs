@@ -88,10 +88,10 @@ test("every bundle file is tracked by git, so skills.sh and the plugin ship it",
   }
 });
 
-test("the README shows the current version", () => {
-  const minor = VERSION.split(".").slice(0, 2).join(".");
+test("the README names no RYUX version, so no result reads as tied to one", () => {
   const readme = readFileSync(join(root, "README.md"), "utf8");
-  assert.match(readme, new RegExp(`^RYUX ${minor.replace(".", "\\.")}, early access`, "m"));
+  assert.doesNotMatch(readme, /RYUX v?\d+\.\d+/, "README: say RYUX, keep versions in docs/benchmarks");
+  assert.doesNotMatch(readme, /\b\d+\.\d+\.\d+\b/, "README: no version numbers (the npm badge shows the current one)");
 });
 
 test("critique findings keep the fields that make them actionable", () => {

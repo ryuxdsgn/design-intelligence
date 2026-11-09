@@ -25,61 +25,33 @@ npx @ryuxdsgn/design-intelligence
 Works with Claude Code, Codex, Cursor, Gemini CLI, GitHub Copilot, OpenCode, Cline, Amp, Kimi Code, and
 Antigravity. Free, MIT.
 
-## How it works
+In the [order tracking benchmark](docs/benchmarks/order-tracking/), agents without a skill showed 28 policies nobody
+had decided as fact, across three runs. With RYUX: 1.
 
-One prompt in Claude Code with the Figma connector, from the run that tested the RYUX 2.22.7 rules: a landing page
-for Raja Emas, a made-up gold savings app for Indonesia.
+## No skill vs RYUX
 
-```
-Design a one-page marketing landing page for a gold savings app called Raja Emas, in two versions: desktop and
-mobile. [...] It is for young first-job savers who save small amounts toward a goal and find gold shops
-intimidating. Confirmed: supervised by OJK; gold partners Antam and UBS (their role is not stated); physical gold
-delivery. No minimum, fee, or price is confirmed. [...] Design it in Figma, on a new page in this file: <Figma link>
-```
+Same short brief, same agent (Claude Code), one side with RYUX. Quotes are the agent's own words from that run;
+scores are the owner's blind ratings, 1 to 5.
 
-1. **It proposes three directions.** Each starts from a different idea: *Benang Emas*, the songket cloth woven
-   with gold thread, where each top-up adds a row; a goal jar filling up; and the first-salary envelope set aside
-   every payday. This run could not stop to ask, so it picked the first and marked the choice provisional.
-2. **It designs both widths** in that direction, with the official App Store and Google Play badges as the only
-   action. The gram balance shows its Rupiah value beside it. Sample data, open rules, and missing logo files are
-   Figma annotations, not labels on the page. No minimum, fee, or price appears, since none was confirmed.
+**Checkout, from one sentence.** The brief names the product (Sejuk, an iOS app for booking an AC technician in
+Jakarta) and nothing else. Without a skill, the agent filled the gaps with a price, fees, a promo code, a warranty, and a
+cancellation rule. The RYUX run asked first: which direction, how the price is set, how people pay, what the screen may
+promise. Told to go with its recommendations, it labelled the price and payment as not decided, left out fees and
+promises, and built five states.
 
-<img src="https://github.com/ryuxdsgn/design-intelligence/releases/download/media/showcase--raja-emas-2.22.7-page.jpg" alt="The top of the Raja Emas page at desktop and mobile: a deep maroon hero, 'Real gold, saved thread by thread.', the official store badges, 'Supervised by OJK', and a phone showing a wedding fund of 3.2 g with its Rupiah value and a woven gold motif filling 3 of 10 rows; below, 'No gold shop, no counter to walk up to.'" width="100%">
+<img src="https://github.com/ryuxdsgn/design-intelligence/releases/download/media/showcase--h2h-1-checkout.jpg" alt="Two checkout screens for Sejuk. No skill: a light grey iOS list with an invented per-unit price, what each unit includes, a 90-minute duration, a GoPay balance, promo SEJUKHEMAT, transport and service fees, a 30-day cooling warranty, and free cancellation until 11:00; red boxes mark 9 of them. RYUX: a deep teal header with a sawtooth trim from Betawi roof eaves, the units stepper beside the price, a 'Sample price. Per-unit pricing not decided' label, QRIS preselected, and one Pay with QRIS button; two red boxes mark a unit type and an arrival window the brief did not give. Five quotes from the RYUX run's Figma annotations and final message explain the choices." width="100%">
 
-3. **It explains its decisions,** in its final message and as 50 Figma annotations on the frames. Three lines,
-   word for word:
+Owner's blind rating: 4.33 with RYUX, 2.83 without; honesty 5 v 1, states 5 v 1, visual direction 4 v 2. The screen
+without a skill fit the AC service better (5 v 4), and copy tied (4 v 4). [Checkout benchmark](docs/benchmarks/checkout/)
 
-```
-The four app actions sit in one woven panel instead of four equal cards, so they read as one product, in
-  order from first buy to cashing out.
-No duplicate download buttons. I removed a "Get the app" header button because the hero badges already do
-  that job. On phones, a sticky bar takes over once the badges scroll away.
-What I left out: no minimum, fee, price, FAQ or "free" claim, because none of those are confirmed.
-```
+**Illustration.** Asked for the service icons, an empty state, and a success screen, the RYUX run built one system from
+the product: the same AC unit in every icon, no steam that would read as heat, a technician on a motorbike as in Jakarta.
+The labels are Indonesian because the brief gave them.
 
-4. **It asks what only you can answer,** first the number visitors want most: "What is the minimum buy?", then the
-   partners' role, delivery terms, the store links, and the logo file.
+<img src="https://github.com/ryuxdsgn/design-intelligence/releases/download/media/showcase--h2h-2-illustration.jpg" alt="Three app screens per side for Sejuk, an AC service app. No skill: flat line icons, a clipboard empty state, and a success screen that names a technician, Pak Budi, with an arrival time of 14.30 and a call button. RYUX: soft clay-style icons of one AC unit with water spray, a gauge, and a wrench; a blank clipboard with a remote; a technician on a motorbike riding to an apartment block. Three numbered quotes from the RYUX run explain the choices." width="100%">
 
-One run. In the owner's blind rating it scored 3.75 of 5, against 3.44 for RYUX 2.22.5 on the same brief.
-
-## What it changes
-
-Without the product context, an agent fills the gaps in a brief with content: an invented fee, a feature nobody
-confirmed, a promise the product never made. RYUX makes it sort what it has first:
-
-- **Known**: stated in the prompt, DESIGN.md, or your product docs, or seen in the design itself.
-- **Design assumptions**: low-risk choices made from the context, written down.
-- **Unconfirmed capabilities**: actions products like yours usually have, proposed and labeled unconfirmed.
-- **Facts, policies, and claims**: fees, refund times, guarantees. Never invented.
-
-The [order tracking benchmark](docs/benchmarks/order-tracking/) tests exactly this. An agent builds a working
-order-tracking prototype from a short brief that leaves policies open, three runs with no skill and three with
-RYUX 2.22.5:
-
-- **Without a skill**, no run asked anything, and the runs showed 28 policies as fact: refund times, a $4.99
-  cancellation fee, "$5 credit added — sorry for the wait", tips, courier ratings, a late-delivery guarantee.
-- **With RYUX**, every run asked first. One policy was shown as fact across three runs; the rest were marked on
-  screen as not decided. Every RYUX run built offline, loading, and error states; no run without a skill did.
+Owner's blind rating of these two runs: 4.06 with RYUX, 3.06 without; over both runs per side, 3.97 v 3.00
+([illustration benchmark](docs/benchmarks/illustration/#rerun-with-the-fix-pr-36-not-released-yet)).
 
 ## Use it
 
@@ -97,7 +69,8 @@ Say what you are doing, in your own words. RYUX picks the step and reads only th
 Every task ends with a report of what was verified and what was not. The installer also offers a short setup
 that writes DESIGN.md, your project's direction (`npx @ryuxdsgn/design-intelligence setup` to change it).
 
-## Scan your code
+<details>
+<summary><b>Scan your code</b></summary>
 
 `scan` checks what a machine can see, with no LLM and no API key. A fail exits 1, so it works in CI.
 
@@ -123,6 +96,8 @@ $ npx @ryuxdsgn/design-intelligence scan file://$PWD/page.html --widths 320
 Add `--hook` to `install` and Claude Code gets the findings for each file it edits. `scan --list-rules` lists
 every check.
 
+</details>
+
 <details>
 <summary><b>Other ways to install</b></summary>
 
@@ -137,9 +112,9 @@ every check.
 <details>
 <summary><b>Benchmarks: where RYUX helps, and where it doesn't</b></summary>
 
-Three benchmarks on RYUX 2.22.5. Each compares the same brief with no skill and with RYUX. Criteria were locked
-before the first run, and every run starts with a fresh agent. There were 2 to 3 runs per side, so these numbers
-describe these runs, not rates.
+Each benchmark compares the same brief with no skill and with RYUX. Criteria were locked before the first run, and
+every run starts with a fresh agent. The head-to-heads above are one run per side; the three below are 2 to 3 per
+side. These numbers describe these runs, not rates.
 
 **Order tracking (code): pass.** Policies the brief left open were shown as fact 28 times in the
 [no-skill runs](docs/benchmarks/order-tracking/) and once with RYUX. Offline, loading, and error states appeared in
@@ -150,8 +125,10 @@ on originality (4.0 v 2.0), on AI-slop resistance (3.5 v 2.0), and overall (3.69
 production plausibility: sample-data labels and logo slots showed on the design.
 
 **Illustration (Figma): fail.** In the [illustration benchmark](docs/benchmarks/illustration/), RYUX lost on concept,
-craft, and fit at real size (3.30 v 3.73). It led only on cohesion. A fix that is not released yet passed a rerun (3.97 v 3.00). A RYUX run costs about 1.5 to 4 times a run
-without a skill.
+craft, and fit at real size (3.30 v 3.73). It led only on cohesion. A fix, now released, passed a rerun (3.97 v 3.00).
+
+**Cost:** a RYUX run costs more, about 1.5 to 7 times a run without a skill in these benchmarks; it asks first,
+checks states, and writes its rationale.
 
 Setup, raw outputs, and how to run one yourself: [`docs/benchmarks/`](docs/benchmarks/).
 
@@ -185,7 +162,7 @@ report a vulnerability, see [SECURITY.md](./SECURITY.md).
 
 ## Status and license
 
-RYUX 2.22, early access. Available now: the skill, the CLI with `scan`, skills.sh, and the Claude Code
+Early access. Available now: the skill, the CLI with `scan`, skills.sh, and the Claude Code
 plugin. Coming: an optional MCP with reference screens from real products. RYUX works fully without it; the
 reference data is private and not in this repository.
 

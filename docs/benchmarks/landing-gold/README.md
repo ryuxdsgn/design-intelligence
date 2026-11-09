@@ -66,3 +66,42 @@ were not independent, that round is not published; this rerun gave every run its
 | ![No skill, run 2: desktop and mobile](https://github.com/ryuxdsgn/design-intelligence/releases/download/media/benchmarks--landing-gold--no-skill-2.jpg) | ![RYUX, run 2: desktop and mobile](https://github.com/ryuxdsgn/design-intelligence/releases/download/media/benchmarks--landing-gold--ryux-2.jpg) |
 
 The images are the top of each page, desktop and mobile, as exported from Figma; nothing was edited after the runs.
+
+## Rerun with the RYUX 2.22.7 rules (PR #39)
+
+After the round above, the marketing-page rules were fixed in
+[PR #39](https://github.com/ryuxdsgn/design-intelligence/pull/39) (released in 2.22.7) and two RYUX runs were made on a
+new brief: a landing page for Raja Emas, a made-up gold savings app for Indonesia. Four of the six locked criteria
+passed. One prompt in Claude Code with the Figma connector:
+
+```
+Design a one-page marketing landing page for a gold savings app called Raja Emas, in two versions: desktop and
+mobile. [...] It is for young first-job savers who save small amounts toward a goal and find gold shops
+intimidating. Confirmed: supervised by OJK; gold partners Antam and UBS (their role is not stated); physical gold
+delivery. No minimum, fee, or price is confirmed. [...] Design it in Figma, on a new page in this file: <Figma link>
+```
+
+1. **It proposes three directions.** Each starts from a different idea: *Benang Emas*, the songket cloth woven
+   with gold thread, where each top-up adds a row; a goal jar filling up; and the first-salary envelope set aside
+   every payday. This run could not stop to ask, so it picked the first and marked the choice provisional.
+2. **It designs both widths** in that direction, with the official App Store and Google Play badges as the only
+   action. The gram balance shows its Rupiah value beside it. Sample data, open rules, and missing logo files are
+   Figma annotations, not labels on the page. No minimum, fee, or price appears, since none was confirmed.
+
+<img src="https://github.com/ryuxdsgn/design-intelligence/releases/download/media/showcase--raja-emas-2.22.7-page.jpg" alt="The top of the Raja Emas page at desktop and mobile: a deep maroon hero, 'Real gold, saved thread by thread.', the official store badges, 'Supervised by OJK', and a phone showing a wedding fund of 3.2 g with its Rupiah value and a woven gold motif filling 3 of 10 rows; below, 'No gold shop, no counter to walk up to.'" width="100%">
+
+3. **It explains its decisions,** in its final message and as 50 Figma annotations on the frames. Three lines,
+   word for word:
+
+```
+The four app actions sit in one woven panel instead of four equal cards, so they read as one product, in
+  order from first buy to cashing out.
+No duplicate download buttons. I removed a "Get the app" header button because the hero badges already do
+  that job. On phones, a sticky bar takes over once the badges scroll away.
+What I left out: no minimum, fee, price, FAQ or "free" claim, because none of those are confirmed.
+```
+
+4. **It asks what only you can answer,** first the number visitors want most: "What is the minimum buy?", then the
+   partners' role, delivery terms, the store links, and the logo file.
+
+One run. In the owner's blind rating it scored 3.75 of 5, against 3.44 for RYUX 2.22.5 on the same brief.

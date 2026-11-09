@@ -67,13 +67,8 @@ for (const [name, body] of [
   doc = fill(doc, name, body);
 }
 
-// One version: the README badge and Status line and the design-rules header follow VERSION.
-const minor = VERSION.split(".").slice(0, 2).join(".");
+// One version: the design-rules header follows VERSION. The README names no version (its npm badge shows it).
 const withVersion = {
-  "README.md": (t) =>
-    t
-      .replace(/access%20v\d+\.\d+(-1f6feb" alt="Version: early access v)\d+\.\d+/, `access%20v${minor}$1${minor}`)
-      .replace(/^RYUX \d+\.\d+, early access, free\./m, `RYUX ${minor}, early access, free.`),
   "docs/design-rules.md": (t) =>
     t.replace(/\*\*Last updated:\*\* [^·\n]*· /, "").replace(/\*\*Version:\*\* [^\n]*/, `**Version:** RYUX ${VERSION}`),
 };
@@ -85,8 +80,6 @@ for (const [file, apply] of Object.entries(withVersion)) {
 doc = versioned["docs/design-rules.md"];
 
 if (check) {
-  const readme = await readFile(join(root, "README.md"), "utf8");
-  if (readme !== versioned["README.md"]) problems.push(`README.md version mentions differ from ${VERSION}`);
   for (const dir of bundleDirs) {
     const label = dir.slice(root.length + 1);
     const committed = {};
@@ -134,7 +127,6 @@ for (const dir of bundleDirs) {
   }
 }
 await writeFile(docPath, doc, "utf8");
-await writeFile(join(root, "README.md"), versioned["README.md"], "utf8");
 execFileSync("node", [join(here, "version.mjs")], { stdio: "inherit" });
 
 // Dogfood: install RYUX into this repo with the real CLI. The generated .claude/skills/ryux folder
