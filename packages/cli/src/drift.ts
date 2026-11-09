@@ -70,9 +70,11 @@ function under(lines: string[], index: number): string[] {
 }
 
 export function readDirection(md: string): Direction | null {
-  const block = directionBlock(md);
-  if (block === null) return null;
-  const lines = block.split("\n");
+  const raw = directionBlock(md);
+  if (raw === null) return null;
+  // A YAML comment is a # after whitespace and followed by a space; an unquoted hex (#875BF7) is not one.
+  const lines = raw.split("\n").map((l) => l.replace(/\s+#(?=\s|$).*$/, ""));
+  const block = lines.join("\n");
   const unread: string[] = [];
   // top-level keys sit at the indent of the first key under direction:, so grammar.motion is not motion
   const top = lines.slice(1).find((l) => l.trim())?.search(/\S/) ?? 2;
@@ -88,7 +90,10 @@ export function readDirection(md: string): Direction | null {
     for (const l of under(lines, typeAt)) {
       const m = /^\s*([\w-]+):\s*(.+)$/.exec(l);
       if (!m || NOT_FONT_KEYS.has(m[1])) continue;
-      const values = m[1] === "families" ? m[2].replace(/^\[|\]$/g, "").split(",") : [m[2]];
+      // families: [A, B] or { heading: A, body: B }; a map's keys are roles, its values the families
+      const values = m[1] === "families"
+        ? m[2].replace(/^[[{]|[\]}]$/g, "").split(",").map((v) => v.replace(/^\s*[\w-]+:\s*/, ""))
+        : [m[2]];
       for (const v of values) {
         const f = family(v.trim());
         if (f && !fonts.includes(f)) fonts.push(f);
