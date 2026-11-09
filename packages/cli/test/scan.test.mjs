@@ -282,6 +282,21 @@ test("drift: reads colours, families, radius, and durations from the direction b
   assert.equal(readDirection("# DESIGN.md\n\n## Visual and motion language\n\nCalm and warm."), null);
 });
 
+test("drift: quoted YAML lists and trailing comments, as an agent writes them from a Figma file", () => {
+  const d = readDirection([
+    "## Visual and motion language", "", "```yaml", "direction:", "  type:",
+    '    families: ["Nunito Sans", \'Inter\']   # heading and body', "    weights: [Regular, Bold]   # plus Italic",
+    "  colour:", '    roles: {primary: "#875BF7"}   # Primary/500', "  shape:", "    radius: [8, 16]   # 2 roles",
+    "  durations: []   # none in the kit", "```",
+  ].join("\n"));
+  assert.deepEqual(d.fonts, ["Nunito Sans", "Inter"]);
+  assert.deepEqual(d.colours, ["#875bf7"]);
+  assert.deepEqual(d.radius, [8, 16], "a number in a comment is not a radius");
+  assert.deepEqual(d.durations, [], "an empty list is read as none, not unread");
+  const map = readDirection("## Visual and motion language\n\n```yaml\ndirection:\n  type:\n    families: { heading: Nunito Sans, body: \"Inter\" }\n```");
+  assert.deepEqual(map.fonts, ["Nunito Sans", "Inter"], "a map of role: family");
+});
+
 test("drift: flags values the direction does not have, and nothing else", () => {
   assert.equal(drift("a.css", ".a { color: #9e3b22; background: #fff; border-radius: 8px; transition: opacity 240ms ease; font-family: 'Fraunces', serif; }").length, 0);
   assert.equal(drift("a.css", "#add { color: #3A1A10 }").length, 0, "an id selector is not a colour");
