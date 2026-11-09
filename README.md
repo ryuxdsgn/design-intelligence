@@ -65,6 +65,16 @@ Blind rating from the recordings: 3.83 with RYUX, 3.00 without; honesty 4 v 2, v
 motion 4 v 3. Craft tied at 3: in both, the button label overlaps during the confirm transition.
 [Motion benchmark](docs/benchmarks/motion/)
 
+**Direction, before the first screen.** Same one-sentence checkout brief. Without a skill, the agent drew one screen;
+its only line on visual direction was about colour. The RYUX run first offered three directions drawn from the product
+and its city, each with its risk, then built the checkout in the one it recommended, with every undecided price and
+rule in Figma annotations rather than on the screen.
+
+<img src="https://github.com/ryuxdsgn/design-intelligence/releases/download/media/showcase--h2h-4-direction.jpg" alt="No skill: a light grey iOS checkout for Sejuk, with its only line on visual direction quoted: the colors are a cool teal, with green used only for savings. RYUX: a page offering three directions for the Sejuk checkout, Mega Mendung (Cirebon batik rain clouds in five blues, recommended), Cool Down (a warm-to-cool temperature line), and The Remote (a dark AC-remote look with an LCD readout), each with palette, type, sample card, and risk; next to it, the checkout built in Mega Mendung with a deep indigo cloud band in the header only. Four quotes from the RYUX run explain the choices." width="100%">
+
+Not rated: a later RYUX run with the same brief, set against the no-skill run above.
+[Checkout benchmark](docs/benchmarks/checkout/#later-run-direction-and-annotations)
+
 ## Use it
 
 Say what you are doing, in your own words. RYUX picks the step and reads only the knowledge it needs.

@@ -56,3 +56,23 @@ visual direction. The question: what does the agent put on the screen for what n
 ![No skill vs RYUX, checkout](https://github.com/ryuxdsgn/design-intelligence/releases/download/media/showcase--h2h-1-checkout.jpg)
 
 One run per side: these numbers describe these two runs, not rates.
+
+## Later run: direction and annotations
+
+One more RYUX run (BR2, 2026-11-09) with the same brief, skill at main 5276eee (2.22.7 plus
+[PR #44](https://github.com/ryuxdsgn/design-intelligence/pull/44): on a design canvas, open-rule and sample labels are
+annotations on the node, not text in the UI). Same harness and reply rule, a new empty Figma file, no no-skill rerun,
+not rated. Criteria were written before the run and checked from a read-only listing of the file:
+
+| Criterion | Result |
+| --- | --- |
+| Visible "not decided", "sample", or "placeholder" text in the 14 screens | 0, pass |
+| Open rules and sample values carried by annotations on their nodes | yes: 11 on the main screen (price, time slot, payment, two placeholders, five rationale notes), 21 of 21 open rules overall, pass |
+| Invented fee, discount, rating, warranty, cancellation rule, or scarcity | 0, pass |
+
+Before drawing, the run wrote a page with three directions (Mega Mendung, Cool Down, The Remote), each with palette,
+type, a sample card, and its risk. The headless reply handed the choice back, so it built the recommended one. Cost
+$10.30 over three turns (the second turn hit the usage limit and was resumed). This run is the RYUX side of the
+README's direction image; the no-skill side is the first run above.
+
+![No skill vs RYUX, direction](https://github.com/ryuxdsgn/design-intelligence/releases/download/media/showcase--h2h-4-direction.jpg)
