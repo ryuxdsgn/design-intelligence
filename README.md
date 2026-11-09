@@ -32,7 +32,9 @@ RYUX: 1, counted blind ([order tracking benchmark](docs/benchmarks/order-trackin
 ## No skill vs RYUX
 
 Same short brief, same agent (Claude Code), one side with RYUX. Quotes are the agent's own words from that run;
-scores are blind ratings, 1 to 5, by a senior designer who didn't know which side used RYUX.
+scores are blind ratings, 1 to 5, by a senior designer who didn't know which side used RYUX. The principles the callouts name
+(Fitts, Hick, Gestalt, Nielsen's heuristics, WCAG) and the rules built on them are listed in
+[Design principles](docs/principles.md).
 
 **Checkout, from one sentence.** The brief names the product (Sejuk, an iOS app for booking an AC technician in
 Jakarta) and nothing else. Without a skill, the agent filled the gaps with a price, fees, a promo code, a warranty, and a
@@ -165,7 +167,8 @@ modules those steps read. Behind every step runs one workflow: understand, frame
 three alternatives, evaluate them against the brief (you pick), build and critique, then verify. Rules have
 levels (Required, Preferred, Contextual) and a few Hard Gates that are never waived, such as no invented
 numbers and no missing critical states. Browse them in [`skills/ryux/`](./skills/ryux) and
-[`docs/design-rules.md`](./docs/design-rules.md).
+[`docs/design-rules.md`](./docs/design-rules.md), and the principles behind them in
+[`docs/principles.md`](./docs/principles.md).
 
 ```
 packages/cli/     the ryux CLI (npx @ryuxdsgn/design-intelligence)
