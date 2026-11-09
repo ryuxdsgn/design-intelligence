@@ -25,8 +25,9 @@ npx @ryuxdsgn/design-intelligence
 Works with Claude Code, Codex, Cursor, Gemini CLI, GitHub Copilot, OpenCode, Cline, Amp, Kimi Code, and
 Antigravity. Free, MIT.
 
-In the [order tracking benchmark](docs/benchmarks/order-tracking/), agents without a skill showed 28 policies nobody
-had decided as fact, across three runs. With RYUX: 1.
+Given a one-line brief for an order-tracking prototype, agents without a skill made up 28 business rules across three
+runs and showed them as fact: refund times, a $4.99 cancellation fee, courier ratings, a late-delivery guarantee. With
+RYUX: 1, counted blind ([order tracking benchmark](docs/benchmarks/order-tracking/)).
 
 ## No skill vs RYUX
 
