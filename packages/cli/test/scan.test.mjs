@@ -181,6 +181,17 @@ test("scan --hook reports on the edited file with exit 2 and stays quiet otherwi
   rmSync(dir, { recursive: true, force: true });
 });
 
+test("scan --hook: a warn-only file also exits 2, so Claude Code shows it to the agent; a plain scan exits 0", () => {
+  const dir = mkdtempSync(join(tmpdir(), "ryux-scan-"));
+  writeFileSync(join(dir, "warn.tsx"), "<p>Dikirim untuk Anda 10/02/2026, 2:30 PM</p>");
+  const hook = run(dir, ["scan", "--hook"], JSON.stringify({ tool_name: "Edit", tool_input: { file_path: join(dir, "warn.tsx") } }));
+  assert.equal(hook.code, 2);
+  assert.match(hook.out, /0 fail, 2 warn/);
+  assert.match(hook.out, /ryux-ignore comment with the reason/);
+  assert.equal(run(dir, ["scan"]).code, 0, "warnings alone do not fail a plain scan or CI");
+  rmSync(dir, { recursive: true, force: true });
+});
+
 test("install --hook adds the hook, keeps the user's settings, and remove takes only the hook out", () => {
   const dir = mkdtempSync(join(tmpdir(), "ryux-scan-"));
   writeFileSync(join(dir, "package.json"), "{}");
