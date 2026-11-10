@@ -28,6 +28,22 @@ test("install, then check passes", () => {
   rmSync(dir, { recursive: true, force: true });
 });
 
+test("install over an existing skill folder names the files it removes that RYUX does not write", () => {
+  const dir = project();
+  run(dir, "install", "--agent", "claude");
+  writeFileSync(join(dir, ".claude/skills/ryux/my-notes.md"), "mine");
+  const plan = run(dir, "install", "--agent", "claude", "--dry-run");
+  assert.match(plan.out, /remove 1 file RYUX does not write: \.claude\/skills\/ryux\/my-notes\.md/);
+  assert.ok(existsSync(join(dir, ".claude/skills/ryux/my-notes.md")), "a dry run deletes nothing");
+  const i = run(dir, "install", "--agent", "claude");
+  assert.equal(i.code, 0, i.out);
+  assert.match(i.out, /removed 1 file RYUX does not write: \.claude\/skills\/ryux\/my-notes\.md/);
+  assert.ok(existsSync(join(dir, ".claude/skills/ryux/SKILL.md")));
+  const again = run(dir, "install", "--agent", "claude");
+  assert.doesNotMatch(again.out, /does not write/, "a clean folder reports nothing");
+  rmSync(dir, { recursive: true, force: true });
+});
+
 test("check fails on a missing module and on no install", () => {
   const dir = project();
   assert.equal(run(dir, "check").code, 1);
