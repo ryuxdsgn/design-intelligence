@@ -118,8 +118,9 @@ $ npx @ryuxdsgn/design-intelligence scan file://$PWD/page.html --widths 320
 ✗ file:///…/page.html @320px RX-A11Y-01 "Transfers usually arrive in minutes.": contrast 2.32:1 (#aaaaaa on #ffffff), needs 4.5:1 [p.hint]
 ```
 
-Add `--hook` to `install` and Claude Code gets the findings for each file it edits. `scan --list-rules` lists
-every check.
+Add `--hook` to `install` and Claude Code gets the findings for each file it edits: any finding, warn included,
+returns exit 2 so the agent sees it and fixes it or adds a `ryux-ignore` comment with the reason. A plain `scan`
+fails (exit 1) only on a fail. `scan --list-rules` lists every check.
 
 </details>
 
@@ -189,8 +190,8 @@ report a vulnerability, see [SECURITY.md](./SECURITY.md).
 ## Status and license
 
 Early access. Available now: the skill, the CLI with `scan`, skills.sh, and the Claude Code
-plugin. Coming: an optional MCP with reference screens from real products. RYUX works fully without it; the
-reference data is private and not in this repository.
+plugin. In early access: an optional MCP with reference screens from real products (a key per person, a small
+library so far). RYUX works fully without it; the reference data is private and not in this repository.
 
 **MIT**, © 2026 ryux.design (see [LICENSE](./LICENSE)). The code and the RYUX skill are covered by this
 license; the reference data and the hosted service are separate. Assets in this repository are synthetic

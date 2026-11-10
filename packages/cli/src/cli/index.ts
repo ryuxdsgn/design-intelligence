@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { homedir } from "node:os";
-import { join } from "node:path";
+import { join, relative, sep } from "node:path";
 import * as p from "@clack/prompts";
 import pc from "picocolors";
 import {
@@ -62,12 +62,27 @@ async function removeLegacy(dir: string, root: string): Promise<string[]> {
 /** Former per-skill folders (RYUX 1.x), removed when the single `ryux` skill is written. */
 const OLD_SKILL_DIRS = ["core", ...ALL_INSTALLABLE_IDS].map((id) => `ryux-${id}`);
 
+/** Files in an installed skill folder that the bundle does not write; rewriting the folder removes them. */
+function foreignFiles(skillDir: string, bundle: Record<string, string>): string[] {
+  if (!existsSync(skillDir)) return [];
+  const known = new Set(Object.keys(bundle));
+  return readdirSync(skillDir, { recursive: true, withFileTypes: true })
+    .filter((e) => e.isFile())
+    .map((e) => join(e.parentPath, e.name))
+    .filter((f) => !known.has(relative(skillDir, f).split(sep).join("/")))
+    .sort();
+}
+const foreignLine = (verb: string, files: string[]): string =>
+  `${verb} ${files.length} file${files.length === 1 ? "" : "s"} RYUX does not write: ${files.map(rel).join(", ")}`;
+
 async function writeSkills(dir: string, root: string): Promise<string[]> {
   const done = await removeLegacy(dir, root);
   for (const name of OLD_SKILL_DIRS) if (await removePath(join(dir, name))) done.push(`${rel(join(dir, name))} (replaced)`);
   const skillDir = join(dir, SKILL_NAME);
-  await removePath(skillDir);
   const files = renderBundle();
+  const foreign = foreignFiles(skillDir, files);
+  await removePath(skillDir);
+  if (foreign.length) done.push(foreignLine("removed", foreign));
   for (const [path, content] of Object.entries(files)) await writeFileEnsured(join(skillDir, path), content);
   done.push(`${rel(skillDir)}/ (${Object.keys(files).length} files)`);
   return done;
@@ -98,6 +113,8 @@ async function planInstall(agentIds: string[], scope: Scope): Promise<string[]> 
     const skillDir = join(dir, SKILL_NAME);
     const old = OLD_SKILL_DIRS.filter((n) => existsSync(join(dir, n))).length;
     plan.push(`${existsSync(skillDir) ? "update" : "create"} ${rel(skillDir)}/ (${Object.keys(renderBundle()).length} files)`);
+    const foreign = foreignFiles(skillDir, renderBundle());
+    if (foreign.length) plan.push(foreignLine("remove", foreign));
     if (old) plan.push(`replace ${old} RYUX 1.x folder${old === 1 ? "" : "s"} in ${rel(dir)}`);
   }
   if (scope.global) return plan;
@@ -461,7 +478,7 @@ const CONTEXT_FIELDS: ContextField[] = [
   { label: "Numbers that may be shown", hint: "(a minimum, a fee, a limit; or none yet)" },
   { label: "Brand and design system", hint: "" },
   { label: "Product docs", hint: "paths RYUX reads for product facts, for example docs/prd.md:" },
-  { label: "Evidence sources", hint: "RYUX MCP (not available yet), Figma files, reference URLs:" },
+  { label: "Evidence sources", hint: "RYUX MCP (early access, by key), Figma files, reference URLs:" },
   {
     label: "Constraints", hint: "platforms, accessibility target (for example WCAG 2.2 AA), what must not change:",
     ask: { flag: "constraints", group: "Project", question: "Where does it run?", example: "Tablet app for shop staff", options: [

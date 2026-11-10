@@ -9,7 +9,7 @@ export const MCP_NAME = "ryux";
 /** Until the hosted MCP is live, every surface says so. No connect URL is printed or written into files
  *  the agent reads. */
 export const MCP_STATUS =
-  "The hosted ryux MCP is not live yet. RYUX works without it and rates evidence None.";
+  "The ryux MCP is in early access (a key per person, a small reference library). RYUX works without it; without reference screens, evidence is rated from the brief, the project, and standards.";
 export const CLI_CMD = "npx @ryuxdsgn/design-intelligence";
 export const MARK_START = "<!-- ryux-rules:start -->";
 export const MARK_END = "<!-- ryux-rules:end -->";
