@@ -25,7 +25,8 @@ workflow (SKILL.md); Frame, Explore, and Evaluate happen in Design.
    transitions, read knowledge/imagery.md (RX-UI-11) before writing any: how often the surface is seen
    decides how much it moves. When it adds illustration, read knowledge/illustration.md: each asset's concept line
    (RX-UI-24), and SVG coloured from tokens, no text inside, alt text that says the meaning (RX-UI-19).
-4. **Implement faithfully.** Use semantic elements, existing components, and real data paths.
+4. **Implement faithfully.** Use semantic elements, existing components, and real data paths;
+   a component the project's library does not have is named in the reply as new, never added quietly.
    Build must not invent business rules, prices, or limits; API behavior or response shapes; or
    data presented as real (RX-FE-02, RX-PR-02). It must not silently change a design decision: a
    change goes back to Design as a new Decision Receipt, and when the code shows the chosen design
