@@ -207,13 +207,13 @@ line below for its exact source.
 <!-- provenance:start -->
 | Source cited | Rules citing it | Rules citing only this |
 | --- | --- | --- |
-| Public standard or research | 94 | 63 |
+| Public standard or research | 95 | 63 |
 | Industry practice | 28 | 7 |
 | Observed in a RYUX run | 18 | 7 |
 | Pattern also in another MIT ruleset (text written for RYUX) | 4 | 3 |
-| RYUX principle, taxonomy, or review | 63 | 21 |
+| RYUX principle, taxonomy, or review | 66 | 23 |
 
-All 151 rules cite a source; 50 cite more than one kind, so the "Rules citing it" column adds up to more than 151.
+All 154 rules cite a source; 51 cite more than one kind, so the "Rules citing it" column adds up to more than 154.
 <!-- provenance:end -->
 
 ## Rules
@@ -221,7 +221,7 @@ All 151 rules cite a source; 50 cite more than one kind, so the "Rules citing it
 Generated from `packages/cli/src/content.ts` by `pnpm sync:skills`. Edit the rules there, not here.
 
 <!-- rules:start -->
-151 rules across 15 modules: 65 Required, 37 Preferred, 49 Contextual; 18 Hard Gates and 13 Quality Locks.
+154 rules across 15 modules: 65 Required, 38 Preferred, 51 Contextual; 18 Hard Gates and 14 Quality Locks.
 
 ### Product thinking (RX-PR) · `knowledge/product.md`
 
@@ -1524,6 +1524,22 @@ Gate area DESIGN SYSTEM. Covers search before create, tokens, component states, 
 - Why: A component that does not resize the way the code does gets detached in the design file and rebuilt in code. (Design-system practice; Figma auto layout (help.figma.com); RX-RD-01; written for RYUX)
 - Check: render each component with its longest label and at its smallest width
 
+#### RX-DS-13 [Contextual] [Quality Lock] Resolve the token matrix per state
+
+- When: Writing DESIGN.md from a design file or a shipped component library, so a build can be made from the file without opening the design tool.
+- Do: For each reusable component, write the resolved token matrix, not only the roles: one entry per variant × treatment × state (default, hover, pressed, focus, disabled), each property (background, text, border, border width, radius, height, padding, gap, typography) given as the token that resolves it (`primary-600`, `rounded-8`), with the sm/md/lg size steps alongside. A state entry lists only what changes from its base. Resolve each token to its value once in a tokens block so the build and `ryux scan --design` read all of them, and flag any text or boundary pair that fails WCAG AA at its size.
+- Do not: Stop at roles ("action_bg: Primary/500") and leave the hover, pressed, focus, and disabled values, the size steps, or the failing-contrast pairs for the reader to open the design tool and work out.
+- Why: A build needs the value for every state it implements; roles alone send the developer back to the design tool and invite a guess, and an unflagged failing pair ships as an accessibility defect. (owner review 2026-11-11, comparing a ryux DESIGN.md (roles only) with the Legion team's token spec (full per-state matrix) and catching a white-on-Primary/500 button at 4.31:1 the team's doc missed; W3C Design Tokens Community Group; written for RYUX)
+- Check: every used component has each state resolved to a token, the size steps listed, and failing contrast pairs named
+
+#### RX-DS-14 [Contextual] Capture the system's do's and don'ts
+
+- When: Writing DESIGN.md from a design file or an existing system, where the tokens alone do not carry the system's intent.
+- Do: Write the behavioural rules a build cannot derive from the tokens, each as a Do or Don't tied to the component it governs: where a state breaks the usual pattern (an active step that reuses success, not primary), where emphasis is inverted (the current breadcrumb de-emphasised while the others stay the brand colour), a container whose body padding is 0 by design, a field whose hover and focus share one border. Take them from the system's own docs and from how its components actually resolve, not from a general style guide.
+- Do not: Record only the tokens and the common pattern, so the one place the system breaks its own rule gets built the usual way and looks wrong.
+- Why: These exceptions are the system's tacit knowledge; without them a build is consistent with the tokens and wrong about the system. (owner review 2026-11-11, comparing a ryux DESIGN.md with the Legion team's: the team's Do's and Don'ts carried stepper-active-is-success, current-breadcrumb-is-grey, card-body-padding-0, and hover-equals-focus-border, none derivable from the tokens; written for RYUX)
+- Check: the doc lists the component behaviours that depart from its own patterns, each tied to its component
+
 ---
 
 ### Accessibility (RX-A11Y) · `knowledge/accessibility.md`
@@ -1764,6 +1780,14 @@ Gate area CODE QUALITY. Covers the repo's own stack, semantic elements, one home
 - Not when: the repo already uses a library for the job: use it; a prototype the user says will be thrown away
 - Trade-off: a question and a check before the build; a dependency to keep up to date
 - Check: review: the platform and the repo checked first; two or three options with size, license, last release, accessibility, and framework fit; each package verified on the registry and its docs before use; one library per job; the choice recorded with its reason
+
+#### RX-FE-19 [Preferred] Build a system component from its tokens and rules
+
+- When: The repo or DESIGN.md documents a design system (a token matrix, component entries, do's and don'ts) and the build makes one of its components.
+- Do: Build each component from its resolved token matrix (RX-DS-13): bind every state (default, hover, pressed, focus, disabled) to the token the matrix names, and follow the system's do's and don'ts (RX-DS-14) where they depart from the usual pattern. When a state or value the build needs is not in the doc, add it to Open questions and ask, rather than inventing it.
+- Do not: Build a documented component from a screenshot or memory, hard-code a value the matrix already names, skip the states the matrix lists, or ignore a do or don't because the common pattern looks fine.
+- Why: A system component built by eye drifts from the tokens and misses the exceptions; the doc exists so the build does not guess. (owner review 2026-11-11, from the DESIGN.md comparison; extends RX-FE-01 and RX-DS-11; written for RYUX)
+- Check: review: each state bound to the matrix's token, the component's do's and don'ts followed, missing values raised not invented
 
 ---
 
