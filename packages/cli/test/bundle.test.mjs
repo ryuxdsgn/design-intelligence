@@ -405,3 +405,29 @@ test("Design in Figma reads the libraries added to the file before the first fra
   assert.match(design, /return \{ libraryInstances: lib, localInstances: local, newLocal: \[\.\.\.created\], redrawn \}/);
   assert.match(f("SKILL.md"), /missing variants <n> · library instances <n>, new local <n> \(marked <n>\), redrawn <n> \| not drawn/);
 });
+
+test("Figma→DESIGN.md generation serves frontend handoff and onboarding, with a resolved token matrix and system do's and don'ts", () => {
+  // owner 2026-11-11, from comparing a ryux DESIGN.md with the Legion team's: add the resolved per-state
+  // token matrix (buildable), an atmosphere/overview for onboarding, and the behavioural do's and don'ts tokens can't show
+  const files = renderBundle();
+  const f = (p) => files[p].replace(/\s+/g, " ");
+  const design = f("capabilities/design.md");
+  // generation guidance: resolved per-state token matrix for frontend handoff
+  assert.match(design, /resolve the token matrix per state/i);
+  assert.match(design, /variant . treatment . state/i);
+  // generation guidance: capture behavioural do's and don'ts and flag failing contrast pairs
+  assert.match(design, /do's and don'ts the tokens cannot show/i);
+  assert.match(design, /contrast pair that fails/i);
+  // template gains an Atmosphere (onboarding) section and a Do's and don'ts section
+  assert.match(design, /## Atmosphere/);
+  assert.match(design, /onboarding/i);
+  assert.match(design, /## Do's and don'ts/);
+  // two audiences named: frontend handoff and onboarding
+  assert.match(design, /frontend handoff/i);
+  // new rules
+  assert.match(f("knowledge/design-system.md"), /### RX-DS-13 .* Resolve the token matrix per state/i);
+  assert.match(f("knowledge/design-system.md"), /### RX-DS-14 .* Capture the system's do's and don'ts/i);
+  assert.match(f("knowledge/frontend.md"), /### RX-FE-19 .* Build a system component from its tokens and rules/i);
+  // the DS matrix rule names the behaviours a build cannot derive from tokens
+  assert.match(f("knowledge/design-system.md"), /reuses success, not primary|current breadcrumb|body padding is 0|hover and focus share/i);
+});

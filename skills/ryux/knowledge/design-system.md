@@ -129,3 +129,19 @@ How reference apps keep components consistent for this pattern: `search_screens`
 - Do not: Position layers absolutely inside a component, or set a fixed width that clips a long label.
 - Why: A component that does not resize the way the code does gets detached in the design file and rebuilt in code. (Design-system practice; Figma auto layout (help.figma.com); RX-RD-01; written for RYUX)
 - Check: render each component with its longest label and at its smallest width
+
+### RX-DS-13 [Contextual] [Quality Lock] Resolve the token matrix per state
+
+- When: Writing DESIGN.md from a design file or a shipped component library, so a build can be made from the file without opening the design tool.
+- Do: For each reusable component, write the resolved token matrix, not only the roles: one entry per variant × treatment × state (default, hover, pressed, focus, disabled), each property (background, text, border, border width, radius, height, padding, gap, typography) given as the token that resolves it (`primary-600`, `rounded-8`), with the sm/md/lg size steps alongside. A state entry lists only what changes from its base. Resolve each token to its value once in a tokens block so the build and `ryux scan --design` read all of them, and flag any text or boundary pair that fails WCAG AA at its size.
+- Do not: Stop at roles ("action_bg: Primary/500") and leave the hover, pressed, focus, and disabled values, the size steps, or the failing-contrast pairs for the reader to open the design tool and work out.
+- Why: A build needs the value for every state it implements; roles alone send the developer back to the design tool and invite a guess, and an unflagged failing pair ships as an accessibility defect. (owner review 2026-11-11, comparing a ryux DESIGN.md (roles only) with the Legion team's token spec (full per-state matrix) and catching a white-on-Primary/500 button at 4.31:1 the team's doc missed; W3C Design Tokens Community Group; written for RYUX)
+- Check: every used component has each state resolved to a token, the size steps listed, and failing contrast pairs named
+
+### RX-DS-14 [Contextual] Capture the system's do's and don'ts
+
+- When: Writing DESIGN.md from a design file or an existing system, where the tokens alone do not carry the system's intent.
+- Do: Write the behavioural rules a build cannot derive from the tokens, each as a Do or Don't tied to the component it governs: where a state breaks the usual pattern (an active step that reuses success, not primary), where emphasis is inverted (the current breadcrumb de-emphasised while the others stay the brand colour), a container whose body padding is 0 by design, a field whose hover and focus share one border. Take them from the system's own docs and from how its components actually resolve, not from a general style guide.
+- Do not: Record only the tokens and the common pattern, so the one place the system breaks its own rule gets built the usual way and looks wrong.
+- Why: These exceptions are the system's tacit knowledge; without them a build is consistent with the tokens and wrong about the system. (owner review 2026-11-11, comparing a ryux DESIGN.md with the Legion team's: the team's Do's and Don'ts carried stepper-active-is-success, current-breadcrumb-is-grey, card-body-padding-0, and hover-equals-focus-border, none derivable from the tokens; written for RYUX)
+- Check: the doc lists the component behaviours that depart from its own patterns, each tied to its component
