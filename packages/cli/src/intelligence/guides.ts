@@ -89,10 +89,17 @@ The six stages of the core workflow (SKILL.md), as Design runs them.
    **Direction is the user's call** (RX-UI-26): when neither the prompt, DESIGN.md, nor a product that
    exists sets the UI direction, the next message offers three directions as style tiles and waits; the motion direction
    rides with it. Show the tiles as one static HTML page (\`directions.html\` in the project folder; no server,
-   no scripts, Google Fonts allowed): per direction its palette swatches, type pairing, one card, one primary
-   button, and its signature, numbered as in the message. Render it once to check it, open it in the user's browser (\`open\` on macOS,
-   \`xdg-open\` on Linux, \`start\` on Windows; when no command can open it, give the path), and ask; one round of choice, and revisions after the choice belong to the build. No DESIGN.md, no product docs, and no question tool are never reasons to skip it:
-   write numbered options and end the turn. Structural alternatives (stage 3) come after, inside the
+   and no scripts of its own, Google Fonts allowed): per direction its palette swatches, type pairing, one card, one primary
+   button, and its signature, numbered as in the message. Give each direction's choice control a \`data-ryux-pick="<n>"\` attribute (its
+   number), and add a regenerate control \`data-ryux-pick="regenerate"\` labelled "None of these — make three new". Render it once to check it.
+   **Close the loop with \`ryux pick\`:** run \`npx @ryuxdsgn/design-intelligence pick directions.html\` and read its one line of
+   output. A clean \`pick: <n>\` line is the user's choice, straight from a click, with no copy-paste; build that direction. A
+   \`regenerate\` line means explore three new directions, rewrite the page, and run \`ryux pick\` again, until a pick. On anything
+   else — a \`fallback:\` line, a non-zero exit, no output, or the command not installed — fall back to the current text flow: open
+   the page in the user's browser (\`open\` on macOS, \`xdg-open\` on Linux, \`start\` on Windows; when no command can open it, give
+   the path) and ask the user to reply with their pick in text. The same text answer stands whenever the user prefers words to a
+   click. One round of choice, and revisions after the choice belong to the build. No DESIGN.md, no product docs, and no question
+   tool are never reasons to skip it: write numbered options and end the turn. Structural alternatives (stage 3) come after, inside the
    chosen direction. Complete context means no questions.
    **Voice and tone** is not asked by default: when the field is blank, infer it from the product's
    existing copy or brand docs, label it inferred, and continue (RX-CD-11). Ask only when there is
