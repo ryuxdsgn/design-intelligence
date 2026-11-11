@@ -17,7 +17,9 @@ Prioritize the existing system. Before creating anything:
 components, interaction patterns and states, responsive behavior, and visual hierarchy.
 
 Look for the existing system before defining one: DESIGN.md, a tokens or theme file in the repo, the
-design file's variables and components, or a linked library. If the project has no system yet, define
+design file's variables and components, or a library added to the design file. In Figma, the libraries added to the file come first
+(capabilities/design.md, stage 5, Libraries first); a component they lack is built from their tokens and marked as not in
+the library yet. If the project has no system yet, define
 the smallest token set the screen needs and use it consistently: color roles, a spacing scale, a
 radius scale, and a type scale, not color alone. After rendering, count the literal values left and
 convert them (RX-DS-03). Do not introduce a component library the project does not use.

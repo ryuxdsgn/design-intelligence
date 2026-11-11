@@ -144,7 +144,7 @@ PRODUCT        PASS | FAIL | NOT VERIFIED | N/A  · one-line reason · evidence 
 UX             PASS | FAIL | NOT VERIFIED | N/A  · one-line reason
 CONTENT        PASS | FAIL | NOT VERIFIED | N/A  · one-line reason · open rules on screen <tagged>/<shown> | none
 UI             PASS | FAIL | NOT VERIFIED | N/A  · one-line reason · point of view: <concept> | task UI, signature: <signature> · concept sections <n>/<total>, devices <n>, focal subjects <n>/<sections>, carrier <kind>, made assets <n>/<planned> · illustration style: <where written> | none
-DESIGN SYSTEM  PASS | FAIL | NOT VERIFIED | N/A  · one-line reason · icon strokes <n>, icon colours <n> (<unbound> unbound), uneven sets <n>, missing variants <n> | not drawn
+DESIGN SYSTEM  PASS | FAIL | NOT VERIFIED | N/A  · one-line reason · icon strokes <n>, icon colours <n> (<unbound> unbound), uneven sets <n>, missing variants <n> · library instances <n>, new local <n> (marked <n>), redrawn <n> | not drawn
 ACCESSIBILITY  PASS | FAIL | NOT VERIFIED | N/A  · one-line reason
 RESPONSIVE     PASS | FAIL | NOT VERIFIED | N/A  · one-line reason
 EDGE CASES     PASS | FAIL | NOT VERIFIED | N/A  · one-line reason · then the view × state matrix (RX-EC-01)
