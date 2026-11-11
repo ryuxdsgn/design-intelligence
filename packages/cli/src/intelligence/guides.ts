@@ -496,7 +496,14 @@ the values that decide a trade-off between two good options.
    as a ramp per role inside the \`direction:\` colour block, so the build and \`ryux scan --design\` know all of
    them. Then list the components: every component set and standalone component meant for reuse (skip internal
    parts, often named with a leading dot or underscore), one row each under Components. Count the families on the
-   file's component pages and say the coverage ("36 of 36"); a family you skip is named with the reason. List every
+   file's component pages and say the coverage ("36 of 36"); a family you skip is named with the reason.
+   For each reusable component, resolve the token matrix per state (RX-DS-13): one entry per variant × treatment × state
+   (default, hover, pressed, focus, disabled), each property given as the token that resolves it, with the sm/md/lg steps, so
+   the file serves a **frontend handoff** that generates code without opening the design tool; flag any contrast pair that fails
+   WCAG AA at its size. Capture, too, the do's and don'ts the tokens cannot show (RX-DS-14): where a component departs from the
+   system's own pattern (an active state that reuses success not primary, a current breadcrumb de-emphasised, a container body
+   padded 0, a field whose hover and focus share one border). Open the file with a short atmosphere for onboarding: what the
+   system is, how it feels, and five to seven key characteristics, before the tokens. List every
    page of the file once under the source line: read, matched against variables and styles, skipped (with the
    reason), or a separator. Take a screenshot of each pattern or screen page you describe, and describe its layout
    from the screenshot, not from layer names. Screens give the product name, flows, and copy language as Observed;
@@ -529,6 +536,8 @@ the values that decide a trade-off between two good options.
 
 <!-- ryux-context:start -->  the setup fields, filled  <!-- ryux-context:end -->
 
+## Atmosphere                 for onboarding: what the system is and how it feels, and five to seven key
+                              characteristics; one short read before the tokens (from a design file, RX-DS-13)
 ## Users and needs            who, their context (device, moment, constraints), what they need; a source per line
 ## Jobs to be done            the primary job, related jobs, what done looks like for the user
 ## Design principles          three to five value statements for this product, each "X over Y" with why it
@@ -548,13 +557,18 @@ the values that decide a trade-off between two good options.
                               source, with its type and all its values, never shortened (Size: variant lg | md | sm ·
                               Disable: boolean · Label: text · Icon: instance swap); a props name beside it only
                               when it differs (Hint Text → hintText) · when to use
-                              it, and when another fits better · source key or node id. Coverage line first.
+                              it, and when another fits better · source key or node id · the resolved token matrix per state
+                              (variant × treatment × state → tokens, with sm/md/lg) so a build needs no design tool,
+                              and the component's own do's and don'ts (RX-DS-13, RX-DS-14). Coverage line first.
                               Values the build needs that the source lacks (breakpoints, states not drawn) go
                               under Open questions for the team, never filled in
 ## Voice and tone             voice words, how it addresses people, how tone shifts by moment
 ## Business rules             two lists. Decided: rule · value · who decided · date (only from the user,
                               the brief, or a doc). Not decided: rule · words that find it on a screen ·
                               the word its label carries. The open-rule listing (stage 6) starts from it
+## Do's and don'ts            system-wide behavioural rules a build cannot derive from the tokens, each a Do or
+                              Don't tied to its component (RX-DS-14); and every contrast pair that fails WCAG AA
+                              at its size, with the token pair and the ratio
 ## How we evaluate            three to five success criteria; machine checks (\`ryux scan\`, states, typecheck
                               and tests); the riskiest assumption, the cheapest test, the signal that would
                               change the plan

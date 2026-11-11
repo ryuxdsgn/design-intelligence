@@ -150,3 +150,11 @@ The repo itself is the main evidence (stack, components, tokens); reference scre
 - Not when: the repo already uses a library for the job: use it; a prototype the user says will be thrown away
 - Trade-off: a question and a check before the build; a dependency to keep up to date
 - Check: review: the platform and the repo checked first; two or three options with size, license, last release, accessibility, and framework fit; each package verified on the registry and its docs before use; one library per job; the choice recorded with its reason
+
+### RX-FE-19 [Preferred] Build a system component from its tokens and rules
+
+- When: The repo or DESIGN.md documents a design system (a token matrix, component entries, do's and don'ts) and the build makes one of its components.
+- Do: Build each component from its resolved token matrix (RX-DS-13): bind every state (default, hover, pressed, focus, disabled) to the token the matrix names, and follow the system's do's and don'ts (RX-DS-14) where they depart from the usual pattern. When a state or value the build needs is not in the doc, add it to Open questions and ask, rather than inventing it.
+- Do not: Build a documented component from a screenshot or memory, hard-code a value the matrix already names, skip the states the matrix lists, or ignore a do or don't because the common pattern looks fine.
+- Why: A system component built by eye drifts from the tokens and misses the exceptions; the doc exists so the build does not guess. (owner review 2026-11-11, from the DESIGN.md comparison; extends RX-FE-01 and RX-DS-11; written for RYUX)
+- Check: review: each state bound to the matrix's token, the component's do's and don'ts followed, missing values raised not invented
