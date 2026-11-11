@@ -104,6 +104,13 @@ export function openBrowser(url: string): void {
 
 const DEFAULT_TIMEOUT_S = 240;
 
+/** Read `--timeout <seconds>` from argv; a missing, non-numeric, zero, or negative value uses the default. */
+export function parseTimeoutMs(argv: string[]): number {
+  const i = argv.indexOf("--timeout");
+  const n = i >= 0 ? Number(argv[i + 1]) : NaN;
+  return (Number.isFinite(n) && n > 0 ? n : DEFAULT_TIMEOUT_S) * 1000;
+}
+
 function resultLine(r: PickResult): string {
   return r.kind === "pick" ? `pick: ${r.n}` : r.kind === "regenerate" ? "regenerate" : `fallback: ${r.reason}`;
 }
@@ -111,8 +118,7 @@ function resultLine(r: PickResult): string {
 /** CLI entry for `ryux pick <path> [--timeout <seconds>]`. */
 export async function runPick(argv: string[]): Promise<void> {
   const path = argv.find((a) => !a.startsWith("--"));
-  const tIdx = argv.indexOf("--timeout");
-  const timeoutS = tIdx >= 0 && argv[tIdx + 1] ? Number(argv[tIdx + 1]) : DEFAULT_TIMEOUT_S;
+  const timeoutMs = parseTimeoutMs(argv);
   if (!path) {
     console.log("fallback: no html path given");
     process.exitCode = 3;
@@ -128,7 +134,7 @@ export async function runPick(argv: string[]): Promise<void> {
   }
   const result = await serveAndWait({
     html,
-    timeoutMs: timeoutS * 1000,
+    timeoutMs,
     open: true,
     onListening: (port, host) => console.error(`ryux pick: waiting at http://${host}:${port}/`),
   });

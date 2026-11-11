@@ -834,6 +834,8 @@ Commands:
   scan        Check source files for rules a machine can see (Rupiah format, alt text, zoom, focus, ...).
               No LLM, no network. Default path: this folder. Give a URL to measure the rendered page
               (sideways scroll, contrast, target size, colliding text); that needs Playwright.
+  pick        Open an HTML page (e.g. a directions page) in the browser and wait for a click;
+              print the chosen number. Used by the Design step to pick a direction without copy-paste.
   update      Update an install to this version (also migrates RYUX 1.x folders).
   remove      Remove RYUX and the marked blocks.
   help        Show this help.
@@ -854,6 +856,7 @@ Options:
   --design [file]      scan: compare colours, fonts, radius, and durations with DESIGN.md's direction
   --ignore <ids>       scan: skip rules, e.g. RX-DS-03 (or a ryux-ignore RX-.. comment in the file)
   --widths <list>      scan <url>: viewport widths in CSS px (default 320,390,1280)
+  --timeout <seconds>  pick: how long to wait for a click before falling back (default 240)
   --product, --work, --audience, --market, --constraints, --intent, --ux, --ui, --voice, --motion <text>
                        set project context fields without questions (setup)
 

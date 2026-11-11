@@ -90,3 +90,19 @@ test("pick times out to fallback with exit 3 and no browser", () => {
   assert.match(r.stdout, /^fallback: timeout$/m);
   rmSync(dir, { recursive: true, force: true });
 });
+
+import { parseTimeoutMs } from "../dist/cli/pick.js";
+
+test("parseTimeoutMs: valid seconds, else the 240s default", () => {
+  assert.equal(parseTimeoutMs(["d.html", "--timeout", "5"]), 5000);
+  assert.equal(parseTimeoutMs(["d.html"]), 240000);
+  assert.equal(parseTimeoutMs(["d.html", "--timeout", "abc"]), 240000);
+  assert.equal(parseTimeoutMs(["d.html", "--timeout", "0"]), 240000);
+  assert.equal(parseTimeoutMs(["d.html", "--timeout", "-3"]), 240000);
+});
+
+test("help documents the pick command and its --timeout flag", () => {
+  const r = spawnSync("node", [cli, "help"], { encoding: "utf8", env: { ...process.env, NO_COLOR: "1" } });
+  assert.match(r.stdout, /\bpick\b/);
+  assert.match(r.stdout, /--timeout/);
+});
