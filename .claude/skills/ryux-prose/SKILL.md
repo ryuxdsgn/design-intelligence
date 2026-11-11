@@ -38,8 +38,10 @@ These override style. Breaking one is a defect, not a choice.
 
 - **Claims scope to evidence.** One screen never becomes "apps do X". One run never becomes
   "RYUX always". Count the evidence in the sentence that leans on it.
-- **Rater wording.** Ratings are "blind ratings by a senior designer". Never "owner", never
-  a plural raters claim until more than one human has rated.
+- **Rater wording.** In the README, ratings are "blind ratings by a senior designer"; the
+  benchmark docs keep the fuller disclosure that the rater is the project owner and not
+  independent — do not strip it. Never a plural raters claim until more than one human has
+  rated.
 - **No version labels in the README** or its images; versions live in docs/benchmarks and
   release notes only.
 - **Never name a client's file, brand, or product.** "A client design file" is the ceiling.
