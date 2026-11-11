@@ -8,6 +8,7 @@
   },
   "repository": "https://github.com/ryuxdsgn/design-intelligence",
   "license": "MIT",
+  "icon": "./.claude-plugin/icon.png",
   "keywords": ["design", "ux", "design-critique", "agent-skills", "accessibility", "anti-slop", "indonesia"],
   "skills": ["./skills/"]
 }
