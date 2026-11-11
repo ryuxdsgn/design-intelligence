@@ -451,3 +451,14 @@ test("usability 101: dominant quality by cadence, SEQ/SUS and 40-participant qua
   assert.match(f("capabilities/critique.md"), /Utility before usability/);
   assert.match(f("capabilities/critique.md"), /usage cadence|used daily|first use/i);
 });
+
+test("Explore closes the direction loop with ryux pick and keeps the text fallback", () => {
+  // owner 2026-11-12, interactive direction pick: a click in the browser answers the agent, no copy-paste
+  const f = renderBundle()["capabilities/design.md"].replace(/\s+/g, " ");
+  assert.match(f, /data-ryux-pick/);
+  assert.match(f, /None of these|make three new/i);
+  assert.match(f, /ryux pick/);
+  assert.match(f, /pick: <n>|a clean pick line/i);
+  assert.match(f, /fall ?back|the current text flow/i);
+  assert.match(f, /no scripts of its own/);
+});
