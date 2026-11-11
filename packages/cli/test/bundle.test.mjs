@@ -379,3 +379,29 @@ test("design runs carry the deciding number and the unit rule without loading co
   assert.match(f("knowledge/content.md"), /no decimals for whole Rupiah, in English copy too/);
   assert.match(f("knowledge/anti-slop.md"), /an empty logo slot reads as a bug/);
 });
+
+test("Design in Figma reads the libraries added to the file before the first frame, and marks what it had to create", () => {
+  // owner decision 2026-11-10: a designer's file with a team library in Assets is the design system by default
+  const files = renderBundle();
+  const f = (p) => files[p].replace(/\s+/g, " ");
+  const design = f("capabilities/design.md");
+  assert.match(design, /\*\*Libraries first\.\*\* In Figma, before the first frame, call `get_libraries`/);
+  assert.match(design, /every library in `libraries_added_to_file` is this product's design system/);
+  assert.match(design, /`libraries_available_to_add` only when the user names one/);
+  assert.match(design, /`search_design_system` with those library keys in `includeLibraryKeys`/);
+  assert.match(design, /Write the inventory in the reply before building/);
+  assert.match(design, /an element the library has is an instance of it, never redrawn/);
+  assert.match(design, /build it in the file from the library's variables and styles, name it `Local\/<name>`, and mark it with a Figma annotation \("Not in the library yet: <name>"\)/);
+  assert.match(design, /unless the prompt or DESIGN\.md says not to use the library/);
+  // the "other pages" rule no longer blocks a library that the file has enabled
+  assert.match(design, /a library added to the file always counts/);
+  // pen.dev and code: the same mark for what the system did not have
+  assert.match(design, /In pen\.dev, the file's own components and styles are the system/);
+  assert.match(f("capabilities/build.md"), /a component the project's library does not have is named in the reply as new/);
+  // the module names the library as the first source in Figma
+  assert.match(f("knowledge/design-system.md"), /In Figma, the libraries added to the file come first/);
+  // the gate measures it: a read-only listing, numbers in the DESIGN SYSTEM line
+  assert.match(design, /Library listing \(RX-DS-01\): in Figma, count from the canvas, not from memory/);
+  assert.match(design, /return \{ libraryInstances: lib, localInstances: local, newLocal: \[\.\.\.created\], redrawn \}/);
+  assert.match(f("SKILL.md"), /missing variants <n> · library instances <n>, new local <n> \(marked <n>\), redrawn <n> \| not drawn/);
+});

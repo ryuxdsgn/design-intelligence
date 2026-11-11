@@ -197,10 +197,26 @@ The six stages of the core workflow (SKILL.md), as Design runs them.
    the context or criteria they change, then explore again.
 5. **Design in the tool, then critique it.** Use the Figma MCP or the pen.dev MCP. System first:
    look for the design system that exists (DESIGN.md, a tokens or theme file in the repo, the design file's variables and
-   components, a linked library) and build from it. In a shared design file, read only the pages the task names; another
-   page's components and variables are this product's library only when DESIGN.md or the user says so. Create only what is missing: variables for color
+   components, a library added to the file) and build from it. In a shared design file, read only the pages the task names; another
+   page's components and variables are this product's library only when DESIGN.md or the user says so, but a library added to the file always counts. Create only what is missing: variables for color
    roles, spacing, radius, and type sizes and families before the first frame, and components for
-   repeated elements (RX-DS-03). Building the system does not replace the states: design every
+   repeated elements (RX-DS-03).
+   **Libraries first.** In Figma, before the first frame, call \`get_libraries\` with the file key: every library in
+   \`libraries_added_to_file\` is this product's design system, unless the prompt or DESIGN.md says not to use the library
+   (an exploration, a new brand); read \`libraries_available_to_add\` only when the user names one. Inventory what those
+   libraries and the file hold: components, variables, and styles through \`search_design_system\` with those library keys
+   in \`includeLibraryKeys\` (search by the names the screen needs: button, input, card, list row, and the colour, spacing,
+   radius, and type roles), the file's own variables and component sets, and one existing screen in the file read once for
+   the components and variables it binds. Write the inventory in the reply before building: the library names, the
+   components the screen will use, the variable collections and text styles, and what is missing. Then build from it: an
+   element the library has is an instance of it, never redrawn (import by key: \`importComponentSetByKeyAsync\`,
+   \`importVariableByKeyAsync\`, \`importStyleByKeyAsync\`), and every colour, space, radius, and text binds to a library
+   variable or style. When the library lacks a component the screen needs, build it in the file from the library's variables
+   and styles, name it \`Local/<name>\`, and mark it with a Figma annotation ("Not in the library yet: <name>") so the designer
+   sees a proposal, not a finished part; list each one in the final message. A file with no library added takes the path
+   above. In pen.dev, the file's own components and styles are the system: read them with the pencil MCP before the first
+   frame, and mark a component you had to create the same way, with a note on the canvas.
+   **States.** Building the system does not replace the states: design every
    state that matters (empty, loading, error, including content that fails to load) and every width
    you claim, and source assets on purpose (RX-UI-13); illustration follows a written style, is
    made as one set, and shows its meaning (RX-UI-17, RX-UI-18, RX-UI-24). Read knowledge/content.md before
@@ -328,6 +344,28 @@ for (const s of screens) {
 // Unit: one rule on one screen. Labelled when a label naming it sits beside it there.
 const all = [...pairs], ok = all.filter(([, p]) => p.ok).length;
 return { screens: screens.length, count: ok + "/" + all.length, unlabelled: all.filter(([, p]) => !p.ok).map(([k, p]) => k + " · " + p.seen.join(" · ")), amountsWithoutRule: noRule };
+\`\`\`
+   - Library listing (RX-DS-01): in Figma, count from the canvas, not from memory, what the screen takes from the library:
+     instances of library components, instances of local ones, the \`Local/\` components created in this run and whether each
+     carries its mark, and frames drawn by hand under the name of a component the inventory has (a redraw). Fill KNOWN from
+     the inventory. Fix: replace each redraw with an instance, mark each unmarked local component, then run it again.
+     Report the numbers in the DESIGN SYSTEM line; redrawn is 0, or each one is explained there.
+
+\`\`\`js
+const PAGE = "Page name", KNOWN = ["button", "input", "card"], LOCAL = /^Local\\//, MARK = /^Not in the library yet/i;
+await figma.loadAllPagesAsync();
+const page = figma.root.children.find((p) => p.name === PAGE);
+const names = new Set(KNOWN.map((k) => k.toLowerCase())), leaf = (n) => n.split("/").pop().trim().toLowerCase();
+let lib = 0, local = 0;
+for (const n of page.findAll((x) => x.type === "INSTANCE")) {
+  const mc = await n.getMainComponentAsync(); if (!mc) continue;
+  names.add(leaf(mc.parent?.type === "COMPONENT_SET" ? mc.parent.name : mc.name));
+  if (mc.remote) lib++; else local++;
+}
+const created = figma.root.findAllWithCriteria({ types: ["COMPONENT", "COMPONENT_SET"] }).filter((c) => LOCAL.test(c.name))
+  .map((c) => c.name + ((c.annotations ?? []).some((a) => MARK.test(a.label ?? "")) ? "" : " · unmarked"));
+const redrawn = page.findAll((x) => x.type === "FRAME" && names.has(leaf(x.name))).map((x) => x.name);
+return { libraryInstances: lib, localInstances: local, newLocal: [...created], redrawn };
 \`\`\`
    - Design system listing (RX-UI-15, RX-DS-06): in Figma, the DESIGN SYSTEM numbers also come from a
      read-only listing, not from memory. It measures what a look at the render misses: the stroke an icon
@@ -624,7 +662,8 @@ workflow (SKILL.md); Frame, Explore, and Evaluate happen in Design.
    transitions, read knowledge/imagery.md (RX-UI-11) before writing any: how often the surface is seen
    decides how much it moves. When it adds illustration, read knowledge/illustration.md: each asset's concept line
    (RX-UI-24), and SVG coloured from tokens, no text inside, alt text that says the meaning (RX-UI-19).
-4. **Implement faithfully.** Use semantic elements, existing components, and real data paths.
+4. **Implement faithfully.** Use semantic elements, existing components, and real data paths;
+   a component the project's library does not have is named in the reply as new, never added quietly.
    Build must not invent business rules, prices, or limits; API behavior or response shapes; or
    data presented as real (RX-FE-02, RX-PR-02). It must not silently change a design decision: a
    change goes back to Design as a new Decision Receipt, and when the code shows the chosen design
@@ -1238,7 +1277,9 @@ icons from the icon set (see ryux-ui).`,
 components, interaction patterns and states, responsive behavior, and visual hierarchy.
 
 Look for the existing system before defining one: DESIGN.md, a tokens or theme file in the repo, the
-design file's variables and components, or a linked library. If the project has no system yet, define
+design file's variables and components, or a library added to the design file. In Figma, the libraries added to the file come first
+(capabilities/design.md, stage 5, Libraries first); a component they lack is built from their tokens and marked as not in
+the library yet. If the project has no system yet, define
 the smallest token set the screen needs and use it consistently: color roles, a spacing scale, a
 radius scale, and a type scale, not color alone. After rendering, count the literal values left and
 convert them (RX-DS-03). Do not introduce a component library the project does not use.`,
