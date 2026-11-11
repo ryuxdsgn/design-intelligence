@@ -1,4 +1,6 @@
 import { createServer } from "node:http";
+import { spawn } from "node:child_process";
+import { readFile } from "node:fs/promises";
 
 export type PickResult =
   | { kind: "pick"; n: number }
@@ -82,6 +84,54 @@ export function serveAndWait(opts: ServeOptions): Promise<PickResult> {
     server.listen(0, host, () => {
       const port = (server.address() as { port: number }).port;
       opts.onListening?.(port, host);
+      if (opts.open !== false) openBrowser(`http://${host}:${port}/`);
     });
   });
+}
+
+/** Open a URL in the user's browser, best-effort. A launch failure is swallowed so serving continues. Honours RYUX_PICK_NO_OPEN. */
+export function openBrowser(url: string): void {
+  if (process.env.RYUX_PICK_NO_OPEN) return;
+  const cmd = process.platform === "darwin" ? "open" : process.platform === "win32" ? "start" : "xdg-open";
+  try {
+    const child = spawn(cmd, [url], { detached: true, stdio: "ignore", shell: process.platform === "win32" });
+    child.on("error", () => {});
+    child.unref();
+  } catch {
+    // launcher unavailable; the URL is already printed by the caller
+  }
+}
+
+const DEFAULT_TIMEOUT_S = 240;
+
+function resultLine(r: PickResult): string {
+  return r.kind === "pick" ? `pick: ${r.n}` : r.kind === "regenerate" ? "regenerate" : `fallback: ${r.reason}`;
+}
+
+/** CLI entry for `ryux pick <path> [--timeout <seconds>]`. */
+export async function runPick(argv: string[]): Promise<void> {
+  const path = argv.find((a) => !a.startsWith("--"));
+  const tIdx = argv.indexOf("--timeout");
+  const timeoutS = tIdx >= 0 && argv[tIdx + 1] ? Number(argv[tIdx + 1]) : DEFAULT_TIMEOUT_S;
+  if (!path) {
+    console.log("fallback: no html path given");
+    process.exitCode = 3;
+    return;
+  }
+  let html: string;
+  try {
+    html = await readFile(path, "utf8");
+  } catch {
+    console.log(`fallback: cannot read ${path}`);
+    process.exitCode = 3;
+    return;
+  }
+  const result = await serveAndWait({
+    html,
+    timeoutMs: timeoutS * 1000,
+    open: true,
+    onListening: (port, host) => console.error(`ryux pick: waiting at http://${host}:${port}/`),
+  });
+  console.log(resultLine(result));
+  if (result.kind === "fallback") process.exitCode = 3;
 }

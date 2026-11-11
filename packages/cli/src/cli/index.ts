@@ -19,6 +19,7 @@ import { renderAgentsBlock, renderBundle, renderPointerBlock, SKILL_NAME } from 
 import { hasBlock, readIfExists, rel, removeBlock, removePath, upsertBlock, writeFileEnsured } from "./fsutil.js";
 import { hasHook, installHook, removeHook } from "./hook.js";
 import { runScan } from "./scan.js";
+import { runPick } from "./pick.js";
 import { readFile, readdir } from "node:fs/promises";
 
 type Flags = Record<string, string | boolean>;
@@ -898,6 +899,8 @@ async function main(): Promise<void> {
       return runCheck(flags);
     case "scan":
       return runScan(argv.slice(1));
+    case "pick":
+      return runPick(argv.slice(1));
     case "init":
       return runInit(flags);
     case "setup":

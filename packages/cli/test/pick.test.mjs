@@ -65,3 +65,28 @@ test("serveAndWait ignores a malformed POST and keeps waiting, then times out", 
   assert.equal(res.status, 400);
   assert.deepEqual(await p, { kind: "fallback", reason: "timeout" });
 });
+
+import { spawnSync } from "node:child_process";
+import { mkdtempSync, writeFileSync, rmSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
+
+const cli = join(dirname(fileURLToPath(import.meta.url)), "..", "dist", "cli", "index.js");
+const noOpen = { ...process.env, NO_COLOR: "1", RYUX_PICK_NO_OPEN: "1" };
+
+test("pick on a missing file falls back with exit 3", () => {
+  const r = spawnSync("node", [cli, "pick", "does-not-exist.html", "--timeout", "1"], { encoding: "utf8", env: noOpen });
+  assert.equal(r.status, 3);
+  assert.match(r.stdout, /^fallback: /m);
+});
+
+test("pick times out to fallback with exit 3 and no browser", () => {
+  const dir = mkdtempSync(join(tmpdir(), "ryux-pick-"));
+  const f = join(dir, "d.html");
+  writeFileSync(f, "<i data-ryux-pick='1'>x</i>");
+  const r = spawnSync("node", [cli, "pick", f, "--timeout", "1"], { encoding: "utf8", env: noOpen });
+  assert.equal(r.status, 3);
+  assert.match(r.stdout, /^fallback: timeout$/m);
+  rmSync(dir, { recursive: true, force: true });
+});
