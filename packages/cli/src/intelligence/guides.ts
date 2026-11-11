@@ -140,7 +140,10 @@ The six stages of the core workflow (SKILL.md), as Design runs them.
    questions in order first: they are the sections and their order (RX-UX-13). When the answer that
    decides is a number nobody confirmed (the minimum buy, a price), the page answers without a number
    and the handoff asks for it first. A quantity in a unit the visitor does not count in (grams of
-   gold) shows its Rupiah value beside it, at a beginner's precision (RX-CD-20). Write three to five success criteria from the brief (the user's main task, what
+   gold) shows its Rupiah value beside it, at a beginner's precision (RX-CD-20). Name the usage
+   cadence and the dominant usability quality it picks (RX-UX-17): learnability for a task done once
+   or rarely, efficiency for a daily tool, memorability for a task people return to after months.
+   Write three to five success criteria from the brief (the user's main task, what
    must be seen first, the brief's character words, conventions that must hold) before any
    alternative exists; Explore and Evaluate use these, and they do not change after you see the
    alternatives. For consequential choices, list the two or three patterns to compare, using

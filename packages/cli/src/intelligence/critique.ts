@@ -59,6 +59,13 @@ Clarity, Efficiency, Recoverability), **flow or form** (Confidence, Recoverabili
 surface** (hero, landing, onboarding, app home with a personality brief: Specificity and
 Coherence weigh more).
 
+**Utility before usability.** Before judging how the screen works, check that what the task needs is
+on it: a capability the task cannot finish without, missing from the screen, is the first finding,
+however clean the layout (useful = utility + usability; NNGroup Usability 101). Then name the usage
+cadence — first use, used daily, or returned to after months — and weigh the findings with the
+quality it picks (RX-UX-17): a daily task UI on steps and time for the practiced user, a first-use
+flow on unaided success, a returning task on working without remembering.
+
 ### 2. Analyze first
 
 Run Analyze (\`ryux-analyze\`: capture plus inventory) or reuse an analysis that already exists. Its

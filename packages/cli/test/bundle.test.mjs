@@ -431,3 +431,23 @@ test("Figma→DESIGN.md generation serves frontend handoff and onboarding, with 
   // the DS matrix rule names the behaviours a build cannot derive from tokens
   assert.match(f("knowledge/design-system.md"), /reuses success, not primary|current breadcrumb|body padding is 0|hover and focus share/i);
 });
+
+test("usability 101: dominant quality by cadence, SEQ/SUS and 40-participant quant, utility before usability", () => {
+  // owner 2026-11-11, from NNGroup Usability 101: cadence decides the dominant quality; satisfaction has
+  // standard instruments; a usable screen without the needed feature still fails
+  const files = renderBundle();
+  const f = (p) => files[p].replace(/\s+/g, " ");
+  assert.match(f("knowledge/ux.md"), /### RX-UX-17 .* The dominant usability quality follows the usage cadence/i);
+  assert.match(f("knowledge/ux.md"), /memorability/i);
+  assert.match(f("knowledge/ux.md"), /e-KYC|once or rarely/i);
+  // RX-UX-12 calibration
+  assert.match(f("knowledge/ux.md"), /around forty when the goal is a number/);
+  assert.match(f("knowledge/ux.md"), /Single Ease Question/);
+  assert.match(f("knowledge/ux.md"), /System Usability Scale/);
+  assert.doesNotMatch(f("knowledge/ux.md"), /at least twenty when the goal is a number/);
+  // Frame names the dominant quality
+  assert.match(f("capabilities/design.md"), /dominant usability quality/i);
+  // Critique checks utility before usability
+  assert.match(f("capabilities/critique.md"), /Utility before usability/);
+  assert.match(f("capabilities/critique.md"), /usage cadence|used daily|first use/i);
+});

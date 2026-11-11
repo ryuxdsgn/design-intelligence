@@ -166,13 +166,13 @@ How Indonesian apps sequence and structure this flow: `get_flow` for a reference
 - Do: Close the design or build with a usability test plan a person can run; RYUX prepares it, people run it. When the open question is not usability, name the method that answers it instead (a tree test for a navigation change, a concept test for an open idea, a desirability study for a look; knowledge/ux.md, research methods):
   - research questions: the open unknowns, the Frame success criteria, and the heuristic evaluation findings marked as needing a test
   - three to five task scenarios that are realistic, ask the participant to do something rather than describe it, and use none of the interface's labels or steps ("Kamu ingin membayar pesanan makan siang dengan saldo e-wallet", not "Ketuk Bayar lalu pilih GoPay")
-  - participants: five per user group for a qualitative test; at least twenty when the goal is a number
-  - a success measure per task, taken from the Frame criteria
+  - participants: five per user group for a qualitative test; around forty when the goal is a number
+  - a success measure per task, taken from the Frame criteria, and a satisfaction measure: the Single Ease Question after each task, the System Usability Scale for the whole, so releases can be compared
   - after launch: the metrics to watch (task success, time on task, errors, completion, support tickets) and the baseline to measure before release
   - Plan at least two rounds of test and fix; a result that changes the context or the criteria sends the work back to Understand or Frame.
   - Before a full design exists (a proposal or a direction), the Decision Receipt's Test field is the minimum plan: never close a recommendation without it.
 - Do not: Claim the design was tested with users, present AI-simulated users as participants, or write tasks that name the buttons to tap.
-- Why: Rules and heuristics find likely problems; only people using the design show which ones are real, and a baseline is what makes the after-launch number mean something. (NNGroup when to use which UX research methods (Rohrer 2022) and UX research cheat sheet (Farrell 2017): the method follows the question; NNGroup usability testing 101; NNGroup how many test users (5 per group, 20 for quantitative); NNGroup task scenarios; NNGroup iterative design (at least three versions); NNGroup establishing baselines; NNGroup design thinking (test and implement))
+- Why: Rules and heuristics find likely problems; only people using the design show which ones are real, and a baseline is what makes the after-launch number mean something. (NNGroup when to use which UX research methods (Rohrer 2022) and UX research cheat sheet (Farrell 2017): the method follows the question; NNGroup usability testing 101; NNGroup how many test users (5 per group, about 40 for quantitative); NNGroup Usability 101 (Nielsen): SEQ and SUS as the standard satisfaction measures; NNGroup task scenarios; NNGroup iterative design (at least three versions); NNGroup establishing baselines; NNGroup design thinking (test and implement))
 - Not when: a small change (a colour, one label, spacing) or when the user says no test plan
 - Trade-off: a plan nobody runs is only a list; say who should run it and when
 - Check: review
@@ -227,3 +227,12 @@ How Indonesian apps sequence and structure this flow: `get_flow` for a reference
 - Not when: a review or receipt screen whose job is the full breakdown
 - Trade-off: a detail behind a tap is missed by people who needed it; choose the split from what most users need
 - Check: per screen: list what is on the first level and what is behind a control; each control names its contents; no third level; nothing the user pays is only behind the control before commitment
+
+### RX-UX-17 [Preferred] The dominant usability quality follows the usage cadence
+
+- Do: Name how often one person repeats this task, and let that pick the usability quality the design optimizes and the criteria test: learnability for a task done once or rarely (onboarding, e-KYC, a mortgage application), efficiency for a tool used daily (a cashier flow, an ops dashboard, an editor), memorability for a task people return to after months (an annual renewal, yearly tax, a report filed each quarter). Write the cadence and the chosen quality into the Frame criteria, and critique with that lens: a daily tool is judged on steps and time for the practiced user, a rare task on whether a first-timer succeeds unaided, a returning task on whether it works without remembering.
+- Do not: Optimize every screen for the first-time user, judge a daily ops tool by its friendliness to beginners, or build a returned-to-after-a-year flow that relies on what users remember from last time.
+- Why: Which usability quality matters most depends on how often the same person does the task; criteria that ignore the cadence praise the wrong design. (NNGroup Usability 101 (Nielsen): usability's five quality components (learnability, efficiency, memorability, errors, satisfaction) and their relative importance by product type — a yearly tax app leans on learnability, a daily professional tool on efficiency; owner review 2026-11-11; written for RYUX)
+- Not when: the cadence is unknown and no evidence sets it: write it as an open question and design for the first use
+- Trade-off: efficiency for the practiced user (density, accelerators) can cost the newcomer clarity; RX-UX-11 serves both
+- Check: the Frame criteria name the cadence and the dominant quality; Critique weighs its findings with that lens
