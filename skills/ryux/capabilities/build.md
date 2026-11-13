@@ -47,3 +47,24 @@ workflow (SKILL.md); Frame, Explore, and Evaluate happen in Design.
    paths>` as well (add `--design` when DESIGN.md has a `direction:` block, so code that strays from its
    colours, type, radius, or durations shows as drift): fix every fail, and fix each warn or give the reason it stays. For a new flow or a consequential change, add the
    usability test plan (RX-UX-12) unless the design already has one.
+
+**Refining what exists.** When the ask improves a screen that works ("polish this", "make the total
+easier to find", "make it feel more premium") and gives no new design, steps 2 and 4 run this way:
+- **Diagnose first.** Render the target at the size it is used and write three to five findings in
+  the Critique schema (capabilities/critique.md, step 8: severity, evidence, the smallest fix that
+  removes the cause), the scope asked, and what stays (the direction in DESIGN.md, copy, data, flows,
+  everything outside the scope). Read the modules those findings touch, not only this file.
+- **Fix by impact, not by ease.** Take the findings with the highest severity and make each fix at a
+  strength a person sees at that size; detail polish comes after. A mood ask (premium, cleaner,
+  bolder) gets at least one change that reads at first glance, inside the direction; a list of
+  one-pixel adjustments does not answer it. When the strongest fix needs a bigger change to one part
+  (a new hero, a reordered section), offer it with the before beside it and ask; never shrink it into
+  a tweak, and never make it unasked.
+- **"Keep everything else" is literal.** A change outside the scope that seems needed (a duplicate
+  the fix would create) is proposed in the reply, not made.
+- **Check the outcome, not only the layout.** Render before and after at the same viewport, the first
+  screen the person sees, and answer the ask itself ("is the total easier to find than before?"); a
+  clipped or doubled element fails, whatever the code says. Report what changed, why, what stayed,
+  and that answer.
+- A fix ask (polish, clean up) where no finding reaches severity 2 gets "no change needed" and the
+  findings; a mood ask still gets its first-glance change.
