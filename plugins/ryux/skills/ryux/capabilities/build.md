@@ -55,16 +55,23 @@ easier to find", "make it feel more premium") and gives no new design, steps 2 a
   removes the cause), the scope asked, and what stays (the direction in DESIGN.md, copy, data, flows,
   everything outside the scope). Read the modules those findings touch, not only this file.
 - **Fix by impact, not by ease.** Take the findings with the highest severity and make each fix at a
-  strength a person sees at that size; detail polish comes after. A mood ask (premium, cleaner,
-  bolder) gets at least one change that reads at first glance, inside the direction; a list of
-  one-pixel adjustments does not answer it. When the strongest fix needs a bigger change to one part
-  (a new hero, a reordered section), offer it with the before beside it and ask; never shrink it into
-  a tweak, and never make it unasked.
+  strength a person sees at that size; detail polish comes after.
+- **A mood ask** (premium, cleaner, bolder) owns the first screen's focal hierarchy: the hero figure,
+  the type scale and its contrast, how much accent is spent, the loudest decoration. Change it there,
+  inside the direction, so it reads at first glance; a list of one-pixel adjustments does not answer
+  it. Only a new section, a reordered page, or a new direction is offered with the before beside it
+  and asked first.
+- **A find-it ask** ("make the total easier to find") strengthens the thing where it already is: size,
+  weight, contrast, its place in its own block. Add a second copy (a sticky bar) only when the first
+  is out of view on the first screen; show it only while the first is out of view, give the content
+  bottom space the height of the bar, and leave the primary action's label and the figure it carries
+  as they are.
 - **"Keep everything else" is literal.** A change outside the scope that seems needed (a duplicate
-  the fix would create) is proposed in the reply, not made.
+  the fix would create, a shorter button label) is proposed in the reply, not made.
 - **Check the outcome, not only the layout.** Render before and after at the same viewport, the first
-  screen the person sees, and answer the ask itself ("is the total easier to find than before?"); a
-  clipped or doubled element fails, whatever the code says. Report what changed, why, what stayed,
-  and that answer.
+  screen the person sees and the state the ask is about, and answer the ask itself ("is the total
+  easier to find than before?"). Run `ryux scan <url>` on that state when Playwright is there: text a
+  bar cuts or covers fails, whatever the code says. Report what changed, why, what stayed, and that
+  answer.
 - A fix ask (polish, clean up) where no finding reaches severity 2 gets "no change needed" and the
   findings; a mood ask still gets its first-glance change.

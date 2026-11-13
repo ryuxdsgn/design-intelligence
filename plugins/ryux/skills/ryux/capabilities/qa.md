@@ -116,7 +116,7 @@ The intended design (Figma, pen.dev, DESIGN.md) is the reference; RYUX screens a
 - Do not: Let a card cover prices or labels, or let nav items touch.
 - Why: Covered text is lost information and looks broken; labels a word space apart read as one phrase. (ryux run 2026-10-02: QRIS card over prices, colliding nav; ryux Figma pilot critique 2026-10-28: "On the way" and "Delivered" 6 pt apart at 360, a courier marker over street labels; owner blind review 2026-11-08 of the Raja Emas landing rerun (RYUX 2.22.5, docs/benchmarks/landing-gold): two hero phones overlapping and cut by a green band on desktop, and cut on mobile)
 - Check: screenshot at every breakpoint, mockups included
-- Measured: `ryux scan <url>` flags text boxes of unrelated elements that overlap (warn)
+- Measured: `ryux scan <url>` flags text boxes of unrelated elements that overlap (warn); text a fixed or sticky bar cuts on the first screen while the bar repeats it, and text a bottom bar still covers with every scroller at its end (fail)
 
 ### RX-QA-04 [Required] Numbers agree
 

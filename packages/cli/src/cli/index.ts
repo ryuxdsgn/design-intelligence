@@ -833,7 +833,7 @@ Commands:
   check       Check the install: files, version, references, pointers, project context.
   scan        Check source files for rules a machine can see (Rupiah format, alt text, zoom, focus, ...).
               No LLM, no network. Default path: this folder. Give a URL to measure the rendered page
-              (sideways scroll, contrast, target size, colliding text); that needs Playwright.
+              (sideways scroll, contrast, target size, colliding text, text under a bar); that needs Playwright.
   pick        Open an HTML page (e.g. a directions page) in the browser and wait for a click;
               print the chosen number. Used by the Design step to pick a direction without copy-paste.
   update      Update an install to this version (also migrates RYUX 1.x folders).
