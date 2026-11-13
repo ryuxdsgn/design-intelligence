@@ -57,9 +57,9 @@ Standards are the main evidence (WCAG 2.2 success criteria); reference screens s
 
 ### RX-A11Y-04 [Required] [Hard Gate] Semantic structure, native controls, and names
 
-- Do: Use real headings, landmarks, lists, buttons, links, and the right input types before custom elements, and give icon-only buttons and meaningful images an accessible name or alt text. Hide decorative icons and images from assistive technology (aria-hidden, or an empty alt).
-- Do not: Build structure or controls from styled divs, or ship unlabeled icon buttons.
-- Why: Assistive technology navigates by semantics and announces unlabeled buttons as just "button"; native controls bring keyboard and platform behavior for free. (WCAG 2.2 SC 1.1.1, 1.3.1, and 4.1.2)
+- Do: Use real headings, landmarks, lists, buttons, links, and the right input types before custom elements, and give icon-only buttons and meaningful images an accessible name or alt text. Hide decorative icons and images from assistive technology (aria-hidden, or an empty alt), animated ones included: a logo animation beside the wordmark is decoration, so the page names the brand once.
+- Do not: Build structure or controls from styled divs, ship unlabeled icon buttons, or give a decorative graphic the same name as the text beside it.
+- Why: Assistive technology navigates by semantics and announces unlabeled buttons as just "button"; native controls bring keyboard and platform behavior for free. (WCAG 2.2 SC 1.1.1, 1.3.1, and 4.1.2; ryux editor, sign-in, 2026-11-13: an animated mark labelled like the wordmark made the phone accessibility tree name the brand twice)
 - Check: read the accessibility tree (a Playwright accessibility snapshot, or the design file's layer types): every control is a native element or has a role, and every one has a name; headings are in order; fails on an unnamed control or a div acting as a button
 - Machine check: `ryux scan` flags <img> with no alt attribute (fail); a clickable <div> or <span> with no role (warn); an icon-only <button> with no accessible name (warn); a heading that skips a level (h2 straight to h4) (warn)
 
@@ -72,10 +72,10 @@ Standards are the main evidence (WCAG 2.2 success criteria); reference screens s
 
 ### RX-A11Y-07 [Required] Errors announced and tied to fields
 
-- Do: Link error messages to their fields and announce them to assistive technology.
-- Do not: Show errors only as red borders or as text that is not associated with the field.
-- Why: An error the user cannot perceive cannot be fixed. (WCAG 2.2 SC 3.3.1 and 4.1.3)
-- Check: review
+- Do: Link error messages to their fields and announce them to assistive technology. After a failed submit, move focus to where the fix starts: the first field in error, or for an error on the whole form (a wrong password) the field to retype, with its text selected; a submit button disabled while sending otherwise drops focus to the page.
+- Do not: Show errors only as red borders or as text that is not associated with the field, or leave focus on the page after a failed submit.
+- Why: An error the user cannot perceive cannot be fixed, and a keyboard or screen reader user who lost focus has to find the field again before trying. (WCAG 2.2 SC 3.3.1, 4.1.3, and 2.4.3; ryux editor, sign-in, 2026-11-13: the submit button, disabled while signing in, dropped focus to the page body after a wrong password (Playwright, phone emulation))
+- Check: submit once with a wrong value, keyboard only: the error is announced and focus lands on the field to fix, not the page body
 
 ### RX-A11Y-08 [Required] Respect reduced motion
 

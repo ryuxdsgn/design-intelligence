@@ -46,9 +46,9 @@ How reference apps show empty, error, offline, and loading states for this flow:
 
 ### RX-EC-03 [Preferred] Data volume, shape, and length
 
-- Do: Check one item, many items, duplicates, missing fields, long names and long Indonesian words, and large amounts such as Rp1.250.000.000; paginate or virtualize long lists, and wrap or truncate with access to the full value.
-- Do not: Design only around a tidy sample of five short items.
-- Why: Real data is uneven and longer than sample data, and layouts break at the extremes. (Localization practice; ryux review practice)
+- Do: Check one item, many items, duplicates, missing fields, long names and long Indonesian words, and large amounts such as Rp1.250.000.000; paginate or virtualize long lists, and wrap or truncate with access to the full value. A field that holds a sentence or more (a title, a method, a note) grows with its text instead of hiding the rest past its edge; one that must stay one line keeps line breaks out.
+- Do not: Design only around a tidy sample of five short items, or put text that runs to sentences in a one-line field.
+- Why: Real data is uneven and longer than sample data, and layouts break at the extremes. (Localization practice; ryux review practice; ryux editor, research review, 2026-11-13: a one-line field hid the report's stated limitation past its edge, at 1440 and 400 px)
 - Check: visual QA
 
 ### RX-EC-06 [Contextual] Slow, timeout, offline, server failure

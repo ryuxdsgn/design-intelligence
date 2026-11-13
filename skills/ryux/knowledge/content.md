@@ -68,9 +68,10 @@ Real labels, errors, and how money, dates, and times are written in the product'
 - Do: Say what happened, why when it helps the user act, and how to recover, next to where it happened, without blaming the user.
   - Keep what the user entered, even when it is wrong, and point to it; never clear the field or the form.
   - Show a field's error after the user has finished with it (on leaving the field or on submit), not while they are still typing; check as they type only an input they are likely to get wrong, and then with guidance, not an error.
-- Do not: Show codes like TXN_0x8004 or "Something went wrong" on their own, clear the user's input after an error, or mark a field wrong before the user has finished typing.
-- Why: Users can only recover from what they understand. (NNGroup error-message guidelines; NNGroup An Error Messages Scoring Rubric (Neusesser and Sunwall 2023): preserve user input, avoid showing errors too early)
-- Check: audit_copy C-04; for each error state: the input is still there, and the error appears only after the field was left or the form sent
+  - Name the real cause: when the fault is the service (it is down, out of quota or credit, or its key was refused), say so and do not point at the user's input or file; offer a retry only when one can succeed (a timeout, a rate limit), otherwise the manual path or who can fix it.
+- Do not: Show codes like TXN_0x8004 or "Something went wrong" on their own, clear the user's input after an error, mark a field wrong before the user has finished typing, blame the user's input for a failure of the service, or offer "try again" when a retry cannot succeed.
+- Why: Users can only recover from what they understand. (NNGroup error-message guidelines; NNGroup An Error Messages Scoring Rubric (Neusesser and Sunwall 2023): preserve user input, avoid showing errors too early; ryux editor, research upload, 2026-11-13: with the AI account out of credit, the message said the PDF could not be read, and four other AI actions said to try again)
+- Check: audit_copy C-04; for each error state: the input is still there, and the error appears only after the field was left or the form sent; for each failure that is not the user's (service down, quota or credit, a refused key): the message names it, and a retry is offered only when one can succeed
 
 ### RX-CD-05 [Required] [Quality Lock] One name per thing
 
