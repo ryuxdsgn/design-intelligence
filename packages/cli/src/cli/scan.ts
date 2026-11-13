@@ -154,9 +154,12 @@ export async function runScan(argv: string[]): Promise<void> {
   }
   const { files, findings, texts } = targets.length ? await scanPaths(targets, skip, design) : { files: 0, findings: [], texts: [] as string[] };
   const drift = design && designFile ? { file: designFile, read: { colours: design.colours.length, fonts: design.fonts, radius: design.radius, durations: design.durations }, notRead: design.unread, unused: unusedTokens(texts, design) } : undefined;
+  let ignored: { url: string; regions: string[] }[] = [];
   if (urls.length) {
     try {
-      findings.push(...(await scanPages(urls, widths)).filter((f) => !skip.has(f.rule)));
+      const pages = await scanPages(urls, widths);
+      findings.push(...pages.findings.filter((f) => !skip.has(f.rule)));
+      ignored = pages.ignored;
     } catch (err) {
       console.error(err instanceof Error ? err.message : err);
       process.exitCode = 1;
@@ -166,10 +169,13 @@ export async function runScan(argv: string[]): Promise<void> {
   const ok = !findings.some((f) => f.level === "fail");
   if (!ok) process.exitCode = 1;
   if (opts.json) {
-    console.log(JSON.stringify({ ok, cli: VERSION, files, pages: urls.length, widths: urls.length ? widths : [], ...(drift ? { design: drift } : {}), findings }, null, 2));
+    console.log(JSON.stringify({ ok, cli: VERSION, files, pages: urls.length, widths: urls.length ? widths : [], ...(drift ? { design: drift } : {}), ...(ignored.length ? { ignored } : {}), findings }, null, 2));
     return;
   }
   console.log(report(findings, files, urls.length));
+  for (const i of ignored) {
+    console.log(`Not measured in ${i.url}: ${i.regions.join(", ")} (marked data-ryux-ignore as prototype controls).`);
+  }
   if (drift) {
     const r = drift.read;
     const lines = [`\nDesign drift against ${drift.file}: ${r.colours} colours, ${r.fonts.length} type families${r.radius ? `, radius ${r.radius.join("/")}` : ""}${r.durations ? `, durations ${r.durations.join("/")}ms` : ""}.`];

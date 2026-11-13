@@ -2,6 +2,8 @@
 // the package compiles for Node without DOM types.
 // Measures a rendered page at the current viewport: horizontal scroll, text contrast, text size,
 // target size, and text that collides. Returns plain findings; the caller adds the width and URL.
+// Anything inside [data-ryux-ignore] (a prototype's scenario panel or demo controls, never product UI)
+// is not measured; the regions are counted so the report says what was left out.
 
 export interface ProbeFinding {
   rule: string;
@@ -10,7 +12,13 @@ export interface ProbeFinding {
   message: string;
 }
 
-export function probe(): ProbeFinding[] {
+export interface ProbeResult {
+  findings: ProbeFinding[];
+  /** Regions marked data-ryux-ignore, by selector; their contents were not measured. */
+  ignored: string[];
+}
+
+export function probe(): ProbeResult {
   const out = [];
   const vw = document.documentElement.clientWidth;
 
@@ -41,6 +49,8 @@ export function probe(): ProbeFinding[] {
     const r = el.getBoundingClientRect();
     return r.width > 1 && r.height > 1;
   };
+  const ignoredRegions = [...document.body.querySelectorAll("[data-ryux-ignore]")].filter((el) => !el.parentElement?.closest("[data-ryux-ignore]"));
+  const outside = (el) => !el.closest("[data-ryux-ignore]");
   const disabled = (el) => Boolean(el.closest("[disabled],[aria-disabled='true'],[inert]"));
   const quote = (s) => (s.length > 40 ? `"${s.slice(0, 37)}..."` : `"${s}"`);
 
@@ -65,7 +75,7 @@ export function probe(): ProbeFinding[] {
   for (const el of document.body.querySelectorAll("*")) {
     if (/^(SCRIPT|STYLE|NOSCRIPT|TEMPLATE|OPTION)$/.test(el.tagName) || el.closest("svg")) continue;
     const nodes = [...el.childNodes].filter((n) => n.nodeType === 3 && n.textContent.trim());
-    if (!nodes.length || !shown(el)) continue;
+    if (!nodes.length || !outside(el) || !shown(el)) continue;
     texts.push({ el, nodes, text: nodes.map((n) => n.textContent).join(" ").replace(/\s+/g, " ").trim() });
   }
 
@@ -165,7 +175,7 @@ export function probe(): ProbeFinding[] {
     ...document.body.querySelectorAll(
       "a[href],button,input:not([type=hidden]),select,textarea,summary,[role=button],[role=link],[role=checkbox],[role=radio],[role=switch],[role=tab],[role=menuitem]",
     ),
-  ].filter((el) => shown(el) && !disabled(el));
+  ].filter((el) => outside(el) && shown(el) && !disabled(el));
   const rects = controls.map((el) => el.getBoundingClientRect());
   const inSentence = (el) => {
     if (el.tagName !== "A" || style(el).display !== "inline") return false;
@@ -224,5 +234,5 @@ export function probe(): ProbeFinding[] {
       out.push({ rule: "RX-QA-03", level: "warn", selector: selector(a.t.el), message: `${quote(a.t.text)} overlaps ${quote(b.t.text)} (${selector(b.t.el)})` });
     }
   }
-  return out;
+  return { findings: out, ignored: ignoredRegions.map(selector) };
 }
