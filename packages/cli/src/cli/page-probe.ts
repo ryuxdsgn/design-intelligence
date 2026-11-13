@@ -21,6 +21,11 @@ export interface ProbeResult {
 export async function probe(): Promise<ProbeResult> {
   const out = [];
   const vw = document.documentElement.clientWidth;
+  // Every scroll position as the page opened: checks below scroll, and the first screen is read from this.
+  const opened = [document.scrollingElement, ...document.body.querySelectorAll("*")]
+    .filter((e) => e && e.scrollHeight > e.clientHeight + 1)
+    .map((e) => [e, e.scrollTop]);
+  const reopen = () => opened.forEach(([e, top]) => { e.scrollTop = top; });
 
   const selector = (el) => {
     const parts = [];
@@ -234,6 +239,73 @@ export async function probe(): Promise<ProbeResult> {
       out.push({ rule: "RX-QA-03", level: "warn", selector: selector(a.t.el), message: `${quote(a.t.text)} overlaps ${quote(b.t.text)} (${selector(b.t.el)})` });
     }
   }
+  // Text under a fixed or sticky bar (RX-QA-03). Content scrolling under a bar is normal; two cases are not:
+  // text cut by a bar on the screen as loaded that repeats what the bar itself shows (one figure twice, one
+  // of them sliced), and text a bottom bar still covers when every scroller is at its end (never readable).
+  const pinnedBar = (el) => {
+    for (let e = el; e; e = e.parentElement) if (/^(fixed|sticky)$/.test(style(e).position)) return e;
+    return null;
+  };
+  const scrollerOf = (el) => {
+    for (let e = el.parentElement; e && e !== document.body; e = e.parentElement) if (/(auto|scroll)/.test(style(e).overflowY) && e.scrollHeight > e.clientHeight + 1) return e;
+    return document.scrollingElement;
+  };
+  // A bar is at least 60% of the viewport wide and fixed, sticky, or absolute against a box outside the scroller the text moves in (a mobile frame's bottom bar).
+  const barOver = (hit, t) => {
+    const own = scrollerOf(t.el);
+    for (let e = hit; e && e !== document.body; e = e.parentElement) {
+      const pos = style(e).position;
+      if (e.getBoundingClientRect().width < vw * 0.6) continue;
+      if (/^(fixed|sticky)$/.test(pos)) return e;
+      // Absolute counts when its containing block does not scroll with the text.
+      if (pos === "absolute" && !(own !== document.scrollingElement && e.offsetParent && own.contains(e.offsetParent))) return e;
+    }
+    return null;
+  };
+  reopen();
+  await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
+  const vh = window.innerHeight;
+  const coverage = (t) => {
+    if (!t.nodes.every((n) => n.isConnected)) return null;
+    const range = document.createRange();
+    range.setStartBefore(t.nodes[0]);
+    range.setEndAfter(t.nodes[t.nodes.length - 1]);
+    const r = range.getBoundingClientRect();
+    if (r.width < 2 || r.height < 2 || r.bottom <= 0 || r.top >= vh || r.right <= 0 || r.left >= vw) return null;
+    let covered = 0, seenPts = 0, bar = null;
+    for (const fy of [0.15, 0.5, 0.85]) for (const fx of [0.1, 0.3, 0.5, 0.7, 0.9]) {
+      const x = r.left + r.width * fx, y = r.top + r.height * fy;
+      if (x < 0 || y < 0 || x >= vw || y >= vh) continue;
+      seenPts++;
+      const hit = document.elementFromPoint(x, y);
+      const b = hit && !t.el.contains(hit) && !hit.contains(t.el) ? barOver(hit, t) : null;
+      if (b && !b.contains(t.el)) { covered++; bar = b; }
+    }
+    return seenPts ? { covered, seenPts, bar, r } : null;
+  };
+  const free = texts.filter((t) => t.text && outside(t.el) && !pinnedBar(t.el) && shown(t.el)).slice(0, 1500);
+  const words = (s) => (s.match(/[\p{L}\p{N}][\p{L}\p{N}.,:]*/gu) || []).filter((w) => w.length > 2);
+  for (const t of free) {
+    const c = coverage(t);
+    if (!c || !c.covered || c.covered === c.seenPts) continue;
+    const barText = c.bar.textContent || "";
+    const repeated = words(t.text).filter((w) => barText.includes(w));
+    if (repeated.length && repeated.join(" ").length >= Math.min(6, t.text.length))
+      out.push({ rule: "RX-QA-03", level: "fail", selector: selector(t.el), message: `${quote(t.text)} is cut by the ${selector(c.bar)} bar on the first screen, which shows ${quote(repeated.join(" "))} again: the same content twice, one copy sliced` });
+  }
+  const scrollers = [document.scrollingElement, ...document.body.querySelectorAll("*")].filter((e) => {
+    if (!e || e.scrollHeight <= e.clientHeight + 1) return false;
+    if (e === document.scrollingElement) return true;
+    return /(auto|scroll)/.test(style(e).overflowY);
+  });
+  scrollers.forEach((e) => { e.scrollTop = e.scrollHeight; });
+  await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
+  for (const t of free) {
+    const c = coverage(t);
+    if (!c || !c.covered || c.bar.getBoundingClientRect().top < vh / 2) continue;
+    out.push({ rule: "RX-QA-03", level: "fail", selector: selector(t.el), message: `${quote(t.text)} stays under the ${selector(c.bar)} bar with the page scrolled to its end: it can never be read; add bottom space the height of the bar` });
+  }
+  reopen();
   // Textarea growth (RX-FM-05): fill each shown textarea with 8 lines for a moment, let its own script
   // or field-sizing react, then compare its height with its content. The value is put back after.
   const frame = () => new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
