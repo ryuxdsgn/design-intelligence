@@ -160,7 +160,7 @@ How comparable products illustrate the same moment: `search_screens` by pattern 
 ### RX-UI-30 [Preferred] Planned imagery is made, and passes a craft read before the page uses it
 
 - When: the direction's carrier or imagery is an illustration, a render, or a photo
-- Do: Make each planned asset before the page (RX-UI-29), by the method its job needs (RX-UI-21), with the tools in knowledge/imagery.md, Making images; label generated and retouched images, and before paid generation say how many and ask once.
+- Do: Make each planned asset before the page (RX-UI-29), by the method its job needs (RX-UI-21), with the tools in knowledge/imagery.md, Making images; label generated and retouched images, and before paid generation say how many and ask once (for the proof of an image-making product, generating is the recommended answer, RX-UI-29).
   - Before the first asset, write one asset spec for the page in the direction block, so the subjects change and the treatment does not: the medium (RX-UI-32); for renders and photos, the camera (height, lens, angle) and the light (direction, temperature); the scale of an object that recurs; the staging (a contact shadow on a ground, or floating), the same for every asset; the crop and edge; the colour grade.
   - When the set is made, lay it side by side against the spec; an asset that differs on two or more axes is remade before the page uses it.
   - Read each asset alone at display size against seven checks: the silhouette reads with the label covered; the object has its defining parts; one light direction; three tones per material; clean joints; the written style (RX-UI-17); it reads at its smallest size.
