@@ -53,12 +53,14 @@ Real Indonesian forms for the same data (address, OTP, e-KYC): `search_screens`,
 
 ### RX-FM-05 [Preferred] The right keyboard and autofill
 
-- Do: Match the keyboard to the input (numeric for amounts, phone numbers, and OTP) and support autofill and paste. Accept the formats people type or paste (spaces, dashes, a country code or a leading zero) and normalize them in the product.
-- Do not: Show a text keyboard for numbers or block pasting codes.
-- Why: The right keyboard removes taps and typos on phones. (HTML inputmode and autocomplete (one-time-code); platform input guidance; robustness principle (Postel, RFC 761, 1980): be liberal in what you accept; Parkinson's law (Parkinson 1955): work expands to the time it is given, so defaults and autofill shrink a task)
+- Do: Match the keyboard to the input (numeric for amounts, phone numbers, and OTP) and support autofill and paste. Accept the formats people type or paste (spaces, dashes, a country code or a leading zero) and normalize them in the product. An answer in the person's own words (a problem, a note, a reason) goes in a textarea that grows with its text: field-sizing: content, with a script that sets the height from scrollHeight where it is not supported.
+- Do not: Show a text keyboard for numbers, block pasting codes, or put a written answer in a fixed box that hides what was typed past its edge.
+- Why: The right keyboard removes taps and typos on phones; a person rereads what they wrote before sending, and a fixed box makes them scroll inside a scrolling page to do it. (HTML inputmode and autocomplete (one-time-code); CSS field-sizing (CSS Basic User Interface Level 4); platform input guidance; robustness principle (Postel, RFC 761, 1980): be liberal in what you accept; Parkinson's law (Parkinson 1955): work expands to the time it is given, so defaults and autofill shrink a task; ryux rule check 2026-11-13: a run that read RX-EC-03 still built a fixed five-row help field)
 - Not when: free-text fields where a restricted keyboard blocks valid input (names with punctuation)
 - Trade-off: inputmode varies across browsers; test on real devices
-- Check: review
+- Check: review; ryux scan: a textarea with nothing that makes it grow (static), or one that hides 8 lines past its edge (rendered)
+- Machine check: `ryux scan` flags a textarea in a folder where nothing makes a textarea grow with its text (warn)
+- Measured: `ryux scan <url>` flags a shown textarea that, filled with 8 lines for a moment, keeps its height and hides the text past its edge (warn)
 
 ### RX-FM-06 [Required] Submission states
 
