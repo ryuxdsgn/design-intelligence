@@ -391,7 +391,7 @@ return { libraryInstances: lib, localInstances: local, newLocal: [...created], r
 const PAGE = "Page name", ICON = /^icons?[\\/ ]/i, STATE = /state|status|selected|checked|active|pressed|disabled/i;
 const page = figma.root.children.find((p) => p.name === PAGE); await page.loadAsync();
 const hex = (c) => "#" + [c.r, c.g, c.b].map((v) => Math.round(v * 255).toString(16).padStart(2, "0")).join("");
-const strokes = {}, colours = {}, unbound = new Set(), byPlace = new Map();
+const strokes = {}, colours = {}, unbound = new Set(), byPlace = new Map(), offCenter = new Set();
 for (const n of page.findAll((x) => x.type === "INSTANCE")) {
   const mc = await n.getMainComponentAsync();
   const name = mc?.parent?.type === "COMPONENT_SET" ? mc.parent.name : mc?.name;
@@ -406,7 +406,15 @@ for (const n of page.findAll((x) => x.type === "INSTANCE")) {
   // Where the icon sits: the variant of the nearest component around it, and its parent layer.
   let place = n.parent.name;
   for (let p = n.parent; p && p.type !== "PAGE"; p = p.parent) if (p.type === "INSTANCE" || p.type === "COMPONENT") { place = (p.type === "INSTANCE" ? (await p.getMainComponentAsync())?.name : p.name) || place; break; }
-  const k = place + " · " + n.parent.name; if (!byPlace.has(k)) byPlace.set(k, new Set()); byPlace.get(k).add([...own].sort().join("+"));
+  // A hidden icon (no visible paint) has no colour to compare.
+  const k = place + " · " + n.parent.name; if (own.size) { if (!byPlace.has(k)) byPlace.set(k, new Set()); byPlace.get(k).add([...own].sort().join("+")); }
+  // The glyph inside the icon's box: its visible shapes, centered within half a pixel.
+  const box = n.absoluteBoundingBox, shapes = n.findAll((x) => x.visible && x.absoluteBoundingBox && !["FRAME", "GROUP", "INSTANCE", "COMPONENT"].includes(x.type)).map((x) => x.absoluteBoundingBox);
+  if (box && shapes.length) {
+    const l = Math.min(...shapes.map((r) => r.x)), t = Math.min(...shapes.map((r) => r.y)), r = Math.max(...shapes.map((r) => r.x + r.width)), b = Math.max(...shapes.map((r) => r.y + r.height));
+    const dx = (l + r) / 2 - (box.x + box.width / 2), dy = (t + b) / 2 - (box.y + box.height / 2);
+    if (Math.abs(dx) > 0.5 || Math.abs(dy) > 0.5) offCenter.add(name + " (" + dx.toFixed(1) + ", " + dy.toFixed(1) + " px)");
+  }
 }
 const mixed = [...byPlace].filter(([, s]) => s.size > 1).map(([k, s]) => k + ": " + [...s].join(" / "));
 const uneven = [], missing = [];
@@ -423,11 +431,11 @@ for (const set of page.findAll((x) => x.type === "COMPONENT_SET")) {
   const combos = props.reduce((acc, [k, { values }]) => acc.flatMap((c) => values.map((v) => [...c, k + "=" + v])), [[]]);
   for (const c of combos) if (!have.has([...c].sort().join(", "))) missing.push(set.name + ": " + c.join(", "));
 }
-return { iconStrokes: strokes, iconColours: colours, unbound: [...unbound], mixedInOnePlace: mixed, unevenSets: uneven, missingVariants: missing };
+return { iconStrokes: strokes, iconColours: colours, unbound: [...unbound], mixedInOnePlace: mixed, offCenterIcons: [...offCenter], unevenSets: uneven, missingVariants: missing };
 \`\`\`
    - Passes when: one icon stroke (or one per drawn master size, written down), every icon colour on a
      variable and one colour per role (no two greys doing one job), one colour for the icons in one
-     place unless the state changes it, no uneven set, and every missing variant drawn or written off. Report it in the DESIGN SYSTEM line.
+     place unless the state changes it, no icon whose glyph is off the center of its box, no uneven set, and every missing variant drawn or written off. Report it in the DESIGN SYSTEM line.
    - Canvas copy is for the team, not for RYUX: annotations, state captions, and labels use plain
      language ("Shown while prices load; button disabled"). Rule IDs, gate results, and Decision
      Receipts go in the Design Direction or the final message, never in frames meant for review or
