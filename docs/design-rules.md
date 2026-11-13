@@ -1085,10 +1085,10 @@ Gate area UI. Covers the visual system of a product: hierarchy, type, layout, de
 
 #### RX-UI-15 [Preferred] [Quality Lock] Detail craft
 
-- Do: Center icons on the optical middle of the text beside them and size them to its line-height; take every icon from one set and match its stroke to the type weight, the same stroke at every icon size (resize an icon, never scale it, or draw a master per size), in colours from the palette's roles; right-align (or decimal-align) number columns; take borders, dividers, radii, and shadows from a small token set; truncate long text on purpose, with the full value still reachable (a tooltip, a detail view, or wrapping).
-- Do not: Let icons sit high or low against their labels, mix icon sets or stroke weights (a scaled icon changes its stroke), give icons near-duplicate colours, center amounts in a table, or invent a one-off shadow for one card.
-- Why: Each detail is small; together they are what makes a screen look made rather than generated. (Bringhurst (figures and alignment); Apple HIG and Material iconography (optical size and alignment); NNGroup icon usability (Harley 2014), icon classification (Nielsen 2014), imagery in visual design (Krause 2023): one stroke, size, corner, and fill per set; owner review 2026-10-17: wrong tab icons in withryux.pen; owner review 2026-11-06 (Figma, Sejuk rerun): icon strokes 1.17 to 2.04 from scaled instances and eight icon colours, two of them near-identical greys)
-- Check: render inspection at 390 and 1280: icon center within 2 px of the text center; column alignment; in Figma, the design system listing (capabilities/design.md, stage 6): icon strokes and icon colours
+- Do: Center icons on the optical middle of the text beside them and size them to its line-height, with each icon's glyph centered in its own box (drawn on the set's full grid, or constrained to the center), so an icon that is centered by its box is centered by what you see; take every icon from one set and match its stroke to the type weight, the same stroke at every icon size (resize an icon, never scale it, or draw a master per size), in colours from the palette's roles; right-align (or decimal-align) number columns; take borders, dividers, radii, and shadows from a small token set; truncate long text on purpose, with the full value still reachable (a tooltip, a detail view, or wrapping).
+- Do not: Let icons sit high or low against their labels, leave a glyph in a corner of its icon box, mix icon sets or stroke weights (a scaled icon changes its stroke), give icons near-duplicate colours, center amounts in a table, or invent a one-off shadow for one card.
+- Why: Each detail is small; together they are what makes a screen look made rather than generated. (Bringhurst (figures and alignment); Apple HIG and Material iconography (optical size and alignment); NNGroup icon usability (Harley 2014), icon classification (Nielsen 2014), imagery in visual design (Krause 2023): one stroke, size, corner, and fill per set; owner review 2026-10-17: wrong tab icons in withryux.pen; owner review 2026-11-06 (Figma, Sejuk rerun): icon strokes 1.17 to 2.04 from scaled instances and eight icon colours, two of them near-identical greys; owner review 2026-11-13 (Figma design-system trial): the plus glyph sat in the top-left of its 20 px box, so the icon in "Tambah barang" read high and left of its label)
+- Check: render inspection at 390 and 1280: icon center within 2 px of the text center; column alignment; in Figma, the design system listing (capabilities/design.md, stage 6): icon strokes, icon colours, and icons whose glyph is off the center of their box
 
 #### RX-UI-20 [Preferred] An icon means one thing, and says it
 
@@ -1516,10 +1516,10 @@ Gate area DESIGN SYSTEM. Covers search before create, tokens, component states, 
 #### RX-DS-10 [Contextual] Interaction states are spec, data states are props
 
 - When: Building or changing reusable components or variables in a design tool (Figma, pen.dev) or a component library, meant to be used by designers and in code.
-- Do: Draw hover, pressed, and focus as variants so the look is specified, and mark them in the contract as CSS states with no prop. Make disabled, loading, selected, and error props, because the product sets them.
-- Do not: Map state=hover to a prop, or leave loading and error as drawings with no prop behind them.
-- Why: A hover prop has nothing to set it, and a loading state with no prop never ships. (ryux owner review 2026-10-25 of a design-system proposal; W3C WAI-ARIA states; written for RYUX)
-- Check: every state in the contract is either a prop or marked CSS state
+- Do: Draw hover, pressed, and focus as variants so the look is specified, and mark them in the contract as CSS states with no prop. Make disabled, loading, selected, and error props, because the product sets them: in the design file, each is its own property named like the prop (disabled, loading: false or true), separate from the variant that holds only the CSS states, and the combinations that cannot happen (hover while disabled) are left out and written off (RX-DS-09).
+- Do not: Map state=hover to a prop, leave loading and error as drawings with no prop behind them, or fold disabled, loading, and error into the same state variant as hover and focus, so the file says state=loading where the code says loading={true}.
+- Why: A hover prop has nothing to set it, and a loading state with no prop never ships. (ryux owner review 2026-10-25 of a design-system proposal; W3C WAI-ARIA states; ryux design-system trial 2026-11-13 (Figma): disabled, loading, and error were values of one state variant, mapped to props only by hand in the contract; written for RYUX)
+- Check: every state in the contract is either a prop or marked CSS state; in the design file, each data state is its own property named like its prop, and the state variant holds CSS states only
 
 #### RX-DS-11 [Contextual] Components bind semantic variables
 
@@ -1532,10 +1532,10 @@ Gate area DESIGN SYSTEM. Covers search before create, tokens, component states, 
 #### RX-DS-12 [Contextual] Components resize like the code
 
 - When: Building or changing reusable components or variables in a design tool (Figma, pen.dev) or a component library, meant to be used by designers and in code.
-- Do: Build each component with auto layout, padding and gap bound to spacing variables, and a stated resize rule (hug the content, or fill the container). Check it with the longest real label, including Indonesian copy, which often runs longer than English, and at the smallest width it is used in.
-- Do not: Position layers absolutely inside a component, or set a fixed width that clips a long label.
-- Why: A component that does not resize the way the code does gets detached in the design file and rebuilt in code. (Design-system practice; Figma auto layout (help.figma.com); RX-RD-01; written for RYUX)
-- Check: render each component with its longest label and at its smallest width
+- Do: Build each component with auto layout, padding and gap bound to spacing variables, and a stated resize rule (hug the content, or fill the container). Check it with the longest real label, including Indonesian copy, which often runs longer than English, and at the smallest width it is used in: put an instance at that width on the sheet (a 320 px screen less its margins, the narrowest table cell or sidebar), with the longest label, and look at it.
+- Do not: Position layers absolutely inside a component, set a fixed width that clips a long label, or show it only at the comfortable width it was drawn at.
+- Why: A component that does not resize the way the code does gets detached in the design file and rebuilt in code. (Design-system practice; Figma auto layout (help.figma.com); RX-RD-01; ryux design-system trial 2026-11-13 (Figma): every component in auto layout, none shown at its smallest width; written for RYUX)
+- Check: the sheet shows each component at its smallest width with its longest label; render it; nothing clipped, overflowing, or wrapped where it must not
 
 #### RX-DS-13 [Contextual] [Quality Lock] Resolve the token matrix per state
 
