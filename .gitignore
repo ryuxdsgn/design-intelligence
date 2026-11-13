@@ -34,3 +34,7 @@ docs/ops.md
 /docs/**/*.webm
 /docs/**/*.mov
 /docs/**/*.webp
+
+# Python bytecode
+__pycache__/
+*.pyc
