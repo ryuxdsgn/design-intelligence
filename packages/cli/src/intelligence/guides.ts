@@ -718,7 +718,7 @@ export const CORE_EVIDENCE = `Say where every claim comes from:
 | **Knowledge** | a known pattern or standard, cited | "WCAG 1.4.3", "observed in 4 screens, scr_..." |
 
 Product evidence (brief, requirements, analytics, research, support data) is Observed when sourced;
-reference screens show what products do, not what this product's users need. Four questions, not four
+reference screens show what products do, not what this product's users need. A research finding from the ryux MCP (\`search_research\`) is that kind of evidence, checked by a person against its report: cite its source, page, and sample ("a 2024 usability study, p. 12; 8 participants in two cities"), keep its label (measured or observed), and scope the claim to that sample. Four questions, not four
 output fields: where it came from (source, above), is it known (known, inferred, or **unknown**, kept
 visible), how strong is the basis (Strong, Thin, None), how sure is the choice (High, Medium, Low).
 Knowledge is what is generally known, evidence is what this context shows, judgment chooses from both.
@@ -733,7 +733,7 @@ stand-in until the real one exists). Never invent numbers, user behavior, busine
 compliance, product or competitor facts, screenshots, or references (RX-PR-02, RX-AS-01).
 
 Record a source as \`{ type: observed | inferred | knowledge, origin, reference }\`, for example
-\`{ knowledge, ryux-knowledge, scr_123 }\` from the ryux MCP, or \`{ observed, screenshot, hero.png }\`.
+\`{ knowledge, ryux-knowledge, scr_123 }\` or \`{ observed, ryux-research, rsf_123 }\` from the ryux MCP, or \`{ observed, screenshot, hero.png }\`.
 Optional sources (the ryux MCP, Figma, a browser, screenshots, other reference libraries) add evidence when connected; none is required. A source that fails (the MCP answers 401 or 429, a file does not load) is NOT VERIFIED in the gate, with the reason, never filled by judgment.`;
 
 export const CORE_HONESTY = `Report what was checked, how, and what was not available; list every change to DESIGN.md as old → new (a business rule moves to Decided only on the user's own words).
