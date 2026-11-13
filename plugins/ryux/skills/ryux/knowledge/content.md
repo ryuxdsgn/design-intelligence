@@ -150,8 +150,9 @@ Real labels, errors, and how money, dates, and times are written in the product'
 - Do: Use the words, phrases, and concepts your users use, taken from the brief, support tickets, research, or the market's own apps, not the team's internal or system terms ("Saldo", not "Wallet balance ledger"; "Pesanan", not "Order entity").
   - Put information in the order people expect from the real world: an Indonesian address from street to province, a receipt from items to total, a schedule from date to place.
   - Explain a term that cannot be avoided where it first appears, in one line.
+  - A brand concept or metaphor stays in the visuals and the headline at most; labels, step names, and calls to action use the plain word for the action ("Step 1", "Download the app", not "Row 1", "Start your first row").
 - Do not: Show database field names, status codes, internal feature names, or a translation of the team's English jargon ("Disbursement pending", "Status: PROCESSING_2").
-- Why: Users should understand a screen without looking up a word; a term from the system's model makes them translate before they can act. (Nielsen heuristic 2 (match between the system and the real world); NNGroup 10 usability heuristics)
+- Why: Users should understand a screen without looking up a word; a term from the system's model makes them translate before they can act. (Nielsen heuristic 2 (match between the system and the real world); NNGroup 10 usability heuristics; owner blind review 2026-11-08 of a RYUX landing page ("rows woven" as a UI label added load) and owner-reviewed rating 2026-11-13 of a RYUX landing rerun (labels "ROW 1-4" and the call to action "Start your first row" lost production plausibility, 3 against 4))
 - Not when: an expert tool whose users share the domain's technical terms; use their terms
 - Trade-off: the user's word may differ from the term the code and the team use, so the two need a written mapping
 - Check: heuristic_eval H-02
