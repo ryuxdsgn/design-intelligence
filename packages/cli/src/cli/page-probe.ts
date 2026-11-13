@@ -10,6 +10,8 @@ export interface ProbeFinding {
   level: "fail" | "warn";
   selector: string;
   message: string;
+  /** A key for a finding reported once per page, not once per width (a visual tell does not change with the viewport). */
+  once?: string;
 }
 
 export interface ProbeResult {
@@ -306,6 +308,100 @@ export async function probe(): Promise<ProbeResult> {
     out.push({ rule: "RX-QA-03", level: "fail", selector: selector(t.el), message: `${quote(t.text)} stays under the ${selector(c.bar)} bar with the page scrolled to its end: it can never be read; add bottom space the height of the bar` });
   }
   reopen();
+  // Visual tells (knowledge/anti-slop.md, "Visual tells"): signals that a reason is missing, never banned
+  // styles, so every one is a warn that names the purpose gate to run. Reported once per page (page-scan keeps the first width).
+  const hsl = ([r, g, b]) => {
+    const [R, G, B] = [r, g, b].map((v) => v / 255);
+    const mx = Math.max(R, G, B), mn = Math.min(R, G, B), l = (mx + mn) / 2, d = mx - mn;
+    if (!d) return [0, 0, l];
+    const sat = d / (1 - Math.abs(2 * l - 1));
+    const h = mx === R ? ((G - B) / d) % 6 : mx === G ? (B - R) / d + 2 : (R - G) / d + 4;
+    return [(h * 60 + 360) % 360, sat, l];
+  };
+  const colours = (text) => [...String(text).matchAll(/rgba?\([^)]+\)/g)].map((m) => rgba(m[0])).filter(Boolean);
+  const vivid = (c) => { const [, sat, l] = hsl(c); return c[3] > 0.15 && sat >= 0.45 && l >= 0.25 && l <= 0.8; };
+  const visible = [...document.body.querySelectorAll("*")].filter((el) => outside(el) && !el.closest("svg") && shown(el));
+  const tell = (rule, key, el, message) => out.push({ rule, level: "warn", selector: el ? selector(el) : "page", message, once: key });
+  const few = (els) => els.slice(0, 3).map(selector).join(", ") + (els.length > 3 ? `, and ${els.length - 3} more` : "");
+
+  // Glow: a coloured shadow that spreads around the box or the text instead of falling below it.
+  const halo = (shadow) => {
+    if (!shadow || shadow === "none") return false;
+    return shadow.split(/,(?![^(]*\))/).some((part) => {
+      const c = colours(part)[0];
+      const n = (part.replace(/rgba?\([^)]+\)/, "").match(/-?\d+(\.\d+)?px/g) || []).map(parseFloat);
+      const [x = 0, y = 0, blur = 0] = n;
+      return c && vivid(c) && blur >= 12 && Math.abs(x) <= blur / 3 && Math.abs(y) <= blur / 3;
+    });
+  };
+  const glowing = visible.filter((el) => { const cs = style(el); return halo(cs.boxShadow) || halo(cs.textShadow) || /drop-shadow\(/.test(cs.filter) && halo(cs.filter.replace(/drop-shadow\(([^)]*\))\)/g, "$1")); });
+  if (glowing.length >= 3)
+    tell("RX-AS-05", "glow", glowing[0], `${glowing.length} elements glow (a coloured shadow around them, not below): ${few(glowing)}; a glow marks the one element that needs attention, so keep it on one or none`);
+
+  // Glass: background blur on several layers.
+  const glass = visible.filter((el) => /blur\(/.test(style(el).backdropFilter || style(el).webkitBackdropFilter || ""));
+  if (glass.length >= 3)
+    tell("RX-AS-05", "glass", glass[0], `${glass.length} layers blur what is behind them: ${few(glass)}; glass earns its place on the one surface that must show what is under it, and its text keeps contrast`);
+
+  // A blue-to-purple gradient across a large area.
+  const big = (el) => { const r = el.getBoundingClientRect(); return r.width >= vw * 0.5 && r.height >= 200; };
+  const wash = visible.find((el) => {
+    const bg = style(el).backgroundImage;
+    if (!/gradient\(/.test(bg) || !big(el)) return false;
+    const hues = colours(bg).filter((c) => hsl(c)[1] >= 0.3 && c[3] > 0.2).map((c) => hsl(c)[0]);
+    return hues.some((h) => h >= 195 && h < 250) && hues.some((h) => h >= 250 && h <= 320);
+  });
+  if (wash) tell("RX-UI-10", "wash", wash, "a blue-to-purple gradient behind a large area: it carries no meaning on its own; take colour from the brand's roles, or keep it only when the direction chose it");
+
+  // A dark page whose one accent is a saturated neon, glowing: the default look of an AI product.
+  const pageBg = background(document.elementFromPoint(vw / 2, 4) || document.body) || background(document.body);
+  if (pageBg && luminance(pageBg) < 0.03) {
+    const actions = visible.filter((el) => el.matches("button, a, [role=button]") && el.getBoundingClientRect().height >= 28);
+    const neon = actions.map((el) => rgba(style(el).backgroundColor)).find((c) => c && c[3] > 0.8 && hsl(c)[1] >= 0.75 && hsl(c)[2] >= 0.45 && hsl(c)[2] <= 0.75);
+    if (neon && glowing.length)
+      tell("RX-UI-26", "neon", null, `a near-black page with a neon accent (rgb ${neon.slice(0, 3).join(", ")}) and glow: the look an AI product gets by default; keep it only when the direction chose it over two others`);
+  }
+
+  // A pill above the main heading that does not carry status.
+  const status = /\b(beta|new|baru|v\d|\d{4}|live|soon|segera|preview)\b/i;
+  for (const h of visible.filter((el) => /^H[12]$/.test(el.tagName)).slice(0, 4)) {
+    let prev = h.previousElementSibling;
+    while (prev && !shown(prev)) prev = prev.previousElementSibling;
+    if (!prev) continue;
+    const r = prev.getBoundingClientRect(), cs = style(prev), text = prev.textContent.trim().replace(/\s+/g, " ");
+    const pill = parseFloat(cs.borderTopLeftRadius) >= r.height / 2 - 1 && r.height <= 40 && (cs.backgroundColor !== "rgba(0, 0, 0, 0)" || parseFloat(cs.borderTopWidth) > 0);
+    if (pill && !prev.matches("button, [role=button]") && /\p{L}{2}/u.test(text) && text.split(" ").length <= 6 && !status.test(text))
+      tell("RX-AS-05", "pill", prev, `a pill above the heading (${quote(text)}) with no status in it: say something the heading does not (a version, a date, beta), or cut it`);
+  }
+
+  // Monospace set for mood: prose in a monospace face outside code.
+  const mono = texts.filter((t) => outside(t.el) && /mono|courier|consolas|menlo/i.test(style(t.el).fontFamily) && !t.el.closest("code, pre, kbd, samp, var, time, [class*=code]") && t.text.split(" ").length >= 3 && /[a-z]{3}/i.test(t.text));
+  if (mono.length >= 3)
+    tell("RX-UI-10", "mono", mono[0].el, `${mono.length} pieces of prose are set in monospace (${quote(mono[0].text)}): keep monospace for code, IDs, and aligned figures`);
+
+  // An italic serif word inside a sans display heading.
+  for (const h of visible.filter((el) => /^H[12]$/.test(el.tagName) && parseFloat(style(el).fontSize) >= 32).slice(0, 4)) {
+    const accent = [...h.querySelectorAll("*")].find((el) => style(el).fontStyle === "italic" && /serif/i.test(style(el).fontFamily) && !/sans/i.test(style(el).fontFamily));
+    if (accent) { tell("RX-UI-10", "serif", accent, `an italic serif word inside the heading (${quote(accent.textContent.trim())}): a common generated accent; choose type for the product's voice, and keep it only when the direction names it`); break; }
+  }
+
+  // Cards inside cards: a bordered or shadowed, rounded, filled box holding another one.
+  const card = (el) => {
+    if (el.matches("input, textarea, select, button, img, video, svg, a")) return false;
+    const cs = style(el), r = el.getBoundingClientRect();
+    const edge = (parseFloat(cs.borderTopWidth) >= 1 && rgba(cs.borderTopColor)?.[3] > 0.1) || (cs.boxShadow && cs.boxShadow !== "none");
+    return edge && parseFloat(cs.borderTopLeftRadius) >= 6 && r.width >= 120 && r.height >= 60;
+  };
+  const cards = visible.filter(card);
+  // The outer box is in the flow and shorter than the screen, so a device frame, a sheet, or a sticky panel is not
+  // a card; and it holds two or more cards, so one framed product shot inside a stage is not counted.
+  const inFlow = (el) => /^(static|relative)$/.test(style(el).position) && el.getBoundingClientRect().height < innerHeight * 0.9;
+  const holds = (c) => cards.filter((d) => d !== c && c.contains(d) && !cards.some((e) => e !== c && e !== d && c.contains(e) && e.contains(d)));
+  const nested = cards.filter((c) => inFlow(c) && holds(c).length >= 2);
+  const outer = nested.filter((c) => !nested.some((d) => d !== c && d.contains(c)));
+  if (outer.length)
+    tell("RX-UI-01", "cards", outer[0], `cards sit inside a card (${outer.length === 1 ? "one box" : `${outer.length} boxes`}, the first holds ${holds(outer[0]).length}): one container per real group; separate inside it with spacing or a divider`);
+
   // Textarea growth (RX-FM-05): fill each shown textarea with 8 lines for a moment, let its own script
   // or field-sizing react, then compare its height with its content. The value is put back after.
   const frame = () => new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
