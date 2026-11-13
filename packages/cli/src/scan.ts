@@ -27,6 +27,9 @@ export interface ScanContext {
   /** Some scanned file handles prefers-reduced-transparency or prefers-contrast. Undefined when single
    *  files were scanned. */
   reducedTransparency?: boolean;
+  /** Some scanned file makes a textarea grow with its text (field-sizing: content, or a script that
+   *  reads scrollHeight, or an autosize component). Undefined when single files were scanned. */
+  growingTextarea?: boolean;
   /** The direction read from DESIGN.md (scan --design). Undefined without --design: drift stays quiet. */
   design?: Direction;
 }
@@ -35,6 +38,9 @@ export interface ScanContext {
 const LOADER = /spin|load|skeleton|shimmer|progress|pulse|busy|pending/i;
 /** Layout properties: animating them makes the browser lay the page out again on every frame. */
 const LAYOUT_PROPS = /^(?:width|height|top|left|right|bottom|margin(?:-\w+)?|padding(?:-\w+)?|max-height|max-width)$/;
+
+/** A textarea that grows with its text: CSS field-sizing, a script that sizes it from scrollHeight, or an autosize component. */
+const GROWS = /field-sizing\s*:\s*content|fieldSizing|\bscrollHeight\b|[Aa]utosize|autoResize|auto-resize|\bminRows\b|\bmaxRows\b/;
 
 const INDONESIAN = /\blang=["']id\b|\bid-ID\b|\blocale\s*[:=]\s*["'`]id\b|\bRp\.?\s?\d|\b(?:yang|untuk|tidak|silakan|pesanan|belum)\b/;
 const TEST_FILE = /(?:^|\/)(?:tests?|__tests__)\/|\.(?:test|spec)\.[cm]?[jt]sx?$/;
@@ -75,6 +81,7 @@ export const RENDER_CHECKS: Pick<Detector, "rule" | "level" | "looksFor">[] = [
   { rule: "RX-A11Y-01", level: "fail", looksFor: "text under 4.5:1 contrast (3:1 when large) on a solid background; text over images or gradients is skipped" },
   { rule: "RX-A11Y-02", level: "fail", looksFor: "controls under 24x24px that are crowded by neighbours (warn when spaced as WCAG 2.5.8 allows); rendered text under 12px (warn)" },
   { rule: "RX-QA-03", level: "warn", looksFor: "text boxes of unrelated elements that overlap" },
+  { rule: "RX-FM-05", level: "warn", looksFor: "a shown textarea that, filled with 8 lines for a moment, keeps its height and hides the text past its edge" },
   { rule: "RX-QA-08", level: "warn", looksFor: "script errors thrown while the page loads" },
 ];
 
@@ -370,6 +377,18 @@ export const DETECTORS: Detector[] = [
     },
   },
   {
+    rule: "RX-FM-05",
+    level: "warn",
+    looksFor: "a textarea in a folder where nothing makes a textarea grow with its text",
+    exts: [...MARKUP, ...SCRIPT],
+    folder: true,
+    find: ({ text }, ctx) => {
+      if (ctx.growingTextarea !== false) return [];
+      const m = /<(?:textarea|Textarea|TextArea)\b/.exec(text);
+      return m ? [{ index: m.index, length: m[0].length, message: "a textarea, and nothing in the scanned folder makes one grow with its text: a fixed box hides what the person wrote past its edge; use field-sizing: content, with a script that sets the height from scrollHeight where it is not supported" }] : [];
+    },
+  },
+  {
     rule: "RX-A11Y-08",
     level: "warn",
     looksFor: "animation in a folder where nothing handles prefers-reduced-motion",
@@ -562,6 +581,7 @@ export function scanSources(sources: Source[], opts: ScanOptions): ScanFinding[]
         reducedMotion: sources.some((s) => /prefers-reduced-motion|motion-(?:reduce|safe):|useReducedMotion|reducedMotion/.test(s.text)),
         indonesian: sources.some((s) => !TEST_FILE.test(s.path) && INDONESIAN.test(s.text)),
         reducedTransparency: sources.some((s) => /prefers-reduced-transparency|prefers-contrast|contrast-more:|useReducedTransparency/.test(s.text)),
+        growingTextarea: sources.some((s) => GROWS.test(s.text)),
       }
     : {};
   if (opts.design) ctx.design = opts.design;

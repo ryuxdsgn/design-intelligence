@@ -106,6 +106,12 @@ test("motion: endless loops, transition properties and length, and translucency"
   assert.deepEqual(folder([["a.css", ".bar { backdrop-filter: blur(20px) }"]]), ["warn RX-UI-35"]);
   assert.deepEqual(folder([["a.css", ".bar { backdrop-filter: blur(20px) }"], ["b.css", "@media (prefers-reduced-transparency: reduce) { .bar { background: #fff } }"]]), []);
   assert.deepEqual(scan("a.css", ".bar { backdrop-filter: blur(20px) }"), [], "single files skip folder checks");
+  // RX-FM-05: a textarea needs something in the folder that makes it grow
+  assert.deepEqual(folder([["a.html", '<textarea id="note" rows="5"></textarea>']]), ["warn RX-FM-05"]);
+  assert.deepEqual(folder([["a.html", '<textarea id="note"></textarea>'], ["b.css", "textarea { field-sizing: content }"]]), []);
+  assert.deepEqual(folder([["a.tsx", "<Textarea minRows={3} />"]]), []);
+  assert.deepEqual(folder([["a.html", "<textarea></textarea>"], ["b.js", "t.style.height = t.scrollHeight + 'px'"]]), []);
+  assert.deepEqual(scan("a.html", "<textarea></textarea>"), [], "single files skip the textarea check");
 });
 
 test("comments are not scanned, and ryux-ignore switches a rule off", () => {
