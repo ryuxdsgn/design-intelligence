@@ -266,6 +266,35 @@ body{margin:0;font:16px sans-serif;background:#fff}.wide{width:600px}.grey{color
   rmSync(dir, { recursive: true, force: true });
 });
 
+// Refine bench R2/R2b, 2026-11-13: a sticky total bar sliced the card's own Total row twice, and a
+// written before/after check did not see it. Same Playwright requirement as above.
+test("scan <url> fails text a bar cuts on the first screen or still covers at the end, not padded content", (t) => {
+  const dir = mkdtempSync(join(tmpdir(), "ryux-bar-"));
+  const page = (pad) => {
+    const path = join(dir, `bar-${pad}.html`);
+    writeFileSync(
+      path,
+      `<!doctype html><meta name="viewport" content="width=device-width"><style>
+body{margin:0;font:16px/20px sans-serif;background:#fff;color:#111}.phone{position:relative;height:600px;overflow:hidden}
+.content{height:100%;overflow-y:auto;padding-bottom:${pad}px;box-sizing:border-box}.gap{height:${pad ? 400 : 510}px}.tail{height:400px}
+.bar{position:absolute;left:0;right:0;bottom:0;height:80px;background:#fff;border-top:1px solid #ccc}</style>
+<div class="phone"><div class="content"><div class="gap"></div><p style="margin:0">Total Rp 170.000</p><div class="tail"></div><p style="margin:0">Last line here</p></div>
+<div class="bar"><span>Total Rp 170.000</span> <button>Confirm booking</button></div></div>`,
+    );
+    const r = run(process.env.RYUX_PLAYWRIGHT_CWD ?? join(dirname(cli), "..", "..", ".."), ["scan", `file://${path}`, "--widths", "390", "--json"]);
+    return r;
+  };
+  const cut = page(0);
+  if (/needs Playwright|could not start Chromium/.test(cut.out)) {
+    rmSync(dir, { recursive: true, force: true });
+    return t.skip("no Playwright browser here");
+  }
+  const bars = (r) => JSON.parse(r.out).findings.filter((f) => f.rule === "RX-QA-03" && f.level === "fail").map((f) => f.message.split(" bar ")[1].split(/[,:]/)[0]);
+  assert.deepEqual(bars(cut).sort(), ["on the first screen", "with the page scrolled to its end"]);
+  assert.deepEqual(bars(page(96)), []);
+  rmSync(dir, { recursive: true, force: true });
+});
+
 test("SVG art: no viewBox fails; fixed size, raster, text, and editor metadata warn once each", () => {
   // illustration baseline, 2026-10-29: 23 of 23 no-skill files had a fixed size, 8 had editor metadata
   assert.deepEqual(rules(scan("art/empty.svg", '<svg xmlns="http://www.w3.org/2000/svg"><path d="M0 0h4"/></svg>')), ["fail RX-UI-19"]);

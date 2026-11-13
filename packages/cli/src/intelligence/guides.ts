@@ -22,7 +22,7 @@ from DESIGN.md and the repo's screens). Pick the entry point, read its file, the
 | --- | --- | --- |
 | **Analyze** | understand a screen, product, or flow that exists | \`capabilities/analyze.md\` |
 | **Design** | create or improve UI and UX without code: Figma, pen.dev, mockups, copy; write or update DESIGN.md from a brief or references | \`capabilities/design.md\` |
-| **Build** | implement or change the interface in code | \`capabilities/build.md\` |
+| **Build** | implement or change the interface in code; refine a screen that works (polish, premium, easier to find) | \`capabilities/build.md\` |
 | **Critique** | find what should change first, and why; a heuristic evaluation | \`capabilities/critique.md\` |
 | **QA** | verify a build against the intended design | \`capabilities/qa.md\` |
 
@@ -715,7 +715,35 @@ workflow (SKILL.md); Frame, Explore, and Evaluate happen in Design.
    tests, render), or say what was not run. Run \`npx @ryuxdsgn/design-intelligence scan <changed
    paths>\` as well (add \`--design\` when DESIGN.md has a \`direction:\` block, so code that strays from its
    colours, type, radius, or durations shows as drift): fix every fail, and fix each warn or give the reason it stays. For a new flow or a consequential change, add the
-   usability test plan (RX-UX-12) unless the design already has one.`;
+   usability test plan (RX-UX-12) unless the design already has one.
+
+**Refining what exists.** When the ask improves a screen that works ("polish this", "make the total
+easier to find", "make it feel more premium") and gives no new design, steps 2 and 4 run this way:
+- **Diagnose first.** Render the target at the size it is used and write three to five findings in
+  the Critique schema (capabilities/critique.md, step 8: severity, evidence, the smallest fix that
+  removes the cause), the scope asked, and what stays (the direction in DESIGN.md, copy, data, flows,
+  everything outside the scope). Read the modules those findings touch, not only this file.
+- **Fix by impact, not by ease.** Take the findings with the highest severity and make each fix at a
+  strength a person sees at that size; detail polish comes after.
+- **A mood ask** (premium, cleaner, bolder) owns the first screen's focal hierarchy: the hero figure,
+  the type scale and its contrast, how much accent is spent, the loudest decoration. Change it there,
+  inside the direction, so it reads at first glance; a list of one-pixel adjustments does not answer
+  it. Only a new section, a reordered page, or a new direction is offered with the before beside it
+  and asked first.
+- **A find-it ask** ("make the total easier to find") strengthens the thing where it already is: size,
+  weight, contrast, its place in its own block. Add a second copy (a sticky bar) only when the first
+  is out of view on the first screen; show it only while the first is out of view, give the content
+  bottom space the height of the bar, and leave the primary action's label and the figure it carries
+  as they are.
+- **"Keep everything else" is literal.** A change outside the scope that seems needed (a duplicate
+  the fix would create, a shorter button label) is proposed in the reply, not made.
+- **Check the outcome, not only the layout.** Render before and after at the same viewport, the first
+  screen the person sees and the state the ask is about, and answer the ask itself ("is the total
+  easier to find than before?"). Run \`ryux scan <url>\` on that state when Playwright is there: text a
+  bar cuts or covers fails, whatever the code says. Report what changed, why, what stayed, and that
+  answer.
+- A fix ask (polish, clean up) where no finding reaches severity 2 gets "no change needed" and the
+  findings; a mood ask still gets its first-glance change.`;
 
 export const CORE_EVIDENCE = `Say where every claim comes from:
 
