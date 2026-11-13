@@ -31,6 +31,26 @@ test("serveAndWait binds loopback only and resolves a pick from a POST", async (
   assert.equal(addr, "127.0.0.1");
 });
 
+test("serveAndWait keeps the picked direction's name as one clean line", async () => {
+  let port;
+  const p = serveAndWait({ html: "<i>x</i>", timeoutMs: 5000, open: false, onListening: (x) => (port = x) });
+  await new Promise((r) => setTimeout(r, 50));
+  await fetch(`http://127.0.0.1:${port}/pick`, {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({ choice: "1", name: "  Besek\n\u001b[31m (recommended)  " }),
+  });
+  assert.deepEqual(await p, { kind: "pick", n: 1, name: "Besek [31m (recommended)" });
+});
+
+test("injectHooks confirms the choice on the page in the page's language and points back to the CLI", () => {
+  const out = injectHooks("<html lang='id'><body></body></html>");
+  assert.match(out, /Kamu memilih/);
+  assert.match(out, /Kembali ke CLI/);
+  assert.match(out, /You picked/);
+  assert.match(out, /window\.close\(\)/);
+});
+
 test("serveAndWait resolves regenerate", async () => {
   let port;
   const p = serveAndWait({
