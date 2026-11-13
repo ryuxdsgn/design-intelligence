@@ -168,6 +168,7 @@ Real screens show what real products do instead of invented numbers and urgency:
 - Do not: Keep cards, gradients, badges, shadows, or animation that have no reason, or accept "it looks more interesting" as one.
 - Why: Unjustified decoration is what makes AI-generated UI look the same. (ryux anti-slop principle; selective attention and banner blindness (Benway and Lane 1998; NNGroup eyetracking): people skip what looks like an ad or decoration, so a key message never wears that look)
 - Check: review
+- Measured: `ryux scan <url>` flags visual tells, once per page: three or more glowing elements (a coloured shadow around them), three or more blurred glass layers, or a pill above the main heading with no status in it (warn)
 
 ### RX-AS-06 [Required] Complexity with a reason
 

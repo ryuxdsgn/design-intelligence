@@ -295,6 +295,46 @@ body{margin:0;font:16px/20px sans-serif;background:#fff;color:#111}.phone{positi
   rmSync(dir, { recursive: true, force: true });
 });
 
+// Visual tells (knowledge/anti-slop.md): warn once per page, never at a single, reasoned use.
+test("scan <url> warns each visual tell once per page, and stays quiet on one reasoned use", (t) => {
+  const dir = mkdtempSync(join(tmpdir(), "ryux-tells-"));
+  const page = (name, body) => {
+    const path = join(dir, `${name}.html`);
+    writeFileSync(path, `<!doctype html><meta name="viewport" content="width=device-width"><style>
+body{margin:0;font:16px/1.5 sans-serif;background:#05060a;color:#eee}.mono{font-family:Menlo,monospace}
+.glow{box-shadow:0 0 24px rgba(168,85,247,.7)}.glass{backdrop-filter:blur(12px)}
+.wash{height:240px;background:linear-gradient(135deg,#3b82f6,#a855f7)}.pill{display:inline-block;border-radius:999px;padding:4px 12px;background:#222}
+.card{border:1px solid #333;border-radius:12px;padding:16px;min-height:80px}.cta{background:#39ff14;color:#000;padding:12px 20px;display:inline-block}
+h1{font-size:48px;margin:8px 0}h1 em{font-family:Georgia,serif;font-style:italic}</style>${body}`);
+    return run(process.env.RYUX_PLAYWRIGHT_CWD ?? join(dirname(cli), "..", "..", ".."), ["scan", `file://${path}`, "--widths", "390,1280", "--json"]);
+  };
+  const tells = (r) => JSON.parse(r.out).findings.filter((f) => f.level === "warn" && /^RX-(AS-05|UI-10|UI-26|UI-01)$/.test(f.rule)).map((f) => `${f.rule} ${f.message.split(/[:(]/)[0].trim()}`);
+  const slop = page("slop", `<div class="wash"><span class="pill">AI-powered writing</span><h1>Write <em>faster</em> today</h1>
+<a class="cta glow" href="#">Start free</a> <span class="glow">one</span> <span class="glow">two</span></div>
+<nav class="glass">a</nav><div class="glass">b</div><div class="glass">c</div>
+<p class="mono">Built for teams who ship.</p><p class="mono">Every word in its place.</p><p class="mono">Write once, publish anywhere.</p>
+<section class="card"><div class="card">Plan one</div><div class="card">Plan two</div></section>`);
+  if (/needs Playwright|could not start Chromium/.test(slop.out)) {
+    rmSync(dir, { recursive: true, force: true });
+    return t.skip("no Playwright browser here");
+  }
+  assert.deepEqual(tells(slop).sort(), [
+    "RX-AS-05 3 elements glow",
+    "RX-AS-05 3 layers blur what is behind them",
+    "RX-AS-05 a pill above the heading",
+    "RX-UI-01 cards sit inside a card",
+    "RX-UI-10 3 pieces of prose are set in monospace",
+    "RX-UI-10 a blue-to-purple gradient behind a large area",
+    "RX-UI-10 an italic serif word inside the heading",
+    "RX-UI-26 a near-black page with a neon accent",
+  ]);
+  const quiet = page("quiet", `<style>body{background:#fafafa;color:#111}</style><span class="pill">Beta</span><h1>Write faster today</h1><a class="cta glow" href="#">Start free</a>
+<nav class="glass">a</nav><p>Run <code class="mono">npx ryux scan</code> to check.</p>
+<section class="card"><div class="card">One framed shot</div></section>`);
+  assert.deepEqual(tells(quiet), []);
+  rmSync(dir, { recursive: true, force: true });
+});
+
 test("SVG art: no viewBox fails; fixed size, raster, text, and editor metadata warn once each", () => {
   // illustration baseline, 2026-10-29: 23 of 23 no-skill files had a fixed size, 8 had editor metadata
   assert.deepEqual(rules(scan("art/empty.svg", '<svg xmlns="http://www.w3.org/2000/svg"><path d="M0 0h4"/></svg>')), ["fail RX-UI-19"]);

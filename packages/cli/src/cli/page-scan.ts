@@ -56,6 +56,7 @@ export async function scanPages(urls: string[], widths: number[]): Promise<PageS
     throw new Error(`Playwright could not start Chromium. Run: npx playwright install chromium\n${err instanceof Error ? err.message.split("\n")[0] : err}`);
   }
   const findings: ScanFinding[] = [];
+  const seen = new Set<string>();
   const ignored = new Map<string, Set<string>>();
   try {
     for (const url of urls) {
@@ -66,7 +67,9 @@ export async function scanPages(urls: string[], widths: number[]): Promise<PageS
         const errors: string[] = [];
         page.on("pageerror", (e) => errors.push(e.message.split("\n")[0]));
         const add = (f: ProbeFinding): void => {
-          findings.push({ ...f, file: url, line: 0, column: 0, width });
+          const { once, ...rest } = f;
+          if (once) { if (seen.has(`${url} ${f.rule} ${once}`)) return; seen.add(`${url} ${f.rule} ${once}`); }
+          findings.push({ ...rest, file: url, line: 0, column: 0, width });
         };
         try {
           await page.goto(url, { waitUntil: "networkidle", timeout: 30_000 }).catch(() => page.goto(url, { waitUntil: "load", timeout: 30_000 }));

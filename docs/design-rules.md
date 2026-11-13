@@ -976,6 +976,7 @@ Gate area UI. Covers the visual system of a product: hierarchy, type, layout, de
 - Not when: screens with several equal peers, such as a dashboard of comparable items; use consistent hierarchy within each card instead
 - Trade-off: emphasizing one thing de-emphasizes the rest
 - Check: visual QA
+- Measured: `ryux scan <url>` flags a bordered or shadowed, rounded box that holds another one (cards inside cards) (warn)
 
 #### RX-UI-03 [Preferred] [Quality Lock] One spacing and type scale
 
@@ -1020,6 +1021,7 @@ Gate area UI. Covers the visual system of a product: hierarchy, type, layout, de
 - Not when: an existing brand system already defines the visual language; follow it
 - Trade-off: a brief takes time before any image exists
 - Check: the Visual Brief; review
+- Measured: `ryux scan <url>` flags visual tells, once per page: a blue-to-purple gradient behind a large area, prose set in monospace, or an italic serif word inside a display heading (warn)
 
 #### RX-UI-26 [Preferred] With no direction given, discover three and let the user choose
 
@@ -1038,6 +1040,7 @@ Gate area UI. Covers the visual system of a product: hierarchy, type, layout, de
 - Not when: the prompt or DESIGN.md sets the direction, an existing brand system defines it, or the product already has screens, code, or a design file: their visual language is the direction, read through Analyze and written as the direction: block with status observed and its source files, unless the user asks for a new look; follow it, and on a surface it was not written for, carry it by RX-UI-33. A small change inside an existing product
 - Trade-off: one more question and three tiles before the design starts
 - Check: the Delivery Gate names the three directions offered, the answer each rests on, the one used, and whether the user chose it or it is provisional; the three differ on at least three grammar dimensions; three base surface families, warm off-white at most one, one cool or neutral direction; flat with flat vectors at most one, a render, retouched photo, or UI composite in at least one; three idea sources, one from the audience's culture or place, its meaning named; one numbering for the options; a made asset in each tile
+- Measured: `ryux scan <url>` flags a near-black page whose action colour is a saturated neon, with glow: the default look of an AI product (warn)
 
 #### RX-UI-31 [Preferred] A palette is built from roles, not picked
 
@@ -1908,6 +1911,7 @@ Gate area ANTI-SLOP. Covers hard gates, purpose gates, quality locks, honest cla
 - Do not: Keep cards, gradients, badges, shadows, or animation that have no reason, or accept "it looks more interesting" as one.
 - Why: Unjustified decoration is what makes AI-generated UI look the same. (ryux anti-slop principle; selective attention and banner blindness (Benway and Lane 1998; NNGroup eyetracking): people skip what looks like an ad or decoration, so a key message never wears that look)
 - Check: review
+- Measured: `ryux scan <url>` flags visual tells, once per page: three or more glowing elements (a coloured shadow around them), three or more blurred glass layers, or a pill above the main heading with no status in it (warn)
 
 #### RX-AS-06 [Required] Complexity with a reason
 
