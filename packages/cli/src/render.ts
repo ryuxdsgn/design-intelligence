@@ -70,13 +70,15 @@ export function deliveryGateTemplate(): string {
     a === "FINAL"
       ? `${a.padEnd(width)}PASS | FAIL | NOT VERIFIED`
       : a === "UI"
-        ? `${a.padEnd(width)}PASS | FAIL | NOT VERIFIED | N/A  · one-line reason · point of view: <concept> | task UI, signature: <signature> · concept sections <n>/<total>, devices <n>, focal subjects <n>/<sections>, carrier <kind>, made assets <n>/<planned> · illustration style: <where written> | none`
+        ? `${a.padEnd(width)}PASS | FAIL | NOT VERIFIED | N/A  · one-line reason · point of view: <concept> | task UI, signature: <signature> · concept sections <n>/<total>, devices <n>, focal subjects <n>/<sections>, carrier <kind>, made assets <n>/<planned>, product proof photo | render | drawn | none · illustration style: <where written> | none`
         : a === "PRODUCT"
         ? `${a.padEnd(width)}PASS | FAIL | NOT VERIFIED | N/A  · one-line reason · evidence Strong | Thin | None · rationale <n> lines, annotations <n> | none · modules read <list>`
         : a === "CONTENT"
         ? `${a.padEnd(width)}PASS | FAIL | NOT VERIFIED | N/A  · one-line reason · open rules on screen <tagged>/<shown> | none`
         : a === "DESIGN SYSTEM"
         ? `${a.padEnd(width)}PASS | FAIL | NOT VERIFIED | N/A  · one-line reason · icon strokes <n>, icon colours <n> (<unbound> unbound), uneven sets <n>, missing variants <n> · library instances <n>, new local <n> (marked <n>), redrawn <n> | not drawn`
+        : a === "UX"
+        ? `${a.padEnd(width)}PASS | FAIL | NOT VERIFIED | N/A  · one-line reason · pricing: plans <n>, with their own action <n>, free start in the row yes | no | none | no pricing`
         : a === "EDGE CASES"
         ? `${a.padEnd(width)}PASS | FAIL | NOT VERIFIED | N/A  · one-line reason · then the view × state matrix (RX-EC-01)`
         : `${a.padEnd(width)}PASS | FAIL | NOT VERIFIED | N/A  · one-line reason`,

@@ -202,7 +202,7 @@ How Indonesian apps sequence and structure this flow: `get_flow` for a reference
 - Why: People weigh every trade-off only when the options are few and the differences are easy to see; when they have to hunt for the difference, they take the first option that seems good enough. (NNGroup psychology study guide: explicit differences, compensatory and noncompensatory decisions, satisficing; Hick's law and choice overload (RX-PR-03); written for RYUX; owner blind ratings 2026-11-13 of an AI product-photo landing (not published): pricing without an action per plan, the free start left out of the plans, mobile plans most expensive first, and no answer to what happens after the free photos)
 - Not when: a single option, or options that differ only in one value the control already shows (a size picker, a time slot)
 - Trade-off: shared details move out of the cards; a reader who reads only one card sees less
-- Check: review: list each option's attributes; the differing ones come first and in the same order on every option
+- Check: review: list each option's attributes; the differing ones come first and in the same order on every option; on a pricing section, count the plans and the plans with their own action (the gate's UX line), and every plan, the free start included, sits in one row
 
 ### RX-UX-15 [Preferred] A running total sits with the action it pays for
 
