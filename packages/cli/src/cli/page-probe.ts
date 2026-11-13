@@ -18,7 +18,7 @@ export interface ProbeResult {
   ignored: string[];
 }
 
-export function probe(): ProbeResult {
+export async function probe(): Promise<ProbeResult> {
   const out = [];
   const vw = document.documentElement.clientWidth;
 
@@ -234,5 +234,31 @@ export function probe(): ProbeResult {
       out.push({ rule: "RX-QA-03", level: "warn", selector: selector(a.t.el), message: `${quote(a.t.text)} overlaps ${quote(b.t.text)} (${selector(b.t.el)})` });
     }
   }
+  // Textarea growth (RX-FM-05): fill each shown textarea with 8 lines for a moment, let its own script
+  // or field-sizing react, then compare its height with its content. The value is put back after.
+  const frame = () => new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
+  for (const ta of document.body.querySelectorAll("textarea")) {
+    if (!outside(ta) || !shown(ta) || disabled(ta) || ta.readOnly) continue;
+    const before = ta.value;
+    const h0 = ta.getBoundingClientRect().height;
+    ta.value = Array.from({ length: 8 }, (_, i) => `Line ${i + 1} of a longer note`).join("\n");
+    ta.dispatchEvent(new Event("input", { bubbles: true }));
+    await frame();
+    const h1 = ta.getBoundingClientRect().height;
+    const hidden = ta.scrollHeight - ta.clientHeight;
+    ta.value = before;
+    ta.dispatchEvent(new Event("input", { bubbles: true }));
+    if (hidden > 4 && h1 <= h0 + 1) {
+      const name = ta.labels?.[0]?.textContent?.trim().replace(/\s+/g, " ") || ta.getAttribute("aria-label") || ta.name || "textarea";
+      out.push({
+        rule: "RX-FM-05",
+        level: "warn",
+        selector: selector(ta),
+        message: `${quote(name)}: with 8 lines it stays ${Math.round(h0)}px tall and hides ${Math.round(hidden)}px of text past its edge; let it grow (field-sizing: content, or set the height from scrollHeight on input)`,
+      });
+    }
+  }
+  await frame();
+
   return { findings: out, ignored: ignoredRegions.map(selector) };
 }
