@@ -856,6 +856,7 @@ Options:
   --design [file]      scan: compare colours, fonts, radius, and durations with DESIGN.md's direction
   --ignore <ids>       scan: skip rules, e.g. RX-DS-03 (or a ryux-ignore RX-.. comment in the file)
   --widths <list>      scan <url>: viewport widths in CSS px (default 320,390,1280)
+                       (a prototype's own controls marked data-ryux-ignore are not measured)
   --timeout <seconds>  pick: how long to wait for a click before falling back (default 240)
   --product, --work, --audience, --market, --constraints, --intent, --ux, --ui, --voice, --motion <text>
                        set project context fields without questions (setup)

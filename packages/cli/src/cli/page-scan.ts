@@ -5,7 +5,7 @@ import { createRequire } from "node:module";
 import { join } from "node:path";
 import { pathToFileURL } from "node:url";
 import type { ScanFinding } from "../scan.js";
-import { probe, type ProbeFinding } from "./page-probe.js";
+import { probe, type ProbeFinding, type ProbeResult } from "./page-probe.js";
 
 interface Page {
   on(event: "pageerror", cb: (err: Error) => void): void;
@@ -40,7 +40,13 @@ async function loadChromium(): Promise<Chromium | null> {
 
 /** Render each URL at each width and return the findings. Throws PLAYWRIGHT_MISSING when there is no
  *  Playwright, and a launch error when its browser is not installed. */
-export async function scanPages(urls: string[], widths: number[]): Promise<ScanFinding[]> {
+export interface PageScan {
+  findings: ScanFinding[];
+  /** Per URL, the regions marked data-ryux-ignore that were not measured. */
+  ignored: { url: string; regions: string[] }[];
+}
+
+export async function scanPages(urls: string[], widths: number[]): Promise<PageScan> {
   const chromium = await loadChromium();
   if (!chromium) throw new Error(PLAYWRIGHT_MISSING);
   let browser: Browser;
@@ -50,6 +56,7 @@ export async function scanPages(urls: string[], widths: number[]): Promise<ScanF
     throw new Error(`Playwright could not start Chromium. Run: npx playwright install chromium\n${err instanceof Error ? err.message.split("\n")[0] : err}`);
   }
   const findings: ScanFinding[] = [];
+  const ignored = new Map<string, Set<string>>();
   try {
     for (const url of urls) {
       for (const width of widths) {
@@ -69,7 +76,13 @@ export async function scanPages(urls: string[], widths: number[]): Promise<ScanF
           continue;
         }
         await page.waitForTimeout(300);
-        (await page.evaluate(probe)).forEach(add);
+        const result: ProbeResult = await page.evaluate(probe);
+        result.findings.forEach(add);
+        if (result.ignored.length) {
+          const set = ignored.get(url) ?? new Set<string>();
+          result.ignored.forEach((r) => set.add(r));
+          ignored.set(url, set);
+        }
         for (const message of [...new Set(errors)]) {
           add({ rule: "RX-QA-08", level: "warn", selector: "page", message: `the page threw "${message}" while loading; check that the primary task still completes` });
         }
@@ -79,5 +92,5 @@ export async function scanPages(urls: string[], widths: number[]): Promise<ScanF
   } finally {
     await browser.close();
   }
-  return findings;
+  return { findings, ignored: [...ignored].map(([url, regions]) => ({ url, regions: [...regions] })) };
 }
