@@ -20,8 +20,8 @@ cannot happen in this product do not need a design; say so in the Delivery Gate.
 
 **Local money and identity flows.** Each common Indonesian flow has options and states its users
 expect. Treat this list as the floor. Reference screens (`get_local_pattern`, `search_screens`) and
-designer notes, when connected, come first; a value in the last column is asked or left open, never
-made up (RX-PR-02):
+designer notes, when connected, come first. A value in the last column is asked, or shown in its place as a
+labelled sample and listed as open; never dropped from the screen, never presented as fact (RX-PR-02):
 
 | Flow | Before the user commits | After, and when it goes wrong | Ask, never invent |
 | --- | --- | --- | --- |
