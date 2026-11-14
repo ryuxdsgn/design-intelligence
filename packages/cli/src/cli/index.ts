@@ -17,7 +17,7 @@ import { CLI_CMD, CONTEXT_END, CONTEXT_FILE, CONTEXT_START, MARK_START, MCP_STAT
 import { validateBundle } from "../validate.js";
 import { renderAgentsBlock, renderBundle, renderPointerBlock, SKILL_NAME } from "../render.js";
 import { hasBlock, readIfExists, rel, removeBlock, removePath, upsertBlock, writeFileEnsured } from "./fsutil.js";
-import { HOOK_AGENTS, HOOK_SPECS, hookAgents, installHook, removeHook, type HookAgent } from "./hook.js";
+import { HOOK_AGENTS, hookAgents, hookFile, installHook, removeHook, type HookAgent } from "./hook.js";
 import { runScan } from "./scan.js";
 import { runPick } from "./pick.js";
 import { readFile, readdir } from "node:fs/promises";
@@ -221,7 +221,7 @@ async function runInstall(flags: Flags): Promise<void> {
   const hookable = HOOK_AGENTS.filter((a) => agents.includes(a));
   let hook = Boolean(flags.hook);
   if (!nonInteractive && hookable.length) {
-    const files = hookable.map((a) => HOOK_SPECS[a].file).join(", ");
+    const files = hookable.map((a) => hookFile(a, scope.global)).join(", ");
     const h = await p.confirm({ message: `Run ryux scan on each file the agent edits? (adds a hook to ${files})`, initialValue: false });
     if (p.isCancel(h)) return cancel();
     hook = h;
@@ -234,13 +234,13 @@ async function runInstall(flags: Flags): Promise<void> {
 
   if (flags["dry-run"]) {
     const plan = await planInstall(agents, scope);
-    const present = await hookAgents(scope.root);
-    for (const a of hooks) plan.push(`${present.includes(a) ? "update" : "add"} the scan hook in ${HOOK_SPECS[a].file} (runs ryux scan after each edit)`);
+    const present = await hookAgents(scope.root, scope.global);
+    for (const a of hooks) plan.push(`${present.includes(a) ? "update" : "add"} the scan hook in ${hookFile(a, scope.global)} (runs ryux scan after each edit)`);
     console.log(`Dry run: nothing was written. ${CLI_CMD} ${flags.init ? "init" : "install"} would:\n${plan.map((l) => `  ${l}`).join("\n")}`);
     return;
   }
   const written = await install(agents, scope);
-  for (const a of hooks) written.push(await installHook(scope.root, a));
+  for (const a of hooks) written.push(await installHook(scope.root, a, scope.global));
   const summary = written.map((w) => pc.green("✓ ") + w).join("\n");
   if (nonInteractive) console.log(summary);
   else p.note(summary, "Installed");
@@ -277,7 +277,7 @@ async function runUpdate(flags: Flags): Promise<void> {
   }
   const done: string[] = [];
   for (const dir of dirs) done.push(...(await writeSkills(dir, scope.root)));
-  for (const a of await hookAgents(scope.root)) done.push(await installHook(scope.root, a));
+  for (const a of await hookAgents(scope.root, scope.global)) done.push(await installHook(scope.root, a, scope.global));
   if (!scope.global) {
     for (const file of ["CLAUDE.md", "GEMINI.md", "AGENTS.md"] as PointerFile[]) {
       const path = join(scope.root, file);
@@ -299,7 +299,7 @@ async function runRemove(flags: Flags): Promise<void> {
     await Promise.all(pointerFiles.map(async (f) => (await readIfExists(join(scope.root, f)))?.includes(MARK_START)))
   ).some(Boolean);
   const hasLegacyCursor = existsSync(join(scope.root, LEGACY_CURSOR_RULES_DIR));
-  if (!hasSkills && !hasBlocks && !hasLegacyCursor && !(await hookAgents(scope.root)).length) {
+  if (!hasSkills && !hasBlocks && !hasLegacyCursor && !(await hookAgents(scope.root, scope.global)).length) {
     console.log("No RYUX install found.");
     return;
   }
@@ -319,7 +319,7 @@ async function runRemove(flags: Flags): Promise<void> {
     removed.push(...(await removeLegacy(dir, scope.root)));
   }
   for (const f of pointerFiles) if (await removeBlock(join(scope.root, f))) removed.push(`${f} (block)`);
-  for (const a of HOOK_AGENTS) if (await removeHook(scope.root, a)) removed.push(`${HOOK_SPECS[a].file} (scan hook)`);
+  for (const a of HOOK_AGENTS) if (await removeHook(scope.root, a, scope.global)) removed.push(`${hookFile(a, scope.global)} (scan hook)`);
   console.log(removed.length ? removed.map((r) => pc.red("− ") + r).join("\n") : "No files removed.");
 }
 
@@ -382,7 +382,7 @@ async function runCheck(flags: Flags): Promise<void> {
       if (sections < DESIGN_SECTIONS.length) add("ok", CONTEXT_FILE, `${sections} of ${DESIGN_SECTIONS.length} design sections. ${AGENT_DESIGN_HINT}`);
     } else add("warn", CONTEXT_FILE, "no RYUX project context", "setup");
   }
-  for (const a of await hookAgents(scope.root)) add("ok", HOOK_SPECS[a].file, "scan hook present");
+  for (const a of await hookAgents(scope.root, scope.global)) add("ok", hookFile(a, scope.global), "scan hook present");
 
   const ok = !findings.some((f) => f.level === "fail");
   if (!ok) process.exitCode = 1;
@@ -856,7 +856,7 @@ Options:
   --yes                skip the confirmation (remove)
   --dry-run            list what install or init would create or update, and write nothing
   --json               print check's or scan's findings as JSON (for agents and CI)
-  --hook               install: run ryux scan after each edit, for Claude Code, Codex, and Cursor (opt-in)
+  --hook               install: run ryux scan after each edit, for Claude Code, Codex, Cursor, and OpenCode (opt-in)
   --list-rules         scan: list what each check looks for
   --design [file]      scan: compare colours, fonts, radius, and durations with DESIGN.md's direction
   --ignore <ids>       scan: skip rules, e.g. RX-DS-03 (or a ryux-ignore RX-.. comment in the file)

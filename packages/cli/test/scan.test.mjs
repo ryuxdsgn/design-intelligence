@@ -3,7 +3,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
-import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -266,6 +266,34 @@ test("install --hook writes the Codex and Cursor hook files next to their own en
   assert.equal(run(dir, ["remove", "--yes"]).code, 0);
   assert.deepEqual(JSON.parse(readFileSync(cursorFile, "utf8")), { version: 1, hooks: { afterFileEdit: [theirs] } });
   assert.equal(JSON.parse(readFileSync(join(dir, ".codex", "hooks.json"), "utf8")).hooks, undefined);
+  rmSync(dir, { recursive: true, force: true });
+});
+
+// OpenCode's hook is a plugin file RYUX owns; run end to end in OpenCode 2.2.7 on 2026-11-14 (the agent fixed Rp 50.000).
+test("install --hook writes the OpenCode plugin, scan --hook opencode prints plain text, and remove deletes only ours", async () => {
+  const dir = mkdtempSync(join(tmpdir(), "ryux-scan-"));
+  writeFileSync(join(dir, "package.json"), "{}");
+  writeFileSync(join(dir, "bad.tsx"), "<p>Rp 50.000</p>");
+  const r = run(dir, ["scan", "--hook", "opencode"], JSON.stringify({ cwd: dir, file_path: "bad.tsx" }));
+  assert.equal(r.code, 0);
+  assert.match(r.out, /^RYUX scan found 1 issue/);
+  assert.match(r.out, /RX-CD-02/);
+  assert.equal(run(dir, ["install", "--agent", "opencode", "--hook"]).code, 0);
+  const plugin = join(dir, ".opencode", "plugins", "ryux-scan.js");
+  const src = readFileSync(plugin, "utf8");
+  assert.match(src, new RegExp(`const COMMAND = "npx -y @ryuxdsgn/design-intelligence@${VERSION.replace(/\./g, "\\.")} scan --hook opencode";`));
+  const mod = await import(`file://${plugin}`);
+  assert.equal(mod.default.id, "ryux-scan");
+  assert.equal(typeof mod.default.setup, "function");
+  assert.equal(typeof mod.default.server, "function");
+  assert.match(run(dir, ["check"]).out, /\.opencode\/plugins\/ryux-scan\.js.*scan hook present/);
+  assert.match(run(dir, ["install", "--agent", "opencode", "--hook"]).out, /already present/);
+  assert.equal(run(dir, ["remove", "--yes"]).code, 0);
+  assert.equal(existsSync(plugin), false);
+  mkdirSync(join(dir, ".opencode", "plugins"), { recursive: true });
+  writeFileSync(plugin, "export default {}");
+  assert.equal(run(dir, ["install", "--agent", "opencode", "--hook"]).code, 1, "a file of the same name that is not ours is never overwritten");
+  assert.equal(readFileSync(plugin, "utf8"), "export default {}");
   rmSync(dir, { recursive: true, force: true });
 });
 
