@@ -222,6 +222,53 @@ test("install --hook adds the hook, keeps the user's settings, and remove takes 
   rmSync(dir, { recursive: true, force: true });
 });
 
+// Codex's apply_patch hands over patch text, not a path; Codex and Cursor read the result as JSON context.
+// Payload shapes follow each agent's hook docs (2026-11-14); not yet run inside Codex or Cursor.
+test("scan --hook codex|cursor reads each agent's payload and answers in its JSON", () => {
+  const dir = mkdtempSync(join(tmpdir(), "ryux-scan-"));
+  mkdirSync(join(dir, "src"));
+  writeFileSync(join(dir, "src", "bad.tsx"), "<p>Rp 50.000</p>");
+  writeFileSync(join(dir, "ok.tsx"), "<p>Rp50.000</p>");
+  const patch = (file) => ["*** Begin Patch", `*** Update File: ${file}`, "@@", "-<p>x</p>", "+<p>y</p>", "*** End Patch"].join("\n");
+  const codex = (file) => run(dir, ["scan", "--hook", "codex"], JSON.stringify({ cwd: dir, hook_event_name: "PostToolUse", tool_name: "apply_patch", tool_input: { command: patch(file) } }));
+  const bad = codex("src/bad.tsx");
+  assert.equal(bad.code, 0, "Codex keeps the edit's result; the finding goes in as context");
+  assert.match(JSON.parse(bad.out).hookSpecificOutput.additionalContext, /RX-CD-02/);
+  assert.equal(codex("ok.tsx").out.trim(), "");
+  const cursor = (input) => run(dir, ["scan", "--hook", "cursor"], JSON.stringify({ cwd: dir, tool_name: "Write", ...input }));
+  const c = cursor({ tool_input: { file_path: join(dir, "src", "bad.tsx") } });
+  assert.equal(c.code, 0);
+  assert.match(JSON.parse(c.out).additional_context, /RX-CD-02/);
+  assert.match(JSON.parse(cursor({ file_path: join(dir, "src", "bad.tsx") }).out).additional_context, /RX-CD-02/, "afterFileEdit shape");
+  assert.equal(cursor({ tool_input: { file_path: join(dir, "ok.tsx") } }).out.trim(), "");
+  rmSync(dir, { recursive: true, force: true });
+});
+
+test("install --hook writes the Codex and Cursor hook files next to their own entries, and remove takes only ours", () => {
+  const dir = mkdtempSync(join(tmpdir(), "ryux-scan-"));
+  writeFileSync(join(dir, "package.json"), "{}");
+  mkdirSync(join(dir, ".cursor"));
+  const cursorFile = join(dir, ".cursor", "hooks.json");
+  const theirs = { command: ".cursor/hooks/format.sh" };
+  writeFileSync(cursorFile, JSON.stringify({ version: 1, hooks: { afterFileEdit: [theirs] } }));
+  assert.equal(run(dir, ["install", "--agent", "codex,cursor", "--hook"]).code, 0);
+  const codex = JSON.parse(readFileSync(join(dir, ".codex", "hooks.json"), "utf8"));
+  assert.deepEqual(codex.hooks.PostToolUse, [{ matcher: "apply_patch", hooks: [{ type: "command", command: `npx -y @ryuxdsgn/design-intelligence@${VERSION} scan --hook codex` }] }]);
+  const cursor = JSON.parse(readFileSync(cursorFile, "utf8"));
+  assert.equal(cursor.version, 1);
+  assert.deepEqual(cursor.hooks.afterFileEdit, [theirs]);
+  assert.deepEqual(cursor.hooks.postToolUse, [{ matcher: "Write|Edit", command: `npx -y @ryuxdsgn/design-intelligence@${VERSION} scan --hook cursor` }]);
+  run(dir, ["install", "--agent", "codex,cursor", "--hook"]);
+  assert.equal(JSON.parse(readFileSync(cursorFile, "utf8")).hooks.postToolUse.length, 1, "installing twice adds it once");
+  const check = run(dir, ["check"]).out;
+  assert.match(check, /\.codex\/hooks\.json.*scan hook present/);
+  assert.match(check, /\.cursor\/hooks\.json.*scan hook present/);
+  assert.equal(run(dir, ["remove", "--yes"]).code, 0);
+  assert.deepEqual(JSON.parse(readFileSync(cursorFile, "utf8")), { version: 1, hooks: { afterFileEdit: [theirs] } });
+  assert.equal(JSON.parse(readFileSync(join(dir, ".codex", "hooks.json"), "utf8")).hooks, undefined);
+  rmSync(dir, { recursive: true, force: true });
+});
+
 test("scan <url> without Playwright says how to add it and exits 1", () => {
   const dir = mkdtempSync(join(tmpdir(), "ryux-scan-"));
   const r = run(dir, ["scan", "https://example.com"]);
