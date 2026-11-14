@@ -977,6 +977,19 @@ For first use and zero data, explain what will appear and give one action to sta
 that can happen, decide what the user sees and what they can do next. Cases that
 cannot happen in this product do not need a design; say so in the Delivery Gate.
 
+**Local money and identity flows.** Each common Indonesian flow has options and states its users
+expect. Treat this list as the floor. Reference screens (\`get_local_pattern\`, \`search_screens\`) and
+designer notes, when connected, come first; a value in the last column is asked or left open, never
+made up (RX-PR-02):
+
+| Flow | Before the user commits | After, and when it goes wrong | Ask, never invent |
+| --- | --- | --- | --- |
+| Electricity token | prepaid or postpaid chosen; meter or customer number checked, the customer's name shown; wrong or unknown number | token grouped in fours, the largest thing on screen, copied in one tap and found again in history; token not issued yet, with what happens next | admin fee, the amounts offered, the power class (kWh only as an estimate) |
+| Virtual account | the amount, or plainly "you set it at the bank" for a VA without one | number grouped, copied in one tap; deadline when it has one; steps per channel; balance arrives by itself, with no confirm button; expired | fee, expiry, minimum and maximum top-up, balance cap; a sample number's bank prefix is a sample |
+| Paylater | not preselected; limit, tenors, total with fees, a due date for each instalment | limit too low or account not active, with another method; declined | provider, fees, tenors, credit limit, who is eligible |
+| Phone credit and data | the number from contacts or the user's own; the operator read from the prefix before the amounts | the number confirmed before paying (a wrong number is hard to undo); pending, failed | products, prices, what a package holds, admin fee |
+| ID photo (e-KYC) | why the ID is needed and how it is protected, in plain words; camera permission refused; whether a gallery upload is allowed | live framing guidance or auto-capture; a quality check with retake (blur, glare, a corner cut off); under review | verification time, security or regulator claims |
+
 Does not cover: how errors are worded (see ryux-content).`,
 
   content: `Content is interface: labels, CTAs, errors, empty states, confirmations, helper text, terminology,
