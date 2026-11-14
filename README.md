@@ -120,8 +120,9 @@ $ npx @ryuxdsgn/design-intelligence scan file://$PWD/page.html --widths 320
 
 Add `--hook` to `install` and the agent gets the findings for each file it edits. Any finding, warn included,
 goes back to the agent, which fixes it or adds a `ryux-ignore` comment with the reason. This works for Claude Code
-(exit 2), Codex, and Cursor (both as context next to the edit's result). Codex runs a project hook only after you
-trust the project and approve the hook in `/hooks`. A plain `scan` fails (exit 1) only on a fail. `scan --list-rules`
+(exit 2), Codex and Cursor (both as context next to the edit's result), and OpenCode (a plugin in
+`.opencode/plugins/`, added to the edit's result). Codex runs a project hook only after you trust the project and
+approve the hook in `/hooks`. A plain `scan` fails (exit 1) only on a fail. `scan --list-rules`
 lists every check.
 
 </details>

@@ -110,7 +110,7 @@ export async function runScan(argv: string[]): Promise<void> {
     if (a === "--json") opts.json = true;
     else if (a === "--hook") {
       opts.hook = true;
-      if (["claude", "codex", "cursor"].includes(argv[i + 1] ?? "")) hookFormat = argv[++i];
+      if (["claude", "codex", "cursor", "opencode"].includes(argv[i + 1] ?? "")) hookFormat = argv[++i];
     }
     else if (a === "--list-rules") opts.list = true;
     else if (a === "--design") designFile = argv[i + 1]?.endsWith(".md") ? argv[++i] : "DESIGN.md";
@@ -155,6 +155,8 @@ export async function runScan(argv: string[]): Promise<void> {
     // and keep the edit's own result.
     if (hookFormat === "codex") console.log(JSON.stringify({ hookSpecificOutput: { hookEventName: "PostToolUse", additionalContext: message } }));
     else if (hookFormat === "cursor") console.log(JSON.stringify({ additional_context: message }));
+    // The OpenCode plugin adds stdout to the tool result the model reads.
+    else if (hookFormat === "opencode") console.log(message);
     else {
       console.error(message);
       process.exitCode = 2;
