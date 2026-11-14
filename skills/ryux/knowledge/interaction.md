@@ -13,6 +13,12 @@ Define every meaningful action in four parts before implementing it:
 | Result | How do they know it worked, and what changed? |
 | Recovery | If it fails or was a mistake, how do they undo, retry, or get help? |
 
+**Picking from a limited set** (seats, time slots, rooms). The legend shows every state a place
+can have: available, selected, sold, and accessible when the venue has it. Selecting starts a hold
+with a visible timer and says what happens when it runs out. Offer a best-available pick for people
+who do not care where they sit, and state the most per order. Ask the hold length, the most per
+order, and how accessible places are allocated; never invent them.
+
 **Confirm or undo?** Reason about it; do not apply it mechanically.
 1. Is it reversible? Then prefer an undo after the fact over a confirmation before.
 2. Is it irreversible **and** high-impact (money, sending, deleting shared data)? Then confirm with
@@ -95,8 +101,9 @@ How local apps handle the same action and its states, and local payment patterns
 ### RX-IX-05 [Required] Full cost before commitment
 
 - Do: Show items, shipping, admin fees, and tax as a breakdown and total before the user commits.
-- Do not: Reveal fees for the first time on the final step.
-- Why: Unexpected extra costs are among the most reported reasons for abandoning checkout. (Baymard checkout usability research; NNGroup e-commerce research)
+  - From the step where the user first holds a choice (a seat held, an item in the bag), the price shown includes its fees, or names the fee as a line to confirm; the pay step only repeats it.
+- Do not: Reveal fees for the first time on the final step, or show a held choice's price without its fees until the pay step.
+- Why: Unexpected extra costs are among the most reported reasons for abandoning checkout. (Baymard checkout usability research; NNGroup e-commerce research; owner review 2026-11-15 of a concert-ticket flow (Panggung, RYUX 2.22.12, OpenCode with DeepSeek, one run; a DeepSeek review, not blind, checked by hand against the exports): the service fee first appeared on the pay step)
 - Not when: prices are not known until a later choice (shipping before an address); show an estimate and say when it is final
 - Trade-off: a full breakdown adds lines to a small screen
 - Check: review
