@@ -3,7 +3,7 @@
 // Claude Code PostToolUse hook on stdin).
 import { existsSync, statSync } from "node:fs";
 import { readFile, readdir } from "node:fs/promises";
-import { join, relative } from "node:path";
+import { join, relative, resolve } from "node:path";
 import pc from "picocolors";
 import { RULES } from "../intelligence/content.js";
 import { VERSION } from "../product.js";
@@ -67,14 +67,22 @@ Not checked: a judgment call, which belongs to Critique.`);
 }
 
 /** Read the PostToolUse payload Claude Code sends on stdin and return the edited file, if any. */
-async function hookFile(): Promise<string | null> {
+/** The files an agent just edited, from its hook payload on stdin. Claude Code and Cursor name the file in
+ *  tool_input (Cursor's afterFileEdit at the top level); Codex's apply_patch carries the patch text, whose
+ *  "*** Add File:", "*** Update File:", and "*** Move to:" lines name the files, relative to its cwd. */
+async function hookFiles(): Promise<string[]> {
   let input = "";
   for await (const chunk of process.stdin) input += chunk;
   try {
-    const payload = JSON.parse(input) as { tool_input?: { file_path?: string } };
-    return payload.tool_input?.file_path ?? null;
+    const payload = JSON.parse(input) as { cwd?: string; file_path?: string; tool_input?: Record<string, unknown> | string };
+    const tool = typeof payload.tool_input === "object" && payload.tool_input ? payload.tool_input : {};
+    const named = [payload.file_path, tool.file_path, tool.path, tool.target_file].find((v): v is string => typeof v === "string");
+    if (named) return [resolve(payload.cwd ?? ".", named)];
+    const patch = [tool.command, tool.input, tool.patch, payload.tool_input].find((v): v is string => typeof v === "string") ?? "";
+    const files = [...patch.matchAll(/^\*\*\* (?:Add File|Update File|Move to): (.+)$/gm)].map((m) => resolve(payload.cwd ?? ".", m[1].trim()));
+    return [...new Set(files)];
   } catch {
-    return null;
+    return [];
   }
 }
 
@@ -94,12 +102,16 @@ export async function runScan(argv: string[]): Promise<void> {
   const paths: string[] = [];
   const skip = new Set<string>();
   const opts = { json: false, hook: false, list: false };
+  let hookFormat = "claude";
   let designFile: string | null = null;
   let widths = DEFAULT_WIDTHS;
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
     if (a === "--json") opts.json = true;
-    else if (a === "--hook") opts.hook = true;
+    else if (a === "--hook") {
+      opts.hook = true;
+      if (["claude", "codex", "cursor"].includes(argv[i + 1] ?? "")) hookFormat = argv[++i];
+    }
     else if (a === "--list-rules") opts.list = true;
     else if (a === "--design") designFile = argv[i + 1]?.endsWith(".md") ? argv[++i] : "DESIGN.md";
     else if (a === "--widths") {
@@ -134,12 +146,19 @@ export async function runScan(argv: string[]): Promise<void> {
 
   if (opts.hook) {
     // A hook must never block an edit by crashing: anything unexpected ends quietly with exit 0.
-    const file = await hookFile();
-    if (!file || !existsSync(file) || !scannable(file)) return;
-    const { findings } = await scanPaths([file], skip, design);
+    const files = (await hookFiles()).filter((f) => existsSync(f) && scannable(f));
+    if (!files.length) return;
+    const { findings } = await scanPaths(files, skip, design);
     if (!findings.length) return;
-    console.error(`RYUX scan found ${findings.length} issue${findings.length === 1 ? "" : "s"} in the file you just edited. Fix each fail; for each warn, fix it or add a ryux-ignore comment with the reason.\n${report(findings, 1)}`);
-    process.exitCode = 2;
+    const message = `RYUX scan found ${findings.length} issue${findings.length === 1 ? "" : "s"} in the file${files.length === 1 ? "" : "s"} you just edited. Fix each fail; for each warn, fix it or add a ryux-ignore comment with the reason.\n${report(findings, files.length)}`;
+    // Claude Code shows stderr to the agent on exit 2. Codex and Cursor read context from JSON on stdout
+    // and keep the edit's own result.
+    if (hookFormat === "codex") console.log(JSON.stringify({ hookSpecificOutput: { hookEventName: "PostToolUse", additionalContext: message } }));
+    else if (hookFormat === "cursor") console.log(JSON.stringify({ additional_context: message }));
+    else {
+      console.error(message);
+      process.exitCode = 2;
+    }
     return;
   }
 

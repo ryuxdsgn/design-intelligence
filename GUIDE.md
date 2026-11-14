@@ -108,7 +108,7 @@ npx @ryuxdsgn/design-intelligence scan src                               # scan 
 npx @ryuxdsgn/design-intelligence scan http://localhost:3000             # measure a running page
 npx @ryuxdsgn/design-intelligence scan --json                            # for agents and CI
 npx @ryuxdsgn/design-intelligence scan src --design                      # code that strays from DESIGN.md's direction
-npx @ryuxdsgn/design-intelligence install --agent claude --hook          # scan each file Claude Code edits
+npx @ryuxdsgn/design-intelligence install --agent claude --hook          # scan each file the agent edits (also codex, cursor)
 ```
 
 Switch a check off for one line with a comment, `ryux-ignore RX-CD-02`, on that line or the line

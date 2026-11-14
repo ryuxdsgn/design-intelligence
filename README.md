@@ -118,9 +118,11 @@ $ npx @ryuxdsgn/design-intelligence scan file://$PWD/page.html --widths 320
 ✗ file:///…/page.html @320px RX-A11Y-01 "Transfers usually arrive in minutes.": contrast 2.32:1 (#aaaaaa on #ffffff), needs 4.5:1 [p.hint]
 ```
 
-Add `--hook` to `install` and Claude Code gets the findings for each file it edits: any finding, warn included,
-returns exit 2 so the agent sees it and fixes it or adds a `ryux-ignore` comment with the reason. A plain `scan`
-fails (exit 1) only on a fail. `scan --list-rules` lists every check.
+Add `--hook` to `install` and the agent gets the findings for each file it edits. Any finding, warn included,
+goes back to the agent, which fixes it or adds a `ryux-ignore` comment with the reason. This works for Claude Code
+(exit 2), Codex, and Cursor (both as context next to the edit's result). Codex runs a project hook only after you
+trust the project and approve the hook in `/hooks`. A plain `scan` fails (exit 1) only on a fail. `scan --list-rules`
+lists every check.
 
 </details>
 
