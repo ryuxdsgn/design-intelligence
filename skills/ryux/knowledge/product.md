@@ -59,7 +59,7 @@ How comparable products frame the same task and offer: `search_screens` (categor
 
 - Do: Before designing, write down the user, their task, the business goal, the design intent (what the user must understand, feel, and do), the information that matters, the primary action, the constraints, and what success looks like.
   - Take what the prompt and DESIGN.md already give.
-  - Ask only when a missing answer materially affects the user flow, what the product can do, or whether the content is correct, or when neither the prompt nor DESIGN.md sets the UI or motion direction: at most three questions in one message, most consequential first, none when the context is complete. A new product or a new look runs Product Discovery first (RX-PR-13).
+  - Ask only when a missing answer materially affects the user flow, what the product can do, or whether the content is correct, or when neither the prompt nor DESIGN.md sets the UI or motion direction: at most three questions in one message, most consequential first, none when the context is complete. Count as material any number the screen shows or depends on: a minimum or maximum amount, a credit limit, a balance cap, a deadline or expiry, a processing or verification time, a fee. One that does not fit in the three questions goes in the assumptions and shows on screen as not decided, never as a made-up value. A new product or a new look runs Product Discovery first (RX-PR-13).
   - Otherwise make the smallest reasonable assumption, write it down, and continue.
 - Do not: Start from a generic template with no stated user or task, or ask questions the prompt or DESIGN.md already answers.
 - Why: Without a task, design and review drift into taste. (`capabilities/critique.md` playbook; NNGroup task-based evaluation)
