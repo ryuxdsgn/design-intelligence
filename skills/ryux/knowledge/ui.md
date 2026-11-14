@@ -154,9 +154,9 @@ A design direction from comparable screens: `extract_design_direction` (patterns
   - Pick one grey family, warm or cool, for surfaces, borders, and secondary text.
   - Elements that behave the same look the same, and elements that behave differently look different: a destructive action has its own color role, not the primary accent.
   - Lower importance with size, weight, or position, never by lowering text contrast.
-- Do not: Introduce new colors per component, or use the accent for decoration.
+- Do not: Introduce new colors per component, use the accent for decoration, recolour content art into the UI palette, or take a colour from content art for an action or a status.
 - Why: When color has a role, the accent and status colors mean something. (ryux visual principle; NNGroup principles of visual design (contrast signals a different function; similarity); isolation effect (von Restorff 1933): the one item that differs is the one remembered, so the accent marks only the primary action; one grey family: pattern also in appllama-app-design-skill (MIT); written for RYUX)
-- Not when: data visualization, which needs its own categorical or sequential palette
+- Not when: data visualization, which needs its own categorical or sequential palette; content art (an event poster, a book or album cover, a dish or product photo), which keeps its own colours inside its frame while the roles govern the chrome around it (RX-UI-21)
 - Trade-off: fewer colors means relying on type and space for emphasis
 - Check: count accent hues and grey families (RX-AS-10); review
 
@@ -223,7 +223,7 @@ A design direction from comparable screens: `extract_design_direction` (patterns
   - carry: the type pair, the colour roles, shape, voice, and the signature as one motif; in task UI the direction shows through these, not through the marketing page's imagery
   - decide again for the surface's job: density, components, navigation, hierarchy, and motion, with Frame and Explore for that surface (capabilities/design.md, stages 2 and 3)
   - a device mockup inside a marketing image is illustrative, a stand-in for screens nobody had designed; never trace the real screens from it
-  - imagery in the app is optional and small: one or two moments at most that have room for it (an empty state, a success), sized to the component it sits in (a spot illustration in a card, not a landscape band); never behind data, figures, or actions; an asset that fails the craft read (RX-UI-30) is left out
+  - imagery in the app is optional and small: one or two moments at most that have room for it (an empty state, a success), sized to the component it sits in (a spot illustration in a card, not a landscape band); never behind data, figures, or actions; an asset that fails the craft read (RX-UI-30) is left out. Content art is not brand imagery: in a product whose items carry their own art (events, books, music, dishes, places), every item gets its own, at full strength in its frame (RX-UI-21)
   - give the app's brand band one surface treatment taken from the direction's grammar (material, shape, colour), so it is not a flat fill: contour lines for a direction grounded in a landscape, a tonal gradient with a soft light for a warm one, soft shapes for an organic one, glass only when the material is glass or digital; one treatment across the app, drawn flat or as an effect (not a picture), text over it still passing contrast (RX-A11Y-01), and never a trend effect the direction does not call for
   - write a surface entry in the DESIGN.md direction block: what carries, what changes, and which moments, if any, hold imagery
 - Do not: Rebuild the marketing page's phone mockup as the app, read a direction written for a page as the spec for task screens, set a landscape render behind a balance or a form, add imagery to a screen only so it looks less plain, leave the brand band a flat fill when the direction has a ground, or pick blobs or glass because they are in fashion.
