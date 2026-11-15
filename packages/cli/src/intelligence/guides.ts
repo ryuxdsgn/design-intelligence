@@ -228,9 +228,14 @@ The six stages of the core workflow (SKILL.md), as Design runs them.
    frame, and mark a component you had to create the same way, with a note on the canvas.
    **States.** Building the system does not replace the states: design every
    state that matters (empty, loading, error, including content that fails to load) and every width
-   you claim, and source assets on purpose (RX-UI-13). In a product whose items carry their own art (events,
-   books, music, dishes, places), read knowledge/imagery.md (Content art) and RX-UI-21 in knowledge/illustration.md
-   before the first list frame. Illustration follows a written style, is
+   you claim, and source assets on purpose (RX-UI-13).
+   **Content art.** In a product whose items carry their own art (events, books, music, dishes, places), each item gets
+   its own image, generated when an image tool exists: up to 12 without asking, one concept per item, one shared style
+   block, no text in the image, the same image from list to detail to ticket. Before deciding there is no tool, search
+   the tools for one (generate_image); a tool list that does not show it is not proof. Time, credits, or "might look
+   fake" is not a reason to draw them; drawn, vector, or typographic art is the fallback for no tool only, and counts as
+   stand-in in the gate. The rest (concepts per genre, crops, labels) is RX-UI-21 in knowledge/illustration.md and
+   knowledge/imagery.md (Content art): read both before the first list frame. Illustration follows a written style, is
    made as one set, and shows its meaning (RX-UI-17, RX-UI-18, RX-UI-24). Read knowledge/content.md before
    writing the screens' words, and check them before the gate: one job per line, no helper text that repeats its label (RX-CD-18).
    **Building a component library** (RX-DS-07 to RX-DS-12): write the contract first (RX-DS-06),
@@ -788,7 +793,7 @@ export const CORE_DECISION_RECORD = `For consequential choices (RX-PR-09) and de
 **Trade-off**, **Choice**, and **Test** (the riskiest assumption behind the choice, the cheapest way to test it, the signal that it works, and the result that would change the choice). Evidence is Strong (2+ comparable screen_ids), Thin (one, or another context),
 or None (no screen_id: a judgment call). With None on a consequential choice, show options or ask (RX-PR-10).`;
 
-export const GATE_RULES = `- Each area is PASS, FAIL, NOT VERIFIED (it applies, but the evidence was not available: name what is missing), or N/A (it does not apply: say why). Scale the gate to the task: a copy fix or a one-component change marks the areas it cannot affect N/A, one line each.
+export const GATE_RULES = `- Each area is PASS, FAIL, NOT VERIFIED (it applies, but the evidence was not available: name what is missing), or N/A (it does not apply: say why). A module the task table requires for the work and the run did not read leaves the areas it serves NOT VERIFIED, never PASS (imagery and illustration serve UI), named in PRODUCT's required-not-read list. Scale the gate to the task: a copy fix or a one-component change marks the areas it cannot affect N/A, one line each.
 - An area FAILS when a [Required] rule in its skills fails without a written exception.
 - A Hard Gate failure cannot be excepted: fix it before declaring the work complete.
 - VISUAL QA without a render is NOT VERIFIED; a PASS names the render tool, the widths, and the states inspected. On a Figma canvas a PASS also carries the gate line of scripts/figma-audit.js with its fails fixed; without it VISUAL QA is NOT VERIFIED.

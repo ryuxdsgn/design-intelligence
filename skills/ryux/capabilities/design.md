@@ -169,9 +169,14 @@ The six stages of the core workflow (SKILL.md), as Design runs them.
    frame, and mark a component you had to create the same way, with a note on the canvas.
    **States.** Building the system does not replace the states: design every
    state that matters (empty, loading, error, including content that fails to load) and every width
-   you claim, and source assets on purpose (RX-UI-13). In a product whose items carry their own art (events,
-   books, music, dishes, places), read knowledge/imagery.md (Content art) and RX-UI-21 in knowledge/illustration.md
-   before the first list frame. Illustration follows a written style, is
+   you claim, and source assets on purpose (RX-UI-13).
+   **Content art.** In a product whose items carry their own art (events, books, music, dishes, places), each item gets
+   its own image, generated when an image tool exists: up to 12 without asking, one concept per item, one shared style
+   block, no text in the image, the same image from list to detail to ticket. Before deciding there is no tool, search
+   the tools for one (generate_image); a tool list that does not show it is not proof. Time, credits, or "might look
+   fake" is not a reason to draw them; drawn, vector, or typographic art is the fallback for no tool only, and counts as
+   stand-in in the gate. The rest (concepts per genre, crops, labels) is RX-UI-21 in knowledge/illustration.md and
+   knowledge/imagery.md (Content art): read both before the first list frame. Illustration follows a written style, is
    made as one set, and shows its meaning (RX-UI-17, RX-UI-18, RX-UI-24). Read knowledge/content.md before
    writing the screens' words, and check them before the gate: one job per line, no helper text that repeats its label (RX-CD-18).
    **Building a component library** (RX-DS-07 to RX-DS-12): write the contract first (RX-DS-06),
