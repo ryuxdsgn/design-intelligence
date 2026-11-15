@@ -1,3 +1,4 @@
+import { figmaAuditScript } from "./figma-audit.js";
 import {
   ACTIVATION,
   GATE_AREAS,
@@ -230,6 +231,7 @@ export function renderBundle(): Record<string, string> {
   };
   for (const s of SKILLS) if (s.id !== "visual-qa") files[`knowledge/${s.id}.md`] = `${knowledgeModule(s.id)}\n`;
   for (const k of Object.keys(files)) files[k] = toModuleRefs(files[k]);
+  files["scripts/figma-audit.js"] = figmaAuditScript();
   return files;
 }
 
@@ -238,7 +240,7 @@ export function renderAgentsBlock(): string {
   const files = renderBundle();
   const router = files["SKILL.md"].replace(/^---[\s\S]*?---\n\n/, "");
   const rest = Object.entries(files)
-    .filter(([k]) => k !== "SKILL.md")
+    .filter(([k]) => k !== "SKILL.md" && k.endsWith(".md"))
     .map(([k, v]) => `<!-- ${k} -->\n${v.trim()}`)
     .join("\n\n");
   return `${router.trim()}\n\n${rest}`;

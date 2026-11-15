@@ -157,7 +157,7 @@ FINAL          PASS | FAIL | NOT VERIFIED
 - Each area is PASS, FAIL, NOT VERIFIED (it applies, but the evidence was not available: name what is missing), or N/A (it does not apply: say why). Scale the gate to the task: a copy fix or a one-component change marks the areas it cannot affect N/A, one line each.
 - An area FAILS when a [Required] rule in its skills fails without a written exception.
 - A Hard Gate failure cannot be excepted: fix it before declaring the work complete.
-- VISUAL QA without a render is NOT VERIFIED; a PASS names the render tool, the widths, and the states inspected.
+- VISUAL QA without a render is NOT VERIFIED; a PASS names the render tool, the widths, and the states inspected. On a Figma canvas a PASS also carries the gate line of scripts/figma-audit.js with its fails fixed; without it VISUAL QA is NOT VERIFIED.
 - CODE QUALITY is NOT VERIFIED while changed logic has no test run; say which checks ran (typecheck, tests).
 - FINAL is FAIL if any area fails, NOT VERIFIED if none fails but one is not verified, else PASS. PASS means the checked criteria were met, not that the design is good or was validated with users ("not tested with users" unless it was).
 
