@@ -169,7 +169,9 @@ The six stages of the core workflow (SKILL.md), as Design runs them.
    frame, and mark a component you had to create the same way, with a note on the canvas.
    **States.** Building the system does not replace the states: design every
    state that matters (empty, loading, error, including content that fails to load) and every width
-   you claim, and source assets on purpose (RX-UI-13); illustration follows a written style, is
+   you claim, and source assets on purpose (RX-UI-13). In a product whose items carry their own art (events,
+   books, music, dishes, places), read knowledge/imagery.md (Content art) and RX-UI-21 in knowledge/illustration.md
+   before the first list frame. Illustration follows a written style, is
    made as one set, and shows its meaning (RX-UI-17, RX-UI-18, RX-UI-24). Read knowledge/content.md before
    writing the screens' words, and check them before the gate: one job per line, no helper text that repeats its label (RX-CD-18).
    **Building a component library** (RX-DS-07 to RX-DS-12): write the contract first (RX-DS-06),
