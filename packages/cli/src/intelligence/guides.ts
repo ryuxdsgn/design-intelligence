@@ -480,6 +480,11 @@ return { iconStrokes: strokes, iconColours: colours, unbound: [...unbound], mixe
      the code the payment provider returns for this order"). The note lives in the annotation, not as
      text inside the UI; the screen shows the asset as it will look. In another tool, use its annotation
      or comment feature. List the placeholders in the final message.
+   - In Figma, audit the page before the gate: send scripts/figma-audit.js from this skill's folder as the code of
+     one use_figma call (set PAGE to the flow's page). It reads the canvas and counts content images and their reuse,
+     contrast, text cut by a bar or clipped, targets, overlays with no lift, a busy screen whose button keeps its idle
+     label, unstyled text and unbound values, and annotations. Fix each fail (and each warn you agree with), run it
+     again, and copy its last gate line into VISUAL QA; the gate's numbers come from it, not from memory.
    - Close with the Delivery Gate, saying what was not designed, such as other widths or states. If
      you wrote DESIGN.md, say so in the final message: which file, and each change as old → new ("(none) → …" for
      an added line).
@@ -784,7 +789,7 @@ or None (no screen_id: a judgment call). With None on a consequential choice, sh
 export const GATE_RULES = `- Each area is PASS, FAIL, NOT VERIFIED (it applies, but the evidence was not available: name what is missing), or N/A (it does not apply: say why). Scale the gate to the task: a copy fix or a one-component change marks the areas it cannot affect N/A, one line each.
 - An area FAILS when a [Required] rule in its skills fails without a written exception.
 - A Hard Gate failure cannot be excepted: fix it before declaring the work complete.
-- VISUAL QA without a render is NOT VERIFIED; a PASS names the render tool, the widths, and the states inspected.
+- VISUAL QA without a render is NOT VERIFIED; a PASS names the render tool, the widths, and the states inspected. On a Figma canvas a PASS also carries the gate line of scripts/figma-audit.js with its fails fixed; without it VISUAL QA is NOT VERIFIED.
 - CODE QUALITY is NOT VERIFIED while changed logic has no test run; say which checks ran (typecheck, tests).
 - FINAL is FAIL if any area fails, NOT VERIFIED if none fails but one is not verified, else PASS. PASS means the checked criteria were met, not that the design is good or was validated with users ("not tested with users" unless it was).`;
 
