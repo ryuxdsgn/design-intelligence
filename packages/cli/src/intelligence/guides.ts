@@ -244,6 +244,9 @@ The six stages of the core workflow (SKILL.md), as Design runs them.
    deliver the contract and sheet as a spec and say what was not built. Work in a draft or a
    duplicate file, build in small steps (one collection or one component set per call), bind every
    value to a variable, and render the sheet after each component set.
+   **Screens are built, not placed** (RX-DS-12): in Figma each screen is auto layout sections (header, content,
+   bottom bar) with lists as stacks; only a layer pinned to an edge (status bar, bottom bar, sheet, toast, scrim) is
+   absolute. Nothing stays on the page outside the screens but one parts frame; shadows come from effect styles.
    **Main page first.** On an expressive surface, make the main page rich and pass the review below
    before the state boards and handoff notes; those follow, short. Effort spread across many frames
    leaves the page people judge thin.
@@ -490,7 +493,7 @@ return { iconStrokes: strokes, iconColours: colours, unbound: [...unbound], mixe
    - In Figma, audit the page before the gate: send scripts/figma-audit.js from this skill's folder as the code of
      one use_figma call (set PAGE to the flow's page). It reads the canvas and counts content images and their reuse,
      contrast, text cut by a bar or clipped, targets, overlays with no lift, a busy screen whose button keeps its idle
-     label, unstyled text and unbound values, and annotations. Fix each fail (and each warn you agree with), run it
+     label, unstyled text and unbound values, screens not built in auto layout and layers left outside them, and annotations. Fix each fail (and each warn you agree with), run it
      again, and copy its last gate line into VISUAL QA; the gate's numbers come from it, not from memory.
    - Close with the Delivery Gate, saying what was not designed, such as other widths or states. If
      you wrote DESIGN.md, say so in the final message: which file, and each change as old → new ("(none) → …" for
