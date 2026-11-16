@@ -228,7 +228,14 @@ The six stages of the core workflow (SKILL.md), as Design runs them.
    frame, and mark a component you had to create the same way, with a note on the canvas.
    **States.** Building the system does not replace the states: design every
    state that matters (empty, loading, error, including content that fails to load) and every width
-   you claim, and source assets on purpose (RX-UI-13); illustration follows a written style, is
+   you claim, and source assets on purpose (RX-UI-13).
+   **Content art.** In a product whose items carry their own art (events, books, music, dishes, places), each item gets
+   its own image, generated when an image tool exists: up to 12 without asking, one concept per item, one shared style
+   block, no text in the image, the same image from list to detail to ticket. Before deciding there is no tool, search
+   the tools for one (generate_image); a tool list that does not show it is not proof. Time, credits, or "might look
+   fake" is not a reason to draw them; drawn, vector, or typographic art is the fallback for no tool only, and counts as
+   stand-in in the gate. The rest (concepts per genre, crops, labels) is RX-UI-21 in knowledge/illustration.md and
+   knowledge/imagery.md (Content art): read both before the first list frame. Illustration follows a written style, is
    made as one set, and shows its meaning (RX-UI-17, RX-UI-18, RX-UI-24). Read knowledge/content.md before
    writing the screens' words, and check them before the gate: one job per line, no helper text that repeats its label (RX-CD-18).
    **Building a component library** (RX-DS-07 to RX-DS-12): write the contract first (RX-DS-06),
@@ -786,7 +793,7 @@ export const CORE_DECISION_RECORD = `For consequential choices (RX-PR-09) and de
 **Trade-off**, **Choice**, and **Test** (the riskiest assumption behind the choice, the cheapest way to test it, the signal that it works, and the result that would change the choice). Evidence is Strong (2+ comparable screen_ids), Thin (one, or another context),
 or None (no screen_id: a judgment call). With None on a consequential choice, show options or ask (RX-PR-10).`;
 
-export const GATE_RULES = `- Each area is PASS, FAIL, NOT VERIFIED (it applies, but the evidence was not available: name what is missing), or N/A (it does not apply: say why). Scale the gate to the task: a copy fix or a one-component change marks the areas it cannot affect N/A, one line each.
+export const GATE_RULES = `- Each area is PASS, FAIL, NOT VERIFIED (it applies, but the evidence was not available: name what is missing), or N/A (it does not apply: say why). A module the task table requires for the work and the run did not read leaves the areas it serves NOT VERIFIED, never PASS (imagery and illustration serve UI), named in PRODUCT's required-not-read list. Scale the gate to the task: a copy fix or a one-component change marks the areas it cannot affect N/A, one line each.
 - An area FAILS when a [Required] rule in its skills fails without a written exception.
 - A Hard Gate failure cannot be excepted: fix it before declaring the work complete.
 - VISUAL QA without a render is NOT VERIFIED; a PASS names the render tool, the widths, and the states inspected. On a Figma canvas a PASS also carries the gate line of scripts/figma-audit.js with its fails fixed; without it VISUAL QA is NOT VERIFIED.
@@ -1131,6 +1138,17 @@ assets (see knowledge/imagery.md).`,
   imagery: `**What a screen shows beyond its system.** Read this with ryux-ui when the work has photos,
 illustration, 3D, motion, or an expressive surface (hero, landing, onboarding, empty state, brand
 moment). It works in three layers.
+
+**Content art.** Some products are made of items that carry their own art: concerts and their
+posters, books and their covers, music, dishes, places. That art is content, not decoration: it
+keeps its own colours inside its frame, while the colour roles govern the chrome around it
+(RX-UI-04). Each item gets its own image, and the same image follows the item from the list to its detail, summary, and ticket.
+With an image tool available (in Figma, generate_image), generate them: up to 12 without asking, one concept per item and
+one shared style block (RX-UI-21 in knowledge/illustration.md: read it before making them). Time, credits, or "might look
+fake" is not a reason to draw them instead; a drawn or typographic cover is the fallback for no image tool only, and the
+gate reports content art as stand-in, which fails UI when a tool was there.
+A direction chosen for such a product says how its content art looks (the type of image, the
+light, how the title sits on it), not only its palette.
 
 **1. Art direction.** Each visual has a job (RX-UI-07), its composition leaves room for the
 content (RX-UI-09), and the visual language is chosen, not defaulted (RX-UI-10). Name the visual
@@ -1547,6 +1565,7 @@ run the purpose gate; keep it when the answer is real, as in the last column.
 | A paper page by default: cream or white surface, ink, one muted accent, text and small cards, no made image | declining the category look by retreating to neutral; four RYUX trials of one brief ended here | a weight carrier at full strength and a colour field from the product's character (RX-UI-29) | the product's brand is paper and ink, and the page still has its carrier |
 | A text button dressed as a store badge, or a confirmed partner shown only in text | reads as unfinished or fake; the real mark is recognised before any label | the official badge or mark from its source, at its guideline size (RX-UI-28) | the fact is not confirmed: then no mark at all |
 | A device frame with a half-empty screen | the product looks thin and unbuilt, the opposite of what the frame is for | one complete screen at real density: platform status bar, real navigation, a full set of labeled sample data (RX-UI-07) | a wireframe, labeled as such |
-| Every direction with no imagery | type and flat colour alone read as a generated page on an expressive surface | name an imagery strategy per direction: the product rendered or photographed, an illustration style, or the product's screens (RX-UI-26) | the brand is carried by type on purpose, and the type move is strong |
+| Every direction with no imagery | type and flat colour alone read as a generated page on an expressive surface, and a content product with no content art reads as a wireframe | name an imagery strategy per direction: the product rendered or photographed, an illustration style, or the product's screens (RX-UI-26); in a content product, the direction tile also says how the content art looks (RX-UI-21) | the brand is carried by type on purpose, and the type move is strong |
+| Every content item the same neutral stand-in: one grey card, one ring motif, for every event, book, or dish | the list reads as a wireframe and nothing tells the items apart at a glance | its own art per item, generated from one style block, the chrome keeping its palette (RX-UI-21, RX-UI-04) | no image tool: one typographic poster per item, reported as stand-in |
 | A landing-page layout for a product screen | hero, feature rows, and a closing CTA on an app screen, a settings page, or a tool | the structure the task needs: list, detail, form, or workspace (RX-UI-05) | the surface really is marketing |`,
 };

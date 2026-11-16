@@ -8,6 +8,17 @@ Directs what a screen shows beyond its system: art direction, composition, expre
 illustration, 3D, motion, or an expressive surface (hero, landing, onboarding, empty state, brand
 moment). It works in three layers.
 
+**Content art.** Some products are made of items that carry their own art: concerts and their
+posters, books and their covers, music, dishes, places. That art is content, not decoration: it
+keeps its own colours inside its frame, while the colour roles govern the chrome around it
+(RX-UI-04). Each item gets its own image, and the same image follows the item from the list to its detail, summary, and ticket.
+With an image tool available (in Figma, generate_image), generate them: up to 12 without asking, one concept per item and
+one shared style block (RX-UI-21 in knowledge/illustration.md: read it before making them). Time, credits, or "might look
+fake" is not a reason to draw them instead; a drawn or typographic cover is the fallback for no image tool only, and the
+gate reports content art as stand-in, which fails UI when a tool was there.
+A direction chosen for such a product says how its content art looks (the type of image, the
+light, how the title sits on it), not only its palette.
+
 **1. Art direction.** Each visual has a job (RX-UI-07), its composition leaves room for the
 content (RX-UI-09), and the visual language is chosen, not defaulted (RX-UI-10). Name the visual
 language in a few words (editorial, product-centric, human, technical, playful, premium,

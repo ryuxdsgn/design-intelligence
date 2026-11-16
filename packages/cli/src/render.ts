@@ -71,9 +71,9 @@ export function deliveryGateTemplate(): string {
     a === "FINAL"
       ? `${a.padEnd(width)}PASS | FAIL | NOT VERIFIED`
       : a === "UI"
-        ? `${a.padEnd(width)}PASS | FAIL | NOT VERIFIED | N/A  · one-line reason · point of view: <concept> | task UI, signature: <signature> · concept sections <n>/<total>, devices <n>, focal subjects <n>/<sections>, carrier <kind>, made assets <n>/<planned>, product proof photo | render | drawn (fails UI when the product makes images) | none · illustration style: <where written> | none`
+        ? `${a.padEnd(width)}PASS | FAIL | NOT VERIFIED | N/A  · one-line reason · point of view: <concept> | task UI, signature: <signature> · concept sections <n>/<total>, devices <n>, focal subjects <n>/<sections>, carrier <kind>, made assets <n>/<planned>, content art <n>/<items> generated | stand-in | none (anything not generated is stand-in: drawn, vector, typographic; stand-in fails UI when an image tool was available or never searched for), product proof photo | render | drawn (fails UI when the product makes images) | none · illustration style: <where written> | none`
         : a === "PRODUCT"
-        ? `${a.padEnd(width)}PASS | FAIL | NOT VERIFIED | N/A  · one-line reason · evidence Strong | Thin | None · rationale <n> lines, annotations <n> | none · modules read <list>`
+        ? `${a.padEnd(width)}PASS | FAIL | NOT VERIFIED | N/A  · one-line reason · evidence Strong | Thin | None · rationale <n> lines, annotations <n> | none · modules read <list>, required not read <list> | none`
         : a === "CONTENT"
         ? `${a.padEnd(width)}PASS | FAIL | NOT VERIFIED | N/A  · one-line reason · open rules on screen <tagged>/<shown> | none`
         : a === "DESIGN SYSTEM"
@@ -120,7 +120,7 @@ ${hardGatesBrief()}
 
 ## Task table: which knowledge to read
 
-A small change (a copy fix, one component, one state) reads only the module it touches, plus anti-slop for visual work; any other task reads its row, plus \`knowledge/content.md\` whenever it writes interface copy (a screen with words counts), \`knowledge/imagery.md\` when it has photos, illustration, 3D, motion, or an expressive surface, and \`knowledge/illustration.md\` when it draws illustration, a mascot, or custom icons:
+A small change (a copy fix, one component, one state) reads only the module it touches, plus anti-slop for visual work; any other task reads its row, plus \`knowledge/content.md\` whenever it writes interface copy (a screen with words counts), \`knowledge/imagery.md\` when it has photos, illustration, 3D, motion, an expressive surface, or items that carry their own art (events, books, music, dishes, places), and \`knowledge/illustration.md\` when it draws illustration, a mascot, or custom icons:
 
 ${activationTable()}
 

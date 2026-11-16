@@ -120,7 +120,7 @@ Optional sources (the ryux MCP, Figma, a browser, screenshots, other reference l
 
 ## Task table: which knowledge to read
 
-A small change (a copy fix, one component, one state) reads only the module it touches, plus anti-slop for visual work; any other task reads its row, plus `knowledge/content.md` whenever it writes interface copy (a screen with words counts), `knowledge/imagery.md` when it has photos, illustration, 3D, motion, or an expressive surface, and `knowledge/illustration.md` when it draws illustration, a mascot, or custom icons:
+A small change (a copy fix, one component, one state) reads only the module it touches, plus anti-slop for visual work; any other task reads its row, plus `knowledge/content.md` whenever it writes interface copy (a screen with words counts), `knowledge/imagery.md` when it has photos, illustration, 3D, motion, an expressive surface, or items that carry their own art (events, books, music, dishes, places), and `knowledge/illustration.md` when it draws illustration, a mascot, or custom icons:
 
 | Task | Read |
 | --- | --- |
@@ -140,10 +140,10 @@ A small change (a copy fix, one component, one state) reads only the module it t
 End UI, UX, copy, or frontend work with this report:
 
 ```
-PRODUCT        PASS | FAIL | NOT VERIFIED | N/A  · one-line reason · evidence Strong | Thin | None · rationale <n> lines, annotations <n> | none · modules read <list>
+PRODUCT        PASS | FAIL | NOT VERIFIED | N/A  · one-line reason · evidence Strong | Thin | None · rationale <n> lines, annotations <n> | none · modules read <list>, required not read <list> | none
 UX             PASS | FAIL | NOT VERIFIED | N/A  · one-line reason · pricing: plans <n>, with their own action <n>, free start in the row yes | no | none | no pricing
 CONTENT        PASS | FAIL | NOT VERIFIED | N/A  · one-line reason · open rules on screen <tagged>/<shown> | none
-UI             PASS | FAIL | NOT VERIFIED | N/A  · one-line reason · point of view: <concept> | task UI, signature: <signature> · concept sections <n>/<total>, devices <n>, focal subjects <n>/<sections>, carrier <kind>, made assets <n>/<planned>, product proof photo | render | drawn (fails UI when the product makes images) | none · illustration style: <where written> | none
+UI             PASS | FAIL | NOT VERIFIED | N/A  · one-line reason · point of view: <concept> | task UI, signature: <signature> · concept sections <n>/<total>, devices <n>, focal subjects <n>/<sections>, carrier <kind>, made assets <n>/<planned>, content art <n>/<items> generated | stand-in | none (anything not generated is stand-in: drawn, vector, typographic; stand-in fails UI when an image tool was available or never searched for), product proof photo | render | drawn (fails UI when the product makes images) | none · illustration style: <where written> | none
 DESIGN SYSTEM  PASS | FAIL | NOT VERIFIED | N/A  · one-line reason · icon strokes <n>, icon colours <n> (<unbound> unbound), uneven sets <n>, missing variants <n> · library instances <n>, new local <n> (marked <n>), redrawn <n> | not drawn
 ACCESSIBILITY  PASS | FAIL | NOT VERIFIED | N/A  · one-line reason
 RESPONSIVE     PASS | FAIL | NOT VERIFIED | N/A  · one-line reason
@@ -154,7 +154,7 @@ ANTI-SLOP      PASS | FAIL | NOT VERIFIED | N/A  · one-line reason
 FINAL          PASS | FAIL | NOT VERIFIED
 ```
 
-- Each area is PASS, FAIL, NOT VERIFIED (it applies, but the evidence was not available: name what is missing), or N/A (it does not apply: say why). Scale the gate to the task: a copy fix or a one-component change marks the areas it cannot affect N/A, one line each.
+- Each area is PASS, FAIL, NOT VERIFIED (it applies, but the evidence was not available: name what is missing), or N/A (it does not apply: say why). A module the task table requires for the work and the run did not read leaves the areas it serves NOT VERIFIED, never PASS (imagery and illustration serve UI), named in PRODUCT's required-not-read list. Scale the gate to the task: a copy fix or a one-component change marks the areas it cannot affect N/A, one line each.
 - An area FAILS when a [Required] rule in its skills fails without a written exception.
 - A Hard Gate failure cannot be excepted: fix it before declaring the work complete.
 - VISUAL QA without a render is NOT VERIFIED; a PASS names the render tool, the widths, and the states inspected. On a Figma canvas a PASS also carries the gate line of scripts/figma-audit.js with its fails fixed; without it VISUAL QA is NOT VERIFIED.
