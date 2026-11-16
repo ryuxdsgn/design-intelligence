@@ -112,8 +112,9 @@ How local apps handle the same action and its states, and local payment patterns
 
 - When: the flow takes a QRIS payment
 - Do: Show the amount and the merchant name before the user scans or confirms, and the paid status afterwards.
-- Do not: Show a QR code without the amount or the merchant.
-- Why: Users check who they are paying and how much before they pay. (QRIS standard (Bank Indonesia); ryux reference screens)
+  - When the user pays on the same phone that shows the code, the QR stays on screen with a way to save or share it, and the apps that can pay it are named; a deep link to one app is an addition, not the payment.
+- Do not: Show a QR code without the amount or the merchant, or send a same-phone QRIS payment to "open your banking app" with no QR to scan or save.
+- Why: Users check who they are paying and how much before they pay. (QRIS standard (Bank Indonesia); ryux reference screens; owner review 2026-11-16 of a secondhand-book flow (Rak, RYUX with #78, OpenCode with DeepSeek, one run): the paying screen said "Open banking app" and showed no QR)
 - Not when: a static QRIS printed for any amount, where the user types the amount; show the merchant name
 - Trade-off: an extra confirmation step before the code
 - Check: search_screens qris
@@ -185,8 +186,10 @@ How local apps handle the same action and its states, and local payment patterns
 
 - When: a screen shows a total that the user's choices change: payment method, insurance, delivery or service tier, add-ons
 - Do: Show each price-changing choice with its current value and its cost inline on the screen that shows the total, so the user sees what they pay for before they confirm.
-- Do not: Hide a choice that changes the price behind a list row or a later screen, or show the total without the choices that make it up.
-- Why: People check a total against the choices behind it; a cost they cannot see next to the total reads as a surprise fee. (ryux run: blind review of a delivery checkout 2026-10-20; NNGroup visual hierarchy; written for RYUX)
+  - Each choice is made once: the next step shows the chosen value with a way to change it, and does not ask again (a payment method picked at checkout is not offered again in the pay sheet).
+  - The screen where the total is confirmed shows every choice behind it, including one made earlier (the courier chosen in the bag is a line at checkout).
+- Do not: Hide a choice that changes the price behind a list row or a later screen, show the total without the choices that make it up, or ask for the same choice on two steps in a row.
+- Why: People check a total against the choices behind it; a cost they cannot see next to the total reads as a surprise fee. (ryux run: blind review of a delivery checkout 2026-10-20; NNGroup visual hierarchy; owner review 2026-11-16 of a secondhand-book flow (Rak, RYUX with #78, OpenCode with DeepSeek, one run): the payment method was chosen at checkout and offered again in the pay sheet, and the courier chosen in the bag was not shown at checkout; written for RYUX)
 - Not when: a single fixed price with no choices on the screen
 - Trade-off: a longer checkout screen; group the choices so the total stays visible
 - Check: review the checkout render: every price-changing choice visible next to the total
