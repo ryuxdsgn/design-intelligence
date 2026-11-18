@@ -16,3 +16,4 @@ pub fn parse(s: &str) -> Result<Json, String> {
 pub mod jsre;
 pub mod drift;
 pub mod scan;
+pub mod jsx;

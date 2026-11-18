@@ -28,7 +28,7 @@ fn every_rule_the_audit_names_exists() {
     let path = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../../fixtures/rules.json");
     let rules: Vec<Value> = serde_json::from_str(&std::fs::read_to_string(path).unwrap()).unwrap();
     let ids: Vec<&str> = rules.iter().filter_map(|r| r["id"].as_str()).collect();
-    let src = [include_str!("../src/audit.rs"), include_str!("../src/drift.rs"), include_str!("../src/scan.rs")].concat();
+    let src = [include_str!("../src/audit.rs"), include_str!("../src/drift.rs"), include_str!("../src/scan.rs"), include_str!("../src/jsx.rs")].concat();
     let re = regex::Regex::new(r"RX-[A-Z0-9]+-\d{2}").unwrap();
     for m in re.find_iter(&src) {
         assert!(ids.contains(&m.as_str()), "{} is not in fixtures/rules.json", m.as_str());

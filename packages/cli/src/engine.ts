@@ -13,6 +13,7 @@ export const engine = (): Engine => (process.env.RYUX_ENGINE === "rust" ? "rust"
 
 interface Core {
   scan(input: string): string;
+  syntaxScan(input: string): string;
   unused(input: string): string;
   readDirection(md: string): string;
   audit(input: string): string;
@@ -47,12 +48,39 @@ export interface ScanOpts {
   design?: Direction;
 }
 
-/** The source detectors over files, ordered by file, then line and column. */
-export function scan(sources: RawSource[], opts: ScanOpts, which: Engine = engine()): ScanFinding[] {
+const input = (sources: RawSource[], opts: ScanOpts): string => JSON.stringify({ sources, folder: opts.folder, skip: [...(opts.skip ?? [])], design: opts.design ?? null });
+const byPlace = (a: ScanFinding, b: ScanFinding): number => a.file.localeCompare(b.file) || a.line - b.line || a.column - b.column;
+
+/** The source detectors over files, ordered by file, then line and column. Shared with the TypeScript:
+ *  both engines give the same findings (fixtures/checks/scan.json). */
+export function scanShared(sources: RawSource[], opts: ScanOpts, which: Engine = engine()): ScanFinding[] {
   if (which === "ts") return scanSources(sources.map((s) => toSource(s.path, s.raw)), opts);
-  const found = answer<ScanFinding[]>(rust().scan(JSON.stringify({ sources, folder: opts.folder, skip: [...(opts.skip ?? [])], design: opts.design ?? null })));
   // ryux-core keeps source order; the file order is JavaScript's localeCompare, as in scanSources.
-  return found.sort((a, b) => a.file.localeCompare(b.file) || a.line - b.line || a.column - b.column);
+  return answer<ScanFinding[]>(rust().scan(input(sources, opts))).sort(byPlace);
+}
+
+let warned = false;
+/** The JSX and TSX syntax checks (SYNTAX_CHECKS). They exist only in ryux-core, so they run through the
+ *  WebAssembly whichever engine the shared checks use. Without it (a checkout before pnpm build:wasm) they
+ *  are skipped with a note, unless RYUX_ENGINE=rust asked for ryux-core. */
+export function scanSyntax(sources: RawSource[], opts: ScanOpts): ScanFinding[] {
+  const jsx = sources.filter((s) => /\.(?:jsx|tsx)$/i.test(s.path));
+  if (!jsx.length) return [];
+  let core: Core;
+  try {
+    core = rust();
+  } catch (err) {
+    if (engine() === "rust") throw err;
+    if (!warned) console.error("ryux scan: the JSX and TSX syntax checks were skipped: wasm/ryux_wasm.js is missing (run pnpm build:wasm).");
+    warned = true;
+    return [];
+  }
+  return answer<ScanFinding[]>(core.syntaxScan(input(jsx, opts)));
+}
+
+/** Every source check: the shared detectors and the syntax checks, ordered by file, then line and column. */
+export function scan(sources: RawSource[], opts: ScanOpts, which: Engine = engine()): ScanFinding[] {
+  return [...scanShared(sources, opts, which), ...scanSyntax(sources, opts)].sort(byPlace);
 }
 
 /** The DESIGN.md direction, or null when the file has none. */

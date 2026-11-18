@@ -624,6 +624,28 @@ pub struct ScanOptions {
 
 /// Run every detector over the sources: findings by source, then line and column.
 pub fn scan_sources(sources: &[Source], opts: ScanOptions) -> Vec<Value> {
+    run(sources, opts, detectors())
+}
+
+fn rule_a11y03_drag(s: &Source, _: &Ctx) -> Vec<Hit> {
+    crate::jsx::drag_without_keyboard(&s.raw, &s.ext)
+        .into_iter()
+        .map(|d| hit(d.index, format!("a <{}> that starts a drag ({}) with no keyboard way: give it a role such as slider, with tabIndex and arrow keys, or add controls that do the same without dragging (WCAG 2.1.1, 2.5.7)", d.tag, d.via)))
+        .collect()
+}
+
+fn jsx(e: &str) -> bool {
+    e == "jsx" || e == "tsx"
+}
+
+/// The checks that read JSX and TSX as a syntax tree. They have no TypeScript twin, so they run apart from
+/// `scan_sources` (whose output both implementations must match) with the same options and ignores.
+pub fn scan_syntax(sources: &[Source], opts: ScanOptions) -> Vec<Value> {
+    const D: &[Detector] = &[Detector { rule: "RX-A11Y-03", level: "warn", exts: jsx, folder: false, find: rule_a11y03_drag }];
+    run(sources, opts, D)
+}
+
+fn run(sources: &[Source], opts: ScanOptions, detectors: &[Detector]) -> Vec<Value> {
     let mut ctx = if opts.folder {
         Ctx {
             reduced_motion: Some(sources.iter().any(|s| re(r"prefers-reduced-motion|motion-(?:reduce|safe):|useReducedMotion|reducedMotion", "").test(&s.text))),
@@ -639,7 +661,7 @@ pub fn scan_sources(sources: &[Source], opts: ScanOptions) -> Vec<Value> {
     let mut out: Vec<(usize, usize, usize, Value)> = Vec::new();
     for (si, src) in sources.iter().enumerate() {
         let ign = ignores(&src.raw);
-        for d in detectors() {
+        for d in detectors {
             if !(d.exts)(&src.ext) || opts.skip.contains(d.rule) || ign.file.contains(d.rule) || ign.file.contains("*") {
                 continue;
             }

@@ -8,7 +8,7 @@ import { scanSources, toSource } from "../dist/scan.js";
 import { readDirection } from "../dist/drift.js";
 import { figmaAudit } from "../dist/figma-audit.js";
 import { FIXTURES, hydrate } from "./golden.mjs";
-import { audit, readDirection as directionIn, scan, unused } from "../dist/engine.js";
+import { audit, readDirection as directionIn, scanShared as scan, unused } from "../dist/engine.js";
 
 const load = (check) => JSON.parse(readFileSync(join(FIXTURES, `${check}.json`), "utf8"));
 const plain = (v) => JSON.parse(JSON.stringify(v ?? null));

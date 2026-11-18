@@ -1,6 +1,6 @@
 [package]
 name = "ryux-core"
-description = "RYUX deterministic checks (canvas audit; scan and drift to follow), with no I/O."
+description = "RYUX deterministic checks (canvas audit, design drift, source scan, and JSX syntax checks), with no I/O."
 version.workspace = true
 edition.workspace = true
 license.workspace = true
@@ -11,3 +11,9 @@ publish = false
 regex = "1"
 fancy-regex = "0.14"
 serde_json = { version = "1", features = ["preserve_order"] }
+# JSX and TSX as a syntax tree (src/jsx.rs). Pinned exactly: oxc changes its AST between minor versions.
+oxc_allocator = "=0.159.0"
+oxc_ast = "=0.159.0"
+oxc_ast_visit = "=0.159.0"
+oxc_parser = "=0.159.0"
+oxc_span = "=0.159.0"

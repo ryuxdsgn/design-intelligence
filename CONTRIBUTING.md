@@ -40,13 +40,14 @@ cargo test         # the Rust checks against fixtures/checks
 CI runs the same steps on every pull request. A change to a check goes into both
 `packages/cli/src` (TypeScript) and `crates/ryux-core` (Rust) while both exist; record the new
 behaviour with `pnpm --filter @ryuxdsgn/design-intelligence record:fixtures`, and both must
-match the recording.
+match the recording. The JSX and TSX syntax checks (`crates/ryux-core/src/jsx.rs`, on the oxc parser) exist only
+in Rust; they have unit tests there and CLI tests in `packages/cli/test/scan.test.mjs`.
 
 ## Where things live
 
 ```
 packages/cli/src/   the source: CLI, scan, and every rule and skill file
-crates/ryux-core/   the deterministic checks in Rust (scan, drift, canvas audit)
+crates/ryux-core/   the deterministic checks in Rust (scan, drift, canvas audit, JSX syntax checks)
 crates/ryux-wasm/   their WebAssembly entry, loaded by the CLI
 fixtures/checks/    recorded inputs and outputs both implementations must match
 skills/ryux/        generated from packages/cli/src, do not edit by hand
