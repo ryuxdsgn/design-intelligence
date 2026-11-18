@@ -22,6 +22,8 @@ jobs:
         run: pnpm test
       - name: Generated skill, docs, and versions match the sources
         run: pnpm check:sync
+      - name: Rust checks answer to the same fixtures (crates/ryux-core)
+        run: cargo test --locked
 
   # When packages/cli/package.json carries a version with no tag yet, tag the commit that set it
   # and publish a GitHub release. npm publishing stays manual.
