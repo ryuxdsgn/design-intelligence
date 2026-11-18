@@ -21,14 +21,13 @@ from DESIGN.md and the repo's screens). Pick the entry point, read its file, the
 | Entry point | When | Read |
 | --- | --- | --- |
 | **Analyze** | understand a screen, product, or flow that exists | \`capabilities/analyze.md\` |
-| **Design** | create or improve UI and UX without code: Figma, pen.dev, mockups, copy; write or update DESIGN.md from a brief or references | \`capabilities/design.md\` |
-| **Build** | implement or change the interface in code; refine a screen that works (polish, premium, easier to find) | \`capabilities/build.md\` |
+| **Design** | create or improve UI and UX without code: Figma, pen.dev, mockups, copy, user flows, journey maps; a revamp or redesign; write or update DESIGN.md from a brief or references | \`capabilities/design.md\` |
+| **Build** | implement or change the interface in code; polish a screen that works (premium, easier to find); a change of unnamed size asks first: polish, revamp, or redesign (RX-UX-20) | \`capabilities/build.md\` |
 | **Critique** | find what should change first, and why; a heuristic evaluation | \`capabilities/critique.md\` |
 | **QA** | verify a build against the intended design | \`capabilities/qa.md\` |
 
-Knowledge modules (\`knowledge/\`): product, ux, interaction, forms, edge-cases, content, ui, imagery (images, motion,
-expressive surfaces), illustration, design-system, accessibility, responsive, frontend, and anti-slop. Evidence comes from the brief, the
-project, product data, standards, and the ryux MCP when connected; none is required. Every entry point ends at the quality gates: the Hard
+Knowledge modules (\`knowledge/\`): product, ux, interaction, forms, edge-cases, content, ui, imagery (images, motion, expressive surfaces),
+illustration, design-system, accessibility, responsive, frontend, and anti-slop. Evidence comes from the brief, the project, product data, standards, and the ryux MCP when connected; none is required. Every entry point ends at the quality gates: the Hard
 Gates below and the Delivery Gate, with anti-slop as the last check, never the starting point. Keep them apart:
 Analyze says what exists, Design what to do, Critique if it is right, QA if it matches.`;
 
@@ -71,6 +70,8 @@ The six stages of the core workflow (SKILL.md), as Design runs them.
    Read the product docs first (the router, stage 1). Ask only when a missing answer materially
    affects the user flow, what the product can do, or whether the content is correct, those
    questions alone, most consequential first, at most three, in one message, before designing.
+   A user flow or journey map asks as in knowledge/ux.md (RX-UX-18, RX-UX-19); a revamp runs stages 2
+   to 5 with the flow locked, a redesign may redraw the flow from evidence (RX-UX-20).
    A product rule that changes which states or actions the screen has (refunds, fees, what happens
    on failure) is a major decision. **Market:** when the prompt, DESIGN.md, and the product docs
    name no market, ask with no market as the recommended default; RYUX's examples are Indonesian
@@ -735,7 +736,7 @@ workflow (SKILL.md); Frame, Explore, and Evaluate happen in Design.
    colours, type, radius, or durations shows as drift): fix every fail, and fix each warn or give the reason it stays. For a new flow or a consequential change, add the
    usability test plan (RX-UX-12) unless the design already has one.
 
-**Refining what exists.** When the ask improves a screen that works ("polish this", "make the total
+**Polish: refining what exists.** When the ask improves a screen that works ("polish this", "make the total
 easier to find", "make it feel more premium") and gives no new design, steps 2 and 4 run this way:
 - **Diagnose first.** Render the target at the size it is used and write three to five findings in
   the Critique schema (capabilities/critique.md, step 8: severity, evidence, the smallest fix that
@@ -761,7 +762,9 @@ easier to find", "make it feel more premium") and gives no new design, steps 2 a
   bar cuts or covers fails, whatever the code says. Report what changed, why, what stayed, and that
   answer.
 - A fix ask (polish, clean up) where no finding reaches severity 2 gets "no change needed" and the
-  findings; a mood ask still gets its first-glance change.`;
+  findings; a mood ask still gets its first-glance change.
+- A revamp or a redesign is not a polish: it runs capabilities/design.md first (RX-UX-20), and an ask
+  that names no size gets one question before any change.`;
 
 export const CORE_EVIDENCE = `Say where every claim comes from:
 

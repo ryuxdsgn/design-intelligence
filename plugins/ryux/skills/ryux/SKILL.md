@@ -25,14 +25,13 @@ from DESIGN.md and the repo's screens). Pick the entry point, read its file, the
 | Entry point | When | Read |
 | --- | --- | --- |
 | **Analyze** | understand a screen, product, or flow that exists | `capabilities/analyze.md` |
-| **Design** | create or improve UI and UX without code: Figma, pen.dev, mockups, copy; write or update DESIGN.md from a brief or references | `capabilities/design.md` |
-| **Build** | implement or change the interface in code; refine a screen that works (polish, premium, easier to find) | `capabilities/build.md` |
+| **Design** | create or improve UI and UX without code: Figma, pen.dev, mockups, copy, user flows, journey maps; a revamp or redesign; write or update DESIGN.md from a brief or references | `capabilities/design.md` |
+| **Build** | implement or change the interface in code; polish a screen that works (premium, easier to find); a change of unnamed size asks first: polish, revamp, or redesign (RX-UX-20) | `capabilities/build.md` |
 | **Critique** | find what should change first, and why; a heuristic evaluation | `capabilities/critique.md` |
 | **QA** | verify a build against the intended design | `capabilities/qa.md` |
 
-Knowledge modules (`knowledge/`): product, ux, interaction, forms, edge-cases, content, ui, imagery (images, motion,
-expressive surfaces), illustration, design-system, accessibility, responsive, frontend, and anti-slop. Evidence comes from the brief, the
-project, product data, standards, and the ryux MCP when connected; none is required. Every entry point ends at the quality gates: the Hard
+Knowledge modules (`knowledge/`): product, ux, interaction, forms, edge-cases, content, ui, imagery (images, motion, expressive surfaces),
+illustration, design-system, accessibility, responsive, frontend, and anti-slop. Evidence comes from the brief, the project, product data, standards, and the ryux MCP when connected; none is required. Every entry point ends at the quality gates: the Hard
 Gates below and the Delivery Gate, with anti-slop as the last check, never the starting point. Keep them apart:
 Analyze says what exists, Design what to do, Critique if it is right, QA if it matches.
 
@@ -133,6 +132,7 @@ A small change (a copy fix, one component, one state) reads only the module it t
 | AI feature (generated answers, summaries, drafts) | `knowledge/product.md`, `knowledge/ux.md`, `knowledge/content.md`, `knowledge/edge-cases.md`, `knowledge/anti-slop.md` |
 | Copy only (UI text, chat, announcements) | `knowledge/content.md`, `knowledge/anti-slop.md` |
 | Visual refinement | `knowledge/ui.md`, `knowledge/design-system.md`, `capabilities/qa.md`, `knowledge/anti-slop.md` |
+| User flow or journey map | `knowledge/product.md`, `knowledge/ux.md`, `knowledge/edge-cases.md`, `knowledge/content.md` |
 | Review or critique | `capabilities/critique.md` (Design Read + heuristic_eval), plus `capabilities/qa.md` |
 
 ## Delivery Gate

@@ -481,3 +481,13 @@ test("ux: flow and journey templates", () => {
   assert.match(ux, /asumsi/i);
   assert.match(ux, /Before a flow or a journey map, ask/);
 });
+
+test("router: flows, journeys, and change size are reachable", () => {
+  const b = renderBundle();
+  assert.match(b["SKILL.md"], /journey map/i);
+  assert.match(b["SKILL.md"], /RX-UX-20/);
+  assert.match(b["SKILL.md"], /\| User flow or journey map \|/);
+  assert.ok(b["SKILL.md"].split("\n").length <= 180);
+  assert.match(b["capabilities/build.md"], /Polish: refining what exists[\s\S]*Diagnose first[\s\S]*Fix by impact/);
+  assert.match(b["capabilities/design.md"], /RX-UX-20/);
+});

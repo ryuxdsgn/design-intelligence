@@ -2205,6 +2205,7 @@ export const ACTIVATION: { task: string; skills: SkillId[] }[] = [
   { task: "AI feature (generated answers, summaries, drafts)", skills: ["product", "ux", "content", "edge-cases", "anti-slop"] },
   { task: "Copy only (UI text, chat, announcements)", skills: ["content", "anti-slop"] },
   { task: "Visual refinement", skills: ["ui", "design-system", "visual-qa", "anti-slop"] },
+  { task: "User flow or journey map", skills: ["product", "ux", "edge-cases", "content"] },
 ];
 
 export const ALL_SKILL_IDS: SkillId[] = SKILLS.map((s) => s.id);
