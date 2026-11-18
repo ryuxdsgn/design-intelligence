@@ -432,6 +432,162 @@
    "sources": [
     {
      "path": "a.html",
+     "raw": "<button id=\"pay\"><svg aria-hidden=\"true\"></svg> <span id=\"payLabel\"></span></button>"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": []
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.html",
+     "raw": "<button><svg aria-hidden=\"true\"></svg><span data-bind=\"payLabel\"></span></button>"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": []
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.html",
+     "raw": "<button><span class=\"txt\" id=\"pay-txt\"></span> <span class=\"spin\" aria-hidden=\"true\"></span></button>"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": []
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.html",
+     "raw": "<button><svg></svg><span aria-hidden=\"true\" id=\"ic\"></span></button>"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": [
+   {
+    "level": "warn",
+    "rule": "RX-A11Y-04",
+    "file": "a.html",
+    "line": 1,
+    "column": 1,
+    "message": "an icon-only <button> with no name: add aria-label or visually hidden text"
+   }
+  ]
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.tsx",
+     "raw": "<div className=\"scrim\" onClick={close}>\n  <div className=\"sheet\" role=\"dialog\" aria-modal=\"true\">x</div></div>"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": []
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.tsx",
+     "raw": "<div onClick={go}><span>Open</span></div>"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": [
+   {
+    "level": "warn",
+    "rule": "RX-A11Y-04",
+    "file": "a.tsx",
+    "line": 1,
+    "column": 1,
+    "message": "a clickable <div>: use a <button> or <a> so it works from the keyboard and has a role"
+   }
+  ]
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.html",
+     "raw": "<h2>A</h2><div><h4>x</h4></div><h2>B</h2><div><h4>x</h4></div><h2>B</h2><div><h4>x</h4></div><h2>B</h2>"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": [
+   {
+    "level": "warn",
+    "rule": "RX-A11Y-04",
+    "file": "a.html",
+    "line": 1,
+    "column": 16,
+    "message": "h2 then h4: headings skip a level; use h3 (3 times in this file: fix it once where it repeats)"
+   }
+  ]
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.html",
+     "raw": "<h2>A</h2><h4>x</h4><h1>C</h1><h3>y</h3>"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": [
+   {
+    "level": "warn",
+    "rule": "RX-A11Y-04",
+    "file": "a.html",
+    "line": 1,
+    "column": 11,
+    "message": "h2 then h4: headings skip a level; use h3"
+   },
+   {
+    "level": "warn",
+    "rule": "RX-A11Y-04",
+    "file": "a.html",
+    "line": 1,
+    "column": 31,
+    "message": "h1 then h3: headings skip a level; use h2"
+   }
+  ]
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.html",
      "raw": "<meta name=\"viewport\" content=\"width=device-width, maximum-scale=1\">"
     }
    ],
