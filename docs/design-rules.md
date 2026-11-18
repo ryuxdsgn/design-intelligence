@@ -208,12 +208,12 @@ line below for its exact source.
 | Source cited | Rules citing it | Rules citing only this |
 | --- | --- | --- |
 | Public standard or research | 96 | 63 |
-| Industry practice | 28 | 7 |
+| Industry practice | 28 | 6 |
 | Observed in a RYUX run | 18 | 7 |
 | Pattern also in another MIT ruleset (text written for RYUX) | 4 | 3 |
-| RYUX principle, taxonomy, or review | 67 | 23 |
+| RYUX principle, taxonomy, or review | 68 | 23 |
 
-All 155 rules cite a source; 52 cite more than one kind, so the "Rules citing it" column adds up to more than 155.
+All 155 rules cite a source; 53 cite more than one kind, so the "Rules citing it" column adds up to more than 155.
 <!-- provenance:end -->
 
 ## Rules
@@ -1541,13 +1541,15 @@ Gate area DESIGN SYSTEM. Covers search before create, tokens, component states, 
 - Why: With one semantic layer, a theme or rebrand changes values in one place and every component follows, in the design file and in code. (W3C Design Tokens Community Group (aliases); Figma variables and modes (help.figma.com); extends RX-DS-03)
 - Check: count component values bound to a primitive or to no variable
 
-#### RX-DS-12 [Contextual] Components resize like the code
+#### RX-DS-12 [Contextual] Components and screens resize like the code
 
-- When: Building or changing reusable components or variables in a design tool (Figma, pen.dev) or a component library, meant to be used by designers and in code.
+- When: Building or changing reusable components or variables in a design tool (Figma, pen.dev) or a component library, meant to be used by designers and in code. Also any screen built in a design tool (Figma, pen.dev).
 - Do: Build each component with auto layout, padding and gap bound to spacing variables, and a stated resize rule (hug the content, or fill the container). Check it with the longest real label, including Indonesian copy, which often runs longer than English, and at the smallest width it is used in: put an instance at that width on the sheet (a 320 px screen less its margins, the narrowest table cell or sidebar), with the longest label, and look at it.
-- Do not: Position layers absolutely inside a component, set a fixed width that clips a long label, or show it only at the comfortable width it was drawn at.
-- Why: A component that does not resize the way the code does gets detached in the design file and rebuilt in code. (Design-system practice; Figma auto layout (help.figma.com); RX-RD-01; ryux design-system trial 2026-11-13 (Figma): every component in auto layout, none shown at its smallest width; written for RYUX)
-- Check: the sheet shows each component at its smallest width with its longest label; render it; nothing clipped, overflowing, or wrapped where it must not
+  - Build a screen the same way: auto layout sections (header, content, bottom bar), a list as a stack, and only a layer pinned to an edge on purpose (a status bar, a bottom bar, a sheet, a toast, a scrim) placed absolutely, with a constraint.
+  - Keep the page clean: nothing outside the screens but one named frame of parts and components, and shadows and blurs from effect styles.
+- Do not: Position layers absolutely inside a component, set a fixed width that clips a long label, or show it only at the comfortable width it was drawn at; build a screen as loose layers placed by x and y, or leave test layers and spare instances on the page.
+- Why: A component or screen that does not resize the way the code does gets detached in the design file and rebuilt in code; a screen of loose layers breaks when one text grows, and every later fix moves numbers by hand. (Design-system practice; Figma auto layout (help.figma.com); RX-RD-01; ryux design-system trial 2026-11-13 (Figma): every component in auto layout, none shown at its smallest width; owner review 2026-11-16 of two Figma flows (Panggung and Rak, OpenCode with DeepSeek, one run each): 0 of 16 screens in auto layout, every layer placed by x and y, a test layer and a spare status bar left on the page, a later tidy pass found 38 text boxes shorter than their text; written for RYUX)
+- Check: the sheet shows each component at its smallest width with its longest label; render it; nothing clipped, overflowing, or wrapped where it must not; on a Figma page, scripts/figma-audit.js counts screens built in auto layout, loose layers, layers outside the screens, and effects without a style
 
 #### RX-DS-13 [Contextual] [Quality Lock] Resolve the token matrix per state
 

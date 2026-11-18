@@ -18,7 +18,7 @@ const figmaAudit = async function figmaAudit(figma, pageName) {
     const screens = page.children.flatMap((n) => (n.type === "SECTION" ? n.children : [n])).filter((n) => n.type === "FRAME" && n.visible !== false && !hasComponents(n));
     const findings = [];
     const add = (rule, level, frame, node, message) => findings.push({ rule, level, frame: frame.name, node: node ? node.name : "", message });
-    const c = { screens: screens.length, imageFills: 0, distinctImages: 0, reusedImages: 0, contrastFails: 0, contrastUnknown: 0, targetsUnder24: 0, targetsUnder44: 0, cutText: 0, clippedText: 0, flatOverlays: 0, idleBusyButtons: 0, unstyledText: 0, unboundFills: 0, unboundSpacing: 0 };
+    const c = { screens: screens.length, imageFills: 0, distinctImages: 0, reusedImages: 0, contrastFails: 0, contrastUnknown: 0, targetsUnder24: 0, targetsUnder44: 0, cutText: 0, clippedText: 0, flatOverlays: 0, idleBusyButtons: 0, unstyledText: 0, unboundFills: 0, unboundSpacing: 0, layoutScreens: 0, looseLayers: 0, strayLayers: 0, rawEffects: 0 };
     const images = new Map();
     // WCAG relative luminance and contrast, on 0-1 channels.
     const lin = (v) => (v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4);
@@ -54,6 +54,33 @@ const figmaAudit = async function figmaAudit(figma, pageName) {
                 names.set(e.n, `${e.n.name} ${mc.parent && mc.parent.type === "COMPONENT_SET" ? mc.parent.name : mc.name}`);
         }
         const nm = (n) => names.get(n) || n.name;
+        // Construction: a screen is built from auto layout (RX-DS-12). A layer placed by x and y in a frame or group
+        // without auto layout is loose, unless it is pinned on purpose (a bar, sheet, toast, scrim, status bar, home
+        // indicator, keyboard) or is the screen's background. Inside a pinned sheet or bar the layers are checked too;
+        // inside an instance or system chrome they are not.
+        const PINNED = /\b(bar|footer|toolbar|tabbar|header|sticky|sheet|dialog|modal|toast|snackbar|popover|scrim|backdrop|dim|keyboard|status ?bar|home ?indicator|background|bg)\b/i;
+        const CHROME = /\b(keyboard|status ?bar|home ?indicator)\b/i; // system chrome: its insides are not checked
+        const fbox = box(frame);
+        const loose = nodes.filter((e) => {
+            if (e.n === frame || e.inInstance)
+                return false;
+            const parent = e.ancestors[e.ancestors.length - 1];
+            const free = parent && (parent.type === "GROUP" || (("layoutMode" in parent) && (!parent.layoutMode || parent.layoutMode === "NONE")));
+            if (!free || PINNED.test(nm(e.n)) || e.ancestors.some((a) => a !== frame && CHROME.test(nm(a))))
+                return false;
+            if (e.n.layoutMode && e.n.layoutMode !== "NONE")
+                return false; // an auto layout section placed on the screen
+            const b = box(e.n);
+            return !(b.width >= fbox.width * 0.9 && b.height >= fbox.height * 0.9);
+        });
+        c.looseLayers += loose.length;
+        if (loose.length <= 2)
+            c.layoutScreens++;
+        else
+            add("RX-DS-12", loose.length > 5 ? "fail" : "warn", frame, loose[0].n, `${loose.length} layers placed by x and y outside auto layout (e.g. "${short(loose[0].n.name, 30)}"); build the screen from auto layout sections`);
+        for (const e of nodes)
+            if (e.n !== frame && !e.inInstance && Array.isArray(e.n.effects) && e.n.effects.some((x) => x.visible !== false) && !e.n.effectStyleId)
+                c.rawEffects++;
         const text = (n) => ("findAll" in n ? n.findAll((t) => t.type === "TEXT" && t.visible !== false).map((t) => t.characters).join(" ") : n.characters || "").trim();
         const opaque = (e) => { const ps = visiblePaints(e.n.fills); return e.a >= 0.9 && ps.some((p) => p.type !== "SOLID" || (p.opacity ?? 1) >= 0.9); };
         for (const e of nodes) {
@@ -206,6 +233,13 @@ const figmaAudit = async function figmaAudit(figma, pageName) {
                 }
             }
     }
+    // Nothing on the page outside the screens but components and the frames or sections that hold them.
+    for (const n of page.children.flatMap((m) => (m.type === "SECTION" ? m.children : [m]))) {
+        if (screens.includes(n) || n.type === "COMPONENT" || n.type === "COMPONENT_SET" || hasComponents(n) || n.visible === false)
+            continue;
+        c.strayLayers++;
+        add("RX-DS-12", "warn", { name: page.name }, n, `"${short(n.name, 30)}" sits on the page outside the screens; delete it or move it into the parts frame`);
+    }
     c.distinctImages = images.size;
     c.reusedImages = [...images.values()].filter((s) => s.size > 1).length;
     const annotations = {};
@@ -223,7 +257,7 @@ const figmaAudit = async function figmaAudit(figma, pageName) {
         annotations.unreadable = 1;
     }
     const fails = findings.filter((f) => f.level === "fail").length;
-    const gate = `figma audit (${page.name}): screens ${c.screens} · images ${c.distinctImages} distinct, ${c.imageFills} fills, ${c.reusedImages} reused across screens · contrast fails ${c.contrastFails} (${c.contrastUnknown} over images, not measured) · text cut ${c.cutText}, clipped ${c.clippedText} · targets under 24 ${c.targetsUnder24}, under 44 ${c.targetsUnder44} · overlays with no lift ${c.flatOverlays} · busy buttons with idle label ${c.idleBusyButtons} · unstyled text ${c.unstyledText}, unbound fills ${c.unboundFills}, unbound spacing ${c.unboundSpacing} · annotations ${Object.entries(annotations).map(([k, v]) => `${k} ${v}`).join(", ") || "none"} · ${fails} fail, ${findings.length - fails} warn`;
+    const gate = `figma audit (${page.name}): screens ${c.screens} · images ${c.distinctImages} distinct, ${c.imageFills} fills, ${c.reusedImages} reused across screens · contrast fails ${c.contrastFails} (${c.contrastUnknown} over images, not measured) · text cut ${c.cutText}, clipped ${c.clippedText} · targets under 24 ${c.targetsUnder24}, under 44 ${c.targetsUnder44} · overlays with no lift ${c.flatOverlays} · busy buttons with idle label ${c.idleBusyButtons} · unstyled text ${c.unstyledText}, unbound fills ${c.unboundFills}, unbound spacing ${c.unboundSpacing} · built in auto layout ${c.layoutScreens}/${c.screens} screens, loose layers ${c.looseLayers}, layers outside the screens ${c.strayLayers}, effects without a style ${c.rawEffects} · annotations ${Object.entries(annotations).map(([k, v]) => `${k} ${v}`).join(", ") || "none"} · ${fails} fail, ${findings.length - fails} warn`;
     return { page: page.name, screens: screens.map((s) => s.name), counts: c, images: [...images.entries()].map(([h, s]) => ({ image: h.slice(0, 8), screens: [...s] })), annotations, findings: findings.slice(0, 80), more: Math.max(0, findings.length - 80), gate };
 };
 return await figmaAudit(figma, PAGE);

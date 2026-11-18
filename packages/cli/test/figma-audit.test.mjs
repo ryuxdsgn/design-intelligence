@@ -137,3 +137,34 @@ test("an instance is known by its component, so seats named A1 are measured as s
   assert.equal(r.findings.length, 1, "one finding for the group");
   assert.match(r.findings[0].message, /"A1" and 1 more \(Local\/Seat\) 30x30, under 44x44/);
 });
+
+test("construction: a screen of loose layers fails, auto layout sections with pinned bars pass", async () => {
+  const rows = (n) => Array.from({ length: n }, (_, i) => text(`Row ${i}`, `Book ${i}`, [16, 120 + i * 40, 200, 20]));
+  const loose = screen("01", rows(6), { layoutMode: "NONE" });
+  assert.deepEqual(rules(await audit([loose])), ["fail RX-DS-12"]);
+  const stack = node("FRAME", "Content", [0, 100, 390, 600], { layoutMode: "VERTICAL" }, rows(6));
+  const bar = node("FRAME", "Bottom bar", [0, 760, 390, 84], { fills: [white], layoutMode: "HORIZONTAL" });
+  const status = node("FRAME", "Status bar", [0, 0, 390, 54]);
+  const bg = node("RECTANGLE", "Background", [0, 0, 390, 844], { fills: [white] });
+  const built = await audit([screen("01", [bg, status, stack, bar], { layoutMode: "NONE" })]);
+  assert.deepEqual(rules(built), []);
+  assert.match(built.gate, /built in auto layout 1\/1 screens, loose layers 0/);
+});
+
+test("construction: layers outside the screens warn, a parts frame does not; raw effects are counted", async () => {
+  const parts = node("FRAME", "Parts", [0, 1000, 600, 300], {}, [node("COMPONENT", "Button", [0, 1000, 100, 44])]);
+  const stray = node("RECTANGLE", "TEST cover", [500, 0, 120, 160]);
+  const card = node("FRAME", "Card", [16, 100, 358, 120], { layoutMode: "VERTICAL", effects: [shadow], effectStyleId: "" });
+  const r = await audit([screen("01", [card], { layoutMode: "VERTICAL" }), parts, stray]);
+  assert.deepEqual(rules(r), ["warn RX-DS-12"]);
+  assert.equal(r.counts.strayLayers, 1);
+  assert.equal(r.counts.rawEffects, 1);
+});
+
+test("construction: the inside of a sheet is checked, the inside of a status bar is not", async () => {
+  const items = (n, y) => Array.from({ length: n }, (_, i) => text(`Opt ${i}`, `Option ${i}`, [16, y + i * 40, 200, 20]));
+  const sheet = node("FRAME", "Payment sheet", [0, 400, 390, 444], { layoutMode: "NONE", effects: [shadow] }, items(4, 420));
+  const status = node("FRAME", "Status bar", [0, 0, 390, 54], { layoutMode: "NONE" }, items(4, 4));
+  const r = await audit([screen("05", [status, sheet], { layoutMode: "NONE" })]);
+  assert.equal(r.counts.looseLayers, 4);
+});
