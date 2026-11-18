@@ -13,6 +13,12 @@ Define every meaningful action in four parts before implementing it:
 | Result | How do they know it worked, and what changed? |
 | Recovery | If it fails or was a mistake, how do they undo, retry, or get help? |
 
+**Picking from a limited set** (seats, time slots, rooms). The legend shows every state a place
+can have: available, selected, sold, and accessible when the venue has it. Selecting starts a hold
+with a visible timer and says what happens when it runs out. Offer a best-available pick for people
+who do not care where they sit, and state the most per order. Ask the hold length, the most per
+order, and how accessible places are allocated; never invent them.
+
 **Confirm or undo?** Reason about it; do not apply it mechanically.
 1. Is it reversible? Then prefer an undo after the fact over a confirmation before.
 2. Is it irreversible **and** high-impact (money, sending, deleting shared data)? Then confirm with
@@ -95,8 +101,9 @@ How local apps handle the same action and its states, and local payment patterns
 ### RX-IX-05 [Required] Full cost before commitment
 
 - Do: Show items, shipping, admin fees, and tax as a breakdown and total before the user commits.
-- Do not: Reveal fees for the first time on the final step.
-- Why: Unexpected extra costs are among the most reported reasons for abandoning checkout. (Baymard checkout usability research; NNGroup e-commerce research)
+  - From the step where the user first holds a choice (a seat held, an item in the bag), the price shown includes its fees, or names the fee as a line to confirm; the pay step only repeats it.
+- Do not: Reveal fees for the first time on the final step, or show a held choice's price without its fees until the pay step.
+- Why: Unexpected extra costs are among the most reported reasons for abandoning checkout. (Baymard checkout usability research; NNGroup e-commerce research; owner review 2026-11-15 of a concert-ticket flow (Panggung, RYUX 2.22.12, OpenCode with DeepSeek, one run; a DeepSeek review, not blind, checked by hand against the exports): the service fee first appeared on the pay step)
 - Not when: prices are not known until a later choice (shipping before an address); show an estimate and say when it is final
 - Trade-off: a full breakdown adds lines to a small screen
 - Check: review
@@ -105,8 +112,9 @@ How local apps handle the same action and its states, and local payment patterns
 
 - When: the flow takes a QRIS payment
 - Do: Show the amount and the merchant name before the user scans or confirms, and the paid status afterwards.
-- Do not: Show a QR code without the amount or the merchant.
-- Why: Users check who they are paying and how much before they pay. (QRIS standard (Bank Indonesia); ryux reference screens)
+  - When the user pays on the same phone that shows the code, the QR stays on screen with a way to save or share it, and the apps that can pay it are named; a deep link to one app is an addition, not the payment.
+- Do not: Show a QR code without the amount or the merchant, or send a same-phone QRIS payment to "open your banking app" with no QR to scan or save.
+- Why: Users check who they are paying and how much before they pay. (QRIS standard (Bank Indonesia); ryux reference screens; owner review 2026-11-16 of a secondhand-book flow (Rak, RYUX with #78, OpenCode with DeepSeek, one run): the paying screen said "Open banking app" and showed no QR)
 - Not when: a static QRIS printed for any amount, where the user types the amount; show the merchant name
 - Trade-off: an extra confirmation step before the code
 - Check: search_screens qris
@@ -178,8 +186,10 @@ How local apps handle the same action and its states, and local payment patterns
 
 - When: a screen shows a total that the user's choices change: payment method, insurance, delivery or service tier, add-ons
 - Do: Show each price-changing choice with its current value and its cost inline on the screen that shows the total, so the user sees what they pay for before they confirm.
-- Do not: Hide a choice that changes the price behind a list row or a later screen, or show the total without the choices that make it up.
-- Why: People check a total against the choices behind it; a cost they cannot see next to the total reads as a surprise fee. (ryux run: blind review of a delivery checkout 2026-10-20; NNGroup visual hierarchy; written for RYUX)
+  - Each choice is made once: the next step shows the chosen value with a way to change it, and does not ask again (a payment method picked at checkout is not offered again in the pay sheet).
+  - The screen where the total is confirmed shows every choice behind it, including one made earlier (the courier chosen in the bag is a line at checkout).
+- Do not: Hide a choice that changes the price behind a list row or a later screen, show the total without the choices that make it up, or ask for the same choice on two steps in a row.
+- Why: People check a total against the choices behind it; a cost they cannot see next to the total reads as a surprise fee. (ryux run: blind review of a delivery checkout 2026-10-20; NNGroup visual hierarchy; owner review 2026-11-16 of a secondhand-book flow (Rak, RYUX with #78, OpenCode with DeepSeek, one run): the payment method was chosen at checkout and offered again in the pay sheet, and the courier chosen in the bag was not shown at checkout; written for RYUX)
 - Not when: a single fixed price with no choices on the screen
 - Trade-off: a longer checkout screen; group the choices so the total stays visible
 - Check: review the checkout render: every price-changing choice visible next to the total

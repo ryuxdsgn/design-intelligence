@@ -207,13 +207,13 @@ line below for its exact source.
 <!-- provenance:start -->
 | Source cited | Rules citing it | Rules citing only this |
 | --- | --- | --- |
-| Public standard or research | 96 | 63 |
+| Public standard or research | 96 | 61 |
 | Industry practice | 28 | 6 |
 | Observed in a RYUX run | 18 | 7 |
 | Pattern also in another MIT ruleset (text written for RYUX) | 4 | 3 |
-| RYUX principle, taxonomy, or review | 68 | 23 |
+| RYUX principle, taxonomy, or review | 71 | 23 |
 
-All 155 rules cite a source; 53 cite more than one kind, so the "Rules citing it" column adds up to more than 155.
+All 155 rules cite a source; 55 cite more than one kind, so the "Rules citing it" column adds up to more than 155.
 <!-- provenance:end -->
 
 ## Rules
@@ -557,8 +557,9 @@ Gate area UX. Covers before, during, result, recovery; feedback, confirmation, n
 #### RX-IX-05 [Required] Full cost before commitment
 
 - Do: Show items, shipping, admin fees, and tax as a breakdown and total before the user commits.
-- Do not: Reveal fees for the first time on the final step.
-- Why: Unexpected extra costs are among the most reported reasons for abandoning checkout. (Baymard checkout usability research; NNGroup e-commerce research)
+  - From the step where the user first holds a choice (a seat held, an item in the bag), the price shown includes its fees, or names the fee as a line to confirm; the pay step only repeats it.
+- Do not: Reveal fees for the first time on the final step, or show a held choice's price without its fees until the pay step.
+- Why: Unexpected extra costs are among the most reported reasons for abandoning checkout. (Baymard checkout usability research; NNGroup e-commerce research; owner review 2026-11-15 of a concert-ticket flow (Panggung, RYUX 2.22.12, OpenCode with DeepSeek, one run; a DeepSeek review, not blind, checked by hand against the exports): the service fee first appeared on the pay step)
 - Not when: prices are not known until a later choice (shipping before an address); show an estimate and say when it is final
 - Trade-off: a full breakdown adds lines to a small screen
 - Check: review
@@ -567,8 +568,9 @@ Gate area UX. Covers before, during, result, recovery; feedback, confirmation, n
 
 - When: the flow takes a QRIS payment
 - Do: Show the amount and the merchant name before the user scans or confirms, and the paid status afterwards.
-- Do not: Show a QR code without the amount or the merchant.
-- Why: Users check who they are paying and how much before they pay. (QRIS standard (Bank Indonesia); ryux reference screens)
+  - When the user pays on the same phone that shows the code, the QR stays on screen with a way to save or share it, and the apps that can pay it are named; a deep link to one app is an addition, not the payment.
+- Do not: Show a QR code without the amount or the merchant, or send a same-phone QRIS payment to "open your banking app" with no QR to scan or save.
+- Why: Users check who they are paying and how much before they pay. (QRIS standard (Bank Indonesia); ryux reference screens; owner review 2026-11-16 of a secondhand-book flow (Rak, RYUX with #78, OpenCode with DeepSeek, one run): the paying screen said "Open banking app" and showed no QR)
 - Not when: a static QRIS printed for any amount, where the user types the amount; show the merchant name
 - Trade-off: an extra confirmation step before the code
 - Check: search_screens qris
@@ -640,8 +642,10 @@ Gate area UX. Covers before, during, result, recovery; feedback, confirmation, n
 
 - When: a screen shows a total that the user's choices change: payment method, insurance, delivery or service tier, add-ons
 - Do: Show each price-changing choice with its current value and its cost inline on the screen that shows the total, so the user sees what they pay for before they confirm.
-- Do not: Hide a choice that changes the price behind a list row or a later screen, or show the total without the choices that make it up.
-- Why: People check a total against the choices behind it; a cost they cannot see next to the total reads as a surprise fee. (ryux run: blind review of a delivery checkout 2026-10-20; NNGroup visual hierarchy; written for RYUX)
+  - Each choice is made once: the next step shows the chosen value with a way to change it, and does not ask again (a payment method picked at checkout is not offered again in the pay sheet).
+  - The screen where the total is confirmed shows every choice behind it, including one made earlier (the courier chosen in the bag is a line at checkout).
+- Do not: Hide a choice that changes the price behind a list row or a later screen, show the total without the choices that make it up, or ask for the same choice on two steps in a row.
+- Why: People check a total against the choices behind it; a cost they cannot see next to the total reads as a surprise fee. (ryux run: blind review of a delivery checkout 2026-10-20; NNGroup visual hierarchy; owner review 2026-11-16 of a secondhand-book flow (Rak, RYUX with #78, OpenCode with DeepSeek, one run): the payment method was chosen at checkout and offered again in the pay sheet, and the courier chosen in the bag was not shown at checkout; written for RYUX)
 - Not when: a single fixed price with no choices on the screen
 - Trade-off: a longer checkout screen; group the choices so the total stays visible
 - Check: review the checkout render: every price-changing choice visible next to the total
@@ -684,8 +688,9 @@ Gate area UX. Covers labels, layout, validation, input preservation, autofill, s
 #### RX-FM-06 [Required] Submission states
 
 - Do: On submit, prevent double submission, show progress, then show success with what happens next, or failure with the input kept and a retry.
-- Do not: Leave the submit button live during a request or end on a blank screen.
-- Why: Submission is where users lose work and trust. (Nielsen heuristics 1 and 9)
+  - After a purchase, success answers what comes next for the thing bought: where and when it is used (a gate, the doors, a pickup point), what to bring, and where to find it again. A fact the product has not given (a gate, an ID rule, a re-entry rule) is a slot marked to confirm, never an invented rule (RX-PR-02).
+- Do not: Leave the submit button live during a request, end on a blank screen, end a purchase on a receipt with no next step, or fill its next step with venue or policy rules nobody gave.
+- Why: Submission is where users lose work and trust. (Nielsen heuristics 1 and 9; owner review 2026-11-15 of a concert-ticket flow (Panggung, RYUX 2.22.12, OpenCode with DeepSeek, one run; a DeepSeek review, not blind, checked by hand against the exports): the ticket had a seat and a QR code but no gate or door time; the review praised another run for venue rules that run had invented)
 - Not when: instant local saves with no network round trip
 - Trade-off: more states to build and test
 - Check: review
@@ -1036,8 +1041,8 @@ Gate area UI. Covers the visual system of a product: hierarchy, type, layout, de
   - Show each as a style tile with the same fields (name and philosophy, base surface, type pair with a heading, body, and figures, palette with roles, a button and a card, medium (one, or a named mix with its binding, RX-UI-32), a small hero holding one asset made for it, signature, calibration product, risk), side by side on the canvas, or as text with the same fields.
   - Ask as choices, the recommended one first, numbered once: the same number in the message, the question, and the tiles; with room to combine (a combination passes the coherence rules again); asked for others, offer three new ones. Without a choice tool, write them as numbered options, end the turn, and wait.
   - Choose yourself only when the user hands this choice back or the task runs without questions (a pipeline, a batch job); "up to you" on another question hands back only that question. Then pick one with a reason, marked provisional in the Assumptions, and offer the other two in a line each.
-- Do not: Build the directions from the category alone, draw all three ideas from the product and the transaction, number the options differently in two places, pick three style keywords from a list, offer three palettes of one layout, put all three on light warm surfaces, describe a carrier in the tile instead of making it, offer a conventional direction with no signature or visual anchor, recommend the category default because it feels safer, decline one default look and recommend another (a dark page with a neon glow after declining the white SaaS page), ask an open "what look do you want?" with no options, or let a direction change the facts: assumptions about the look are allowed, assumptions about the product are not (RX-AS-01, RX-PR-02).
-- Why: With no direction, an agent ranks the familiar look first and ships it, and a rule that tells it to be bold moves it to the next familiar look; the variety has to come from the user's choice among directions that fit. (Art direction practice (style tiles; a direction as a set of reasoned visual decisions); landing-gold rounds 2 to 4 and owner trials T1 to T9, 2026-10-30/31 (docs/benchmarks/landing-gold): with a direction assigned or chosen by the agent, RYUX runs converged on one look and rated below a peer for slop resistance; owner decision 2026-10-31 (Design Direction Intelligence); landing-gold round 5, 2026-11-01, and owner review: all three RYUX runs drew their ideas from the product and the saving habit and offered nearly the same three directions, while the peer drew on Indonesian textile, theatre, and shop culture; owner decision 2026-11-06: a product that exists keeps its own direction, read from its screens and code, instead of being offered three new ones; owner blind ratings 2026-11-13 of an AI product-photo landing (two runs per arm, not published): both RYUX runs reached the same "light in the dark" concept from the name Kilau ("shine"), declined the white SaaS page, and recommended a dark page with a lime glow, read as a SaaS template, visual appeal 3.0 v 4.0, while bolder options they offered (warung sign painting, a daylight kitchen studio) went unused)
+- Do not: Build the directions from the category alone, draw all three ideas from the product and the transaction, number the options differently in two places, pick three style keywords from a list, offer three palettes of one layout, put all three on light warm surfaces, describe a carrier in the tile instead of making it, offer a conventional direction with no signature or visual anchor, recommend the category default because it feels safer, decline one default look and recommend another (a dark page with a neon glow after declining the white SaaS page), ask an open "what look do you want?" with no options, or let a direction change the facts: assumptions about the look are allowed, assumptions about the product are not (RX-AS-01, RX-PR-02).; or let a direction add product mechanics (a drop, a queue, a countdown, a limited serial, a membership number, a stock count): a direction changes how the product looks, never what it does (RX-PR-02, RX-AS-04)
+- Why: With no direction, an agent ranks the familiar look first and ships it, and a rule that tells it to be bold moves it to the next familiar look; the variety has to come from the user's choice among directions that fit. (Art direction practice (style tiles; a direction as a set of reasoned visual decisions); landing-gold rounds 2 to 4 and owner trials T1 to T9, 2026-10-30/31 (docs/benchmarks/landing-gold): with a direction assigned or chosen by the agent, RYUX runs converged on one look and rated below a peer for slop resistance; owner decision 2026-10-31 (Design Direction Intelligence); landing-gold round 5, 2026-11-01, and owner review: all three RYUX runs drew their ideas from the product and the saving habit and offered nearly the same three directions, while the peer drew on Indonesian textile, theatre, and shop culture; owner decision 2026-11-06: a product that exists keeps its own direction, read from its screens and code, instead of being offered three new ones; owner blind ratings 2026-11-13 of an AI product-photo landing (two runs per arm, not published): both RYUX runs reached the same "light in the dark" concept from the name Kilau ("shine"), declined the white SaaS page, and recommended a dark page with a lime glow, read as a SaaS template, visual appeal 3.0 v 4.0, while bolder options they offered (warung sign painting, a daylight kitchen studio) went unused; owner review 2026-11-15 of a concert-ticket flow (Panggung, RYUX 2.22.12, OpenCode with DeepSeek, one run; a DeepSeek review, not blind, checked by hand against the exports): the chosen direction, "The drop", added a drop number, a closing countdown, a 2,148-person queue, a serial out of 3,000, and a member number, none of them in the brief)
 - Not when: the prompt or DESIGN.md sets the direction, an existing brand system defines it, or the product already has screens, code, or a design file: their visual language is the direction, read through Analyze and written as the direction: block with status observed and its source files, unless the user asks for a new look; follow it, and on a surface it was not written for, carry it by RX-UI-33. A small change inside an existing product
 - Trade-off: one more question and three tiles before the design starts
 - Check: the Delivery Gate names the three directions offered, the answer each rests on, the one used, and whether the user chose it or it is provisional; the three differ on at least three grammar dimensions; three base surface families, warm off-white at most one, one cool or neutral direction; flat with flat vectors at most one, a render, retouched photo, or UI composite in at least one; three idea sources, one from the audience's culture or place, its meaning named; one numbering for the options; a made asset in each tile

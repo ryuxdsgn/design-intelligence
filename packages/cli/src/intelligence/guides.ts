@@ -931,6 +931,12 @@ Does not cover: per-action behavior (see ryux-interaction), forms (see ryux-form
 | Result | How do they know it worked, and what changed? |
 | Recovery | If it fails or was a mistake, how do they undo, retry, or get help? |
 
+**Picking from a limited set** (seats, time slots, rooms). The legend shows every state a place
+can have: available, selected, sold, and accessible when the venue has it. Selecting starts a hold
+with a visible timer and says what happens when it runs out. Offer a best-available pick for people
+who do not care where they sit, and state the most per order. Ask the hold length, the most per
+order, and how accessible places are allocated; never invent them.
+
 **Confirm or undo?** Reason about it; do not apply it mechanically.
 1. Is it reversible? Then prefer an undo after the fact over a confirmation before.
 2. Is it irreversible **and** high-impact (money, sending, deleting shared data)? Then confirm with

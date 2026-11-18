@@ -65,8 +65,9 @@ Real Indonesian forms for the same data (address, OTP, e-KYC): `search_screens`,
 ### RX-FM-06 [Required] Submission states
 
 - Do: On submit, prevent double submission, show progress, then show success with what happens next, or failure with the input kept and a retry.
-- Do not: Leave the submit button live during a request or end on a blank screen.
-- Why: Submission is where users lose work and trust. (Nielsen heuristics 1 and 9)
+  - After a purchase, success answers what comes next for the thing bought: where and when it is used (a gate, the doors, a pickup point), what to bring, and where to find it again. A fact the product has not given (a gate, an ID rule, a re-entry rule) is a slot marked to confirm, never an invented rule (RX-PR-02).
+- Do not: Leave the submit button live during a request, end on a blank screen, end a purchase on a receipt with no next step, or fill its next step with venue or policy rules nobody gave.
+- Why: Submission is where users lose work and trust. (Nielsen heuristics 1 and 9; owner review 2026-11-15 of a concert-ticket flow (Panggung, RYUX 2.22.12, OpenCode with DeepSeek, one run; a DeepSeek review, not blind, checked by hand against the exports): the ticket had a seat and a QR code but no gate or door time; the review praised another run for venue rules that run had invented)
 - Not when: instant local saves with no network round trip
 - Trade-off: more states to build and test
 - Check: review
