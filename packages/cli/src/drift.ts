@@ -177,7 +177,8 @@ export function driftRadius(text: string, dir: Direction): DriftHit[] {
   const known = new Set(dir.radius);
   const out: DriftHit[] = [];
   for (const m of text.matchAll(/(border(?:-(?:top|bottom)-(?:left|right))?-radius\s*:\s*|borderRadius\s*:\s*)([^;}\n,]+)/g)) {
-    const values = [...m[2].matchAll(/(\d+(?:\.\d+)?)(px)?\b(?!\s*%)/g)].map((v) => Number(v[1]));
+    // a whole number only: "12.5 %" is a percentage, not 12 px followed by .5
+    const values = [...m[2].matchAll(/(?<![\d.])(\d+(?:\.\d+)?)(?![\d.])(px)?\b(?!\s*%)/g)].map((v) => Number(v[1]));
     const bad = values.filter((v) => v !== 0 && v < 999 && !known.has(v));
     if (!bad.length) continue;
     out.push({ index: (m.index ?? 0) + m[1].length, length: m[2].trim().length, message: `radius ${bad.join(", ")}px is not in DESIGN.md's shape.radius (${dir.radius.join(", ")}): ${fix("shape.radius")}` });

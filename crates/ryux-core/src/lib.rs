@@ -12,3 +12,6 @@ pub use serde_json::Value as Json;
 pub fn parse(s: &str) -> Result<Json, String> {
     serde_json::from_str(s).map_err(|e| e.to_string())
 }
+
+pub mod jsre;
+pub mod drift;
