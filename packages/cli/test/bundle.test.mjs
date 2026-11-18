@@ -501,7 +501,7 @@ test("review fixes: change size, questions, journey evidence", () => {
   // 2. the Polish asks already name a size
   assert.match(r20, /premium, cleaner, easier to find[^\n]*name polish/i);
   // 3. a revamp in code explores inside the direction, then builds
-  assert.match(r20, /explore only inside the DESIGN\.md direction[^\n]*then implement it through capabilities\/build\.md/i);
+  assert.match(r20, /flow locked, and in a code project then implement it through capabilities\/build\.md/i);
   // 4. one question budget, stated in Design stage 1
   assert.match(b["capabilities/design.md"], /up to four for a user flow or journey map/);
   // 5. the output place is a default, not a question
@@ -514,4 +514,21 @@ test("review fixes: change size, questions, journey evidence", () => {
   assert.match(ux, /mixed map/i);
   // 8. the pending branch ends where the user sees it, not at the success end
   assert.doesNotMatch(ux, /G2\[[^\]]*\] --> H/);
+});
+
+test("fix round 1: screen-ready flows and journeys, a revamp that changes the look and every state", () => {
+  const ux = renderBundle()["knowledge/ux.md"];
+  // B1: what the owner found useful
+  assert.match(ux, /screen list[^\n]*primary and secondary action[^\n]*states/i);
+  assert.match(ux, /two or three flow structures[^\n]*recommendation[^\n]*runner-up[^\n]*when to switch/i);
+  assert.match(ux, /confidence[^\n]*impact if wrong[^\n]*how to validate/i);
+  assert.match(ux, /phases agree with the map's own recommendations/i);
+  assert.match(ux, /one actor[^\n]*no second persona/i);
+  // B2: a revamp
+  const r20 = ux.slice(ux.indexOf("RX-UX-20"), ux.indexOf("RX-UX-20") + 4000);
+  assert.match(r20, /changes the visual language[^\n]*type scale[^\n]*surfaces[^\n]*component shapes/i);
+  assert.match(r20, /brand anchors[^\n]*logo[^\n]*primary accent/i);
+  assert.match(r20, /every state[^\n]*error/i);
+  assert.match(r20, /disclosure never hides what a state needs/i);
+  assert.match(r20, /floating control that covers content/i);
 });

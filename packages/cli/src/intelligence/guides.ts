@@ -957,6 +957,14 @@ flowchart TD
   G -- Ya --> H[Token 20 digit tampil, bisa disalin: selesai]
 \`\`\`
 
+**Make it ready for screens.** A flow or journey deliverable goes on to design, so it also carries:
+- the success criteria, written before any structure is chosen;
+- for the riskiest decision in the flow (when the price is final, when the user pays, what happens on a
+  mismatch), two or three flow structures side by side, with the recommendation, the runner-up, and when to switch;
+- the assumptions in one table: each with its confidence, impact if wrong, and how to validate it;
+- a screen list: per screen its primary and secondary action and the states it must have (RX-EC-01).
+Keep one actor for one journey: no second persona until evidence says a second group behaves differently.
+
 Under it, list each failure branch with its way back ("pembayaran gagal: saldo tidak terpotong, coba metode
 lain") so each maps to a state in the design (RX-EC-01).
 
@@ -973,6 +981,9 @@ cell comes from (each cell cites its source): a cited study or user data, or "as
 | Pain points | ... | ... | ... | ... | ... |
 | Opportunities (owner) | ... | ... | ... | ... | ... |
 | Source | asumsi | asumsi | ... | ... | ... |
+
+The phases agree with the map's own recommendations: when an opportunity says to defer a step (sign-up after
+the first order), the phases and the flow show it deferred, not as its own phase.
 
 An assumption-based map marks each guessed cell (asumsi) and ends with how to test the riskiest guesses: who
 to ask, the method (knowledge/ux.md, research methods), and the answer that would change the map. In Figma or

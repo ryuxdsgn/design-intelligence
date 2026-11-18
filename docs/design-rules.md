@@ -545,7 +545,12 @@ Gate area UX. Covers information architecture, navigation, flows, grouping, disc
 - When: the ask is to improve or restyle an existing screen, page, or flow
 - Do: Name which of three changes the request is, and keep what that size keeps. Adding a feature, fixing a bug, or a named small edit (rename a button, add a filter) is none of the three: do it without asking.
   - Polish: the flow and the basic look stay; details, hierarchy, and states are tidied (capabilities/build.md, Polish).
-  - Revamp: the flow and the functions stay; the look and the screen structure may change a lot, inside the direction in DESIGN.md (ask before leaving it). Run capabilities/design.md, stages 2 to 5, with the flow locked: explore only inside the DESIGN.md direction, and in a code project then implement it through capabilities/build.md.
+  - Revamp: the flow and the functions stay; the look and the screen structure change a lot. Run capabilities/design.md, stages 2 to 5, with the flow locked, and in a code project then implement it through capabilities/build.md.
+    - A revamp changes the visual language, not only the layout: the type scale and pairing, surfaces, component shapes, icons, and density; a re-layout in the same paint is a polish.
+    - The brand anchors stay unless the user says otherwise: the logo, the name, and the primary accent. Record each change to the DESIGN.md direction as old -> new.
+    - It covers every state, the error, empty, loading, and offline states as much as the happy one.
+    - Disclosure never hides what a state needs (the step times that explain a late order stay visible while it is late), and the status keeps its weight when a figure becomes the hero.
+    - Clear the standing clutter: stacked notes, and a floating control that covers content.
   - Redesign: the flow, the information architecture, and the problem itself may be rethought, starting from evidence (research, analytics, a Critique), and drawn as a new flow (RX-UX-18).
   - The asks listed under Polish (premium, cleaner, easier to find, a find-it or mood ask) name polish.
   - When the request names none (perbaiki, bikin lebih bagus, improve this), ask once before changing anything, with the three options and what each would change on this screen. When it names one, do not ask.
