@@ -61,6 +61,8 @@ const LAYOUT_PROPS: &str = r"^(?:width|height|top|left|right|bottom|margin(?:-\w
 const GROWS: &str = r"field-sizing\s*:\s*content|fieldSizing|\bscrollHeight\b|[Aa]utosize|autoResize|auto-resize|\bminRows\b|\bmaxRows\b";
 const INDONESIAN: &str = r#"\blang=["']id\b|\bid-ID\b|\blocale\s*[:=]\s*["'`]id\b|\bRp\.?\s?\d|\b(?:yang|untuk|tidak|silakan|pesanan|belum)\b"#;
 const TEST_FILE: &str = r"(?:^|\/)(?:tests?|__tests__)\/|\.(?:test|spec)\.[cm]?[jt]sx?$";
+const RUNTIME_LABEL: &str = r#"<[\w-]+(?![^>]*\baria-hidden\s*=\s*["']?true)[^>]*\s(?:id|data-bind|data-text|data-i18n|x-text|v-text)\s*=[^>]*>\s*<\/"#;
+const SCRIM: &str = r#"^\s*<[\w.-]+(?=[\s/>])[^>]*\brole\s*=\s*["'{]?\s*["']?(?:alertdialog|dialog)\b"#;
 const RUPIAH_FIX: &str = "write Rp1.250.000 (Rp right before the number, dots for thousands, no decimals)";
 
 fn short(s: &str) -> String {
@@ -270,7 +272,9 @@ fn rule_a11y04_img(s: &Source, _: &Ctx) -> Vec<Hit> {
 fn rule_a11y04_click(s: &Source, _: &Ctx) -> Vec<Hit> {
     tags(&s.text, "div|span")
         .into_iter()
-        .filter(|t| re(r"(?:^|\s)(?:onClick|onclick|@click|v-on:click|on:click)\s*=", "").test(&t.attrs) && !re(r"\brole\s*=", "").test(&t.attrs))
+        .filter(|t| {
+            re(r"(?:^|\s)(?:onClick|onclick|@click|v-on:click|on:click)\s*=", "").test(&t.attrs) && !re(r"\brole\s*=", "").test(&t.attrs) && !re(SCRIM, "").test(&s.text[byte_at(&s.text, t.index + t.length)..])
+        })
         .map(|t| hit(t.index, format!("a clickable <{}>: use a <button> or <a> so it works from the keyboard and has a role", t.name)))
         .collect()
 }
@@ -294,7 +298,7 @@ fn rule_a11y04_icon(s: &Source, _: &Ctx) -> Vec<Hit> {
         let Some(close) = index_of(&u, "</button>", t.index + t.length) else { continue };
         let inner = String::from_utf16_lossy(&u[t.index + t.length..close]);
         let icon = re(r"<svg\b|<i\b|<[A-Z]\w*", "").test(&inner);
-        let named = re(r#"\balt\s*=\s*["'][^"']+["']|\baria-label\s*="#, "").test(&inner);
+        let named = re(r#"\balt\s*=\s*["'][^"']+["']|\baria-label\s*="#, "").test(&inner) || re(RUNTIME_LABEL, "").test(&inner);
         let words = re(r"<[^>]*>", "g").replace(&inner, "");
         if icon && !named && trim(&words).is_empty() {
             out.push(hit(t.index, "an icon-only <button> with no name: add aria-label or visually hidden text"));
@@ -304,16 +308,26 @@ fn rule_a11y04_icon(s: &Source, _: &Ctx) -> Vec<Hit> {
 }
 
 fn rule_a11y04_heading(s: &Source, _: &Ctx) -> Vec<Hit> {
-    let mut hits = Vec::new();
+    // One finding per skip per file, at its first place, with how often it repeats.
+    let mut skips: Vec<((i64, i64), usize, usize)> = Vec::new();
     let mut prev = 0;
     for m in re(r"<h([1-6])(?=[\s>])", "g").match_all(&s.text) {
         let level: i64 = m.g(1).parse().unwrap();
         if prev != 0 && level > prev + 1 {
-            hits.push(hit(m.index, format!("h{prev} then h{level}: headings skip a level; use h{}", prev + 1)));
+            match skips.iter_mut().find(|k| k.0 == (prev, level)) {
+                Some(k) => k.2 += 1,
+                None => skips.push(((prev, level), m.index, 1)),
+            }
         }
         prev = level;
     }
-    hits
+    skips
+        .into_iter()
+        .map(|((from, to), index, count)| {
+            let more = if count > 1 { format!(" ({count} times in this file: fix it once where it repeats)") } else { String::new() };
+            hit(index, format!("h{from} then h{to}: headings skip a level; use h{}{more}", from + 1))
+        })
+        .collect()
 }
 
 fn first(s: &Source, pattern: &str, message: impl Fn(&str) -> String) -> Vec<Hit> {

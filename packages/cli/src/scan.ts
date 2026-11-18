@@ -141,6 +141,11 @@ function tags(text: string, names: string): { index: number; length: number; nam
   return out;
 }
 
+/** An empty element a script fills with the label (by id or a binding attribute), not hidden from assistive technology. */
+const RUNTIME_LABEL = /<[\w-]+(?![^>]*\baria-hidden\s*=\s*["']?true)[^>]*\s(?:id|data-bind|data-text|data-i18n|x-text|v-text)\s*=[^>]*>\s*<\//;
+/** The start of a tag whose element is a dialog: the scrim check looks for it as the first child. */
+const SCRIM = /^\s*<[\w.-]+(?=[\s/>])[^>]*\brole\s*=\s*["'{]?\s*["']?(?:alertdialog|dialog)\b/;
+
 const RUPIAH_FIX = "write Rp1.250.000 (Rp right before the number, dots for thousands, no decimals)";
 const px = (v: string): number => Number.parseFloat(v);
 
@@ -341,17 +346,18 @@ export const DETECTORS: Detector[] = [
   {
     rule: "RX-A11Y-04",
     level: "warn",
-    looksFor: "a clickable <div> or <span> with no role",
+    looksFor: "a clickable <div> or <span> with no role (a scrim whose first child is a role=\"dialog\" is skipped)",
     exts: MARKUP,
     find: ({ text }) =>
       tags(text, "div|span")
-        .filter((t) => /(?:^|\s)(?:onClick|onclick|@click|v-on:click|on:click)\s*=/.test(t.attrs) && !/\brole\s*=/.test(t.attrs))
+        // a scrim whose first child is the dialog: clicking it is a mouse shortcut for the dialog's own close
+        .filter((t) => /(?:^|\s)(?:onClick|onclick|@click|v-on:click|on:click)\s*=/.test(t.attrs) && !/\brole\s*=/.test(t.attrs) && !SCRIM.test(text.slice(t.index + t.length)))
         .map((t) => ({ index: t.index, length: t.length, message: `a clickable <${t.name}>: use a <button> or <a> so it works from the keyboard and has a role` })),
   },
   {
     rule: "RX-A11Y-04",
     level: "warn",
-    looksFor: "an icon-only <button> with no accessible name",
+    looksFor: "an icon-only <button> with no accessible name (an empty child a script fills, by id or data-bind, counts as its name)",
     exts: MARKUP,
     find: ({ text }) =>
       tags(text, "button").flatMap((t) => {
@@ -360,7 +366,7 @@ export const DETECTORS: Detector[] = [
         if (close < 0) return [];
         const inner = text.slice(t.index + t.length, close);
         const icon = /<svg\b|<i\b|<[A-Z]\w*/.test(inner);
-        const named = /\balt\s*=\s*["'][^"']+["']|\baria-label\s*=/.test(inner);
+        const named = /\balt\s*=\s*["'][^"']+["']|\baria-label\s*=/.test(inner) || RUNTIME_LABEL.test(inner);
         const words = inner.replace(/<[^>]*>/g, "").trim();
         return icon && !named && !words ? [{ index: t.index, length: t.length, message: "an icon-only <button> with no name: add aria-label or visually hidden text" }] : [];
       }),
@@ -371,14 +377,24 @@ export const DETECTORS: Detector[] = [
     looksFor: "a heading that skips a level (h2 straight to h4)",
     exts: MARKUP,
     find: ({ text }) => {
-      const hits: Hit[] = [];
+      // One finding per skip (h2 then h4) per file, at its first place: a repeated card repeats the same
+      // skip, and one fix in its template ends all of them.
+      const skips = new Map<string, { index: number; length: number; count: number }>();
       let prev = 0;
       for (const m of text.matchAll(/<h([1-6])(?=[\s>])/g)) {
         const level = Number(m[1]);
-        if (prev && level > prev + 1) hits.push({ index: m.index!, length: m[0].length, message: `h${prev} then h${level}: headings skip a level; use h${prev + 1}` });
+        if (prev && level > prev + 1) {
+          const key = `${prev}-${level}`;
+          const seen = skips.get(key);
+          if (seen) seen.count++;
+          else skips.set(key, { index: m.index!, length: m[0].length, count: 1 });
+        }
         prev = level;
       }
-      return hits;
+      return [...skips].map(([key, s]) => {
+        const [from, to] = key.split("-").map(Number);
+        return { index: s.index, length: s.length, message: `h${from} then h${to}: headings skip a level; use h${from + 1}${s.count > 1 ? ` (${s.count} times in this file: fix it once where it repeats)` : ""}` };
+      });
     },
   },
   {

@@ -207,13 +207,13 @@ line below for its exact source.
 <!-- provenance:start -->
 | Source cited | Rules citing it | Rules citing only this |
 | --- | --- | --- |
-| Public standard or research | 96 | 60 |
+| Public standard or research | 96 | 57 |
 | Industry practice | 28 | 6 |
 | Observed in a RYUX run | 18 | 7 |
 | Pattern also in another MIT ruleset (text written for RYUX) | 4 | 3 |
-| RYUX principle, taxonomy, or review | 72 | 23 |
+| RYUX principle, taxonomy, or review | 75 | 23 |
 
-All 155 rules cite a source; 56 cite more than one kind, so the "Rules citing it" column adds up to more than 155.
+All 155 rules cite a source; 59 cite more than one kind, so the "Rules citing it" column adds up to more than 155.
 <!-- provenance:end -->
 
 ## Rules
@@ -530,9 +530,10 @@ Gate area UX. Covers before, during, result, recovery; feedback, confirmation, n
 - Do: Give an immediate pressed state; past about 1 second show a loading indicator; past about 10 seconds show progress with an estimate or let the user leave and come back. A loading skeleton has the shape of the layout it stands in for: the same blocks in the same places, so nothing jumps when the content arrives.
   - When an action changes a value outside the element that was touched (a total in a bottom bar, a cart count, a badge), mark the change where it lands: a short highlight or a number transition, or keep the value next to the control.
   - The in-progress label ("Booking…") stays on the button until the result replaces the screen: keep the button's width and fade the label in place, rather than morphing the button into a spinner that cuts its label, and never show the idle label again on the way out.
+  - Say the wait to assistive technology too, not only with a spinner hidden by aria-hidden: aria-busy on the region that is loading, or the in-progress label read by a polite live region.
   - A toast confirms on the screen where the action happened and then leaves; the next screen does not repeat it as a fixed banner.
 - Do not: Let a payment or save run with no visible status, or change a total away from where the user is looking with no sign that it changed.
-- Why: Silence during a wait reads as failure and invites double taps. (Nielsen response-time limits (0.1 / 1 / 10 s); Nielsen heuristic 1; Doherty threshold (Doherty and Thadani 1982): responses under about 400 ms keep people engaged; skeleton shape: pattern also in appllama-app-design-skill (MIT); written for RYUX; flow (Csikszentmihalyi 1990): a task without interruptions or unexplained waits keeps people absorbed in it; change blindness (NNGroup psychology study guide): people miss changes outside their focus; owner blind review 2026-11-09 of the motion head-to-head (docs/benchmarks/motion): in both runs the confirm button's label overlapped or flipped back to the idle label during the transition, and one cut it in a spinner morph; owner blind review 2026-11-18 of three Rak flows (secondhand books, Yogyakarta): "added to your bag" shown again as a fixed banner on the bag screen)
+- Why: Silence during a wait reads as failure and invites double taps. (Nielsen response-time limits (0.1 / 1 / 10 s); Nielsen heuristic 1; Doherty threshold (Doherty and Thadani 1982): responses under about 400 ms keep people engaged; skeleton shape: pattern also in appllama-app-design-skill (MIT); written for RYUX; flow (Csikszentmihalyi 1990): a task without interruptions or unexplained waits keeps people absorbed in it; change blindness (NNGroup psychology study guide): people miss changes outside their focus; owner blind review 2026-11-09 of the motion head-to-head (docs/benchmarks/motion): in both runs the confirm button's label overlapped or flipped back to the idle label during the transition, and one cut it in a spinner morph; owner blind review 2026-11-18 of three Rak flows (secondhand books, Yogyakarta): "added to your bag" shown again as a fixed banner on the bag screen; owner review 2026-11-18 of the markup detector sheet (scan findings in 5 projects, parser candidates in 5 React projects): pay buttons whose spinner and check were aria-hidden with nothing announced)
 - Not when: instant actions under about 0.1 s; a spinner that flashes is noise
 - Trade-off: progress indicators need real progress data; a fake bar misleads
 - Check: heuristic_eval H-01
@@ -1607,19 +1608,19 @@ Gate area ACCESSIBILITY. Covers semantics, keyboard, focus, contrast, targets, n
 
 #### RX-A11Y-03 [Required] [Hard Gate] Keyboard and visible focus
 
-- Do: Make actions operable from the keyboard (path-based input such as drawing excepted), show a visible focus indicator, and keep focus order the same as the visual order. Show the focus indicator for keyboard focus (CSS :focus-visible), not after a tap or click; when a screen change moves focus to its heading for screen readers, give the heading tabindex="-1" and no outline on pointer input. When a dialog, menu, or popover closes, put focus back on the element that opened it, or on the nearest sensible element if that one is gone.
-- Do not: Build pointer-only actions, or remove focus outlines without an accessible replacement.
-- Why: Keyboard and switch users navigate and act by focus. (WCAG 2.2 SC 2.1.1, 2.4.3, and 2.4.7; WAI-ARIA APG dialog pattern; CSS Selectors Level 4 :focus-visible; owner blind review 2026-11-09 of the motion head-to-head (docs/benchmarks/motion): a focus ring on the title after the first tap read as a glitch)
-- Check: tab through the render from the top: every control is reached in reading order and shows a visible focus indicator (3:1 against its background); fails on a skipped control, a focus trap, or an invisible focus
+- Do: Make actions operable from the keyboard, show a visible focus indicator, and keep focus order the same as the visual order. Only input whose path is the content (a signature, freehand drawing) is exempt; a box drawn by dragging, a before-and-after slider, or a sheet dragged open still needs a keyboard way, such as arrow keys to move and resize, or a button to expand. Give every drag a single-pointer alternative too: a tap, or buttons that step the value. Show the focus indicator for keyboard focus (CSS :focus-visible), not after a tap or click; when a screen change moves focus to its heading for screen readers, give the heading tabindex="-1" and no outline on pointer input. While a dialog or sheet is open, Esc closes it and Tab stays inside it; a click on its scrim may close it too, as a mouse shortcut beside its own close control. When a dialog, menu, or popover closes, put focus back on the element that opened it, or on the nearest sensible element if that one is gone.
+- Do not: Build pointer-only or drag-only actions, or remove focus outlines without an accessible replacement.
+- Why: Keyboard and switch users navigate and act by focus. (WCAG 2.2 SC 2.1.1, 2.4.3, 2.4.7, and 2.5.7; WAI-ARIA APG dialog and slider patterns; CSS Selectors Level 4 :focus-visible; owner review 2026-11-18 of the markup detector sheet (scan findings in 5 projects, parser candidates in 5 React projects): a drag-only comparison slider and a box drawn only by pointer; owner blind review 2026-11-09 of the motion head-to-head (docs/benchmarks/motion): a focus ring on the title after the first tap read as a glitch)
+- Check: tab through the render from the top: every control is reached in reading order and shows a visible focus indicator (3:1 against its background); fails on a skipped control, a focus trap, an invisible focus, or a drag with no keyboard way; then open each dialog and press Esc and Tab
 - Machine check: `ryux scan` flags a positive tabindex, which takes the element out of the visual focus order (fail); focus outlines removed on a control (a button, link, input, or :focus rule) with no focus-visible replacement (warn)
 
 #### RX-A11Y-04 [Required] [Hard Gate] Semantic structure, native controls, and names
 
-- Do: Use real headings, landmarks, lists, buttons, links, and the right input types before custom elements, and give icon-only buttons and meaningful images an accessible name or alt text. Hide decorative icons and images from assistive technology (aria-hidden, or an empty alt), animated ones included: a logo animation beside the wordmark is decoration, so the page names the brand once.
+- Do: Use real headings, landmarks, lists, buttons, links, and the right input types before custom elements, and give icon-only buttons and meaningful images an accessible name or alt text. Hide decorative icons and images from assistive technology (aria-hidden, or an empty alt), animated ones included: a logo animation beside the wordmark is decoration, so the page names the brand once. A label a script fills in still starts with default text in the markup, so the control has a name if the script fails or is late. A button in a form that does not submit it says type="button".
 - Do not: Build structure or controls from styled divs, ship unlabeled icon buttons, or give a decorative graphic the same name as the text beside it.
-- Why: Assistive technology navigates by semantics and announces unlabeled buttons as just "button"; native controls bring keyboard and platform behavior for free. (WCAG 2.2 SC 1.1.1, 1.3.1, and 4.1.2; ryux editor, sign-in, 2026-11-13: an animated mark labelled like the wordmark made the phone accessibility tree name the brand twice)
+- Why: Assistive technology navigates by semantics and announces unlabeled buttons as just "button"; native controls bring keyboard and platform behavior for free. (WCAG 2.2 SC 1.1.1, 1.3.1, and 4.1.2; HTML: a button's type defaults to submit; owner review 2026-11-18 of the markup detector sheet (scan findings in 5 projects, parser candidates in 5 React projects): payment buttons whose label span was empty until a script filled it, and a source picker with no type in a form; ryux editor, sign-in, 2026-11-13: an animated mark labelled like the wordmark made the phone accessibility tree name the brand twice)
 - Check: read the accessibility tree (a Playwright accessibility snapshot, or the design file's layer types): every control is a native element or has a role, and every one has a name; headings are in order; fails on an unnamed control or a div acting as a button
-- Machine check: `ryux scan` flags <img> with no alt attribute (fail); a clickable <div> or <span> with no role (warn); an icon-only <button> with no accessible name (warn); a heading that skips a level (h2 straight to h4) (warn)
+- Machine check: `ryux scan` flags <img> with no alt attribute (fail); a clickable <div> or <span> with no role (a scrim whose first child is a role="dialog" is skipped) (warn); an icon-only <button> with no accessible name (an empty child a script fills, by id or data-bind, counts as its name) (warn); a heading that skips a level (h2 straight to h4) (warn)
 
 #### RX-A11Y-06 [Required] Not color alone
 

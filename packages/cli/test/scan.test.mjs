@@ -48,6 +48,26 @@ test("copy: dates, times, filler, placeholders, and urgency", () => {
   assert.deepEqual(scan("a.tsx", "<p>Kuota 40 kursi per kelas</p>"), []);
 });
 
+test("markup detectors: a label a script fills, a scrim around a dialog, one heading skip per file", () => {
+  // Owner review 2026-11-18 of the markup detector sheet: these were false alarms or repeats.
+  const runtime = [
+    '<button id="pay"><svg aria-hidden="true"></svg> <span id="payLabel"></span></button>',
+    '<button><svg aria-hidden="true"></svg><span data-bind="payLabel"></span></button>',
+    '<button><span class="txt" id="pay-txt"></span> <span class="spin" aria-hidden="true"></span></button>',
+  ];
+  for (const html of runtime) assert.deepEqual(scan("a.html", html), [], html);
+  // an empty child hidden from assistive technology is no name
+  assert.deepEqual(rules(scan("a.html", '<button><svg></svg><span aria-hidden="true" id="ic"></span></button>')), ["warn RX-A11Y-04"]);
+  // a scrim whose first child is the dialog is skipped; a plain clickable div is not
+  assert.deepEqual(scan("a.tsx", '<div className="scrim" onClick={close}>\n  <div className="sheet" role="dialog" aria-modal="true">x</div></div>'), []);
+  assert.deepEqual(rules(scan("a.tsx", '<div onClick={go}><span>Open</span></div>')), ["warn RX-A11Y-04"]);
+  // a repeated card repeats its skip: one finding, with the count
+  const cards = scan("a.html", "<h2>A</h2>" + "<div><h4>x</h4></div><h2>B</h2>".repeat(3));
+  assert.equal(cards.length, 1);
+  assert.match(cards[0].message, /h2 then h4: .* \(3 times in this file/);
+  assert.deepEqual(scan("a.html", "<h2>A</h2><h4>x</h4><h1>C</h1><h3>y</h3>").map((f) => f.message.split(":")[0]), ["h2 then h4", "h1 then h3"]);
+});
+
 test("accessibility in markup: zoom, tabindex, alt, clickable div, icon button, headings", () => {
   assert.deepEqual(rules(scan("a.html", '<meta name="viewport" content="width=device-width, maximum-scale=1">')), ["fail RX-A11Y-02"]);
   assert.deepEqual(scan("a.html", '<meta name="viewport" content="width=device-width, initial-scale=1">'), []);
