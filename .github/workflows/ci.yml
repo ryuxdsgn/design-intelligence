@@ -16,6 +16,11 @@ jobs:
           node-version: 22
           cache: pnpm
       - run: pnpm install --frozen-lockfile
+      # The CLI runs its checks in ryux-core, built to WebAssembly; pnpm test builds it with wasm-pack.
+      - name: Rust toolchain for WebAssembly
+        run: rustup target add wasm32-unknown-unknown
+      - name: wasm-pack (pinned)
+        run: npm install -g wasm-pack@0.15.1
       - name: Typecheck
         run: pnpm typecheck
       - name: Tests (bundle, rules, version, CLI install/check/init/update/remove)

@@ -2,7 +2,7 @@ import { spawnSync } from "node:child_process";
 import { mkdtempSync, readFileSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { basename, dirname, extname, join, resolve } from "node:path";
-import { figmaAudit } from "../figma-audit.js";
+import { audit } from "../engine.js";
 import { figcraftCanvas } from "../figcraft-doc.js";
 
 /** Reads a FigCraft document: a .json from `figcraft-cli convert`, or a .figcraft converted here with figcraft-cli. */
@@ -33,7 +33,7 @@ export async function runAudit(args: string[]): Promise<void> {
     process.exitCode = 2;
     return;
   }
-  const result = await figmaAudit(figcraftCanvas(readFigcraft(file)), page);
+  const result = await audit(figcraftCanvas(readFigcraft(file)), page);
   if (typeof result.gate === "string") result.gate = result.gate.replace(/^figma audit/, "figcraft audit");
   const findings: { level: string; rule: string; frame: string; node: string; message: string }[] = result.findings || [];
   if (args.includes("--json")) console.log(JSON.stringify(result, null, 2));

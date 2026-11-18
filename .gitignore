@@ -39,5 +39,6 @@ docs/ops.md
 __pycache__/
 *.pyc
 
-# Rust build output
+# Rust build output, and its WebAssembly build for the CLI (pnpm build:wasm; shipped in the npm package)
 /target/
+/packages/cli/wasm/

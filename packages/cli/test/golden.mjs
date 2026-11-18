@@ -27,6 +27,8 @@ function save(check, input, output) {
 const plain = (v) => JSON.parse(JSON.stringify(v ?? null));
 
 const drift = await import("../dist/drift.js");
+const { neutralCanvas } = await import("../dist/canvas-json.js");
+export { neutralCanvas };
 
 /** scanSources over {path, raw} sources; the check builds its own Source (ext, comment-blanked text).
  *  With a direction, each source's drift hits and the unused tokens are recorded too. */
@@ -46,29 +48,6 @@ export const recordDirection = (readDirection) => (md) => {
   save("direction", { md }, plain(out));
   return out;
 };
-
-async function neutral(n) {
-  const out = {};
-  for (const [k, v] of Object.entries(n)) {
-    if (typeof v === "function" || k === "parent") continue;
-    if (typeof v === "symbol") out[k] = { $mixed: true };
-    else if (k === "children") out[k] = await Promise.all(v.map(neutral));
-    else out[k] = plain(v);
-  }
-  if (typeof n.getMainComponentAsync === "function") {
-    const mc = await n.getMainComponentAsync().catch(() => null);
-    out.mainComponent = mc ? { name: mc.name, parent: mc.parent ? { type: mc.parent.type, name: mc.parent.name } : null } : null;
-  }
-  return out;
-}
-
-/** figmaAudit over a canvas; recorded as { pages, page, annotationCategories }. */
-export const neutralCanvas = async (figma, pageName) => ({
-  pages: await Promise.all(figma.root.children.map(async (p) => ({ name: p.name, children: await Promise.all((p.children || []).map(neutral)) }))),
-  current: figma.currentPage.name,
-  page: pageName || "",
-  annotationCategories: plain(await figma.annotations.getAnnotationCategoriesAsync()),
-});
 
 export const recordAudit = (figmaAudit) => async (figma, pageName) => {
   const input = recording ? await neutralCanvas(figma, pageName) : null;

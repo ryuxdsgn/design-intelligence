@@ -7,8 +7,9 @@ import { join, relative, resolve } from "node:path";
 import pc from "picocolors";
 import { RULES } from "../intelligence/content.js";
 import { VERSION } from "../product.js";
-import { readDirection, unusedTokens, type Direction } from "../drift.js";
-import { DETECTORS, RENDER_CHECKS, SCAN_EXTS, scanSources, toSource, type ScanFinding } from "../scan.js";
+import type { Direction } from "../drift.js";
+import { readDirection, scan, unused, type RawSource } from "../engine.js";
+import { DETECTORS, RENDER_CHECKS, SCAN_EXTS, type ScanFinding } from "../scan.js";
 import { scanPages } from "./page-scan.js";
 
 const DEFAULT_WIDTHS = [320, 390, 1280];
@@ -29,7 +30,7 @@ async function walk(dir: string, out: string[]): Promise<void> {
   }
 }
 
-async function scanPaths(paths: string[], skip: Set<string>, design?: Direction): Promise<{ files: number; findings: ScanFinding[]; texts: string[] }> {
+async function scanPaths(paths: string[], skip: Set<string>, design?: Direction): Promise<{ files: number; findings: ScanFinding[]; sources: RawSource[] }> {
   const files: string[] = [];
   let folder = false;
   for (const p of paths) {
@@ -38,12 +39,12 @@ async function scanPaths(paths: string[], skip: Set<string>, design?: Direction)
       await walk(p, files);
     } else if (scannable(p)) files.push(p);
   }
-  const sources = [];
+  const sources: RawSource[] = [];
   for (const f of files) {
     if (statSync(f).size > MAX_BYTES) continue;
-    sources.push(toSource(relative(process.cwd(), f) || f, await readFile(f, "utf8")));
+    sources.push({ path: relative(process.cwd(), f) || f, raw: await readFile(f, "utf8") });
   }
-  return { files: sources.length, findings: scanSources(sources, { folder, skip, design }), texts: sources.map((s) => s.text) };
+  return { files: sources.length, findings: scan(sources, { folder, skip, design }), sources };
 }
 
 const title = (id: string): string => RULES.find((r) => r.id === id)?.title ?? "";
@@ -173,8 +174,8 @@ export async function runScan(argv: string[]): Promise<void> {
     process.exitCode = 2;
     return;
   }
-  const { files, findings, texts } = targets.length ? await scanPaths(targets, skip, design) : { files: 0, findings: [], texts: [] as string[] };
-  const drift = design && designFile ? { file: designFile, read: { colours: design.colours.length, fonts: design.fonts, radius: design.radius, durations: design.durations }, notRead: design.unread, unused: unusedTokens(texts, design) } : undefined;
+  const { files, findings, sources } = targets.length ? await scanPaths(targets, skip, design) : { files: 0, findings: [], sources: [] as RawSource[] };
+  const drift = design && designFile ? { file: designFile, read: { colours: design.colours.length, fonts: design.fonts, radius: design.radius, durations: design.durations }, notRead: design.unread, unused: unused(sources, design) } : undefined;
   let ignored: { url: string; regions: string[] }[] = [];
   if (urls.length) {
     try {

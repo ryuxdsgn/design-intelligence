@@ -15,9 +15,11 @@ const LINE_END: &str = r"\n\r\x{2028}\x{2029}";
 enum Engine {
     Fast(regex::Regex),
     /// `skeleton` is the pattern with its lookarounds removed: every real match is also a skeleton match
-    /// at the same start, so the fast engine finds candidate starts and `anchored` (the full pattern
-    /// behind `\G`) checks only those, instead of running the backtracking engine at every position.
-    Fancy { anchored: fancy_regex::Regex, skeleton: regex::Regex },
+    /// at the same start, so no real match starts before the skeleton's first one. The backtracking engine
+    /// searches from there and returns the next real match; a search never revisits text, so a whole
+    /// matchAll stays linear. (An anchored check per candidate does not: fancy-regex wraps every pattern
+    /// in a lazy `.*?`, so even `\G` walks to the end of the text on each call.)
+    Fancy { full: fancy_regex::Regex, skeleton: regex::Regex },
 }
 
 /// The pattern without its lookaround groups: `(?=..)`, `(?!..)`, `(?<=..)`, `(?<!..)`.
@@ -89,12 +91,11 @@ pub fn js(pattern: &str, flags: &str) -> JsRe {
     let re = if fancy {
         let src = format!("{prefix}{}", translate(pattern, m, d, ascii_fold, false));
         // JavaScript has no backtracking limit; fancy-regex stops at a million steps by default.
-        let anchored = format!(r"\G(?:{src})");
         // JavaScript has no backtracking limit; fancy-regex stops at a million steps by default.
-        let anchored = fancy_regex::RegexBuilder::new(&anchored).backtrack_limit(usize::MAX).build().unwrap_or_else(|e| panic!("regex /{pattern}/{flags}: {e}\n{src}"));
+        let full = fancy_regex::RegexBuilder::new(&src).backtrack_limit(usize::MAX).build().unwrap_or_else(|e| panic!("regex /{pattern}/{flags}: {e}\n{src}"));
         let skel = drop_lookarounds(&fast);
         let skeleton = regex::Regex::new(&skel).unwrap_or_else(|e| panic!("skeleton of /{pattern}/{flags}: {e}\n{skel}"));
-        Engine::Fancy { anchored, skeleton }
+        Engine::Fancy { full, skeleton }
     } else {
         Engine::Fast(regex::Regex::new(&fast).unwrap_or_else(|e| panic!("regex /{pattern}/{flags}: {e}\n{fast}")))
     };
@@ -270,15 +271,9 @@ impl JsRe {
     fn at_from(&self, s: &str, at: usize, base: (usize, usize)) -> Option<Hit> {
         let spans: Vec<Option<(usize, usize)>> = match &self.re {
             Engine::Fast(r) => r.captures_at(s, at).map(|c| c.iter().map(|g| g.map(|g| (g.start(), g.end()))).collect())?,
-            Engine::Fancy { anchored, skeleton } => {
-                let mut from = at;
-                loop {
-                    let p = skeleton.find_at(s, from)?.start();
-                    if let Some(c) = anchored.captures_from_pos(s, p).expect("regex") {
-                        break c.iter().map(|g| g.map(|g| (g.start(), g.end()))).collect();
-                    }
-                    from = p + s[p..].chars().next()?.len_utf8();
-                }
+            Engine::Fancy { full, skeleton } => {
+                let p = skeleton.find_at(s, at)?.start();
+                full.captures_from_pos(s, p).expect("regex")?.iter().map(|g| g.map(|g| (g.start(), g.end()))).collect()
             }
         };
         Some(Hit::from(spans, s, base))
