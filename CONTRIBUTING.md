@@ -22,7 +22,9 @@ part follows the [Code of Conduct](./CODE_OF_CONDUCT.md).
 ## Set up
 
 You need Node 22, pnpm, and Rust with the WebAssembly target and wasm-pack. The CLI's checks (scan,
-design drift, and the canvas audit) run in `crates/ryux-core`, built to WebAssembly by `pnpm test`.
+design drift, and the canvas audit) have two implementations that must give the same results: the
+TypeScript in `packages/cli/src` (the default) and `crates/ryux-core`, built to WebAssembly by
+`pnpm test` and used with `RYUX_ENGINE=rust`.
 
 ```bash
 rustup target add wasm32-unknown-unknown

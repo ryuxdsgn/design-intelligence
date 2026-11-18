@@ -1,6 +1,7 @@
-// Where the deterministic checks run. By default in ryux-core, the Rust crate in crates/ryux-core, built to
-// WebAssembly in ../wasm; RYUX_ENGINE=ts runs the TypeScript (scan.ts, drift.ts, figma-audit.ts) instead,
-// kept for one release so the two can be compared. Both answer to fixtures/checks.
+// Where the deterministic checks run. By default in the TypeScript (scan.ts, drift.ts, figma-audit.ts);
+// RYUX_ENGINE=rust runs ryux-core, the Rust crate in crates/ryux-core, built to WebAssembly in ../wasm. Both
+// answer to fixtures/checks. Rust stays opt-in until it earns the default with a measured gain (owner,
+// 2026-11-18): as WebAssembly it is about twice as slow on these regex checks.
 import { createRequire } from "node:module";
 import { neutralCanvas } from "./canvas-json.js";
 import { readDirection as tsDirection, unusedTokens, type Direction } from "./drift.js";
@@ -8,7 +9,7 @@ import { figmaAudit } from "./figma-audit.js";
 import { scanSources, toSource, type ScanFinding } from "./scan.js";
 
 export type Engine = "rust" | "ts";
-export const engine = (): Engine => (process.env.RYUX_ENGINE === "ts" ? "ts" : "rust");
+export const engine = (): Engine => (process.env.RYUX_ENGINE === "rust" ? "rust" : "ts");
 
 interface Core {
   scan(input: string): string;
@@ -23,7 +24,7 @@ function rust(): Core {
   try {
     core = createRequire(import.meta.url)("../wasm/ryux_wasm.js") as Core;
   } catch (err) {
-    throw new Error(`RYUX's check engine (wasm/ryux_wasm.js) is missing from this install. In a checkout, run pnpm build:wasm; or set RYUX_ENGINE=ts to run the TypeScript checks. (${err instanceof Error ? err.message.split("\n")[0] : err})`);
+    throw new Error(`RYUX's check engine (wasm/ryux_wasm.js) is missing from this install. In a checkout, run pnpm build:wasm; or leave RYUX_ENGINE unset to run the TypeScript checks. (${err instanceof Error ? err.message.split("\n")[0] : err})`);
   }
   return core;
 }

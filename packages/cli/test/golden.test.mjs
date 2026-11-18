@@ -32,8 +32,8 @@ test("golden: audit", async () => {
   for (const { input, output } of cases) assert.deepEqual(plain(await figmaAudit(hydrate(input), input.page)), output, input.pages.map((p) => p.children.map((f) => f.name).join(",")).join(" | "));
 });
 
-// The same contract through the engine the CLI calls: ryux-core as WebAssembly (the default) and the
-// TypeScript (RYUX_ENGINE=ts). Unused tokens are recorded over comment-blanked texts; the engine reads raw
+// The same contract through the engine the CLI calls: the TypeScript (the default) and ryux-core as
+// WebAssembly (RYUX_ENGINE=rust). Unused tokens are recorded over comment-blanked texts; the engine reads raw
 // sources, so its cases are the scan cases that carry a direction.
 for (const which of ["rust", "ts"]) {
   test(`golden through the ${which} engine: scan, direction, unused, audit`, async () => {
