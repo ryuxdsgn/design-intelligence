@@ -90,6 +90,12 @@ export const RENDER_CHECKS: Pick<Detector, "rule" | "level" | "looksFor">[] = [
   { rule: "RX-QA-08", level: "warn", looksFor: "script errors thrown while the page loads" },
 ];
 
+/** What ryux-core reads in .jsx and .tsx as a syntax tree (crates/ryux-core/src/jsx.rs), for --list-rules and the
+ *  rule text. These have no TypeScript version; engine.ts runs them through the WebAssembly build. */
+export const SYNTAX_CHECKS: Pick<Detector, "rule" | "level" | "looksFor">[] = [
+  { rule: "RX-A11Y-03", level: "warn", looksFor: "in .jsx and .tsx: an element that starts a drag (onPointerDown, onMouseDown, onTouchStart, onDragStart) with no keyboard way (no onKeyDown, onKeyUp, tabIndex, or role), not a native control and with no spread props" },
+];
+
 const MARKUP = ["html", "htm", "jsx", "tsx", "vue", "svelte", "astro"] as const;
 const STYLE = ["css", "scss", "sass", "less"] as const;
 const SCRIPT = ["js", "mjs", "cjs", "ts"] as const;

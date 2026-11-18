@@ -9,7 +9,7 @@ import { RULES } from "../intelligence/content.js";
 import { VERSION } from "../product.js";
 import type { Direction } from "../drift.js";
 import { readDirection, scan, unused, type RawSource } from "../engine.js";
-import { DETECTORS, RENDER_CHECKS, SCAN_EXTS, type ScanFinding } from "../scan.js";
+import { DETECTORS, RENDER_CHECKS, SCAN_EXTS, SYNTAX_CHECKS, type ScanFinding } from "../scan.js";
 import { scanPages } from "./page-scan.js";
 
 const DEFAULT_WIDTHS = [320, 390, 1280];
@@ -52,7 +52,7 @@ const title = (id: string): string => RULES.find((r) => r.id === id)?.title ?? "
 function listRules(json: boolean): void {
   if (json) {
     const entry = (d: { rule: string; level: string; looksFor: string; folder?: boolean }, kind: string) => ({ rule: d.rule, title: title(d.rule), level: d.level, kind, looksFor: d.looksFor, folderOnly: Boolean(d.folder) });
-    console.log(JSON.stringify([...DETECTORS.map((d) => entry(d, "source")), ...RENDER_CHECKS.map((d) => entry(d, "render"))], null, 2));
+    console.log(JSON.stringify([...DETECTORS.map((d) => entry(d, "source")), ...SYNTAX_CHECKS.map((d) => entry(d, "syntax")), ...RENDER_CHECKS.map((d) => entry(d, "render"))], null, 2));
     return;
   }
   const row = (d: { rule: string; level: string; looksFor: string; folder?: boolean }): void => {
@@ -61,6 +61,8 @@ function listRules(json: boolean): void {
   };
   console.log(`ryux scan v${VERSION}: checks for rules a machine can see. No LLM.\n\nSource files (${DETECTORS.length}):`);
   DETECTORS.forEach(row);
+  console.log(`\nJSX and TSX, read as a syntax tree (${SYNTAX_CHECKS.length}):`);
+  SYNTAX_CHECKS.forEach(row);
   console.log(`\nRendered pages, for a URL (${RENDER_CHECKS.length}; needs Playwright in the project; widths ${DEFAULT_WIDTHS.join(", ")} unless --widths):`);
   RENDER_CHECKS.forEach(row);
   console.log(`\nfail: wrong wherever it appears, exit 1. warn: worth a look, exit 0.

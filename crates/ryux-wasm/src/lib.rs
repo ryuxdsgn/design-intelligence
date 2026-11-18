@@ -73,3 +73,17 @@ pub fn unused(input: &str) -> String {
     let texts: Vec<String> = v["sources"].as_array().map_or(Vec::new(), |a| a.iter().map(|x| to_source(x["path"].as_str().unwrap_or(""), x["raw"].as_str().unwrap_or("")).text).collect());
     drift::unused_tokens(&texts, &dir).to_string()
 }
+
+/// The JSX and TSX syntax checks (oxc), with the input of `scan`. They have no TypeScript twin.
+#[wasm_bindgen(js_name = syntaxScan)]
+pub fn syntax_scan(input: &str) -> String {
+    use ryux_core::{drift::Direction, scan as s};
+    let v = match ryux_core::parse(input) {
+        Ok(v) => v,
+        Err(e) => return format!("{{\"error\":{}}}", ryux_core::js::quote(&format!("invalid input: {e}"))),
+    };
+    let sources: Vec<s::Source> = v["sources"].as_array().map_or(Vec::new(), |a| a.iter().map(|x| s::to_source(x["path"].as_str().unwrap_or(""), x["raw"].as_str().unwrap_or(""))).collect());
+    let skip = v["skip"].as_array().map(|a| a.iter().filter_map(|x| x.as_str().map(String::from)).collect()).unwrap_or_default();
+    let opts = s::ScanOptions { folder: v["folder"].as_bool().unwrap_or(false), skip, design: Direction::from_json(&v["design"]) };
+    ryux_core::Json::Array(s::scan_syntax(&sources, opts)).to_string()
+}

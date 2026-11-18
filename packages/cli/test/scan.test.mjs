@@ -7,7 +7,8 @@ import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync
 import { tmpdir } from "node:os";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { DETECTORS, scanSources as scanAll, toSource } from "../dist/scan.js";
+import { DETECTORS, SYNTAX_CHECKS, scanSources as scanAll, toSource } from "../dist/scan.js";
+import { scan as scanEngine } from "../dist/engine.js";
 import { recordDirection, recordScan } from "./golden.mjs";
 import { RULES } from "../dist/intelligence/content.js";
 import { VERSION } from "../dist/product.js";
@@ -23,7 +24,30 @@ const rules = (findings) => findings.map((f) => `${f.level} ${f.rule}`);
 
 test("every detector checks a rule that exists", () => {
   const ids = new Set(RULES.map((r) => r.id));
-  for (const d of DETECTORS) assert.ok(ids.has(d.rule), d.rule);
+  for (const d of [...DETECTORS, ...SYNTAX_CHECKS]) assert.ok(ids.has(d.rule), d.rule);
+});
+
+test("syntax checks: a drag with no keyboard way in JSX and TSX, read by ryux-core whichever engine runs", () => {
+  // Owner review 2026-11-18 of the markup detector sheet: a drag-only comparison slider was a real problem
+  // the text patterns missed.
+  const slider = 'export const C = () => (\n  <div className="compare" onPointerDown={(e) => drag(e)}>\n    <img src="a.png" alt="Sebelum" />\n  </div>\n);\n';
+  for (const which of ["ts", "rust"]) {
+    const found = scanEngine([{ path: "Compare.tsx", raw: slider }], { folder: false }, which);
+    assert.deepEqual(found.map((f) => `${f.level} ${f.rule} ${f.line}:${f.column}`), ["warn RX-A11Y-03 2:3"], which);
+    assert.match(found[0].message, /<div> that starts a drag \(onPointerDown\) with no keyboard way/);
+  }
+  const fine = [
+    '<div role="slider" tabIndex={0} aria-valuenow={v} onPointerDown={d} onKeyDown={k} />',
+    "<Slider onPointerDown={d} />",
+    "<button onPointerDown={d}>Geser</button>",
+    "const s = '<div onPointerDown={x}>';",
+  ];
+  for (const raw of fine) assert.deepEqual(scanEngine([{ path: "a.tsx", raw: `const a = ${raw};` }], { folder: false }), [], raw);
+  // the same ignore comments, and the same skip
+  assert.deepEqual(scanEngine([{ path: "a.jsx", raw: `// ryux-ignore RX-A11Y-03 drawing canvas, keyboard mode below\nconst a = <div onMouseDown={d} />;` }], { folder: false }), []);
+  assert.deepEqual(scanEngine([{ path: "a.tsx", raw: slider }], { folder: false, skip: new Set(["RX-A11Y-03"]) }), []);
+  // a .js or .html file is not read as a syntax tree
+  assert.deepEqual(scanEngine([{ path: "a.html", raw: '<div onpointerdown="d()"></div>' }], { folder: false }), []);
 });
 
 test("Rupiah: wrong forms fail, Rp1.250.000 and Rp1,5 juta pass", () => {
