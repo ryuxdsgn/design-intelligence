@@ -311,9 +311,9 @@ pub fn drift_colours(text: &str, ext: &str, dir: &Direction) -> Vec<Hit> {
         return out;
     }
     for m in r.code_hex.match_all(text) {
-        let from = m.index.saturating_sub(16);
-        let before = slice16(text, from, Some(m.index + len16(m.g(1))));
-        if r.link_before.test(&before) {
+        let end = m.start + m.g(1).len();
+        let before = &text[crate::js::back16(text, m.start, 16)..end];
+        if r.link_before.test(before) {
             continue;
         }
         check(m.g(2), m.index + len16(m.g(1)));
