@@ -1,0 +1,8048 @@
+[
+ {
+  "input": {
+   "pages": [
+    {
+     "name": "Flow",
+     "children": [
+      {
+       "type": "FRAME",
+       "name": "01",
+       "x": 0,
+       "y": 0,
+       "width": 390,
+       "height": 844,
+       "absoluteBoundingBox": {
+        "x": 0,
+        "y": 0,
+        "width": 390,
+        "height": 844
+       },
+       "visible": true,
+       "opacity": 1,
+       "fills": [
+        {
+         "type": "SOLID",
+         "color": {
+          "r": 1,
+          "g": 1,
+          "b": 1
+         }
+        }
+       ],
+       "strokes": [],
+       "effects": [],
+       "clipsContent": true,
+       "children": [
+        {
+         "type": "TEXT",
+         "name": "Hint",
+         "x": 16,
+         "y": 100,
+         "width": 200,
+         "height": 20,
+         "absoluteBoundingBox": {
+          "x": 16,
+          "y": 100,
+          "width": 200,
+          "height": 20
+         },
+         "visible": true,
+         "opacity": 1,
+         "fills": [
+          {
+           "type": "SOLID",
+           "color": {
+            "r": 0.78,
+            "g": 0.78,
+            "b": 0.78
+           }
+          }
+         ],
+         "strokes": [],
+         "effects": [],
+         "characters": "Pick a seat",
+         "fontSize": 15,
+         "fontName": {
+          "family": "Inter",
+          "style": "Regular"
+         },
+         "textStyleId": "S:1"
+        },
+        {
+         "type": "TEXT",
+         "name": "Title",
+         "x": 16,
+         "y": 60,
+         "width": 200,
+         "height": 20,
+         "absoluteBoundingBox": {
+          "x": 16,
+          "y": 60,
+          "width": 200,
+          "height": 20
+         },
+         "visible": true,
+         "opacity": 1,
+         "fills": [
+          {
+           "type": "SOLID",
+           "color": {
+            "r": 0.08,
+            "g": 0.07,
+            "b": 0.06
+           }
+          }
+         ],
+         "strokes": [],
+         "effects": [],
+         "characters": "Panggung",
+         "fontSize": 15,
+         "fontName": {
+          "family": "Inter",
+          "style": "Regular"
+         },
+         "textStyleId": "S:1"
+        }
+       ]
+      }
+     ]
+    }
+   ],
+   "current": "Flow",
+   "page": "Flow",
+   "annotationCategories": []
+  },
+  "output": {
+   "page": "Flow",
+   "screens": [
+    "01"
+   ],
+   "counts": {
+    "screens": 1,
+    "imageFills": 0,
+    "distinctImages": 0,
+    "reusedImages": 0,
+    "contrastFails": 1,
+    "contrastUnknown": 0,
+    "targetsUnder24": 0,
+    "targetsUnder44": 0,
+    "cutText": 0,
+    "clippedText": 0,
+    "flatOverlays": 0,
+    "idleBusyButtons": 0,
+    "unstyledText": 0,
+    "unboundFills": 2,
+    "unboundSpacing": 0,
+    "layoutScreens": 1,
+    "looseLayers": 0,
+    "strayLayers": 0,
+    "rawEffects": 0,
+    "emptyBands": 0,
+    "capsLabels": 0,
+    "cards": 0,
+    "smallText": 0,
+    "texts": 2,
+    "unevenRows": 0
+   },
+   "images": [],
+   "annotations": {},
+   "findings": [
+    {
+     "rule": "RX-A11Y-01",
+     "level": "fail",
+     "frame": "01",
+     "node": "Hint",
+     "message": "\"Pick a seat\" 1.69:1, needs 4.5:1"
+    }
+   ],
+   "more": 0,
+   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 1 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 2, unbound spacing 0 · built in auto layout 1/1 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 0, small uppercase labels 0, section cards 0, text under 12 px 0/2, uneven button rows 0 · annotations none · 1 fail, 0 warn"
+  }
+ },
+ {
+  "input": {
+   "pages": [
+    {
+     "name": "Flow",
+     "children": [
+      {
+       "type": "FRAME",
+       "name": "01",
+       "x": 0,
+       "y": 0,
+       "width": 390,
+       "height": 844,
+       "absoluteBoundingBox": {
+        "x": 0,
+        "y": 0,
+        "width": 390,
+        "height": 844
+       },
+       "visible": true,
+       "opacity": 1,
+       "fills": [
+        {
+         "type": "SOLID",
+         "color": {
+          "r": 1,
+          "g": 1,
+          "b": 1
+         }
+        }
+       ],
+       "strokes": [],
+       "effects": [],
+       "clipsContent": true,
+       "children": [
+        {
+         "type": "RECTANGLE",
+         "name": "Art",
+         "x": 0,
+         "y": 0,
+         "width": 390,
+         "height": 300,
+         "absoluteBoundingBox": {
+          "x": 0,
+          "y": 0,
+          "width": 390,
+          "height": 300
+         },
+         "visible": true,
+         "opacity": 1,
+         "fills": [
+          {
+           "type": "IMAGE",
+           "imageHash": "aaa"
+          }
+         ],
+         "strokes": [],
+         "effects": [],
+         "children": []
+        },
+        {
+         "type": "TEXT",
+         "name": "On art",
+         "x": 16,
+         "y": 100,
+         "width": 200,
+         "height": 20,
+         "absoluteBoundingBox": {
+          "x": 16,
+          "y": 100,
+          "width": 200,
+          "height": 20
+         },
+         "visible": true,
+         "opacity": 1,
+         "fills": [
+          {
+           "type": "SOLID",
+           "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+           }
+          }
+         ],
+         "strokes": [],
+         "effects": [],
+         "characters": "Senja",
+         "fontSize": 15,
+         "fontName": {
+          "family": "Inter",
+          "style": "Regular"
+         },
+         "textStyleId": "S:1"
+        }
+       ]
+      }
+     ]
+    }
+   ],
+   "current": "Flow",
+   "page": "Flow",
+   "annotationCategories": []
+  },
+  "output": {
+   "page": "Flow",
+   "screens": [
+    "01"
+   ],
+   "counts": {
+    "screens": 1,
+    "imageFills": 1,
+    "distinctImages": 1,
+    "reusedImages": 0,
+    "contrastFails": 0,
+    "contrastUnknown": 1,
+    "targetsUnder24": 0,
+    "targetsUnder44": 0,
+    "cutText": 0,
+    "clippedText": 0,
+    "flatOverlays": 0,
+    "idleBusyButtons": 0,
+    "unstyledText": 0,
+    "unboundFills": 1,
+    "unboundSpacing": 0,
+    "layoutScreens": 1,
+    "looseLayers": 0,
+    "strayLayers": 0,
+    "rawEffects": 0,
+    "emptyBands": 0,
+    "capsLabels": 0,
+    "cards": 0,
+    "smallText": 0,
+    "texts": 1,
+    "unevenRows": 0
+   },
+   "images": [
+    {
+     "image": "aaa",
+     "screens": [
+      "01"
+     ]
+    }
+   ],
+   "annotations": {},
+   "findings": [],
+   "more": 0,
+   "gate": "figma audit (Flow): screens 1 · images 1 distinct, 1 fills, 0 reused across screens · contrast fails 0 (1 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 1, unbound spacing 0 · built in auto layout 1/1 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 0, small uppercase labels 0, section cards 0, text under 12 px 0/1, uneven button rows 0 · annotations none · 0 fail, 0 warn"
+  }
+ },
+ {
+  "input": {
+   "pages": [
+    {
+     "name": "Flow",
+     "children": [
+      {
+       "type": "FRAME",
+       "name": "01-list",
+       "x": 0,
+       "y": 0,
+       "width": 390,
+       "height": 844,
+       "absoluteBoundingBox": {
+        "x": 0,
+        "y": 0,
+        "width": 390,
+        "height": 844
+       },
+       "visible": true,
+       "opacity": 1,
+       "fills": [
+        {
+         "type": "SOLID",
+         "color": {
+          "r": 1,
+          "g": 1,
+          "b": 1
+         }
+        }
+       ],
+       "strokes": [],
+       "effects": [],
+       "clipsContent": true,
+       "children": [
+        {
+         "type": "RECTANGLE",
+         "name": "Art",
+         "x": 16,
+         "y": 100,
+         "width": 60,
+         "height": 60,
+         "absoluteBoundingBox": {
+          "x": 16,
+          "y": 100,
+          "width": 60,
+          "height": 60
+         },
+         "visible": true,
+         "opacity": 1,
+         "fills": [
+          {
+           "type": "IMAGE",
+           "imageHash": "aaa"
+          }
+         ],
+         "strokes": [],
+         "effects": [],
+         "children": []
+        },
+        {
+         "type": "RECTANGLE",
+         "name": "Art",
+         "x": 16,
+         "y": 200,
+         "width": 60,
+         "height": 60,
+         "absoluteBoundingBox": {
+          "x": 16,
+          "y": 200,
+          "width": 60,
+          "height": 60
+         },
+         "visible": true,
+         "opacity": 1,
+         "fills": [
+          {
+           "type": "IMAGE",
+           "imageHash": "bbb"
+          }
+         ],
+         "strokes": [],
+         "effects": [],
+         "children": []
+        }
+       ]
+      },
+      {
+       "type": "FRAME",
+       "name": "02-event",
+       "x": 0,
+       "y": 0,
+       "width": 390,
+       "height": 844,
+       "absoluteBoundingBox": {
+        "x": 0,
+        "y": 0,
+        "width": 390,
+        "height": 844
+       },
+       "visible": true,
+       "opacity": 1,
+       "fills": [
+        {
+         "type": "SOLID",
+         "color": {
+          "r": 1,
+          "g": 1,
+          "b": 1
+         }
+        }
+       ],
+       "strokes": [],
+       "effects": [],
+       "clipsContent": true,
+       "children": [
+        {
+         "type": "RECTANGLE",
+         "name": "Art",
+         "x": 16,
+         "y": 100,
+         "width": 60,
+         "height": 60,
+         "absoluteBoundingBox": {
+          "x": 16,
+          "y": 100,
+          "width": 60,
+          "height": 60
+         },
+         "visible": true,
+         "opacity": 1,
+         "fills": [
+          {
+           "type": "IMAGE",
+           "imageHash": "aaa"
+          }
+         ],
+         "strokes": [],
+         "effects": [],
+         "children": []
+        }
+       ]
+      },
+      {
+       "type": "FRAME",
+       "name": "09-ticket",
+       "x": 0,
+       "y": 0,
+       "width": 390,
+       "height": 844,
+       "absoluteBoundingBox": {
+        "x": 0,
+        "y": 0,
+        "width": 390,
+        "height": 844
+       },
+       "visible": true,
+       "opacity": 1,
+       "fills": [
+        {
+         "type": "SOLID",
+         "color": {
+          "r": 1,
+          "g": 1,
+          "b": 1
+         }
+        }
+       ],
+       "strokes": [],
+       "effects": [],
+       "clipsContent": true,
+       "children": [
+        {
+         "type": "RECTANGLE",
+         "name": "Art",
+         "x": 16,
+         "y": 100,
+         "width": 60,
+         "height": 60,
+         "absoluteBoundingBox": {
+          "x": 16,
+          "y": 100,
+          "width": 60,
+          "height": 60
+         },
+         "visible": true,
+         "opacity": 1,
+         "fills": [
+          {
+           "type": "IMAGE",
+           "imageHash": "aaa"
+          }
+         ],
+         "strokes": [],
+         "effects": [],
+         "children": []
+        }
+       ]
+      }
+     ]
+    }
+   ],
+   "current": "Flow",
+   "page": "Flow",
+   "annotationCategories": []
+  },
+  "output": {
+   "page": "Flow",
+   "screens": [
+    "01-list",
+    "02-event",
+    "09-ticket"
+   ],
+   "counts": {
+    "screens": 3,
+    "imageFills": 4,
+    "distinctImages": 2,
+    "reusedImages": 1,
+    "contrastFails": 0,
+    "contrastUnknown": 0,
+    "targetsUnder24": 0,
+    "targetsUnder44": 0,
+    "cutText": 0,
+    "clippedText": 0,
+    "flatOverlays": 0,
+    "idleBusyButtons": 0,
+    "unstyledText": 0,
+    "unboundFills": 0,
+    "unboundSpacing": 0,
+    "layoutScreens": 3,
+    "looseLayers": 0,
+    "strayLayers": 0,
+    "rawEffects": 0,
+    "emptyBands": 0,
+    "capsLabels": 0,
+    "cards": 0,
+    "smallText": 0,
+    "texts": 0,
+    "unevenRows": 0
+   },
+   "images": [
+    {
+     "image": "aaa",
+     "screens": [
+      "01-list",
+      "02-event",
+      "09-ticket"
+     ]
+    },
+    {
+     "image": "bbb",
+     "screens": [
+      "01-list"
+     ]
+    }
+   ],
+   "annotations": {},
+   "findings": [],
+   "more": 0,
+   "gate": "figma audit (Flow): screens 3 · images 2 distinct, 4 fills, 1 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 0, unbound spacing 0 · built in auto layout 3/3 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 0, small uppercase labels 0, section cards 0, text under 12 px 0/0, uneven button rows 0 · annotations none · 0 fail, 0 warn"
+  }
+ },
+ {
+  "input": {
+   "pages": [
+    {
+     "name": "Flow",
+     "children": [
+      {
+       "type": "FRAME",
+       "name": "01",
+       "x": 0,
+       "y": 0,
+       "width": 390,
+       "height": 844,
+       "absoluteBoundingBox": {
+        "x": 0,
+        "y": 0,
+        "width": 390,
+        "height": 844
+       },
+       "visible": true,
+       "opacity": 1,
+       "fills": [
+        {
+         "type": "SOLID",
+         "color": {
+          "r": 1,
+          "g": 1,
+          "b": 1
+         }
+        }
+       ],
+       "strokes": [],
+       "effects": [],
+       "clipsContent": true,
+       "children": []
+      },
+      {
+       "type": "FRAME",
+       "name": "Components",
+       "x": 0,
+       "y": 1000,
+       "width": 800,
+       "height": 400,
+       "absoluteBoundingBox": {
+        "x": 0,
+        "y": 1000,
+        "width": 800,
+        "height": 400
+       },
+       "visible": true,
+       "opacity": 1,
+       "fills": [],
+       "strokes": [],
+       "effects": [],
+       "children": [
+        {
+         "type": "COMPONENT",
+         "name": "Button",
+         "x": 0,
+         "y": 1000,
+         "width": 100,
+         "height": 44,
+         "absoluteBoundingBox": {
+          "x": 0,
+          "y": 1000,
+          "width": 100,
+          "height": 44
+         },
+         "visible": true,
+         "opacity": 1,
+         "fills": [],
+         "strokes": [],
+         "effects": [],
+         "children": []
+        }
+       ]
+      }
+     ]
+    }
+   ],
+   "current": "Flow",
+   "page": "Flow",
+   "annotationCategories": []
+  },
+  "output": {
+   "page": "Flow",
+   "screens": [
+    "01"
+   ],
+   "counts": {
+    "screens": 1,
+    "imageFills": 0,
+    "distinctImages": 0,
+    "reusedImages": 0,
+    "contrastFails": 0,
+    "contrastUnknown": 0,
+    "targetsUnder24": 0,
+    "targetsUnder44": 0,
+    "cutText": 0,
+    "clippedText": 0,
+    "flatOverlays": 0,
+    "idleBusyButtons": 0,
+    "unstyledText": 0,
+    "unboundFills": 0,
+    "unboundSpacing": 0,
+    "layoutScreens": 1,
+    "looseLayers": 0,
+    "strayLayers": 0,
+    "rawEffects": 0,
+    "emptyBands": 0,
+    "capsLabels": 0,
+    "cards": 0,
+    "smallText": 0,
+    "texts": 0,
+    "unevenRows": 0
+   },
+   "images": [],
+   "annotations": {},
+   "findings": [],
+   "more": 0,
+   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 0, unbound spacing 0 · built in auto layout 1/1 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 0, small uppercase labels 0, section cards 0, text under 12 px 0/0, uneven button rows 0 · annotations none · 0 fail, 0 warn"
+  }
+ },
+ {
+  "input": {
+   "pages": [
+    {
+     "name": "Flow",
+     "children": [
+      {
+       "type": "FRAME",
+       "name": "06",
+       "x": 0,
+       "y": 0,
+       "width": 390,
+       "height": 844,
+       "absoluteBoundingBox": {
+        "x": 0,
+        "y": 0,
+        "width": 390,
+        "height": 844
+       },
+       "visible": true,
+       "opacity": 1,
+       "fills": [
+        {
+         "type": "SOLID",
+         "color": {
+          "r": 1,
+          "g": 1,
+          "b": 1
+         }
+        }
+       ],
+       "strokes": [],
+       "effects": [],
+       "clipsContent": true,
+       "children": [
+        {
+         "type": "TEXT",
+         "name": "Total",
+         "x": 16,
+         "y": 750,
+         "width": 200,
+         "height": 24,
+         "absoluteBoundingBox": {
+          "x": 16,
+          "y": 750,
+          "width": 200,
+          "height": 24
+         },
+         "visible": true,
+         "opacity": 1,
+         "fills": [
+          {
+           "type": "SOLID",
+           "color": {
+            "r": 0.08,
+            "g": 0.07,
+            "b": 0.06
+           }
+          }
+         ],
+         "strokes": [],
+         "effects": [],
+         "characters": "Total Rp1.250.000",
+         "fontSize": 15,
+         "fontName": {
+          "family": "Inter",
+          "style": "Regular"
+         },
+         "textStyleId": "S:1"
+        },
+        {
+         "type": "FRAME",
+         "name": "Bottom bar",
+         "x": 0,
+         "y": 760,
+         "width": 390,
+         "height": 84,
+         "absoluteBoundingBox": {
+          "x": 0,
+          "y": 760,
+          "width": 390,
+          "height": 84
+         },
+         "visible": true,
+         "opacity": 1,
+         "fills": [
+          {
+           "type": "SOLID",
+           "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+           }
+          }
+         ],
+         "strokes": [],
+         "effects": [],
+         "children": []
+        }
+       ]
+      }
+     ]
+    }
+   ],
+   "current": "Flow",
+   "page": "Flow",
+   "annotationCategories": []
+  },
+  "output": {
+   "page": "Flow",
+   "screens": [
+    "06"
+   ],
+   "counts": {
+    "screens": 1,
+    "imageFills": 0,
+    "distinctImages": 0,
+    "reusedImages": 0,
+    "contrastFails": 0,
+    "contrastUnknown": 0,
+    "targetsUnder24": 0,
+    "targetsUnder44": 0,
+    "cutText": 1,
+    "clippedText": 0,
+    "flatOverlays": 0,
+    "idleBusyButtons": 0,
+    "unstyledText": 0,
+    "unboundFills": 2,
+    "unboundSpacing": 0,
+    "layoutScreens": 1,
+    "looseLayers": 0,
+    "strayLayers": 0,
+    "rawEffects": 0,
+    "emptyBands": 0,
+    "capsLabels": 0,
+    "cards": 0,
+    "smallText": 0,
+    "texts": 1,
+    "unevenRows": 0
+   },
+   "images": [],
+   "annotations": {},
+   "findings": [
+    {
+     "rule": "RX-QA-03",
+     "level": "fail",
+     "frame": "06",
+     "node": "Total",
+     "message": "\"Total Rp1.250.000\" is cut by \"Bottom bar\" (58% covered)"
+    }
+   ],
+   "more": 0,
+   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 1, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 2, unbound spacing 0 · built in auto layout 1/1 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 0, small uppercase labels 0, section cards 0, text under 12 px 0/1, uneven button rows 0 · annotations none · 1 fail, 0 warn"
+  }
+ },
+ {
+  "input": {
+   "pages": [
+    {
+     "name": "Flow",
+     "children": [
+      {
+       "type": "FRAME",
+       "name": "06",
+       "x": 0,
+       "y": 0,
+       "width": 390,
+       "height": 844,
+       "absoluteBoundingBox": {
+        "x": 0,
+        "y": 0,
+        "width": 390,
+        "height": 844
+       },
+       "visible": true,
+       "opacity": 1,
+       "fills": [
+        {
+         "type": "SOLID",
+         "color": {
+          "r": 1,
+          "g": 1,
+          "b": 1
+         }
+        }
+       ],
+       "strokes": [],
+       "effects": [],
+       "clipsContent": true,
+       "children": [
+        {
+         "type": "TEXT",
+         "name": "Total",
+         "x": 16,
+         "y": 700,
+         "width": 200,
+         "height": 24,
+         "absoluteBoundingBox": {
+          "x": 16,
+          "y": 700,
+          "width": 200,
+          "height": 24
+         },
+         "visible": true,
+         "opacity": 1,
+         "fills": [
+          {
+           "type": "SOLID",
+           "color": {
+            "r": 0.08,
+            "g": 0.07,
+            "b": 0.06
+           }
+          }
+         ],
+         "strokes": [],
+         "effects": [],
+         "characters": "Total Rp1.250.000",
+         "fontSize": 15,
+         "fontName": {
+          "family": "Inter",
+          "style": "Regular"
+         },
+         "textStyleId": "S:1"
+        },
+        {
+         "type": "TEXT",
+         "name": "Row",
+         "x": 16,
+         "y": 800,
+         "width": 200,
+         "height": 20,
+         "absoluteBoundingBox": {
+          "x": 16,
+          "y": 800,
+          "width": 200,
+          "height": 20
+         },
+         "visible": true,
+         "opacity": 1,
+         "fills": [
+          {
+           "type": "SOLID",
+           "color": {
+            "r": 0.08,
+            "g": 0.07,
+            "b": 0.06
+           }
+          }
+         ],
+         "strokes": [],
+         "effects": [],
+         "characters": "Under",
+         "fontSize": 15,
+         "fontName": {
+          "family": "Inter",
+          "style": "Regular"
+         },
+         "textStyleId": "S:1"
+        },
+        {
+         "type": "FRAME",
+         "name": "Bottom bar",
+         "x": 0,
+         "y": 760,
+         "width": 390,
+         "height": 84,
+         "absoluteBoundingBox": {
+          "x": 0,
+          "y": 760,
+          "width": 390,
+          "height": 84
+         },
+         "visible": true,
+         "opacity": 1,
+         "fills": [
+          {
+           "type": "SOLID",
+           "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+           }
+          }
+         ],
+         "strokes": [],
+         "effects": [],
+         "children": []
+        }
+       ]
+      }
+     ]
+    }
+   ],
+   "current": "Flow",
+   "page": "Flow",
+   "annotationCategories": []
+  },
+  "output": {
+   "page": "Flow",
+   "screens": [
+    "06"
+   ],
+   "counts": {
+    "screens": 1,
+    "imageFills": 0,
+    "distinctImages": 0,
+    "reusedImages": 0,
+    "contrastFails": 0,
+    "contrastUnknown": 0,
+    "targetsUnder24": 0,
+    "targetsUnder44": 0,
+    "cutText": 0,
+    "clippedText": 0,
+    "flatOverlays": 0,
+    "idleBusyButtons": 0,
+    "unstyledText": 0,
+    "unboundFills": 3,
+    "unboundSpacing": 0,
+    "layoutScreens": 1,
+    "looseLayers": 0,
+    "strayLayers": 0,
+    "rawEffects": 0,
+    "emptyBands": 0,
+    "capsLabels": 0,
+    "cards": 0,
+    "smallText": 0,
+    "texts": 2,
+    "unevenRows": 0
+   },
+   "images": [],
+   "annotations": {},
+   "findings": [],
+   "more": 0,
+   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 3, unbound spacing 0 · built in auto layout 1/1 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 0, small uppercase labels 0, section cards 0, text under 12 px 0/2, uneven button rows 0 · annotations none · 0 fail, 0 warn"
+  }
+ },
+ {
+  "input": {
+   "pages": [
+    {
+     "name": "Flow",
+     "children": [
+      {
+       "type": "FRAME",
+       "name": "08",
+       "x": 0,
+       "y": 0,
+       "width": 390,
+       "height": 844,
+       "absoluteBoundingBox": {
+        "x": 0,
+        "y": 0,
+        "width": 390,
+        "height": 844
+       },
+       "visible": true,
+       "opacity": 1,
+       "fills": [
+        {
+         "type": "SOLID",
+         "color": {
+          "r": 1,
+          "g": 1,
+          "b": 1
+         }
+        }
+       ],
+       "strokes": [],
+       "effects": [],
+       "clipsContent": true,
+       "children": [
+        {
+         "type": "FRAME",
+         "name": "Processing dialog",
+         "x": 55,
+         "y": 340,
+         "width": 280,
+         "height": 150,
+         "absoluteBoundingBox": {
+          "x": 55,
+          "y": 340,
+          "width": 280,
+          "height": 150
+         },
+         "visible": true,
+         "opacity": 1,
+         "fills": [
+          {
+           "type": "SOLID",
+           "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+           }
+          }
+         ],
+         "strokes": [],
+         "effects": [],
+         "children": [
+          {
+           "type": "TEXT",
+           "name": "T",
+           "x": 70,
+           "y": 360,
+           "width": 200,
+           "height": 20,
+           "absoluteBoundingBox": {
+            "x": 70,
+            "y": 360,
+            "width": 200,
+            "height": 20
+           },
+           "visible": true,
+           "opacity": 1,
+           "fills": [
+            {
+             "type": "SOLID",
+             "color": {
+              "r": 0.08,
+              "g": 0.07,
+              "b": 0.06
+             }
+            }
+           ],
+           "strokes": [],
+           "effects": [],
+           "characters": "Done",
+           "fontSize": 15,
+           "fontName": {
+            "family": "Inter",
+            "style": "Regular"
+           },
+           "textStyleId": "S:1"
+          }
+         ]
+        }
+       ]
+      }
+     ]
+    }
+   ],
+   "current": "Flow",
+   "page": "Flow",
+   "annotationCategories": []
+  },
+  "output": {
+   "page": "Flow",
+   "screens": [
+    "08"
+   ],
+   "counts": {
+    "screens": 1,
+    "imageFills": 0,
+    "distinctImages": 0,
+    "reusedImages": 0,
+    "contrastFails": 0,
+    "contrastUnknown": 0,
+    "targetsUnder24": 0,
+    "targetsUnder44": 0,
+    "cutText": 0,
+    "clippedText": 0,
+    "flatOverlays": 1,
+    "idleBusyButtons": 0,
+    "unstyledText": 0,
+    "unboundFills": 2,
+    "unboundSpacing": 0,
+    "layoutScreens": 1,
+    "looseLayers": 0,
+    "strayLayers": 0,
+    "rawEffects": 0,
+    "emptyBands": 0,
+    "capsLabels": 0,
+    "cards": 0,
+    "smallText": 0,
+    "texts": 1,
+    "unevenRows": 0
+   },
+   "images": [],
+   "annotations": {},
+   "findings": [
+    {
+     "rule": "RX-UI-15",
+     "level": "warn",
+     "frame": "08",
+     "node": "Processing dialog",
+     "message": "overlay \"Processing dialog\" has no shadow or border to lift it from what is under it"
+    }
+   ],
+   "more": 0,
+   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 1 · busy buttons with idle label 0 · unstyled text 0, unbound fills 2, unbound spacing 0 · built in auto layout 1/1 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 0, small uppercase labels 0, section cards 0, text under 12 px 0/1, uneven button rows 0 · annotations none · 0 fail, 1 warn"
+  }
+ },
+ {
+  "input": {
+   "pages": [
+    {
+     "name": "Flow",
+     "children": [
+      {
+       "type": "FRAME",
+       "name": "08",
+       "x": 0,
+       "y": 0,
+       "width": 390,
+       "height": 844,
+       "absoluteBoundingBox": {
+        "x": 0,
+        "y": 0,
+        "width": 390,
+        "height": 844
+       },
+       "visible": true,
+       "opacity": 1,
+       "fills": [
+        {
+         "type": "SOLID",
+         "color": {
+          "r": 1,
+          "g": 1,
+          "b": 1
+         }
+        }
+       ],
+       "strokes": [],
+       "effects": [],
+       "clipsContent": true,
+       "children": [
+        {
+         "type": "FRAME",
+         "name": "Processing dialog",
+         "x": 55,
+         "y": 340,
+         "width": 280,
+         "height": 150,
+         "absoluteBoundingBox": {
+          "x": 55,
+          "y": 340,
+          "width": 280,
+          "height": 150
+         },
+         "visible": true,
+         "opacity": 1,
+         "fills": [
+          {
+           "type": "SOLID",
+           "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+           }
+          }
+         ],
+         "strokes": [],
+         "effects": [
+          {
+           "type": "DROP_SHADOW",
+           "visible": true
+          }
+         ],
+         "children": [
+          {
+           "type": "TEXT",
+           "name": "T",
+           "x": 70,
+           "y": 360,
+           "width": 200,
+           "height": 20,
+           "absoluteBoundingBox": {
+            "x": 70,
+            "y": 360,
+            "width": 200,
+            "height": 20
+           },
+           "visible": true,
+           "opacity": 1,
+           "fills": [
+            {
+             "type": "SOLID",
+             "color": {
+              "r": 0.08,
+              "g": 0.07,
+              "b": 0.06
+             }
+            }
+           ],
+           "strokes": [],
+           "effects": [],
+           "characters": "Done",
+           "fontSize": 15,
+           "fontName": {
+            "family": "Inter",
+            "style": "Regular"
+           },
+           "textStyleId": "S:1"
+          }
+         ]
+        }
+       ]
+      }
+     ]
+    }
+   ],
+   "current": "Flow",
+   "page": "Flow",
+   "annotationCategories": []
+  },
+  "output": {
+   "page": "Flow",
+   "screens": [
+    "08"
+   ],
+   "counts": {
+    "screens": 1,
+    "imageFills": 0,
+    "distinctImages": 0,
+    "reusedImages": 0,
+    "contrastFails": 0,
+    "contrastUnknown": 0,
+    "targetsUnder24": 0,
+    "targetsUnder44": 0,
+    "cutText": 0,
+    "clippedText": 0,
+    "flatOverlays": 0,
+    "idleBusyButtons": 0,
+    "unstyledText": 0,
+    "unboundFills": 2,
+    "unboundSpacing": 0,
+    "layoutScreens": 1,
+    "looseLayers": 0,
+    "strayLayers": 0,
+    "rawEffects": 1,
+    "emptyBands": 0,
+    "capsLabels": 0,
+    "cards": 0,
+    "smallText": 0,
+    "texts": 1,
+    "unevenRows": 0
+   },
+   "images": [],
+   "annotations": {},
+   "findings": [],
+   "more": 0,
+   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 2, unbound spacing 0 · built in auto layout 1/1 screens, loose layers 0, layers outside the screens 0, effects without a style 1 · empty bands 0, small uppercase labels 0, section cards 0, text under 12 px 0/1, uneven button rows 0 · annotations none · 0 fail, 0 warn"
+  }
+ },
+ {
+  "input": {
+   "pages": [
+    {
+     "name": "Flow",
+     "children": [
+      {
+       "type": "FRAME",
+       "name": "08",
+       "x": 0,
+       "y": 0,
+       "width": 390,
+       "height": 844,
+       "absoluteBoundingBox": {
+        "x": 0,
+        "y": 0,
+        "width": 390,
+        "height": 844
+       },
+       "visible": true,
+       "opacity": 1,
+       "fills": [
+        {
+         "type": "SOLID",
+         "color": {
+          "r": 1,
+          "g": 1,
+          "b": 1
+         }
+        }
+       ],
+       "strokes": [],
+       "effects": [],
+       "clipsContent": true,
+       "children": [
+        {
+         "type": "TEXT",
+         "name": "Status",
+         "x": 100,
+         "y": 700,
+         "width": 200,
+         "height": 20,
+         "absoluteBoundingBox": {
+          "x": 100,
+          "y": 700,
+          "width": 200,
+          "height": 20
+         },
+         "visible": true,
+         "opacity": 1,
+         "fills": [
+          {
+           "type": "SOLID",
+           "color": {
+            "r": 0.08,
+            "g": 0.07,
+            "b": 0.06
+           }
+          }
+         ],
+         "strokes": [],
+         "effects": [],
+         "characters": "Confirming payment",
+         "fontSize": 15,
+         "fontName": {
+          "family": "Inter",
+          "style": "Regular"
+         },
+         "textStyleId": "S:1"
+        },
+        {
+         "type": "INSTANCE",
+         "name": "Button",
+         "x": 20,
+         "y": 764,
+         "width": 350,
+         "height": 52,
+         "absoluteBoundingBox": {
+          "x": 20,
+          "y": 764,
+          "width": 350,
+          "height": 52
+         },
+         "visible": true,
+         "opacity": 1,
+         "fills": [
+          {
+           "type": "SOLID",
+           "color": {
+            "r": 0.08,
+            "g": 0.07,
+            "b": 0.06
+           }
+          }
+         ],
+         "strokes": [],
+         "effects": [],
+         "children": [
+          {
+           "type": "TEXT",
+           "name": "Label",
+           "x": 120,
+           "y": 780,
+           "width": 150,
+           "height": 20,
+           "absoluteBoundingBox": {
+            "x": 120,
+            "y": 780,
+            "width": 150,
+            "height": 20
+           },
+           "visible": true,
+           "opacity": 1,
+           "fills": [
+            {
+             "type": "SOLID",
+             "color": {
+              "r": 1,
+              "g": 1,
+              "b": 1
+             }
+            }
+           ],
+           "strokes": [],
+           "effects": [],
+           "characters": "Pay Rp1.250.000",
+           "fontSize": 15,
+           "fontName": {
+            "family": "Inter",
+            "style": "Regular"
+           },
+           "textStyleId": "S:1"
+          }
+         ]
+        }
+       ]
+      }
+     ]
+    }
+   ],
+   "current": "Flow",
+   "page": "Flow",
+   "annotationCategories": []
+  },
+  "output": {
+   "page": "Flow",
+   "screens": [
+    "08"
+   ],
+   "counts": {
+    "screens": 1,
+    "imageFills": 0,
+    "distinctImages": 0,
+    "reusedImages": 0,
+    "contrastFails": 0,
+    "contrastUnknown": 0,
+    "targetsUnder24": 0,
+    "targetsUnder44": 0,
+    "cutText": 0,
+    "clippedText": 0,
+    "flatOverlays": 0,
+    "idleBusyButtons": 1,
+    "unstyledText": 0,
+    "unboundFills": 2,
+    "unboundSpacing": 0,
+    "layoutScreens": 1,
+    "looseLayers": 0,
+    "strayLayers": 0,
+    "rawEffects": 0,
+    "emptyBands": 0,
+    "capsLabels": 0,
+    "cards": 0,
+    "smallText": 0,
+    "texts": 1,
+    "unevenRows": 0
+   },
+   "images": [],
+   "annotations": {},
+   "findings": [
+    {
+     "rule": "RX-IX-02",
+     "level": "warn",
+     "frame": "08",
+     "node": "Button",
+     "message": "the screen says it is busy but \"Pay Rp1.250.000\" keeps its idle label"
+    }
+   ],
+   "more": 0,
+   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 1 · unstyled text 0, unbound fills 2, unbound spacing 0 · built in auto layout 1/1 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 0, small uppercase labels 0, section cards 0, text under 12 px 0/1, uneven button rows 0 · annotations none · 0 fail, 1 warn"
+  }
+ },
+ {
+  "input": {
+   "pages": [
+    {
+     "name": "Flow",
+     "children": [
+      {
+       "type": "FRAME",
+       "name": "08",
+       "x": 0,
+       "y": 0,
+       "width": 390,
+       "height": 844,
+       "absoluteBoundingBox": {
+        "x": 0,
+        "y": 0,
+        "width": 390,
+        "height": 844
+       },
+       "visible": true,
+       "opacity": 1,
+       "fills": [
+        {
+         "type": "SOLID",
+         "color": {
+          "r": 1,
+          "g": 1,
+          "b": 1
+         }
+        }
+       ],
+       "strokes": [],
+       "effects": [],
+       "clipsContent": true,
+       "children": [
+        {
+         "type": "TEXT",
+         "name": "Status",
+         "x": 100,
+         "y": 700,
+         "width": 200,
+         "height": 20,
+         "absoluteBoundingBox": {
+          "x": 100,
+          "y": 700,
+          "width": 200,
+          "height": 20
+         },
+         "visible": true,
+         "opacity": 1,
+         "fills": [
+          {
+           "type": "SOLID",
+           "color": {
+            "r": 0.08,
+            "g": 0.07,
+            "b": 0.06
+           }
+          }
+         ],
+         "strokes": [],
+         "effects": [],
+         "characters": "Confirming payment",
+         "fontSize": 15,
+         "fontName": {
+          "family": "Inter",
+          "style": "Regular"
+         },
+         "textStyleId": "S:1"
+        },
+        {
+         "type": "INSTANCE",
+         "name": "Button",
+         "x": 20,
+         "y": 764,
+         "width": 350,
+         "height": 52,
+         "absoluteBoundingBox": {
+          "x": 20,
+          "y": 764,
+          "width": 350,
+          "height": 52
+         },
+         "visible": true,
+         "opacity": 1,
+         "fills": [
+          {
+           "type": "SOLID",
+           "color": {
+            "r": 0.08,
+            "g": 0.07,
+            "b": 0.06
+           }
+          }
+         ],
+         "strokes": [],
+         "effects": [],
+         "children": [
+          {
+           "type": "TEXT",
+           "name": "Label",
+           "x": 120,
+           "y": 780,
+           "width": 150,
+           "height": 20,
+           "absoluteBoundingBox": {
+            "x": 120,
+            "y": 780,
+            "width": 150,
+            "height": 20
+           },
+           "visible": true,
+           "opacity": 1,
+           "fills": [
+            {
+             "type": "SOLID",
+             "color": {
+              "r": 1,
+              "g": 1,
+              "b": 1
+             }
+            }
+           ],
+           "strokes": [],
+           "effects": [],
+           "characters": "Paying…",
+           "fontSize": 15,
+           "fontName": {
+            "family": "Inter",
+            "style": "Regular"
+           },
+           "textStyleId": "S:1"
+          }
+         ]
+        }
+       ]
+      }
+     ]
+    }
+   ],
+   "current": "Flow",
+   "page": "Flow",
+   "annotationCategories": []
+  },
+  "output": {
+   "page": "Flow",
+   "screens": [
+    "08"
+   ],
+   "counts": {
+    "screens": 1,
+    "imageFills": 0,
+    "distinctImages": 0,
+    "reusedImages": 0,
+    "contrastFails": 0,
+    "contrastUnknown": 0,
+    "targetsUnder24": 0,
+    "targetsUnder44": 0,
+    "cutText": 0,
+    "clippedText": 0,
+    "flatOverlays": 0,
+    "idleBusyButtons": 0,
+    "unstyledText": 0,
+    "unboundFills": 2,
+    "unboundSpacing": 0,
+    "layoutScreens": 1,
+    "looseLayers": 0,
+    "strayLayers": 0,
+    "rawEffects": 0,
+    "emptyBands": 0,
+    "capsLabels": 0,
+    "cards": 0,
+    "smallText": 0,
+    "texts": 1,
+    "unevenRows": 0
+   },
+   "images": [],
+   "annotations": {},
+   "findings": [],
+   "more": 0,
+   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 2, unbound spacing 0 · built in auto layout 1/1 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 0, small uppercase labels 0, section cards 0, text under 12 px 0/1, uneven button rows 0 · annotations none · 0 fail, 0 warn"
+  }
+ },
+ {
+  "input": {
+   "pages": [
+    {
+     "name": "Flow",
+     "children": [
+      {
+       "type": "FRAME",
+       "name": "08",
+       "x": 0,
+       "y": 0,
+       "width": 390,
+       "height": 844,
+       "absoluteBoundingBox": {
+        "x": 0,
+        "y": 0,
+        "width": 390,
+        "height": 844
+       },
+       "visible": true,
+       "opacity": 1,
+       "fills": [
+        {
+         "type": "SOLID",
+         "color": {
+          "r": 1,
+          "g": 1,
+          "b": 1
+         }
+        }
+       ],
+       "strokes": [],
+       "effects": [],
+       "clipsContent": true,
+       "children": [
+        {
+         "type": "TEXT",
+         "name": "Status",
+         "x": 100,
+         "y": 700,
+         "width": 200,
+         "height": 20,
+         "absoluteBoundingBox": {
+          "x": 100,
+          "y": 700,
+          "width": 200,
+          "height": 20
+         },
+         "visible": true,
+         "opacity": 1,
+         "fills": [
+          {
+           "type": "SOLID",
+           "color": {
+            "r": 0.08,
+            "g": 0.07,
+            "b": 0.06
+           }
+          }
+         ],
+         "strokes": [],
+         "effects": [],
+         "characters": "Confirming payment",
+         "fontSize": 15,
+         "fontName": {
+          "family": "Inter",
+          "style": "Regular"
+         },
+         "textStyleId": "S:1"
+        },
+        {
+         "type": "INSTANCE",
+         "name": "Button",
+         "x": 20,
+         "y": 764,
+         "width": 350,
+         "height": 52,
+         "absoluteBoundingBox": {
+          "x": 20,
+          "y": 764,
+          "width": 350,
+          "height": 52
+         },
+         "visible": true,
+         "opacity": 1,
+         "fills": [
+          {
+           "type": "SOLID",
+           "color": {
+            "r": 0.08,
+            "g": 0.07,
+            "b": 0.06
+           }
+          }
+         ],
+         "strokes": [],
+         "effects": [],
+         "children": [
+          {
+           "type": "TEXT",
+           "name": "Label",
+           "x": 120,
+           "y": 780,
+           "width": 150,
+           "height": 20,
+           "absoluteBoundingBox": {
+            "x": 120,
+            "y": 780,
+            "width": 150,
+            "height": 20
+           },
+           "visible": true,
+           "opacity": 1,
+           "fills": [
+            {
+             "type": "SOLID",
+             "color": {
+              "r": 1,
+              "g": 1,
+              "b": 1
+             }
+            }
+           ],
+           "strokes": [],
+           "effects": [],
+           "characters": "Cancel",
+           "fontSize": 15,
+           "fontName": {
+            "family": "Inter",
+            "style": "Regular"
+           },
+           "textStyleId": "S:1"
+          }
+         ]
+        }
+       ]
+      }
+     ]
+    }
+   ],
+   "current": "Flow",
+   "page": "Flow",
+   "annotationCategories": []
+  },
+  "output": {
+   "page": "Flow",
+   "screens": [
+    "08"
+   ],
+   "counts": {
+    "screens": 1,
+    "imageFills": 0,
+    "distinctImages": 0,
+    "reusedImages": 0,
+    "contrastFails": 0,
+    "contrastUnknown": 0,
+    "targetsUnder24": 0,
+    "targetsUnder44": 0,
+    "cutText": 0,
+    "clippedText": 0,
+    "flatOverlays": 0,
+    "idleBusyButtons": 0,
+    "unstyledText": 0,
+    "unboundFills": 2,
+    "unboundSpacing": 0,
+    "layoutScreens": 1,
+    "looseLayers": 0,
+    "strayLayers": 0,
+    "rawEffects": 0,
+    "emptyBands": 0,
+    "capsLabels": 0,
+    "cards": 0,
+    "smallText": 0,
+    "texts": 1,
+    "unevenRows": 0
+   },
+   "images": [],
+   "annotations": {},
+   "findings": [],
+   "more": 0,
+   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 2, unbound spacing 0 · built in auto layout 1/1 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 0, small uppercase labels 0, section cards 0, text under 12 px 0/1, uneven button rows 0 · annotations none · 0 fail, 0 warn"
+  }
+ },
+ {
+  "input": {
+   "pages": [
+    {
+     "name": "Flow",
+     "children": [
+      {
+       "type": "FRAME",
+       "name": "07",
+       "x": 0,
+       "y": 0,
+       "width": 390,
+       "height": 844,
+       "absoluteBoundingBox": {
+        "x": 0,
+        "y": 0,
+        "width": 390,
+        "height": 844
+       },
+       "visible": true,
+       "opacity": 1,
+       "fills": [
+        {
+         "type": "SOLID",
+         "color": {
+          "r": 1,
+          "g": 1,
+          "b": 1
+         }
+        }
+       ],
+       "strokes": [],
+       "effects": [],
+       "clipsContent": true,
+       "children": [
+        {
+         "type": "INSTANCE",
+         "name": "Button",
+         "x": 20,
+         "y": 764,
+         "width": 350,
+         "height": 52,
+         "absoluteBoundingBox": {
+          "x": 20,
+          "y": 764,
+          "width": 350,
+          "height": 52
+         },
+         "visible": true,
+         "opacity": 1,
+         "fills": [
+          {
+           "type": "SOLID",
+           "color": {
+            "r": 0.08,
+            "g": 0.07,
+            "b": 0.06
+           }
+          }
+         ],
+         "strokes": [],
+         "effects": [],
+         "children": [
+          {
+           "type": "TEXT",
+           "name": "Label",
+           "x": 120,
+           "y": 780,
+           "width": 150,
+           "height": 20,
+           "absoluteBoundingBox": {
+            "x": 120,
+            "y": 780,
+            "width": 150,
+            "height": 20
+           },
+           "visible": true,
+           "opacity": 1,
+           "fills": [
+            {
+             "type": "SOLID",
+             "color": {
+              "r": 1,
+              "g": 1,
+              "b": 1
+             }
+            }
+           ],
+           "strokes": [],
+           "effects": [],
+           "characters": "Pay Rp1.250.000",
+           "fontSize": 15,
+           "fontName": {
+            "family": "Inter",
+            "style": "Regular"
+           },
+           "textStyleId": "S:1"
+          }
+         ]
+        }
+       ]
+      }
+     ]
+    }
+   ],
+   "current": "Flow",
+   "page": "Flow",
+   "annotationCategories": []
+  },
+  "output": {
+   "page": "Flow",
+   "screens": [
+    "07"
+   ],
+   "counts": {
+    "screens": 1,
+    "imageFills": 0,
+    "distinctImages": 0,
+    "reusedImages": 0,
+    "contrastFails": 0,
+    "contrastUnknown": 0,
+    "targetsUnder24": 0,
+    "targetsUnder44": 0,
+    "cutText": 0,
+    "clippedText": 0,
+    "flatOverlays": 0,
+    "idleBusyButtons": 0,
+    "unstyledText": 0,
+    "unboundFills": 1,
+    "unboundSpacing": 0,
+    "layoutScreens": 1,
+    "looseLayers": 0,
+    "strayLayers": 0,
+    "rawEffects": 0,
+    "emptyBands": 0,
+    "capsLabels": 0,
+    "cards": 0,
+    "smallText": 0,
+    "texts": 0,
+    "unevenRows": 0
+   },
+   "images": [],
+   "annotations": {},
+   "findings": [],
+   "more": 0,
+   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 1, unbound spacing 0 · built in auto layout 1/1 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 0, small uppercase labels 0, section cards 0, text under 12 px 0/0, uneven button rows 0 · annotations none · 0 fail, 0 warn"
+  }
+ },
+ {
+  "input": {
+   "pages": [
+    {
+     "name": "Flow",
+     "children": [
+      {
+       "type": "FRAME",
+       "name": "03",
+       "x": 0,
+       "y": 0,
+       "width": 390,
+       "height": 844,
+       "absoluteBoundingBox": {
+        "x": 0,
+        "y": 0,
+        "width": 390,
+        "height": 844
+       },
+       "visible": true,
+       "opacity": 1,
+       "fills": [
+        {
+         "type": "SOLID",
+         "color": {
+          "r": 1,
+          "g": 1,
+          "b": 1
+         }
+        }
+       ],
+       "strokes": [],
+       "effects": [],
+       "clipsContent": true,
+       "children": [
+        {
+         "type": "FRAME",
+         "name": "Seat A1",
+         "x": 100,
+         "y": 300,
+         "width": 20,
+         "height": 20,
+         "absoluteBoundingBox": {
+          "x": 100,
+          "y": 300,
+          "width": 20,
+          "height": 20
+         },
+         "visible": true,
+         "opacity": 1,
+         "fills": [
+          {
+           "type": "SOLID",
+           "color": {
+            "r": 0.08,
+            "g": 0.07,
+            "b": 0.06
+           }
+          }
+         ],
+         "strokes": [],
+         "effects": [],
+         "children": []
+        }
+       ]
+      }
+     ]
+    }
+   ],
+   "current": "Flow",
+   "page": "Flow",
+   "annotationCategories": []
+  },
+  "output": {
+   "page": "Flow",
+   "screens": [
+    "03"
+   ],
+   "counts": {
+    "screens": 1,
+    "imageFills": 0,
+    "distinctImages": 0,
+    "reusedImages": 0,
+    "contrastFails": 0,
+    "contrastUnknown": 0,
+    "targetsUnder24": 1,
+    "targetsUnder44": 0,
+    "cutText": 0,
+    "clippedText": 0,
+    "flatOverlays": 0,
+    "idleBusyButtons": 0,
+    "unstyledText": 0,
+    "unboundFills": 1,
+    "unboundSpacing": 0,
+    "layoutScreens": 1,
+    "looseLayers": 0,
+    "strayLayers": 0,
+    "rawEffects": 0,
+    "emptyBands": 0,
+    "capsLabels": 0,
+    "cards": 0,
+    "smallText": 0,
+    "texts": 0,
+    "unevenRows": 0
+   },
+   "images": [],
+   "annotations": {},
+   "findings": [
+    {
+     "rule": "RX-A11Y-02",
+     "level": "fail",
+     "frame": "03",
+     "node": "Seat A1",
+     "message": "\"Seat A1\" 20x20, under 24x24"
+    }
+   ],
+   "more": 0,
+   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 1, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 1, unbound spacing 0 · built in auto layout 1/1 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 0, small uppercase labels 0, section cards 0, text under 12 px 0/0, uneven button rows 0 · annotations none · 1 fail, 0 warn"
+  }
+ },
+ {
+  "input": {
+   "pages": [
+    {
+     "name": "Flow",
+     "children": [
+      {
+       "type": "FRAME",
+       "name": "03",
+       "x": 0,
+       "y": 0,
+       "width": 390,
+       "height": 844,
+       "absoluteBoundingBox": {
+        "x": 0,
+        "y": 0,
+        "width": 390,
+        "height": 844
+       },
+       "visible": true,
+       "opacity": 1,
+       "fills": [
+        {
+         "type": "SOLID",
+         "color": {
+          "r": 1,
+          "g": 1,
+          "b": 1
+         }
+        }
+       ],
+       "strokes": [],
+       "effects": [],
+       "clipsContent": true,
+       "children": [
+        {
+         "type": "FRAME",
+         "name": "Seat A1",
+         "x": 100,
+         "y": 300,
+         "width": 30,
+         "height": 30,
+         "absoluteBoundingBox": {
+          "x": 100,
+          "y": 300,
+          "width": 30,
+          "height": 30
+         },
+         "visible": true,
+         "opacity": 1,
+         "fills": [
+          {
+           "type": "SOLID",
+           "color": {
+            "r": 0.08,
+            "g": 0.07,
+            "b": 0.06
+           }
+          }
+         ],
+         "strokes": [],
+         "effects": [],
+         "children": []
+        }
+       ]
+      }
+     ]
+    }
+   ],
+   "current": "Flow",
+   "page": "Flow",
+   "annotationCategories": []
+  },
+  "output": {
+   "page": "Flow",
+   "screens": [
+    "03"
+   ],
+   "counts": {
+    "screens": 1,
+    "imageFills": 0,
+    "distinctImages": 0,
+    "reusedImages": 0,
+    "contrastFails": 0,
+    "contrastUnknown": 0,
+    "targetsUnder24": 0,
+    "targetsUnder44": 1,
+    "cutText": 0,
+    "clippedText": 0,
+    "flatOverlays": 0,
+    "idleBusyButtons": 0,
+    "unstyledText": 0,
+    "unboundFills": 1,
+    "unboundSpacing": 0,
+    "layoutScreens": 1,
+    "looseLayers": 0,
+    "strayLayers": 0,
+    "rawEffects": 0,
+    "emptyBands": 0,
+    "capsLabels": 0,
+    "cards": 0,
+    "smallText": 0,
+    "texts": 0,
+    "unevenRows": 0
+   },
+   "images": [],
+   "annotations": {},
+   "findings": [
+    {
+     "rule": "RX-A11Y-02",
+     "level": "warn",
+     "frame": "03",
+     "node": "Seat A1",
+     "message": "\"Seat A1\" 30x30, under 44x44"
+    }
+   ],
+   "more": 0,
+   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 1 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 1, unbound spacing 0 · built in auto layout 1/1 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 0, small uppercase labels 0, section cards 0, text under 12 px 0/0, uneven button rows 0 · annotations none · 0 fail, 1 warn"
+  }
+ },
+ {
+  "input": {
+   "pages": [
+    {
+     "name": "Flow",
+     "children": [
+      {
+       "type": "FRAME",
+       "name": "03",
+       "x": 0,
+       "y": 0,
+       "width": 390,
+       "height": 844,
+       "absoluteBoundingBox": {
+        "x": 0,
+        "y": 0,
+        "width": 390,
+        "height": 844
+       },
+       "visible": true,
+       "opacity": 1,
+       "fills": [
+        {
+         "type": "SOLID",
+         "color": {
+          "r": 1,
+          "g": 1,
+          "b": 1
+         }
+        }
+       ],
+       "strokes": [],
+       "effects": [],
+       "clipsContent": true,
+       "children": [
+        {
+         "type": "FRAME",
+         "name": "Seat A1",
+         "x": 100,
+         "y": 300,
+         "width": 44,
+         "height": 44,
+         "absoluteBoundingBox": {
+          "x": 100,
+          "y": 300,
+          "width": 44,
+          "height": 44
+         },
+         "visible": true,
+         "opacity": 1,
+         "fills": [
+          {
+           "type": "SOLID",
+           "color": {
+            "r": 0.08,
+            "g": 0.07,
+            "b": 0.06
+           }
+          }
+         ],
+         "strokes": [],
+         "effects": [],
+         "children": []
+        }
+       ]
+      }
+     ]
+    }
+   ],
+   "current": "Flow",
+   "page": "Flow",
+   "annotationCategories": []
+  },
+  "output": {
+   "page": "Flow",
+   "screens": [
+    "03"
+   ],
+   "counts": {
+    "screens": 1,
+    "imageFills": 0,
+    "distinctImages": 0,
+    "reusedImages": 0,
+    "contrastFails": 0,
+    "contrastUnknown": 0,
+    "targetsUnder24": 0,
+    "targetsUnder44": 0,
+    "cutText": 0,
+    "clippedText": 0,
+    "flatOverlays": 0,
+    "idleBusyButtons": 0,
+    "unstyledText": 0,
+    "unboundFills": 1,
+    "unboundSpacing": 0,
+    "layoutScreens": 1,
+    "looseLayers": 0,
+    "strayLayers": 0,
+    "rawEffects": 0,
+    "emptyBands": 0,
+    "capsLabels": 0,
+    "cards": 0,
+    "smallText": 0,
+    "texts": 0,
+    "unevenRows": 0
+   },
+   "images": [],
+   "annotations": {},
+   "findings": [],
+   "more": 0,
+   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 1, unbound spacing 0 · built in auto layout 1/1 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 0, small uppercase labels 0, section cards 0, text under 12 px 0/0, uneven button rows 0 · annotations none · 0 fail, 0 warn"
+  }
+ },
+ {
+  "input": {
+   "pages": [
+    {
+     "name": "Flow",
+     "children": [
+      {
+       "type": "FRAME",
+       "name": "01",
+       "x": 0,
+       "y": 0,
+       "width": 390,
+       "height": 844,
+       "absoluteBoundingBox": {
+        "x": 0,
+        "y": 0,
+        "width": 390,
+        "height": 844
+       },
+       "visible": true,
+       "opacity": 1,
+       "fills": [
+        {
+         "type": "SOLID",
+         "color": {
+          "r": 1,
+          "g": 1,
+          "b": 1
+         }
+        }
+       ],
+       "strokes": [],
+       "effects": [],
+       "clipsContent": true,
+       "children": [
+        {
+         "type": "TEXT",
+         "name": "Loose",
+         "x": 16,
+         "y": 100,
+         "width": 100,
+         "height": 20,
+         "absoluteBoundingBox": {
+          "x": 16,
+          "y": 100,
+          "width": 100,
+          "height": 20
+         },
+         "visible": true,
+         "opacity": 1,
+         "fills": [
+          {
+           "type": "SOLID",
+           "color": {
+            "r": 0.08,
+            "g": 0.07,
+            "b": 0.06
+           }
+          }
+         ],
+         "strokes": [],
+         "effects": [],
+         "characters": "Hello",
+         "fontSize": 15,
+         "fontName": {
+          "family": "Inter",
+          "style": "Regular"
+         },
+         "textStyleId": "",
+         "annotations": [
+          {
+           "label": "Sample",
+           "categoryId": "c1"
+          }
+         ]
+        }
+       ]
+      }
+     ]
+    }
+   ],
+   "current": "Flow",
+   "page": "Flow",
+   "annotationCategories": [
+    {
+     "id": "c1",
+     "label": "Sample data"
+    }
+   ]
+  },
+  "output": {
+   "page": "Flow",
+   "screens": [
+    "01"
+   ],
+   "counts": {
+    "screens": 1,
+    "imageFills": 0,
+    "distinctImages": 0,
+    "reusedImages": 0,
+    "contrastFails": 0,
+    "contrastUnknown": 0,
+    "targetsUnder24": 0,
+    "targetsUnder44": 0,
+    "cutText": 0,
+    "clippedText": 0,
+    "flatOverlays": 0,
+    "idleBusyButtons": 0,
+    "unstyledText": 1,
+    "unboundFills": 1,
+    "unboundSpacing": 0,
+    "layoutScreens": 1,
+    "looseLayers": 0,
+    "strayLayers": 0,
+    "rawEffects": 0,
+    "emptyBands": 0,
+    "capsLabels": 0,
+    "cards": 0,
+    "smallText": 0,
+    "texts": 1,
+    "unevenRows": 0
+   },
+   "images": [],
+   "annotations": {
+    "Sample data": 1
+   },
+   "findings": [],
+   "more": 0,
+   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 1, unbound fills 1, unbound spacing 0 · built in auto layout 1/1 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 0, small uppercase labels 0, section cards 0, text under 12 px 0/1, uneven button rows 0 · annotations Sample data 1 · 0 fail, 0 warn"
+  }
+ },
+ {
+  "input": {
+   "pages": [
+    {
+     "name": "Flow",
+     "children": [
+      {
+       "type": "FRAME",
+       "name": "08",
+       "x": 0,
+       "y": 0,
+       "width": 390,
+       "height": 844,
+       "absoluteBoundingBox": {
+        "x": 0,
+        "y": 0,
+        "width": 390,
+        "height": 844
+       },
+       "visible": true,
+       "opacity": 1,
+       "fills": [
+        {
+         "type": "SOLID",
+         "color": {
+          "r": 1,
+          "g": 1,
+          "b": 1
+         }
+        }
+       ],
+       "strokes": [],
+       "effects": [],
+       "clipsContent": true,
+       "children": [
+        {
+         "type": "RECTANGLE",
+         "name": "Scrim",
+         "x": 0,
+         "y": 0,
+         "width": 390,
+         "height": 844,
+         "absoluteBoundingBox": {
+          "x": 0,
+          "y": 0,
+          "width": 390,
+          "height": 844
+         },
+         "visible": true,
+         "opacity": 0.4,
+         "fills": [
+          {
+           "type": "SOLID",
+           "color": {
+            "r": 0.08,
+            "g": 0.07,
+            "b": 0.06
+           }
+          }
+         ],
+         "strokes": [],
+         "effects": [],
+         "children": []
+        },
+        {
+         "type": "FRAME",
+         "name": "Processing",
+         "x": 55,
+         "y": 340,
+         "width": 280,
+         "height": 150,
+         "absoluteBoundingBox": {
+          "x": 55,
+          "y": 340,
+          "width": 280,
+          "height": 150
+         },
+         "visible": true,
+         "opacity": 1,
+         "fills": [
+          {
+           "type": "SOLID",
+           "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+           }
+          }
+         ],
+         "strokes": [],
+         "effects": [],
+         "children": [
+          {
+           "type": "TEXT",
+           "name": "T",
+           "x": 70,
+           "y": 360,
+           "width": 200,
+           "height": 20,
+           "absoluteBoundingBox": {
+            "x": 70,
+            "y": 360,
+            "width": 200,
+            "height": 20
+           },
+           "visible": true,
+           "opacity": 1,
+           "fills": [
+            {
+             "type": "SOLID",
+             "color": {
+              "r": 0.08,
+              "g": 0.07,
+              "b": 0.06
+             }
+            }
+           ],
+           "strokes": [],
+           "effects": [],
+           "characters": "Wait",
+           "fontSize": 15,
+           "fontName": {
+            "family": "Inter",
+            "style": "Regular"
+           },
+           "textStyleId": "S:1"
+          }
+         ]
+        }
+       ]
+      }
+     ]
+    }
+   ],
+   "current": "Flow",
+   "page": "Flow",
+   "annotationCategories": []
+  },
+  "output": {
+   "page": "Flow",
+   "screens": [
+    "08"
+   ],
+   "counts": {
+    "screens": 1,
+    "imageFills": 0,
+    "distinctImages": 0,
+    "reusedImages": 0,
+    "contrastFails": 0,
+    "contrastUnknown": 0,
+    "targetsUnder24": 0,
+    "targetsUnder44": 0,
+    "cutText": 0,
+    "clippedText": 0,
+    "flatOverlays": 1,
+    "idleBusyButtons": 0,
+    "unstyledText": 0,
+    "unboundFills": 3,
+    "unboundSpacing": 0,
+    "layoutScreens": 1,
+    "looseLayers": 0,
+    "strayLayers": 0,
+    "rawEffects": 0,
+    "emptyBands": 0,
+    "capsLabels": 0,
+    "cards": 0,
+    "smallText": 0,
+    "texts": 1,
+    "unevenRows": 0
+   },
+   "images": [],
+   "annotations": {},
+   "findings": [
+    {
+     "rule": "RX-UI-15",
+     "level": "warn",
+     "frame": "08",
+     "node": "Processing",
+     "message": "overlay \"Processing\" has no shadow or border to lift it from what is under it"
+    }
+   ],
+   "more": 0,
+   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 1 · busy buttons with idle label 0 · unstyled text 0, unbound fills 3, unbound spacing 0 · built in auto layout 1/1 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 0, small uppercase labels 0, section cards 0, text under 12 px 0/1, uneven button rows 0 · annotations none · 0 fail, 1 warn"
+  }
+ },
+ {
+  "input": {
+   "pages": [
+    {
+     "name": "Flow",
+     "children": [
+      {
+       "type": "FRAME",
+       "name": "08",
+       "x": 0,
+       "y": 0,
+       "width": 390,
+       "height": 844,
+       "absoluteBoundingBox": {
+        "x": 0,
+        "y": 0,
+        "width": 390,
+        "height": 844
+       },
+       "visible": true,
+       "opacity": 1,
+       "fills": [
+        {
+         "type": "SOLID",
+         "color": {
+          "r": 1,
+          "g": 1,
+          "b": 1
+         }
+        }
+       ],
+       "strokes": [],
+       "effects": [],
+       "clipsContent": true,
+       "children": [
+        {
+         "type": "RECTANGLE",
+         "name": "Scrim",
+         "x": 0,
+         "y": 0,
+         "width": 390,
+         "height": 844,
+         "absoluteBoundingBox": {
+          "x": 0,
+          "y": 0,
+          "width": 390,
+          "height": 844
+         },
+         "visible": true,
+         "opacity": 0.4,
+         "fills": [
+          {
+           "type": "SOLID",
+           "color": {
+            "r": 0.08,
+            "g": 0.07,
+            "b": 0.06
+           }
+          }
+         ],
+         "strokes": [],
+         "effects": [],
+         "children": []
+        },
+        {
+         "type": "FRAME",
+         "name": "Processing",
+         "x": 55,
+         "y": 340,
+         "width": 280,
+         "height": 150,
+         "absoluteBoundingBox": {
+          "x": 55,
+          "y": 340,
+          "width": 280,
+          "height": 150
+         },
+         "visible": true,
+         "opacity": 1,
+         "fills": [
+          {
+           "type": "SOLID",
+           "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+           }
+          }
+         ],
+         "strokes": [],
+         "effects": [
+          {
+           "type": "DROP_SHADOW",
+           "visible": true
+          }
+         ],
+         "children": [
+          {
+           "type": "TEXT",
+           "name": "T",
+           "x": 70,
+           "y": 360,
+           "width": 200,
+           "height": 20,
+           "absoluteBoundingBox": {
+            "x": 70,
+            "y": 360,
+            "width": 200,
+            "height": 20
+           },
+           "visible": true,
+           "opacity": 1,
+           "fills": [
+            {
+             "type": "SOLID",
+             "color": {
+              "r": 0.08,
+              "g": 0.07,
+              "b": 0.06
+             }
+            }
+           ],
+           "strokes": [],
+           "effects": [],
+           "characters": "Wait",
+           "fontSize": 15,
+           "fontName": {
+            "family": "Inter",
+            "style": "Regular"
+           },
+           "textStyleId": "S:1"
+          }
+         ]
+        }
+       ]
+      }
+     ]
+    }
+   ],
+   "current": "Flow",
+   "page": "Flow",
+   "annotationCategories": []
+  },
+  "output": {
+   "page": "Flow",
+   "screens": [
+    "08"
+   ],
+   "counts": {
+    "screens": 1,
+    "imageFills": 0,
+    "distinctImages": 0,
+    "reusedImages": 0,
+    "contrastFails": 0,
+    "contrastUnknown": 0,
+    "targetsUnder24": 0,
+    "targetsUnder44": 0,
+    "cutText": 0,
+    "clippedText": 0,
+    "flatOverlays": 0,
+    "idleBusyButtons": 0,
+    "unstyledText": 0,
+    "unboundFills": 3,
+    "unboundSpacing": 0,
+    "layoutScreens": 1,
+    "looseLayers": 0,
+    "strayLayers": 0,
+    "rawEffects": 1,
+    "emptyBands": 0,
+    "capsLabels": 0,
+    "cards": 0,
+    "smallText": 0,
+    "texts": 1,
+    "unevenRows": 0
+   },
+   "images": [],
+   "annotations": {},
+   "findings": [],
+   "more": 0,
+   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 3, unbound spacing 0 · built in auto layout 1/1 screens, loose layers 0, layers outside the screens 0, effects without a style 1 · empty bands 0, small uppercase labels 0, section cards 0, text under 12 px 0/1, uneven button rows 0 · annotations none · 0 fail, 0 warn"
+  }
+ },
+ {
+  "input": {
+   "pages": [
+    {
+     "name": "Flow",
+     "children": [
+      {
+       "type": "FRAME",
+       "name": "04",
+       "x": 0,
+       "y": 0,
+       "width": 390,
+       "height": 844,
+       "absoluteBoundingBox": {
+        "x": 0,
+        "y": 0,
+        "width": 390,
+        "height": 844
+       },
+       "visible": true,
+       "opacity": 1,
+       "fills": [
+        {
+         "type": "SOLID",
+         "color": {
+          "r": 1,
+          "g": 1,
+          "b": 1
+         }
+        }
+       ],
+       "strokes": [],
+       "effects": [],
+       "clipsContent": true,
+       "children": [
+        {
+         "type": "FRAME",
+         "name": "Bag item",
+         "x": 0,
+         "y": 200,
+         "width": 390,
+         "height": 120,
+         "absoluteBoundingBox": {
+          "x": 0,
+          "y": 200,
+          "width": 390,
+          "height": 120
+         },
+         "visible": true,
+         "opacity": 1,
+         "fills": [],
+         "strokes": [],
+         "effects": [],
+         "children": [
+          {
+           "type": "TEXT",
+           "name": "T",
+           "x": 20,
+           "y": 210,
+           "width": 300,
+           "height": 20,
+           "absoluteBoundingBox": {
+            "x": 20,
+            "y": 210,
+            "width": 300,
+            "height": 20
+           },
+           "visible": true,
+           "opacity": 1,
+           "fills": [
+            {
+             "type": "SOLID",
+             "color": {
+              "r": 0.08,
+              "g": 0.07,
+              "b": 0.06
+             }
+            }
+           ],
+           "strokes": [],
+           "effects": [],
+           "characters": "Pengantar Ekonomi Mikro",
+           "fontSize": 15,
+           "fontName": {
+            "family": "Inter",
+            "style": "Regular"
+           },
+           "textStyleId": "S:1"
+          },
+          {
+           "type": "TEXT",
+           "name": "action/remove",
+           "x": 20,
+           "y": 290,
+           "width": 318,
+           "height": 16,
+           "absoluteBoundingBox": {
+            "x": 20,
+            "y": 290,
+            "width": 318,
+            "height": 16
+           },
+           "visible": true,
+           "opacity": 1,
+           "fills": [
+            {
+             "type": "SOLID",
+             "color": {
+              "r": 0.08,
+              "g": 0.07,
+              "b": 0.06
+             }
+            }
+           ],
+           "strokes": [],
+           "effects": [],
+           "characters": "Remove",
+           "fontSize": 13,
+           "fontName": {
+            "family": "Inter",
+            "style": "Regular"
+           },
+           "textStyleId": "S:1"
+          }
+         ]
+        }
+       ]
+      }
+     ]
+    }
+   ],
+   "current": "Flow",
+   "page": "Flow",
+   "annotationCategories": []
+  },
+  "output": {
+   "page": "Flow",
+   "screens": [
+    "04"
+   ],
+   "counts": {
+    "screens": 1,
+    "imageFills": 0,
+    "distinctImages": 0,
+    "reusedImages": 0,
+    "contrastFails": 0,
+    "contrastUnknown": 0,
+    "targetsUnder24": 1,
+    "targetsUnder44": 0,
+    "cutText": 0,
+    "clippedText": 0,
+    "flatOverlays": 0,
+    "idleBusyButtons": 0,
+    "unstyledText": 0,
+    "unboundFills": 2,
+    "unboundSpacing": 0,
+    "layoutScreens": 1,
+    "looseLayers": 0,
+    "strayLayers": 0,
+    "rawEffects": 0,
+    "emptyBands": 0,
+    "capsLabels": 0,
+    "cards": 0,
+    "smallText": 0,
+    "texts": 2,
+    "unevenRows": 0
+   },
+   "images": [],
+   "annotations": {},
+   "findings": [
+    {
+     "rule": "RX-A11Y-02",
+     "level": "fail",
+     "frame": "04",
+     "node": "action/remove",
+     "message": "\"action/remove\" 318x16, under 24x24"
+    }
+   ],
+   "more": 0,
+   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 1, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 2, unbound spacing 0 · built in auto layout 1/1 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 0, small uppercase labels 0, section cards 0, text under 12 px 0/2, uneven button rows 0 · annotations none · 1 fail, 0 warn"
+  }
+ },
+ {
+  "input": {
+   "pages": [
+    {
+     "name": "Flow",
+     "children": [
+      {
+       "type": "FRAME",
+       "name": "04",
+       "x": 0,
+       "y": 0,
+       "width": 390,
+       "height": 844,
+       "absoluteBoundingBox": {
+        "x": 0,
+        "y": 0,
+        "width": 390,
+        "height": 844
+       },
+       "visible": true,
+       "opacity": 1,
+       "fills": [
+        {
+         "type": "SOLID",
+         "color": {
+          "r": 1,
+          "g": 1,
+          "b": 1
+         }
+        }
+       ],
+       "strokes": [],
+       "effects": [],
+       "clipsContent": true,
+       "children": [
+        {
+         "type": "FRAME",
+         "name": "Bag item",
+         "x": 0,
+         "y": 200,
+         "width": 390,
+         "height": 120,
+         "absoluteBoundingBox": {
+          "x": 0,
+          "y": 200,
+          "width": 390,
+          "height": 120
+         },
+         "visible": true,
+         "opacity": 1,
+         "fills": [],
+         "strokes": [],
+         "effects": [],
+         "children": [
+          {
+           "type": "TEXT",
+           "name": "T",
+           "x": 20,
+           "y": 210,
+           "width": 300,
+           "height": 20,
+           "absoluteBoundingBox": {
+            "x": 20,
+            "y": 210,
+            "width": 300,
+            "height": 20
+           },
+           "visible": true,
+           "opacity": 1,
+           "fills": [
+            {
+             "type": "SOLID",
+             "color": {
+              "r": 0.08,
+              "g": 0.07,
+              "b": 0.06
+             }
+            }
+           ],
+           "strokes": [],
+           "effects": [],
+           "characters": "Pengantar Ekonomi Mikro",
+           "fontSize": 15,
+           "fontName": {
+            "family": "Inter",
+            "style": "Regular"
+           },
+           "textStyleId": "S:1"
+          },
+          {
+           "type": "FRAME",
+           "name": "remove",
+           "x": 20,
+           "y": 270,
+           "width": 68,
+           "height": 44,
+           "absoluteBoundingBox": {
+            "x": 20,
+            "y": 270,
+            "width": 68,
+            "height": 44
+           },
+           "visible": true,
+           "opacity": 1,
+           "fills": [],
+           "strokes": [],
+           "effects": [],
+           "children": [
+            {
+             "type": "TEXT",
+             "name": "label",
+             "x": 26,
+             "y": 282,
+             "width": 56,
+             "height": 20,
+             "absoluteBoundingBox": {
+              "x": 26,
+              "y": 282,
+              "width": 56,
+              "height": 20
+             },
+             "visible": true,
+             "opacity": 1,
+             "fills": [
+              {
+               "type": "SOLID",
+               "color": {
+                "r": 0.08,
+                "g": 0.07,
+                "b": 0.06
+               }
+              }
+             ],
+             "strokes": [],
+             "effects": [],
+             "characters": "Hapus",
+             "fontSize": 15,
+             "fontName": {
+              "family": "Inter",
+              "style": "Regular"
+             },
+             "textStyleId": "S:1"
+            }
+           ]
+          }
+         ]
+        }
+       ]
+      }
+     ]
+    }
+   ],
+   "current": "Flow",
+   "page": "Flow",
+   "annotationCategories": []
+  },
+  "output": {
+   "page": "Flow",
+   "screens": [
+    "04"
+   ],
+   "counts": {
+    "screens": 1,
+    "imageFills": 0,
+    "distinctImages": 0,
+    "reusedImages": 0,
+    "contrastFails": 0,
+    "contrastUnknown": 0,
+    "targetsUnder24": 0,
+    "targetsUnder44": 0,
+    "cutText": 0,
+    "clippedText": 0,
+    "flatOverlays": 0,
+    "idleBusyButtons": 0,
+    "unstyledText": 0,
+    "unboundFills": 2,
+    "unboundSpacing": 0,
+    "layoutScreens": 1,
+    "looseLayers": 0,
+    "strayLayers": 0,
+    "rawEffects": 0,
+    "emptyBands": 0,
+    "capsLabels": 0,
+    "cards": 0,
+    "smallText": 0,
+    "texts": 2,
+    "unevenRows": 0
+   },
+   "images": [],
+   "annotations": {},
+   "findings": [],
+   "more": 0,
+   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 2, unbound spacing 0 · built in auto layout 1/1 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 0, small uppercase labels 0, section cards 0, text under 12 px 0/2, uneven button rows 0 · annotations none · 0 fail, 0 warn"
+  }
+ },
+ {
+  "input": {
+   "pages": [
+    {
+     "name": "Flow",
+     "children": [
+      {
+       "type": "FRAME",
+       "name": "04",
+       "x": 0,
+       "y": 0,
+       "width": 390,
+       "height": 844,
+       "absoluteBoundingBox": {
+        "x": 0,
+        "y": 0,
+        "width": 390,
+        "height": 844
+       },
+       "visible": true,
+       "opacity": 1,
+       "fills": [
+        {
+         "type": "SOLID",
+         "color": {
+          "r": 1,
+          "g": 1,
+          "b": 1
+         }
+        }
+       ],
+       "strokes": [],
+       "effects": [],
+       "clipsContent": true,
+       "children": [
+        {
+         "type": "FRAME",
+         "name": "Button",
+         "x": 20,
+         "y": 270,
+         "width": 350,
+         "height": 52,
+         "absoluteBoundingBox": {
+          "x": 20,
+          "y": 270,
+          "width": 350,
+          "height": 52
+         },
+         "visible": true,
+         "opacity": 1,
+         "fills": [],
+         "strokes": [],
+         "effects": [],
+         "children": [
+          {
+           "type": "TEXT",
+           "name": "label",
+           "x": 160,
+           "y": 286,
+           "width": 40,
+           "height": 20,
+           "absoluteBoundingBox": {
+            "x": 160,
+            "y": 286,
+            "width": 40,
+            "height": 20
+           },
+           "visible": true,
+           "opacity": 1,
+           "fills": [
+            {
+             "type": "SOLID",
+             "color": {
+              "r": 0.08,
+              "g": 0.07,
+              "b": 0.06
+             }
+            }
+           ],
+           "strokes": [],
+           "effects": [],
+           "characters": "Batal",
+           "fontSize": 15,
+           "fontName": {
+            "family": "Inter",
+            "style": "Regular"
+           },
+           "textStyleId": "S:1"
+          }
+         ]
+        }
+       ]
+      }
+     ]
+    }
+   ],
+   "current": "Flow",
+   "page": "Flow",
+   "annotationCategories": []
+  },
+  "output": {
+   "page": "Flow",
+   "screens": [
+    "04"
+   ],
+   "counts": {
+    "screens": 1,
+    "imageFills": 0,
+    "distinctImages": 0,
+    "reusedImages": 0,
+    "contrastFails": 0,
+    "contrastUnknown": 0,
+    "targetsUnder24": 0,
+    "targetsUnder44": 0,
+    "cutText": 0,
+    "clippedText": 0,
+    "flatOverlays": 0,
+    "idleBusyButtons": 0,
+    "unstyledText": 0,
+    "unboundFills": 1,
+    "unboundSpacing": 0,
+    "layoutScreens": 1,
+    "looseLayers": 0,
+    "strayLayers": 0,
+    "rawEffects": 0,
+    "emptyBands": 0,
+    "capsLabels": 0,
+    "cards": 0,
+    "smallText": 0,
+    "texts": 1,
+    "unevenRows": 0
+   },
+   "images": [],
+   "annotations": {},
+   "findings": [],
+   "more": 0,
+   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 1, unbound spacing 0 · built in auto layout 1/1 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 0, small uppercase labels 0, section cards 0, text under 12 px 0/1, uneven button rows 0 · annotations none · 0 fail, 0 warn"
+  }
+ },
+ {
+  "input": {
+   "pages": [
+    {
+     "name": "Flow",
+     "children": [
+      {
+       "type": "FRAME",
+       "name": "05",
+       "x": 0,
+       "y": 0,
+       "width": 390,
+       "height": 844,
+       "absoluteBoundingBox": {
+        "x": 0,
+        "y": 0,
+        "width": 390,
+        "height": 844
+       },
+       "visible": true,
+       "opacity": 1,
+       "fills": [
+        {
+         "type": "SOLID",
+         "color": {
+          "r": 1,
+          "g": 1,
+          "b": 1
+         }
+        }
+       ],
+       "strokes": [],
+       "effects": [],
+       "clipsContent": true,
+       "children": [
+        {
+         "type": "FRAME",
+         "name": "Radio",
+         "x": 20,
+         "y": 300,
+         "width": 20,
+         "height": 20,
+         "absoluteBoundingBox": {
+          "x": 20,
+          "y": 300,
+          "width": 20,
+          "height": 20
+         },
+         "visible": true,
+         "opacity": 1,
+         "fills": [],
+         "strokes": [],
+         "effects": [],
+         "children": [
+          {
+           "type": "ELLIPSE",
+           "name": "Radio dot",
+           "x": 25,
+           "y": 305,
+           "width": 10,
+           "height": 10,
+           "absoluteBoundingBox": {
+            "x": 25,
+            "y": 305,
+            "width": 10,
+            "height": 10
+           },
+           "visible": true,
+           "opacity": 1,
+           "fills": [
+            {
+             "type": "SOLID",
+             "color": {
+              "r": 0.08,
+              "g": 0.07,
+              "b": 0.06
+             }
+            }
+           ],
+           "strokes": [],
+           "effects": [],
+           "children": []
+          }
+         ]
+        }
+       ]
+      }
+     ]
+    }
+   ],
+   "current": "Flow",
+   "page": "Flow",
+   "annotationCategories": []
+  },
+  "output": {
+   "page": "Flow",
+   "screens": [
+    "05"
+   ],
+   "counts": {
+    "screens": 1,
+    "imageFills": 0,
+    "distinctImages": 0,
+    "reusedImages": 0,
+    "contrastFails": 0,
+    "contrastUnknown": 0,
+    "targetsUnder24": 1,
+    "targetsUnder44": 0,
+    "cutText": 0,
+    "clippedText": 0,
+    "flatOverlays": 0,
+    "idleBusyButtons": 0,
+    "unstyledText": 0,
+    "unboundFills": 1,
+    "unboundSpacing": 0,
+    "layoutScreens": 1,
+    "looseLayers": 0,
+    "strayLayers": 0,
+    "rawEffects": 0,
+    "emptyBands": 0,
+    "capsLabels": 0,
+    "cards": 0,
+    "smallText": 0,
+    "texts": 0,
+    "unevenRows": 0
+   },
+   "images": [],
+   "annotations": {},
+   "findings": [
+    {
+     "rule": "RX-A11Y-02",
+     "level": "fail",
+     "frame": "05",
+     "node": "Radio",
+     "message": "\"Radio\" 20x20, under 24x24"
+    }
+   ],
+   "more": 0,
+   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 1, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 1, unbound spacing 0 · built in auto layout 1/1 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 0, small uppercase labels 0, section cards 0, text under 12 px 0/0, uneven button rows 0 · annotations none · 1 fail, 0 warn"
+  }
+ },
+ {
+  "input": {
+   "pages": [
+    {
+     "name": "Flow",
+     "children": [
+      {
+       "type": "FRAME",
+       "name": "05",
+       "x": 0,
+       "y": 0,
+       "width": 390,
+       "height": 844,
+       "absoluteBoundingBox": {
+        "x": 0,
+        "y": 0,
+        "width": 390,
+        "height": 844
+       },
+       "visible": true,
+       "opacity": 1,
+       "fills": [
+        {
+         "type": "SOLID",
+         "color": {
+          "r": 1,
+          "g": 1,
+          "b": 1
+         }
+        }
+       ],
+       "strokes": [],
+       "effects": [],
+       "clipsContent": true,
+       "children": [
+        {
+         "type": "FRAME",
+         "name": "Payment method row",
+         "x": 0,
+         "y": 282,
+         "width": 390,
+         "height": 56,
+         "absoluteBoundingBox": {
+          "x": 0,
+          "y": 282,
+          "width": 390,
+          "height": 56
+         },
+         "visible": true,
+         "opacity": 1,
+         "fills": [],
+         "strokes": [],
+         "effects": [],
+         "children": [
+          {
+           "type": "FRAME",
+           "name": "Radio",
+           "x": 20,
+           "y": 300,
+           "width": 20,
+           "height": 20,
+           "absoluteBoundingBox": {
+            "x": 20,
+            "y": 300,
+            "width": 20,
+            "height": 20
+           },
+           "visible": true,
+           "opacity": 1,
+           "fills": [],
+           "strokes": [],
+           "effects": [],
+           "children": [
+            {
+             "type": "ELLIPSE",
+             "name": "Radio dot",
+             "x": 25,
+             "y": 305,
+             "width": 10,
+             "height": 10,
+             "absoluteBoundingBox": {
+              "x": 25,
+              "y": 305,
+              "width": 10,
+              "height": 10
+             },
+             "visible": true,
+             "opacity": 1,
+             "fills": [
+              {
+               "type": "SOLID",
+               "color": {
+                "r": 0.08,
+                "g": 0.07,
+                "b": 0.06
+               }
+              }
+             ],
+             "strokes": [],
+             "effects": [],
+             "children": []
+            }
+           ]
+          },
+          {
+           "type": "TEXT",
+           "name": "L",
+           "x": 56,
+           "y": 300,
+           "width": 100,
+           "height": 20,
+           "absoluteBoundingBox": {
+            "x": 56,
+            "y": 300,
+            "width": 100,
+            "height": 20
+           },
+           "visible": true,
+           "opacity": 1,
+           "fills": [
+            {
+             "type": "SOLID",
+             "color": {
+              "r": 0.08,
+              "g": 0.07,
+              "b": 0.06
+             }
+            }
+           ],
+           "strokes": [],
+           "effects": [],
+           "characters": "QRIS",
+           "fontSize": 15,
+           "fontName": {
+            "family": "Inter",
+            "style": "Regular"
+           },
+           "textStyleId": "S:1"
+          }
+         ]
+        }
+       ]
+      }
+     ]
+    }
+   ],
+   "current": "Flow",
+   "page": "Flow",
+   "annotationCategories": []
+  },
+  "output": {
+   "page": "Flow",
+   "screens": [
+    "05"
+   ],
+   "counts": {
+    "screens": 1,
+    "imageFills": 0,
+    "distinctImages": 0,
+    "reusedImages": 0,
+    "contrastFails": 0,
+    "contrastUnknown": 0,
+    "targetsUnder24": 0,
+    "targetsUnder44": 0,
+    "cutText": 0,
+    "clippedText": 0,
+    "flatOverlays": 0,
+    "idleBusyButtons": 0,
+    "unstyledText": 0,
+    "unboundFills": 2,
+    "unboundSpacing": 0,
+    "layoutScreens": 1,
+    "looseLayers": 0,
+    "strayLayers": 0,
+    "rawEffects": 0,
+    "emptyBands": 0,
+    "capsLabels": 0,
+    "cards": 0,
+    "smallText": 0,
+    "texts": 1,
+    "unevenRows": 0
+   },
+   "images": [],
+   "annotations": {},
+   "findings": [],
+   "more": 0,
+   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 2, unbound spacing 0 · built in auto layout 1/1 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 0, small uppercase labels 0, section cards 0, text under 12 px 0/1, uneven button rows 0 · annotations none · 0 fail, 0 warn"
+  }
+ },
+ {
+  "input": {
+   "pages": [
+    {
+     "name": "Flow",
+     "children": [
+      {
+       "type": "FRAME",
+       "name": "07",
+       "x": 0,
+       "y": 0,
+       "width": 390,
+       "height": 844,
+       "absoluteBoundingBox": {
+        "x": 0,
+        "y": 0,
+        "width": 390,
+        "height": 844
+       },
+       "visible": true,
+       "opacity": 1,
+       "fills": [
+        {
+         "type": "SOLID",
+         "color": {
+          "r": 1,
+          "g": 1,
+          "b": 1
+         }
+        }
+       ],
+       "strokes": [],
+       "effects": [],
+       "clipsContent": true,
+       "children": [
+        {
+         "type": "FRAME",
+         "name": "Option BCA",
+         "x": 0,
+         "y": 282,
+         "width": 350,
+         "height": 56,
+         "absoluteBoundingBox": {
+          "x": 0,
+          "y": 282,
+          "width": 350,
+          "height": 56
+         },
+         "visible": true,
+         "opacity": 1,
+         "fills": [],
+         "strokes": [],
+         "effects": [],
+         "children": [
+          {
+           "type": "ELLIPSE",
+           "name": "Radio",
+           "x": 20,
+           "y": 300,
+           "width": 20,
+           "height": 20,
+           "absoluteBoundingBox": {
+            "x": 20,
+            "y": 300,
+            "width": 20,
+            "height": 20
+           },
+           "visible": true,
+           "opacity": 1,
+           "fills": [],
+           "strokes": [],
+           "effects": [],
+           "children": []
+          },
+          {
+           "type": "ELLIPSE",
+           "name": "Radio dot",
+           "x": 25,
+           "y": 305,
+           "width": 10,
+           "height": 10,
+           "absoluteBoundingBox": {
+            "x": 25,
+            "y": 305,
+            "width": 10,
+            "height": 10
+           },
+           "visible": true,
+           "opacity": 1,
+           "fills": [],
+           "strokes": [],
+           "effects": [],
+           "children": []
+          },
+          {
+           "type": "TEXT",
+           "name": "L",
+           "x": 56,
+           "y": 300,
+           "width": 100,
+           "height": 20,
+           "absoluteBoundingBox": {
+            "x": 56,
+            "y": 300,
+            "width": 100,
+            "height": 20
+           },
+           "visible": true,
+           "opacity": 1,
+           "fills": [
+            {
+             "type": "SOLID",
+             "color": {
+              "r": 0.08,
+              "g": 0.07,
+              "b": 0.06
+             }
+            }
+           ],
+           "strokes": [],
+           "effects": [],
+           "characters": "BCA",
+           "fontSize": 15,
+           "fontName": {
+            "family": "Inter",
+            "style": "Regular"
+           },
+           "textStyleId": "S:1"
+          }
+         ]
+        }
+       ]
+      }
+     ]
+    }
+   ],
+   "current": "Flow",
+   "page": "Flow",
+   "annotationCategories": []
+  },
+  "output": {
+   "page": "Flow",
+   "screens": [
+    "07"
+   ],
+   "counts": {
+    "screens": 1,
+    "imageFills": 0,
+    "distinctImages": 0,
+    "reusedImages": 0,
+    "contrastFails": 0,
+    "contrastUnknown": 0,
+    "targetsUnder24": 0,
+    "targetsUnder44": 0,
+    "cutText": 0,
+    "clippedText": 0,
+    "flatOverlays": 0,
+    "idleBusyButtons": 0,
+    "unstyledText": 0,
+    "unboundFills": 1,
+    "unboundSpacing": 0,
+    "layoutScreens": 1,
+    "looseLayers": 0,
+    "strayLayers": 0,
+    "rawEffects": 0,
+    "emptyBands": 0,
+    "capsLabels": 0,
+    "cards": 0,
+    "smallText": 0,
+    "texts": 1,
+    "unevenRows": 0
+   },
+   "images": [],
+   "annotations": {},
+   "findings": [],
+   "more": 0,
+   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 1, unbound spacing 0 · built in auto layout 1/1 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 0, small uppercase labels 0, section cards 0, text under 12 px 0/1, uneven button rows 0 · annotations none · 0 fail, 0 warn"
+  }
+ },
+ {
+  "input": {
+   "pages": [
+    {
+     "name": "Flow",
+     "children": [
+      {
+       "type": "FRAME",
+       "name": "03",
+       "x": 0,
+       "y": 0,
+       "width": 390,
+       "height": 844,
+       "absoluteBoundingBox": {
+        "x": 0,
+        "y": 0,
+        "width": 390,
+        "height": 844
+       },
+       "visible": true,
+       "opacity": 1,
+       "fills": [
+        {
+         "type": "SOLID",
+         "color": {
+          "r": 1,
+          "g": 1,
+          "b": 1
+         }
+        }
+       ],
+       "strokes": [],
+       "effects": [],
+       "clipsContent": true,
+       "children": [
+        {
+         "type": "FRAME",
+         "name": "Seat row",
+         "x": 0,
+         "y": 300,
+         "width": 390,
+         "height": 56,
+         "absoluteBoundingBox": {
+          "x": 0,
+          "y": 300,
+          "width": 390,
+          "height": 56
+         },
+         "visible": true,
+         "opacity": 1,
+         "fills": [],
+         "strokes": [],
+         "effects": [],
+         "children": [
+          {
+           "type": "FRAME",
+           "name": "Seat A1",
+           "x": 10,
+           "y": 310,
+           "width": 30,
+           "height": 30,
+           "absoluteBoundingBox": {
+            "x": 10,
+            "y": 310,
+            "width": 30,
+            "height": 30
+           },
+           "visible": true,
+           "opacity": 1,
+           "fills": [],
+           "strokes": [],
+           "effects": [],
+           "children": []
+          },
+          {
+           "type": "FRAME",
+           "name": "Seat A2",
+           "x": 50,
+           "y": 310,
+           "width": 30,
+           "height": 30,
+           "absoluteBoundingBox": {
+            "x": 50,
+            "y": 310,
+            "width": 30,
+            "height": 30
+           },
+           "visible": true,
+           "opacity": 1,
+           "fills": [],
+           "strokes": [],
+           "effects": [],
+           "children": []
+          }
+         ]
+        }
+       ]
+      }
+     ]
+    }
+   ],
+   "current": "Flow",
+   "page": "Flow",
+   "annotationCategories": []
+  },
+  "output": {
+   "page": "Flow",
+   "screens": [
+    "03"
+   ],
+   "counts": {
+    "screens": 1,
+    "imageFills": 0,
+    "distinctImages": 0,
+    "reusedImages": 0,
+    "contrastFails": 0,
+    "contrastUnknown": 0,
+    "targetsUnder24": 0,
+    "targetsUnder44": 2,
+    "cutText": 0,
+    "clippedText": 0,
+    "flatOverlays": 0,
+    "idleBusyButtons": 0,
+    "unstyledText": 0,
+    "unboundFills": 0,
+    "unboundSpacing": 0,
+    "layoutScreens": 1,
+    "looseLayers": 0,
+    "strayLayers": 0,
+    "rawEffects": 0,
+    "emptyBands": 0,
+    "capsLabels": 0,
+    "cards": 0,
+    "smallText": 0,
+    "texts": 0,
+    "unevenRows": 0
+   },
+   "images": [],
+   "annotations": {},
+   "findings": [
+    {
+     "rule": "RX-A11Y-02",
+     "level": "warn",
+     "frame": "03",
+     "node": "Seat A1",
+     "message": "\"Seat A1\" 30x30, under 44x44"
+    },
+    {
+     "rule": "RX-A11Y-02",
+     "level": "warn",
+     "frame": "03",
+     "node": "Seat A2",
+     "message": "\"Seat A2\" 30x30, under 44x44"
+    }
+   ],
+   "more": 0,
+   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 2 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 0, unbound spacing 0 · built in auto layout 1/1 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 0, small uppercase labels 0, section cards 0, text under 12 px 0/0, uneven button rows 0 · annotations none · 0 fail, 2 warn"
+  }
+ },
+ {
+  "input": {
+   "pages": [
+    {
+     "name": "Flow",
+     "children": [
+      {
+       "type": "FRAME",
+       "name": "03",
+       "x": 0,
+       "y": 0,
+       "width": 390,
+       "height": 844,
+       "absoluteBoundingBox": {
+        "x": 0,
+        "y": 0,
+        "width": 390,
+        "height": 844
+       },
+       "visible": true,
+       "opacity": 1,
+       "fills": [
+        {
+         "type": "SOLID",
+         "color": {
+          "r": 1,
+          "g": 1,
+          "b": 1
+         }
+        }
+       ],
+       "strokes": [],
+       "effects": [],
+       "clipsContent": true,
+       "children": [
+        {
+         "type": "FRAME",
+         "name": "Seat map",
+         "x": 0,
+         "y": 280,
+         "width": 390,
+         "height": 80,
+         "absoluteBoundingBox": {
+          "x": 0,
+          "y": 280,
+          "width": 390,
+          "height": 80
+         },
+         "visible": true,
+         "opacity": 1,
+         "fills": [],
+         "strokes": [],
+         "effects": [],
+         "children": [
+          {
+           "type": "INSTANCE",
+           "name": "A1",
+           "x": 10,
+           "y": 300,
+           "width": 30,
+           "height": 30,
+           "absoluteBoundingBox": {
+            "x": 10,
+            "y": 300,
+            "width": 30,
+            "height": 30
+           },
+           "visible": true,
+           "opacity": 1,
+           "fills": [],
+           "strokes": [],
+           "effects": [],
+           "children": [],
+           "mainComponent": {
+            "name": "State=Available",
+            "parent": {
+             "type": "COMPONENT_SET",
+             "name": "Local/Seat"
+            }
+           }
+          },
+          {
+           "type": "INSTANCE",
+           "name": "A2",
+           "x": 50,
+           "y": 300,
+           "width": 30,
+           "height": 30,
+           "absoluteBoundingBox": {
+            "x": 50,
+            "y": 300,
+            "width": 30,
+            "height": 30
+           },
+           "visible": true,
+           "opacity": 1,
+           "fills": [],
+           "strokes": [],
+           "effects": [],
+           "children": [],
+           "mainComponent": {
+            "name": "State=Available",
+            "parent": {
+             "type": "COMPONENT_SET",
+             "name": "Local/Seat"
+            }
+           }
+          }
+         ]
+        }
+       ]
+      }
+     ]
+    }
+   ],
+   "current": "Flow",
+   "page": "Flow",
+   "annotationCategories": []
+  },
+  "output": {
+   "page": "Flow",
+   "screens": [
+    "03"
+   ],
+   "counts": {
+    "screens": 1,
+    "imageFills": 0,
+    "distinctImages": 0,
+    "reusedImages": 0,
+    "contrastFails": 0,
+    "contrastUnknown": 0,
+    "targetsUnder24": 0,
+    "targetsUnder44": 2,
+    "cutText": 0,
+    "clippedText": 0,
+    "flatOverlays": 0,
+    "idleBusyButtons": 0,
+    "unstyledText": 0,
+    "unboundFills": 0,
+    "unboundSpacing": 0,
+    "layoutScreens": 1,
+    "looseLayers": 0,
+    "strayLayers": 0,
+    "rawEffects": 0,
+    "emptyBands": 0,
+    "capsLabels": 0,
+    "cards": 0,
+    "smallText": 0,
+    "texts": 0,
+    "unevenRows": 0
+   },
+   "images": [],
+   "annotations": {},
+   "findings": [
+    {
+     "rule": "RX-A11Y-02",
+     "level": "warn",
+     "frame": "03",
+     "node": "A1",
+     "message": "\"A1\" and 1 more (Local/Seat) 30x30, under 44x44"
+    }
+   ],
+   "more": 0,
+   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 2 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 0, unbound spacing 0 · built in auto layout 1/1 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 0, small uppercase labels 0, section cards 0, text under 12 px 0/0, uneven button rows 0 · annotations none · 0 fail, 1 warn"
+  }
+ },
+ {
+  "input": {
+   "pages": [
+    {
+     "name": "Flow",
+     "children": [
+      {
+       "type": "FRAME",
+       "name": "01",
+       "x": 0,
+       "y": 0,
+       "width": 390,
+       "height": 844,
+       "absoluteBoundingBox": {
+        "x": 0,
+        "y": 0,
+        "width": 390,
+        "height": 844
+       },
+       "visible": true,
+       "opacity": 1,
+       "fills": [
+        {
+         "type": "SOLID",
+         "color": {
+          "r": 1,
+          "g": 1,
+          "b": 1
+         }
+        }
+       ],
+       "strokes": [],
+       "effects": [],
+       "clipsContent": true,
+       "layoutMode": "NONE",
+       "children": [
+        {
+         "type": "TEXT",
+         "name": "Row 0",
+         "x": 16,
+         "y": 120,
+         "width": 200,
+         "height": 20,
+         "absoluteBoundingBox": {
+          "x": 16,
+          "y": 120,
+          "width": 200,
+          "height": 20
+         },
+         "visible": true,
+         "opacity": 1,
+         "fills": [
+          {
+           "type": "SOLID",
+           "color": {
+            "r": 0.08,
+            "g": 0.07,
+            "b": 0.06
+           }
+          }
+         ],
+         "strokes": [],
+         "effects": [],
+         "characters": "Book 0",
+         "fontSize": 15,
+         "fontName": {
+          "family": "Inter",
+          "style": "Regular"
+         },
+         "textStyleId": "S:1"
+        },
+        {
+         "type": "TEXT",
+         "name": "Row 1",
+         "x": 16,
+         "y": 230,
+         "width": 200,
+         "height": 20,
+         "absoluteBoundingBox": {
+          "x": 16,
+          "y": 230,
+          "width": 200,
+          "height": 20
+         },
+         "visible": true,
+         "opacity": 1,
+         "fills": [
+          {
+           "type": "SOLID",
+           "color": {
+            "r": 0.08,
+            "g": 0.07,
+            "b": 0.06
+           }
+          }
+         ],
+         "strokes": [],
+         "effects": [],
+         "characters": "Book 1",
+         "fontSize": 15,
+         "fontName": {
+          "family": "Inter",
+          "style": "Regular"
+         },
+         "textStyleId": "S:1"
+        },
+        {
+         "type": "TEXT",
+         "name": "Row 2",
+         "x": 16,
+         "y": 340,
+         "width": 200,
+         "height": 20,
+         "absoluteBoundingBox": {
+          "x": 16,
+          "y": 340,
+          "width": 200,
+          "height": 20
+         },
+         "visible": true,
+         "opacity": 1,
+         "fills": [
+          {
+           "type": "SOLID",
+           "color": {
+            "r": 0.08,
+            "g": 0.07,
+            "b": 0.06
+           }
+          }
+         ],
+         "strokes": [],
+         "effects": [],
+         "characters": "Book 2",
+         "fontSize": 15,
+         "fontName": {
+          "family": "Inter",
+          "style": "Regular"
+         },
+         "textStyleId": "S:1"
+        },
+        {
+         "type": "TEXT",
+         "name": "Row 3",
+         "x": 16,
+         "y": 450,
+         "width": 200,
+         "height": 20,
+         "absoluteBoundingBox": {
+          "x": 16,
+          "y": 450,
+          "width": 200,
+          "height": 20
+         },
+         "visible": true,
+         "opacity": 1,
+         "fills": [
+          {
+           "type": "SOLID",
+           "color": {
+            "r": 0.08,
+            "g": 0.07,
+            "b": 0.06
+           }
+          }
+         ],
+         "strokes": [],
+         "effects": [],
+         "characters": "Book 3",
+         "fontSize": 15,
+         "fontName": {
+          "family": "Inter",
+          "style": "Regular"
+         },
+         "textStyleId": "S:1"
+        },
+        {
+         "type": "TEXT",
+         "name": "Row 4",
+         "x": 16,
+         "y": 560,
+         "width": 200,
+         "height": 20,
+         "absoluteBoundingBox": {
+          "x": 16,
+          "y": 560,
+          "width": 200,
+          "height": 20
+         },
+         "visible": true,
+         "opacity": 1,
+         "fills": [
+          {
+           "type": "SOLID",
+           "color": {
+            "r": 0.08,
+            "g": 0.07,
+            "b": 0.06
+           }
+          }
+         ],
+         "strokes": [],
+         "effects": [],
+         "characters": "Book 4",
+         "fontSize": 15,
+         "fontName": {
+          "family": "Inter",
+          "style": "Regular"
+         },
+         "textStyleId": "S:1"
+        },
+        {
+         "type": "TEXT",
+         "name": "Row 5",
+         "x": 16,
+         "y": 670,
+         "width": 200,
+         "height": 20,
+         "absoluteBoundingBox": {
+          "x": 16,
+          "y": 670,
+          "width": 200,
+          "height": 20
+         },
+         "visible": true,
+         "opacity": 1,
+         "fills": [
+          {
+           "type": "SOLID",
+           "color": {
+            "r": 0.08,
+            "g": 0.07,
+            "b": 0.06
+           }
+          }
+         ],
+         "strokes": [],
+         "effects": [],
+         "characters": "Book 5",
+         "fontSize": 15,
+         "fontName": {
+          "family": "Inter",
+          "style": "Regular"
+         },
+         "textStyleId": "S:1"
+        }
+       ]
+      }
+     ]
+    }
+   ],
+   "current": "Flow",
+   "page": "Flow",
+   "annotationCategories": []
+  },
+  "output": {
+   "page": "Flow",
+   "screens": [
+    "01"
+   ],
+   "counts": {
+    "screens": 1,
+    "imageFills": 0,
+    "distinctImages": 0,
+    "reusedImages": 0,
+    "contrastFails": 0,
+    "contrastUnknown": 0,
+    "targetsUnder24": 0,
+    "targetsUnder44": 0,
+    "cutText": 0,
+    "clippedText": 0,
+    "flatOverlays": 0,
+    "idleBusyButtons": 0,
+    "unstyledText": 0,
+    "unboundFills": 6,
+    "unboundSpacing": 0,
+    "layoutScreens": 0,
+    "looseLayers": 6,
+    "strayLayers": 0,
+    "rawEffects": 0,
+    "emptyBands": 0,
+    "capsLabels": 0,
+    "cards": 0,
+    "smallText": 0,
+    "texts": 6,
+    "unevenRows": 0
+   },
+   "images": [],
+   "annotations": {},
+   "findings": [
+    {
+     "rule": "RX-DS-12",
+     "level": "fail",
+     "frame": "01",
+     "node": "Row 0",
+     "message": "6 layers placed by x and y outside auto layout (e.g. \"Row 0\"); build the screen from auto layout sections"
+    }
+   ],
+   "more": 0,
+   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 6, unbound spacing 0 · built in auto layout 0/1 screens, loose layers 6, layers outside the screens 0, effects without a style 0 · empty bands 0, small uppercase labels 0, section cards 0, text under 12 px 0/6, uneven button rows 0 · annotations none · 1 fail, 0 warn"
+  }
+ },
+ {
+  "input": {
+   "pages": [
+    {
+     "name": "Flow",
+     "children": [
+      {
+       "type": "FRAME",
+       "name": "01",
+       "x": 0,
+       "y": 0,
+       "width": 390,
+       "height": 844,
+       "absoluteBoundingBox": {
+        "x": 0,
+        "y": 0,
+        "width": 390,
+        "height": 844
+       },
+       "visible": true,
+       "opacity": 1,
+       "fills": [
+        {
+         "type": "SOLID",
+         "color": {
+          "r": 1,
+          "g": 1,
+          "b": 1
+         }
+        }
+       ],
+       "strokes": [],
+       "effects": [],
+       "clipsContent": true,
+       "layoutMode": "NONE",
+       "children": [
+        {
+         "type": "RECTANGLE",
+         "name": "Background",
+         "x": 0,
+         "y": 0,
+         "width": 390,
+         "height": 844,
+         "absoluteBoundingBox": {
+          "x": 0,
+          "y": 0,
+          "width": 390,
+          "height": 844
+         },
+         "visible": true,
+         "opacity": 1,
+         "fills": [
+          {
+           "type": "SOLID",
+           "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+           }
+          }
+         ],
+         "strokes": [],
+         "effects": [],
+         "children": []
+        },
+        {
+         "type": "FRAME",
+         "name": "Status bar",
+         "x": 0,
+         "y": 0,
+         "width": 390,
+         "height": 54,
+         "absoluteBoundingBox": {
+          "x": 0,
+          "y": 0,
+          "width": 390,
+          "height": 54
+         },
+         "visible": true,
+         "opacity": 1,
+         "fills": [],
+         "strokes": [],
+         "effects": [],
+         "children": []
+        },
+        {
+         "type": "FRAME",
+         "name": "Content",
+         "x": 0,
+         "y": 100,
+         "width": 390,
+         "height": 600,
+         "absoluteBoundingBox": {
+          "x": 0,
+          "y": 100,
+          "width": 390,
+          "height": 600
+         },
+         "visible": true,
+         "opacity": 1,
+         "fills": [],
+         "strokes": [],
+         "effects": [],
+         "layoutMode": "VERTICAL",
+         "children": [
+          {
+           "type": "TEXT",
+           "name": "Row 0",
+           "x": 16,
+           "y": 120,
+           "width": 200,
+           "height": 20,
+           "absoluteBoundingBox": {
+            "x": 16,
+            "y": 120,
+            "width": 200,
+            "height": 20
+           },
+           "visible": true,
+           "opacity": 1,
+           "fills": [
+            {
+             "type": "SOLID",
+             "color": {
+              "r": 0.08,
+              "g": 0.07,
+              "b": 0.06
+             }
+            }
+           ],
+           "strokes": [],
+           "effects": [],
+           "characters": "Book 0",
+           "fontSize": 15,
+           "fontName": {
+            "family": "Inter",
+            "style": "Regular"
+           },
+           "textStyleId": "S:1"
+          },
+          {
+           "type": "TEXT",
+           "name": "Row 1",
+           "x": 16,
+           "y": 230,
+           "width": 200,
+           "height": 20,
+           "absoluteBoundingBox": {
+            "x": 16,
+            "y": 230,
+            "width": 200,
+            "height": 20
+           },
+           "visible": true,
+           "opacity": 1,
+           "fills": [
+            {
+             "type": "SOLID",
+             "color": {
+              "r": 0.08,
+              "g": 0.07,
+              "b": 0.06
+             }
+            }
+           ],
+           "strokes": [],
+           "effects": [],
+           "characters": "Book 1",
+           "fontSize": 15,
+           "fontName": {
+            "family": "Inter",
+            "style": "Regular"
+           },
+           "textStyleId": "S:1"
+          },
+          {
+           "type": "TEXT",
+           "name": "Row 2",
+           "x": 16,
+           "y": 340,
+           "width": 200,
+           "height": 20,
+           "absoluteBoundingBox": {
+            "x": 16,
+            "y": 340,
+            "width": 200,
+            "height": 20
+           },
+           "visible": true,
+           "opacity": 1,
+           "fills": [
+            {
+             "type": "SOLID",
+             "color": {
+              "r": 0.08,
+              "g": 0.07,
+              "b": 0.06
+             }
+            }
+           ],
+           "strokes": [],
+           "effects": [],
+           "characters": "Book 2",
+           "fontSize": 15,
+           "fontName": {
+            "family": "Inter",
+            "style": "Regular"
+           },
+           "textStyleId": "S:1"
+          },
+          {
+           "type": "TEXT",
+           "name": "Row 3",
+           "x": 16,
+           "y": 450,
+           "width": 200,
+           "height": 20,
+           "absoluteBoundingBox": {
+            "x": 16,
+            "y": 450,
+            "width": 200,
+            "height": 20
+           },
+           "visible": true,
+           "opacity": 1,
+           "fills": [
+            {
+             "type": "SOLID",
+             "color": {
+              "r": 0.08,
+              "g": 0.07,
+              "b": 0.06
+             }
+            }
+           ],
+           "strokes": [],
+           "effects": [],
+           "characters": "Book 3",
+           "fontSize": 15,
+           "fontName": {
+            "family": "Inter",
+            "style": "Regular"
+           },
+           "textStyleId": "S:1"
+          },
+          {
+           "type": "TEXT",
+           "name": "Row 4",
+           "x": 16,
+           "y": 560,
+           "width": 200,
+           "height": 20,
+           "absoluteBoundingBox": {
+            "x": 16,
+            "y": 560,
+            "width": 200,
+            "height": 20
+           },
+           "visible": true,
+           "opacity": 1,
+           "fills": [
+            {
+             "type": "SOLID",
+             "color": {
+              "r": 0.08,
+              "g": 0.07,
+              "b": 0.06
+             }
+            }
+           ],
+           "strokes": [],
+           "effects": [],
+           "characters": "Book 4",
+           "fontSize": 15,
+           "fontName": {
+            "family": "Inter",
+            "style": "Regular"
+           },
+           "textStyleId": "S:1"
+          },
+          {
+           "type": "TEXT",
+           "name": "Row 5",
+           "x": 16,
+           "y": 670,
+           "width": 200,
+           "height": 20,
+           "absoluteBoundingBox": {
+            "x": 16,
+            "y": 670,
+            "width": 200,
+            "height": 20
+           },
+           "visible": true,
+           "opacity": 1,
+           "fills": [
+            {
+             "type": "SOLID",
+             "color": {
+              "r": 0.08,
+              "g": 0.07,
+              "b": 0.06
+             }
+            }
+           ],
+           "strokes": [],
+           "effects": [],
+           "characters": "Book 5",
+           "fontSize": 15,
+           "fontName": {
+            "family": "Inter",
+            "style": "Regular"
+           },
+           "textStyleId": "S:1"
+          }
+         ]
+        },
+        {
+         "type": "FRAME",
+         "name": "Bottom bar",
+         "x": 0,
+         "y": 760,
+         "width": 390,
+         "height": 84,
+         "absoluteBoundingBox": {
+          "x": 0,
+          "y": 760,
+          "width": 390,
+          "height": 84
+         },
+         "visible": true,
+         "opacity": 1,
+         "fills": [
+          {
+           "type": "SOLID",
+           "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+           }
+          }
+         ],
+         "strokes": [],
+         "effects": [],
+         "layoutMode": "HORIZONTAL",
+         "children": []
+        }
+       ]
+      }
+     ]
+    }
+   ],
+   "current": "Flow",
+   "page": "Flow",
+   "annotationCategories": []
+  },
+  "output": {
+   "page": "Flow",
+   "screens": [
+    "01"
+   ],
+   "counts": {
+    "screens": 1,
+    "imageFills": 0,
+    "distinctImages": 0,
+    "reusedImages": 0,
+    "contrastFails": 0,
+    "contrastUnknown": 0,
+    "targetsUnder24": 0,
+    "targetsUnder44": 0,
+    "cutText": 0,
+    "clippedText": 0,
+    "flatOverlays": 0,
+    "idleBusyButtons": 0,
+    "unstyledText": 0,
+    "unboundFills": 8,
+    "unboundSpacing": 0,
+    "layoutScreens": 1,
+    "looseLayers": 0,
+    "strayLayers": 0,
+    "rawEffects": 0,
+    "emptyBands": 0,
+    "capsLabels": 0,
+    "cards": 0,
+    "smallText": 0,
+    "texts": 6,
+    "unevenRows": 0
+   },
+   "images": [],
+   "annotations": {},
+   "findings": [],
+   "more": 0,
+   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 8, unbound spacing 0 · built in auto layout 1/1 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 0, small uppercase labels 0, section cards 0, text under 12 px 0/6, uneven button rows 0 · annotations none · 0 fail, 0 warn"
+  }
+ },
+ {
+  "input": {
+   "pages": [
+    {
+     "name": "Flow",
+     "children": [
+      {
+       "type": "FRAME",
+       "name": "01",
+       "x": 0,
+       "y": 0,
+       "width": 390,
+       "height": 844,
+       "absoluteBoundingBox": {
+        "x": 0,
+        "y": 0,
+        "width": 390,
+        "height": 844
+       },
+       "visible": true,
+       "opacity": 1,
+       "fills": [
+        {
+         "type": "SOLID",
+         "color": {
+          "r": 1,
+          "g": 1,
+          "b": 1
+         }
+        }
+       ],
+       "strokes": [],
+       "effects": [],
+       "clipsContent": true,
+       "layoutMode": "VERTICAL",
+       "children": [
+        {
+         "type": "FRAME",
+         "name": "Card",
+         "x": 16,
+         "y": 100,
+         "width": 358,
+         "height": 120,
+         "absoluteBoundingBox": {
+          "x": 16,
+          "y": 100,
+          "width": 358,
+          "height": 120
+         },
+         "visible": true,
+         "opacity": 1,
+         "fills": [],
+         "strokes": [],
+         "effects": [
+          {
+           "type": "DROP_SHADOW",
+           "visible": true
+          }
+         ],
+         "layoutMode": "VERTICAL",
+         "effectStyleId": "",
+         "children": []
+        }
+       ]
+      },
+      {
+       "type": "FRAME",
+       "name": "Parts",
+       "x": 0,
+       "y": 1000,
+       "width": 600,
+       "height": 300,
+       "absoluteBoundingBox": {
+        "x": 0,
+        "y": 1000,
+        "width": 600,
+        "height": 300
+       },
+       "visible": true,
+       "opacity": 1,
+       "fills": [],
+       "strokes": [],
+       "effects": [],
+       "children": [
+        {
+         "type": "COMPONENT",
+         "name": "Button",
+         "x": 0,
+         "y": 1000,
+         "width": 100,
+         "height": 44,
+         "absoluteBoundingBox": {
+          "x": 0,
+          "y": 1000,
+          "width": 100,
+          "height": 44
+         },
+         "visible": true,
+         "opacity": 1,
+         "fills": [],
+         "strokes": [],
+         "effects": [],
+         "children": []
+        }
+       ]
+      },
+      {
+       "type": "RECTANGLE",
+       "name": "TEST cover",
+       "x": 500,
+       "y": 0,
+       "width": 120,
+       "height": 160,
+       "absoluteBoundingBox": {
+        "x": 500,
+        "y": 0,
+        "width": 120,
+        "height": 160
+       },
+       "visible": true,
+       "opacity": 1,
+       "fills": [],
+       "strokes": [],
+       "effects": [],
+       "children": []
+      }
+     ]
+    }
+   ],
+   "current": "Flow",
+   "page": "Flow",
+   "annotationCategories": []
+  },
+  "output": {
+   "page": "Flow",
+   "screens": [
+    "01"
+   ],
+   "counts": {
+    "screens": 1,
+    "imageFills": 0,
+    "distinctImages": 0,
+    "reusedImages": 0,
+    "contrastFails": 0,
+    "contrastUnknown": 0,
+    "targetsUnder24": 0,
+    "targetsUnder44": 0,
+    "cutText": 0,
+    "clippedText": 0,
+    "flatOverlays": 0,
+    "idleBusyButtons": 0,
+    "unstyledText": 0,
+    "unboundFills": 0,
+    "unboundSpacing": 0,
+    "layoutScreens": 1,
+    "looseLayers": 0,
+    "strayLayers": 1,
+    "rawEffects": 1,
+    "emptyBands": 0,
+    "capsLabels": 0,
+    "cards": 0,
+    "smallText": 0,
+    "texts": 0,
+    "unevenRows": 0
+   },
+   "images": [],
+   "annotations": {},
+   "findings": [
+    {
+     "rule": "RX-DS-12",
+     "level": "warn",
+     "frame": "Flow",
+     "node": "TEST cover",
+     "message": "\"TEST cover\" sits on the page outside the screens; delete it or move it into the parts frame"
+    }
+   ],
+   "more": 0,
+   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 0, unbound spacing 0 · built in auto layout 1/1 screens, loose layers 0, layers outside the screens 1, effects without a style 1 · empty bands 0, small uppercase labels 0, section cards 0, text under 12 px 0/0, uneven button rows 0 · annotations none · 0 fail, 1 warn"
+  }
+ },
+ {
+  "input": {
+   "pages": [
+    {
+     "name": "Flow",
+     "children": [
+      {
+       "type": "FRAME",
+       "name": "05",
+       "x": 0,
+       "y": 0,
+       "width": 390,
+       "height": 844,
+       "absoluteBoundingBox": {
+        "x": 0,
+        "y": 0,
+        "width": 390,
+        "height": 844
+       },
+       "visible": true,
+       "opacity": 1,
+       "fills": [
+        {
+         "type": "SOLID",
+         "color": {
+          "r": 1,
+          "g": 1,
+          "b": 1
+         }
+        }
+       ],
+       "strokes": [],
+       "effects": [],
+       "clipsContent": true,
+       "layoutMode": "NONE",
+       "children": [
+        {
+         "type": "FRAME",
+         "name": "Status bar",
+         "x": 0,
+         "y": 0,
+         "width": 390,
+         "height": 54,
+         "absoluteBoundingBox": {
+          "x": 0,
+          "y": 0,
+          "width": 390,
+          "height": 54
+         },
+         "visible": true,
+         "opacity": 1,
+         "fills": [],
+         "strokes": [],
+         "effects": [],
+         "layoutMode": "NONE",
+         "children": [
+          {
+           "type": "TEXT",
+           "name": "Opt 0",
+           "x": 16,
+           "y": 4,
+           "width": 200,
+           "height": 20,
+           "absoluteBoundingBox": {
+            "x": 16,
+            "y": 4,
+            "width": 200,
+            "height": 20
+           },
+           "visible": true,
+           "opacity": 1,
+           "fills": [
+            {
+             "type": "SOLID",
+             "color": {
+              "r": 0.08,
+              "g": 0.07,
+              "b": 0.06
+             }
+            }
+           ],
+           "strokes": [],
+           "effects": [],
+           "characters": "Option 0",
+           "fontSize": 15,
+           "fontName": {
+            "family": "Inter",
+            "style": "Regular"
+           },
+           "textStyleId": "S:1"
+          },
+          {
+           "type": "TEXT",
+           "name": "Opt 1",
+           "x": 16,
+           "y": 44,
+           "width": 200,
+           "height": 20,
+           "absoluteBoundingBox": {
+            "x": 16,
+            "y": 44,
+            "width": 200,
+            "height": 20
+           },
+           "visible": true,
+           "opacity": 1,
+           "fills": [
+            {
+             "type": "SOLID",
+             "color": {
+              "r": 0.08,
+              "g": 0.07,
+              "b": 0.06
+             }
+            }
+           ],
+           "strokes": [],
+           "effects": [],
+           "characters": "Option 1",
+           "fontSize": 15,
+           "fontName": {
+            "family": "Inter",
+            "style": "Regular"
+           },
+           "textStyleId": "S:1"
+          },
+          {
+           "type": "TEXT",
+           "name": "Opt 2",
+           "x": 16,
+           "y": 84,
+           "width": 200,
+           "height": 20,
+           "absoluteBoundingBox": {
+            "x": 16,
+            "y": 84,
+            "width": 200,
+            "height": 20
+           },
+           "visible": true,
+           "opacity": 1,
+           "fills": [
+            {
+             "type": "SOLID",
+             "color": {
+              "r": 0.08,
+              "g": 0.07,
+              "b": 0.06
+             }
+            }
+           ],
+           "strokes": [],
+           "effects": [],
+           "characters": "Option 2",
+           "fontSize": 15,
+           "fontName": {
+            "family": "Inter",
+            "style": "Regular"
+           },
+           "textStyleId": "S:1"
+          },
+          {
+           "type": "TEXT",
+           "name": "Opt 3",
+           "x": 16,
+           "y": 124,
+           "width": 200,
+           "height": 20,
+           "absoluteBoundingBox": {
+            "x": 16,
+            "y": 124,
+            "width": 200,
+            "height": 20
+           },
+           "visible": true,
+           "opacity": 1,
+           "fills": [
+            {
+             "type": "SOLID",
+             "color": {
+              "r": 0.08,
+              "g": 0.07,
+              "b": 0.06
+             }
+            }
+           ],
+           "strokes": [],
+           "effects": [],
+           "characters": "Option 3",
+           "fontSize": 15,
+           "fontName": {
+            "family": "Inter",
+            "style": "Regular"
+           },
+           "textStyleId": "S:1"
+          }
+         ]
+        },
+        {
+         "type": "FRAME",
+         "name": "Payment sheet",
+         "x": 0,
+         "y": 400,
+         "width": 390,
+         "height": 444,
+         "absoluteBoundingBox": {
+          "x": 0,
+          "y": 400,
+          "width": 390,
+          "height": 444
+         },
+         "visible": true,
+         "opacity": 1,
+         "fills": [],
+         "strokes": [],
+         "effects": [
+          {
+           "type": "DROP_SHADOW",
+           "visible": true
+          }
+         ],
+         "layoutMode": "NONE",
+         "children": [
+          {
+           "type": "TEXT",
+           "name": "Opt 0",
+           "x": 16,
+           "y": 420,
+           "width": 200,
+           "height": 20,
+           "absoluteBoundingBox": {
+            "x": 16,
+            "y": 420,
+            "width": 200,
+            "height": 20
+           },
+           "visible": true,
+           "opacity": 1,
+           "fills": [
+            {
+             "type": "SOLID",
+             "color": {
+              "r": 0.08,
+              "g": 0.07,
+              "b": 0.06
+             }
+            }
+           ],
+           "strokes": [],
+           "effects": [],
+           "characters": "Option 0",
+           "fontSize": 15,
+           "fontName": {
+            "family": "Inter",
+            "style": "Regular"
+           },
+           "textStyleId": "S:1"
+          },
+          {
+           "type": "TEXT",
+           "name": "Opt 1",
+           "x": 16,
+           "y": 460,
+           "width": 200,
+           "height": 20,
+           "absoluteBoundingBox": {
+            "x": 16,
+            "y": 460,
+            "width": 200,
+            "height": 20
+           },
+           "visible": true,
+           "opacity": 1,
+           "fills": [
+            {
+             "type": "SOLID",
+             "color": {
+              "r": 0.08,
+              "g": 0.07,
+              "b": 0.06
+             }
+            }
+           ],
+           "strokes": [],
+           "effects": [],
+           "characters": "Option 1",
+           "fontSize": 15,
+           "fontName": {
+            "family": "Inter",
+            "style": "Regular"
+           },
+           "textStyleId": "S:1"
+          },
+          {
+           "type": "TEXT",
+           "name": "Opt 2",
+           "x": 16,
+           "y": 500,
+           "width": 200,
+           "height": 20,
+           "absoluteBoundingBox": {
+            "x": 16,
+            "y": 500,
+            "width": 200,
+            "height": 20
+           },
+           "visible": true,
+           "opacity": 1,
+           "fills": [
+            {
+             "type": "SOLID",
+             "color": {
+              "r": 0.08,
+              "g": 0.07,
+              "b": 0.06
+             }
+            }
+           ],
+           "strokes": [],
+           "effects": [],
+           "characters": "Option 2",
+           "fontSize": 15,
+           "fontName": {
+            "family": "Inter",
+            "style": "Regular"
+           },
+           "textStyleId": "S:1"
+          },
+          {
+           "type": "TEXT",
+           "name": "Opt 3",
+           "x": 16,
+           "y": 540,
+           "width": 200,
+           "height": 20,
+           "absoluteBoundingBox": {
+            "x": 16,
+            "y": 540,
+            "width": 200,
+            "height": 20
+           },
+           "visible": true,
+           "opacity": 1,
+           "fills": [
+            {
+             "type": "SOLID",
+             "color": {
+              "r": 0.08,
+              "g": 0.07,
+              "b": 0.06
+             }
+            }
+           ],
+           "strokes": [],
+           "effects": [],
+           "characters": "Option 3",
+           "fontSize": 15,
+           "fontName": {
+            "family": "Inter",
+            "style": "Regular"
+           },
+           "textStyleId": "S:1"
+          }
+         ]
+        }
+       ]
+      }
+     ]
+    }
+   ],
+   "current": "Flow",
+   "page": "Flow",
+   "annotationCategories": []
+  },
+  "output": {
+   "page": "Flow",
+   "screens": [
+    "05"
+   ],
+   "counts": {
+    "screens": 1,
+    "imageFills": 0,
+    "distinctImages": 0,
+    "reusedImages": 0,
+    "contrastFails": 0,
+    "contrastUnknown": 0,
+    "targetsUnder24": 0,
+    "targetsUnder44": 0,
+    "cutText": 0,
+    "clippedText": 0,
+    "flatOverlays": 0,
+    "idleBusyButtons": 0,
+    "unstyledText": 0,
+    "unboundFills": 8,
+    "unboundSpacing": 0,
+    "layoutScreens": 0,
+    "looseLayers": 4,
+    "strayLayers": 0,
+    "rawEffects": 1,
+    "emptyBands": 1,
+    "capsLabels": 0,
+    "cards": 0,
+    "smallText": 0,
+    "texts": 8,
+    "unevenRows": 0
+   },
+   "images": [],
+   "annotations": {},
+   "findings": [
+    {
+     "rule": "RX-DS-12",
+     "level": "warn",
+     "frame": "05",
+     "node": "Opt 0",
+     "message": "4 layers placed by x and y outside auto layout (e.g. \"Opt 0\"); build the screen from auto layout sections"
+    },
+    {
+     "rule": "RX-UI-05",
+     "level": "warn",
+     "frame": "05",
+     "node": "",
+     "message": "an empty band 276 pt tall from y 144; move the blocks together, give the space a job, or let the content fill it"
+    }
+   ],
+   "more": 0,
+   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 8, unbound spacing 0 · built in auto layout 0/1 screens, loose layers 4, layers outside the screens 0, effects without a style 1 · empty bands 1, small uppercase labels 0, section cards 0, text under 12 px 0/8, uneven button rows 0 · annotations none · 0 fail, 2 warn"
+  }
+ },
+ {
+  "input": {
+   "pages": [
+    {
+     "name": "Flow",
+     "children": [
+      {
+       "type": "FRAME",
+       "name": "04",
+       "x": 0,
+       "y": 0,
+       "width": 390,
+       "height": 844,
+       "absoluteBoundingBox": {
+        "x": 0,
+        "y": 0,
+        "width": 390,
+        "height": 844
+       },
+       "visible": true,
+       "opacity": 1,
+       "fills": [
+        {
+         "type": "SOLID",
+         "color": {
+          "r": 1,
+          "g": 1,
+          "b": 1
+         }
+        }
+       ],
+       "strokes": [],
+       "effects": [],
+       "clipsContent": true,
+       "children": [
+        {
+         "type": "TEXT",
+         "name": "Eyebrow 0",
+         "x": 16,
+         "y": 100,
+         "width": 200,
+         "height": 14,
+         "absoluteBoundingBox": {
+          "x": 16,
+          "y": 100,
+          "width": 200,
+          "height": 14
+         },
+         "visible": true,
+         "opacity": 1,
+         "fills": [
+          {
+           "type": "SOLID",
+           "color": {
+            "r": 0.08,
+            "g": 0.07,
+            "b": 0.06
+           }
+          }
+         ],
+         "strokes": [],
+         "effects": [],
+         "characters": "ON THE SHELF",
+         "fontSize": 12,
+         "fontName": {
+          "family": "Inter",
+          "style": "Regular"
+         },
+         "textStyleId": "S:1"
+        },
+        {
+         "type": "TEXT",
+         "name": "Eyebrow 1",
+         "x": 16,
+         "y": 160,
+         "width": 200,
+         "height": 14,
+         "absoluteBoundingBox": {
+          "x": 16,
+          "y": 160,
+          "width": 200,
+          "height": 14
+         },
+         "visible": true,
+         "opacity": 1,
+         "fills": [
+          {
+           "type": "SOLID",
+           "color": {
+            "r": 0.08,
+            "g": 0.07,
+            "b": 0.06
+           }
+          }
+         ],
+         "strokes": [],
+         "effects": [],
+         "characters": "SOLD BY",
+         "fontSize": 12,
+         "fontName": {
+          "family": "Inter",
+          "style": "Regular"
+         },
+         "textStyleId": "S:1"
+        },
+        {
+         "type": "TEXT",
+         "name": "Eyebrow 2",
+         "x": 16,
+         "y": 220,
+         "width": 200,
+         "height": 14,
+         "absoluteBoundingBox": {
+          "x": 16,
+          "y": 220,
+          "width": 200,
+          "height": 14
+         },
+         "visible": true,
+         "opacity": 1,
+         "fills": [
+          {
+           "type": "SOLID",
+           "color": {
+            "r": 0.08,
+            "g": 0.07,
+            "b": 0.06
+           }
+          }
+         ],
+         "strokes": [],
+         "effects": [],
+         "characters": "DELIVERY",
+         "fontSize": 12,
+         "fontName": {
+          "family": "Inter",
+          "style": "Regular"
+         },
+         "textStyleId": "S:1"
+        },
+        {
+         "type": "TEXT",
+         "name": "Eyebrow 3",
+         "x": 16,
+         "y": 280,
+         "width": 200,
+         "height": 14,
+         "absoluteBoundingBox": {
+          "x": 16,
+          "y": 280,
+          "width": 200,
+          "height": 14
+         },
+         "visible": true,
+         "opacity": 1,
+         "fills": [
+          {
+           "type": "SOLID",
+           "color": {
+            "r": 0.08,
+            "g": 0.07,
+            "b": 0.06
+           }
+          }
+         ],
+         "strokes": [],
+         "effects": [],
+         "characters": "SUMMARY",
+         "fontSize": 12,
+         "fontName": {
+          "family": "Inter",
+          "style": "Regular"
+         },
+         "textStyleId": "S:1"
+        }
+       ]
+      }
+     ]
+    }
+   ],
+   "current": "Flow",
+   "page": "Flow",
+   "annotationCategories": []
+  },
+  "output": {
+   "page": "Flow",
+   "screens": [
+    "04"
+   ],
+   "counts": {
+    "screens": 1,
+    "imageFills": 0,
+    "distinctImages": 0,
+    "reusedImages": 0,
+    "contrastFails": 0,
+    "contrastUnknown": 0,
+    "targetsUnder24": 0,
+    "targetsUnder44": 0,
+    "cutText": 0,
+    "clippedText": 0,
+    "flatOverlays": 0,
+    "idleBusyButtons": 0,
+    "unstyledText": 0,
+    "unboundFills": 4,
+    "unboundSpacing": 0,
+    "layoutScreens": 1,
+    "looseLayers": 0,
+    "strayLayers": 0,
+    "rawEffects": 0,
+    "emptyBands": 0,
+    "capsLabels": 4,
+    "cards": 0,
+    "smallText": 0,
+    "texts": 4,
+    "unevenRows": 0
+   },
+   "images": [],
+   "annotations": {},
+   "findings": [
+    {
+     "rule": "RX-UI-01",
+     "level": "warn",
+     "frame": "04",
+     "node": "Eyebrow 0",
+     "message": "4 small uppercase labels (\"ON THE SHELF\", \"SOLD BY\", \"DELIVERY\"…); label a section only when its content does not say what it is"
+    }
+   ],
+   "more": 0,
+   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 4, unbound spacing 0 · built in auto layout 1/1 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 0, small uppercase labels 4, section cards 0, text under 12 px 0/4, uneven button rows 0 · annotations none · 0 fail, 1 warn"
+  }
+ },
+ {
+  "input": {
+   "pages": [
+    {
+     "name": "Flow",
+     "children": [
+      {
+       "type": "FRAME",
+       "name": "04",
+       "x": 0,
+       "y": 0,
+       "width": 390,
+       "height": 844,
+       "absoluteBoundingBox": {
+        "x": 0,
+        "y": 0,
+        "width": 390,
+        "height": 844
+       },
+       "visible": true,
+       "opacity": 1,
+       "fills": [
+        {
+         "type": "SOLID",
+         "color": {
+          "r": 1,
+          "g": 1,
+          "b": 1
+         }
+        }
+       ],
+       "strokes": [],
+       "effects": [],
+       "clipsContent": true,
+       "children": [
+        {
+         "type": "TEXT",
+         "name": "Eyebrow 0",
+         "x": 16,
+         "y": 100,
+         "width": 200,
+         "height": 14,
+         "absoluteBoundingBox": {
+          "x": 16,
+          "y": 100,
+          "width": 200,
+          "height": 14
+         },
+         "visible": true,
+         "opacity": 1,
+         "fills": [
+          {
+           "type": "SOLID",
+           "color": {
+            "r": 0.08,
+            "g": 0.07,
+            "b": 0.06
+           }
+          }
+         ],
+         "strokes": [],
+         "effects": [],
+         "characters": "ON THE SHELF",
+         "fontSize": 12,
+         "fontName": {
+          "family": "Inter",
+          "style": "Regular"
+         },
+         "textStyleId": "S:1"
+        },
+        {
+         "type": "TEXT",
+         "name": "Eyebrow 1",
+         "x": 16,
+         "y": 160,
+         "width": 200,
+         "height": 14,
+         "absoluteBoundingBox": {
+          "x": 16,
+          "y": 160,
+          "width": 200,
+          "height": 14
+         },
+         "visible": true,
+         "opacity": 1,
+         "fills": [
+          {
+           "type": "SOLID",
+           "color": {
+            "r": 0.08,
+            "g": 0.07,
+            "b": 0.06
+           }
+          }
+         ],
+         "strokes": [],
+         "effects": [],
+         "characters": "SOLD BY",
+         "fontSize": 12,
+         "fontName": {
+          "family": "Inter",
+          "style": "Regular"
+         },
+         "textStyleId": "S:1"
+        },
+        {
+         "type": "TEXT",
+         "name": "Eyebrow 2",
+         "x": 16,
+         "y": 220,
+         "width": 200,
+         "height": 14,
+         "absoluteBoundingBox": {
+          "x": 16,
+          "y": 220,
+          "width": 200,
+          "height": 14
+         },
+         "visible": true,
+         "opacity": 1,
+         "fills": [
+          {
+           "type": "SOLID",
+           "color": {
+            "r": 0.08,
+            "g": 0.07,
+            "b": 0.06
+           }
+          }
+         ],
+         "strokes": [],
+         "effects": [],
+         "characters": "DELIVERY",
+         "fontSize": 12,
+         "fontName": {
+          "family": "Inter",
+          "style": "Regular"
+         },
+         "textStyleId": "S:1"
+        }
+       ]
+      }
+     ]
+    }
+   ],
+   "current": "Flow",
+   "page": "Flow",
+   "annotationCategories": []
+  },
+  "output": {
+   "page": "Flow",
+   "screens": [
+    "04"
+   ],
+   "counts": {
+    "screens": 1,
+    "imageFills": 0,
+    "distinctImages": 0,
+    "reusedImages": 0,
+    "contrastFails": 0,
+    "contrastUnknown": 0,
+    "targetsUnder24": 0,
+    "targetsUnder44": 0,
+    "cutText": 0,
+    "clippedText": 0,
+    "flatOverlays": 0,
+    "idleBusyButtons": 0,
+    "unstyledText": 0,
+    "unboundFills": 3,
+    "unboundSpacing": 0,
+    "layoutScreens": 1,
+    "looseLayers": 0,
+    "strayLayers": 0,
+    "rawEffects": 0,
+    "emptyBands": 0,
+    "capsLabels": 3,
+    "cards": 0,
+    "smallText": 0,
+    "texts": 3,
+    "unevenRows": 0
+   },
+   "images": [],
+   "annotations": {},
+   "findings": [],
+   "more": 0,
+   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 3, unbound spacing 0 · built in auto layout 1/1 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 0, small uppercase labels 3, section cards 0, text under 12 px 0/3, uneven button rows 0 · annotations none · 0 fail, 0 warn"
+  }
+ },
+ {
+  "input": {
+   "pages": [
+    {
+     "name": "Flow",
+     "children": [
+      {
+       "type": "FRAME",
+       "name": "05",
+       "x": 0,
+       "y": 0,
+       "width": 390,
+       "height": 844,
+       "absoluteBoundingBox": {
+        "x": 0,
+        "y": 0,
+        "width": 390,
+        "height": 844
+       },
+       "visible": true,
+       "opacity": 1,
+       "fills": [
+        {
+         "type": "SOLID",
+         "color": {
+          "r": 1,
+          "g": 1,
+          "b": 1
+         }
+        }
+       ],
+       "strokes": [],
+       "effects": [],
+       "clipsContent": true,
+       "children": [
+        {
+         "type": "TEXT",
+         "name": "Eyebrow",
+         "x": 16,
+         "y": 100,
+         "width": 200,
+         "height": 14,
+         "absoluteBoundingBox": {
+          "x": 16,
+          "y": 100,
+          "width": 200,
+          "height": 14
+         },
+         "visible": true,
+         "opacity": 1,
+         "fills": [
+          {
+           "type": "SOLID",
+           "color": {
+            "r": 0.08,
+            "g": 0.07,
+            "b": 0.06
+           }
+          }
+         ],
+         "strokes": [],
+         "effects": [],
+         "characters": "Pay with",
+         "fontSize": 12,
+         "fontName": {
+          "family": "Inter",
+          "style": "Regular"
+         },
+         "textStyleId": "S:1",
+         "textCase": "UPPER"
+        }
+       ]
+      }
+     ]
+    }
+   ],
+   "current": "Flow",
+   "page": "Flow",
+   "annotationCategories": []
+  },
+  "output": {
+   "page": "Flow",
+   "screens": [
+    "05"
+   ],
+   "counts": {
+    "screens": 1,
+    "imageFills": 0,
+    "distinctImages": 0,
+    "reusedImages": 0,
+    "contrastFails": 0,
+    "contrastUnknown": 0,
+    "targetsUnder24": 0,
+    "targetsUnder44": 0,
+    "cutText": 0,
+    "clippedText": 0,
+    "flatOverlays": 0,
+    "idleBusyButtons": 0,
+    "unstyledText": 0,
+    "unboundFills": 1,
+    "unboundSpacing": 0,
+    "layoutScreens": 1,
+    "looseLayers": 0,
+    "strayLayers": 0,
+    "rawEffects": 0,
+    "emptyBands": 0,
+    "capsLabels": 1,
+    "cards": 0,
+    "smallText": 0,
+    "texts": 1,
+    "unevenRows": 0
+   },
+   "images": [],
+   "annotations": {},
+   "findings": [],
+   "more": 0,
+   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 1, unbound spacing 0 · built in auto layout 1/1 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 0, small uppercase labels 1, section cards 0, text under 12 px 0/1, uneven button rows 0 · annotations none · 0 fail, 0 warn"
+  }
+ },
+ {
+  "input": {
+   "pages": [
+    {
+     "name": "Flow",
+     "children": [
+      {
+       "type": "FRAME",
+       "name": "05",
+       "x": 0,
+       "y": 0,
+       "width": 390,
+       "height": 844,
+       "absoluteBoundingBox": {
+        "x": 0,
+        "y": 0,
+        "width": 390,
+        "height": 844
+       },
+       "visible": true,
+       "opacity": 1,
+       "fills": [
+        {
+         "type": "SOLID",
+         "color": {
+          "r": 1,
+          "g": 1,
+          "b": 1
+         }
+        }
+       ],
+       "strokes": [],
+       "effects": [],
+       "clipsContent": true,
+       "children": [
+        {
+         "type": "FRAME",
+         "name": "Deliver to",
+         "x": 16,
+         "y": 100,
+         "width": 358,
+         "height": 80,
+         "absoluteBoundingBox": {
+          "x": 16,
+          "y": 100,
+          "width": 358,
+          "height": 80
+         },
+         "visible": true,
+         "opacity": 1,
+         "fills": [],
+         "strokes": [
+          {
+           "type": "SOLID",
+           "color": {
+            "r": 0.78,
+            "g": 0.78,
+            "b": 0.78
+           }
+          }
+         ],
+         "effects": [],
+         "cornerRadius": 12,
+         "children": []
+        },
+        {
+         "type": "FRAME",
+         "name": "Your order",
+         "x": 16,
+         "y": 190,
+         "width": 358,
+         "height": 80,
+         "absoluteBoundingBox": {
+          "x": 16,
+          "y": 190,
+          "width": 358,
+          "height": 80
+         },
+         "visible": true,
+         "opacity": 1,
+         "fills": [],
+         "strokes": [
+          {
+           "type": "SOLID",
+           "color": {
+            "r": 0.78,
+            "g": 0.78,
+            "b": 0.78
+           }
+          }
+         ],
+         "effects": [],
+         "cornerRadius": 12,
+         "children": []
+        },
+        {
+         "type": "FRAME",
+         "name": "Waiting",
+         "x": 16,
+         "y": 280,
+         "width": 358,
+         "height": 80,
+         "absoluteBoundingBox": {
+          "x": 16,
+          "y": 280,
+          "width": 358,
+          "height": 80
+         },
+         "visible": true,
+         "opacity": 1,
+         "fills": [],
+         "strokes": [
+          {
+           "type": "SOLID",
+           "color": {
+            "r": 0.78,
+            "g": 0.78,
+            "b": 0.78
+           }
+          }
+         ],
+         "effects": [],
+         "cornerRadius": 12,
+         "children": []
+        },
+        {
+         "type": "FRAME",
+         "name": "Order",
+         "x": 16,
+         "y": 370,
+         "width": 358,
+         "height": 80,
+         "absoluteBoundingBox": {
+          "x": 16,
+          "y": 370,
+          "width": 358,
+          "height": 80
+         },
+         "visible": true,
+         "opacity": 1,
+         "fills": [],
+         "strokes": [
+          {
+           "type": "SOLID",
+           "color": {
+            "r": 0.78,
+            "g": 0.78,
+            "b": 0.78
+           }
+          }
+         ],
+         "effects": [],
+         "cornerRadius": 12,
+         "children": []
+        }
+       ]
+      }
+     ]
+    }
+   ],
+   "current": "Flow",
+   "page": "Flow",
+   "annotationCategories": []
+  },
+  "output": {
+   "page": "Flow",
+   "screens": [
+    "05"
+   ],
+   "counts": {
+    "screens": 1,
+    "imageFills": 0,
+    "distinctImages": 0,
+    "reusedImages": 0,
+    "contrastFails": 0,
+    "contrastUnknown": 0,
+    "targetsUnder24": 0,
+    "targetsUnder44": 0,
+    "cutText": 0,
+    "clippedText": 0,
+    "flatOverlays": 0,
+    "idleBusyButtons": 0,
+    "unstyledText": 0,
+    "unboundFills": 0,
+    "unboundSpacing": 0,
+    "layoutScreens": 1,
+    "looseLayers": 0,
+    "strayLayers": 0,
+    "rawEffects": 0,
+    "emptyBands": 0,
+    "capsLabels": 0,
+    "cards": 4,
+    "smallText": 0,
+    "texts": 0,
+    "unevenRows": 0
+   },
+   "images": [],
+   "annotations": {},
+   "findings": [
+    {
+     "rule": "RX-UI-01",
+     "level": "warn",
+     "frame": "05",
+     "node": "Deliver to",
+     "message": "4 sections in a bordered or shadowed card (\"Deliver to\" and 3 more); group with space, a heading, or one divider first"
+    }
+   ],
+   "more": 0,
+   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 0, unbound spacing 0 · built in auto layout 1/1 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 0, small uppercase labels 0, section cards 4, text under 12 px 0/0, uneven button rows 0 · annotations none · 0 fail, 1 warn"
+  }
+ },
+ {
+  "input": {
+   "pages": [
+    {
+     "name": "Flow",
+     "children": [
+      {
+       "type": "FRAME",
+       "name": "05",
+       "x": 0,
+       "y": 0,
+       "width": 390,
+       "height": 844,
+       "absoluteBoundingBox": {
+        "x": 0,
+        "y": 0,
+        "width": 390,
+        "height": 844
+       },
+       "visible": true,
+       "opacity": 1,
+       "fills": [
+        {
+         "type": "SOLID",
+         "color": {
+          "r": 1,
+          "g": 1,
+          "b": 1
+         }
+        }
+       ],
+       "strokes": [],
+       "effects": [],
+       "clipsContent": true,
+       "children": [
+        {
+         "type": "FRAME",
+         "name": "Deliver to",
+         "x": 16,
+         "y": 100,
+         "width": 358,
+         "height": 80,
+         "absoluteBoundingBox": {
+          "x": 16,
+          "y": 100,
+          "width": 358,
+          "height": 80
+         },
+         "visible": true,
+         "opacity": 1,
+         "fills": [],
+         "strokes": [
+          {
+           "type": "SOLID",
+           "color": {
+            "r": 0.78,
+            "g": 0.78,
+            "b": 0.78
+           }
+          }
+         ],
+         "effects": [],
+         "cornerRadius": 12,
+         "children": []
+        },
+        {
+         "type": "FRAME",
+         "name": "Option QRIS",
+         "x": 16,
+         "y": 190,
+         "width": 358,
+         "height": 80,
+         "absoluteBoundingBox": {
+          "x": 16,
+          "y": 190,
+          "width": 358,
+          "height": 80
+         },
+         "visible": true,
+         "opacity": 1,
+         "fills": [],
+         "strokes": [
+          {
+           "type": "SOLID",
+           "color": {
+            "r": 0.78,
+            "g": 0.78,
+            "b": 0.78
+           }
+          }
+         ],
+         "effects": [],
+         "cornerRadius": 12,
+         "children": []
+        },
+        {
+         "type": "FRAME",
+         "name": "Option VA",
+         "x": 16,
+         "y": 280,
+         "width": 358,
+         "height": 80,
+         "absoluteBoundingBox": {
+          "x": 16,
+          "y": 280,
+          "width": 358,
+          "height": 80
+         },
+         "visible": true,
+         "opacity": 1,
+         "fills": [],
+         "strokes": [
+          {
+           "type": "SOLID",
+           "color": {
+            "r": 0.78,
+            "g": 0.78,
+            "b": 0.78
+           }
+          }
+         ],
+         "effects": [],
+         "cornerRadius": 12,
+         "children": []
+        },
+        {
+         "type": "FRAME",
+         "name": "Pay button",
+         "x": 16,
+         "y": 370,
+         "width": 358,
+         "height": 80,
+         "absoluteBoundingBox": {
+          "x": 16,
+          "y": 370,
+          "width": 358,
+          "height": 80
+         },
+         "visible": true,
+         "opacity": 1,
+         "fills": [],
+         "strokes": [
+          {
+           "type": "SOLID",
+           "color": {
+            "r": 0.78,
+            "g": 0.78,
+            "b": 0.78
+           }
+          }
+         ],
+         "effects": [],
+         "cornerRadius": 12,
+         "children": []
+        }
+       ]
+      }
+     ]
+    }
+   ],
+   "current": "Flow",
+   "page": "Flow",
+   "annotationCategories": []
+  },
+  "output": {
+   "page": "Flow",
+   "screens": [
+    "05"
+   ],
+   "counts": {
+    "screens": 1,
+    "imageFills": 0,
+    "distinctImages": 0,
+    "reusedImages": 0,
+    "contrastFails": 0,
+    "contrastUnknown": 0,
+    "targetsUnder24": 0,
+    "targetsUnder44": 0,
+    "cutText": 0,
+    "clippedText": 0,
+    "flatOverlays": 0,
+    "idleBusyButtons": 0,
+    "unstyledText": 0,
+    "unboundFills": 0,
+    "unboundSpacing": 0,
+    "layoutScreens": 1,
+    "looseLayers": 0,
+    "strayLayers": 0,
+    "rawEffects": 0,
+    "emptyBands": 0,
+    "capsLabels": 0,
+    "cards": 1,
+    "smallText": 0,
+    "texts": 0,
+    "unevenRows": 0
+   },
+   "images": [],
+   "annotations": {},
+   "findings": [],
+   "more": 0,
+   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 0, unbound spacing 0 · built in auto layout 1/1 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 0, small uppercase labels 0, section cards 1, text under 12 px 0/0, uneven button rows 0 · annotations none · 0 fail, 0 warn"
+  }
+ },
+ {
+  "input": {
+   "pages": [
+    {
+     "name": "Flow",
+     "children": [
+      {
+       "type": "FRAME",
+       "name": "04",
+       "x": 0,
+       "y": 0,
+       "width": 390,
+       "height": 844,
+       "absoluteBoundingBox": {
+        "x": 0,
+        "y": 0,
+        "width": 390,
+        "height": 844
+       },
+       "visible": true,
+       "opacity": 1,
+       "fills": [
+        {
+         "type": "SOLID",
+         "color": {
+          "r": 1,
+          "g": 1,
+          "b": 1
+         }
+        }
+       ],
+       "strokes": [],
+       "effects": [],
+       "clipsContent": true,
+       "children": [
+        {
+         "type": "TEXT",
+         "name": "Item",
+         "x": 16,
+         "y": 100,
+         "width": 200,
+         "height": 20,
+         "absoluteBoundingBox": {
+          "x": 16,
+          "y": 100,
+          "width": 200,
+          "height": 20
+         },
+         "visible": true,
+         "opacity": 1,
+         "fills": [
+          {
+           "type": "SOLID",
+           "color": {
+            "r": 0.08,
+            "g": 0.07,
+            "b": 0.06
+           }
+          }
+         ],
+         "strokes": [],
+         "effects": [],
+         "characters": "Bumi Manusia",
+         "fontSize": 15,
+         "fontName": {
+          "family": "Inter",
+          "style": "Regular"
+         },
+         "textStyleId": "S:1"
+        },
+        {
+         "type": "TEXT",
+         "name": "Courier",
+         "x": 16,
+         "y": 140,
+         "width": 200,
+         "height": 20,
+         "absoluteBoundingBox": {
+          "x": 16,
+          "y": 140,
+          "width": 200,
+          "height": 20
+         },
+         "visible": true,
+         "opacity": 1,
+         "fills": [
+          {
+           "type": "SOLID",
+           "color": {
+            "r": 0.08,
+            "g": 0.07,
+            "b": 0.06
+           }
+          }
+         ],
+         "strokes": [],
+         "effects": [],
+         "characters": "Courier",
+         "fontSize": 15,
+         "fontName": {
+          "family": "Inter",
+          "style": "Regular"
+         },
+         "textStyleId": "S:1"
+        },
+        {
+         "type": "TEXT",
+         "name": "Book",
+         "x": 16,
+         "y": 310,
+         "width": 200,
+         "height": 20,
+         "absoluteBoundingBox": {
+          "x": 16,
+          "y": 310,
+          "width": 200,
+          "height": 20
+         },
+         "visible": true,
+         "opacity": 1,
+         "fills": [
+          {
+           "type": "SOLID",
+           "color": {
+            "r": 0.08,
+            "g": 0.07,
+            "b": 0.06
+           }
+          }
+         ],
+         "strokes": [],
+         "effects": [],
+         "characters": "Book Rp65.000",
+         "fontSize": 15,
+         "fontName": {
+          "family": "Inter",
+          "style": "Regular"
+         },
+         "textStyleId": "S:1"
+        }
+       ]
+      }
+     ]
+    }
+   ],
+   "current": "Flow",
+   "page": "Flow",
+   "annotationCategories": []
+  },
+  "output": {
+   "page": "Flow",
+   "screens": [
+    "04"
+   ],
+   "counts": {
+    "screens": 1,
+    "imageFills": 0,
+    "distinctImages": 0,
+    "reusedImages": 0,
+    "contrastFails": 0,
+    "contrastUnknown": 0,
+    "targetsUnder24": 0,
+    "targetsUnder44": 0,
+    "cutText": 0,
+    "clippedText": 0,
+    "flatOverlays": 0,
+    "idleBusyButtons": 0,
+    "unstyledText": 0,
+    "unboundFills": 3,
+    "unboundSpacing": 0,
+    "layoutScreens": 1,
+    "looseLayers": 0,
+    "strayLayers": 0,
+    "rawEffects": 0,
+    "emptyBands": 1,
+    "capsLabels": 0,
+    "cards": 0,
+    "smallText": 0,
+    "texts": 3,
+    "unevenRows": 0
+   },
+   "images": [],
+   "annotations": {},
+   "findings": [
+    {
+     "rule": "RX-UI-05",
+     "level": "warn",
+     "frame": "04",
+     "node": "",
+     "message": "an empty band 150 pt tall from y 160; move the blocks together, give the space a job, or let the content fill it"
+    }
+   ],
+   "more": 0,
+   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 3, unbound spacing 0 · built in auto layout 1/1 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 1, small uppercase labels 0, section cards 0, text under 12 px 0/3, uneven button rows 0 · annotations none · 0 fail, 1 warn"
+  }
+ },
+ {
+  "input": {
+   "pages": [
+    {
+     "name": "Flow",
+     "children": [
+      {
+       "type": "FRAME",
+       "name": "04",
+       "x": 0,
+       "y": 0,
+       "width": 390,
+       "height": 844,
+       "absoluteBoundingBox": {
+        "x": 0,
+        "y": 0,
+        "width": 390,
+        "height": 844
+       },
+       "visible": true,
+       "opacity": 1,
+       "fills": [
+        {
+         "type": "SOLID",
+         "color": {
+          "r": 1,
+          "g": 1,
+          "b": 1
+         }
+        }
+       ],
+       "strokes": [],
+       "effects": [],
+       "clipsContent": true,
+       "children": [
+        {
+         "type": "TEXT",
+         "name": "Item",
+         "x": 16,
+         "y": 100,
+         "width": 200,
+         "height": 20,
+         "absoluteBoundingBox": {
+          "x": 16,
+          "y": 100,
+          "width": 200,
+          "height": 20
+         },
+         "visible": true,
+         "opacity": 1,
+         "fills": [
+          {
+           "type": "SOLID",
+           "color": {
+            "r": 0.08,
+            "g": 0.07,
+            "b": 0.06
+           }
+          }
+         ],
+         "strokes": [],
+         "effects": [],
+         "characters": "Bumi Manusia",
+         "fontSize": 15,
+         "fontName": {
+          "family": "Inter",
+          "style": "Regular"
+         },
+         "textStyleId": "S:1"
+        },
+        {
+         "type": "TEXT",
+         "name": "Courier",
+         "x": 16,
+         "y": 140,
+         "width": 200,
+         "height": 20,
+         "absoluteBoundingBox": {
+          "x": 16,
+          "y": 140,
+          "width": 200,
+          "height": 20
+         },
+         "visible": true,
+         "opacity": 1,
+         "fills": [
+          {
+           "type": "SOLID",
+           "color": {
+            "r": 0.08,
+            "g": 0.07,
+            "b": 0.06
+           }
+          }
+         ],
+         "strokes": [],
+         "effects": [],
+         "characters": "Courier",
+         "fontSize": 15,
+         "fontName": {
+          "family": "Inter",
+          "style": "Regular"
+         },
+         "textStyleId": "S:1"
+        },
+        {
+         "type": "TEXT",
+         "name": "Book",
+         "x": 16,
+         "y": 200,
+         "width": 200,
+         "height": 20,
+         "absoluteBoundingBox": {
+          "x": 16,
+          "y": 200,
+          "width": 200,
+          "height": 20
+         },
+         "visible": true,
+         "opacity": 1,
+         "fills": [
+          {
+           "type": "SOLID",
+           "color": {
+            "r": 0.08,
+            "g": 0.07,
+            "b": 0.06
+           }
+          }
+         ],
+         "strokes": [],
+         "effects": [],
+         "characters": "Book Rp65.000",
+         "fontSize": 15,
+         "fontName": {
+          "family": "Inter",
+          "style": "Regular"
+         },
+         "textStyleId": "S:1"
+        }
+       ]
+      }
+     ]
+    }
+   ],
+   "current": "Flow",
+   "page": "Flow",
+   "annotationCategories": []
+  },
+  "output": {
+   "page": "Flow",
+   "screens": [
+    "04"
+   ],
+   "counts": {
+    "screens": 1,
+    "imageFills": 0,
+    "distinctImages": 0,
+    "reusedImages": 0,
+    "contrastFails": 0,
+    "contrastUnknown": 0,
+    "targetsUnder24": 0,
+    "targetsUnder44": 0,
+    "cutText": 0,
+    "clippedText": 0,
+    "flatOverlays": 0,
+    "idleBusyButtons": 0,
+    "unstyledText": 0,
+    "unboundFills": 3,
+    "unboundSpacing": 0,
+    "layoutScreens": 1,
+    "looseLayers": 0,
+    "strayLayers": 0,
+    "rawEffects": 0,
+    "emptyBands": 0,
+    "capsLabels": 0,
+    "cards": 0,
+    "smallText": 0,
+    "texts": 3,
+    "unevenRows": 0
+   },
+   "images": [],
+   "annotations": {},
+   "findings": [],
+   "more": 0,
+   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 3, unbound spacing 0 · built in auto layout 1/1 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 0, small uppercase labels 0, section cards 0, text under 12 px 0/3, uneven button rows 0 · annotations none · 0 fail, 0 warn"
+  }
+ },
+ {
+  "input": {
+   "pages": [
+    {
+     "name": "Flow",
+     "children": [
+      {
+       "type": "FRAME",
+       "name": "01",
+       "x": 0,
+       "y": 0,
+       "width": 390,
+       "height": 844,
+       "absoluteBoundingBox": {
+        "x": 0,
+        "y": 0,
+        "width": 390,
+        "height": 844
+       },
+       "visible": true,
+       "opacity": 1,
+       "fills": [
+        {
+         "type": "SOLID",
+         "color": {
+          "r": 1,
+          "g": 1,
+          "b": 1
+         }
+        }
+       ],
+       "strokes": [],
+       "effects": [],
+       "clipsContent": true,
+       "children": [
+        {
+         "type": "INSTANCE",
+         "name": "Status bar",
+         "x": 0,
+         "y": 0,
+         "width": 390,
+         "height": 54,
+         "absoluteBoundingBox": {
+          "x": 0,
+          "y": 0,
+          "width": 390,
+          "height": 54
+         },
+         "visible": true,
+         "opacity": 1,
+         "fills": [],
+         "strokes": [],
+         "effects": [],
+         "children": [
+          {
+           "type": "TEXT",
+           "name": "Time",
+           "x": 20,
+           "y": 15,
+           "width": 40,
+           "height": 20,
+           "absoluteBoundingBox": {
+            "x": 20,
+            "y": 15,
+            "width": 40,
+            "height": 20
+           },
+           "visible": true,
+           "opacity": 1,
+           "fills": [
+            {
+             "type": "SOLID",
+             "color": {
+              "r": 0.08,
+              "g": 0.07,
+              "b": 0.06
+             }
+            }
+           ],
+           "strokes": [],
+           "effects": [],
+           "characters": "9:41",
+           "fontSize": 10,
+           "fontName": {
+            "family": "Inter",
+            "style": "Regular"
+           },
+           "textStyleId": "S:1"
+          }
+         ]
+        },
+        {
+         "type": "TEXT",
+         "name": "Author",
+         "x": 16,
+         "y": 60,
+         "width": 200,
+         "height": 14,
+         "absoluteBoundingBox": {
+          "x": 16,
+          "y": 60,
+          "width": 200,
+          "height": 14
+         },
+         "visible": true,
+         "opacity": 1,
+         "fills": [
+          {
+           "type": "SOLID",
+           "color": {
+            "r": 0.08,
+            "g": 0.07,
+            "b": 0.06
+           }
+          }
+         ],
+         "strokes": [],
+         "effects": [],
+         "characters": "Pramoedya Ananta Toer",
+         "fontSize": 11,
+         "fontName": {
+          "family": "Inter",
+          "style": "Regular"
+         },
+         "textStyleId": "S:1"
+        },
+        {
+         "type": "TEXT",
+         "name": "Title",
+         "x": 16,
+         "y": 80,
+         "width": 200,
+         "height": 20,
+         "absoluteBoundingBox": {
+          "x": 16,
+          "y": 80,
+          "width": 200,
+          "height": 20
+         },
+         "visible": true,
+         "opacity": 1,
+         "fills": [
+          {
+           "type": "SOLID",
+           "color": {
+            "r": 0.08,
+            "g": 0.07,
+            "b": 0.06
+           }
+          }
+         ],
+         "strokes": [],
+         "effects": [],
+         "characters": "Bumi Manusia",
+         "fontSize": 15,
+         "fontName": {
+          "family": "Inter",
+          "style": "Regular"
+         },
+         "textStyleId": "S:1"
+        }
+       ]
+      }
+     ]
+    }
+   ],
+   "current": "Flow",
+   "page": "Flow",
+   "annotationCategories": []
+  },
+  "output": {
+   "page": "Flow",
+   "screens": [
+    "01"
+   ],
+   "counts": {
+    "screens": 1,
+    "imageFills": 0,
+    "distinctImages": 0,
+    "reusedImages": 0,
+    "contrastFails": 0,
+    "contrastUnknown": 0,
+    "targetsUnder24": 0,
+    "targetsUnder44": 0,
+    "cutText": 0,
+    "clippedText": 0,
+    "flatOverlays": 0,
+    "idleBusyButtons": 0,
+    "unstyledText": 0,
+    "unboundFills": 2,
+    "unboundSpacing": 0,
+    "layoutScreens": 1,
+    "looseLayers": 0,
+    "strayLayers": 0,
+    "rawEffects": 0,
+    "emptyBands": 0,
+    "capsLabels": 0,
+    "cards": 0,
+    "smallText": 1,
+    "texts": 2,
+    "unevenRows": 0
+   },
+   "images": [],
+   "annotations": {},
+   "findings": [
+    {
+     "rule": "RX-A11Y-02",
+     "level": "warn",
+     "frame": "01",
+     "node": "Author",
+     "message": "1 of 2 text layers under 12 px (e.g. \"Pramoedya Ananta Toer\" 11 px)"
+    }
+   ],
+   "more": 0,
+   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 2, unbound spacing 0 · built in auto layout 1/1 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 0, small uppercase labels 0, section cards 0, text under 12 px 1/2, uneven button rows 0 · annotations none · 0 fail, 1 warn"
+  }
+ },
+ {
+  "input": {
+   "pages": [
+    {
+     "name": "Flow",
+     "children": [
+      {
+       "type": "FRAME",
+       "name": "06",
+       "x": 0,
+       "y": 0,
+       "width": 390,
+       "height": 844,
+       "absoluteBoundingBox": {
+        "x": 0,
+        "y": 0,
+        "width": 390,
+        "height": 844
+       },
+       "visible": true,
+       "opacity": 1,
+       "fills": [
+        {
+         "type": "SOLID",
+         "color": {
+          "r": 1,
+          "g": 1,
+          "b": 1
+         }
+        }
+       ],
+       "strokes": [],
+       "effects": [],
+       "clipsContent": true,
+       "children": [
+        {
+         "type": "FRAME",
+         "name": "Save QR button",
+         "x": 16,
+         "y": 600,
+         "width": 160,
+         "height": 44,
+         "absoluteBoundingBox": {
+          "x": 16,
+          "y": 600,
+          "width": 160,
+          "height": 44
+         },
+         "visible": true,
+         "opacity": 1,
+         "fills": [],
+         "strokes": [
+          {
+           "type": "SOLID",
+           "color": {
+            "r": 0.78,
+            "g": 0.78,
+            "b": 0.78
+           }
+          }
+         ],
+         "effects": [],
+         "children": [
+          {
+           "type": "TEXT",
+           "name": "Label",
+           "x": 80,
+           "y": 604,
+           "width": 80,
+           "height": 20,
+           "absoluteBoundingBox": {
+            "x": 80,
+            "y": 604,
+            "width": 80,
+            "height": 20
+           },
+           "visible": true,
+           "opacity": 1,
+           "fills": [
+            {
+             "type": "SOLID",
+             "color": {
+              "r": 0.08,
+              "g": 0.07,
+              "b": 0.06
+             }
+            }
+           ],
+           "strokes": [],
+           "effects": [],
+           "characters": "Save QR",
+           "fontSize": 15,
+           "fontName": {
+            "family": "Inter",
+            "style": "Regular"
+           },
+           "textStyleId": "S:1"
+          }
+         ]
+        },
+        {
+         "type": "FRAME",
+         "name": "Share button",
+         "x": 200,
+         "y": 600,
+         "width": 160,
+         "height": 44,
+         "absoluteBoundingBox": {
+          "x": 200,
+          "y": 600,
+          "width": 160,
+          "height": 44
+         },
+         "visible": true,
+         "opacity": 1,
+         "fills": [],
+         "strokes": [
+          {
+           "type": "SOLID",
+           "color": {
+            "r": 0.78,
+            "g": 0.78,
+            "b": 0.78
+           }
+          }
+         ],
+         "effects": [],
+         "children": [
+          {
+           "type": "VECTOR",
+           "name": "Share",
+           "x": 240,
+           "y": 612,
+           "width": 20,
+           "height": 20,
+           "absoluteBoundingBox": {
+            "x": 240,
+            "y": 612,
+            "width": 20,
+            "height": 20
+           },
+           "visible": true,
+           "opacity": 1,
+           "fills": [],
+           "strokes": [],
+           "effects": [],
+           "children": []
+          },
+          {
+           "type": "TEXT",
+           "name": "Label",
+           "x": 264,
+           "y": 612,
+           "width": 80,
+           "height": 20,
+           "absoluteBoundingBox": {
+            "x": 264,
+            "y": 612,
+            "width": 80,
+            "height": 20
+           },
+           "visible": true,
+           "opacity": 1,
+           "fills": [
+            {
+             "type": "SOLID",
+             "color": {
+              "r": 0.08,
+              "g": 0.07,
+              "b": 0.06
+             }
+            }
+           ],
+           "strokes": [],
+           "effects": [],
+           "characters": "Share",
+           "fontSize": 15,
+           "fontName": {
+            "family": "Inter",
+            "style": "Regular"
+           },
+           "textStyleId": "S:1"
+          }
+         ]
+        }
+       ]
+      }
+     ]
+    }
+   ],
+   "current": "Flow",
+   "page": "Flow",
+   "annotationCategories": []
+  },
+  "output": {
+   "page": "Flow",
+   "screens": [
+    "06"
+   ],
+   "counts": {
+    "screens": 1,
+    "imageFills": 0,
+    "distinctImages": 0,
+    "reusedImages": 0,
+    "contrastFails": 0,
+    "contrastUnknown": 0,
+    "targetsUnder24": 0,
+    "targetsUnder44": 0,
+    "cutText": 0,
+    "clippedText": 0,
+    "flatOverlays": 0,
+    "idleBusyButtons": 0,
+    "unstyledText": 0,
+    "unboundFills": 2,
+    "unboundSpacing": 0,
+    "layoutScreens": 1,
+    "looseLayers": 0,
+    "strayLayers": 0,
+    "rawEffects": 0,
+    "emptyBands": 0,
+    "capsLabels": 0,
+    "cards": 0,
+    "smallText": 0,
+    "texts": 2,
+    "unevenRows": 1
+   },
+   "images": [],
+   "annotations": {},
+   "findings": [
+    {
+     "rule": "RX-UI-15",
+     "level": "warn",
+     "frame": "06",
+     "node": "Save QR button",
+     "message": "buttons in one row (\"Save QR\", \"Share\"): labels 8 px apart, an icon in some, not all"
+    }
+   ],
+   "more": 0,
+   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 2, unbound spacing 0 · built in auto layout 1/1 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 0, small uppercase labels 0, section cards 0, text under 12 px 0/2, uneven button rows 1 · annotations none · 0 fail, 1 warn"
+  }
+ },
+ {
+  "input": {
+   "pages": [
+    {
+     "name": "Flow",
+     "children": [
+      {
+       "type": "FRAME",
+       "name": "06",
+       "x": 0,
+       "y": 0,
+       "width": 390,
+       "height": 844,
+       "absoluteBoundingBox": {
+        "x": 0,
+        "y": 0,
+        "width": 390,
+        "height": 844
+       },
+       "visible": true,
+       "opacity": 1,
+       "fills": [
+        {
+         "type": "SOLID",
+         "color": {
+          "r": 1,
+          "g": 1,
+          "b": 1
+         }
+        }
+       ],
+       "strokes": [],
+       "effects": [],
+       "clipsContent": true,
+       "children": [
+        {
+         "type": "FRAME",
+         "name": "Save QR button",
+         "x": 16,
+         "y": 600,
+         "width": 160,
+         "height": 44,
+         "absoluteBoundingBox": {
+          "x": 16,
+          "y": 600,
+          "width": 160,
+          "height": 44
+         },
+         "visible": true,
+         "opacity": 1,
+         "fills": [],
+         "strokes": [
+          {
+           "type": "SOLID",
+           "color": {
+            "r": 0.78,
+            "g": 0.78,
+            "b": 0.78
+           }
+          }
+         ],
+         "effects": [],
+         "children": [
+          {
+           "type": "VECTOR",
+           "name": "Share",
+           "x": 56,
+           "y": 612,
+           "width": 20,
+           "height": 20,
+           "absoluteBoundingBox": {
+            "x": 56,
+            "y": 612,
+            "width": 20,
+            "height": 20
+           },
+           "visible": true,
+           "opacity": 1,
+           "fills": [],
+           "strokes": [],
+           "effects": [],
+           "children": []
+          },
+          {
+           "type": "TEXT",
+           "name": "Label",
+           "x": 80,
+           "y": 612,
+           "width": 80,
+           "height": 20,
+           "absoluteBoundingBox": {
+            "x": 80,
+            "y": 612,
+            "width": 80,
+            "height": 20
+           },
+           "visible": true,
+           "opacity": 1,
+           "fills": [
+            {
+             "type": "SOLID",
+             "color": {
+              "r": 0.08,
+              "g": 0.07,
+              "b": 0.06
+             }
+            }
+           ],
+           "strokes": [],
+           "effects": [],
+           "characters": "Save QR",
+           "fontSize": 15,
+           "fontName": {
+            "family": "Inter",
+            "style": "Regular"
+           },
+           "textStyleId": "S:1"
+          }
+         ]
+        },
+        {
+         "type": "FRAME",
+         "name": "Share button",
+         "x": 200,
+         "y": 600,
+         "width": 160,
+         "height": 44,
+         "absoluteBoundingBox": {
+          "x": 200,
+          "y": 600,
+          "width": 160,
+          "height": 44
+         },
+         "visible": true,
+         "opacity": 1,
+         "fills": [],
+         "strokes": [
+          {
+           "type": "SOLID",
+           "color": {
+            "r": 0.78,
+            "g": 0.78,
+            "b": 0.78
+           }
+          }
+         ],
+         "effects": [],
+         "children": [
+          {
+           "type": "VECTOR",
+           "name": "Share",
+           "x": 240,
+           "y": 612,
+           "width": 20,
+           "height": 20,
+           "absoluteBoundingBox": {
+            "x": 240,
+            "y": 612,
+            "width": 20,
+            "height": 20
+           },
+           "visible": true,
+           "opacity": 1,
+           "fills": [],
+           "strokes": [],
+           "effects": [],
+           "children": []
+          },
+          {
+           "type": "TEXT",
+           "name": "Label",
+           "x": 264,
+           "y": 612,
+           "width": 80,
+           "height": 20,
+           "absoluteBoundingBox": {
+            "x": 264,
+            "y": 612,
+            "width": 80,
+            "height": 20
+           },
+           "visible": true,
+           "opacity": 1,
+           "fills": [
+            {
+             "type": "SOLID",
+             "color": {
+              "r": 0.08,
+              "g": 0.07,
+              "b": 0.06
+             }
+            }
+           ],
+           "strokes": [],
+           "effects": [],
+           "characters": "Share",
+           "fontSize": 15,
+           "fontName": {
+            "family": "Inter",
+            "style": "Regular"
+           },
+           "textStyleId": "S:1"
+          }
+         ]
+        }
+       ]
+      }
+     ]
+    }
+   ],
+   "current": "Flow",
+   "page": "Flow",
+   "annotationCategories": []
+  },
+  "output": {
+   "page": "Flow",
+   "screens": [
+    "06"
+   ],
+   "counts": {
+    "screens": 1,
+    "imageFills": 0,
+    "distinctImages": 0,
+    "reusedImages": 0,
+    "contrastFails": 0,
+    "contrastUnknown": 0,
+    "targetsUnder24": 0,
+    "targetsUnder44": 0,
+    "cutText": 0,
+    "clippedText": 0,
+    "flatOverlays": 0,
+    "idleBusyButtons": 0,
+    "unstyledText": 0,
+    "unboundFills": 2,
+    "unboundSpacing": 0,
+    "layoutScreens": 1,
+    "looseLayers": 0,
+    "strayLayers": 0,
+    "rawEffects": 0,
+    "emptyBands": 0,
+    "capsLabels": 0,
+    "cards": 0,
+    "smallText": 0,
+    "texts": 2,
+    "unevenRows": 0
+   },
+   "images": [],
+   "annotations": {},
+   "findings": [],
+   "more": 0,
+   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 2, unbound spacing 0 · built in auto layout 1/1 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 0, small uppercase labels 0, section cards 0, text under 12 px 0/2, uneven button rows 0 · annotations none · 0 fail, 0 warn"
+  }
+ },
+ {
+  "input": {
+   "pages": [
+    {
+     "name": "Rak",
+     "children": [
+      {
+       "id": "2",
+       "type": "FRAME",
+       "name": "06-pay",
+       "visible": true,
+       "opacity": 1,
+       "x": 1000,
+       "y": 0,
+       "width": 390,
+       "height": 844,
+       "absoluteBoundingBox": {
+        "x": 1000,
+        "y": 0,
+        "width": 390,
+        "height": 844
+       },
+       "fills": [
+        {
+         "type": "SOLID",
+         "visible": true,
+         "color": {
+          "r": 1,
+          "g": 1,
+          "b": 1
+         },
+         "opacity": 1,
+         "boundVariables": {
+          "color": {
+           "id": "VariableID:1"
+          }
+         }
+        }
+       ],
+       "strokes": [],
+       "effects": [],
+       "effectStyleId": "",
+       "fillStyleId": "",
+       "cornerRadius": 0,
+       "clipsContent": true,
+       "layoutMode": "NONE",
+       "annotations": [],
+       "children": [
+        {
+         "id": "3",
+         "type": "TEXT",
+         "name": "Eyebrow",
+         "visible": true,
+         "opacity": 1,
+         "x": 16,
+         "y": 100,
+         "width": 80,
+         "height": 13,
+         "absoluteBoundingBox": {
+          "x": 1016,
+          "y": 100,
+          "width": 80,
+          "height": 13
+         },
+         "fills": [
+          {
+           "type": "SOLID",
+           "visible": true,
+           "color": {
+            "r": 0.1,
+            "g": 0.1,
+            "b": 0.1
+           },
+           "opacity": 1
+          }
+         ],
+         "strokes": [],
+         "effects": [],
+         "effectStyleId": "",
+         "fillStyleId": "",
+         "cornerRadius": 0,
+         "clipsContent": false,
+         "layoutMode": "NONE",
+         "characters": "STEP 2 OF 2",
+         "fontSize": 11,
+         "fontName": {
+          "family": "Inter",
+          "style": "Regular"
+         },
+         "textCase": "UPPER",
+         "textStyleId": "S:1",
+         "annotations": [
+          {
+           "label": "made up",
+           "categoryId": "c1"
+          }
+         ]
+        },
+        {
+         "id": "4",
+         "type": "RECTANGLE",
+         "name": "QR card",
+         "visible": true,
+         "opacity": 1,
+         "x": 16,
+         "y": 130,
+         "width": 358,
+         "height": 300,
+         "absoluteBoundingBox": {
+          "x": 1016,
+          "y": 130,
+          "width": 358,
+          "height": 300
+         },
+         "fills": [
+          {
+           "type": "SOLID",
+           "visible": true,
+           "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+           },
+           "opacity": 1
+          }
+         ],
+         "strokes": [],
+         "effects": [
+          {
+           "type": "DROP_SHADOW",
+           "visible": true
+          }
+         ],
+         "effectStyleId": "S:2",
+         "fillStyleId": "",
+         "cornerRadius": 16,
+         "clipsContent": false,
+         "layoutMode": "NONE",
+         "annotations": []
+        },
+        {
+         "id": "5",
+         "type": "INSTANCE",
+         "name": "Save QR button",
+         "visible": true,
+         "opacity": 1,
+         "x": 16,
+         "y": 600,
+         "width": 160,
+         "height": 44,
+         "absoluteBoundingBox": {
+          "x": 1016,
+          "y": 600,
+          "width": 160,
+          "height": 44
+         },
+         "fills": [],
+         "strokes": [
+          {
+           "type": "SOLID",
+           "visible": true,
+           "color": {
+            "r": 0.8,
+            "g": 0.8,
+            "b": 0.8
+           },
+           "opacity": 1
+          }
+         ],
+         "effects": [],
+         "effectStyleId": "",
+         "fillStyleId": "",
+         "cornerRadius": 0,
+         "clipsContent": false,
+         "layoutMode": "NONE",
+         "annotations": [],
+         "children": [
+          {
+           "id": "9",
+           "type": "TEXT",
+           "name": "Label",
+           "visible": true,
+           "opacity": 1,
+           "x": 64,
+           "y": 4,
+           "width": 60,
+           "height": 20,
+           "absoluteBoundingBox": {
+            "x": 1080,
+            "y": 604,
+            "width": 60,
+            "height": 20
+           },
+           "fills": [
+            {
+             "type": "SOLID",
+             "visible": true,
+             "color": {
+              "r": 0.1,
+              "g": 0.1,
+              "b": 0.1
+             },
+             "opacity": 1
+            }
+           ],
+           "strokes": [],
+           "effects": [],
+           "effectStyleId": "",
+           "fillStyleId": "",
+           "cornerRadius": 0,
+           "clipsContent": false,
+           "layoutMode": "NONE",
+           "characters": "Save QR",
+           "fontSize": 15,
+           "fontName": {
+            "family": "",
+            "style": ""
+           },
+           "textCase": "ORIGINAL",
+           "textStyleId": "",
+           "annotations": []
+          }
+         ],
+         "mainComponent": {
+          "name": "Local/Button",
+          "parent": {
+           "type": "PAGE",
+           "name": "Rak"
+          }
+         }
+        },
+        {
+         "id": "6",
+         "type": "FRAME",
+         "name": "Share button",
+         "visible": true,
+         "opacity": 1,
+         "x": 200,
+         "y": 600,
+         "width": 160,
+         "height": 44,
+         "absoluteBoundingBox": {
+          "x": 1200,
+          "y": 600,
+          "width": 160,
+          "height": 44
+         },
+         "fills": [],
+         "strokes": [],
+         "effects": [],
+         "effectStyleId": "",
+         "fillStyleId": "",
+         "cornerRadius": 0,
+         "clipsContent": false,
+         "layoutMode": "HORIZONTAL",
+         "itemSpacing": 8,
+         "paddingTop": 12,
+         "paddingRight": 12,
+         "paddingBottom": 12,
+         "paddingLeft": 12,
+         "boundVariables": {},
+         "annotations": [],
+         "children": [
+          {
+           "id": "7",
+           "type": "VECTOR",
+           "name": "Share",
+           "visible": true,
+           "opacity": 1,
+           "x": 40,
+           "y": 12,
+           "width": 20,
+           "height": 20,
+           "absoluteBoundingBox": {
+            "x": 1240,
+            "y": 612,
+            "width": 20,
+            "height": 20
+           },
+           "fills": [],
+           "strokes": [],
+           "effects": [],
+           "effectStyleId": "",
+           "fillStyleId": "",
+           "cornerRadius": 0,
+           "clipsContent": false,
+           "layoutMode": "NONE",
+           "annotations": []
+          },
+          {
+           "id": "10",
+           "type": "TEXT",
+           "name": "Label",
+           "visible": true,
+           "opacity": 1,
+           "x": 64,
+           "y": 12,
+           "width": 60,
+           "height": 20,
+           "absoluteBoundingBox": {
+            "x": 1264,
+            "y": 612,
+            "width": 60,
+            "height": 20
+           },
+           "fills": [
+            {
+             "type": "SOLID",
+             "visible": true,
+             "color": {
+              "r": 0.1,
+              "g": 0.1,
+              "b": 0.1
+             },
+             "opacity": 1
+            }
+           ],
+           "strokes": [],
+           "effects": [],
+           "effectStyleId": "",
+           "fillStyleId": "",
+           "cornerRadius": 0,
+           "clipsContent": false,
+           "layoutMode": "NONE",
+           "characters": "Share",
+           "fontSize": 15,
+           "fontName": {
+            "family": "",
+            "style": ""
+           },
+           "textCase": "ORIGINAL",
+           "textStyleId": "",
+           "annotations": []
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "id": "8",
+       "type": "COMPONENT",
+       "name": "Local/Button",
+       "visible": true,
+       "opacity": 1,
+       "x": 0,
+       "y": 2000,
+       "width": 160,
+       "height": 44,
+       "absoluteBoundingBox": {
+        "x": 0,
+        "y": 2000,
+        "width": 160,
+        "height": 44
+       },
+       "fills": [],
+       "strokes": [],
+       "effects": [],
+       "effectStyleId": "",
+       "fillStyleId": "",
+       "cornerRadius": 0,
+       "clipsContent": false,
+       "layoutMode": "NONE",
+       "annotations": [],
+       "children": []
+      }
+     ]
+    }
+   ],
+   "current": "Rak",
+   "page": "Rak",
+   "annotationCategories": [
+    {
+     "id": "c1",
+     "label": "Sample data"
+    }
+   ]
+  },
+  "output": {
+   "page": "Rak",
+   "screens": [
+    "06-pay"
+   ],
+   "counts": {
+    "screens": 1,
+    "imageFills": 0,
+    "distinctImages": 0,
+    "reusedImages": 0,
+    "contrastFails": 0,
+    "contrastUnknown": 0,
+    "targetsUnder24": 0,
+    "targetsUnder44": 0,
+    "cutText": 0,
+    "clippedText": 0,
+    "flatOverlays": 0,
+    "idleBusyButtons": 0,
+    "unstyledText": 1,
+    "unboundFills": 3,
+    "unboundSpacing": 1,
+    "layoutScreens": 0,
+    "looseLayers": 3,
+    "strayLayers": 0,
+    "rawEffects": 0,
+    "emptyBands": 1,
+    "capsLabels": 1,
+    "cards": 1,
+    "smallText": 1,
+    "texts": 2,
+    "unevenRows": 1
+   },
+   "images": [],
+   "annotations": {
+    "Sample data": 1
+   },
+   "findings": [
+    {
+     "rule": "RX-DS-12",
+     "level": "warn",
+     "frame": "06-pay",
+     "node": "Eyebrow",
+     "message": "3 layers placed by x and y outside auto layout (e.g. \"Eyebrow\"); build the screen from auto layout sections"
+    },
+    {
+     "rule": "RX-A11Y-02",
+     "level": "warn",
+     "frame": "06-pay",
+     "node": "Eyebrow",
+     "message": "1 of 2 text layers under 12 px (e.g. \"STEP 2 OF 2\" 11 px)"
+    },
+    {
+     "rule": "RX-UI-05",
+     "level": "warn",
+     "frame": "06-pay",
+     "node": "",
+     "message": "an empty band 170 pt tall from y 430; move the blocks together, give the space a job, or let the content fill it"
+    },
+    {
+     "rule": "RX-UI-15",
+     "level": "warn",
+     "frame": "06-pay",
+     "node": "Save QR button",
+     "message": "buttons in one row (\"Save QR\", \"Share\"): labels 8 px apart, an icon in some, not all"
+    }
+   ],
+   "more": 0,
+   "gate": "figma audit (Rak): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 1, unbound fills 3, unbound spacing 1 · built in auto layout 0/1 screens, loose layers 3, layers outside the screens 0, effects without a style 0 · empty bands 1, small uppercase labels 1, section cards 1, text under 12 px 1/2, uneven button rows 1 · annotations Sample data 1 · 0 fail, 4 warn"
+  }
+ }
+]

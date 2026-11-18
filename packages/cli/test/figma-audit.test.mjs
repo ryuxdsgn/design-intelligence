@@ -2,7 +2,8 @@
 // the shipped script running as use_figma runs it. Run on the built dist.
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { figmaAudit, figmaAuditScript } from "../dist/figma-audit.js";
+import { figmaAudit as auditCanvas, figmaAuditScript } from "../dist/figma-audit.js";
+import { recordAudit } from "./golden.mjs";
 import { renderBundle } from "../dist/render.js";
 import { RULES } from "../dist/intelligence/content.js";
 
@@ -28,6 +29,7 @@ function canvas(frames, annotationCats = []) {
   const page = { name: "Flow", children: frames };
   return { root: { children: [page] }, currentPage: page, setCurrentPageAsync: async () => {}, annotations: { getAnnotationCategoriesAsync: async () => annotationCats } };
 }
+const figmaAudit = recordAudit(auditCanvas);
 const audit = async (frames, cats) => figmaAudit(canvas(frames, cats), "Flow");
 const rules = (r) => r.findings.map((f) => `${f.level} ${f.rule}`);
 

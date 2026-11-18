@@ -1,0 +1,777 @@
+[
+ {
+  "id": "RX-PR-01",
+  "level": "required",
+  "title": "State the context first"
+ },
+ {
+  "id": "RX-PR-02",
+  "level": "required",
+  "title": "Unknowns stay assumptions"
+ },
+ {
+  "id": "RX-PR-03",
+  "level": "required",
+  "title": "One clear goal; one primary action when the task has one"
+ },
+ {
+  "id": "RX-PR-04",
+  "level": "required",
+  "title": "Back decisions with real screens"
+ },
+ {
+  "id": "RX-PR-05",
+  "level": "required",
+  "title": "The product's market first"
+ },
+ {
+  "id": "RX-PR-09",
+  "level": "required",
+  "title": "Compare patterns before choosing"
+ },
+ {
+  "id": "RX-PR-10",
+  "level": "required",
+  "title": "Say when the evidence is not enough"
+ },
+ {
+  "id": "RX-PR-11",
+  "level": "contextual",
+  "title": "An AI feature has a written standard for its output"
+ },
+ {
+  "id": "RX-PR-12",
+  "level": "contextual",
+  "title": "A DESIGN.md answers five questions or names what is unknown"
+ },
+ {
+  "id": "RX-PR-13",
+  "level": "preferred",
+  "title": "Before a direction, learn what makes this product specific"
+ },
+ {
+  "id": "RX-PR-14",
+  "level": "required",
+  "title": "Every shaping decision carries its reason"
+ },
+ {
+  "id": "RX-UX-01",
+  "level": "required",
+  "title": "Structure from the user's goal"
+ },
+ {
+  "id": "RX-UX-02",
+  "level": "preferred",
+  "title": "Where am I, what's left, how do I leave"
+ },
+ {
+  "id": "RX-UX-06",
+  "level": "contextual",
+  "title": "Search, filter, and sort that match the hunt"
+ },
+ {
+  "id": "RX-UX-07",
+  "level": "contextual",
+  "title": "Ask for sign-in when it is needed"
+ },
+ {
+  "id": "RX-UX-08",
+  "level": "preferred",
+  "title": "Recognition over recall; the product carries the load"
+ },
+ {
+  "id": "RX-UX-10",
+  "level": "required",
+  "title": "Change what is broken, keep what works"
+ },
+ {
+  "id": "RX-UX-11",
+  "level": "contextual",
+  "title": "Accelerators for frequent users"
+ },
+ {
+  "id": "RX-UX-12",
+  "level": "contextual",
+  "title": "A test plan travels with the design"
+ },
+ {
+  "id": "RX-UX-13",
+  "level": "preferred",
+  "title": "A page's sections answer the visitor's questions, in their order"
+ },
+ {
+  "id": "RX-UX-14",
+  "level": "preferred",
+  "title": "Options show what sets them apart"
+ },
+ {
+  "id": "RX-UX-15",
+  "level": "preferred",
+  "title": "A running total sits with the action it pays for"
+ },
+ {
+  "id": "RX-UX-16",
+  "level": "preferred",
+  "title": "What decides is shown; details open on demand"
+ },
+ {
+  "id": "RX-UX-17",
+  "level": "preferred",
+  "title": "The dominant usability quality follows the usage cadence"
+ },
+ {
+  "id": "RX-IX-01",
+  "level": "required",
+  "title": "Before, during, result, recovery"
+ },
+ {
+  "id": "RX-IX-02",
+  "level": "required",
+  "title": "Feedback that matches the wait"
+ },
+ {
+  "id": "RX-IX-03",
+  "level": "required",
+  "title": "Cancel, back, and undo"
+ },
+ {
+  "id": "RX-IX-04",
+  "level": "required",
+  "title": "Protect high-impact actions by reasoning"
+ },
+ {
+  "id": "RX-IX-05",
+  "level": "required",
+  "title": "Full cost before commitment"
+ },
+ {
+  "id": "RX-IX-09",
+  "level": "contextual",
+  "title": "QRIS: amount and merchant first"
+ },
+ {
+  "id": "RX-IX-10",
+  "level": "contextual",
+  "title": "Virtual account: copy, deadline, steps"
+ },
+ {
+  "id": "RX-IX-11",
+  "level": "contextual",
+  "title": "Paylater and installments in full"
+ },
+ {
+  "id": "RX-IX-12",
+  "level": "required",
+  "title": "Every control leads somewhere real"
+ },
+ {
+  "id": "RX-IX-13",
+  "level": "required",
+  "title": "Each transition means one thing"
+ },
+ {
+  "id": "RX-IX-14",
+  "level": "required",
+  "title": "One-way doors"
+ },
+ {
+  "id": "RX-IX-15",
+  "level": "contextual",
+  "title": "Gestures follow the finger"
+ },
+ {
+  "id": "RX-IX-16",
+  "level": "contextual",
+  "title": "Haptics as punctuation"
+ },
+ {
+  "id": "RX-IX-17",
+  "level": "preferred",
+  "title": "Choices that change the price sit with the price"
+ },
+ {
+  "id": "RX-FM-01",
+  "level": "required",
+  "title": "Visible labels tied to fields"
+ },
+ {
+  "id": "RX-FM-03",
+  "level": "required",
+  "title": "Validate near the field, keep the input"
+ },
+ {
+  "id": "RX-FM-05",
+  "level": "preferred",
+  "title": "The right keyboard and autofill"
+ },
+ {
+  "id": "RX-FM-06",
+  "level": "required",
+  "title": "Submission states"
+ },
+ {
+  "id": "RX-FM-08",
+  "level": "contextual",
+  "title": "OTP: channel choice and paste"
+ },
+ {
+  "id": "RX-FM-09",
+  "level": "contextual",
+  "title": "Addresses with landmarks"
+ },
+ {
+  "id": "RX-FM-10",
+  "level": "contextual",
+  "title": "e-KYC: reason and guidance first"
+ },
+ {
+  "id": "RX-FM-11",
+  "level": "contextual",
+  "title": "Names as people write them"
+ },
+ {
+  "id": "RX-EC-01",
+  "level": "required",
+  "title": "Critical states exist"
+ },
+ {
+  "id": "RX-EC-02",
+  "level": "required",
+  "title": "Errors with a way forward"
+ },
+ {
+  "id": "RX-EC-03",
+  "level": "preferred",
+  "title": "Data volume, shape, and length"
+ },
+ {
+  "id": "RX-EC-06",
+  "level": "contextual",
+  "title": "Slow, timeout, offline, server failure"
+ },
+ {
+  "id": "RX-EC-07",
+  "level": "contextual",
+  "title": "Roles, access, and sessions"
+ },
+ {
+  "id": "RX-CD-01",
+  "level": "contextual",
+  "title": "Natural Bahasa Indonesia"
+ },
+ {
+  "id": "RX-CD-02",
+  "level": "contextual",
+  "title": "Rupiah as Rp1.250.000"
+ },
+ {
+  "id": "RX-CD-03",
+  "level": "preferred",
+  "title": "Specific, plain copy"
+ },
+ {
+  "id": "RX-CD-04",
+  "level": "required",
+  "title": "Errors: what, why, how to recover"
+ },
+ {
+  "id": "RX-CD-05",
+  "level": "required",
+  "title": "One name per thing"
+ },
+ {
+  "id": "RX-CD-09",
+  "level": "contextual",
+  "title": "Dates, times, and numbers in Indonesian form"
+ },
+ {
+  "id": "RX-CD-10",
+  "level": "contextual",
+  "title": "A FAQ answers questions people ask"
+ },
+ {
+  "id": "RX-CD-11",
+  "level": "preferred",
+  "title": "Tone fits the moment, voice stays"
+ },
+ {
+  "id": "RX-CD-12",
+  "level": "required",
+  "title": "Labels say what happens"
+ },
+ {
+  "id": "RX-CD-13",
+  "level": "required",
+  "title": "Empty states teach and lead"
+ },
+ {
+  "id": "RX-CD-14",
+  "level": "contextual",
+  "title": "Notifications and permission requests earn their place"
+ },
+ {
+  "id": "RX-CD-15",
+  "level": "required",
+  "title": "The user's words and order"
+ },
+ {
+  "id": "RX-CD-16",
+  "level": "contextual",
+  "title": "Help where the question comes up"
+ },
+ {
+  "id": "RX-CD-17",
+  "level": "required",
+  "title": "Choices are framed honestly"
+ },
+ {
+  "id": "RX-CD-18",
+  "level": "preferred",
+  "title": "Every line earns its words"
+ },
+ {
+  "id": "RX-CD-19",
+  "level": "preferred",
+  "title": "Claims the page can prove"
+ },
+ {
+  "id": "RX-CD-20",
+  "level": "contextual",
+  "title": "An unfamiliar unit comes with its everyday value"
+ },
+ {
+  "id": "RX-UI-01",
+  "level": "required",
+  "title": "Hierarchy follows priority"
+ },
+ {
+  "id": "RX-UI-03",
+  "level": "preferred",
+  "title": "One spacing and type scale"
+ },
+ {
+  "id": "RX-UI-04",
+  "level": "preferred",
+  "title": "A palette with roles"
+ },
+ {
+  "id": "RX-UI-05",
+  "level": "preferred",
+  "title": "Layout from content, not a template"
+ },
+ {
+  "id": "RX-UI-10",
+  "level": "preferred",
+  "title": "Visual language is chosen, not defaulted"
+ },
+ {
+  "id": "RX-UI-26",
+  "level": "preferred",
+  "title": "With no direction given, discover three and let the user choose"
+ },
+ {
+  "id": "RX-UI-31",
+  "level": "preferred",
+  "title": "A palette is built from roles, not picked"
+ },
+ {
+  "id": "RX-UI-33",
+  "level": "required",
+  "title": "A direction moves to a new surface by its brand layer, not its mockups"
+ },
+ {
+  "id": "RX-UI-14",
+  "level": "preferred",
+  "title": "Type that is set, not only sized"
+ },
+ {
+  "id": "RX-UI-15",
+  "level": "preferred",
+  "title": "Detail craft"
+ },
+ {
+  "id": "RX-UI-20",
+  "level": "preferred",
+  "title": "An icon means one thing, and says it"
+ },
+ {
+  "id": "RX-UI-35",
+  "level": "contextual",
+  "title": "Translucent surfaces stay readable"
+ },
+ {
+  "id": "RX-UI-36",
+  "level": "preferred",
+  "title": "A selected option looks chosen, not pressable"
+ },
+ {
+  "id": "RX-UI-37",
+  "level": "preferred",
+  "title": "The step indicator stays quiet"
+ },
+ {
+  "id": "RX-UI-07",
+  "level": "contextual",
+  "title": "Imagery has a job and is what it claims"
+ },
+ {
+  "id": "RX-UI-09",
+  "level": "contextual",
+  "title": "Composition leaves room for the content"
+ },
+ {
+  "id": "RX-UI-11",
+  "level": "contextual",
+  "title": "Motion earns its level"
+ },
+ {
+  "id": "RX-UI-12",
+  "level": "contextual",
+  "title": "A point of view on expressive surfaces"
+ },
+ {
+  "id": "RX-UI-27",
+  "level": "preferred",
+  "title": "On an expressive surface, the concept shapes the page, not one card"
+ },
+ {
+  "id": "RX-UI-29",
+  "level": "preferred",
+  "title": "An expressive page has one weight carrier, made at full strength"
+ },
+ {
+  "id": "RX-UI-32",
+  "level": "required",
+  "title": "One page, one world"
+ },
+ {
+  "id": "RX-UI-13",
+  "level": "contextual",
+  "title": "Source assets on purpose"
+ },
+ {
+  "id": "RX-UI-28",
+  "level": "preferred",
+  "title": "Standard marks are used as they are, when their fact is confirmed"
+ },
+ {
+  "id": "RX-UI-16",
+  "level": "contextual",
+  "title": "Delight stands on three legs"
+ },
+ {
+  "id": "RX-UI-23",
+  "level": "contextual",
+  "title": "A mark designed on request"
+ },
+ {
+  "id": "RX-UI-34",
+  "level": "contextual",
+  "title": "An animated scene tells one story"
+ },
+ {
+  "id": "RX-UI-17",
+  "level": "contextual",
+  "title": "Illustration follows a written style"
+ },
+ {
+  "id": "RX-UI-18",
+  "level": "contextual",
+  "title": "A set reads as one family"
+ },
+ {
+  "id": "RX-UI-19",
+  "level": "contextual",
+  "title": "Illustration ships as a themed, accessible asset"
+ },
+ {
+  "id": "RX-UI-21",
+  "level": "contextual",
+  "title": "Pick the production method from the asset's job"
+ },
+ {
+  "id": "RX-UI-22",
+  "level": "contextual",
+  "title": "Texture has a source and a limit"
+ },
+ {
+  "id": "RX-UI-24",
+  "level": "contextual",
+  "title": "Each illustration shows its meaning"
+ },
+ {
+  "id": "RX-UI-30",
+  "level": "preferred",
+  "title": "Planned imagery is made, and passes a craft read before the page uses it"
+ },
+ {
+  "id": "RX-DS-01",
+  "level": "required",
+  "title": "Search before you create"
+ },
+ {
+  "id": "RX-DS-02",
+  "level": "required",
+  "title": "Consistency, conventions, and states"
+ },
+ {
+  "id": "RX-DS-03",
+  "level": "preferred",
+  "title": "Tokens over one-off values"
+ },
+ {
+  "id": "RX-DS-05",
+  "level": "contextual",
+  "title": "Every theme you ship works"
+ },
+ {
+  "id": "RX-DS-06",
+  "level": "preferred",
+  "title": "The component sheet is a spec"
+ },
+ {
+  "id": "RX-DS-07",
+  "level": "contextual",
+  "title": "Property names are the code's props"
+ },
+ {
+  "id": "RX-DS-08",
+  "level": "contextual",
+  "title": "Each property has the type its job needs"
+ },
+ {
+  "id": "RX-DS-09",
+  "level": "contextual",
+  "title": "Variants stay few and valid"
+ },
+ {
+  "id": "RX-DS-10",
+  "level": "contextual",
+  "title": "Interaction states are spec, data states are props"
+ },
+ {
+  "id": "RX-DS-11",
+  "level": "contextual",
+  "title": "Components bind semantic variables"
+ },
+ {
+  "id": "RX-DS-12",
+  "level": "contextual",
+  "title": "Components and screens resize like the code"
+ },
+ {
+  "id": "RX-DS-13",
+  "level": "contextual",
+  "title": "Resolve the token matrix per state"
+ },
+ {
+  "id": "RX-DS-14",
+  "level": "contextual",
+  "title": "Capture the system's do's and don'ts"
+ },
+ {
+  "id": "RX-A11Y-01",
+  "level": "required",
+  "title": "Readable contrast"
+ },
+ {
+  "id": "RX-A11Y-02",
+  "level": "required",
+  "title": "Readable text, reachable targets"
+ },
+ {
+  "id": "RX-A11Y-03",
+  "level": "required",
+  "title": "Keyboard and visible focus"
+ },
+ {
+  "id": "RX-A11Y-04",
+  "level": "required",
+  "title": "Semantic structure, native controls, and names"
+ },
+ {
+  "id": "RX-A11Y-06",
+  "level": "required",
+  "title": "Not color alone"
+ },
+ {
+  "id": "RX-A11Y-07",
+  "level": "required",
+  "title": "Errors announced and tied to fields"
+ },
+ {
+  "id": "RX-A11Y-08",
+  "level": "required",
+  "title": "Respect reduced motion"
+ },
+ {
+  "id": "RX-RD-01",
+  "level": "required",
+  "title": "Stated viewport plus the smallest"
+ },
+ {
+  "id": "RX-RD-02",
+  "level": "required",
+  "title": "Prioritize, simplify, reorganize"
+ },
+ {
+  "id": "RX-RD-03",
+  "level": "required",
+  "title": "Safe areas and thumb reach"
+ },
+ {
+  "id": "RX-RD-04",
+  "level": "contextual",
+  "title": "Tables and overlays on small screens"
+ },
+ {
+  "id": "RX-RD-06",
+  "level": "preferred",
+  "title": "Consistent responsive behavior"
+ },
+ {
+  "id": "RX-FE-01",
+  "level": "required",
+  "title": "Work in the repo's own stack"
+ },
+ {
+  "id": "RX-FE-02",
+  "level": "required",
+  "title": "No invented logic in UI code"
+ },
+ {
+  "id": "RX-FE-05",
+  "level": "required",
+  "title": "Actionable errors"
+ },
+ {
+  "id": "RX-FE-06",
+  "level": "preferred",
+  "title": "Comments say why"
+ },
+ {
+  "id": "RX-FE-07",
+  "level": "preferred",
+  "title": "Fit the codebase"
+ },
+ {
+  "id": "RX-FE-12",
+  "level": "contextual",
+  "title": "Rupiah formatting in code"
+ },
+ {
+  "id": "RX-FE-13",
+  "level": "required",
+  "title": "One home for each piece of logic"
+ },
+ {
+  "id": "RX-FE-14",
+  "level": "required",
+  "title": "Test logic and critical flows"
+ },
+ {
+  "id": "RX-FE-15",
+  "level": "required",
+  "title": "Change the source, not the output"
+ },
+ {
+  "id": "RX-FE-16",
+  "level": "required",
+  "title": "The build passes"
+ },
+ {
+  "id": "RX-FE-17",
+  "level": "preferred",
+  "title": "A visual library is offered as a choice, the lightest first"
+ },
+ {
+  "id": "RX-FE-18",
+  "level": "preferred",
+  "title": "A hard job gets a proven library, offered as a choice"
+ },
+ {
+  "id": "RX-FE-19",
+  "level": "preferred",
+  "title": "Build a system component from its tokens and rules"
+ },
+ {
+  "id": "RX-QA-01",
+  "level": "required",
+  "title": "Render, inspect, fix, render again"
+ },
+ {
+  "id": "RX-QA-03",
+  "level": "required",
+  "title": "No covered or colliding text"
+ },
+ {
+  "id": "RX-QA-04",
+  "level": "required",
+  "title": "Numbers agree"
+ },
+ {
+  "id": "RX-QA-06",
+  "level": "preferred",
+  "title": "Match the intended design"
+ },
+ {
+  "id": "RX-QA-08",
+  "level": "required",
+  "title": "The primary task completes"
+ },
+ {
+  "id": "RX-AS-01",
+  "level": "required",
+  "title": "Only real numbers"
+ },
+ {
+  "id": "RX-AS-02",
+  "level": "required",
+  "title": "No invented people"
+ },
+ {
+  "id": "RX-AS-03",
+  "level": "required",
+  "title": "Sample data is realistic and labeled; placeholders only for what is missing"
+ },
+ {
+  "id": "RX-AS-04",
+  "level": "required",
+  "title": "No fake urgency"
+ },
+ {
+  "id": "RX-AS-05",
+  "level": "required",
+  "title": "Decoration passes a purpose gate"
+ },
+ {
+  "id": "RX-AS-06",
+  "level": "required",
+  "title": "Complexity with a reason"
+ },
+ {
+  "id": "RX-AS-07",
+  "level": "required",
+  "title": "Claims match the evidence"
+ },
+ {
+  "id": "RX-AS-08",
+  "level": "required",
+  "title": "Human designer notes"
+ },
+ {
+  "id": "RX-AS-09",
+  "level": "contextual",
+  "title": "Clean is not the same as designed"
+ },
+ {
+  "id": "RX-AS-10",
+  "level": "required",
+  "title": "Count before handoff"
+ },
+ {
+  "id": "RX-AS-11",
+  "level": "required",
+  "title": "The product's own mark"
+ }
+]

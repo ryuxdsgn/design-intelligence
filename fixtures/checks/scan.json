@@ -1,0 +1,2101 @@
+[
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.tsx",
+     "raw": "<p>Rp 50.000</p>"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": [
+   {
+    "level": "fail",
+    "rule": "RX-CD-02",
+    "file": "a.tsx",
+    "line": 1,
+    "column": 4,
+    "message": "\"Rp 50.000\": write Rp1.250.000 (Rp right before the number, dots for thousands, no decimals)"
+   }
+  ]
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.tsx",
+     "raw": "<p>Rp. 50.000</p>"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": [
+   {
+    "level": "fail",
+    "rule": "RX-CD-02",
+    "file": "a.tsx",
+    "line": 1,
+    "column": 4,
+    "message": "\"Rp. 50.000\": write Rp1.250.000 (Rp right before the number, dots for thousands, no decimals)"
+   }
+  ]
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.tsx",
+     "raw": "<p>Rp1,250,000</p>"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": [
+   {
+    "level": "fail",
+    "rule": "RX-CD-02",
+    "file": "a.tsx",
+    "line": 1,
+    "column": 4,
+    "message": "\"Rp1,250,000\": write Rp1.250.000 (Rp right before the number, dots for thousands, no decimals)"
+   }
+  ]
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.tsx",
+     "raw": "<p>Rp1.250.000,00</p>"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": [
+   {
+    "level": "fail",
+    "rule": "RX-CD-02",
+    "file": "a.tsx",
+    "line": 1,
+    "column": 4,
+    "message": "\"Rp1.250.000,00\": write Rp1.250.000 (Rp right before the number, dots for thousands, no decimals)"
+   }
+  ]
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.tsx",
+     "raw": "<p>Rp2500</p>"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": [
+   {
+    "level": "fail",
+    "rule": "RX-CD-02",
+    "file": "a.tsx",
+    "line": 1,
+    "column": 4,
+    "message": "\"Rp2500\": write Rp1.250.000 (Rp right before the number, dots for thousands, no decimals)"
+   }
+  ]
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.tsx",
+     "raw": "<p>IDR 10000</p>"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": [
+   {
+    "level": "fail",
+    "rule": "RX-CD-02",
+    "file": "a.tsx",
+    "line": 1,
+    "column": 4,
+    "message": "\"IDR 10000\": write Rp1.250.000 (Rp right before the number, dots for thousands, no decimals)"
+   }
+  ]
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.tsx",
+     "raw": "<p>Rp {total}</p>"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": [
+   {
+    "level": "fail",
+    "rule": "RX-CD-02",
+    "file": "a.tsx",
+    "line": 1,
+    "column": 4,
+    "message": "\"Rp {...\": Rupiah with a space before the value; write Rp1.250.000 (Rp right before the number, dots for thousands, no decimals)"
+   }
+  ]
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.tsx",
+     "raw": "<p>'Rp ' + n</p>"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": [
+   {
+    "level": "fail",
+    "rule": "RX-CD-02",
+    "file": "a.tsx",
+    "line": 1,
+    "column": 4,
+    "message": "'Rp ': a Rupiah prefix with a space; write Rp1.250.000 (Rp right before the number, dots for thousands, no decimals)"
+   }
+  ]
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.tsx",
+     "raw": "<p>Rp1.250.000. Rp500, Rp1,5 juta, Rp{total}</p>"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": []
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.ts",
+     "raw": "format(n, { style: \"currency\", currency: \"IDR\" })"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": [
+   {
+    "level": "warn",
+    "rule": "RX-FE-12",
+    "file": "a.ts",
+    "line": 1,
+    "column": 32,
+    "message": "Intl currency style writes a space after Rp (and ,00 unless maximumFractionDigits is 0): format with id-ID grouping and prepend Rp"
+   }
+  ]
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.tsx",
+     "raw": "<p>Dikirim untuk Anda 10/02/2026, 2:30 PM</p>"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": [
+   {
+    "level": "warn",
+    "rule": "RX-CD-09",
+    "file": "a.tsx",
+    "line": 1,
+    "column": 23,
+    "message": "\"10/02/2026\": in Indonesian copy write 2 Okt 2026 (other markets follow their locale)"
+   },
+   {
+    "level": "warn",
+    "rule": "RX-CD-09",
+    "file": "a.tsx",
+    "line": 1,
+    "column": 35,
+    "message": "\"2:30 PM\": in Indonesian copy write 14.30 in 24-hour form (other markets follow their locale)"
+   }
+  ]
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.tsx",
+     "raw": "<p>2 Okt 2026, 14.30 WIB</p>"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": []
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.tsx",
+     "raw": "<p>Arrives around 6:38 PM</p>"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": []
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "src/format.ts",
+     "raw": "`${h}:${m} PM`; const eta = '6:38 PM'"
+    },
+    {
+     "path": "src/App.tsx",
+     "raw": "<html lang=\"id\">"
+    }
+   ],
+   "folder": true,
+   "skip": [],
+   "design": null
+  },
+  "output": [
+   {
+    "level": "warn",
+    "rule": "RX-CD-09",
+    "file": "src/format.ts",
+    "line": 1,
+    "column": 30,
+    "message": "\"6:38 PM\": in Indonesian copy write 14.30 in 24-hour form (other markets follow their locale)"
+   }
+  ]
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "src/App.test.tsx",
+     "raw": "expect('6:38 PM')"
+    },
+    {
+     "path": "tests/a.mjs",
+     "raw": "'6:38 PM'"
+    },
+    {
+     "path": "src/App.tsx",
+     "raw": "<html lang=\"id\">"
+    }
+   ],
+   "folder": true,
+   "skip": [],
+   "design": null
+  },
+  "output": []
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.tsx",
+     "raw": "<p>Lorem ipsum dolor</p>"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": [
+   {
+    "level": "fail",
+    "rule": "RX-AS-03",
+    "file": "a.tsx",
+    "line": 1,
+    "column": 4,
+    "message": "lorem ipsum: use realistic sample content from the brief, labeled as sample data"
+   }
+  ]
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.tsx",
+     "raw": "<p>John Doe, 0812-XXXX</p>"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": [
+   {
+    "level": "warn",
+    "rule": "RX-AS-03",
+    "file": "a.tsx",
+    "line": 1,
+    "column": 4,
+    "message": "\"John Doe\": a placeholder person; use realistic sample data and label it, or the real name"
+   },
+   {
+    "level": "warn",
+    "rule": "RX-AS-03",
+    "file": "a.tsx",
+    "line": 1,
+    "column": 19,
+    "message": "\"XXXX\": placeholder characters; use realistic sample data, labeled"
+   }
+  ]
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.tsx",
+     "raw": "<p>Hanya tersisa 2 kursi, buruan!</p>"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": [
+   {
+    "level": "warn",
+    "rule": "RX-AS-04",
+    "file": "a.tsx",
+    "line": 1,
+    "column": 4,
+    "message": "\"Hanya tersisa 2\": urgency copy; keep it only when the deadline or quota is real, stated as a plain fact"
+   },
+   {
+    "level": "warn",
+    "rule": "RX-AS-04",
+    "file": "a.tsx",
+    "line": 1,
+    "column": 27,
+    "message": "\"buruan\": urgency copy; keep it only when the deadline or quota is real, stated as a plain fact"
+   }
+  ]
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.tsx",
+     "raw": "<p>Kuota 40 kursi per kelas</p>"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": []
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.html",
+     "raw": "<meta name=\"viewport\" content=\"width=device-width, maximum-scale=1\">"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": [
+   {
+    "level": "fail",
+    "rule": "RX-A11Y-02",
+    "file": "a.html",
+    "line": 1,
+    "column": 52,
+    "message": "\"maximum-scale=1\": people must be able to zoom; remove it"
+   }
+  ]
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.html",
+     "raw": "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": []
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.tsx",
+     "raw": "<input tabIndex={2} />"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": [
+   {
+    "level": "fail",
+    "rule": "RX-A11Y-03",
+    "file": "a.tsx",
+    "line": 1,
+    "column": 8,
+    "message": "tabindex 2: keep focus order the same as the visual order; use 0 or the DOM order"
+   }
+  ]
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.tsx",
+     "raw": "<input tabIndex={0} /><h2 tabIndex={-1}>x</h2>"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": []
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.tsx",
+     "raw": "<img src=\"/a.png\">"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": [
+   {
+    "level": "fail",
+    "rule": "RX-A11Y-04",
+    "file": "a.tsx",
+    "line": 1,
+    "column": 1,
+    "message": "an <img> with no alt: describe meaningful images, use alt=\"\" for decorative ones"
+   }
+  ]
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.tsx",
+     "raw": "<img alt=\"\" src={x} onLoad={() => a > b} /><img {...props} />"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": []
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.tsx",
+     "raw": "<div onClick={go}>Buka</div>"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": [
+   {
+    "level": "warn",
+    "rule": "RX-A11Y-04",
+    "file": "a.tsx",
+    "line": 1,
+    "column": 1,
+    "message": "a clickable <div>: use a <button> or <a> so it works from the keyboard and has a role"
+   }
+  ]
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.tsx",
+     "raw": "<div role=\"button\" onClick={go}>Buka</div>"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": []
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.tsx",
+     "raw": "<button><CloseIcon /></button>"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": [
+   {
+    "level": "warn",
+    "rule": "RX-A11Y-04",
+    "file": "a.tsx",
+    "line": 1,
+    "column": 1,
+    "message": "an icon-only <button> with no name: add aria-label or visually hidden text"
+   }
+  ]
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.tsx",
+     "raw": "<button aria-label=\"Tutup\"><CloseIcon /></button><button><Icon /> Simpan</button><button>{label}</button>"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": []
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.tsx",
+     "raw": "<h1>A</h1><h3>B</h3>"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": [
+   {
+    "level": "warn",
+    "rule": "RX-A11Y-04",
+    "file": "a.tsx",
+    "line": 1,
+    "column": 11,
+    "message": "h1 then h3: headings skip a level; use h2"
+   }
+  ]
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.tsx",
+     "raw": "<h1>A</h1><h2>B</h2><h3>C</h3><h2>D</h2>"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": []
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.tsx",
+     "raw": "<button className=\"outline-none\">Simpan</button>"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": [
+   {
+    "level": "warn",
+    "rule": "RX-A11Y-03",
+    "file": "a.tsx",
+    "line": 1,
+    "column": 1,
+    "message": "focus outline removed on a control with no focus-visible style: show a visible focus indicator"
+   }
+  ]
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.tsx",
+     "raw": "<button className=\"outline-none focus-visible:ring-2\">x</button><h2 tabIndex={-1} className=\"outline-none\">x</h2><div className=\"outline-none\">x</div>"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": []
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.css",
+     "raw": "button:focus { outline: none }"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": [
+   {
+    "level": "warn",
+    "rule": "RX-A11Y-03",
+    "file": "a.css",
+    "line": 1,
+    "column": 16,
+    "message": "focus outline removed on a control with no focus-visible style: show a visible focus indicator"
+   }
+  ]
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.css",
+     "raw": ".card { outline: none }"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": []
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.css",
+     "raw": "button { outline: none } button:focus-visible { outline: 2px solid }"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": []
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.css",
+     "raw": ".x { font-size: 11px }"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": [
+   {
+    "level": "warn",
+    "rule": "RX-A11Y-02",
+    "file": "a.css",
+    "line": 1,
+    "column": 6,
+    "message": "11px text: body text is 14 to 16px on mobile; below 12px is hard to read"
+   }
+  ]
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.tsx",
+     "raw": "<p className=\"text-[10px]\">x</p>"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": [
+   {
+    "level": "warn",
+    "rule": "RX-A11Y-02",
+    "file": "a.tsx",
+    "line": 1,
+    "column": 15,
+    "message": "10px text: body text is 14 to 16px on mobile; below 12px is hard to read"
+   }
+  ]
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.css",
+     "raw": ".x { font-size: 12px } .y { font-size: 0.75rem }"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": []
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "Card.tsx",
+     "raw": "const s = { a: \"#ff0000\", b: \"#00ff00\", c: \"#0000ff\" };"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": [
+   {
+    "level": "warn",
+    "rule": "RX-DS-03",
+    "file": "Card.tsx",
+    "line": 1,
+    "column": 17,
+    "message": "3 one-off colors (#ff0000, #00ff00, #0000ff): use the color tokens, or define them by role"
+   }
+  ]
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "theme.ts",
+     "raw": "const s = { a: \"#ff0000\", b: \"#00ff00\", c: \"#0000ff\" };"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": []
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.css",
+     "raw": ":root { --a: #ff0000; --b: #00ff00; --c: #0000ff; }"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": []
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.tsx",
+     "raw": "<p>Pesanan #123, #456, #789</p>"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": []
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.css",
+     "raw": ".x { animation: spin 1s }"
+    }
+   ],
+   "folder": true,
+   "skip": [],
+   "design": null
+  },
+  "output": [
+   {
+    "level": "warn",
+    "rule": "RX-A11Y-08",
+    "file": "a.css",
+    "line": 1,
+    "column": 6,
+    "message": "\"animation:\" and nothing in the scanned folder handles prefers-reduced-motion: replace large movement with a fade or a cut when it is set"
+   }
+  ]
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.css",
+     "raw": ".x { animation: spin 1s }"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": []
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.css",
+     "raw": ".x { animation: spin 1s }"
+    },
+    {
+     "path": "b.css",
+     "raw": "@media (prefers-reduced-motion: reduce) {}"
+    }
+   ],
+   "folder": true,
+   "skip": [],
+   "design": null
+  },
+  "output": []
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.css",
+     "raw": ".hero { animation: float 3s ease-in-out infinite }"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": [
+   {
+    "level": "warn",
+    "rule": "RX-A11Y-08",
+    "file": "a.css",
+    "line": 1,
+    "column": 9,
+    "message": "\"animation: float 3s ease-in-out infinite\" repeats forever: give it a pause or stop control, stop it after a few cycles, or keep looping only for a loading indicator"
+   }
+  ]
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.tsx",
+     "raw": "<div className=\"animate-bounce\" />"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": [
+   {
+    "level": "warn",
+    "rule": "RX-A11Y-08",
+    "file": "a.tsx",
+    "line": 1,
+    "column": 17,
+    "message": "\"animate-bounce\" repeats forever: give it a pause or stop control, stop it after a few cycles, or keep looping only for a loading indicator"
+   }
+  ]
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.tsx",
+     "raw": "animate={{ y: 4 }} transition={{ repeat: Infinity }}"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": [
+   {
+    "level": "warn",
+    "rule": "RX-A11Y-08",
+    "file": "a.tsx",
+    "line": 1,
+    "column": 34,
+    "message": "\"repeat: Infinity\" repeats forever: give it a pause or stop control, stop it after a few cycles, or keep looping only for a loading indicator"
+   }
+  ]
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.css",
+     "raw": ".spinner { animation: spin 1s linear infinite }"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": []
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.tsx",
+     "raw": "<div className=\"skeleton animate-pulse\" />"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": []
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.css",
+     "raw": ".toast { animation: in 200ms ease-out }"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": []
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.css",
+     "raw": ".x { transition: all 0.2s }"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": [
+   {
+    "level": "warn",
+    "rule": "RX-UI-11",
+    "file": "a.css",
+    "line": 1,
+    "column": 6,
+    "message": "a transition on all properties: name the ones that move, transform and opacity where you can"
+   }
+  ]
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.tsx",
+     "raw": "<div className=\"transition-all\" />"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": [
+   {
+    "level": "warn",
+    "rule": "RX-UI-11",
+    "file": "a.tsx",
+    "line": 1,
+    "column": 17,
+    "message": "transition-all animates every property: name the ones that move, transform and opacity where you can"
+   }
+  ]
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.css",
+     "raw": ".x { transition: height 200ms, opacity 200ms }"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": [
+   {
+    "level": "warn",
+    "rule": "RX-UI-11",
+    "file": "a.css",
+    "line": 1,
+    "column": 6,
+    "message": "a transition on height: animate transform or opacity instead, so the page is not laid out again every frame"
+   }
+  ]
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.css",
+     "raw": ".x { transition: transform 200ms ease-out, opacity 150ms }"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": []
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.css",
+     "raw": ".x { transition: transform 0.8s ease }"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": [
+   {
+    "level": "warn",
+    "rule": "RX-UI-11",
+    "file": "a.css",
+    "line": 1,
+    "column": 6,
+    "message": "a 800 ms transition: task UI reads anything near 500 ms as waiting; about 100 to 300 ms, 400 ms for a large move"
+   }
+  ]
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.tsx",
+     "raw": "<div className=\"transition-opacity duration-700\" />"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": [
+   {
+    "level": "warn",
+    "rule": "RX-UI-11",
+    "file": "a.tsx",
+    "line": 1,
+    "column": 36,
+    "message": "duration-700: task UI reads anything near 500 ms as waiting; about 100 to 300 ms, 400 ms for a large move"
+   }
+  ]
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.css",
+     "raw": ".x { transition: opacity 200ms ease 600ms }"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": []
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.tsx",
+     "raw": "<div className=\"transition-opacity duration-300\" />"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": []
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.css",
+     "raw": ".bar { backdrop-filter: blur(20px) }"
+    }
+   ],
+   "folder": true,
+   "skip": [],
+   "design": null
+  },
+  "output": [
+   {
+    "level": "warn",
+    "rule": "RX-UI-35",
+    "file": "a.css",
+    "line": 1,
+    "column": 8,
+    "message": "\"backdrop-filter:\" and nothing in the scanned folder handles prefers-reduced-transparency or prefers-contrast: fall back to a solid surface when either is set, and check text contrast over the busiest background"
+   }
+  ]
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.css",
+     "raw": ".bar { backdrop-filter: blur(20px) }"
+    },
+    {
+     "path": "b.css",
+     "raw": "@media (prefers-reduced-transparency: reduce) { .bar { background: #fff } }"
+    }
+   ],
+   "folder": true,
+   "skip": [],
+   "design": null
+  },
+  "output": []
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.css",
+     "raw": ".bar { backdrop-filter: blur(20px) }"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": []
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.html",
+     "raw": "<textarea id=\"note\" rows=\"5\"></textarea>"
+    }
+   ],
+   "folder": true,
+   "skip": [],
+   "design": null
+  },
+  "output": [
+   {
+    "level": "warn",
+    "rule": "RX-FM-05",
+    "file": "a.html",
+    "line": 1,
+    "column": 1,
+    "message": "a textarea, and nothing in the scanned folder makes one grow with its text: a fixed box hides what the person wrote past its edge; use field-sizing: content, with a script that sets the height from scrollHeight where it is not supported"
+   }
+  ]
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.html",
+     "raw": "<textarea id=\"note\"></textarea>"
+    },
+    {
+     "path": "b.css",
+     "raw": "textarea { field-sizing: content }"
+    }
+   ],
+   "folder": true,
+   "skip": [],
+   "design": null
+  },
+  "output": []
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.tsx",
+     "raw": "<Textarea minRows={3} />"
+    }
+   ],
+   "folder": true,
+   "skip": [],
+   "design": null
+  },
+  "output": []
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.html",
+     "raw": "<textarea></textarea>"
+    },
+    {
+     "path": "b.js",
+     "raw": "t.style.height = t.scrollHeight + 'px'"
+    }
+   ],
+   "folder": true,
+   "skip": [],
+   "design": null
+  },
+  "output": []
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.html",
+     "raw": "<textarea></textarea>"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": []
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.tsx",
+     "raw": "{/* Rp 99 */}\n// Rp 99\n<p>x</p>"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": []
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.tsx",
+     "raw": "<p>Rp 99</p> {/* ryux-ignore RX-CD-02 */}"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": []
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.tsx",
+     "raw": "// ryux-ignore RX-CD-02\n<p>Rp 99</p>"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": []
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.tsx",
+     "raw": "// ryux-ignore RX-AS-03\n<p>Rp 99</p>"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": [
+   {
+    "level": "fail",
+    "rule": "RX-CD-02",
+    "file": "a.tsx",
+    "line": 2,
+    "column": 4,
+    "message": "\"Rp 99\": write Rp1.250.000 (Rp right before the number, dots for thousands, no decimals)"
+   }
+  ]
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.tsx",
+     "raw": "// ryux-ignore-file RX-CD-02\n\n\n<p>Rp 99</p>"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": []
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.tsx",
+     "raw": "<a href=\"/promo\">Selengkapnya</a>"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": [
+   {
+    "level": "warn",
+    "rule": "RX-CD-12",
+    "file": "a.tsx",
+    "line": 1,
+    "column": 17,
+    "message": "\"Selengkapnya\": a label that does not say where it leads or what it does; name the destination or the result (\"Lihat syarat promo\", \"Kirim laporan\")"
+   }
+  ]
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.tsx",
+     "raw": "<Button onClick={() => go()}> Learn more </Button>"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": [
+   {
+    "level": "warn",
+    "rule": "RX-CD-12",
+    "file": "a.tsx",
+    "line": 1,
+    "column": 29,
+    "message": "\"Learn more\": a label that does not say where it leads or what it does; name the destination or the result (\"Lihat syarat promo\", \"Kirim laporan\")"
+   }
+  ]
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.html",
+     "raw": "<button>Klik di sini</button>"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": [
+   {
+    "level": "warn",
+    "rule": "RX-CD-12",
+    "file": "a.html",
+    "line": 1,
+    "column": 8,
+    "message": "\"Klik di sini\": a label that does not say where it leads or what it does; name the destination or the result (\"Lihat syarat promo\", \"Kirim laporan\")"
+   }
+  ]
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.tsx",
+     "raw": "<a href=\"/promo\">Lihat syarat promo</a>"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": []
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.tsx",
+     "raw": "<p>Selengkapnya</p>"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": []
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.ts",
+     "raw": "const label = \"<a>Selengkapnya</a>\";"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": []
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.tsx",
+     "raw": "<h1 className=\"t\">Selamat datang di Sejuk</h1>"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": [
+   {
+    "level": "warn",
+    "rule": "RX-CD-12",
+    "file": "a.tsx",
+    "line": 1,
+    "column": 1,
+    "message": "\"Selamat datang di\": the first two words of a heading are what a scanning eye reads; start with what the section is about"
+   }
+  ]
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.html",
+     "raw": "<h2>Yuk, pesan teknisi</h2>"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": [
+   {
+    "level": "warn",
+    "rule": "RX-CD-12",
+    "file": "a.html",
+    "line": 1,
+    "column": 1,
+    "message": "\"Yuk\": the first two words of a heading are what a scanning eye reads; start with what the section is about"
+   }
+  ]
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.tsx",
+     "raw": "<h1>Pesan teknisi AC</h1>"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": []
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.tsx",
+     "raw": "<h2>Ayam goreng</h2>"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": []
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.tsx",
+     "raw": "<p>Selamat datang di Sejuk</p>"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": []
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.tsx",
+     "raw": "<p>Fitur ini memungkinkan Anda membayar dengan QRIS.</p>"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": [
+   {
+    "level": "warn",
+    "rule": "RX-CD-18",
+    "file": "a.tsx",
+    "line": 1,
+    "column": 3,
+    "message": "\"memungkinkan Anda\": filler that adds words, not meaning; say what the user can do (\"Bayar dengan QRIS\", not \"memungkinkan Anda membayar dengan QRIS\")"
+   }
+  ]
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.html",
+     "raw": "<span>We understand that waiting is hard</span>"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": [
+   {
+    "level": "warn",
+    "rule": "RX-CD-18",
+    "file": "a.html",
+    "line": 1,
+    "column": 6,
+    "message": "\"We understand that\": filler that adds words, not meaning; say what the user can do (\"Bayar dengan QRIS\", not \"memungkinkan Anda membayar dengan QRIS\")"
+   }
+  ]
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.tsx",
+     "raw": "<p>Bayar dengan QRIS.</p>"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": []
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.ts",
+     "raw": "const t = \"memungkinkan Anda\";"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": []
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.tsx",
+     "raw": "<p>Teknisi AC terbaik di Jakarta</p>"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": [
+   {
+    "level": "warn",
+    "rule": "RX-CD-19",
+    "file": "a.tsx",
+    "line": 1,
+    "column": 3,
+    "message": "\"terbaik\": a superlative needs a source from the brief; otherwise write the fact that would earn it"
+   }
+  ]
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.html",
+     "raw": "<h2>The fastest way to pay</h2>"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": [
+   {
+    "level": "warn",
+    "rule": "RX-CD-19",
+    "file": "a.html",
+    "line": 1,
+    "column": 4,
+    "message": "\"fastest\": a superlative needs a source from the brief; otherwise write the fact that would earn it"
+   }
+  ]
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.tsx",
+     "raw": "<span>#1 di Indonesia</span>"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": [
+   {
+    "level": "warn",
+    "rule": "RX-CD-19",
+    "file": "a.tsx",
+    "line": 1,
+    "column": 6,
+    "message": "\"#1\": a superlative needs a source from the brief; otherwise write the fact that would earn it"
+   }
+  ]
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.tsx",
+     "raw": "<p>Teknisi datang dalam 2 jam</p>"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": []
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.tsx",
+     "raw": "<p>Langkah 1 dari 3</p>"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": []
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "art/empty.svg",
+     "raw": "<svg xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M0 0h4\"/></svg>"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": [
+   {
+    "level": "fail",
+    "rule": "RX-UI-19",
+    "file": "art/empty.svg",
+    "line": 1,
+    "column": 1,
+    "message": "<svg> with no viewBox: add one (viewBox=\"0 0 w h\") so the art scales with its container"
+   }
+  ]
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "art/empty.svg",
+     "raw": "<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:inkscape=\"x\" width=\"240\" height=\"180\" viewBox=\"0 0 240 180\"><g inkscape:label=\"a\" inkscape:groupmode=\"layer\"><image href=\"data:image/png;base64,AA\"/><text>Kosong</text></g></svg>"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": [
+   {
+    "level": "warn",
+    "rule": "RX-UI-19",
+    "file": "art/empty.svg",
+    "line": 1,
+    "column": 1,
+    "message": "fixed width=\"240\" height=\"180\" on the root: leave the size to CSS so the art fits its container"
+   },
+   {
+    "level": "warn",
+    "rule": "RX-UI-19",
+    "file": "art/empty.svg",
+    "line": 1,
+    "column": 110,
+    "message": "editor metadata: export without it"
+   },
+   {
+    "level": "warn",
+    "rule": "RX-UI-19",
+    "file": "art/empty.svg",
+    "line": 1,
+    "column": 156,
+    "message": "an embedded raster inside the SVG: draw it as vector, or ship the raster on its own at 2x"
+   },
+   {
+    "level": "warn",
+    "rule": "RX-UI-19",
+    "file": "art/empty.svg",
+    "line": 1,
+    "column": 196,
+    "message": "<text> inside the art: keep words in the HTML so they can be translated, read, and zoomed"
+   }
+  ]
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "art/empty.svg",
+     "raw": "<?xml version=\"1.0\"?>\n<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"100%\" viewBox=\"0 0 240 180\"><g id=\"box\"><path d=\"M0 0h4\"/></g></svg>"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": []
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.svg",
+     "raw": "<svg viewBox=\"0 0 8 8\" stroke-width=\"3\"><!-- drawn for Inkscape users --><path d=\"M0 0h4\"/></svg>"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": []
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.css",
+     "raw": ".a { color: #9e3b22; background: #fff; border-radius: 8px; transition: opacity 240ms ease; font-family: 'Fraunces', serif; }"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": {
+    "colours": [
+     "#9e3b22",
+     "#3a1a10",
+     "#ff44cc"
+    ],
+    "fonts": [
+     "Fraunces",
+     "Plus Jakarta Sans"
+    ],
+    "radius": [
+     8,
+     16
+    ],
+    "durations": [
+     240
+    ],
+    "unread": []
+   }
+  },
+  "output": []
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.css",
+     "raw": "#add { color: #3A1A10 }"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": {
+    "colours": [
+     "#9e3b22",
+     "#3a1a10",
+     "#ff44cc"
+    ],
+    "fonts": [
+     "Fraunces",
+     "Plus Jakarta Sans"
+    ],
+    "radius": [
+     8,
+     16
+    ],
+    "durations": [
+     240
+    ],
+    "unread": []
+   }
+  },
+  "output": []
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.tsx",
+     "raw": "<a href=\"#add\">x</a><div className=\"bg-[#9E3B22]\" />"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": {
+    "colours": [
+     "#9e3b22",
+     "#3a1a10",
+     "#ff44cc"
+    ],
+    "fonts": [
+     "Fraunces",
+     "Plus Jakarta Sans"
+    ],
+    "radius": [
+     8,
+     16
+    ],
+    "durations": [
+     240
+    ],
+    "unread": []
+   }
+  },
+  "output": []
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "b.css",
+     "raw": ".b { color: #123456; border-radius: 12px; transition: transform 300ms, opacity 240ms 100ms; font-family: Inter, sans-serif; }"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": {
+    "colours": [
+     "#9e3b22",
+     "#3a1a10",
+     "#ff44cc"
+    ],
+    "fonts": [
+     "Fraunces",
+     "Plus Jakarta Sans"
+    ],
+    "radius": [
+     8,
+     16
+    ],
+    "durations": [
+     240
+    ],
+    "unread": []
+   }
+  },
+  "output": [
+   {
+    "level": "warn",
+    "rule": "RX-DS-03",
+    "file": "b.css",
+    "line": 1,
+    "column": 13,
+    "message": "#123456 is not a direction colour in DESIGN.md: use the token, or add it to DESIGN.md's direction (colour) if the direction changed on purpose"
+   },
+   {
+    "level": "warn",
+    "rule": "RX-DS-03",
+    "file": "b.css",
+    "line": 1,
+    "column": 37,
+    "message": "radius 12px is not in DESIGN.md's shape.radius (8, 16): use the token, or add it to DESIGN.md's direction (shape.radius) if the direction changed on purpose"
+   },
+   {
+    "level": "warn",
+    "rule": "RX-DS-03",
+    "file": "b.css",
+    "line": 1,
+    "column": 55,
+    "message": "duration 300ms is not in DESIGN.md's motion durations (240): use the token, or add it to DESIGN.md's direction (motion.durations) if the direction changed on purpose"
+   },
+   {
+    "level": "warn",
+    "rule": "RX-DS-03",
+    "file": "b.css",
+    "line": 1,
+    "column": 106,
+    "message": "font \"Inter\" is not in DESIGN.md's type families (Fraunces, Plus Jakarta Sans): use the token, or add it to DESIGN.md's direction (type) if the direction changed on purpose"
+   }
+  ]
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "c.tsx",
+     "raw": "<div style={{ color: \"#00ff00\", fontFamily: \"Roboto\" }} />"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": {
+    "colours": [
+     "#9e3b22",
+     "#3a1a10",
+     "#ff44cc"
+    ],
+    "fonts": [
+     "Fraunces",
+     "Plus Jakarta Sans"
+    ],
+    "radius": [
+     8,
+     16
+    ],
+    "durations": [
+     240
+    ],
+    "unread": []
+   }
+  },
+  "output": [
+   {
+    "level": "warn",
+    "rule": "RX-DS-03",
+    "file": "c.tsx",
+    "line": 1,
+    "column": 23,
+    "message": "#00ff00 is not a direction colour in DESIGN.md: use the token, or add it to DESIGN.md's direction (colour) if the direction changed on purpose"
+   },
+   {
+    "level": "warn",
+    "rule": "RX-DS-03",
+    "file": "c.tsx",
+    "line": 1,
+    "column": 46,
+    "message": "font \"Roboto\" is not in DESIGN.md's type families (Fraunces, Plus Jakarta Sans): use the token, or add it to DESIGN.md's direction (type) if the direction changed on purpose"
+   }
+  ]
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "b.css",
+     "raw": ".b { color: #123456 }"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": []
+ }
+]

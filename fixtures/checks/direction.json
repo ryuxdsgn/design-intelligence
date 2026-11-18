@@ -1,0 +1,71 @@
+[
+ {
+  "input": {
+   "md": "# DESIGN.md\n\n## Visual and motion language\n\n```yaml\ndirection:\n  name: Test\n  grammar:\n    motion: balanced\n  type:\n    display: Fraunces SemiBold (H1 72/75)\n    body: Plus Jakarta Sans 400/700, 16/24\n    figures: tabular\n  colour:\n    roles: {dominant: \"#9E3B22\", ink: \"#3a1a10\", action: \"#F4C\"}\n  shape:\n    radius: [8, 16]\n  motion: one layer settles once (L4, 240ms)\n```\n\n## Voice and tone\n\nWarm."
+  },
+  "output": {
+   "colours": [
+    "#9e3b22",
+    "#3a1a10",
+    "#ff44cc"
+   ],
+   "fonts": [
+    "Fraunces",
+    "Plus Jakarta Sans"
+   ],
+   "radius": [
+    8,
+    16
+   ],
+   "durations": [
+    240
+   ],
+   "unread": []
+  }
+ },
+ {
+  "input": {
+   "md": "# DESIGN.md\n\n## Visual and motion language\n\nCalm and warm."
+  },
+  "output": null
+ },
+ {
+  "input": {
+   "md": "## Visual and motion language\n\n```yaml\ndirection:\n  type:\n    families: [\"Nunito Sans\", 'Inter']   # heading and body\n    weights: [Regular, Bold]   # plus Italic\n  colour:\n    roles: {primary: \"#875BF7\"}   # Primary/500\n  shape:\n    radius: [8, 16]   # 2 roles\n  durations: []   # none in the kit\n```"
+  },
+  "output": {
+   "colours": [
+    "#875bf7"
+   ],
+   "fonts": [
+    "Nunito Sans",
+    "Inter"
+   ],
+   "radius": [
+    8,
+    16
+   ],
+   "durations": [],
+   "unread": []
+  }
+ },
+ {
+  "input": {
+   "md": "## Visual and motion language\n\n```yaml\ndirection:\n  type:\n    families: { heading: Nunito Sans, body: \"Inter\" }\n```"
+  },
+  "output": {
+   "colours": [],
+   "fonts": [
+    "Nunito Sans",
+    "Inter"
+   ],
+   "radius": null,
+   "durations": null,
+   "unread": [
+    "colour (no hex values)",
+    "shape.radius (add radius: [..] in px to check it)",
+    "motion.durations (add durations: [..] in ms, or write them as 240ms)"
+   ]
+  }
+ }
+]
