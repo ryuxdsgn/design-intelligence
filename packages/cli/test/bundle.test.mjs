@@ -462,3 +462,14 @@ test("Explore closes the direction loop with ryux pick and keeps the text fallba
   assert.match(f, /fall ?back|the current text flow/i);
   assert.match(f, /no scripts of its own/);
 });
+
+test("ux: flows, journey maps, and the size of a change", () => {
+  const ux = renderBundle()["knowledge/ux.md"];
+  for (const id of ["RX-UX-18", "RX-UX-19", "RX-UX-20"]) assert.match(ux, new RegExp(id));
+  assert.match(ux, /RX-UX-18[\s\S]*failure branch/i);
+  assert.match(ux, /RX-UX-18[\s\S]*read the screens or routes/i);
+  assert.match(ux, /RX-UX-19[\s\S]*assumption-based/i);
+  assert.match(ux, /RX-UX-19[\s\S]*search_research/);
+  assert.match(ux, /RX-UX-20[\s\S]*Polish[\s\S]*Revamp[\s\S]*Redesign/);
+  assert.match(ux, /RX-UX-20[\s\S]*names none/i);
+});
