@@ -531,8 +531,8 @@ Gate area UX. Covers information architecture, navigation, flows, grouping, disc
 
 - When: a user journey map or customer journey map is asked for
 - Do: Before making it, ask what the brief and the repo do not answer: the actor, the scenario and its goal, where the journey starts and ends, and what data exists (interviews, analytics, support tickets, research).
-  - Its parts follow NNGroup: the actor; the scenario and expectations; the phases; per phase the actions, thoughts, and emotions; the touchpoints; the opportunities; and an owner for each opportunity.
-  - With research from the user or the ryux MCP (search_research), each row cites its source, page, and sample (core evidence model).
+  - Its parts follow NNGroup: the actor; the scenario and expectations; the phases; per phase the actions, thoughts (mindsets), and emotions; and the opportunities. The touchpoints and an owner per opportunity are RYUX additions.
+  - With research from the user or the ryux MCP (search_research), each cell cites its source (a study with its page and sample, an analytics report, a ticket set) as in the core evidence model. When research covers only some cells, it is a mixed map: cited cells and asumsi cells side by side, and the title says mixed.
   - With none, the map is titled assumption-based (a hypothesis map): every thought, emotion, and pain point is marked as a guess, and the map ends with how to test the riskiest guesses (RX-UX-12).
   - Use the table in knowledge/ux.md, User flows and journey maps.
 - Do not: Write emotions, quotes, or pain points as if users said them when no one asked them, invent percentages or scores, or leave out the source row.
@@ -542,11 +542,12 @@ Gate area UX. Covers information architecture, navigation, flows, grouping, disc
 
 #### RX-UX-20 [Required] Name the size of the change: polish, revamp, or redesign
 
-- When: an existing screen, page, or flow is to be changed
-- Do: Name which of three changes the request is, and keep what that size keeps:
+- When: the ask is to improve or restyle an existing screen, page, or flow
+- Do: Name which of three changes the request is, and keep what that size keeps. Adding a feature, fixing a bug, or a named small edit (rename a button, add a filter) is none of the three: do it without asking.
   - Polish: the flow and the basic look stay; details, hierarchy, and states are tidied (capabilities/build.md, Polish).
-  - Revamp: the flow and the functions stay; the look and the screen structure may change a lot, inside the direction in DESIGN.md (ask before leaving it). Run capabilities/design.md, stages 2 to 5, with the flow locked.
+  - Revamp: the flow and the functions stay; the look and the screen structure may change a lot, inside the direction in DESIGN.md (ask before leaving it). Run capabilities/design.md, stages 2 to 5, with the flow locked: explore only inside the DESIGN.md direction, and in a code project then implement it through capabilities/build.md.
   - Redesign: the flow, the information architecture, and the problem itself may be rethought, starting from evidence (research, analytics, a Critique), and drawn as a new flow (RX-UX-18).
+  - The asks listed under Polish (premium, cleaner, easier to find, a find-it or mood ask) name polish.
   - When the request names none (perbaiki, bikin lebih bagus, improve this), ask once before changing anything, with the three options and what each would change on this screen. When it names one, do not ask.
   - RX-UX-10 applies to all three: list what works, and change only what has a named problem.
 - Do not: Turn a polish into a revamp, change the flow or functions in a revamp, start a redesign without evidence, or guess the size of an ambiguous request.

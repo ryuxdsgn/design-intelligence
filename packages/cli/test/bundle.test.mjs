@@ -491,3 +491,27 @@ test("router: flows, journeys, and change size are reachable", () => {
   assert.match(b["capabilities/build.md"], /Polish: refining what exists[\s\S]*Diagnose first[\s\S]*Fix by impact/);
   assert.match(b["capabilities/design.md"], /RX-UX-20/);
 });
+
+test("review fixes: change size, questions, journey evidence", () => {
+  const b = renderBundle();
+  const ux = b["knowledge/ux.md"];
+  const r20 = ux.slice(ux.indexOf("RX-UX-20"), ux.indexOf("RX-UX-20") + 2500);
+  // 1. only improve or restyle asks are sized; features and bug fixes are not
+  assert.match(r20, /adding a feature, fixing a bug, or a named small edit[^.]*is none of the three/i);
+  // 2. the Polish asks already name a size
+  assert.match(r20, /premium, cleaner, easier to find[^\n]*name polish/i);
+  // 3. a revamp in code explores inside the direction, then builds
+  assert.match(r20, /explore only inside the DESIGN\.md direction[^\n]*then implement it through capabilities\/build\.md/i);
+  // 4. one question budget, stated in Design stage 1
+  assert.match(b["capabilities/design.md"], /up to four for a user flow or journey map/);
+  // 5. the output place is a default, not a question
+  assert.doesNotMatch(ux, /Where should it go/);
+  assert.match(ux, /Put it in the file the user names, else docs\//);
+  // 6. parts NN/g does not list are attributed to RYUX
+  assert.match(ux, /touchpoints and an owner per opportunity are RYUX additions/i);
+  // 7. evidence per cell, mixed maps allowed
+  assert.match(ux, /each cell cites its source/i);
+  assert.match(ux, /mixed map/i);
+  // 8. the pending branch ends where the user sees it, not at the success end
+  assert.doesNotMatch(ux, /G2\[[^\]]*\] --> H/);
+});

@@ -12,7 +12,7 @@ The six stages of the core workflow (SKILL.md), as Design runs them.
    Read the product docs first (the router, stage 1). Ask only when a missing answer materially
    affects the user flow, what the product can do, or whether the content is correct, those
    questions alone, most consequential first, at most three, in one message, before designing.
-   A user flow or journey map asks as in knowledge/ux.md (RX-UX-18, RX-UX-19); a revamp runs stages 2
+   A user flow or journey map asks as in knowledge/ux.md (RX-UX-18, RX-UX-19), up to four for a user flow or journey map; a revamp runs stages 2
    to 5 with the flow locked, a redesign may redraw the flow from evidence (RX-UX-20).
    A product rule that changes which states or actions the screen has (refunds, fees, what happens
    on failure) is a major decision. **Market:** when the prompt, DESIGN.md, and the product docs

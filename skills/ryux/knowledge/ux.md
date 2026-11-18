@@ -84,13 +84,14 @@ A user flow is one task in one product: the steps and the system's answers, minu
 map is a goal across channels and days, with what the person thinks and feels (RX-UX-19). Use a flow to design
 screens, a journey map to decide which moments are worth designing; the flow is a deep dive into one phase.
 
-**Before a flow or a journey map, ask** once, at most five questions, and only what the brief, DESIGN.md, and
+**Before a flow or a journey map, ask** once, at most four questions, and only what the brief, DESIGN.md, and
 the repo do not already answer:
 1. Who is the actor, and what situation are they in?
 2. What is the scenario, and what goal ends it?
 3. Where does it start (the trigger) and where does it end?
 4. What data exists: interviews, analytics, support tickets, research (ryux MCP `search_research`)?
-5. Where should it go: a file in docs/, Figma, or FigJam?
+
+Put it in the file the user names, else docs/ in the project; Figma or FigJam only when connected and asked.
 
 **A flow, as Mermaid.** Decisions are diamonds; every failure branch returns to the task or ends with a way
 out. Labels in the interface language. A short example (buying a prepaid electricity token):
@@ -105,7 +106,7 @@ flowchart TD
   E --> F{Pembayaran berhasil?}
   F -- Tidak --> F2[Saldo tetap, coba metode lain] --> E
   F -- Ya --> G{Token terbit?}
-  G -- Belum --> G2[Status diproses + token dikirim ke riwayat] --> H
+  G -- Belum --> G2[Status diproses: token menyusul di riwayat dan notifikasi, saldo aman]
   G -- Ya --> H[Token 20 digit tampil, bisa disalin: selesai]
 ```
 
@@ -114,7 +115,7 @@ lain") so each maps to a state in the design (RX-EC-01).
 
 **A journey map, as a table.** Columns are the phases; rows are the lenses. Above it: the actor, the scenario
 and expectations, and whether the map is research-based or assumption-based. The Source row says where each
-column comes from: a cited study or user data, or "asumsi".
+cell comes from (each cell cites its source): a cited study or user data, or "asumsi"; a mixed map has both.
 
 | Lens | Sadar token menipis | Membeli | Menunggu token | Memasukkan token | Setelahnya |
 | --- | --- | --- | --- | --- | --- |
@@ -312,8 +313,8 @@ How Indonesian apps sequence and structure this flow: `get_flow` for a reference
 
 - When: a user journey map or customer journey map is asked for
 - Do: Before making it, ask what the brief and the repo do not answer: the actor, the scenario and its goal, where the journey starts and ends, and what data exists (interviews, analytics, support tickets, research).
-  - Its parts follow NNGroup: the actor; the scenario and expectations; the phases; per phase the actions, thoughts, and emotions; the touchpoints; the opportunities; and an owner for each opportunity.
-  - With research from the user or the ryux MCP (search_research), each row cites its source, page, and sample (core evidence model).
+  - Its parts follow NNGroup: the actor; the scenario and expectations; the phases; per phase the actions, thoughts (mindsets), and emotions; and the opportunities. The touchpoints and an owner per opportunity are RYUX additions.
+  - With research from the user or the ryux MCP (search_research), each cell cites its source (a study with its page and sample, an analytics report, a ticket set) as in the core evidence model. When research covers only some cells, it is a mixed map: cited cells and asumsi cells side by side, and the title says mixed.
   - With none, the map is titled assumption-based (a hypothesis map): every thought, emotion, and pain point is marked as a guess, and the map ends with how to test the riskiest guesses (RX-UX-12).
   - Use the table in knowledge/ux.md, User flows and journey maps.
 - Do not: Write emotions, quotes, or pain points as if users said them when no one asked them, invent percentages or scores, or leave out the source row.
@@ -323,11 +324,12 @@ How Indonesian apps sequence and structure this flow: `get_flow` for a reference
 
 ### RX-UX-20 [Required] Name the size of the change: polish, revamp, or redesign
 
-- When: an existing screen, page, or flow is to be changed
-- Do: Name which of three changes the request is, and keep what that size keeps:
+- When: the ask is to improve or restyle an existing screen, page, or flow
+- Do: Name which of three changes the request is, and keep what that size keeps. Adding a feature, fixing a bug, or a named small edit (rename a button, add a filter) is none of the three: do it without asking.
   - Polish: the flow and the basic look stay; details, hierarchy, and states are tidied (capabilities/build.md, Polish).
-  - Revamp: the flow and the functions stay; the look and the screen structure may change a lot, inside the direction in DESIGN.md (ask before leaving it). Run capabilities/design.md, stages 2 to 5, with the flow locked.
+  - Revamp: the flow and the functions stay; the look and the screen structure may change a lot, inside the direction in DESIGN.md (ask before leaving it). Run capabilities/design.md, stages 2 to 5, with the flow locked: explore only inside the DESIGN.md direction, and in a code project then implement it through capabilities/build.md.
   - Redesign: the flow, the information architecture, and the problem itself may be rethought, starting from evidence (research, analytics, a Critique), and drawn as a new flow (RX-UX-18).
+  - The asks listed under Polish (premium, cleaner, easier to find, a find-it or mood ask) name polish.
   - When the request names none (perbaiki, bikin lebih bagus, improve this), ask once before changing anything, with the three options and what each would change on this screen. When it names one, do not ask.
   - RX-UX-10 applies to all three: list what works, and change only what has a named problem.
 - Do not: Turn a polish into a revamp, change the flow or functions in a revamp, start a redesign without evidence, or guess the size of an ambiguous request.
