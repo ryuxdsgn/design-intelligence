@@ -4,7 +4,9 @@
 // carries numbers from the canvas instead of the agent's own claims. Same idea as page-probe.ts for code.
 // Checks: content images (RX-UI-21), contrast (RX-A11Y-01), targets (RX-A11Y-02), text cut by a bar or
 // clipped (RX-QA-03), an overlay with no elevation (RX-UI-15), a busy screen whose button keeps its idle
-// label (RX-IX-02), tokens (RX-DS-03), and annotations by category (RX-AS-03).
+// label (RX-IX-02), tokens (RX-DS-03), annotations by category (RX-AS-03), construction (RX-DS-12), and the visual
+// tells an owner review found in a flow that passed every other check: empty bands (RX-UI-05), small uppercase
+// labels and section cards (RX-UI-01), text under 12 px (RX-A11Y-02), and uneven buttons in a row (RX-UI-15).
 
 export interface AuditFinding {
   rule: string;
@@ -30,7 +32,7 @@ export async function figmaAudit(figma, pageName) {
 
   const findings = [];
   const add = (rule, level, frame, node, message) => findings.push({ rule, level, frame: frame.name, node: node ? node.name : "", message });
-  const c = { screens: screens.length, imageFills: 0, distinctImages: 0, reusedImages: 0, contrastFails: 0, contrastUnknown: 0, targetsUnder24: 0, targetsUnder44: 0, cutText: 0, clippedText: 0, flatOverlays: 0, idleBusyButtons: 0, unstyledText: 0, unboundFills: 0, unboundSpacing: 0, layoutScreens: 0, looseLayers: 0, strayLayers: 0, rawEffects: 0 };
+  const c = { screens: screens.length, imageFills: 0, distinctImages: 0, reusedImages: 0, contrastFails: 0, contrastUnknown: 0, targetsUnder24: 0, targetsUnder44: 0, cutText: 0, clippedText: 0, flatOverlays: 0, idleBusyButtons: 0, unstyledText: 0, unboundFills: 0, unboundSpacing: 0, layoutScreens: 0, looseLayers: 0, strayLayers: 0, rawEffects: 0, emptyBands: 0, capsLabels: 0, cards: 0, smallText: 0, texts: 0, unevenRows: 0 };
   const images = new Map();
 
   // WCAG relative luminance and contrast, on 0-1 channels.
@@ -194,6 +196,47 @@ export async function figmaAudit(figma, pageName) {
       add("RX-A11Y-02", g.m < 24 ? "fail" : "warn", frame, g.e.n, `${who} ${g.size}, under ${g.m < 24 ? 24 : 44}x${g.m < 24 ? 24 : 44}`);
     }
 
+    // Visual tells: what made a flow read as generated in owner review, measured so "0 fail" cannot hide it.
+    const own = nodes.filter((e) => e.n !== frame && !e.inInstance);
+    const texts = own.filter((e) => e.n.type === "TEXT" && e.n.characters.trim() && !MIXED(e.n.fontSize));
+    // Small uppercase labels above blocks (RX-UI-01): more than three on one screen is a template, not a hierarchy.
+    const caps = texts.filter((e) => { const s = e.n.characters.trim(); return e.n.fontSize <= 13 && s.length <= 32 && /\p{L}{2}/u.test(s) && (e.n.textCase === "UPPER" || s === s.toUpperCase()); });
+    c.capsLabels += caps.length;
+    if (caps.length > 3) add("RX-UI-01", "warn", frame, caps[0].n, `${caps.length} small uppercase labels (${caps.slice(0, 3).map((e) => `"${short(e.n.characters.trim(), 16)}"`).join(", ")}…); label a section only when its content does not say what it is`);
+    // A bordered or shadowed rounded box around a section (RX-UI-01): more than three on one screen makes every section equal.
+    const raised = (n) => visiblePaints(n.strokes).length > 0 || (Array.isArray(n.effects) && n.effects.some((x) => x.type === "DROP_SHADOW" && x.visible !== false));
+    const cards = own.filter((e) => { const n = e.n, b = box(n); return n.type !== "TEXT" && "cornerRadius" in n && !MIXED(n.cornerRadius) && n.cornerRadius > 0 && raised(n) && b.width >= fbox.width * 0.6 && b.height >= 40 && !PINNED.test(nm(n)) && !TARGET.test(nm(n)) && !OVERLAY.test(nm(n)) && !/\b(option|method|choice|radio|input|field|search)\b/i.test(nm(n)); });
+    c.cards += cards.length;
+    if (cards.length > 3) add("RX-UI-01", "warn", frame, cards[0].n, `${cards.length} sections in a bordered or shadowed card ("${short(cards[0].n.name, 24)}" and ${cards.length - 1} more); group with space, a heading, or one divider first`);
+    // Text under 12 px (RX-A11Y-02), outside system chrome.
+    const tiny = texts.filter((e) => e.n.fontSize < 12);
+    c.smallText += tiny.length; c.texts += texts.length;
+    if (tiny.length) add("RX-A11Y-02", "warn", frame, tiny[0].n, `${tiny.length} of ${texts.length} text layers under 12 px (e.g. "${short(tiny[0].n.characters.trim(), 24)}" ${tiny[0].n.fontSize} px)`);
+    // An empty band (RX-UI-05): the tallest vertical gap between painted blocks, from the first block to the last.
+    const painted = nodes.filter((e) => {
+      const n = e.n, b = box(n);
+      if (n === frame || e.ancestors.some((a) => a.type === "INSTANCE")) return false;
+      if (b.width >= fbox.width * 0.9 && b.height >= fbox.height * 0.9) return false;
+      return n.type === "TEXT" || n.type === "INSTANCE" || visiblePaints(n.fills).length > 0 || visiblePaints(n.strokes).length > 0;
+    }).map((e) => [box(e.n).y - fbox.y, box(e.n).y - fbox.y + box(e.n).height]).filter(([a, b]) => b > 0 && a < fbox.height).sort((p, q) => p[0] - q[0]);
+    let reach = painted.length ? painted[0][1] : 0, band = { h: 0, at: 0 };
+    for (const [a, b] of painted.slice(1)) { if (a - reach > band.h) band = { h: a - reach, at: reach }; reach = Math.max(reach, b); }
+    if (band.h >= 96) { c.emptyBands++; add("RX-UI-05", "warn", frame, null, `an empty band ${Math.round(band.h)} pt tall from y ${Math.round(band.at)}; move the blocks together, give the space a job, or let the content fill it`); }
+    // Buttons that share a row (RX-UI-15): one height, labels on one line, an icon in each or in none.
+    const rows = new Map();
+    for (const e of outermost(/\b(button|btn|cta)\b/i)) { const parent = e.ancestors[e.ancestors.length - 1]; if (!rows.has(parent)) rows.set(parent, []); rows.get(parent).push(e.n); }
+    const cy = (n) => box(n).y + box(n).height / 2;
+    const label = (n) => ("findAll" in n ? n.findAll((t) => t.type === "TEXT" && t.visible !== false && t.characters.trim())[0] : null);
+    const icon = (n) => "findAll" in n && n.findAll((t) => t.visible !== false && (t.type === "VECTOR" || t.type === "BOOLEAN_OPERATION" || /\bicon\b/i.test(t.name))).length > 0;
+    for (const row of rows.values()) {
+      const line = row.filter((n) => row.some((o) => o !== n && Math.abs(cy(o) - cy(n)) < 8));
+      if (line.length < 2) continue;
+      const hs = line.map((n) => box(n).height), ms = line.map(label).filter(Boolean).map(cy), is = line.map(icon);
+      const spread = (xs) => Math.max(...xs) - Math.min(...xs);
+      const why = [spread(hs) > 2 && "heights differ", ms.length > 1 && spread(ms) > 2 && `labels ${Math.round(spread(ms))} px apart`, is.some(Boolean) && !is.every(Boolean) && "an icon in some, not all"].filter(Boolean);
+      if (why.length) { c.unevenRows++; add("RX-UI-15", "warn", frame, line[0], `buttons in one row (${line.map((n) => `"${short(label(n) ? label(n).characters.trim() : n.name, 14)}"`).join(", ")}): ${why.join(", ")}`); }
+    }
+
     // A busy screen (a visible "Paying…" or "Processing") whose button still shows its idle label.
     const busy = nodes.some((e) => e.n.type === "TEXT" && BUSY.test(e.n.characters) && !e.ancestors.some((a) => /button|btn|cta/i.test(nm(a))));
     if (busy) for (const e of outermost(/\b(button|btn|cta)\b/i)) {
@@ -220,7 +263,7 @@ export async function figmaAudit(figma, pageName) {
   } catch (err) { annotations.unreadable = 1; }
 
   const fails = findings.filter((f) => f.level === "fail").length;
-  const gate = `figma audit (${page.name}): screens ${c.screens} · images ${c.distinctImages} distinct, ${c.imageFills} fills, ${c.reusedImages} reused across screens · contrast fails ${c.contrastFails} (${c.contrastUnknown} over images, not measured) · text cut ${c.cutText}, clipped ${c.clippedText} · targets under 24 ${c.targetsUnder24}, under 44 ${c.targetsUnder44} · overlays with no lift ${c.flatOverlays} · busy buttons with idle label ${c.idleBusyButtons} · unstyled text ${c.unstyledText}, unbound fills ${c.unboundFills}, unbound spacing ${c.unboundSpacing} · built in auto layout ${c.layoutScreens}/${c.screens} screens, loose layers ${c.looseLayers}, layers outside the screens ${c.strayLayers}, effects without a style ${c.rawEffects} · annotations ${Object.entries(annotations).map(([k, v]) => `${k} ${v}`).join(", ") || "none"} · ${fails} fail, ${findings.length - fails} warn`;
+  const gate = `figma audit (${page.name}): screens ${c.screens} · images ${c.distinctImages} distinct, ${c.imageFills} fills, ${c.reusedImages} reused across screens · contrast fails ${c.contrastFails} (${c.contrastUnknown} over images, not measured) · text cut ${c.cutText}, clipped ${c.clippedText} · targets under 24 ${c.targetsUnder24}, under 44 ${c.targetsUnder44} · overlays with no lift ${c.flatOverlays} · busy buttons with idle label ${c.idleBusyButtons} · unstyled text ${c.unstyledText}, unbound fills ${c.unboundFills}, unbound spacing ${c.unboundSpacing} · built in auto layout ${c.layoutScreens}/${c.screens} screens, loose layers ${c.looseLayers}, layers outside the screens ${c.strayLayers}, effects without a style ${c.rawEffects} · empty bands ${c.emptyBands}, small uppercase labels ${c.capsLabels}, section cards ${c.cards}, text under 12 px ${c.smallText}/${c.texts}, uneven button rows ${c.unevenRows} · annotations ${Object.entries(annotations).map(([k, v]) => `${k} ${v}`).join(", ") || "none"} · ${fails} fail, ${findings.length - fails} warn`;
   return { page: page.name, screens: screens.map((s) => s.name), counts: c, images: [...images.entries()].map(([h, s]) => ({ image: h.slice(0, 8), screens: [...s] })), annotations, findings: findings.slice(0, 80), more: Math.max(0, findings.length - 80), gate };
 }
 

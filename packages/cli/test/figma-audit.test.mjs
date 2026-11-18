@@ -76,7 +76,7 @@ test("an overlay with no shadow or border warns; a lifted one passes", async () 
 
 test("a busy screen whose button keeps its idle label warns; 'Paying…' and Cancel pass", async () => {
   const button = (label) => node("INSTANCE", "Button", [20, 764, 350, 52], { fills: [ink] }, [text("Label", label, [120, 780, 150, 20], { fills: [white] })]);
-  const busy = text("Status", "Confirming payment", [100, 400, 200, 20]);
+  const busy = text("Status", "Confirming payment", [100, 700, 200, 20]);
   assert.deepEqual(rules(await audit([screen("08", [busy, button("Pay Rp1.250.000")])])), ["warn RX-IX-02"]);
   assert.deepEqual(rules(await audit([screen("08", [busy, button("Paying…")])])), []);
   assert.deepEqual(rules(await audit([screen("08", [busy, button("Cancel")])])), []);
@@ -139,7 +139,7 @@ test("an instance is known by its component, so seats named A1 are measured as s
 });
 
 test("construction: a screen of loose layers fails, auto layout sections with pinned bars pass", async () => {
-  const rows = (n) => Array.from({ length: n }, (_, i) => text(`Row ${i}`, `Book ${i}`, [16, 120 + i * 40, 200, 20]));
+  const rows = (n) => Array.from({ length: n }, (_, i) => text(`Row ${i}`, `Book ${i}`, [16, 120 + i * 110, 200, 20]));
   const loose = screen("01", rows(6), { layoutMode: "NONE" });
   assert.deepEqual(rules(await audit([loose])), ["fail RX-DS-12"]);
   const stack = node("FRAME", "Content", [0, 100, 390, 600], { layoutMode: "VERTICAL" }, rows(6));
@@ -167,4 +167,44 @@ test("construction: the inside of a sheet is checked, the inside of a status bar
   const status = node("FRAME", "Status bar", [0, 0, 390, 54], { layoutMode: "NONE" }, items(4, 4));
   const r = await audit([screen("05", [status, sheet], { layoutMode: "NONE" })]);
   assert.equal(r.counts.looseLayers, 4);
+});
+
+test("tells: more than three small uppercase labels on a screen warn; three pass", async () => {
+  const labels = (n) => Array.from({ length: n }, (_, i) => text(`Eyebrow ${i}`, ["ON THE SHELF", "SOLD BY", "DELIVERY", "SUMMARY"][i], [16, 100 + i * 60, 200, 14], { fontSize: 12 }));
+  const four = await audit([screen("04", labels(4))]);
+  assert.deepEqual(rules(four), ["warn RX-UI-01"]);
+  assert.equal(four.counts.capsLabels, 4);
+  assert.deepEqual(rules(await audit([screen("04", labels(3))])), []);
+  const caseUpper = text("Eyebrow", "Pay with", [16, 100, 200, 14], { fontSize: 12, textCase: "UPPER" });
+  assert.equal((await audit([screen("05", [caseUpper])])).counts.capsLabels, 1, "uppercase set by text case counts too");
+});
+
+test("tells: more than three bordered section cards warn; option rows and buttons are not cards", async () => {
+  const card = (name, y) => node("FRAME", name, [16, y, 358, 80], { cornerRadius: 12, strokes: [pale] });
+  assert.deepEqual(rules(await audit([screen("05", [card("Deliver to", 100), card("Your order", 190), card("Waiting", 280), card("Order", 370)])])), ["warn RX-UI-01"]);
+  assert.deepEqual(rules(await audit([screen("05", [card("Deliver to", 100), card("Option QRIS", 190), card("Option VA", 280), card("Pay button", 370)])])), []);
+});
+
+test("tells: an empty band of 96 pt or more between blocks warns", async () => {
+  const bag = (gap) => screen("04", [text("Item", "Bumi Manusia", [16, 100, 200, 20]), text("Courier", "Courier", [16, 140, 200, 20]), text("Book", "Book Rp65.000", [16, 160 + gap, 200, 20])]);
+  const r = await audit([bag(150)]);
+  assert.deepEqual(rules(r), ["warn RX-UI-05"]);
+  assert.match(r.findings[0].message, /empty band 150 pt tall from y 160/);
+  assert.deepEqual(rules(await audit([bag(40)])), []);
+  assert.match(r.gate, /empty bands 1, small uppercase labels 0, section cards 0, text under 12 px 0\/3, uneven button rows 0/);
+});
+
+test("tells: text under 12 px warns with its share; the status bar's insides are not counted", async () => {
+  const status = node("INSTANCE", "Status bar", [0, 0, 390, 54], {}, [text("Time", "9:41", [20, 15, 40, 20], { fontSize: 10 })]);
+  const r = await audit([screen("01", [status, text("Author", "Pramoedya Ananta Toer", [16, 60, 200, 14], { fontSize: 11 }), text("Title", "Bumi Manusia", [16, 80, 200, 20])])]);
+  assert.deepEqual(rules(r), ["warn RX-A11Y-02"]);
+  assert.match(r.findings[0].message, /1 of 2 text layers under 12 px/);
+});
+
+test("tells: buttons in one row with labels off line or an icon in only one warn; matched buttons pass", async () => {
+  const btn = (name, x, labelY, withIcon) => node("FRAME", name, [x, 600, 160, 44], { strokes: [pale] }, [...(withIcon ? [node("VECTOR", "Share", [x + 40, 612, 20, 20])] : []), text("Label", name.replace(" button", ""), [x + 64, labelY, 80, 20])]);
+  const off = await audit([screen("06", [btn("Save QR button", 16, 604, false), btn("Share button", 200, 612, true)])]);
+  assert.deepEqual(rules(off), ["warn RX-UI-15"]);
+  assert.match(off.findings[0].message, /labels 8 px apart, an icon in some, not all/);
+  assert.deepEqual(rules(await audit([screen("06", [btn("Save QR button", 16, 612, true), btn("Share button", 200, 612, true)])])), []);
 });

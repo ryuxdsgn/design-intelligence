@@ -42,8 +42,8 @@ Standards are the main evidence (WCAG 2.2 success criteria); reference screens s
 
 - Do: Keep body text around 14 to 16px on mobile, and touch targets at least 24×24px, preferably 44×44px. The target is the hit area, not the glyph: a 20 to 24px icon sits inside a 44×44 button. Measure it on the element or node; a name or comment that states a size is not a measurement.
 - Do not: Shrink body text or crowd small targets together.
-- Why: Small text and targets cause misreads and mis-taps. (WCAG 2.2 SC 2.5.8 (24px minimum); Apple HIG 44pt; Material 48dp; Fitts's law (Fitts 1954): bigger and nearer targets are faster to hit; ryux Figma pilot critique 2026-10-28: a layer named "Close (44 pt tap)" measured 24×44)
-- Check: audit_ui
+- Why: Small text and targets cause misreads and mis-taps. (WCAG 2.2 SC 2.5.8 (24px minimum); Apple HIG 44pt; Material 48dp; Fitts's law (Fitts 1954): bigger and nearer targets are faster to hit; ryux Figma pilot critique 2026-10-28: a layer named "Close (44 pt tap)" measured 24×44; owner review 2026-11-18 (Figma, Rak-8, "agak slop" after the audit said 0 fail): author, shop, address, and order lines set at 11 pt grey across the flow)
+- Check: audit_ui; in Figma, the audit counts text under 12 px
 - Machine check: `ryux scan` flags zoom turned off: user-scalable=no, maximum-scale=1, userScalable: false, maximumScale: 1 (fail); text set below 12px (CSS font-size, Tailwind text-[Npx], fontSize in style objects) (warn)
 - Measured: `ryux scan <url>` flags controls under 24x24px that are crowded by neighbours (warn when spaced as WCAG 2.5.8 allows); rendered text under 12px (warn) (fail)
 
