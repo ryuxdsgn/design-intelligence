@@ -20,6 +20,7 @@ import { hasBlock, readIfExists, rel, removeBlock, removePath, upsertBlock, writ
 import { HOOK_AGENTS, hookAgents, hookFile, installHook, removeHook, type HookAgent } from "./hook.js";
 import { runScan } from "./scan.js";
 import { runPick } from "./pick.js";
+import { runAudit } from "./audit.js";
 import { readFile, readdir } from "node:fs/promises";
 
 type Flags = Record<string, string | boolean>;
@@ -839,6 +840,9 @@ Commands:
   scan        Check source files for rules a machine can see (Rupiah format, alt text, zoom, focus, ...).
               No LLM, no network. Default path: this folder. Give a URL to measure the rendered page
               (sideways scroll, contrast, target size, colliding text, text under a bar); that needs Playwright.
+  audit       Measure a FigCraft design file's screens with the Figma audit's checks (contrast, targets,
+              text cut by a bar, auto layout, empty bands, small text, ...). Takes .figcraft (needs
+              figcraft-cli) or the .json it converts to. No LLM, no network.
   pick        Open an HTML page (e.g. a directions page) in the browser and wait for a click;
               print the chosen number. Used by the Design step to pick a direction without copy-paste.
   update      Update an install to this version (also migrates RYUX 1.x folders).
@@ -855,7 +859,8 @@ Options:
   --mcp                print the ryux MCP connect command
   --yes                skip the confirmation (remove)
   --dry-run            list what install or init would create or update, and write nothing
-  --json               print check's or scan's findings as JSON (for agents and CI)
+  --json               print check's, scan's, or audit's findings as JSON (for agents and CI)
+  --page <name>        audit: the page to measure (default the file's current page)
   --hook               install: run ryux scan after each edit, for Claude Code, Codex, Cursor, and OpenCode (opt-in)
   --list-rules         scan: list what each check looks for
   --design [file]      scan: compare colours, fonts, radius, and durations with DESIGN.md's direction
@@ -882,6 +887,7 @@ Examples:
   ${CLI_CMD} scan src
   ${CLI_CMD} scan http://localhost:3000/checkout
   ${CLI_CMD} scan --list-rules
+  ${CLI_CMD} audit flow.figcraft --page Rak
   ${CLI_CMD} install --agent claude --hook
 
 Exit codes: 0 done or healthy, 1 a problem was found (for scan: a fail) or the command failed, 2 the command was used wrongly.`);
@@ -910,6 +916,8 @@ async function main(): Promise<void> {
       return runScan(argv.slice(1));
     case "pick":
       return runPick(argv.slice(1));
+    case "audit":
+      return runAudit(argv.slice(1));
     case "init":
       return runInit(flags);
     case "setup":

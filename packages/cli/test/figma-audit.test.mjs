@@ -76,7 +76,7 @@ test("an overlay with no shadow or border warns; a lifted one passes", async () 
 
 test("a busy screen whose button keeps its idle label warns; 'Paying…' and Cancel pass", async () => {
   const button = (label) => node("INSTANCE", "Button", [20, 764, 350, 52], { fills: [ink] }, [text("Label", label, [120, 780, 150, 20], { fills: [white] })]);
-  const busy = text("Status", "Confirming payment", [100, 400, 200, 20]);
+  const busy = text("Status", "Confirming payment", [100, 700, 200, 20]);
   assert.deepEqual(rules(await audit([screen("08", [busy, button("Pay Rp1.250.000")])])), ["warn RX-IX-02"]);
   assert.deepEqual(rules(await audit([screen("08", [busy, button("Paying…")])])), []);
   assert.deepEqual(rules(await audit([screen("08", [busy, button("Cancel")])])), []);
@@ -139,7 +139,7 @@ test("an instance is known by its component, so seats named A1 are measured as s
 });
 
 test("construction: a screen of loose layers fails, auto layout sections with pinned bars pass", async () => {
-  const rows = (n) => Array.from({ length: n }, (_, i) => text(`Row ${i}`, `Book ${i}`, [16, 120 + i * 40, 200, 20]));
+  const rows = (n) => Array.from({ length: n }, (_, i) => text(`Row ${i}`, `Book ${i}`, [16, 120 + i * 110, 200, 20]));
   const loose = screen("01", rows(6), { layoutMode: "NONE" });
   assert.deepEqual(rules(await audit([loose])), ["fail RX-DS-12"]);
   const stack = node("FRAME", "Content", [0, 100, 390, 600], { layoutMode: "VERTICAL" }, rows(6));
@@ -167,4 +167,76 @@ test("construction: the inside of a sheet is checked, the inside of a status bar
   const status = node("FRAME", "Status bar", [0, 0, 390, 54], { layoutMode: "NONE" }, items(4, 4));
   const r = await audit([screen("05", [status, sheet], { layoutMode: "NONE" })]);
   assert.equal(r.counts.looseLayers, 4);
+});
+
+test("tells: more than three small uppercase labels on a screen warn; three pass", async () => {
+  const labels = (n) => Array.from({ length: n }, (_, i) => text(`Eyebrow ${i}`, ["ON THE SHELF", "SOLD BY", "DELIVERY", "SUMMARY"][i], [16, 100 + i * 60, 200, 14], { fontSize: 12 }));
+  const four = await audit([screen("04", labels(4))]);
+  assert.deepEqual(rules(four), ["warn RX-UI-01"]);
+  assert.equal(four.counts.capsLabels, 4);
+  assert.deepEqual(rules(await audit([screen("04", labels(3))])), []);
+  const caseUpper = text("Eyebrow", "Pay with", [16, 100, 200, 14], { fontSize: 12, textCase: "UPPER" });
+  assert.equal((await audit([screen("05", [caseUpper])])).counts.capsLabels, 1, "uppercase set by text case counts too");
+});
+
+test("tells: more than three bordered section cards warn; option rows and buttons are not cards", async () => {
+  const card = (name, y) => node("FRAME", name, [16, y, 358, 80], { cornerRadius: 12, strokes: [pale] });
+  assert.deepEqual(rules(await audit([screen("05", [card("Deliver to", 100), card("Your order", 190), card("Waiting", 280), card("Order", 370)])])), ["warn RX-UI-01"]);
+  assert.deepEqual(rules(await audit([screen("05", [card("Deliver to", 100), card("Option QRIS", 190), card("Option VA", 280), card("Pay button", 370)])])), []);
+});
+
+test("tells: an empty band of 96 pt or more between blocks warns", async () => {
+  const bag = (gap) => screen("04", [text("Item", "Bumi Manusia", [16, 100, 200, 20]), text("Courier", "Courier", [16, 140, 200, 20]), text("Book", "Book Rp65.000", [16, 160 + gap, 200, 20])]);
+  const r = await audit([bag(150)]);
+  assert.deepEqual(rules(r), ["warn RX-UI-05"]);
+  assert.match(r.findings[0].message, /empty band 150 pt tall from y 160/);
+  assert.deepEqual(rules(await audit([bag(40)])), []);
+  assert.match(r.gate, /empty bands 1, small uppercase labels 0, section cards 0, text under 12 px 0\/3, uneven button rows 0/);
+});
+
+test("tells: text under 12 px warns with its share; the status bar's insides are not counted", async () => {
+  const status = node("INSTANCE", "Status bar", [0, 0, 390, 54], {}, [text("Time", "9:41", [20, 15, 40, 20], { fontSize: 10 })]);
+  const r = await audit([screen("01", [status, text("Author", "Pramoedya Ananta Toer", [16, 60, 200, 14], { fontSize: 11 }), text("Title", "Bumi Manusia", [16, 80, 200, 20])])]);
+  assert.deepEqual(rules(r), ["warn RX-A11Y-02"]);
+  assert.match(r.findings[0].message, /1 of 2 text layers under 12 px/);
+});
+
+test("tells: buttons in one row with labels off line or an icon in only one warn; matched buttons pass", async () => {
+  const btn = (name, x, labelY, withIcon) => node("FRAME", name, [x, 600, 160, 44], { strokes: [pale] }, [...(withIcon ? [node("VECTOR", "Share", [x + 40, 612, 20, 20])] : []), text("Label", name.replace(" button", ""), [x + 64, labelY, 80, 20])]);
+  const off = await audit([screen("06", [btn("Save QR button", 16, 604, false), btn("Share button", 200, 612, true)])]);
+  assert.deepEqual(rules(off), ["warn RX-UI-15"]);
+  assert.match(off.findings[0].message, /labels 8 px apart, an icon in some, not all/);
+  assert.deepEqual(rules(await audit([screen("06", [btn("Save QR button", 16, 612, true), btn("Share button", 200, 612, true)])])), []);
+});
+
+test("figcraft: a FigCraft document is read through the same audit (boxes, styles, bindings, annotations, instances)", async () => {
+  const { figcraftCanvas } = await import("../dist/figcraft-doc.js");
+  const solid = (r, g, b) => ({ type: "solid", visible: true, opacity: 1, color: { r, g, b, a: 1 } });
+  const T = (x, y) => [1, 0, 0, 1, x, y];
+  const doc = {
+    pages: [1], current_page: 1,
+    annotation_categories: [{ id: "c1", name: "Sample data" }],
+    nodes: {
+      1: { id: 1, type: "page", name: "Rak", children: [2, 8] },
+      2: { id: 2, type: "frame", name: "06-pay", parent: 1, transform: T(1000, 0), width: 390, height: 844, clip: true, fills: [solid(1, 1, 1)], bound: { fill: "VariableID:1" }, children: [3, 4, 5, 6] },
+      3: { id: 3, type: "text", name: "Eyebrow", parent: 2, transform: T(16, 100), width: 80, height: 13, characters: "STEP 2 OF 2", fills: [solid(0.1, 0.1, 0.1)], style: { font_size: 11, font_family: "Inter", font_style: "Regular", case: "upper" }, styles: { text: "S:1" }, annotations: [{ category: "c1", label: "made up" }] },
+      4: { id: 4, type: "rectangle", name: "QR card", parent: 2, transform: T(16, 130), width: 358, height: 300, corners: { radii: [16, 16, 16, 16] }, fills: [solid(1, 1, 1)], effects: [{ type: "dropShadow", visible: true }], styles: { effect: "S:2" } },
+      5: { id: 5, type: "instance", name: "Save QR button", parent: 2, source: 8, transform: T(16, 600), width: 160, height: 44, strokes: [solid(0.8, 0.8, 0.8)], children: [9] },
+      6: { id: 6, type: "frame", name: "Share button", parent: 2, transform: T(200, 600), width: 160, height: 44, layout: { mode: "horizontal", gap: 8, padding: [12, 12, 12, 12] }, children: [7, 10] },
+      7: { id: 7, type: "vector", name: "Share", parent: 6, transform: T(40, 12), width: 20, height: 20 },
+      10: { id: 10, type: "text", name: "Label", parent: 6, transform: T(64, 12), width: 60, height: 20, characters: "Share", fills: [solid(0.1, 0.1, 0.1)], style: { font_size: 15 } },
+      8: { id: 8, type: "component", name: "Local/Button", parent: 1, transform: T(0, 2000), width: 160, height: 44, children: [] },
+      9: { id: 9, type: "text", name: "Label", parent: 5, transform: T(64, 4), width: 60, height: 20, characters: "Save QR", fills: [solid(0.1, 0.1, 0.1)], style: { font_size: 15 } },
+    },
+  };
+  const fig = figcraftCanvas(doc);
+  const shot = fig.root.children[0].children[0];
+  assert.deepEqual(shot.children[3].children[1].absoluteBoundingBox, { x: 1264, y: 612, width: 60, height: 20 }, "boxes compose the parents' transforms");
+  const r = await figmaAudit(fig, "Rak");
+  assert.equal(r.counts.screens, 1, "the component at page level is not a screen");
+  assert.equal(r.counts.rawEffects, 0, "a shadow from an effect style counts as styled");
+  assert.equal(r.counts.unstyledText, 1, "the Share label has no text style");
+  assert.equal(r.counts.smallText, 1);
+  assert.deepEqual(r.annotations, { "Sample data": 1 });
+  assert.match(r.findings.find((f) => f.rule === "RX-UI-15").message, /"Save QR", "Share"\): labels 8 px apart, an icon in some, not all/);
 });
