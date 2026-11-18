@@ -34,6 +34,7 @@ export async function runAudit(args: string[]): Promise<void> {
     return;
   }
   const result = await figmaAudit(figcraftCanvas(readFigcraft(file)), page);
+  if (typeof result.gate === "string") result.gate = result.gate.replace(/^figma audit/, "figcraft audit");
   const findings: { level: string; rule: string; frame: string; node: string; message: string }[] = result.findings || [];
   if (args.includes("--json")) console.log(JSON.stringify(result, null, 2));
   else if (result.error) console.error(result.error);
