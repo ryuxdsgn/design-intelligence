@@ -832,10 +832,10 @@ Gate area CONTENT. Covers specific copy, action labels, error messages, terminol
 
 #### RX-CD-09 [Contextual] Dates, times, and numbers in Indonesian form
 
-- When: the copy is in Bahasa Indonesia; other markets follow their own locale
-- Do: Write dates as 2 Okt 2026 or Jumat, 2 Oktober 2026; times as 14.30 in 24-hour form, with WIB, WITA, or WIT when the time zone matters; decimals with a comma (1,5) and thousands with a dot (12.500); phone numbers as +62 812-3456-7890.
-- Do not: Write 10/02/2026, 2:30 PM, or 1.5 in Indonesian copy.
-- Why: Slash dates are ambiguous and English number formats read as foreign or as the wrong value. (PUEBI number and time notation; id-ID locale conventions)
+- When: the product serves Indonesian users, in Bahasa Indonesia or in English copy written for them; other markets follow their own locale
+- Do: Write dates as 2 Okt 2026 or Jumat, 2 Oktober 2026; times as 14.30 in 24-hour form, with WIB, WITA, or WIT when the time zone matters; decimals with a comma (1,5) and thousands with a dot (12.500); phone numbers as +62 812-3456-7890. English copy for Indonesian users keeps these number forms (Rp67.000, 1,2 km), so the same value never reads two ways in one product.
+- Do not: Write 10/02/2026, 2:30 PM, or 1.5 in copy for Indonesian users, in either language.
+- Why: Slash dates are ambiguous and English number formats read as foreign or as the wrong value. (PUEBI number and time notation; id-ID locale conventions; owner blind review 2026-11-18 of three Rak flows (secondhand books, Yogyakarta): "1.2 km" in English copy for a Yogyakarta app)
 - Check: audit_copy C-08
 - Machine check: `ryux scan` flags dates as 10/02/2026 and times as 2:30 PM in Indonesian copy (lang id, id-ID, Rupiah, or Indonesian words in the folder); test files are skipped (warn)
 
@@ -1587,9 +1587,9 @@ Gate area ACCESSIBILITY. Covers semantics, keyboard, focus, contrast, targets, n
 
 #### RX-A11Y-02 [Required] [Hard Gate] Readable text, reachable targets
 
-- Do: Keep body text around 14 to 16px on mobile, and touch targets at least 24×24px, preferably 44×44px. The target is the hit area, not the glyph: a 20 to 24px icon sits inside a 44×44 button. Measure it on the element or node; a name or comment that states a size is not a measurement.
+- Do: Keep body text around 14 to 16px on mobile, and touch targets at least 24×24px, preferably 44×44px. The target is the hit area, not the glyph: a 20 to 24px icon sits inside a 44×44 button, and a text link ("Remove", "Change") gets the same padded hit area as a button. Measure it on the element or node; a name or comment that states a size is not a measurement.
 - Do not: Shrink body text or crowd small targets together.
-- Why: Small text and targets cause misreads and mis-taps. (WCAG 2.2 SC 2.5.8 (24px minimum); Apple HIG 44pt; Material 48dp; Fitts's law (Fitts 1954): bigger and nearer targets are faster to hit; ryux Figma pilot critique 2026-10-28: a layer named "Close (44 pt tap)" measured 24×44)
+- Why: Small text and targets cause misreads and mis-taps. (WCAG 2.2 SC 2.5.8 (24px minimum); Apple HIG 44pt; Material 48dp; Fitts's law (Fitts 1954): bigger and nearer targets are faster to hit; ryux Figma pilot critique 2026-10-28: a layer named "Close (44 pt tap)" measured 24×44; owner blind review 2026-11-18 of three Rak flows (secondhand books, Yogyakarta): a small "Remove" text link as the only way to remove a bag item)
 - Check: audit_ui
 - Machine check: `ryux scan` flags zoom turned off: user-scalable=no, maximum-scale=1, userScalable: false, maximumScale: 1 (fail); text set below 12px (CSS font-size, Tailwind text-[Npx], fontSize in style objects) (warn)
 - Measured: `ryux scan <url>` flags controls under 24x24px that are crowded by neighbours (warn when spaced as WCAG 2.5.8 allows); rendered text under 12px (warn) (fail)
