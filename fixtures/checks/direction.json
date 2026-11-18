@@ -67,5 +67,140 @@
     "motion.durations (add durations: [..] in ms, or write them as 240ms)"
    ]
   }
+ },
+ {
+  "input": {
+   "md": "# DESIGN.md\r\n\r\n## Visual and motion language\r\n\r\n```yaml\r\ndirection:\r\n  name: Test\r\n  grammar:\r\n    motion: balanced\r\n  type:\r\n    display: Fraunces SemiBold (H1 72/75)\r\n    body: Plus Jakarta Sans 400/700, 16/24\r\n    figures: tabular\r\n  colour:\r\n    roles: {dominant: \"#9E3B22\", ink: \"#3a1a10\", action: \"#F4C\"}\r\n  shape:\r\n    radius: [8, 16]\r\n  motion: one layer settles once (L4, 240ms)\r\n```\r\n\r\n## Voice and tone\r\n\r\nWarm."
+  },
+  "output": {
+   "colours": [
+    "#9e3b22",
+    "#3a1a10",
+    "#ff44cc"
+   ],
+   "fonts": [],
+   "radius": [
+    8,
+    16
+   ],
+   "durations": null,
+   "unread": [
+    "type (no family names under type:)",
+    "motion.durations (add durations: [..] in ms, or write them as 240ms)"
+   ]
+  }
+ },
+ {
+  "input": {
+   "md": "# DESIGN.md\n\n## Visual and motion language\n\n```yaml\ndirection:\n  name: Test\n  grammar:\n    motion: balanced\n  type:\n    display: \"Fraunces\" SemiBold (H1 72/75)\n    body: Plus Jakarta Sans 400/700, 16/24\n    figures: tabular\n  colour:\n    roles: {dominant: \"#9E3B22\", ink: \"#3a1a10\", action: \"#F4C\"}\n  shape:\n    radius: [8, 12.5, 999]\n  motion: one layer settles once (L4, 240ms)\n```\n\n## Voice and tone\n\nWarm."
+  },
+  "output": {
+   "colours": [
+    "#9e3b22",
+    "#3a1a10",
+    "#ff44cc"
+   ],
+   "fonts": [
+    "Fraunces\"",
+    "Plus Jakarta Sans"
+   ],
+   "radius": [
+    8,
+    12.5,
+    999
+   ],
+   "durations": [
+    240
+   ],
+   "unread": []
+  }
+ },
+ {
+  "input": {
+   "md": "# DESIGN.md\n\n## Visual and motion language\n\n```yaml\ndirection:\n  name: Test\n  grammar:\n    motion: balanced\n  type:\n    display: Fraunces SemiBold (H1 72/75)\n    body: Plus Jakarta Sans 400/700, 16/24\n    figures: tabular\n  colour:\n    roles: {dominant: \"#9E3B22\", ink: \"#3a1a10\", action: \"#F4C\"}\n  shape:\n    radius: [8, 16]\n  motion:\n    enter: 180ms\n    exit: 0.2s 120ms\n```\n\n## Voice and tone\n\nWarm."
+  },
+  "output": {
+   "colours": [
+    "#9e3b22",
+    "#3a1a10",
+    "#ff44cc"
+   ],
+   "fonts": [
+    "Fraunces",
+    "Plus Jakarta Sans"
+   ],
+   "radius": [
+    8,
+    16
+   ],
+   "durations": [
+    180,
+    120
+   ],
+   "unread": []
+  }
+ },
+ {
+  "input": {
+   "md": "# DESIGN.md\n\n## Visual and motion language ✦\n\n```yaml\ndirection:\n  name: Tést 😀\n  grammar:\n    motion: balanced\n  type:\n    display: Fraunces SemiBold (H1 72/75)\n    body: Plus Jakarta Sans 400/700, 16/24\n    figures: tabular\n  colour:\n    roles: {dominant: \"#9E3B22\", ink: \"#3a1a10\", action: \"#F4C\"}\n  shape:\n    radius: [8, 16]\n  motion: one layer settles once (L4, 240ms)\n```\n\n## Voice and tone\n\nWarm."
+  },
+  "output": {
+   "colours": [
+    "#9e3b22",
+    "#3a1a10",
+    "#ff44cc"
+   ],
+   "fonts": [
+    "Fraunces",
+    "Plus Jakarta Sans"
+   ],
+   "radius": [
+    8,
+    16
+   ],
+   "durations": [
+    240
+   ],
+   "unread": []
+  }
+ },
+ {
+  "input": {
+   "md": "## Visual and motion language\n\ndirection:\n  colour: { a: #ABC, b: #12345678 } # brand\n  type:\n    families: { heading: 'Söhne Breit', body: Inter }\n  durations: [150, 240.5]\n"
+  },
+  "output": {
+   "colours": [
+    "#aabbcc",
+    "#123456"
+   ],
+   "fonts": [],
+   "radius": null,
+   "durations": [
+    150,
+    240.5
+   ],
+   "unread": [
+    "type (no family names under type:)",
+    "shape.radius (add radius: [..] in px to check it)"
+   ]
+  }
+ },
+ {
+  "input": {
+   "md": "intro\n## Visual and motion language\n```yaml\ndirection:  \n\tcolour: #fff\n```\n## Next\ndirection:\n  colour: #000\n"
+  },
+  "output": {
+   "colours": [
+    "#ffffff"
+   ],
+   "fonts": [],
+   "radius": null,
+   "durations": null,
+   "unread": [
+    "type (no family names under type:)",
+    "shape.radius (add radius: [..] in px to check it)",
+    "motion.durations (add durations: [..] in ms, or write them as 240ms)"
+   ]
+  }
  }
 ]

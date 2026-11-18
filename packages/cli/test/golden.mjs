@@ -26,9 +26,17 @@ function save(check, input, output) {
 
 const plain = (v) => JSON.parse(JSON.stringify(v ?? null));
 
-/** scanSources over {path, raw} sources; the check builds its own Source (ext, comment-blanked text). */
+const drift = await import("../dist/drift.js");
+
+/** scanSources over {path, raw} sources; the check builds its own Source (ext, comment-blanked text).
+ *  With a direction, each source's drift hits and the unused tokens are recorded too. */
 export const recordScan = (scanSources) => (sources, opts) => {
   const out = scanSources(sources, opts);
+  if (opts.design) {
+    const d = opts.design;
+    for (const s of sources) save("drift", { text: s.text, ext: s.ext, design: d }, plain({ colours: drift.driftColours(s.text, s.ext, d), fonts: drift.driftFonts(s.text, d), radius: drift.driftRadius(s.text, d), durations: drift.driftDurations(s.text, d) }));
+    save("unused", { texts: sources.map((s) => s.text), design: d }, plain(drift.unusedTokens(sources.map((s) => s.text), d)));
+  }
   save("scan", { sources: sources.map((s) => ({ path: s.path, raw: s.raw })), folder: !!opts.folder, skip: [...(opts.skip || [])].sort(), design: opts.design || null }, plain(out));
   return out;
 };

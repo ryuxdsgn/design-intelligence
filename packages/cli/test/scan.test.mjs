@@ -471,6 +471,35 @@ test("drift: flags values the direction does not have, and nothing else", () => 
   assert.equal(scanSources([toSource("b.css", ".b { color: #123456 }")], { folder: false }).filter((f) => f.rule === "RX-DS-03").length, 0, "quiet without --design");
 });
 
+// Inputs where JavaScript and a second implementation could part ways (line ends, UTF-16, number forms,
+// regex lookarounds); recorded into fixtures/checks by RYUX_RECORD=1 for the Rust port.
+test("drift: edge inputs are read the same way every time", () => {
+  const variants = [
+    DESIGN.replace(/\n/g, "\r\n"),
+    DESIGN.replace("Fraunces SemiBold", "\"Fraunces\" SemiBold").replace("[8, 16]", "[8, 12.5, 999]"),
+    DESIGN.replace("  motion: one layer settles once (L4, 240ms)", "  motion:\n    enter: 180ms\n    exit: 0.2s 120ms"),
+    DESIGN.replace("## Visual and motion language", "## Visual and motion language ✦").replace("Test", "Tést 😀"),
+    "## Visual and motion language\n\ndirection:\n  colour: { a: #ABC, b: #12345678 } # brand\n  type:\n    families: { heading: 'Söhne Breit', body: Inter }\n  durations: [150, 240.5]\n",
+    "intro\n## Visual and motion language\n```yaml\ndirection:  \n\tcolour: #fff\n```\n## Next\ndirection:\n  colour: #000\n",
+  ];
+  for (const md of variants) assert.ok(readDirection(md) !== undefined);
+  const css = [
+    ".a{border-radius:12.5 %;border-top-left-radius:6px 4px}",
+    ".b{transition:opacity .3s ease 100ms, transform 1.5s;animation-duration:250ms,0.4s}\r\n.c{transition-delay:300ms}",
+    ".d{color:#ABCDEF80;background:linear-gradient(#123,#fff)} #idx{color:#000}",
+    ".e{font-family:\"Söhne\",serif} .f{font-family:var(--x)} .g{font-family:$body}",
+  ];
+  for (const c of css) drift("x.css", c);
+  const tsx = [
+    '<p style={{ color: "#12abef" }}>Rp😀</p><a href="#abc">x</a><i to="#def"/>',
+    'const c = ["#123", "#ffffff",\'#9E3B22\', `#aaa`]; const s = { fontFamily: "Roboto, sans-serif", borderRadius: 7 };',
+    '<div className="bg-[#9E3B22] text-[#123456]" data-x="(#abc)" />',
+  ];
+  for (const t of tsx) drift("x.tsx", t);
+  assert.equal(drift("x.css", ".a{border-radius:12.5 %}").length, 0, "a percentage is not a radius, decimal or not");
+  assert.equal(drift("x.css", ".a{border-radius:12.5px}")[0].message.split(" ")[1], "12.5px", "a decimal radius is read whole");
+});
+
 test("drift: scan --design reports what it read and what it could not check", () => {
   const dir = mkdtempSync(join(tmpdir(), "ryux-drift-"));
   try {

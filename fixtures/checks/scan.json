@@ -2097,5 +2097,453 @@
    "design": null
   },
   "output": []
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "x.css",
+     "raw": ".a{border-radius:12.5 %;border-top-left-radius:6px 4px}"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": {
+    "colours": [
+     "#9e3b22",
+     "#3a1a10",
+     "#ff44cc"
+    ],
+    "fonts": [
+     "Fraunces",
+     "Plus Jakarta Sans"
+    ],
+    "radius": [
+     8,
+     16
+    ],
+    "durations": [
+     240
+    ],
+    "unread": []
+   }
+  },
+  "output": [
+   {
+    "level": "warn",
+    "rule": "RX-DS-03",
+    "file": "x.css",
+    "line": 1,
+    "column": 48,
+    "message": "radius 6, 4px is not in DESIGN.md's shape.radius (8, 16): use the token, or add it to DESIGN.md's direction (shape.radius) if the direction changed on purpose"
+   }
+  ]
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "x.css",
+     "raw": ".b{transition:opacity .3s ease 100ms, transform 1.5s;animation-duration:250ms,0.4s}\r\n.c{transition-delay:300ms}"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": {
+    "colours": [
+     "#9e3b22",
+     "#3a1a10",
+     "#ff44cc"
+    ],
+    "fonts": [
+     "Fraunces",
+     "Plus Jakarta Sans"
+    ],
+    "radius": [
+     8,
+     16
+    ],
+    "durations": [
+     240
+    ],
+    "unread": []
+   }
+  },
+  "output": [
+   {
+    "level": "warn",
+    "rule": "RX-UI-11",
+    "file": "x.css",
+    "line": 1,
+    "column": 4,
+    "message": "a 1500 ms transition: task UI reads anything near 500 ms as waiting; about 100 to 300 ms, 400 ms for a large move"
+   },
+   {
+    "level": "warn",
+    "rule": "RX-DS-03",
+    "file": "x.css",
+    "line": 1,
+    "column": 15,
+    "message": "duration 300, 1500ms is not in DESIGN.md's motion durations (240): use the token, or add it to DESIGN.md's direction (motion.durations) if the direction changed on purpose"
+   },
+   {
+    "level": "warn",
+    "rule": "RX-DS-03",
+    "file": "x.css",
+    "line": 1,
+    "column": 73,
+    "message": "duration 250, 400ms is not in DESIGN.md's motion durations (240): use the token, or add it to DESIGN.md's direction (motion.durations) if the direction changed on purpose"
+   }
+  ]
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "x.css",
+     "raw": ".d{color:#ABCDEF80;background:linear-gradient(#123,#fff)} #idx{color:#000}"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": {
+    "colours": [
+     "#9e3b22",
+     "#3a1a10",
+     "#ff44cc"
+    ],
+    "fonts": [
+     "Fraunces",
+     "Plus Jakarta Sans"
+    ],
+    "radius": [
+     8,
+     16
+    ],
+    "durations": [
+     240
+    ],
+    "unread": []
+   }
+  },
+  "output": [
+   {
+    "level": "warn",
+    "rule": "RX-DS-03",
+    "file": "x.css",
+    "line": 1,
+    "column": 10,
+    "message": "#ABCDEF80 is not a direction colour in DESIGN.md: use the token, or add it to DESIGN.md's direction (colour) if the direction changed on purpose"
+   },
+   {
+    "level": "warn",
+    "rule": "RX-DS-03",
+    "file": "x.css",
+    "line": 1,
+    "column": 10,
+    "message": "4 one-off colors (#abcdef80, #123, #fff, ...): use the color tokens, or define them by role"
+   },
+   {
+    "level": "warn",
+    "rule": "RX-DS-03",
+    "file": "x.css",
+    "line": 1,
+    "column": 47,
+    "message": "#123 is not a direction colour in DESIGN.md: use the token, or add it to DESIGN.md's direction (colour) if the direction changed on purpose"
+   }
+  ]
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "x.css",
+     "raw": ".e{font-family:\"Söhne\",serif} .f{font-family:var(--x)} .g{font-family:$body}"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": {
+    "colours": [
+     "#9e3b22",
+     "#3a1a10",
+     "#ff44cc"
+    ],
+    "fonts": [
+     "Fraunces",
+     "Plus Jakarta Sans"
+    ],
+    "radius": [
+     8,
+     16
+    ],
+    "durations": [
+     240
+    ],
+    "unread": []
+   }
+  },
+  "output": [
+   {
+    "level": "warn",
+    "rule": "RX-DS-03",
+    "file": "x.css",
+    "line": 1,
+    "column": 16,
+    "message": "font \"Söhne\" is not in DESIGN.md's type families (Fraunces, Plus Jakarta Sans): use the token, or add it to DESIGN.md's direction (type) if the direction changed on purpose"
+   }
+  ]
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "x.tsx",
+     "raw": "<p style={{ color: \"#12abef\" }}>Rp😀</p><a href=\"#abc\">x</a><i to=\"#def\"/>"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": {
+    "colours": [
+     "#9e3b22",
+     "#3a1a10",
+     "#ff44cc"
+    ],
+    "fonts": [
+     "Fraunces",
+     "Plus Jakarta Sans"
+    ],
+    "radius": [
+     8,
+     16
+    ],
+    "durations": [
+     240
+    ],
+    "unread": []
+   }
+  },
+  "output": [
+   {
+    "level": "warn",
+    "rule": "RX-DS-03",
+    "file": "x.tsx",
+    "line": 1,
+    "column": 21,
+    "message": "#12abef is not a direction colour in DESIGN.md: use the token, or add it to DESIGN.md's direction (colour) if the direction changed on purpose"
+   },
+   {
+    "level": "warn",
+    "rule": "RX-DS-03",
+    "file": "x.tsx",
+    "line": 1,
+    "column": 21,
+    "message": "3 one-off colors (#12abef, #abc, #def): use the color tokens, or define them by role"
+   }
+  ]
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "x.tsx",
+     "raw": "const c = [\"#123\", \"#ffffff\",'#9E3B22', `#aaa`]; const s = { fontFamily: \"Roboto, sans-serif\", borderRadius: 7 };"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": {
+    "colours": [
+     "#9e3b22",
+     "#3a1a10",
+     "#ff44cc"
+    ],
+    "fonts": [
+     "Fraunces",
+     "Plus Jakarta Sans"
+    ],
+    "radius": [
+     8,
+     16
+    ],
+    "durations": [
+     240
+    ],
+    "unread": []
+   }
+  },
+  "output": [
+   {
+    "level": "warn",
+    "rule": "RX-DS-03",
+    "file": "x.tsx",
+    "line": 1,
+    "column": 13,
+    "message": "#123 is not a direction colour in DESIGN.md: use the token, or add it to DESIGN.md's direction (colour) if the direction changed on purpose"
+   },
+   {
+    "level": "warn",
+    "rule": "RX-DS-03",
+    "file": "x.tsx",
+    "line": 1,
+    "column": 13,
+    "message": "4 one-off colors (#123, #ffffff, #9e3b22, ...): use the color tokens, or define them by role"
+   },
+   {
+    "level": "warn",
+    "rule": "RX-DS-03",
+    "file": "x.tsx",
+    "line": 1,
+    "column": 42,
+    "message": "#aaa is not a direction colour in DESIGN.md: use the token, or add it to DESIGN.md's direction (colour) if the direction changed on purpose"
+   },
+   {
+    "level": "warn",
+    "rule": "RX-DS-03",
+    "file": "x.tsx",
+    "line": 1,
+    "column": 75,
+    "message": "font \"Roboto\" is not in DESIGN.md's type families (Fraunces, Plus Jakarta Sans): use the token, or add it to DESIGN.md's direction (type) if the direction changed on purpose"
+   },
+   {
+    "level": "warn",
+    "rule": "RX-DS-03",
+    "file": "x.tsx",
+    "line": 1,
+    "column": 110,
+    "message": "radius 7px is not in DESIGN.md's shape.radius (8, 16): use the token, or add it to DESIGN.md's direction (shape.radius) if the direction changed on purpose"
+   }
+  ]
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "x.tsx",
+     "raw": "<div className=\"bg-[#9E3B22] text-[#123456]\" data-x=\"(#abc)\" />"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": {
+    "colours": [
+     "#9e3b22",
+     "#3a1a10",
+     "#ff44cc"
+    ],
+    "fonts": [
+     "Fraunces",
+     "Plus Jakarta Sans"
+    ],
+    "radius": [
+     8,
+     16
+    ],
+    "durations": [
+     240
+    ],
+    "unread": []
+   }
+  },
+  "output": [
+   {
+    "level": "warn",
+    "rule": "RX-DS-03",
+    "file": "x.tsx",
+    "line": 1,
+    "column": 21,
+    "message": "3 one-off colors (#9e3b22, #123456, #abc): use the color tokens, or define them by role"
+   },
+   {
+    "level": "warn",
+    "rule": "RX-DS-03",
+    "file": "x.tsx",
+    "line": 1,
+    "column": 36,
+    "message": "#123456 is not a direction colour in DESIGN.md: use the token, or add it to DESIGN.md's direction (colour) if the direction changed on purpose"
+   },
+   {
+    "level": "warn",
+    "rule": "RX-DS-03",
+    "file": "x.tsx",
+    "line": 1,
+    "column": 55,
+    "message": "#abc is not a direction colour in DESIGN.md: use the token, or add it to DESIGN.md's direction (colour) if the direction changed on purpose"
+   }
+  ]
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "x.css",
+     "raw": ".a{border-radius:12.5 %}"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": {
+    "colours": [
+     "#9e3b22",
+     "#3a1a10",
+     "#ff44cc"
+    ],
+    "fonts": [
+     "Fraunces",
+     "Plus Jakarta Sans"
+    ],
+    "radius": [
+     8,
+     16
+    ],
+    "durations": [
+     240
+    ],
+    "unread": []
+   }
+  },
+  "output": []
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "x.css",
+     "raw": ".a{border-radius:12.5px}"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": {
+    "colours": [
+     "#9e3b22",
+     "#3a1a10",
+     "#ff44cc"
+    ],
+    "fonts": [
+     "Fraunces",
+     "Plus Jakarta Sans"
+    ],
+    "radius": [
+     8,
+     16
+    ],
+    "durations": [
+     240
+    ],
+    "unread": []
+   }
+  },
+  "output": [
+   {
+    "level": "warn",
+    "rule": "RX-DS-03",
+    "file": "x.css",
+    "line": 1,
+    "column": 18,
+    "message": "radius 12.5px is not in DESIGN.md's shape.radius (8, 16): use the token, or add it to DESIGN.md's direction (shape.radius) if the direction changed on purpose"
+   }
+  ]
  }
 ]

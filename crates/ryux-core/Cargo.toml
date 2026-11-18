@@ -9,4 +9,5 @@ publish = false
 
 [dependencies]
 regex = "1"
+fancy-regex = "0.14"
 serde_json = { version = "1", features = ["preserve_order"] }

@@ -1,0 +1,514 @@
+[
+ {
+  "input": {
+   "texts": [
+    ".a { color: #9e3b22; background: #fff; border-radius: 8px; transition: opacity 240ms ease; font-family: 'Fraunces', serif; }"
+   ],
+   "design": {
+    "colours": [
+     "#9e3b22",
+     "#3a1a10",
+     "#ff44cc"
+    ],
+    "fonts": [
+     "Fraunces",
+     "Plus Jakarta Sans"
+    ],
+    "radius": [
+     8,
+     16
+    ],
+    "durations": [
+     240
+    ],
+    "unread": []
+   }
+  },
+  "output": {
+   "colours": [
+    "#3a1a10",
+    "#ff44cc"
+   ],
+   "fonts": [
+    "Plus Jakarta Sans"
+   ]
+  }
+ },
+ {
+  "input": {
+   "texts": [
+    "#add { color: #3A1A10 }"
+   ],
+   "design": {
+    "colours": [
+     "#9e3b22",
+     "#3a1a10",
+     "#ff44cc"
+    ],
+    "fonts": [
+     "Fraunces",
+     "Plus Jakarta Sans"
+    ],
+    "radius": [
+     8,
+     16
+    ],
+    "durations": [
+     240
+    ],
+    "unread": []
+   }
+  },
+  "output": {
+   "colours": [
+    "#9e3b22",
+    "#ff44cc"
+   ],
+   "fonts": [
+    "Fraunces",
+    "Plus Jakarta Sans"
+   ]
+  }
+ },
+ {
+  "input": {
+   "texts": [
+    "<a href=\"#add\">x</a><div className=\"bg-[#9E3B22]\" />"
+   ],
+   "design": {
+    "colours": [
+     "#9e3b22",
+     "#3a1a10",
+     "#ff44cc"
+    ],
+    "fonts": [
+     "Fraunces",
+     "Plus Jakarta Sans"
+    ],
+    "radius": [
+     8,
+     16
+    ],
+    "durations": [
+     240
+    ],
+    "unread": []
+   }
+  },
+  "output": {
+   "colours": [
+    "#3a1a10",
+    "#ff44cc"
+   ],
+   "fonts": [
+    "Fraunces",
+    "Plus Jakarta Sans"
+   ]
+  }
+ },
+ {
+  "input": {
+   "texts": [
+    ".b { color: #123456; border-radius: 12px; transition: transform 300ms, opacity 240ms 100ms; font-family: Inter, sans-serif; }"
+   ],
+   "design": {
+    "colours": [
+     "#9e3b22",
+     "#3a1a10",
+     "#ff44cc"
+    ],
+    "fonts": [
+     "Fraunces",
+     "Plus Jakarta Sans"
+    ],
+    "radius": [
+     8,
+     16
+    ],
+    "durations": [
+     240
+    ],
+    "unread": []
+   }
+  },
+  "output": {
+   "colours": [
+    "#9e3b22",
+    "#3a1a10",
+    "#ff44cc"
+   ],
+   "fonts": [
+    "Fraunces",
+    "Plus Jakarta Sans"
+   ]
+  }
+ },
+ {
+  "input": {
+   "texts": [
+    "<div style={{ color: \"#00ff00\", fontFamily: \"Roboto\" }} />"
+   ],
+   "design": {
+    "colours": [
+     "#9e3b22",
+     "#3a1a10",
+     "#ff44cc"
+    ],
+    "fonts": [
+     "Fraunces",
+     "Plus Jakarta Sans"
+    ],
+    "radius": [
+     8,
+     16
+    ],
+    "durations": [
+     240
+    ],
+    "unread": []
+   }
+  },
+  "output": {
+   "colours": [
+    "#9e3b22",
+    "#3a1a10",
+    "#ff44cc"
+   ],
+   "fonts": [
+    "Fraunces",
+    "Plus Jakarta Sans"
+   ]
+  }
+ },
+ {
+  "input": {
+   "texts": [
+    ".a{border-radius:12.5 %;border-top-left-radius:6px 4px}"
+   ],
+   "design": {
+    "colours": [
+     "#9e3b22",
+     "#3a1a10",
+     "#ff44cc"
+    ],
+    "fonts": [
+     "Fraunces",
+     "Plus Jakarta Sans"
+    ],
+    "radius": [
+     8,
+     16
+    ],
+    "durations": [
+     240
+    ],
+    "unread": []
+   }
+  },
+  "output": {
+   "colours": [
+    "#9e3b22",
+    "#3a1a10",
+    "#ff44cc"
+   ],
+   "fonts": [
+    "Fraunces",
+    "Plus Jakarta Sans"
+   ]
+  }
+ },
+ {
+  "input": {
+   "texts": [
+    ".b{transition:opacity .3s ease 100ms, transform 1.5s;animation-duration:250ms,0.4s}\r\n.c{transition-delay:300ms}"
+   ],
+   "design": {
+    "colours": [
+     "#9e3b22",
+     "#3a1a10",
+     "#ff44cc"
+    ],
+    "fonts": [
+     "Fraunces",
+     "Plus Jakarta Sans"
+    ],
+    "radius": [
+     8,
+     16
+    ],
+    "durations": [
+     240
+    ],
+    "unread": []
+   }
+  },
+  "output": {
+   "colours": [
+    "#9e3b22",
+    "#3a1a10",
+    "#ff44cc"
+   ],
+   "fonts": [
+    "Fraunces",
+    "Plus Jakarta Sans"
+   ]
+  }
+ },
+ {
+  "input": {
+   "texts": [
+    ".d{color:#ABCDEF80;background:linear-gradient(#123,#fff)} #idx{color:#000}"
+   ],
+   "design": {
+    "colours": [
+     "#9e3b22",
+     "#3a1a10",
+     "#ff44cc"
+    ],
+    "fonts": [
+     "Fraunces",
+     "Plus Jakarta Sans"
+    ],
+    "radius": [
+     8,
+     16
+    ],
+    "durations": [
+     240
+    ],
+    "unread": []
+   }
+  },
+  "output": {
+   "colours": [
+    "#9e3b22",
+    "#3a1a10",
+    "#ff44cc"
+   ],
+   "fonts": [
+    "Fraunces",
+    "Plus Jakarta Sans"
+   ]
+  }
+ },
+ {
+  "input": {
+   "texts": [
+    ".e{font-family:\"Söhne\",serif} .f{font-family:var(--x)} .g{font-family:$body}"
+   ],
+   "design": {
+    "colours": [
+     "#9e3b22",
+     "#3a1a10",
+     "#ff44cc"
+    ],
+    "fonts": [
+     "Fraunces",
+     "Plus Jakarta Sans"
+    ],
+    "radius": [
+     8,
+     16
+    ],
+    "durations": [
+     240
+    ],
+    "unread": []
+   }
+  },
+  "output": {
+   "colours": [
+    "#9e3b22",
+    "#3a1a10",
+    "#ff44cc"
+   ],
+   "fonts": [
+    "Fraunces",
+    "Plus Jakarta Sans"
+   ]
+  }
+ },
+ {
+  "input": {
+   "texts": [
+    "<p style={{ color: \"#12abef\" }}>Rp😀</p><a href=\"#abc\">x</a><i to=\"#def\"/>"
+   ],
+   "design": {
+    "colours": [
+     "#9e3b22",
+     "#3a1a10",
+     "#ff44cc"
+    ],
+    "fonts": [
+     "Fraunces",
+     "Plus Jakarta Sans"
+    ],
+    "radius": [
+     8,
+     16
+    ],
+    "durations": [
+     240
+    ],
+    "unread": []
+   }
+  },
+  "output": {
+   "colours": [
+    "#9e3b22",
+    "#3a1a10",
+    "#ff44cc"
+   ],
+   "fonts": [
+    "Fraunces",
+    "Plus Jakarta Sans"
+   ]
+  }
+ },
+ {
+  "input": {
+   "texts": [
+    "const c = [\"#123\", \"#ffffff\",'#9E3B22', `#aaa`]; const s = { fontFamily: \"Roboto, sans-serif\", borderRadius: 7 };"
+   ],
+   "design": {
+    "colours": [
+     "#9e3b22",
+     "#3a1a10",
+     "#ff44cc"
+    ],
+    "fonts": [
+     "Fraunces",
+     "Plus Jakarta Sans"
+    ],
+    "radius": [
+     8,
+     16
+    ],
+    "durations": [
+     240
+    ],
+    "unread": []
+   }
+  },
+  "output": {
+   "colours": [
+    "#3a1a10",
+    "#ff44cc"
+   ],
+   "fonts": [
+    "Fraunces",
+    "Plus Jakarta Sans"
+   ]
+  }
+ },
+ {
+  "input": {
+   "texts": [
+    "<div className=\"bg-[#9E3B22] text-[#123456]\" data-x=\"(#abc)\" />"
+   ],
+   "design": {
+    "colours": [
+     "#9e3b22",
+     "#3a1a10",
+     "#ff44cc"
+    ],
+    "fonts": [
+     "Fraunces",
+     "Plus Jakarta Sans"
+    ],
+    "radius": [
+     8,
+     16
+    ],
+    "durations": [
+     240
+    ],
+    "unread": []
+   }
+  },
+  "output": {
+   "colours": [
+    "#3a1a10",
+    "#ff44cc"
+   ],
+   "fonts": [
+    "Fraunces",
+    "Plus Jakarta Sans"
+   ]
+  }
+ },
+ {
+  "input": {
+   "texts": [
+    ".a{border-radius:12.5 %}"
+   ],
+   "design": {
+    "colours": [
+     "#9e3b22",
+     "#3a1a10",
+     "#ff44cc"
+    ],
+    "fonts": [
+     "Fraunces",
+     "Plus Jakarta Sans"
+    ],
+    "radius": [
+     8,
+     16
+    ],
+    "durations": [
+     240
+    ],
+    "unread": []
+   }
+  },
+  "output": {
+   "colours": [
+    "#9e3b22",
+    "#3a1a10",
+    "#ff44cc"
+   ],
+   "fonts": [
+    "Fraunces",
+    "Plus Jakarta Sans"
+   ]
+  }
+ },
+ {
+  "input": {
+   "texts": [
+    ".a{border-radius:12.5px}"
+   ],
+   "design": {
+    "colours": [
+     "#9e3b22",
+     "#3a1a10",
+     "#ff44cc"
+    ],
+    "fonts": [
+     "Fraunces",
+     "Plus Jakarta Sans"
+    ],
+    "radius": [
+     8,
+     16
+    ],
+    "durations": [
+     240
+    ],
+    "unread": []
+   }
+  },
+  "output": {
+   "colours": [
+    "#9e3b22",
+    "#3a1a10",
+    "#ff44cc"
+   ],
+   "fonts": [
+    "Fraunces",
+    "Plus Jakarta Sans"
+   ]
+  }
+ }
+]

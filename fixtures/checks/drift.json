@@ -1,0 +1,552 @@
+[
+ {
+  "input": {
+   "text": ".a { color: #9e3b22; background: #fff; border-radius: 8px; transition: opacity 240ms ease; font-family: 'Fraunces', serif; }",
+   "ext": "css",
+   "design": {
+    "colours": [
+     "#9e3b22",
+     "#3a1a10",
+     "#ff44cc"
+    ],
+    "fonts": [
+     "Fraunces",
+     "Plus Jakarta Sans"
+    ],
+    "radius": [
+     8,
+     16
+    ],
+    "durations": [
+     240
+    ],
+    "unread": []
+   }
+  },
+  "output": {
+   "colours": [],
+   "fonts": [],
+   "radius": [],
+   "durations": []
+  }
+ },
+ {
+  "input": {
+   "text": "#add { color: #3A1A10 }",
+   "ext": "css",
+   "design": {
+    "colours": [
+     "#9e3b22",
+     "#3a1a10",
+     "#ff44cc"
+    ],
+    "fonts": [
+     "Fraunces",
+     "Plus Jakarta Sans"
+    ],
+    "radius": [
+     8,
+     16
+    ],
+    "durations": [
+     240
+    ],
+    "unread": []
+   }
+  },
+  "output": {
+   "colours": [],
+   "fonts": [],
+   "radius": [],
+   "durations": []
+  }
+ },
+ {
+  "input": {
+   "text": "<a href=\"#add\">x</a><div className=\"bg-[#9E3B22]\" />",
+   "ext": "tsx",
+   "design": {
+    "colours": [
+     "#9e3b22",
+     "#3a1a10",
+     "#ff44cc"
+    ],
+    "fonts": [
+     "Fraunces",
+     "Plus Jakarta Sans"
+    ],
+    "radius": [
+     8,
+     16
+    ],
+    "durations": [
+     240
+    ],
+    "unread": []
+   }
+  },
+  "output": {
+   "colours": [],
+   "fonts": [],
+   "radius": [],
+   "durations": []
+  }
+ },
+ {
+  "input": {
+   "text": ".b { color: #123456; border-radius: 12px; transition: transform 300ms, opacity 240ms 100ms; font-family: Inter, sans-serif; }",
+   "ext": "css",
+   "design": {
+    "colours": [
+     "#9e3b22",
+     "#3a1a10",
+     "#ff44cc"
+    ],
+    "fonts": [
+     "Fraunces",
+     "Plus Jakarta Sans"
+    ],
+    "radius": [
+     8,
+     16
+    ],
+    "durations": [
+     240
+    ],
+    "unread": []
+   }
+  },
+  "output": {
+   "colours": [
+    {
+     "index": 12,
+     "length": 7,
+     "message": "#123456 is not a direction colour in DESIGN.md: use the token, or add it to DESIGN.md's direction (colour) if the direction changed on purpose"
+    }
+   ],
+   "fonts": [
+    {
+     "index": 105,
+     "length": 17,
+     "message": "font \"Inter\" is not in DESIGN.md's type families (Fraunces, Plus Jakarta Sans): use the token, or add it to DESIGN.md's direction (type) if the direction changed on purpose"
+    }
+   ],
+   "radius": [
+    {
+     "index": 36,
+     "length": 4,
+     "message": "radius 12px is not in DESIGN.md's shape.radius (8, 16): use the token, or add it to DESIGN.md's direction (shape.radius) if the direction changed on purpose"
+    }
+   ],
+   "durations": [
+    {
+     "index": 54,
+     "length": 36,
+     "message": "duration 300ms is not in DESIGN.md's motion durations (240): use the token, or add it to DESIGN.md's direction (motion.durations) if the direction changed on purpose"
+    }
+   ]
+  }
+ },
+ {
+  "input": {
+   "text": "<div style={{ color: \"#00ff00\", fontFamily: \"Roboto\" }} />",
+   "ext": "tsx",
+   "design": {
+    "colours": [
+     "#9e3b22",
+     "#3a1a10",
+     "#ff44cc"
+    ],
+    "fonts": [
+     "Fraunces",
+     "Plus Jakarta Sans"
+    ],
+    "radius": [
+     8,
+     16
+    ],
+    "durations": [
+     240
+    ],
+    "unread": []
+   }
+  },
+  "output": {
+   "colours": [
+    {
+     "index": 22,
+     "length": 7,
+     "message": "#00ff00 is not a direction colour in DESIGN.md: use the token, or add it to DESIGN.md's direction (colour) if the direction changed on purpose"
+    }
+   ],
+   "fonts": [
+    {
+     "index": 45,
+     "length": 6,
+     "message": "font \"Roboto\" is not in DESIGN.md's type families (Fraunces, Plus Jakarta Sans): use the token, or add it to DESIGN.md's direction (type) if the direction changed on purpose"
+    }
+   ],
+   "radius": [],
+   "durations": []
+  }
+ },
+ {
+  "input": {
+   "text": ".a{border-radius:12.5 %;border-top-left-radius:6px 4px}",
+   "ext": "css",
+   "design": {
+    "colours": [
+     "#9e3b22",
+     "#3a1a10",
+     "#ff44cc"
+    ],
+    "fonts": [
+     "Fraunces",
+     "Plus Jakarta Sans"
+    ],
+    "radius": [
+     8,
+     16
+    ],
+    "durations": [
+     240
+    ],
+    "unread": []
+   }
+  },
+  "output": {
+   "colours": [],
+   "fonts": [],
+   "radius": [
+    {
+     "index": 47,
+     "length": 7,
+     "message": "radius 6, 4px is not in DESIGN.md's shape.radius (8, 16): use the token, or add it to DESIGN.md's direction (shape.radius) if the direction changed on purpose"
+    }
+   ],
+   "durations": []
+  }
+ },
+ {
+  "input": {
+   "text": ".b{transition:opacity .3s ease 100ms, transform 1.5s;animation-duration:250ms,0.4s}\r\n.c{transition-delay:300ms}",
+   "ext": "css",
+   "design": {
+    "colours": [
+     "#9e3b22",
+     "#3a1a10",
+     "#ff44cc"
+    ],
+    "fonts": [
+     "Fraunces",
+     "Plus Jakarta Sans"
+    ],
+    "radius": [
+     8,
+     16
+    ],
+    "durations": [
+     240
+    ],
+    "unread": []
+   }
+  },
+  "output": {
+   "colours": [],
+   "fonts": [],
+   "radius": [],
+   "durations": [
+    {
+     "index": 14,
+     "length": 38,
+     "message": "duration 300, 1500ms is not in DESIGN.md's motion durations (240): use the token, or add it to DESIGN.md's direction (motion.durations) if the direction changed on purpose"
+    },
+    {
+     "index": 72,
+     "length": 10,
+     "message": "duration 250, 400ms is not in DESIGN.md's motion durations (240): use the token, or add it to DESIGN.md's direction (motion.durations) if the direction changed on purpose"
+    }
+   ]
+  }
+ },
+ {
+  "input": {
+   "text": ".d{color:#ABCDEF80;background:linear-gradient(#123,#fff)} #idx{color:#000}",
+   "ext": "css",
+   "design": {
+    "colours": [
+     "#9e3b22",
+     "#3a1a10",
+     "#ff44cc"
+    ],
+    "fonts": [
+     "Fraunces",
+     "Plus Jakarta Sans"
+    ],
+    "radius": [
+     8,
+     16
+    ],
+    "durations": [
+     240
+    ],
+    "unread": []
+   }
+  },
+  "output": {
+   "colours": [
+    {
+     "index": 9,
+     "length": 9,
+     "message": "#ABCDEF80 is not a direction colour in DESIGN.md: use the token, or add it to DESIGN.md's direction (colour) if the direction changed on purpose"
+    },
+    {
+     "index": 46,
+     "length": 4,
+     "message": "#123 is not a direction colour in DESIGN.md: use the token, or add it to DESIGN.md's direction (colour) if the direction changed on purpose"
+    }
+   ],
+   "fonts": [],
+   "radius": [],
+   "durations": []
+  }
+ },
+ {
+  "input": {
+   "text": ".e{font-family:\"Söhne\",serif} .f{font-family:var(--x)} .g{font-family:$body}",
+   "ext": "css",
+   "design": {
+    "colours": [
+     "#9e3b22",
+     "#3a1a10",
+     "#ff44cc"
+    ],
+    "fonts": [
+     "Fraunces",
+     "Plus Jakarta Sans"
+    ],
+    "radius": [
+     8,
+     16
+    ],
+    "durations": [
+     240
+    ],
+    "unread": []
+   }
+  },
+  "output": {
+   "colours": [],
+   "fonts": [
+    {
+     "index": 15,
+     "length": 7,
+     "message": "font \"Söhne\" is not in DESIGN.md's type families (Fraunces, Plus Jakarta Sans): use the token, or add it to DESIGN.md's direction (type) if the direction changed on purpose"
+    }
+   ],
+   "radius": [],
+   "durations": []
+  }
+ },
+ {
+  "input": {
+   "text": "<p style={{ color: \"#12abef\" }}>Rp😀</p><a href=\"#abc\">x</a><i to=\"#def\"/>",
+   "ext": "tsx",
+   "design": {
+    "colours": [
+     "#9e3b22",
+     "#3a1a10",
+     "#ff44cc"
+    ],
+    "fonts": [
+     "Fraunces",
+     "Plus Jakarta Sans"
+    ],
+    "radius": [
+     8,
+     16
+    ],
+    "durations": [
+     240
+    ],
+    "unread": []
+   }
+  },
+  "output": {
+   "colours": [
+    {
+     "index": 20,
+     "length": 7,
+     "message": "#12abef is not a direction colour in DESIGN.md: use the token, or add it to DESIGN.md's direction (colour) if the direction changed on purpose"
+    }
+   ],
+   "fonts": [],
+   "radius": [],
+   "durations": []
+  }
+ },
+ {
+  "input": {
+   "text": "const c = [\"#123\", \"#ffffff\",'#9E3B22', `#aaa`]; const s = { fontFamily: \"Roboto, sans-serif\", borderRadius: 7 };",
+   "ext": "tsx",
+   "design": {
+    "colours": [
+     "#9e3b22",
+     "#3a1a10",
+     "#ff44cc"
+    ],
+    "fonts": [
+     "Fraunces",
+     "Plus Jakarta Sans"
+    ],
+    "radius": [
+     8,
+     16
+    ],
+    "durations": [
+     240
+    ],
+    "unread": []
+   }
+  },
+  "output": {
+   "colours": [
+    {
+     "index": 12,
+     "length": 4,
+     "message": "#123 is not a direction colour in DESIGN.md: use the token, or add it to DESIGN.md's direction (colour) if the direction changed on purpose"
+    },
+    {
+     "index": 41,
+     "length": 4,
+     "message": "#aaa is not a direction colour in DESIGN.md: use the token, or add it to DESIGN.md's direction (colour) if the direction changed on purpose"
+    }
+   ],
+   "fonts": [
+    {
+     "index": 74,
+     "length": 18,
+     "message": "font \"Roboto\" is not in DESIGN.md's type families (Fraunces, Plus Jakarta Sans): use the token, or add it to DESIGN.md's direction (type) if the direction changed on purpose"
+    }
+   ],
+   "radius": [
+    {
+     "index": 109,
+     "length": 1,
+     "message": "radius 7px is not in DESIGN.md's shape.radius (8, 16): use the token, or add it to DESIGN.md's direction (shape.radius) if the direction changed on purpose"
+    }
+   ],
+   "durations": []
+  }
+ },
+ {
+  "input": {
+   "text": "<div className=\"bg-[#9E3B22] text-[#123456]\" data-x=\"(#abc)\" />",
+   "ext": "tsx",
+   "design": {
+    "colours": [
+     "#9e3b22",
+     "#3a1a10",
+     "#ff44cc"
+    ],
+    "fonts": [
+     "Fraunces",
+     "Plus Jakarta Sans"
+    ],
+    "radius": [
+     8,
+     16
+    ],
+    "durations": [
+     240
+    ],
+    "unread": []
+   }
+  },
+  "output": {
+   "colours": [
+    {
+     "index": 35,
+     "length": 7,
+     "message": "#123456 is not a direction colour in DESIGN.md: use the token, or add it to DESIGN.md's direction (colour) if the direction changed on purpose"
+    },
+    {
+     "index": 54,
+     "length": 4,
+     "message": "#abc is not a direction colour in DESIGN.md: use the token, or add it to DESIGN.md's direction (colour) if the direction changed on purpose"
+    }
+   ],
+   "fonts": [],
+   "radius": [],
+   "durations": []
+  }
+ },
+ {
+  "input": {
+   "text": ".a{border-radius:12.5 %}",
+   "ext": "css",
+   "design": {
+    "colours": [
+     "#9e3b22",
+     "#3a1a10",
+     "#ff44cc"
+    ],
+    "fonts": [
+     "Fraunces",
+     "Plus Jakarta Sans"
+    ],
+    "radius": [
+     8,
+     16
+    ],
+    "durations": [
+     240
+    ],
+    "unread": []
+   }
+  },
+  "output": {
+   "colours": [],
+   "fonts": [],
+   "radius": [],
+   "durations": []
+  }
+ },
+ {
+  "input": {
+   "text": ".a{border-radius:12.5px}",
+   "ext": "css",
+   "design": {
+    "colours": [
+     "#9e3b22",
+     "#3a1a10",
+     "#ff44cc"
+    ],
+    "fonts": [
+     "Fraunces",
+     "Plus Jakarta Sans"
+    ],
+    "radius": [
+     8,
+     16
+    ],
+    "durations": [
+     240
+    ],
+    "unread": []
+   }
+  },
+  "output": {
+   "colours": [],
+   "fonts": [],
+   "radius": [
+    {
+     "index": 17,
+     "length": 6,
+     "message": "radius 12.5px is not in DESIGN.md's shape.radius (8, 16): use the token, or add it to DESIGN.md's direction (shape.radius) if the direction changed on purpose"
+    }
+   ],
+   "durations": []
+  }
+ }
+]
