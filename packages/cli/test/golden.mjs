@@ -55,13 +55,15 @@ async function neutral(n) {
 }
 
 /** figmaAudit over a canvas; recorded as { pages, page, annotationCategories }. */
+export const neutralCanvas = async (figma, pageName) => ({
+  pages: await Promise.all(figma.root.children.map(async (p) => ({ name: p.name, children: await Promise.all((p.children || []).map(neutral)) }))),
+  current: figma.currentPage.name,
+  page: pageName || "",
+  annotationCategories: plain(await figma.annotations.getAnnotationCategoriesAsync()),
+});
+
 export const recordAudit = (figmaAudit) => async (figma, pageName) => {
-  const input = recording ? {
-    pages: await Promise.all(figma.root.children.map(async (p) => ({ name: p.name, children: await Promise.all((p.children || []).map(neutral)) }))),
-    current: figma.currentPage.name,
-    page: pageName || "",
-    annotationCategories: plain(await figma.annotations.getAnnotationCategoriesAsync()),
-  } : null;
+  const input = recording ? await neutralCanvas(figma, pageName) : null;
   const out = await figmaAudit(figma, pageName);
   if (input) save("audit", input, plain(out));
   return out;

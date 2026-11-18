@@ -1,0 +1,13 @@
+[workspace]
+members = ["crates/ryux-core", "crates/ryux-wasm"]
+resolver = "2"
+
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+repository = "https://github.com/ryuxdsgn/design-intelligence"
+
+[profile.release]
+opt-level = "s"
+lto = true

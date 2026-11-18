@@ -38,3 +38,6 @@ docs/ops.md
 # Python bytecode
 __pycache__/
 *.pyc
+
+# Rust build output
+/target/
