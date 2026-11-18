@@ -208,3 +208,35 @@ test("tells: buttons in one row with labels off line or an icon in only one warn
   assert.match(off.findings[0].message, /labels 8 px apart, an icon in some, not all/);
   assert.deepEqual(rules(await audit([screen("06", [btn("Save QR button", 16, 612, true), btn("Share button", 200, 612, true)])])), []);
 });
+
+test("figcraft: a FigCraft document is read through the same audit (boxes, styles, bindings, annotations, instances)", async () => {
+  const { figcraftCanvas } = await import("../dist/figcraft-doc.js");
+  const solid = (r, g, b) => ({ type: "solid", visible: true, opacity: 1, color: { r, g, b, a: 1 } });
+  const T = (x, y) => [1, 0, 0, 1, x, y];
+  const doc = {
+    pages: [1], current_page: 1,
+    annotation_categories: [{ id: "c1", name: "Sample data" }],
+    nodes: {
+      1: { id: 1, type: "page", name: "Rak", children: [2, 8] },
+      2: { id: 2, type: "frame", name: "06-pay", parent: 1, transform: T(1000, 0), width: 390, height: 844, clip: true, fills: [solid(1, 1, 1)], bound: { fill: "VariableID:1" }, children: [3, 4, 5, 6] },
+      3: { id: 3, type: "text", name: "Eyebrow", parent: 2, transform: T(16, 100), width: 80, height: 13, characters: "STEP 2 OF 2", fills: [solid(0.1, 0.1, 0.1)], style: { font_size: 11, font_family: "Inter", font_style: "Regular", case: "upper" }, styles: { text: "S:1" }, annotations: [{ category: "c1", label: "made up" }] },
+      4: { id: 4, type: "rectangle", name: "QR card", parent: 2, transform: T(16, 130), width: 358, height: 300, corners: { radii: [16, 16, 16, 16] }, fills: [solid(1, 1, 1)], effects: [{ type: "dropShadow", visible: true }], styles: { effect: "S:2" } },
+      5: { id: 5, type: "instance", name: "Save QR button", parent: 2, source: 8, transform: T(16, 600), width: 160, height: 44, strokes: [solid(0.8, 0.8, 0.8)], children: [9] },
+      6: { id: 6, type: "frame", name: "Share button", parent: 2, transform: T(200, 600), width: 160, height: 44, layout: { mode: "horizontal", gap: 8, padding: [12, 12, 12, 12] }, children: [7, 10] },
+      7: { id: 7, type: "vector", name: "Share", parent: 6, transform: T(40, 12), width: 20, height: 20 },
+      10: { id: 10, type: "text", name: "Label", parent: 6, transform: T(64, 12), width: 60, height: 20, characters: "Share", fills: [solid(0.1, 0.1, 0.1)], style: { font_size: 15 } },
+      8: { id: 8, type: "component", name: "Local/Button", parent: 1, transform: T(0, 2000), width: 160, height: 44, children: [] },
+      9: { id: 9, type: "text", name: "Label", parent: 5, transform: T(64, 4), width: 60, height: 20, characters: "Save QR", fills: [solid(0.1, 0.1, 0.1)], style: { font_size: 15 } },
+    },
+  };
+  const fig = figcraftCanvas(doc);
+  const shot = fig.root.children[0].children[0];
+  assert.deepEqual(shot.children[3].children[1].absoluteBoundingBox, { x: 1264, y: 612, width: 60, height: 20 }, "boxes compose the parents' transforms");
+  const r = await figmaAudit(fig, "Rak");
+  assert.equal(r.counts.screens, 1, "the component at page level is not a screen");
+  assert.equal(r.counts.rawEffects, 0, "a shadow from an effect style counts as styled");
+  assert.equal(r.counts.unstyledText, 1, "the Share label has no text style");
+  assert.equal(r.counts.smallText, 1);
+  assert.deepEqual(r.annotations, { "Sample data": 1 });
+  assert.match(r.findings.find((f) => f.rule === "RX-UI-15").message, /"Save QR", "Share"\): labels 8 px apart, an icon in some, not all/);
+});

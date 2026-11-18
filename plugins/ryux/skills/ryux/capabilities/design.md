@@ -434,8 +434,11 @@ return { iconStrokes: strokes, iconColours: colours, unbound: [...unbound], mixe
    - In Figma, audit the page before the gate: send scripts/figma-audit.js from this skill's folder as the code of
      one use_figma call (set PAGE to the flow's page). It reads the canvas and counts content images and their reuse,
      contrast, text cut by a bar or clipped, targets, overlays with no lift, a busy screen whose button keeps its idle
-     label, unstyled text and unbound values, screens not built in auto layout and layers left outside them, and annotations. Fix each fail (and each warn you agree with), run it
-     again, and copy its last gate line into VISUAL QA; the gate's numbers come from it, not from memory.
+     label, unstyled text and unbound values, screens not built in auto layout and layers left outside them, empty bands,
+     small uppercase labels, section cards, text under 12 px, uneven buttons in a row, and annotations. Fix each fail, fix
+     each warn or give the reason it stays, run it again, and copy its last gate line into VISUAL QA; the gate's numbers
+     come from it, not from memory. In FigCraft, save the file and run `npx @ryuxdsgn/design-intelligence audit <file>
+     --page <page>` instead: the same checks on the saved .figcraft (it needs figcraft-cli).
    - Close with the Delivery Gate, saying what was not designed, such as other widths or states. If
      you wrote DESIGN.md, say so in the final message: which file, and each change as old → new ("(none) → …" for
      an added line).
