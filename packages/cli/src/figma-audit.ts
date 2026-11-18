@@ -2,7 +2,7 @@
 // the Plugin API exists; the package compiles for Node without its types. It only reads the file.
 // Measures one page of screens and returns counts, findings, and one gate line, so the Delivery Gate
 // carries numbers from the canvas instead of the agent's own claims. Same idea as page-probe.ts for code.
-// Checks: content images (RX-UI-21), contrast (RX-A11Y-01), targets (RX-A11Y-02), text cut by a bar or
+// Checks: content images (RX-UI-21), contrast (RX-A11Y-01), targets and text links (RX-A11Y-02), text cut by a bar or
 // clipped (RX-QA-03), an overlay with no elevation (RX-UI-15), a busy screen whose button keeps its idle
 // label (RX-IX-02), tokens (RX-DS-03), annotations by category (RX-AS-03), construction (RX-DS-12), and the visual
 // tells an owner review found in a flow that passed every other check: empty bands (RX-UI-05), small uppercase
@@ -180,9 +180,17 @@ export async function figmaAudit(figma, pageName) {
     // A dot drawn on top of its radio (a sibling inside the radio's box) is the same target.
     const targets = named.filter((e) => !named.some((o) => o !== e && inside(box(e.n), box(o.n)) && !inside(box(o.n), box(e.n))));
     const heldByRow = (e) => e.ancestors.some((a) => a !== frame && ROW.test(nm(a)) && Math.min(box(a).width, box(a).height) >= 44 && targets.filter((t) => t.ancestors.includes(a)).length === 1);
+    // A text link ("Remove", "Ubah") is a target too: its hit area is the text, or the wrapper that holds only it.
+    // One inside a named target was measured above; a row does not count, since tapping the row does something else.
+    const LINK = /^(remove|change|edit|delete|cancel|see all|view all|view bag|hapus|ubah|ganti|batal|lihat semua)$/i;
+    const links = nodes.filter((e) => e.n.type === "TEXT" && LINK.test(String(e.n.characters || "").trim()) && !e.ancestors.some((a) => a !== frame && isTarget(a))).map((e) => {
+      let i = e.ancestors.length - 1, hit = e.n;
+      while (i >= 0 && e.ancestors[i] !== frame && "children" in e.ancestors[i] && e.ancestors[i].children.length === 1) hit = e.ancestors[i--];
+      return { ...e, n: hit };
+    });
     // One finding per screen, kind, and size: a seat map is "A1 and 39 more", not 40 findings.
     const small = new Map();
-    for (const e of targets.filter((t) => !heldByRow(t))) {
+    for (const e of [...targets.filter((t) => !heldByRow(t)), ...links]) {
       const b = box(e.n), m = Math.min(b.width, b.height);
       if (m >= 44) continue;
       if (m < 24) c.targetsUnder24++; else c.targetsUnder44++;

@@ -113,8 +113,9 @@ How Indonesian apps sequence and structure this flow: `get_flow` for a reference
 
 - When: a list or catalog is longer than a screen or two
 - Do: Offer search, filters, or sorting that match how users look for items, show active filters, and give a one-step way to clear them.
+  - A shopping home names the product and puts the search entry at the top; categories alone make a person who knows the title hunt for it.
 - Do not: Add every possible filter, or hide which filters are applied.
-- Why: Users narrow by the attributes they care about; invisible filters cause "missing" items. (NNGroup filtering and faceted search research)
+- Why: Users narrow by the attributes they care about; invisible filters cause "missing" items. (NNGroup filtering and faceted search research; owner blind review 2026-11-18 of the Rak FigCraft A/B (secondhand books, Yogyakarta; no skill vs RYUX, one run each): a shelf with categories only, no search and no product name)
 - Not when: the list fits in a screen or two; filters slow down scanning
 - Trade-off: each filter is UI to maintain and can hide items users expect to see
 - Check: review
@@ -223,8 +224,9 @@ How Indonesian apps sequence and structure this flow: `get_flow` for a reference
   - Put the rest one tap away behind a control that names what it opens ("Lihat rincian biaya", "Syarat pembatalan"), not "Selengkapnya" (RX-CD-12).
   - Two levels at most; when a third seems needed, simplify the content first.
   - Never hide a fee, a condition, or a cost the user will pay: disclosure postpones detail, it does not hide what decides.
+  - When the user buys from an independent seller (a marketplace, a secondhand copy), what decides includes trust: the seller's record (rating, sales, how long they have sold), how long a single copy is held for this buyer, and how the payment is protected (held until the buyer confirms delivery, or the refund path). State each as an open rule when the brief does not decide it (RX-PR-02).
 - Do not: List every price, fee, and condition on the first screen of a choice, or hide a cost behind a disclosure until after the user has committed.
-- Why: Fewer things on the first level make the important ones easier to see and the task faster; details stay available for the few who want them. (NNGroup Progressive Disclosure (Nielsen 2006): frequent needs first, two levels at most, a control labelled with what it reveals; Hick's law (more options, slower choice); owner review of the Sejuk bland test 2026-11-07 ("terlalu banyak menampilkan harga dari awal"))
+- Why: Fewer things on the first level make the important ones easier to see and the task faster; details stay available for the few who want them. (NNGroup Progressive Disclosure (Nielsen 2006): frequent needs first, two levels at most, a control labelled with what it reveals; Hick's law (more options, slower choice); owner review of the Sejuk bland test 2026-11-07 ("terlalu banyak menampilkan harga dari awal"); owner blind review 2026-11-18 of the Rak FigCraft A/B (secondhand books, Yogyakarta; no skill vs RYUX, one run each): the RYUX flow showed no seller rating, no hold time on a one-copy book, and no payment protection, where the no-skill flow showed all three)
 - Not when: a review or receipt screen whose job is the full breakdown
 - Trade-off: a detail behind a tap is missed by people who needed it; choose the split from what most users need
 - Check: per screen: list what is on the first level and what is behind a control; each control names its contents; no third level; nothing the user pays is only behind the control before commitment

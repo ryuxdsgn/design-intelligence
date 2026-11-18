@@ -197,8 +197,9 @@ Real screens show what real products do instead of invented numbers and urgency:
 - When: the surface is expressive: a hero, landing page, onboarding, empty state, or brand moment, or the brief asks for a new look or more personality; on a new product's task UI, the brand layer only (see Do)
 - Do: Run the swap test honestly: replace the name and logo with a competitor's in the same category. If the layout, the visual, and the headline would still work for them, the surface has no point of view yet; give it one (RX-UI-12). Report the answer in the Delivery Gate.
   - On task UI: keep the structure familiar and run the test on the brand layer only (palette, type, surfaces, iconography, map styling). On a new product, "only the logo would change" is a FAIL.
+  - Correct is not finished: look at the screens small, in greyscale. When every block sits on the same surface at the same weight, the screen reads flat; give each screen one focal mass (the cover, the price, the code) at a clearly larger scale or darker value, and at least one change of surface (a raised sheet, a tinted band, imagery that bleeds to the edge).
 - Do not: Treat a tidy, generic layout as done because it passes every other gate; generic restraint is slop too.
-- Why: Removing slop is the floor, not the ceiling; interchangeable design makes the product forgettable. (ryux delivery principle; Critique Design Read: specificity)
+- Why: Removing slop is the floor, not the ceiling; interchangeable design makes the product forgettable. (ryux delivery principle; Critique Design Read: specificity; owner blind review 2026-11-18 of the Rak FigCraft A/B (secondhand books, Yogyakarta; no skill vs RYUX, one run each): the RYUX flow led on context, consistency, and production, but rated 4 against 5 on visual appeal and read flat to the owner)
 - Not when: an existing product whose brand system already defines the surface; follow it
 - Trade-off: takes a design decision, not only removals
 - Check: swap test; review
