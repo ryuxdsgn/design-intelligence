@@ -58,6 +58,31 @@ pub fn slice16(s: &str, from: usize, to: Option<usize>) -> String {
     String::from_utf16_lossy(&u[from..end])
 }
 
+/// The byte offset `n` UTF-16 units before `byte` (or 0), walking only that far. A cut inside a surrogate
+/// pair keeps the whole character; the callers test ASCII patterns, which a lone surrogate cannot change.
+pub fn back16(s: &str, byte: usize, n: usize) -> usize {
+    let mut left = n;
+    for (b, ch) in s[..byte].char_indices().rev() {
+        if left == 0 {
+            return b + ch.len_utf8();
+        }
+        left = left.saturating_sub(ch.len_utf16());
+    }
+    0
+}
+
+/// The byte offset `n` UTF-16 units after `byte` (or the end).
+pub fn fwd16(s: &str, byte: usize, n: usize) -> usize {
+    let mut left = n;
+    for (b, ch) in s[byte..].char_indices() {
+        if left == 0 {
+            return byte + b;
+        }
+        left = left.saturating_sub(ch.len_utf16());
+    }
+    s.len()
+}
+
 /// `s.trim()`: JavaScript also trims the byte-order mark.
 pub fn trim(s: &str) -> &str {
     s.trim_matches(|c: char| c.is_whitespace() || c == '\u{feff}')
@@ -139,6 +164,8 @@ mod tests {
         assert_eq!(len16("a😀"), 3);
         assert_eq!(slice16("Rak Buku", 0, Some(3)), "Rak");
         assert_eq!(trim("\u{feff} x "), "x");
+        assert_eq!(&"abcdef"[back16("abcdef", 4, 2)..fwd16("abcdef", 4, 1)], "cde");
+        assert_eq!(back16("abc", 2, 9), 0);
     }
 }
 
