@@ -473,3 +473,11 @@ test("ux: flows, journey maps, and the size of a change", () => {
   assert.match(ux, /RX-UX-20[\s\S]*Polish[\s\S]*Revamp[\s\S]*Redesign/);
   assert.match(ux, /RX-UX-20[\s\S]*names none/i);
 });
+
+test("ux: flow and journey templates", () => {
+  const ux = renderBundle()["knowledge/ux.md"];
+  assert.match(ux, /```mermaid\nflowchart/);
+  assert.match(ux, /\| *Lens *\|/);
+  assert.match(ux, /asumsi/i);
+  assert.match(ux, /Before a flow or a journey map, ask/);
+});

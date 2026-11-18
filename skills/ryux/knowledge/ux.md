@@ -78,6 +78,58 @@ usability; qualitative for why and how to fix, quantitative for how many and how
 
 Most projects need more than one method. A single method, or none, is a choice to write down.
 
+## User flows and journey maps
+
+A user flow is one task in one product: the steps and the system's answers, minutes long (RX-UX-18). A journey
+map is a goal across channels and days, with what the person thinks and feels (RX-UX-19). Use a flow to design
+screens, a journey map to decide which moments are worth designing; the flow is a deep dive into one phase.
+
+**Before a flow or a journey map, ask** once, at most five questions, and only what the brief, DESIGN.md, and
+the repo do not already answer:
+1. Who is the actor, and what situation are they in?
+2. What is the scenario, and what goal ends it?
+3. Where does it start (the trigger) and where does it end?
+4. What data exists: interviews, analytics, support tickets, research (ryux MCP `search_research`)?
+5. Where should it go: a file in docs/, Figma, or FigJam?
+
+**A flow, as Mermaid.** Decisions are diamonds; every failure branch returns to the task or ends with a way
+out. Labels in the interface language. A short example (buying a prepaid electricity token):
+
+```mermaid
+flowchart TD
+  A[Token listrik hampir habis: buka aplikasi] --> B[Masukkan nomor meter]
+  B --> C{Nomor meter ditemukan?}
+  C -- Tidak --> C2[Pesan: cek nomor di meteran] --> B
+  C -- Ya --> D[Lihat nama pelanggan, pilih nominal]
+  D --> E[Bayar]
+  E --> F{Pembayaran berhasil?}
+  F -- Tidak --> F2[Saldo tetap, coba metode lain] --> E
+  F -- Ya --> G{Token terbit?}
+  G -- Belum --> G2[Status diproses + token dikirim ke riwayat] --> H
+  G -- Ya --> H[Token 20 digit tampil, bisa disalin: selesai]
+```
+
+Under it, list each failure branch with its way back ("pembayaran gagal: saldo tidak terpotong, coba metode
+lain") so each maps to a state in the design (RX-EC-01).
+
+**A journey map, as a table.** Columns are the phases; rows are the lenses. Above it: the actor, the scenario
+and expectations, and whether the map is research-based or assumption-based. The Source row says where each
+column comes from: a cited study or user data, or "asumsi".
+
+| Lens | Sadar token menipis | Membeli | Menunggu token | Memasukkan token | Setelahnya |
+| --- | --- | --- | --- | --- | --- |
+| Actions | ... | ... | ... | ... | ... |
+| Thoughts | ... | ... | ... | ... | ... |
+| Emotions | ... | ... | ... | ... | ... |
+| Touchpoints | ... | ... | ... | ... | ... |
+| Pain points | ... | ... | ... | ... | ... |
+| Opportunities (owner) | ... | ... | ... | ... | ... |
+| Source | asumsi | asumsi | ... | ... | ... |
+
+An assumption-based map marks each guessed cell (asumsi) and ends with how to test the riskiest guesses: who
+to ask, the method (knowledge/ux.md, research methods), and the answer that would change the map. In Figma or
+FigJam, draw the same rows and columns when it is connected and asked for.
+
 Does not cover: per-action behavior (see `knowledge/interaction.md`), forms (see `knowledge/forms.md`), or states
 (see `knowledge/edge-cases.md`).
 
