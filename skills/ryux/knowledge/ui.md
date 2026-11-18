@@ -153,9 +153,10 @@ A design direction from comparable screens: `extract_design_direction` (patterns
 - Do: Use a small set of colors with defined roles: surface, text, accent for the primary action, and status colors.
   - Pick one grey family, warm or cool, for surfaces, borders, and secondary text.
   - Elements that behave the same look the same, and elements that behave differently look different: a destructive action has its own color role, not the primary accent.
+  - A highlight marks one kind of thing: give it to the one fact that decides the task (the condition of a used item, the amount to pay), not also to prices, tabs, and navigation. Two strong accents (a brand colour and an action colour) take separate jobs, one for emphasis and one for actions, never the same element.
   - Lower importance with size, weight, or position, never by lowering text contrast.
 - Do not: Introduce new colors per component, use the accent for decoration, recolour content art into the UI palette, or take a colour from content art for an action or a status.
-- Why: When color has a role, the accent and status colors mean something. (ryux visual principle; NNGroup principles of visual design (contrast signals a different function; similarity); isolation effect (von Restorff 1933): the one item that differs is the one remembered, so the accent marks only the primary action; one grey family: pattern also in appllama-app-design-skill (MIT); written for RYUX)
+- Why: When color has a role, the accent and status colors mean something. (ryux visual principle; NNGroup principles of visual design (contrast signals a different function; similarity); isolation effect (von Restorff 1933): the one item that differs is the one remembered, so the accent marks only the primary action; one grey family: pattern also in appllama-app-design-skill (MIT); written for RYUX; owner blind review 2026-11-18 of three Rak flows (secondhand books, Yogyakarta): a yellow highlight on condition, prices, and the active tab lost its meaning, beside a blue action colour)
 - Not when: data visualization, which needs its own categorical or sequential palette; content art (an event poster, a book or album cover, a dish or product photo), which keeps its own colours inside its frame while the roles govern the chrome around it (RX-UI-21)
 - Trade-off: fewer colors means relying on type and space for emphasis
 - Check: count accent hues and grey families (RX-AS-10); review
@@ -284,11 +285,11 @@ A design direction from comparable screens: `extract_design_direction` (patterns
 ### RX-UI-36 [Preferred] A selected option looks chosen, not pressable
 
 - When: the user picks from options shown as chips, tiles, or cards (a time slot, a day, a service, a size) on a screen that also has buttons
-- Do: Mark the selected option as a state: a check or radio mark, a stroke, and a tint of the action colour, with the label still dark on it; keep the solid action fill for buttons only.
+- Do: Mark the selected option as a state: a check or radio mark, a stroke, and a tint of the action colour, with the label still dark on it; keep the solid action fill for buttons only. The tint is the action colour lightened, or a palette role; never a hue the palette does not have.
   - Selected, unselected, and unavailable read apart in greyscale, and unavailable says why in words (RX-A11Y-06: not colour alone).
   - Name the state once in the component (selected: true or false) so every option set on every screen marks it the same way (RX-DS-02).
 - Do not: Fill the selected chip or slot with the primary button's solid colour and white text, so it reads as a second button next to the real one.
-- Why: A shape filled like the primary button signals an action; when a choice looks the same, people hesitate over which control commits and the screen seems to have two primary actions. (NNGroup signifiers; Nielsen heuristic 4 (consistency and standards); Gestalt similarity: what looks alike is read as alike; Material filter and choice chips (selected shown with a check and a tonal fill); RX-PR-03; written for RYUX)
+- Why: A shape filled like the primary button signals an action; when a choice looks the same, people hesitate over which control commits and the screen seems to have two primary actions. (NNGroup signifiers; Nielsen heuristic 4 (consistency and standards); Gestalt similarity: what looks alike is read as alike; Material filter and choice chips (selected shown with a check and a tonal fill); RX-PR-03; written for RYUX; owner blind review 2026-11-18 of three Rak flows (secondhand books, Yogyakarta): a selected chip in a lavender the palette did not have)
 - Not when: a segmented control or tab bar, whose filled segment is the platform's own selected state
 - Trade-off: a tinted selection is quieter than a solid fill; the mark and the stroke must carry it
 - Check: render the option set with one selected next to the primary button, in greyscale: the selected option and the button do not share fill, text colour, and shape
