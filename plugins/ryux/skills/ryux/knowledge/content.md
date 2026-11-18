@@ -194,8 +194,9 @@ Real labels, errors, and how money, dates, and times are written in the product'
 
 - Do: Describe the product with facts, not praise: each adjective about the product or the company is backed by a fact on the same screen ("cepat" by "teknisi datang dalam 2 jam" only when that is promised), or it is cut.
   - Superlatives ("terbaik", "tercepat", "termurah", "nomor 1", "best", "fastest") need a source the brief gives; without one, write the fact that would have earned them.
+  - A struck-through price names what it is ("Harga baru Rp120.000" beside a used copy); an unexplained crossed-out price reads as a discount the seller never gave.
 - Do not: Write marketing adjectives into task screens, or claim to be the best, fastest, or cheapest without a source.
-- Why: Readers discount promotional language and trust the page less for it; objective copy alone made a site measurably easier to use. (NNGroup Concise, SCANNABLE, and Objective (Morkes and Nielsen 1997: objective text 27% more usable, all three together 124%); RX-AS-07 (claims match the evidence); RX-AS-01 (no invented metrics); written for RYUX)
+- Why: Readers discount promotional language and trust the page less for it; objective copy alone made a site measurably easier to use. (NNGroup Concise, SCANNABLE, and Objective (Morkes and Nielsen 1997: objective text 27% more usable, all three together 124%); RX-AS-07 (claims match the evidence); RX-AS-01 (no invented metrics); written for RYUX; owner blind review 2026-11-18 of the Rak FigCraft A/B (secondhand books, Yogyakarta; no skill vs RYUX, one run each): a crossed-out Rp 120.000 above a secondhand price with no reference)
 - Not when: a quoted, sourced award or ranking, shown with its source
 - Trade-off: factual copy can read flatter than praise; the brand's voice carries the character (RX-CD-11)
 - Check: list each adjective about the product; each has a fact on the screen or a source in the brief; ryux scan warns on superlatives in markup

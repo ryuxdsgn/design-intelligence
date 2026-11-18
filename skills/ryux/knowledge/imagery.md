@@ -194,8 +194,9 @@ How comparable products use imagery and motion: `search_screens` by pattern, `ex
 
 - When: the design uses photos, illustration, or 3D
 - Do: Name each visual's job in one line: explain, orient, demonstrate, set the emotion, carry the identity, give context, or tell the story. Use real product screens or clearly illustrative art.
+  - A photo of the item the buyer will receive (a secondhand copy, a used phone) is evidence of its condition: give it a real-photo slot with a gallery and zoom, and mark an illustrated stand-in with a Placeholder annotation. Gallery dots promise photos that exist.
 - Do not: Add a visual because the hero looks empty, or present a stock photo of a stranger, or a generated image, as a real customer or product screen.
-- Why: A visual without a job competes with the content; borrowed faces and fake screens imply things that do not exist. (ryux run 2026-10-02: pen.dev landing without ryux; RX-AS-05 purpose gate)
+- Why: A visual without a job competes with the content; borrowed faces and fake screens imply things that do not exist. (ryux run 2026-10-02: pen.dev landing without ryux; RX-AS-05 purpose gate; owner blind review 2026-11-18 of the Rak FigCraft A/B (secondhand books, Yogyakarta; no skill vs RYUX, one run each): the seller's photo of a copy drawn as an illustration, and gallery dots on a detail page with one image)
 - Not when: pure illustration that clearly is not a photo of a customer
 - Trade-off: real product screenshots age quickly and need updating
 - Check: review

@@ -118,6 +118,17 @@ test("an unnamed dialog painted over a full-screen scrim is an overlay", async (
   assert.deepEqual(rules(await audit([screen("08", [scrim, box])])), []);
 });
 
+test("a text link is a target: bare 16 px text fails, a 44 px wrapper holding only it passes", async () => {
+  const row = (link) => node("FRAME", "Bag item", [0, 200, 390, 120], {}, [text("T", "Pengantar Ekonomi Mikro", [20, 210, 300, 20]), link]);
+  const bare = await audit([screen("04", [row(text("action/remove", "Remove", [20, 290, 318, 16], { fontSize: 13 }))])]);
+  assert.deepEqual(rules(bare), ["fail RX-A11Y-02"]);
+  assert.equal(bare.counts.targetsUnder24, 1);
+  const wrapped = node("FRAME", "remove", [20, 270, 68, 44], {}, [text("label", "Hapus", [26, 282, 56, 20])]);
+  assert.deepEqual(rules(await audit([screen("04", [row(wrapped)])])), []);
+  const button = node("FRAME", "Button", [20, 270, 350, 52], {}, [text("label", "Batal", [160, 286, 40, 20])]);
+  assert.deepEqual(rules(await audit([screen("04", [button])])), [], "text inside a named button is measured as the button");
+});
+
 test("a dot inside a radio is one target, and a 56 px row holding one radio passes", async () => {
   const radio = () => node("FRAME", "Radio", [20, 300, 20, 20], {}, [node("ELLIPSE", "Radio dot", [25, 305, 10, 10], { fills: [ink] })]);
   assert.deepEqual(rules(await audit([screen("05", [radio()])])), ["fail RX-A11Y-02"]);
