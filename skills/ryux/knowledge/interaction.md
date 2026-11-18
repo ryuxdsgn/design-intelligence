@@ -65,8 +65,9 @@ How local apps handle the same action and its states, and local payment patterns
 - Do: Give an immediate pressed state; past about 1 second show a loading indicator; past about 10 seconds show progress with an estimate or let the user leave and come back. A loading skeleton has the shape of the layout it stands in for: the same blocks in the same places, so nothing jumps when the content arrives.
   - When an action changes a value outside the element that was touched (a total in a bottom bar, a cart count, a badge), mark the change where it lands: a short highlight or a number transition, or keep the value next to the control.
   - The in-progress label ("Booking…") stays on the button until the result replaces the screen: keep the button's width and fade the label in place, rather than morphing the button into a spinner that cuts its label, and never show the idle label again on the way out.
+  - A toast confirms on the screen where the action happened and then leaves; the next screen does not repeat it as a fixed banner.
 - Do not: Let a payment or save run with no visible status, or change a total away from where the user is looking with no sign that it changed.
-- Why: Silence during a wait reads as failure and invites double taps. (Nielsen response-time limits (0.1 / 1 / 10 s); Nielsen heuristic 1; Doherty threshold (Doherty and Thadani 1982): responses under about 400 ms keep people engaged; skeleton shape: pattern also in appllama-app-design-skill (MIT); written for RYUX; flow (Csikszentmihalyi 1990): a task without interruptions or unexplained waits keeps people absorbed in it; change blindness (NNGroup psychology study guide): people miss changes outside their focus; owner blind review 2026-11-09 of the motion head-to-head (docs/benchmarks/motion): in both runs the confirm button's label overlapped or flipped back to the idle label during the transition, and one cut it in a spinner morph)
+- Why: Silence during a wait reads as failure and invites double taps. (Nielsen response-time limits (0.1 / 1 / 10 s); Nielsen heuristic 1; Doherty threshold (Doherty and Thadani 1982): responses under about 400 ms keep people engaged; skeleton shape: pattern also in appllama-app-design-skill (MIT); written for RYUX; flow (Csikszentmihalyi 1990): a task without interruptions or unexplained waits keeps people absorbed in it; change blindness (NNGroup psychology study guide): people miss changes outside their focus; owner blind review 2026-11-09 of the motion head-to-head (docs/benchmarks/motion): in both runs the confirm button's label overlapped or flipped back to the idle label during the transition, and one cut it in a spinner morph; owner blind review 2026-11-18 of three Rak flows (secondhand books, Yogyakarta): "added to your bag" shown again as a fixed banner on the bag screen)
 - Not when: instant actions under about 0.1 s; a spinner that flashes is noise
 - Trade-off: progress indicators need real progress data; a fake bar misleads
 - Check: heuristic_eval H-01
@@ -86,8 +87,9 @@ How local apps handle the same action and its states, and local payment patterns
   - A confirmation restates the request and its effect ("Hapus 3 foto dari album Liburan? Foto tidak bisa dikembalikan."), and its buttons name the outcomes ("Hapus foto" and "Batal"), never Ya/Tidak or OK.
   - While a confirmation is open it is the only control for that action: the button that opened it steps aside, and the confirming button repeats the trigger's label ("Publish changes", not "Publish now").
   - Give a destructive confirmation no default button; ask for typing a word only for the rarest, most dangerous actions.
+  - A destructive action is never the screen's primary button. When an item is gone (sold, expired, removed by someone else), the primary action leads on (similar items, back to browsing), removing it is secondary, and counts and badges already show the change.
 - Do not: Confirm every action by reflex, use a bare "Are you sure?" before a payment, or leave the trigger beside its confirmation under another name.
-- Why: Confirmation that appears everywhere gets dismissed by habit; specifics and undo catch real mistakes. Two buttons for one action, under two names, make people wonder whether they differ. (Nielsen heuristic 5; NNGroup confirmation-dialog guidance; owner review of the RYUX editor, 2026-10-29: editing a published flow showed "Publish changes" and "Publish now" at once)
+- Why: Confirmation that appears everywhere gets dismissed by habit; specifics and undo catch real mistakes. Two buttons for one action, under two names, make people wonder whether they differ. (Nielsen heuristic 5; NNGroup confirmation-dialog guidance; owner review of the RYUX editor, 2026-10-29: editing a published flow showed "Publish changes" and "Publish now" at once; owner blind review 2026-11-18 of three Rak flows (secondhand books, Yogyakarta): a sold book left the bag badge at 1 and made "Remove from bag" the primary button)
 - Not when: reversible, low-impact actions where undo is enough
 - Trade-off: one extra step versus irreversible loss
 - Check: heuristic_eval H-05
@@ -104,9 +106,9 @@ How local apps handle the same action and its states, and local payment patterns
 ### RX-IX-09 [Contextual] QRIS: amount and merchant first
 
 - When: the flow takes a QRIS payment
-- Do: Show the amount and the merchant name before the user scans or confirms, and the paid status afterwards.
-- Do not: Show a QR code without the amount or the merchant.
-- Why: Users check who they are paying and how much before they pay. (QRIS standard (Bank Indonesia); ryux reference screens)
+- Do: Show the amount and the merchant name before the user scans or confirms, and the paid status afterwards. A QRIS payment shows the QR code itself, with a way to save it when the payer is on the same phone; "approve it in your banking app" with no code is a push or virtual-account flow, not QRIS.
+- Do not: Show a QR code without the amount or the merchant, or call a payment QRIS and never show the code.
+- Why: Users check who they are paying and how much before they pay. (QRIS standard (Bank Indonesia); ryux reference screens; owner blind review 2026-11-18 of three Rak flows (secondhand books, Yogyakarta): one flow chose QRIS and then asked the user to approve in a banking app, with no QR shown)
 - Not when: a static QRIS printed for any amount, where the user types the amount; show the merchant name
 - Trade-off: an extra confirmation step before the code
 - Check: search_screens qris

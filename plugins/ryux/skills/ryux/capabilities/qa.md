@@ -113,8 +113,9 @@ The intended design (Figma, pen.dev, DESIGN.md) is the reference; RYUX screens a
   - Device mockups (phones, laptops) do not overlap each other or get cut by a section edge, unless the cut is designed (bleeding off the page edge); check each breakpoint's render, desktop and mobile, not one.
   - Labels in a row (steps, tabs, chips) stay visibly apart at the smallest width: at least twice a word space between two labels, or show only the current one.
   - On a map, keep street and place labels clear of markers, chips, and the route.
-- Do not: Let a card cover prices or labels, or let nav items touch.
-- Why: Covered text is lost information and looks broken; labels a word space apart read as one phrase. (ryux run 2026-10-02: QRIS card over prices, colliding nav; ryux Figma pilot critique 2026-10-28: "On the way" and "Delivered" 6 pt apart at 360, a courier marker over street labels; owner blind review 2026-11-08 of the Raja Emas landing rerun (RYUX 2.22.5, docs/benchmarks/landing-gold): two hero phones overlapping and cut by a green band on desktop, and cut on mobile)
+  - Text that can outgrow its box (a seller name with its area, a long title) wraps, or ends in an ellipsis; it is never cut at the frame edge mid-word.
+- Do not: Let a card cover prices or labels, let nav items touch, or let a line run out of its frame with no ellipsis.
+- Why: Covered text is lost information and looks broken; labels a word space apart read as one phrase. (ryux run 2026-10-02: QRIS card over prices, colliding nav; ryux Figma pilot critique 2026-10-28: "On the way" and "Delivered" 6 pt apart at 360, a courier marker over street labels; owner blind review 2026-11-08 of the Raja Emas landing rerun (RYUX 2.22.5, docs/benchmarks/landing-gold): two hero phones overlapping and cut by a green band on desktop, and cut on mobile; owner blind review 2026-11-18 of three Rak flows (secondhand books, Yogyakarta): a seller and area cut at the frame edge with no ellipsis)
 - Check: screenshot at every breakpoint, mockups included
 - Measured: `ryux scan <url>` flags text boxes of unrelated elements that overlap (warn); text a fixed or sticky bar cuts on the first screen while the bar repeats it, and text a bottom bar still covers with every scroller at its end (fail)
 
@@ -122,8 +123,8 @@ The intended design (Figma, pen.dev, DESIGN.md) is the reference; RYUX screens a
 
 - Do: Make line items add up to subtotals and totals, and show the same value the same way everywhere on the screen.
   - Times follow one timeline across a flow: the status-bar clock, timestamps, and estimates on each frame fit its stage.
-- Do not: Show sample numbers or times that contradict each other.
-- Why: Readers check sums and clocks; one wrong total or an arrival time already past undermines everything else. (ryux README checkout image (items Rp125.000, subtotal Rp1.200.000); ryux Figma pilot critique 2026-10-28: a 7:31 clock on every frame beside a 7:38 last update and a 6:15 arrival window)
+- Do not: Show sample numbers, times, or facts that contradict each other (a translator credited on a book shown in the language it was written in).
+- Why: Readers check sums and clocks; one wrong total or an arrival time already past undermines everything else. (ryux README checkout image (items Rp125.000, subtotal Rp1.200.000); ryux Figma pilot critique 2026-10-28: a 7:31 clock on every frame beside a 7:38 last update and a 6:15 arrival window; owner blind review 2026-11-18 of three Rak flows (secondhand books, Yogyakarta): a translator credited on an Indonesian original)
 - Check: review
 
 ### RX-QA-06 [Preferred] Match the intended design
