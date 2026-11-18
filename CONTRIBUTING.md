@@ -21,21 +21,34 @@ part follows the [Code of Conduct](./CODE_OF_CONDUCT.md).
 
 ## Set up
 
-You need Node 22 and pnpm.
+You need Node 22, pnpm, and Rust with the WebAssembly target and wasm-pack. The CLI's checks (scan,
+design drift, and the canvas audit) have two implementations that must give the same results: the
+TypeScript in `packages/cli/src` (the default) and `crates/ryux-core`, built to WebAssembly by
+`pnpm test` and used with `RYUX_ENGINE=rust`.
 
 ```bash
+rustup target add wasm32-unknown-unknown
+npm install -g wasm-pack@0.15.1
+
 pnpm install
 pnpm typecheck
-pnpm test
+pnpm test          # builds the CLI and the WebAssembly, then runs the tests
 pnpm check:sync
+cargo test         # the Rust checks against fixtures/checks
 ```
 
-CI runs the same four steps on every pull request.
+CI runs the same steps on every pull request. A change to a check goes into both
+`packages/cli/src` (TypeScript) and `crates/ryux-core` (Rust) while both exist; record the new
+behaviour with `pnpm --filter @ryuxdsgn/design-intelligence record:fixtures`, and both must
+match the recording.
 
 ## Where things live
 
 ```
 packages/cli/src/   the source: CLI, scan, and every rule and skill file
+crates/ryux-core/   the deterministic checks in Rust (scan, drift, canvas audit)
+crates/ryux-wasm/   their WebAssembly entry, loaded by the CLI
+fixtures/checks/    recorded inputs and outputs both implementations must match
 skills/ryux/        generated from packages/cli/src, do not edit by hand
 plugins/ryux/       generated plugin copy, do not edit by hand
 docs/               design rules, benchmarks

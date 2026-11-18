@@ -7,7 +7,8 @@
   "scripts": {
     "sync:skills": "pnpm --filter @ryuxdsgn/design-intelligence build && node packages/cli/scripts/sync-skills.mjs",
     "typecheck": "pnpm -r typecheck",
-    "test": "pnpm --filter @ryuxdsgn/design-intelligence build && pnpm --filter @ryuxdsgn/design-intelligence test",
+    "build:wasm": "pnpm --filter @ryuxdsgn/design-intelligence build:wasm",
+    "test": "pnpm --filter @ryuxdsgn/design-intelligence build && pnpm build:wasm && pnpm --filter @ryuxdsgn/design-intelligence test",
     "check:sync": "pnpm --filter @ryuxdsgn/design-intelligence build && node packages/cli/scripts/sync-skills.mjs --check"
   }
 }

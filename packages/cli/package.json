@@ -9,6 +9,7 @@
   },
   "files": [
     "dist",
+    "wasm",
     "LICENSE",
     "README.md"
   ],
@@ -41,7 +42,8 @@
     "node": ">=20.12"
   },
   "scripts": {
-    "prepack": "npm run build",
+    "prepack": "npm run build && node -e \"if(!require('fs').existsSync('wasm/ryux_wasm_bg.wasm')){console.error('wasm/ is missing: run pnpm build:wasm before packing');process.exit(1)}\"",
+    "build:wasm": "wasm-pack build ../../crates/ryux-wasm --target nodejs --release --out-dir ../../packages/cli/wasm && node -e \"require('fs').rmSync('wasm/.gitignore',{force:true})\"",
     "build": "node -e \"require('fs').rmSync('dist',{recursive:true,force:true})\" && tsc",
     "dev": "tsc && node dist/cli/index.js",
     "typecheck": "tsc --noEmit",

@@ -59,3 +59,17 @@ pub fn scan(input: &str) -> String {
     let opts = s::ScanOptions { folder: v["folder"].as_bool().unwrap_or(false), skip, design: Direction::from_json(&v["design"]) };
     ryux_core::Json::Array(s::scan_sources(&sources, opts)).to_string()
 }
+
+/// unusedTokens over raw sources: `{ sources: [{ path, raw }], design }` → `{ colours, fonts }`. Comments
+/// are blanked first, as the scan reads the files.
+#[wasm_bindgen]
+pub fn unused(input: &str) -> String {
+    use ryux_core::{drift, scan::to_source};
+    let v = match ryux_core::parse(input) {
+        Ok(v) => v,
+        Err(e) => return format!("{{\"error\":{}}}", ryux_core::js::quote(&format!("invalid input: {e}"))),
+    };
+    let Some(dir) = drift::Direction::from_json(&v["design"]) else { return "{\"error\":\"no design\"}".into() };
+    let texts: Vec<String> = v["sources"].as_array().map_or(Vec::new(), |a| a.iter().map(|x| to_source(x["path"].as_str().unwrap_or(""), x["raw"].as_str().unwrap_or("")).text).collect());
+    drift::unused_tokens(&texts, &dir).to_string()
+}
