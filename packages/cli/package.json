@@ -45,7 +45,8 @@
     "build": "node -e \"require('fs').rmSync('dist',{recursive:true,force:true})\" && tsc",
     "dev": "tsc && node dist/cli/index.js",
     "typecheck": "tsc --noEmit",
-    "test": "node --test \"test/*.test.mjs\""
+    "test": "node --test \"test/*.test.mjs\"",
+    "record:fixtures": "node -e \"require('fs').rmSync('../../fixtures/checks',{recursive:true,force:true})\" && RYUX_RECORD=1 node --test test/scan.test.mjs test/figma-audit.test.mjs"
   },
   "dependencies": {
     "@clack/prompts": "^0.7.0",

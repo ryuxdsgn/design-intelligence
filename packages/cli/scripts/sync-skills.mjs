@@ -25,6 +25,7 @@ import {
 } from "../dist/render.js";
 import { validateBundle, validateRules } from "../dist/validate.js";
 import { VERSION } from "../dist/product.js";
+import { RULES } from "../dist/intelligence/content.js";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const root = join(here, "..", "..", "..");
@@ -79,7 +80,12 @@ for (const [file, apply] of Object.entries(withVersion)) {
 }
 doc = versioned["docs/design-rules.md"];
 
+// Rule IDs, levels, and titles for checks outside TypeScript (the Rust port): one list, generated here.
+const rulesPath = join(root, "fixtures", "rules.json");
+const rulesJson = `${JSON.stringify(RULES.map((r) => ({ id: r.id, level: r.level, title: r.title })), null, 1)}\n`;
+
 if (check) {
+  if (!existsSync(rulesPath) || (await readFile(rulesPath, "utf8")) !== rulesJson) problems.push("fixtures/rules.json is out of date");
   for (const dir of bundleDirs) {
     const label = dir.slice(root.length + 1);
     const committed = {};
@@ -127,6 +133,8 @@ for (const dir of bundleDirs) {
   }
 }
 await writeFile(docPath, doc, "utf8");
+await mkdir(dirname(rulesPath), { recursive: true });
+await writeFile(rulesPath, rulesJson, "utf8");
 execFileSync("node", [join(here, "version.mjs")], { stdio: "inherit" });
 
 // Dogfood: install RYUX into this repo with the real CLI. The generated .claude/skills/ryux folder

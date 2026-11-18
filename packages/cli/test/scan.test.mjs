@@ -7,7 +7,8 @@ import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync
 import { tmpdir } from "node:os";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { DETECTORS, scanSources, toSource } from "../dist/scan.js";
+import { DETECTORS, scanSources as scanAll, toSource } from "../dist/scan.js";
+import { recordDirection, recordScan } from "./golden.mjs";
 import { RULES } from "../dist/intelligence/content.js";
 import { VERSION } from "../dist/product.js";
 
@@ -16,6 +17,7 @@ const run = (cwd, args, input) => {
   const r = spawnSync("node", [cli, ...args], { cwd, input, encoding: "utf8", env: { ...process.env, NO_COLOR: "1" } });
   return { code: r.status, out: `${r.stdout}${r.stderr}` };
 };
+const scanSources = recordScan(scanAll);
 const scan = (path, raw, folder = false) => scanSources([toSource(path, raw)], { folder });
 const rules = (findings) => findings.map((f) => `${f.level} ${f.rule}`);
 
@@ -424,7 +426,7 @@ test("SVG art: stroke-width is not a fixed size, and a comment naming an editor 
 });
 
 // Design drift (scan --design): the direction block in DESIGN.md against the code.
-const { readDirection } = await import("../dist/drift.js");
+const readDirection = recordDirection((await import("../dist/drift.js")).readDirection);
 const DESIGN = [
   "# DESIGN.md", "", "## Visual and motion language", "", "```yaml", "direction:", "  name: Test",
   "  grammar:", "    motion: balanced", "  type:", "    display: Fraunces SemiBold (H1 72/75)", "    body: Plus Jakarta Sans 400/700, 16/24",
