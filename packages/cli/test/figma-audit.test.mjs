@@ -1,8 +1,9 @@
-// Tests for the Figma audit (scripts/figma-audit.js): each check on a wrong and a right fake canvas, and
+// Tests for the Figma audit (ryux-core's audit; scripts/figma-audit.md in Figma): each check on a wrong and a right fake canvas, and
 // the shipped script running as use_figma runs it. Run on the built dist.
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { figmaAudit as auditCanvas, figmaAuditScript } from "../dist/figma-audit.js";
+import { figmaAuditScript } from "../dist/figma-audit.js";
+import { audit as auditCanvas } from "../dist/engine.js";
 import { recordAudit } from "./golden.mjs";
 import { renderBundle } from "../dist/render.js";
 import { RULES } from "../dist/intelligence/content.js";

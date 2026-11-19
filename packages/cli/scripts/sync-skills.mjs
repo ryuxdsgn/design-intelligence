@@ -80,7 +80,7 @@ for (const [file, apply] of Object.entries(withVersion)) {
 }
 doc = versioned["docs/design-rules.md"];
 
-// Rule IDs, levels, and titles for checks outside TypeScript (the Rust port): one list, generated here.
+// Rule IDs, levels, and titles for ryux-core (crates/ryux-core): one list, generated here.
 const rulesPath = join(root, "fixtures", "rules.json");
 const rulesJson = `${JSON.stringify(RULES.map((r) => ({ id: r.id, level: r.level, title: r.title })), null, 1)}\n`;
 

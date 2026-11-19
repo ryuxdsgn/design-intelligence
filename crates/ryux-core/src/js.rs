@@ -1,4 +1,4 @@
-//! JavaScript semantics the TypeScript checks rely on, so the port returns the same strings and numbers:
+//! JavaScript semantics the checks keep from their first, TypeScript version, so they return the same strings and numbers:
 //! truthiness, UTF-16 lengths and slices, `trim`, `Math.round`, `toFixed`, and number-to-string.
 
 use serde_json::Value;

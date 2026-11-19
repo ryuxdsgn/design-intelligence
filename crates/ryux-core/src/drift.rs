@@ -1,6 +1,6 @@
-//! Design drift: the port of `packages/cli/src/drift.ts`. The direction block in DESIGN.md (colours,
+//! Design drift: the direction block in DESIGN.md (colours,
 //! type families, corner radius, motion durations) against the values the code uses. Offsets and lengths
-//! are UTF-16 code units, as in the TypeScript.
+//! are UTF-16 code units, as JavaScript counts them.
 
 use crate::js::{len16, num_str, round, slice16, trim};
 use crate::jsre::{js, JsRe};

@@ -7,9 +7,9 @@ import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync
 import { tmpdir } from "node:os";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { DETECTORS, SYNTAX_CHECKS, scanSources as scanAll, toSource } from "../dist/scan.js";
-import { scan as scanEngine } from "../dist/engine.js";
-import { recordDirection, recordScan } from "./golden.mjs";
+import { SOURCE_CHECKS, SYNTAX_CHECKS } from "../dist/checks.js";
+import { readDirection as directionIn, scan as scanEngine, scanShared } from "../dist/engine.js";
+import { recordDirection, recordScan, toSource } from "./golden.mjs";
 import { RULES } from "../dist/intelligence/content.js";
 import { VERSION } from "../dist/product.js";
 
@@ -18,24 +18,22 @@ const run = (cwd, args, input) => {
   const r = spawnSync("node", [cli, ...args], { cwd, input, encoding: "utf8", env: { ...process.env, NO_COLOR: "1" } });
   return { code: r.status, out: `${r.stdout}${r.stderr}` };
 };
-const scanSources = recordScan(scanAll);
+const scanSources = recordScan(scanShared);
 const scan = (path, raw, folder = false) => scanSources([toSource(path, raw)], { folder });
 const rules = (findings) => findings.map((f) => `${f.level} ${f.rule}`);
 
 test("every detector checks a rule that exists", () => {
   const ids = new Set(RULES.map((r) => r.id));
-  for (const d of [...DETECTORS, ...SYNTAX_CHECKS]) assert.ok(ids.has(d.rule), d.rule);
+  for (const d of [...SOURCE_CHECKS, ...SYNTAX_CHECKS]) assert.ok(ids.has(d.rule), d.rule);
 });
 
-test("syntax checks: a drag with no keyboard way in JSX and TSX, read by ryux-core whichever engine runs", () => {
+test("syntax checks: a drag with no keyboard way in JSX and TSX, read by ryux-core as a syntax tree", () => {
   // Owner review 2026-11-18 of the markup detector sheet: a drag-only comparison slider was a real problem
   // the text patterns missed.
   const slider = 'export const C = () => (\n  <div className="compare" onPointerDown={(e) => drag(e)}>\n    <img src="a.png" alt="Sebelum" />\n  </div>\n);\n';
-  for (const which of ["ts", "rust"]) {
-    const found = scanEngine([{ path: "Compare.tsx", raw: slider }], { folder: false }, which);
-    assert.deepEqual(found.map((f) => `${f.level} ${f.rule} ${f.line}:${f.column}`), ["warn RX-A11Y-03 2:3"], which);
-    assert.match(found[0].message, /<div> that starts a drag \(onPointerDown\) with no keyboard way/);
-  }
+  const found = scanEngine([{ path: "Compare.tsx", raw: slider }], { folder: false });
+  assert.deepEqual(found.map((f) => `${f.level} ${f.rule} ${f.line}:${f.column}`), ["warn RX-A11Y-03 2:3"]);
+  assert.match(found[0].message, /<div> that starts a drag \(onPointerDown\) with no keyboard way/);
   const fine = [
     '<div role="slider" tabIndex={0} aria-valuenow={v} onPointerDown={d} onKeyDown={k} />',
     "<Slider onPointerDown={d} />",
@@ -470,7 +468,7 @@ test("SVG art: stroke-width is not a fixed size, and a comment naming an editor 
 });
 
 // Design drift (scan --design): the direction block in DESIGN.md against the code.
-const readDirection = recordDirection((await import("../dist/drift.js")).readDirection);
+const readDirection = recordDirection(directionIn);
 const DESIGN = [
   "# DESIGN.md", "", "## Visual and motion language", "", "```yaml", "direction:", "  name: Test",
   "  grammar:", "    motion: balanced", "  type:", "    display: Fraunces SemiBold (H1 72/75)", "    body: Plus Jakarta Sans 400/700, 16/24",

@@ -4,7 +4,7 @@
 import { createRequire } from "node:module";
 import { join } from "node:path";
 import { pathToFileURL } from "node:url";
-import type { ScanFinding } from "../scan.js";
+import type { ScanFinding } from "../checks.js";
 import { probe, type ProbeFinding, type ProbeResult } from "./page-probe.js";
 
 interface Page {
