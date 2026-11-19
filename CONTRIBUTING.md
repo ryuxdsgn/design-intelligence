@@ -48,7 +48,8 @@ The browser is different: for `ryux scan <url>`, the script in the page (`packag
 only reads boxes, computed styles, text, and hit tests, and `crates/ryux-core/src/probe.rs` judges them. Its parity
 test (`packages/cli/test/scan.test.mjs`) renders the pages in `packages/cli/test/pages.mjs` with Playwright, so
 recording fixtures needs Playwright with Chromium where the tests run (`RYUX_PLAYWRIGHT_CWD`, or the repo root);
-without it, that test skips, and CI replays `fixtures/checks/probe.json` only.
+without it, that test skips. CI installs Playwright and sets `RYUX_REQUIRE_BROWSER=1`, so there a missing browser
+fails the render tests instead of skipping them.
 
 ## Where things live
 
