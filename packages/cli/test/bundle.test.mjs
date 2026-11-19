@@ -542,11 +542,12 @@ test("fix round 1: screen-ready flows and journeys, a revamp that changes the lo
   assert.match(r20, /floating control covers content or the docked action bar/i);
 });
 
-test("structural alternatives close with ryux pick and a 60 s recommendation, reported honestly", () => {
-  const d = renderBundle()["capabilities/design.md"];
+test("structural alternatives close with ryux pick, which only marks the recommendation; with no click the agent asks", () => {
+  // owner 2026-11-19: pick stops and asks; it never chooses for the person
+  const d = renderBundle()["capabilities/design.md"].replace(/\s+/g, " ");
   assert.match(d, /pick alternatives\.html --recommend <n>/);
-  assert.match(d, /`recommended: <n>` line[^\n]*no answer/i);
-  assert.match(d, /never as the user's choice/i);
+  assert.match(d, /stop and ask in text[^.]*recommendation first; never build one for the user without an answer/i);
+  assert.doesNotMatch(d, /recommended: <n>|60-second countdown/);
 });
 
 test("a revamp lists its states, renders each before and after, and an error state keeps what is known", () => {
@@ -646,7 +647,7 @@ test("B3: a revamp of a product with a direction stays inside the brand, keeps i
 
 test("B3 rerun: not waiting still runs the timed pick; a revamp keeps the field pattern, the title's context, and reaches the next task", () => {
   const files = renderBundle();
-  assert.match(files["capabilities/design.md"], /"do not wait"[^\n]*is not a reason to skip[^\n]*/i);
+  assert.match(files["capabilities/design.md"].replace(/\s+/g, " "), /"continue with your recommendation" is that answer/i);
   const r20 = ruleSection(files["knowledge/ux.md"], "RX-UX-20");
   assert.match(r20, /a field keeps the product's surface pattern/i);
   assert.match(r20, /the title keeps the context/i);

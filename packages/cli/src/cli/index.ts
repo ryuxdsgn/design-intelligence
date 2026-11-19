@@ -868,7 +868,7 @@ Options:
   --widths <list>      scan <url>: viewport widths in CSS px (default 320,390,1280)
                        (a prototype's own controls marked data-ryux-ignore are not measured)
   --timeout <seconds>  pick: how long to wait for a click before falling back (default 240, or 60 with --recommend)
-  --recommend <n>      pick: mark option n on the page; with no click before the timeout, print "recommended: n"
+  --recommend <n>      pick: mark option n on the page as the recommendation (never chosen for you)
   --product, --work, --audience, --market, --constraints, --intent, --ux, --ui, --voice, --motion <text>
                        set project context fields without questions (setup)
 

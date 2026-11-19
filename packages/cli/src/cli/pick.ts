@@ -5,7 +5,6 @@ import { readFile } from "node:fs/promises";
 export type PickResult =
   | { kind: "pick"; n: number; name?: string }
   | { kind: "regenerate" }
-  | { kind: "recommended"; n: number }
   | { kind: "fallback"; reason: string };
 
 const CLIENT_SCRIPT = `<script>
@@ -74,52 +73,31 @@ const CLIENT_SCRIPT = `<script>
 })();
 </script>`;
 
-const TIMER_SCRIPT = `<script>
+// With a recommendation the page marks that option. It never counts down or chooses for the person: an agent
+// that picks on the person's behalf reads as bypassing their oversight (owner 2026-11-19, after Claude Code's
+// permission check refused the timed pick in two of four runs).
+const MARK_SCRIPT = `<script>
 (function () {
-  var cfg = JSON.parse(document.getElementById("ryux-pick-timer").textContent);
-  var id = /^id\\b/i.test(document.documentElement.lang || "");
-  var t = id
-    ? { rec: "Rekomendasi", left: function (s, n) { return "Pilih dalam " + s + " detik. Kalau tidak dijawab, rekomendasi " + n + " yang dipakai."; }, over: function (n) { return "Waktu habis: rekomendasi " + n + " dipakai. Tab ini boleh ditutup."; } }
-    : { rec: "Recommended", left: function (s, n) { return "Pick within " + s + " seconds. With no answer, recommendation " + n + " is used."; }, over: function (n) { return "Time is up: recommendation " + n + " is used. You can close this tab."; } };
-  var bar = document.createElement("div");
-  bar.id = "ryux-pick-timer-bar";
-  bar.setAttribute("role", "status");
-  bar.style.cssText = "position:sticky;top:0;z-index:2147483646;background:#111;color:#fff;padding:.75rem 1rem;font:15px/1.4 system-ui,sans-serif;text-align:center";
-  document.body.insertBefore(bar, document.body.firstChild);
+  var cfg = JSON.parse(document.getElementById("ryux-pick-recommend").textContent);
+  var label = /^id\\b/i.test(document.documentElement.lang || "") ? "Rekomendasi" : "Recommended";
   document.querySelectorAll('[data-ryux-pick="' + cfg.recommend + '"]').forEach(function (el) {
     var tag = document.createElement("span");
-    tag.textContent = t.rec;
+    tag.textContent = label;
     tag.style.cssText = "display:inline-block;margin-left:.5rem;padding:.1rem .5rem;border-radius:999px;background:#1a7f37;color:#fff;font:600 12px/1.6 system-ui,sans-serif;vertical-align:middle";
     el.appendChild(tag);
   });
-  var left = cfg.seconds;
-  function tick() {
-    if (document.getElementById("ryux-pick-note")) { clearInterval(iv); bar.remove(); return; }
-    if (left <= 0) {
-      clearInterval(iv);
-      bar.textContent = t.over(cfg.recommend);
-      document.addEventListener("click", function (e) { if (e.target.closest("[data-ryux-pick]")) { e.stopImmediatePropagation(); e.preventDefault(); } }, true);
-      setTimeout(function () { window.close(); }, 1500);
-      return;
-    }
-    bar.textContent = t.left(left, cfg.recommend);
-    left -= 1;
-  }
-  var iv = setInterval(tick, 1000);
-  tick();
 })();
 </script>`;
 
-export interface TimerOptions {
+export interface MarkOptions {
   recommend: number;
-  seconds: number;
 }
 
-/** Append the choice-return script, and with a recommendation a countdown that marks it. The data-ryux-pick hooks are left untouched. */
-export function injectHooks(html: string, timer?: TimerOptions): string {
-  if (!timer) return html + "\n" + CLIENT_SCRIPT;
-  const cfg = `<script type="application/json" id="ryux-pick-timer">${JSON.stringify({ recommend: timer.recommend, seconds: timer.seconds })}</script>`;
-  return html + "\n" + CLIENT_SCRIPT + "\n" + cfg + "\n" + TIMER_SCRIPT;
+/** Append the choice-return script, and with a recommendation a mark on that option. The data-ryux-pick hooks are left untouched. */
+export function injectHooks(html: string, mark?: MarkOptions): string {
+  if (!mark) return html + "\n" + CLIENT_SCRIPT;
+  const cfg = `<script type="application/json" id="ryux-pick-recommend">${JSON.stringify({ recommend: mark.recommend })}</script>`;
+  return html + "\n" + CLIENT_SCRIPT + "\n" + cfg + "\n" + MARK_SCRIPT;
 }
 
 function parseChoice(raw: string, rawName = ""): PickResult | null {
@@ -133,7 +111,7 @@ function parseChoice(raw: string, rawName = ""): PickResult | null {
 export interface ServeOptions {
   html: string;
   timeoutMs: number;
-  /** The option the agent recommends: shown on the page, and used when no answer arrives before the timeout. */
+  /** The option the agent recommends: marked on the page; never chosen for the person. */
   recommend?: number;
   open?: boolean;
   onListening?: (port: number, host: string) => void;
@@ -142,7 +120,7 @@ export interface ServeOptions {
 /** Serve the injected page on 127.0.0.1 and resolve when a valid choice is POSTed, or on timeout. */
 export function serveAndWait(opts: ServeOptions): Promise<PickResult> {
   const host = "127.0.0.1";
-  const page = injectHooks(opts.html, opts.recommend !== undefined ? { recommend: opts.recommend, seconds: Math.round(opts.timeoutMs / 1000) } : undefined);
+  const page = injectHooks(opts.html, opts.recommend !== undefined ? { recommend: opts.recommend } : undefined);
   return new Promise<PickResult>((resolve) => {
     let done = false;
     const server = createServer((req, res) => {
@@ -172,8 +150,7 @@ export function serveAndWait(opts: ServeOptions): Promise<PickResult> {
       res.writeHead(200, { "content-type": "text/html; charset=utf-8" }).end(page);
     });
 
-    const onTimeout = (): PickResult => (opts.recommend !== undefined ? { kind: "recommended", n: opts.recommend } : { kind: "fallback", reason: "timeout" });
-    const timer = setTimeout(() => finish(onTimeout()), opts.timeoutMs);
+    const timer = setTimeout(() => finish({ kind: "fallback", reason: "timeout" }), opts.timeoutMs);
 
     function finish(result: PickResult): void {
       if (done) return;
@@ -204,7 +181,6 @@ export function openBrowser(url: string): void {
 }
 
 const DEFAULT_TIMEOUT_S = 240;
-const RECOMMEND_TIMEOUT_S = 60;
 
 /** Read `--timeout <seconds>` from argv; a missing, non-numeric, zero, or negative value uses the default. */
 export function parseTimeoutMs(argv: string[]): number {
@@ -213,21 +189,19 @@ export function parseTimeoutMs(argv: string[]): number {
   return (Number.isFinite(n) && n > 0 ? n : DEFAULT_TIMEOUT_S) * 1000;
 }
 
-/** Read the path, `--recommend <n>`, and `--timeout <seconds>`; a recommendation makes the default wait 60 s. */
+/** Read the path, `--recommend <n>`, and `--timeout <seconds>`. */
 export function parsePickArgs(argv: string[]): { path?: string; recommend?: number; timeoutMs: number } {
   const ri = argv.indexOf("--recommend");
   const rn = ri >= 0 ? Number(argv[ri + 1]) : NaN;
   const recommend = Number.isInteger(rn) && rn > 0 ? rn : undefined;
   const flagValues = new Set([ri, argv.indexOf("--timeout")].filter((i) => i >= 0).map((i) => i + 1));
   const path = argv.find((a, i) => !a.startsWith("--") && !flagValues.has(i));
-  const hasTimeout = argv.includes("--timeout");
-  const timeoutMs = !hasTimeout && recommend !== undefined ? RECOMMEND_TIMEOUT_S * 1000 : parseTimeoutMs(argv);
+  const timeoutMs = parseTimeoutMs(argv);
   return { path, recommend, timeoutMs };
 }
 
-export function resultLine(r: PickResult, timeoutMs = 0): string {
+export function resultLine(r: PickResult): string {
   if (r.kind === "pick") return `pick: ${r.n}`;
-  if (r.kind === "recommended") return `recommended: ${r.n} (no answer in ${Math.round(timeoutMs / 1000)} s)`;
   return r.kind === "regenerate" ? "regenerate" : `fallback: ${r.reason}`;
 }
 
@@ -257,7 +231,6 @@ export async function runPick(argv: string[]): Promise<void> {
   // stdout stays one machine line for the agent; the person watching the terminal gets a plain confirmation.
   if (result.kind === "pick") console.error(`ryux pick: choice received: ${result.n}${result.name ? ` · ${result.name}` : ""}`);
   else if (result.kind === "regenerate") console.error("ryux pick: choice received: three new directions");
-  else if (result.kind === "recommended") console.error(`ryux pick: no answer in ${Math.round(timeoutMs / 1000)} s; using recommendation ${result.n}`);
-  console.log(resultLine(result, timeoutMs));
+  console.log(resultLine(result));
   if (result.kind === "fallback") process.exitCode = 3;
 }
