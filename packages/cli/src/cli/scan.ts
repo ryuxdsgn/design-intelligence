@@ -1,13 +1,13 @@
 // `ryux scan`: run the deterministic detectors (ryux-core, through ../engine.ts) over files and folders, measure rendered
 // pages given as URLs (./page-scan.ts), or check the file an agent just edited (--hook, fed by a
 // Claude Code PostToolUse hook on stdin).
-import { existsSync, statSync } from "node:fs";
+import { existsSync, readFileSync, statSync } from "node:fs";
 import { readFile, readdir } from "node:fs/promises";
 import { join, relative, resolve } from "node:path";
 import pc from "picocolors";
 import { RULES } from "../intelligence/content.js";
 import { VERSION } from "../product.js";
-import { readDirection, scan, unused, type RawSource } from "../engine.js";
+import { readDirection, scanReading, unused, type RawSource } from "../engine.js";
 import { RENDER_CHECKS, SCAN_EXTS, SOURCE_CHECKS, SYNTAX_CHECKS, type Direction, type ScanFinding } from "../checks.js";
 import { scanPages } from "./page-scan.js";
 
@@ -16,6 +16,13 @@ const isUrl = (t: string): boolean => /^(?:https?|file):\/\//.test(t);
 
 const SKIP_DIRS = new Set(["node_modules", "dist", "build", "out", "coverage", "vendor", ".next", ".nuxt", ".svelte-kit", ".output"]);
 const MAX_BYTES = 512 * 1024;
+
+/** A file ryux-core asked for, by the path it named (relative to the working directory), when it exists. */
+function readOne(path: string): RawSource | undefined {
+  const full = resolve(process.cwd(), path);
+  if (!existsSync(full) || !statSync(full).isFile() || statSync(full).size > MAX_BYTES) return undefined;
+  return { path, raw: readFileSync(full, "utf8") };
+}
 
 const scannable = (path: string): boolean =>
   SCAN_EXTS.includes(path.slice(path.lastIndexOf(".") + 1).toLowerCase()) && !/\.(?:min\.\w+|d\.ts)$/.test(path);
@@ -43,7 +50,7 @@ async function scanPaths(paths: string[], skip: Set<string>, design?: Direction)
     if (statSync(f).size > MAX_BYTES) continue;
     sources.push({ path: relative(process.cwd(), f) || f, raw: await readFile(f, "utf8") });
   }
-  return { files: sources.length, findings: scan(sources, { folder, skip, design }), sources };
+  return { files: sources.length, findings: scanReading(sources, { folder, skip, design }, readOne), sources };
 }
 
 const title = (id: string): string => RULES.find((r) => r.id === id)?.title ?? "";

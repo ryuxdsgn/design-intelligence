@@ -25,12 +25,51 @@ pub struct Markup {
     /// A `<button>` with no type inside a `<form>`, other than the one taken as the form's submit.
     pub untyped: Vec<usize>,
     /// The first loading indicator: a spinner, loader, loading, or skeleton class or component, or "Loading…" text.
+    /// A component imported from another module is not here but in `loaders_from`.
     pub loading: Option<usize>,
-    /// The first dialog: an element with a dialog role, or a `<dialog>`.
+    /// Loading components imported from another module (not an icon set): offset, the name that module exports
+    /// it under ("default" for a default import), and the import path. Each is judged by its own markup there.
+    pub loaders_from: Vec<(usize, String, String)>,
+    /// The first modal dialog: an element with a dialog role and aria-modal, an alertdialog, or a dialog with a
+    /// scrim around it or just before it. A panel with none of these is not modal, and a native `<dialog>` is
+    /// modal only through showModal(), which gives Esc and the inert page itself.
     pub dialog: Option<usize>,
-    /// An HTML page that loads a script from a file (`<script src>`): what it does at run time, such as closing a
-    /// dialog on Esc or setting aria-busy, is in that file, out of this one's sight.
-    pub external_script: bool,
+    /// The `src` of every `<script src>` an HTML page loads, as written: what it does at run time, such as closing a
+    /// dialog on Esc or setting aria-busy, is in that file.
+    pub scripts: Vec<String>,
+}
+
+/// A re-export: the path, and the names as (imported, exported), or None for `export *`.
+pub type ReExport = (String, Option<Vec<(String, String)>>);
+
+/// What a module defines and re-exports, for finding a component another file imports.
+#[derive(Default)]
+pub struct Module {
+    /// Top-level functions, classes, and variables (exported or not), "default" for the default export:
+    /// the name and the byte span of its declaration.
+    pub defs: Vec<(String, usize, usize)>,
+    /// `export * from "p"` (None) and `export { a as b } from "p"` (the names, as (imported, exported)).
+    pub reexports: Vec<ReExport>,
+}
+
+/// The module read from a script or component file, or None when oxc cannot parse it.
+pub fn module(text: &str, ext: &str) -> Option<Module> {
+    jsx::module(text, ext)
+}
+
+/// A class or id word that names a scrim: scrim, backdrop, or overlay.
+fn scrim_name(s: &str) -> bool {
+    words(s).iter().any(|w| matches!(w.as_str(), "scrim" | "backdrop" | "overlay"))
+}
+
+/// aria-modal written as true (the value starts with "true", as hidden() reads aria-hidden).
+fn modal_value(v: &str) -> bool {
+    v.trim().to_ascii_lowercase().starts_with("true")
+}
+
+/// role="alertdialog": a modal dialog by definition.
+fn alert_role(v: &str) -> bool {
+    v.trim_start().starts_with("alertdialog")
 }
 
 /// The file read as structure, or None when it stays on the patterns (not JSX, TSX, or HTML; or oxc gave up).
@@ -149,10 +188,13 @@ mod jsx {
         out: Markup,
         /// The forms the visit is inside, innermost last.
         forms: Vec<Form>,
-        /// Loading indicators: offset, and for a component the name it is imported under.
+        /// Loading indicators: offset, and for a component its name as written (UI.Spinner).
         loaders: Vec<(usize, Option<String>)>,
-        /// Imported names and the path each comes from.
-        imports: HashMap<String, String>,
+        /// Imported names: the path each comes from, and the name it has there ("default", or "*" for a namespace).
+        imports: HashMap<String, (String, String)>,
+        /// For each element being visited, innermost last: whether it is a scrim (a scrim class or id, or a click
+        /// handler) and whether the sibling just before the current child was one (by class or id).
+        around: Vec<(bool, bool)>,
     }
 
     #[derive(Default)]
@@ -243,6 +285,23 @@ mod jsx {
         Attrs { list, spread }
     }
 
+    /// The strings in the named attributes: a literal value, or the strings in an expression (cn("scrim", x)).
+    fn class_strings(src: &str, el: &JSXOpeningElement, names: &[&str]) -> Vec<String> {
+        let mut out = Vec::new();
+        for item in &el.attributes {
+            let JSXAttributeItem::Attribute(attr) = item else { continue };
+            if !names.contains(&text(src, attr.name.span())) {
+                continue;
+            }
+            match &attr.value {
+                Some(JSXAttributeValue::StringLiteral(s)) => out.push(s.value.as_str().unwrap_or_default().to_string()),
+                Some(JSXAttributeValue::ExpressionContainer(c)) => out.extend(strings(src, &c.expression).into_iter().map(|(_, s)| s)),
+                _ => {}
+            }
+        }
+        out
+    }
+
     fn tabindex(v: &Value) -> Option<String> {
         match v {
             Value::Str(s) => positive(s),
@@ -303,6 +362,8 @@ mod jsx {
             let name = text(src, open.name.span());
             let at = u16_at(src, open.span.start as usize);
             let a = attrs(src, open);
+            let named_scrim = class_strings(src, open, &["className", "class", "id"]).iter().any(|s| scrim_name(s));
+            let (parent, before) = self.around.last().copied().unwrap_or((false, false));
             for (n, start, v) in &a.list {
                 if *n == "tabIndex" || *n == "tabindex" {
                     if let Some(t) = tabindex(v) {
@@ -323,27 +384,38 @@ mod jsx {
                 "h1" | "h2" | "h3" | "h4" | "h5" | "h6" => self.out.headings.push((at, name[1..].parse().unwrap())),
                 _ => {}
             }
-            self.markup_checks(el, name, at, &a);
+            self.markup_checks(el, name, at, &a, parent || before);
+            self.around.push((named_scrim || CLICK.iter().any(|c| a.has(c)), false));
             if name == "form" {
                 let dialog_method = matches!(a.get("method"), Some(Value::Str(m)) if m.eq_ignore_ascii_case("dialog"));
                 self.forms.push(Form { dialog_method, ..Default::default() });
                 walk::walk_jsx_element(self, el);
                 let f = self.forms.pop().unwrap();
                 self.out.untyped.extend(untyped_in_form(f.dialog_method, f.explicit_submit, &f.buttons));
-                return;
+            } else {
+                walk::walk_jsx_element(self, el);
             }
-            walk::walk_jsx_element(self, el);
+            self.around.pop();
+            if let Some(top) = self.around.last_mut() {
+                top.1 = named_scrim;
+            }
+        }
+
+        fn visit_jsx_fragment(&mut self, f: &JSXFragment<'a>) {
+            self.around.push((false, false));
+            walk::walk_jsx_fragment(self, f);
+            self.around.pop();
         }
 
         fn visit_import_declaration(&mut self, d: &ImportDeclaration<'a>) {
             let from = d.source.value.as_str().unwrap_or_default().to_string();
             for sp in d.specifiers.iter().flatten() {
-                let local = match sp {
-                    ImportDeclarationSpecifier::ImportSpecifier(s) => &s.local,
-                    ImportDeclarationSpecifier::ImportDefaultSpecifier(s) => &s.local,
-                    ImportDeclarationSpecifier::ImportNamespaceSpecifier(s) => &s.local,
+                let (local, there) = match sp {
+                    ImportDeclarationSpecifier::ImportSpecifier(s) => (&s.local, s.imported.name().as_str().to_string()),
+                    ImportDeclarationSpecifier::ImportDefaultSpecifier(s) => (&s.local, "default".to_string()),
+                    ImportDeclarationSpecifier::ImportNamespaceSpecifier(s) => (&s.local, "*".to_string()),
                 };
-                self.imports.insert(local.name.as_str().to_string(), from.clone());
+                self.imports.insert(local.name.as_str().to_string(), (from.clone(), there));
             }
         }
 
@@ -368,7 +440,7 @@ mod jsx {
 
     impl Reader<'_> {
         /// The button, loading, and dialog checks' reading of one element.
-        fn markup_checks(&mut self, el: &JSXElement, name: &str, at: usize, a: &Attrs) {
+        fn markup_checks(&mut self, el: &JSXElement, name: &str, at: usize, a: &Attrs, scrimmed: bool) {
             let src = self.src;
             let lower = name.starts_with(|c: char| c.is_ascii_lowercase());
             // a submit the form names itself: <button type="submit">, <input type="image">, <Button type="submit">
@@ -382,8 +454,16 @@ mod jsx {
                     f.buttons.push((at, a.has("onClick")));
                 }
             }
-            if self.out.dialog.is_none() && ((lower && matches!(a.get("role"), Some(Value::Str(r)) if dialog_role(r))) || name == "dialog") {
-                self.out.dialog = Some(at);
+            if self.out.dialog.is_none() && lower && matches!(a.get("role"), Some(Value::Str(r)) if dialog_role(r)) {
+                let modal = match a.get("aria-modal") {
+                    Some(Value::Str(v)) => modal_value(v),
+                    Some(Value::Bool(b)) => *b,
+                    Some(Value::Other) => true,
+                    _ => false,
+                };
+                if modal || scrimmed || matches!(a.get("role"), Some(Value::Str(r)) if alert_role(r)) {
+                    self.out.dialog = Some(at);
+                }
             }
             // a loading class (className="spinner", cn("skeleton", x)), a component (<Spinner />), or a web component
             for item in &el.opening_element.attributes {
@@ -404,7 +484,7 @@ mod jsx {
             if !lower {
                 let last = name.rsplit('.').next().unwrap_or(name);
                 if loader_name(last) {
-                    self.loaders.push((at, Some(name.split('.').next().unwrap_or(name).to_string())));
+                    self.loaders.push((at, Some(name.to_string())));
                 }
             } else if name.contains('-') && loader_name(name) {
                 self.loaders.push((at, None));
@@ -434,17 +514,91 @@ mod jsx {
         if ret.fatal_error {
             return None;
         }
-        let mut r = Reader { src: raw, out: Markup::default(), forms: Vec::new(), loaders: Vec::new(), imports: HashMap::new() };
+        let mut r = Reader { src: raw, out: Markup::default(), forms: Vec::new(), loaders: Vec::new(), imports: HashMap::new(), around: Vec::new() };
         r.visit_program(&ret.program);
-        // an imported component counts only from an icon set; one defined in this file counts
-        let imports = &r.imports;
-        let elsewhere = |root: &Option<String>| root.as_ref().and_then(|n| imports.get(n)).is_some_and(|from| !icon_package(from));
-        r.out.loading = r.loaders.iter().filter(|l| !elsewhere(&l.1)).map(|l| l.0).min();
+        // a component imported from an icon set, or defined in this file, counts here; one from another module is
+        // judged by its own markup there (loaders_from)
+        let mut here = Vec::new();
+        for (at, name) in &r.loaders {
+            let root = name.as_deref().map(|n| n.split('.').next().unwrap_or(n));
+            match root.and_then(|n| r.imports.get(n)) {
+                Some((from, _)) if icon_package(from) => here.push(*at),
+                Some((from, there)) => {
+                    let name = name.as_deref().unwrap_or_default();
+                    let exported = if there == "*" { name.rsplit('.').next().unwrap_or(name).to_string() } else { there.clone() };
+                    r.out.loaders_from.push((*at, exported, from.clone()));
+                }
+                None => here.push(*at),
+            }
+        }
+        r.out.loading = here.into_iter().min();
         Some(r.out)
     }
 
     pub fn read(raw: &str, ext: &str) -> Option<Markup> {
         parse(raw, if ext == "tsx" { SourceType::tsx() } else { SourceType::jsx() })
+    }
+
+    pub fn module(text: &str, ext: &str) -> Option<Module> {
+        use oxc_ast::ast::{Declaration, ExportDefaultDeclarationKind, Statement};
+        let kind = match ext {
+            "tsx" => SourceType::tsx(),
+            "ts" | "mts" | "cts" => SourceType::ts(),
+            _ => SourceType::jsx(),
+        };
+        let alloc = Allocator::default();
+        let ret = Parser::new(&alloc, text, kind).parse();
+        if ret.fatal_error {
+            return None;
+        }
+        let mut m = Module::default();
+        let span = |s: Span| (s.start as usize, s.end as usize);
+        fn func(f: &oxc_ast::ast::Function, out: &mut Vec<(String, Span)>) {
+            out.extend(f.id.as_ref().map(|i| (i.name.as_str().to_string(), f.span)));
+        }
+        fn class(c: &oxc_ast::ast::Class, out: &mut Vec<(String, Span)>) {
+            out.extend(c.id.as_ref().map(|i| (i.name.as_str().to_string(), c.span)));
+        }
+        fn vars(v: &oxc_ast::ast::VariableDeclaration, out: &mut Vec<(String, Span)>) {
+            for d in &v.declarations {
+                out.extend(d.id.get_identifier_name().map(|n| (n.as_str().to_string(), d.span)));
+            }
+        }
+        fn declared(d: &Declaration, out: &mut Vec<(String, Span)>) {
+            match d {
+                Declaration::FunctionDeclaration(f) => func(f, out),
+                Declaration::ClassDeclaration(c) => class(c, out),
+                Declaration::VariableDeclaration(v) => vars(v, out),
+                _ => {}
+            }
+        }
+        let mut found: Vec<(String, Span)> = Vec::new();
+        let mut default_of: Option<String> = None;
+        for st in &ret.program.body {
+            match st {
+                Statement::FunctionDeclaration(f) => func(f, &mut found),
+                Statement::ClassDeclaration(c) => class(c, &mut found),
+                Statement::VariableDeclaration(v) => vars(v, &mut found),
+                Statement::ExportDeclaration(e) => declared(&e.declaration, &mut found),
+                Statement::ExportDefaultDeclaration(e) => match &e.declaration {
+                    ExportDefaultDeclarationKind::Identifier(i) => default_of = Some(i.name.as_str().to_string()),
+                    _ => found.push(("default".to_string(), e.span)),
+                },
+                Statement::ExportFromDeclaration(e) => {
+                    let names = e.specifiers.iter().map(|s| (s.local.name().as_str().to_string(), s.exported.name().as_str().to_string())).collect();
+                    m.reexports.push((e.source.value.as_str().unwrap_or_default().to_string(), Some(names)));
+                }
+                Statement::ExportAllDeclaration(e) if e.exported.is_none() => m.reexports.push((e.source.value.as_str().unwrap_or_default().to_string(), None)),
+                _ => {}
+            }
+        }
+        if let Some(n) = default_of {
+            if let Some((_, sp)) = found.iter().find(|f| f.0 == n).cloned() {
+                found.push(("default".to_string(), sp));
+            }
+        }
+        m.defs = found.into_iter().map(|(n, s)| { let (a, b) = span(s); (n, a, b) }).collect();
+        Some(m)
     }
 
     /// The positive tabindex a page's inline script sets (`el.tabIndex = 2`), with UTF-16 offsets in `code`.
@@ -706,7 +860,9 @@ mod html {
             match t.name.as_str() {
                 // el.tabIndex = 2 in an inline script, which the pattern also caught
                 "script" => {
-                    out.external_script |= has("src");
+                    if let Some((_, v)) = t.attrs.iter().find(|a| a.0 == "src") {
+                        out.scripts.push(v.to_string());
+                    }
                     let b = raw.as_bytes();
                     let close = (t.end..b.len()).find(|&i| b[i..].len() >= 8 && b[i..i + 8].eq_ignore_ascii_case(b"</script")).unwrap_or(b.len());
                     let code = &raw[t.end..close];
@@ -779,8 +935,13 @@ mod html {
             if el.attr("class").is_some_and(loader_name) || (el.name().contains('-') && loader_name(el.name())) {
                 loaders.push(at(t));
             }
-            if out.dialog.is_none() && (el.name() == "dialog" || el.attr("role").is_some_and(dialog_role)) {
-                out.dialog = Some(at(t));
+            if out.dialog.is_none() && el.attr("role").is_some_and(dialog_role) {
+                let named = |e: &scraper::node::Element| ["class", "id"].iter().any(|n| e.attr(n).is_some_and(scrim_name));
+                let parent = node.parent().and_then(|p| p.value().as_element().map(|e| named(e) || e.attrs().any(|a| CLICK.contains(&a.0)))).unwrap_or(false);
+                let before = node.prev_siblings().find_map(|p| p.value().as_element().map(named)).unwrap_or(false);
+                if el.attr("aria-modal").is_some_and(modal_value) || el.attr("role").is_some_and(alert_role) || parent || before {
+                    out.dialog = Some(at(t));
+                }
             }
             if el.name() != "form" {
                 continue;

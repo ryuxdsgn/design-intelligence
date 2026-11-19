@@ -78,7 +78,7 @@ How local apps handle the same action and its states, and local payment patterns
 - Not when: instant actions under about 0.1 s; a spinner that flashes is noise
 - Trade-off: progress indicators need real progress data; a fake bar misleads
 - Check: heuristic_eval H-01
-- Machine check: `ryux scan` flags in .jsx, .tsx, and .html: a loading indicator (a spinner, loader, loading, or skeleton class; a component by such a name defined in the file or taken from an icon set; or "Loading…", "Memuat…", "Memproses…" text) in a file with no aria-busy, aria-live, role="status", "progressbar", or "alert", <output>, or <progress>; once per file, and not in an HTML page that loads its script from a file (warn)
+- Machine check: `ryux scan` flags in .jsx, .tsx, and .html: a loading indicator (a spinner, loader, loading, or skeleton class; a component by such a name defined in the file, taken from an icon set, or imported from a project module whose own markup announces nothing; or "Loading…", "Memuat…", "Memproses…" text) in a file, with the scripts an HTML page loads, that has no aria-busy, aria-live, role="status", "progressbar", or "alert", <output>, or <progress>; once per file, and not when a page loads a script the scan cannot read (warn)
 
 ### RX-IX-03 [Required] Cancel, back, and undo
 

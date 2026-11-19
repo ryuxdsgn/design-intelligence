@@ -132,21 +132,35 @@ test("markup checks the owner named on 2026-11-18: a button that submits by acci
     'import { Spinner } from "@chakra-ui/react";\nexport const A = () => <Spinner />;',
     '<img loading="lazy" alt="" src={s} /><p>Loading times vary by region</p>',
   ]) assert.deepEqual(scan("a.tsx", raw), [], raw);
-  // a dialog the file shows no keyboard way out of: once per file, at the dialog
+  // a modal dialog the file shows no keyboard way out of: once per file, at the dialog
   const sheet = '<div className="sheet" role="dialog" aria-modal="true">\n  <h2>Filter</h2>\n</div>';
   const shut = scan("Sheet.tsx", sheet);
   assert.deepEqual(at(shut), ["warn RX-A11Y-03 1:1"]);
-  assert.match(shut[0].message, /a dialog with no keyboard way out in this file: close it on Esc and keep Tab inside it/);
-  assert.deepEqual(at(scan("a.html", "<dialog open>Saved</dialog>")), ["warn RX-A11Y-03 1:1"]);
+  assert.match(shut[0].message, /a modal dialog with no keyboard way out: close it on Esc and keep Tab inside it/);
+  // Esc alone leaves Tab free to move to the page behind a modal
+  const esc = scan("a.tsx", '<div role="dialog" aria-modal="true" onKeyDown={(e) => e.key === "Escape" && close()}>x</div>');
+  assert.deepEqual(at(esc), ["warn RX-A11Y-03 1:1"]);
+  assert.match(esc[0].message, /closes on Esc but lets Tab move to the page behind it/);
+  // not modal: a panel with no aria-modal and no scrim, and a <dialog> opened with show() or open
+  assert.deepEqual(scan("a.html", '<div id="chat" role="dialog" aria-label="Help"><button>Close</button></div>'), []);
+  assert.deepEqual(scan("a.html", "<dialog open>Saved</dialog>"), []);
   for (const raw of [
-    '<div role="dialog" onKeyDown={(e) => e.key === "Escape" && close()}>x</div>',
-    '<dialog ref={r} onCancel={close}>x</dialog>',
-    'import * as Dialog from "@radix-ui/react-dialog";\nexport const A = () => <Dialog.Content role="dialog">x</Dialog.Content>;',
-    '<Sheet role="dialog">x</Sheet>',
+    '<div role="dialog" aria-modal="true" onKeyDown={(e) => { if (e.key === "Escape") close(); if (e.key === "Tab") keep(e); }}>x</div>',
+    'import * as Dialog from "@radix-ui/react-dialog";\nexport const A = () => <Dialog.Content role="dialog" aria-modal="true">x</Dialog.Content>;',
+    '<Sheet role="dialog" aria-modal="true">x</Sheet>',
   ]) assert.deepEqual(scan("a.tsx", raw), [], raw);
   assert.deepEqual(scan("a.html", "<dialog id=d>x</dialog><script>d.showModal()</script>"), []);
-  // an HTML page whose script is in a file may do it there: not judged
-  assert.deepEqual(scan("a.html", '<div role="dialog">x</div><div class="spinner"></div><script src="app.js"></script>'), []);
+  // an HTML page is judged with the scripts it loads from the project; one the scan does not have keeps it quiet
+  const page = '<div class="scrim" hidden></div>\n<div role="dialog" aria-modal="true" hidden></div><div class="spinner"></div>\n<script src="app.js"></script>';
+  assert.deepEqual(scan("a.html", page), []);
+  const withScript = (code) => scanSources([toSource("a.html", page)], { folder: false, context: [toSource("app.js", code)] });
+  assert.deepEqual(at(withScript("open();")), ["warn RX-A11Y-03 2:1", "warn RX-IX-02 2:51"]);
+  assert.deepEqual(withScript("on('keydown', (e) => { if (e.key === 'Escape') close(); if (e.key === 'Tab') trap(e); }); el.setAttribute('aria-busy', 'true');"), []);
+  // a loading component from another module is judged by its own markup there
+  const kit = [toSource("src/components/index.ts", 'export * from "./Skeleton";'), toSource("src/components/Skeleton.tsx", 'export const Skeleton = () => <span className="skeleton" aria-hidden="true" />;\nexport const SkeletonList = () => <div aria-busy="true"><Skeleton /></div>;')];
+  const home = (name) => scanSources([toSource("src/screens/Home.tsx", `import { ${name} } from "../components";\nexport const Home = () => <${name} />;`)], { folder: false, context: kit });
+  assert.deepEqual(at(home("Skeleton")), ["warn RX-IX-02 2:27"]);
+  assert.deepEqual(home("SkeletonList"), []);
   // Vue, Svelte, and Astro get none of these checks
   for (const ext of ["vue", "svelte", "astro"]) assert.deepEqual(scan(`a.${ext}`, '<form><button @click="t">Show</button><button>Go</button></form><div class="spinner"></div><div role="dialog">x</div>'), [], ext);
 });
@@ -261,6 +275,32 @@ test("scan CLI: exit 1 on a fail, 0 on warnings only, 2 on a missing path; --jso
   assert.equal(run(dir, ["scan", "--ignore", "RX-CD-02"]).code, 0);
   assert.equal(run(dir, ["scan", "nope"]).code, 2);
   assert.match(run(dir, ["scan", "--list-rules"]).out, /RX-CD-02 +Rupiah as Rp1\.250\.000/);
+  rmSync(dir, { recursive: true, force: true });
+});
+
+test("scan reads the scripts a page loads and the module a loading component comes from, and reports only the file asked", () => {
+  const dir = mkdtempSync(join(tmpdir(), "ryux-scan-"));
+  mkdirSync(join(dir, "js"));
+  mkdirSync(join(dir, "src", "components"), { recursive: true });
+  mkdirSync(join(dir, "src", "screens"));
+  const page = '<div class="scrim" hidden></div>\n<div role="dialog" aria-modal="true" hidden></div>\n<script src="js/app.js?v=2"></script>';
+  writeFileSync(join(dir, "index.html"), page);
+  writeFileSync(join(dir, "js", "app.js"), "document.addEventListener('keydown', (e) => { if (e.key === 'Escape') close(); });");
+  writeFileSync(join(dir, "src", "components", "index.ts"), 'export { Skeleton, SkeletonList } from "./Skeleton";');
+  writeFileSync(join(dir, "src", "components", "Skeleton.tsx"), 'export function Skeleton() {\n  return <span className="skeleton" aria-hidden="true" />;\n}\nexport function SkeletonList() {\n  return <div aria-busy="true"><Skeleton /></div>;\n}');
+  writeFileSync(join(dir, "src", "screens", "Home.tsx"), 'import { Skeleton } from "../components";\nexport const Home = ({ b }) => <p>{b ?? <Skeleton />}</p>;');
+  writeFileSync(join(dir, "src", "screens", "History.tsx"), 'import { SkeletonList } from "../components";\nexport const History = () => <SkeletonList />;');
+  const json = (args) => JSON.parse(run(dir, ["scan", ...args, "--json"]).out).findings.map((f) => `${f.rule} ${f.file}:${f.line}`);
+  // the page's dialog closes on Esc in js/app.js, but nothing keeps Tab inside it
+  assert.deepEqual(json(["index.html"]), ["RX-A11Y-03 index.html:2"]);
+  assert.deepEqual(json([join("src", "screens", "Home.tsx")]), [`RX-IX-02 ${join("src", "screens", "Home.tsx")}:2`]);
+  assert.deepEqual(json([join("src", "screens", "History.tsx")]), []);
+  // the hook reads them too, from the file an agent just edited
+  const hook = run(dir, ["scan", "--hook"], JSON.stringify({ tool_name: "Edit", tool_input: { file_path: join(dir, "src", "screens", "Home.tsx") } }));
+  assert.equal(hook.code, 2);
+  assert.match(hook.out, /RX-IX-02/);
+  rmSync(join(dir, "js", "app.js"));
+  assert.deepEqual(json(["index.html"]), []);
   rmSync(dir, { recursive: true, force: true });
 });
 
