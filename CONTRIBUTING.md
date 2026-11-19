@@ -42,9 +42,8 @@ and into `packages/cli/src/checks.ts` when it adds, removes, or reorders a detec
 two lists equal). Record the new behaviour with `pnpm --filter @ryuxdsgn/design-intelligence record:fixtures`
 and review the diff in `fixtures/checks`: the node tests and `cargo test` replay it. The JSX and TSX
 syntax checks (`crates/ryux-core/src/jsx.rs`, on the oxc parser) have unit tests there and CLI tests in
-`packages/cli/test/scan.test.mjs`. The script agents run inside Figma (`packages/cli/src/figma-audit.ts`)
-measures nothing: it returns the page as JSON for `ryux audit`. When the audit reads a new node property, the
-script must return it too; the parity test in `packages/cli/test/golden.test.mjs` fails until it does.
+`packages/cli/test/scan.test.mjs`. The Figma audit script agents run inside Figma
+(`packages/cli/src/figma-audit.ts`) is still JavaScript and must agree with ryux-core's audit.
 
 ## Where things live
 
