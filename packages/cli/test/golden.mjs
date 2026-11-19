@@ -1,14 +1,19 @@
-// Golden fixtures: the contract the TypeScript checks and their Rust port must both meet.
-// With RYUX_RECORD=1 the tests record what each pure check was given and what it returned, as plain JSON,
-// into fixtures/checks/<check>.json; golden.test.mjs replays every case. Canvas nodes are stored in a neutral
-// form (no functions): an instance keeps its main component as data, and figma.mixed is {"$mixed": true}.
+// Golden fixtures: the contract ryux-core's checks answer to.
+// With RYUX_RECORD=1 the tests record what each pure check was given and what ryux-core returned, as plain
+// JSON, into fixtures/checks/<check>.json; golden.test.mjs and `cargo test` replay every case. Canvas nodes are
+// stored in a neutral form (no functions): an instance keeps its main component as data, and figma.mixed is
+// {"$mixed": true}.
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { createRequire } from "node:module";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 export const FIXTURES = join(dirname(fileURLToPath(import.meta.url)), "..", "..", "..", "fixtures", "checks");
 const recording = process.env.RYUX_RECORD === "1";
 const cases = new Map();
+
+/** ryux-core as WebAssembly, the module engine.ts loads. */
+export const core = createRequire(import.meta.url)("../wasm/ryux_wasm.js");
 
 function save(check, input, output) {
   if (!recording) return;
@@ -26,18 +31,22 @@ function save(check, input, output) {
 
 const plain = (v) => JSON.parse(JSON.stringify(v ?? null));
 
-const drift = await import("../dist/drift.js");
 const { neutralCanvas } = await import("../dist/canvas-json.js");
 export { neutralCanvas };
 
-/** scanSources over {path, raw} sources; the check builds its own Source (ext, comment-blanked text).
- *  With a direction, each source's drift hits and the unused tokens are recorded too. */
-export const recordScan = (scanSources) => (sources, opts) => {
-  const out = scanSources(sources, opts);
-  if (opts.design) {
+/** A source as the checks read it: path, raw, and ryux-core's ext and comment-blanked text. */
+export const toSource = (path, raw) => ({ path, raw, ...JSON.parse(core.source(path, raw)) });
+
+/** The source detectors (engine.scanShared) over {path, raw} sources. With a direction, each source's drift
+ *  hits and the unused tokens are recorded too, over the comment-blanked text. */
+export const recordScan = (scanShared) => (sources, opts) => {
+  const out = scanShared(sources.map((s) => ({ path: s.path, raw: s.raw })), opts);
+  if (recording && opts.design) {
     const d = opts.design;
-    for (const s of sources) save("drift", { text: s.text, ext: s.ext, design: d }, plain({ colours: drift.driftColours(s.text, s.ext, d), fonts: drift.driftFonts(s.text, d), radius: drift.driftRadius(s.text, d), durations: drift.driftDurations(s.text, d) }));
-    save("unused", { texts: sources.map((s) => s.text), design: d }, plain(drift.unusedTokens(sources.map((s) => s.text), d)));
+    const read = sources.map((s) => (s.text === undefined ? toSource(s.path, s.raw) : s));
+    for (const s of read) save("drift", { text: s.text, ext: s.ext, design: d }, JSON.parse(core.drift(JSON.stringify({ text: s.text, ext: s.ext, design: d }))));
+    const texts = read.map((s) => s.text);
+    save("unused", { texts, design: d }, JSON.parse(core.unused(JSON.stringify({ texts, design: d }))));
   }
   save("scan", { sources: sources.map((s) => ({ path: s.path, raw: s.raw })), folder: !!opts.folder, skip: [...(opts.skip || [])].sort(), design: opts.design || null }, plain(out));
   return out;
@@ -49,14 +58,14 @@ export const recordDirection = (readDirection) => (md) => {
   return out;
 };
 
-export const recordAudit = (figmaAudit) => async (figma, pageName) => {
+export const recordAudit = (audit) => async (figma, pageName) => {
   const input = recording ? await neutralCanvas(figma, pageName) : null;
-  const out = await figmaAudit(figma, pageName);
+  const out = await audit(figma, pageName);
   if (input) save("audit", input, plain(out));
   return out;
 };
 
-/** The Plugin API slice figmaAudit reads, rebuilt from a recorded canvas. */
+/** The Plugin API slice the audit reads, rebuilt from a recorded canvas. */
 export function hydrate(input) {
   const build = (r) => {
     const n = {};

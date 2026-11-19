@@ -22,9 +22,9 @@ part follows the [Code of Conduct](./CODE_OF_CONDUCT.md).
 ## Set up
 
 You need Node 22, pnpm, and Rust with the WebAssembly target and wasm-pack. The CLI's checks (scan,
-design drift, and the canvas audit) have two implementations that must give the same results: the
-TypeScript in `packages/cli/src` (the default) and `crates/ryux-core`, built to WebAssembly by
-`pnpm test` and used with `RYUX_ENGINE=rust`.
+design drift, and the canvas audit) run in `crates/ryux-core`, built to WebAssembly by `pnpm test`
+(or `pnpm build:wasm`); the CLI does not run without it. `packages/cli/src/checks.ts` lists what the
+checks look for, for `ryux scan --list-rules` and the rule text.
 
 ```bash
 rustup target add wasm32-unknown-unknown
@@ -37,11 +37,13 @@ pnpm check:sync
 cargo test         # the Rust checks against fixtures/checks
 ```
 
-CI runs the same steps on every pull request. A change to a check goes into both
-`packages/cli/src` (TypeScript) and `crates/ryux-core` (Rust) while both exist; record the new
-behaviour with `pnpm --filter @ryuxdsgn/design-intelligence record:fixtures`, and both must
-match the recording. The JSX and TSX syntax checks (`crates/ryux-core/src/jsx.rs`, on the oxc parser) exist only
-in Rust; they have unit tests there and CLI tests in `packages/cli/test/scan.test.mjs`.
+CI runs the same steps on every pull request. A change to a check goes into `crates/ryux-core`,
+and into `packages/cli/src/checks.ts` when it adds, removes, or reorders a detector (a test holds the
+two lists equal). Record the new behaviour with `pnpm --filter @ryuxdsgn/design-intelligence record:fixtures`
+and review the diff in `fixtures/checks`: the node tests and `cargo test` replay it. The JSX and TSX
+syntax checks (`crates/ryux-core/src/jsx.rs`, on the oxc parser) have unit tests there and CLI tests in
+`packages/cli/test/scan.test.mjs`. The Figma audit script agents run inside Figma
+(`packages/cli/src/figma-audit.ts`) is still JavaScript and must agree with ryux-core's audit.
 
 ## Where things live
 
@@ -49,7 +51,7 @@ in Rust; they have unit tests there and CLI tests in `packages/cli/test/scan.tes
 packages/cli/src/   the source: CLI, scan, and every rule and skill file
 crates/ryux-core/   the deterministic checks in Rust (scan, drift, canvas audit, JSX syntax checks)
 crates/ryux-wasm/   their WebAssembly entry, loaded by the CLI
-fixtures/checks/    recorded inputs and outputs both implementations must match
+fixtures/checks/    recorded inputs and outputs the checks must match
 skills/ryux/        generated from packages/cli/src, do not edit by hand
 plugins/ryux/       generated plugin copy, do not edit by hand
 docs/               design rules, benchmarks

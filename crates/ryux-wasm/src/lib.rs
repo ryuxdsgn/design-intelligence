@@ -46,7 +46,7 @@ pub fn drift(input: &str) -> String {
 }
 
 /// scanSources: `{ sources: [{ path, raw }], folder, skip, design }` → findings, in source order then
-/// line and column. The caller sorts by file name (`localeCompare`), as the TypeScript does.
+/// line and column. The caller sorts by file name (`localeCompare`).
 #[wasm_bindgen]
 pub fn scan(input: &str) -> String {
     use ryux_core::{drift::Direction, scan as s};
@@ -61,7 +61,8 @@ pub fn scan(input: &str) -> String {
 }
 
 /// unusedTokens over raw sources: `{ sources: [{ path, raw }], design }` → `{ colours, fonts }`. Comments
-/// are blanked first, as the scan reads the files.
+/// are blanked first, as the scan reads the files. `{ texts, design }` reads texts already blanked (the form
+/// fixtures/checks/unused.json records).
 #[wasm_bindgen]
 pub fn unused(input: &str) -> String {
     use ryux_core::{drift, scan::to_source};
@@ -70,11 +71,35 @@ pub fn unused(input: &str) -> String {
         Err(e) => return format!("{{\"error\":{}}}", ryux_core::js::quote(&format!("invalid input: {e}"))),
     };
     let Some(dir) = drift::Direction::from_json(&v["design"]) else { return "{\"error\":\"no design\"}".into() };
-    let texts: Vec<String> = v["sources"].as_array().map_or(Vec::new(), |a| a.iter().map(|x| to_source(x["path"].as_str().unwrap_or(""), x["raw"].as_str().unwrap_or("")).text).collect());
+    let texts: Vec<String> = match v["texts"].as_array() {
+        Some(t) => t.iter().map(|x| x.as_str().unwrap_or("").to_string()).collect(),
+        None => v["sources"].as_array().map_or(Vec::new(), |a| a.iter().map(|x| to_source(x["path"].as_str().unwrap_or(""), x["raw"].as_str().unwrap_or("")).text).collect()),
+    };
     drift::unused_tokens(&texts, &dir).to_string()
 }
 
-/// The JSX and TSX syntax checks (oxc), with the input of `scan`. They have no TypeScript twin.
+/// The detectors behind `scan` as data, in order: `[{rule, level, folder}]`. The CLI tests its catalogue
+/// (packages/cli/src/checks.ts) against this list.
+#[wasm_bindgen]
+pub fn detectors() -> String {
+    ryux_core::scan::catalogue(false).to_string()
+}
+
+/// The detectors behind `syntaxScan`, in the form of `detectors`.
+#[wasm_bindgen(js_name = syntaxDetectors)]
+pub fn syntax_detectors() -> String {
+    ryux_core::scan::catalogue(true).to_string()
+}
+
+/// One source as the checks read it: `{ ext, text }`, the text with comments blanked. The fixture recorder
+/// (packages/cli/test/golden.mjs) stores drift cases over this text.
+#[wasm_bindgen]
+pub fn source(path: &str, raw: &str) -> String {
+    let s = ryux_core::scan::to_source(path, raw);
+    ryux_core::Json::Object([("ext".to_string(), ryux_core::Json::from(s.ext)), ("text".to_string(), ryux_core::Json::from(s.text))].into_iter().collect()).to_string()
+}
+
+/// The JSX and TSX syntax checks (oxc), with the input of `scan`.
 #[wasm_bindgen(js_name = syntaxScan)]
 pub fn syntax_scan(input: &str) -> String {
     use ryux_core::{drift::Direction, scan as s};

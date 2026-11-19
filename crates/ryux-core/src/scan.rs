@@ -1,5 +1,5 @@
-//! Source scan: the port of `packages/cli/src/scan.ts` (the detectors and `scanSources`). Offsets, lines,
-//! and columns are UTF-16 code units, as in the TypeScript. Findings come back ordered by source, then
+//! Source scan: the detectors behind `ryux scan` and `scan_sources`. Offsets, lines, and columns are
+//! UTF-16 code units, as JavaScript counts them. Findings come back ordered by source, then
 //! line and column; ordering files by name (`localeCompare`) is left to the JavaScript caller.
 
 use crate::drift::{self, Direction};
@@ -92,7 +92,7 @@ fn matches(text: &str, patterns: &[(&str, &str, Msg)]) -> Vec<Hit> {
     hits
 }
 
-/// UTF-16 units of `text`, for the scanners that walk it the way the TypeScript does.
+/// UTF-16 units of `text`, for the scanners that walk it the way JavaScript indexes a string.
 fn units(text: &str) -> Vec<u16> {
     text.encode_utf16().collect()
 }
@@ -406,7 +406,7 @@ fn rule_ui35(s: &Source, c: &Ctx) -> Vec<Hit> {
     first(s, r"\bbackdrop-filter\s*:|\bbackdrop-blur\b|\bbackdropFilter\s*:", |m| format!("\"{m}\" and nothing in the scanned folder handles prefers-reduced-transparency or prefers-contrast: fall back to a solid surface when either is set, and check text contrast over the busiest background"))
 }
 
-/// The TypeScript's `(?<=[:(,[]\s*|["'`])(?<!(?:fill|stroke|stop-color)=["'])` before a hex: JavaScript has
+/// The JavaScript pattern `(?<=[:(,[]\s*|["'`])(?<!(?:fill|stroke|stop-color)=["'])` before a hex: JavaScript has
 /// variable-length lookbehind, fancy-regex does not, so it is checked here on the text before the "#".
 fn hex_lookbehind_ok(before: &str) -> bool {
     let quoted_attr = ["fill=\"", "fill='", "stroke=\"", "stroke='", "stop-color=\"", "stop-color='"].iter().any(|p| before.ends_with(p));
@@ -516,7 +516,7 @@ fn svg(e: &str) -> bool {
     e == "svg"
 }
 
-/// The detectors, in the TypeScript's order (findings on one line and column keep this order).
+/// The detectors, in the catalogue's order (findings on one line and column keep this order).
 fn detectors() -> &'static [Detector] {
     const D: &[Detector] = &[
         Detector { rule: "RX-DS-03", level: "warn", exts: all, folder: false, find: rule_ds03_drift },
@@ -638,11 +638,15 @@ fn jsx(e: &str) -> bool {
     e == "jsx" || e == "tsx"
 }
 
-/// The checks that read JSX and TSX as a syntax tree. They have no TypeScript twin, so they run apart from
-/// `scan_sources` (whose output both implementations must match) with the same options and ignores.
-pub fn scan_syntax(sources: &[Source], opts: ScanOptions) -> Vec<Value> {
+/// The checks that read JSX and TSX as a syntax tree, run apart from `scan_sources` (whose output
+/// fixtures/checks/scan.json records) with the same options and ignores.
+fn syntax_detectors() -> &'static [Detector] {
     const D: &[Detector] = &[Detector { rule: "RX-A11Y-03", level: "warn", exts: jsx, folder: false, find: rule_a11y03_drag }];
-    run(sources, opts, D)
+    D
+}
+
+pub fn scan_syntax(sources: &[Source], opts: ScanOptions) -> Vec<Value> {
+    run(sources, opts, syntax_detectors())
 }
 
 fn run(sources: &[Source], opts: ScanOptions, detectors: &[Detector]) -> Vec<Value> {
@@ -684,7 +688,10 @@ fn run(sources: &[Source], opts: ScanOptions, detectors: &[Detector]) -> Vec<Val
     out.into_iter().map(|x| x.3).collect()
 }
 
-/// Every rule a detector checks, for the rules.json check in the tests.
-pub fn detector_rules() -> Vec<&'static str> {
-    detectors().iter().map(|d| d.rule).collect()
+/// The detectors as data, in order: `[{rule, level, folder}]`; `syntax` picks the JSX and TSX syntax checks.
+/// The CLI's catalogue (packages/cli/src/checks.ts, printed by `ryux scan --list-rules` and the rule text) is
+/// tested against it, so the two lists cannot drift apart.
+pub fn catalogue(syntax: bool) -> Value {
+    let list = if syntax { syntax_detectors() } else { detectors() };
+    Value::Array(list.iter().map(|d| json!({ "rule": d.rule, "level": d.level, "folder": d.folder })).collect())
 }

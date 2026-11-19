@@ -1,5 +1,5 @@
-//! RYUX's deterministic checks, without I/O: JSON in, JSON out. The TypeScript in `packages/cli/src` and
-//! this crate answer to one contract, `fixtures/checks/*.json`; `cargo test` replays it here.
+//! RYUX's deterministic checks, without I/O: JSON in, JSON out. The CLI in `packages/cli` runs them as
+//! WebAssembly (crates/ryux-wasm); they answer to `fixtures/checks/*.json`, which `cargo test` replays here.
 
 pub mod audit;
 pub mod js;

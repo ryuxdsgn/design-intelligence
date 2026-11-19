@@ -14,7 +14,7 @@ import {
   type Skill,
 } from "./intelligence/content.js";
 import { VERSION } from "./product.js";
-import { DETECTORS, RENDER_CHECKS, SYNTAX_CHECKS } from "./scan.js";
+import { RENDER_CHECKS, SOURCE_CHECKS, SYNTAX_CHECKS } from "./checks.js";
 import {
   CORE_CAPABILITIES,
   CORE_DECISION_RECORD,
@@ -47,7 +47,7 @@ function ruleBlock(r: Rule): string {
   if (r.notWhen) lines.push(`- Not when: ${r.notWhen}`);
   if (r.tradeoff) lines.push(`- Trade-off: ${r.tradeoff}`);
   if (r.check) lines.push(`- Check: ${r.check}`);
-  const machine = [...DETECTORS, ...SYNTAX_CHECKS].filter((d) => d.rule === r.id);
+  const machine = [...SOURCE_CHECKS, ...SYNTAX_CHECKS].filter((d) => d.rule === r.id);
   if (machine.length) lines.push(`- Machine check: \`ryux scan\` flags ${machine.map((d) => `${d.looksFor} (${d.level})`).join("; ")}`);
   const measured = RENDER_CHECKS.filter((d) => d.rule === r.id);
   if (measured.length) lines.push(`- Measured: \`ryux scan <url>\` flags ${measured.map((d) => `${d.looksFor} (${d.level})`).join("; ")}`);

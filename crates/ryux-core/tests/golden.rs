@@ -1,4 +1,4 @@
-//! Replays fixtures/checks/*.json, the cases the TypeScript tests recorded, against this crate.
+//! Replays fixtures/checks/*.json, the cases the CLI tests record (pnpm --filter @ryuxdsgn/design-intelligence record:fixtures), against this crate.
 
 use serde_json::Value;
 use std::path::PathBuf;

@@ -1,4 +1,4 @@
-//! JavaScript regular expressions, as the TypeScript checks write them, run with JavaScript's meaning.
+//! JavaScript regular expressions, as the checks were first written, run with JavaScript's meaning.
 //! The pattern is translated to fancy-regex syntax (which has lookahead and lookbehind): `\d` and `\w` are
 //! ASCII, `\s` is JavaScript's whitespace (with U+FEFF, without U+0085), `\b` is an ASCII word boundary,
 //! `.` stops at every JavaScript line terminator, and with the `m` flag `^` and `$` do too.

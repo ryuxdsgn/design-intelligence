@@ -1,4 +1,4 @@
-// `ryux scan`: run the deterministic detectors (../scan.ts) over files and folders, measure rendered
+// `ryux scan`: run the deterministic detectors (ryux-core, through ../engine.ts) over files and folders, measure rendered
 // pages given as URLs (./page-scan.ts), or check the file an agent just edited (--hook, fed by a
 // Claude Code PostToolUse hook on stdin).
 import { existsSync, statSync } from "node:fs";
@@ -7,9 +7,8 @@ import { join, relative, resolve } from "node:path";
 import pc from "picocolors";
 import { RULES } from "../intelligence/content.js";
 import { VERSION } from "../product.js";
-import type { Direction } from "../drift.js";
 import { readDirection, scan, unused, type RawSource } from "../engine.js";
-import { DETECTORS, RENDER_CHECKS, SCAN_EXTS, SYNTAX_CHECKS, type ScanFinding } from "../scan.js";
+import { RENDER_CHECKS, SCAN_EXTS, SOURCE_CHECKS, SYNTAX_CHECKS, type Direction, type ScanFinding } from "../checks.js";
 import { scanPages } from "./page-scan.js";
 
 const DEFAULT_WIDTHS = [320, 390, 1280];
@@ -52,15 +51,15 @@ const title = (id: string): string => RULES.find((r) => r.id === id)?.title ?? "
 function listRules(json: boolean): void {
   if (json) {
     const entry = (d: { rule: string; level: string; looksFor: string; folder?: boolean }, kind: string) => ({ rule: d.rule, title: title(d.rule), level: d.level, kind, looksFor: d.looksFor, folderOnly: Boolean(d.folder) });
-    console.log(JSON.stringify([...DETECTORS.map((d) => entry(d, "source")), ...SYNTAX_CHECKS.map((d) => entry(d, "syntax")), ...RENDER_CHECKS.map((d) => entry(d, "render"))], null, 2));
+    console.log(JSON.stringify([...SOURCE_CHECKS.map((d) => entry(d, "source")), ...SYNTAX_CHECKS.map((d) => entry(d, "syntax")), ...RENDER_CHECKS.map((d) => entry(d, "render"))], null, 2));
     return;
   }
   const row = (d: { rule: string; level: string; looksFor: string; folder?: boolean }): void => {
     console.log(`${d.level === "fail" ? pc.red("fail") : pc.yellow("warn")}  ${d.rule.padEnd(11)} ${title(d.rule)}`);
     console.log(`      ${d.looksFor}${d.folder ? " (folder scans only)" : ""}`);
   };
-  console.log(`ryux scan v${VERSION}: checks for rules a machine can see. No LLM.\n\nSource files (${DETECTORS.length}):`);
-  DETECTORS.forEach(row);
+  console.log(`ryux scan v${VERSION}: checks for rules a machine can see. No LLM.\n\nSource files (${SOURCE_CHECKS.length}):`);
+  SOURCE_CHECKS.forEach(row);
   console.log(`\nJSX and TSX, read as a syntax tree (${SYNTAX_CHECKS.length}):`);
   SYNTAX_CHECKS.forEach(row);
   console.log(`\nRendered pages, for a URL (${RENDER_CHECKS.length}; needs Playwright in the project; widths ${DEFAULT_WIDTHS.join(", ")} unless --widths):`);

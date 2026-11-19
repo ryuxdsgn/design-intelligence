@@ -1,5 +1,5 @@
 //! Checks that read JSX and TSX as a syntax tree (oxc), where a pattern over the text cannot tell an element
-//! from a string, or a prop from text. They exist only here, not in the TypeScript checks: see engine.ts.
+//! from a string, or a prop from text. engine.ts runs them through `syntaxScan`.
 
 use crate::jsre::u16_at;
 use oxc_allocator::Allocator;
