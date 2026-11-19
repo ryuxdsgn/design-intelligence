@@ -538,6 +538,8 @@ test("structural alternatives close with ryux pick and a 60 s recommendation, re
   assert.match(d, /pick alternatives\.html --recommend <n>/);
   assert.match(d, /`recommended: <n>` line[^\n]*no answer/i);
   assert.match(d, /never as the user's choice/i);
+});
+
 test("a revamp lists its states, renders each before and after, and an error state keeps what is known", () => {
   const ux = renderBundle()["knowledge/ux.md"];
   const r20 = ux.slice(ux.indexOf("RX-UX-20"), ux.indexOf("### ", ux.indexOf("RX-UX-20") + 10));
