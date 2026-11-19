@@ -72,8 +72,9 @@ export const SOURCE_CHECKS: Check[] = [
   { rule: "RX-UI-19", level: "warn", looksFor: "an .svg file with a fixed width or height on the root, an embedded raster, <text> inside the art, or editor metadata" },
 ];
 
-/** What `ryux scan <url>` measures on the rendered page (cli/page-probe.ts), for --list-rules and the
- *  rule text. */
+/** What `ryux scan <url>` measures on the rendered page, for --list-rules and the rule text: ryux-core judges what
+ *  the in-page extract read (crates/ryux-core/src/probe.rs, cli/page-probe.ts), in this order; the CLI reports
+ *  RX-QA-08 itself. test/golden.test.mjs holds the other rows equal to ryux-core's. */
 export const RENDER_CHECKS: Check[] = [
   { rule: "RX-RD-01", level: "fail", looksFor: "a page that scrolls sideways at a scanned width, naming the widest elements" },
   { rule: "RX-A11Y-01", level: "fail", looksFor: "text under 4.5:1 contrast (3:1 when large) on a solid background; text over images or gradients is skipped" },

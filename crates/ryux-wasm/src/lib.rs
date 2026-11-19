@@ -11,6 +11,23 @@ pub fn audit(input: &str) -> String {
     }
 }
 
+/// The rendered checks over the in-page extract (packages/cli/src/cli/page-probe.ts): `{ findings, ignored }`, or
+/// `{ ask }` when the page must act first (fixtures/checks/probe.json).
+#[wasm_bindgen]
+pub fn probe(input: &str) -> String {
+    match serde_json_parse(input) {
+        Ok(v) => ryux_core::probe(&v).to_string(),
+        Err(e) => format!("{{\"error\":{}}}", ryux_core::js::quote(&format!("invalid input: {e}"))),
+    }
+}
+
+/// What the rendered checks look for, as data: `[{rule, level}]`, the rows of RENDER_CHECKS in packages/cli/src/checks.ts
+/// that ryux-core reports.
+#[wasm_bindgen(js_name = renderChecks)]
+pub fn render_checks() -> String {
+    ryux_core::probe::catalogue().to_string()
+}
+
 fn serde_json_parse(s: &str) -> Result<ryux_core::Json, String> {
     ryux_core::parse(s)
 }

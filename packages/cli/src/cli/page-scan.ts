@@ -1,17 +1,20 @@
-// `ryux scan <url>`: render a page with Playwright at each width and measure it (./page-probe.ts).
+// `ryux scan <url>`: render a page with Playwright at each width, read it with the in-page extract (./page-probe.ts),
+// and judge that in ryux-core (../engine.ts).
 // Playwright is optional: it is loaded from the user's project (or a global install) and never
 // bundled, so installing RYUX stays light.
 import { createRequire } from "node:module";
 import { join } from "node:path";
 import { pathToFileURL } from "node:url";
 import type { ScanFinding } from "../checks.js";
-import { probe, type ProbeFinding, type ProbeResult } from "./page-probe.js";
+import { probe } from "../engine.js";
+import { probeAnswer, probeExtract, type ProbeAsk, type ProbeFinding, type ProbeResult } from "./page-probe.js";
 
 interface Page {
   on(event: "pageerror", cb: (err: Error) => void): void;
   goto(url: string, opts: { waitUntil: string; timeout: number }): Promise<unknown>;
   waitForTimeout(ms: number): Promise<void>;
   evaluate<T>(fn: () => T): Promise<T>;
+  evaluate<T, A>(fn: (arg: A) => T, arg: A): Promise<T>;
 }
 interface Browser {
   newContext(opts: { viewport: { width: number; height: number }; reducedMotion: string }): Promise<{ newPage(): Promise<Page>; close(): Promise<void> }>;
@@ -79,7 +82,15 @@ export async function scanPages(urls: string[], widths: number[]): Promise<PageS
           continue;
         }
         await page.waitForTimeout(300);
-        const result: ProbeResult = await page.evaluate(probe);
+        // The page only reads; ryux-core judges. When it needs a hit test or a filled textarea, it asks, the page
+        // does that, and it judges again with the answers.
+        const extract: Record<string, unknown> = await page.evaluate(probeExtract);
+        let judged = probe(extract);
+        if (judged.ask) {
+          extract.answers = await page.evaluate(probeAnswer, judged.ask as ProbeAsk);
+          judged = probe(extract);
+        }
+        const result: ProbeResult = judged;
         result.findings.forEach(add);
         if (result.ignored.length) {
           const set = ignored.get(url) ?? new Set<string>();

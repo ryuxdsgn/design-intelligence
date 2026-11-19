@@ -3,8 +3,10 @@
 
 pub mod audit;
 pub mod js;
+pub mod probe;
 
 pub use audit::audit;
+pub use probe::probe;
 
 pub use serde_json::Value as Json;
 

@@ -1,6 +1,6 @@
 [package]
 name = "ryux-core"
-description = "RYUX deterministic checks (canvas audit, design drift, source scan, and JSX syntax checks), with no I/O."
+description = "RYUX deterministic checks (canvas audit, design drift, source scan, rendered page checks, and JSX syntax checks), with no I/O."
 version.workspace = true
 edition.workspace = true
 license.workspace = true

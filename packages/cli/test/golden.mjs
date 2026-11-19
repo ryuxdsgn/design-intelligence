@@ -1,15 +1,16 @@
 // Golden fixtures: the contract ryux-core's checks answer to.
 // With RYUX_RECORD=1 the tests record what each pure check was given and what ryux-core returned, as plain
-// JSON, into fixtures/checks/<check>.json; golden.test.mjs and `cargo test` replay every case. Canvas nodes are
+// JSON, into fixtures/checks/<check>.json; golden.test.mjs and `cargo test` replay every case. The rendered checks
+// (probe.json) are recorded from the test pages in Chromium (probePage), so recording needs Playwright. Canvas nodes are
 // stored in a neutral form (no functions): an instance keeps its main component as data, and figma.mixed is
 // {"$mixed": true}.
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { createRequire } from "node:module";
 import { dirname, join } from "node:path";
-import { fileURLToPath } from "node:url";
+import { fileURLToPath, pathToFileURL } from "node:url";
 
 export const FIXTURES = join(dirname(fileURLToPath(import.meta.url)), "..", "..", "..", "fixtures", "checks");
-const recording = process.env.RYUX_RECORD === "1";
+export const recording = process.env.RYUX_RECORD === "1";
 const cases = new Map();
 
 /** ryux-core as WebAssembly, the module engine.ts loads. */
@@ -86,4 +87,34 @@ export function hydrate(input) {
     annotations: { getAnnotationCategoriesAsync: async () => input.annotationCategories },
   };
   return figma;
+}
+
+/** Playwright's Chromium where the rendered tests find it (RYUX_PLAYWRIGHT_CWD, or the repo root and the folders
+ *  above it), or null. */
+export async function chromium() {
+  const from = createRequire(join(process.env.RYUX_PLAYWRIGHT_CWD ?? join(FIXTURES, "..", ".."), "noop.js"));
+  for (const name of ["playwright", "playwright-core", "@playwright/test"]) {
+    try {
+      const mod = await import(pathToFileURL(from.resolve(name)).href);
+      const c = mod.chromium ?? mod.default?.chromium;
+      if (c) return c;
+    } catch {}
+  }
+  return null;
+}
+
+/** The rendered checks as `ryux scan <url>` runs them (cli/page-scan.ts): the shipped extract in the page, judged
+ *  by ryux-core, the page answering what ryux-core asks. Records the extract with its answers and the judgement
+ *  into probe.json. */
+export async function probePage(page) {
+  const { probeExtract, probeAnswer } = await import("../dist/cli/page-probe.js");
+  const { probe } = await import("../dist/engine.js");
+  const extract = await page.evaluate(probeExtract);
+  let out = probe(extract);
+  if (out.ask) {
+    extract.answers = await page.evaluate(probeAnswer, out.ask);
+    out = probe(extract);
+  }
+  save("probe", extract, plain(out));
+  return { extract, out };
 }
