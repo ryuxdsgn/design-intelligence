@@ -143,10 +143,10 @@ The six stages of the core workflow (SKILL.md), as Design runs them.
    options and your recommendation first (stage 1, "Ask as choices"). When the alternatives are on a page
    (`alternatives.html`, each choice control with `data-ryux-pick="<n>"` as for directions), run
    `npx @ryuxdsgn/design-intelligence pick alternatives.html --recommend <n>`, without `-y`, with your recommendation's number:
-   the page shows it marked and a 60-second countdown. A `pick: <n>` line is the user's click. A
-   `recommended: <n>` line means no answer in time: build the recommendation and say in the reply that the
-   user did not answer and you used it, never as the user's choice. Any other line falls back to the text flow.
-   A reply such as "do not wait" or "continue with your recommendation" is not a reason to skip the page and the pick: the countdown is the not-waiting path, so write the page, run `pick`, and build what it returns.
+   the page marks it. A `pick: <n>` line is the user's click; build it. On anything else (a `fallback:` line, no output, or
+   a refusal), stop and ask in text with the alternatives as options and your recommendation first; never build one for the
+   user without an answer. A reply such as "continue with your recommendation" is that answer: build it and say it was your
+   recommendation, not the user's click.
    Build only the chosen one
    into the full design (states, widths, Visual Brief, RX-UI-10), write the Design Direction
    below, and mark the others on the canvas as not chosen. When the user has already said to pick for
