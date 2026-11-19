@@ -17,3 +17,7 @@ oxc_ast = "=0.159.0"
 oxc_ast_visit = "=0.159.0"
 oxc_parser = "=0.159.0"
 oxc_span = "=0.159.0"
+# HTML as a tree (src/markup.rs): html5ever's tokenizer and tree builder, into scraper's tree. Pinned exactly:
+# markup.rs implements html5ever's TreeSink, which changes between minor versions, and scraper must match it.
+html5ever = "=0.40.1"
+scraper = { version = "=0.29.0", default-features = false }

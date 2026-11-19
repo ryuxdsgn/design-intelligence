@@ -5,6 +5,7 @@
 use crate::drift::{self, Direction};
 use crate::js::{len16, num_str, round, slice16, trim};
 use crate::jsre::{byte_at, js, JsRe};
+use crate::markup::{self, Markup};
 use serde_json::{json, Value};
 use std::collections::{HashMap, HashSet};
 use std::sync::{Mutex, OnceLock};
@@ -28,6 +29,13 @@ pub struct Source {
     pub raw: String,
     /// The raw text with comments blanked (same UTF-16 length and line breaks).
     pub text: String,
+    /// The file read as structure, for the markup detectors (crate::markup), once.
+    markup: std::cell::OnceCell<Option<Markup>>,
+}
+
+/// JSX, TSX, and HTML read as structure; None keeps a detector on its pattern over the text.
+fn structure(s: &Source) -> Option<&Markup> {
+    s.markup.get_or_init(|| markup::read(&s.raw, &s.ext)).as_ref()
 }
 
 #[derive(Default)]
@@ -221,6 +229,10 @@ fn rule_a11y02_small(s: &Source, _: &Ctx) -> Vec<Hit> {
 }
 
 fn rule_a11y03_tabindex(s: &Source, _: &Ctx) -> Vec<Hit> {
+    let message = |v: &str| format!("tabindex {v}: keep focus order the same as the visual order; use 0 or the DOM order");
+    if let Some(m) = structure(s) {
+        return m.tabindex.iter().map(|(i, v)| hit(*i, message(v))).collect();
+    }
     matches(&s.text, &[(r#"\btab[iI]ndex\s*=\s*(?:["']|\{\s*)?([1-9]\d*)"#, "", |m| {
         Some(format!("tabindex {}: keep focus order the same as the visual order; use 0 or the DOM order", m.g(1)))
     })])
@@ -262,20 +274,28 @@ fn rule_a11y03_outline(s: &Source, _: &Ctx) -> Vec<Hit> {
 }
 
 fn rule_a11y04_img(s: &Source, _: &Ctx) -> Vec<Hit> {
+    const MESSAGE: &str = "an <img> with no alt: describe meaningful images, use alt=\"\" for decorative ones";
+    if let Some(m) = structure(s) {
+        return m.img.iter().map(|&i| hit(i, MESSAGE)).collect();
+    }
     tags(&s.text, "img")
         .into_iter()
         .filter(|t| !re(r"\balt\s*=", "").test(&t.attrs) && !re(r"\{\s*\.\.\.", "").test(&t.attrs))
-        .map(|t| hit(t.index, "an <img> with no alt: describe meaningful images, use alt=\"\" for decorative ones"))
+        .map(|t| hit(t.index, MESSAGE))
         .collect()
 }
 
 fn rule_a11y04_click(s: &Source, _: &Ctx) -> Vec<Hit> {
+    let message = |tag: &str| format!("a clickable <{tag}>: use a <button> or <a> so it works from the keyboard and has a role");
+    if let Some(m) = structure(s) {
+        return m.click.iter().map(|(i, tag)| hit(*i, message(tag))).collect();
+    }
     tags(&s.text, "div|span")
         .into_iter()
         .filter(|t| {
             re(r"(?:^|\s)(?:onClick|onclick|@click|v-on:click|on:click)\s*=", "").test(&t.attrs) && !re(r"\brole\s*=", "").test(&t.attrs) && !re(SCRIM, "").test(&s.text[byte_at(&s.text, t.index + t.length)..])
         })
-        .map(|t| hit(t.index, format!("a clickable <{}>: use a <button> or <a> so it works from the keyboard and has a role", t.name)))
+        .map(|t| hit(t.index, message(&t.name)))
         .collect()
 }
 
@@ -289,6 +309,10 @@ fn index_of(u: &[u16], needle: &str, from: usize) -> Option<usize> {
 }
 
 fn rule_a11y04_icon(s: &Source, _: &Ctx) -> Vec<Hit> {
+    const MESSAGE: &str = "an icon-only <button> with no name: add aria-label or visually hidden text";
+    if let Some(m) = structure(s) {
+        return m.icon.iter().map(|&i| hit(i, MESSAGE)).collect();
+    }
     let u = units(&s.text);
     let mut out = Vec::new();
     for t in tags(&s.text, "button") {
@@ -301,7 +325,7 @@ fn rule_a11y04_icon(s: &Source, _: &Ctx) -> Vec<Hit> {
         let named = re(r#"\balt\s*=\s*["'][^"']+["']|\baria-label\s*="#, "").test(&inner) || re(RUNTIME_LABEL, "").test(&inner);
         let words = re(r"<[^>]*>", "g").replace(&inner, "");
         if icon && !named && trim(&words).is_empty() {
-            out.push(hit(t.index, "an icon-only <button> with no name: add aria-label or visually hidden text"));
+            out.push(hit(t.index, MESSAGE));
         }
     }
     out
@@ -311,12 +335,15 @@ fn rule_a11y04_heading(s: &Source, _: &Ctx) -> Vec<Hit> {
     // One finding per skip per file, at its first place, with how often it repeats.
     let mut skips: Vec<((i64, i64), usize, usize)> = Vec::new();
     let mut prev = 0;
-    for m in re(r"<h([1-6])(?=[\s>])", "g").match_all(&s.text) {
-        let level: i64 = m.g(1).parse().unwrap();
+    let headings: Vec<(usize, i64)> = match structure(s) {
+        Some(m) => m.headings.clone(),
+        None => re(r"<h([1-6])(?=[\s>])", "g").match_all(&s.text).iter().map(|m| (m.index, m.g(1).parse().unwrap())).collect(),
+    };
+    for (index, level) in headings {
         if prev != 0 && level > prev + 1 {
             match skips.iter_mut().find(|k| k.0 == (prev, level)) {
                 Some(k) => k.2 += 1,
-                None => skips.push(((prev, level), m.index, 1)),
+                None => skips.push(((prev, level), index, 1)),
             }
         }
         prev = level;
@@ -580,7 +607,7 @@ pub fn to_source(path: &str, raw: &str) -> Source {
     let u: Vec<u16> = path.encode_utf16().collect();
     let dot = u.iter().rposition(|&c| c == b'.' as u16).map_or(0, |i| i + 1);
     let ext = String::from_utf16_lossy(&u[dot..]).to_lowercase();
-    Source { path: path.to_string(), text: strip_comments(raw, &ext), ext, raw: raw.to_string() }
+    Source { path: path.to_string(), text: strip_comments(raw, &ext), ext, raw: raw.to_string(), markup: Default::default() }
 }
 
 struct Ignores {

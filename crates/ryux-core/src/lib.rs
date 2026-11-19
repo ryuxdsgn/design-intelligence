@@ -19,3 +19,4 @@ pub mod jsre;
 pub mod drift;
 pub mod scan;
 pub mod jsx;
+pub mod markup;
