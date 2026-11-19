@@ -126,3 +126,34 @@ test("help documents the pick command and its --timeout flag", () => {
   assert.match(r.stdout, /\bpick\b/);
   assert.match(r.stdout, /--timeout/);
 });
+
+test("with a recommendation, no answer in time resolves to that recommendation, marked as not the user's", async () => {
+  const r = await serveAndWait({ html: '<button data-ryux-pick="2">x</button>', timeoutMs: 150, open: false, recommend: 2 });
+  assert.deepEqual(r, { kind: "recommended", n: 2 });
+});
+
+test("with a recommendation, a click before the timer still wins", async () => {
+  let port;
+  const p = serveAndWait({ html: "<i>x</i>", timeoutMs: 5000, open: false, recommend: 2, onListening: (x) => (port = x) });
+  await new Promise((r) => setTimeout(r, 50));
+  await fetch(`http://127.0.0.1:${port}/pick`, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ choice: "3" }) });
+  assert.deepEqual(await p, { kind: "pick", n: 3 });
+});
+
+test("the page shows a countdown and marks the recommended option, in the page's language", () => {
+  const out = injectHooks("<html lang='id'><body></body></html>", { recommend: 2, seconds: 60 });
+  assert.match(out, /"recommend":2/);
+  assert.match(out, /"seconds":60/);
+  assert.match(out, /Rekomendasi/);
+  assert.match(out, /detik/);
+  assert.match(out, /Recommended/);
+  assert.match(out, /seconds/);
+});
+
+test("recommendation flags: --recommend sets a 60 s default, --timeout still overrides", async () => {
+  const { parsePickArgs, resultLine } = await import("../dist/cli/pick.js");
+  assert.deepEqual(parsePickArgs(["p.html", "--recommend", "2"]), { path: "p.html", recommend: 2, timeoutMs: 60000 });
+  assert.deepEqual(parsePickArgs(["p.html", "--recommend", "2", "--timeout", "30"]), { path: "p.html", recommend: 2, timeoutMs: 30000 });
+  assert.deepEqual(parsePickArgs(["p.html"]), { path: "p.html", recommend: undefined, timeoutMs: 240000 });
+  assert.equal(resultLine({ kind: "recommended", n: 2 }, 60000), "recommended: 2 (no answer in 60 s)");
+});
