@@ -4,12 +4,12 @@ A short brief asks for a clickable prototype of a booking flow, with motion for 
 serve the task and the platform, and does the flow stay honest about what nobody decided?
 
 ## Setup
-- **Brief** ([prompt.txt](prompt.txt)): a Sejuk booking flow (choose a time slot, review, confirmed), one `index.html`
+- **Brief** ([prompt.txt](#prompttxt)): a Sejuk booking flow (choose a time slot, review, confirmed), one `index.html`
   with no libraries or network, 390 wide, English copy, and the motion and design decisions explained at the end. The RYUX
   side gets "Use the ryux skill." before it.
 - **Agent:** Claude Code `claude -p`, Opus 5.5, an empty folder (the RYUX side holds only its install), no MCP servers, global skills moved aside. One run per
   side (2026-11-09).
-- **Reply rule:** a turn that ends without an `.html` file gets [reply.txt](reply.txt) once ("Go with what you recommend
+- **Reply rule:** a turn that ends without an `.html` file gets [reply.txt](#replytxt) once ("Go with what you recommend
   and build the prototype."). The RYUX run asked first and got that reply.
 - **Recording** (same for both): Playwright Chromium at 390 x 844, then by visible text: tap the first enabled time slot,
   the action matching review/continue/next, the action matching confirm/book; 800 ms after each tap, 2 s at the end.
@@ -48,3 +48,19 @@ serve the task and the platform, and does the flow stay honest about what nobody
 ![No skill vs RYUX, motion](https://github.com/ryuxdsgn/design-intelligence/releases/download/media/showcase--h2h-3-motion.gif)
 
 One run per side: these numbers describe these two runs, not rates.
+
+## Brief and replies
+
+The exact text each run received.
+
+### prompt.txt
+
+````text
+Build a clickable prototype of the booking flow for Sejuk, an iOS app in Jakarta for booking an AC service technician to come to your home: choose a time slot, review the booking, and see it confirmed. One index.html in this folder (HTML, CSS, and JavaScript, no external libraries or network), 390 wide, with the motion for each step. Write the copy in English. At the end of your final message, explain the motion and the design decisions.
+````
+
+### reply.txt
+
+````text
+Go with what you recommend and build the prototype.
+````

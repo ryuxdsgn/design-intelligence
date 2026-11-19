@@ -4,7 +4,7 @@ One brief for the Raja Emas gold savings app: a landing page in desktop and mobi
 Figma connector. Does the page fit its product, or read as a template?
 
 ## Setup
-- **Brief:** [`prompt.txt`](prompt.txt), with the file link filled in. It is a made-up app for Indonesia. The brief
+- **Brief:** [`prompt.txt`](#prompttxt), with the file link filled in. It is a made-up app for Indonesia. The brief
   confirms OJK supervision, Antam and UBS as gold partners, and physical delivery, and confirms no price or fee.
 - **Arms:** two runs each, run one at a time.
   - **No skill:** skills and slash commands off.
@@ -12,7 +12,7 @@ Figma connector. Does the page fit its product, or read as a template?
   - Both arms: Opus 5.5, `claude -p`, the claude.ai Figma connector and no other MCP server. Each run had **its own
     new Figma file**, page "Raja Emas".
 - **Reply rule:** a run that stopped before building a desktop frame got one reply,
-  [`reply-direction.txt`](reply-direction.txt): "Go with the direction you recommend and build the page." One RYUX
+  [`reply-direction.txt`](#reply-directiontxt): "Go with the direction you recommend and build the page." One RYUX
   run stopped after three style tiles and asked which direction to build, and got that reply. The other RYUX run
   marked its recommended direction as provisional and built it. The no-skill runs built straight away.
 - **Rating:**
@@ -105,3 +105,25 @@ What I left out: no minimum, fee, price, FAQ or "free" claim, because none of th
    partners' role, delivery terms, the store links, and the logo file.
 
 One run. In the owner's blind rating it scored 3.75 of 5, against 3.44 for RYUX 2.22.5 on the same brief.
+
+## Brief and replies
+
+The exact text each run received.
+
+### prompt.txt
+
+````text
+Design a one-page marketing landing page for a gold savings app called Raja Emas, in two versions: desktop and mobile. The app is for Indonesia: people buy and save gold in small amounts from their phone. It is for young first-job savers (20s to 30s) who save small amounts toward a goal and find gold shops intimidating; they would choose it for trust and safety, real gold that is theirs to own. In the app people buy gold in small amounts, save toward a goal, sell back to cash, and auto-save on a schedule. Confirmed: supervised by OJK; gold partners Antam and UBS (their role is not stated); physical gold delivery. No minimum, fee, or price is confirmed. The app is live; the page's one goal is downloads from the App Store and Google Play. Write the copy in English. Design it in Figma, on a new page named "Raja Emas" in this file: {FILE}
+````
+
+### reply-direction.txt
+
+````text
+Go with the direction you recommend and build the page.
+````
+
+### reply.txt
+
+````text
+I don't have more to add. Use your own judgment for anything the brief leaves open, tell me what you assumed, and go ahead and design it.
+````
