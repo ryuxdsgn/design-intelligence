@@ -608,3 +608,9 @@ test("review of #99: the hard-gate brief keeps every dont sentence a don't, and 
   assert.match(r20, /unless DESIGN\.md or the brand system sets them/i);
   assert.match(r20, /Check:[^\n]*moved control[^\n]*reason[^\n]*current step[^\n]*old time/i);
 });
+
+test("ryux pick runs without -y, since an auto-confirm install can be refused by the agent's permission check", () => {
+  const d = renderBundle()["capabilities/design.md"];
+  assert.match(d, /pick directions\.html` as is, without `-y`/);
+  assert.match(d, /pick alternatives\.html --recommend <n>`, without `-y`,/);
+});
