@@ -341,7 +341,8 @@ How Indonesian apps sequence and structure this flow: `get_flow` for a reference
   - Revamp: the flow and the functions stay; the look and the screen structure change a lot. Run capabilities/design.md, stages 2 to 5, with the flow locked, and in a code project then implement it through capabilities/build.md.
     - A revamp changes the visual language, not only the layout: the type scale and pairing, surfaces, component shapes, icons, and density; a re-layout in the same paint is a polish.
     - The brand anchors stay unless the user says otherwise: the logo, the name, and the primary accent. Record each change to the DESIGN.md direction as old -> new.
-    - It covers every state, the error, empty, loading, and offline states as much as the happy one.
+    - It covers every state, the error, empty, loading, and offline states as much as the happy one: list the states first (the view x state matrix, RX-EC-01) and render each one before and after. A state left as it was is named in the reply with its reason.
+    - An error or offline state keeps what is known: the last status with its time and the order or item summary, next to the retry, not a bare message on an empty screen (RX-EC-06).
     - Disclosure never hides what a state needs (the step times that explain a late order stay visible while it is late), and the status keeps its weight when a figure becomes the hero.
     - Clear the standing clutter: stacked notes, and a floating control that covers content.
   - Redesign: the flow, the information architecture, and the problem itself may be rethought, starting from evidence (research, analytics, a Critique), and drawn as a new flow (RX-UX-18).
@@ -351,4 +352,4 @@ How Indonesian apps sequence and structure this flow: `get_flow` for a reference
 - Do not: Turn a polish into a revamp, change the flow or functions in a revamp, start a redesign without evidence, or guess the size of an ambiguous request.
 - Why: The three sizes promise different risks: users relearn nothing after a polish, the look after a revamp, and the task itself after a redesign; a wrong guess either breaks what people know or under-delivers. (owner definitions 2026-11-19; NNGroup Radical Redesign or Incremental Change? (Loranger, 2015): improve incrementally by default, overhaul only when evidence shows small fixes cannot solve it)
 - Trade-off: one question before work on an ambiguous request; it costs less than redoing the wrong size
-- Check: the reply names the size; an ambiguous request got one question before the first change; a revamp keeps the flow and handlers
+- Check: the reply names the size; an ambiguous request got one question before the first change; a revamp keeps the flow and handlers, and has before and after renders of every state in the matrix
