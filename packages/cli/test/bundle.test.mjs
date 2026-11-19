@@ -574,3 +574,15 @@ test("revamp round 4: known controls keep their place, new surfaces, each state 
   const slop = files["knowledge/anti-slop.md"];
   assert.match(slop, /street names on an illustrative map/i);
 });
+
+test("revamp round 5: the item list follows the state, a decision keeps its weight, the old time struck through, one way to help, the stepper names the step", () => {
+  const files = renderBundle();
+  const ux = files["knowledge/ux.md"];
+  const r20 = ux.slice(ux.indexOf("RX-UX-20"), ux.indexOf("### ", ux.indexOf("RX-UX-20") + 10));
+  assert.match(r20, /item list follows the state[^\n]*summary[^\n]*wait/i);
+  assert.match(r20, /asks for a decision keeps more weight than an ordinary item/i);
+  assert.match(r20, /old one struck through next to the new one/i);
+  assert.match(r20, /one way to it is enough[^\n]*not both/i);
+  assert.match(r20, /Fewer is not none[^\n]*names the current step/i);
+  assert.match(r20, /rounds 2 to 5/);
+});
