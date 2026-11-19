@@ -532,3 +532,10 @@ test("fix round 1: screen-ready flows and journeys, a revamp that changes the lo
   assert.match(r20, /disclosure never hides what a state needs/i);
   assert.match(r20, /floating control that covers content/i);
 });
+
+test("structural alternatives close with ryux pick and a 60 s recommendation, reported honestly", () => {
+  const d = renderBundle()["capabilities/design.md"];
+  assert.match(d, /pick alternatives\.html --recommend <n>/);
+  assert.match(d, /`recommended: <n>` line[^\n]*no answer/i);
+  assert.match(d, /never as the user's choice/i);
+});

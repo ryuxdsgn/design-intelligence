@@ -197,7 +197,13 @@ The six stages of the core workflow (SKILL.md), as Design runs them.
    one with a Decision Receipt, name the runner-up and what would make it win, and say "close call"
    when it is one. When the user gave a reference or a taste anchor, the alternative closest to it
    wins a tie. "It looks better" is not a reason. Then stop and let the user choose, with the alternatives as
-   options and your recommendation first (stage 1, "Ask as choices"). Build only the chosen one
+   options and your recommendation first (stage 1, "Ask as choices"). When the alternatives are on a page
+   (\`alternatives.html\`, each choice control with \`data-ryux-pick="<n>"\` as for directions), run
+   \`npx @ryuxdsgn/design-intelligence pick alternatives.html --recommend <n>\` with your recommendation's number:
+   the page shows it marked and a 60-second countdown. A \`pick: <n>\` line is the user's click. A
+   \`recommended: <n>\` line means no answer in time: build the recommendation and say in the reply that the
+   user did not answer and you used it, never as the user's choice. Any other line falls back to the text flow.
+   Build only the chosen one
    into the full design (states, widths, Visual Brief, RX-UI-10), write the Design Direction
    below, and mark the others on the canvas as not chosen. When the user has already said to pick for
    them, continue with the recommendation and say so.
