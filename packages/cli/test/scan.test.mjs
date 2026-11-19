@@ -82,7 +82,8 @@ test("markup detectors: a label a script fills, a scrim around a dialog, one hea
   // an empty child hidden from assistive technology is no name
   assert.deepEqual(rules(scan("a.html", '<button><svg></svg><span aria-hidden="true" id="ic"></span></button>')), ["warn RX-A11Y-04"]);
   // a scrim whose first child is the dialog is skipped; a plain clickable div is not
-  assert.deepEqual(scan("a.tsx", '<div className="scrim" onClick={close}>\n  <div className="sheet" role="dialog" aria-modal="true">x</div></div>'), []);
+  // (the dialog itself shows no Esc or focus trap, which RX-A11Y-03 reports)
+  assert.deepEqual(rules(scan("a.tsx", '<div className="scrim" onClick={close}>\n  <div className="sheet" role="dialog" aria-modal="true">x</div></div>')), ["warn RX-A11Y-03"]);
   assert.deepEqual(rules(scan("a.tsx", '<div onClick={go}><span>Open</span></div>')), ["warn RX-A11Y-04"]);
   // a repeated card repeats its skip: one finding, with the count
   const cards = scan("a.html", "<h2>A</h2>" + "<div><h4>x</h4></div><h2>B</h2>".repeat(3));
@@ -104,6 +105,50 @@ test("accessibility in markup: zoom, tabindex, alt, clickable div, icon button, 
   assert.deepEqual(scan("a.tsx", '<button aria-label="Tutup"><CloseIcon /></button><button><Icon /> Simpan</button><button>{label}</button>'), []);
   assert.deepEqual(rules(scan("a.tsx", "<h1>A</h1><h3>B</h3>")), ["warn RX-A11Y-04"]);
   assert.deepEqual(scan("a.tsx", "<h1>A</h1><h2>B</h2><h3>C</h3><h2>D</h2>"), []);
+});
+
+test("markup checks the owner named on 2026-11-18: a button that submits by accident, a wait only shown, a dialog with no way out", () => {
+  const at = (findings) => findings.map((f) => `${f.level} ${f.rule} ${f.line}:${f.column}`);
+  // a typeless button in a form submits it; the form's last typeless button with no click handler is its submit
+  const login = '<form>\n  <input type="password" />\n  <button onClick={toggle}>Show password</button>\n  <button>Sign in</button>\n</form>';
+  const typed = scan("Login.tsx", login);
+  assert.deepEqual(at(typed), ["warn RX-A11Y-04 3:3"]);
+  assert.match(typed[0].message, /a <button> with no type inside a <form> submits the form when pressed: add type="button"/);
+  assert.deepEqual(at(scan("a.html", '<form><button>Add item</button><input type="submit" value="Save"></form>')), ["warn RX-A11Y-04 1:7"]);
+  for (const raw of [
+    '<form><button type="button" onClick={t}>Show</button><button type={kind}>Go</button><button {...rest}>More</button><button>Save</button></form>',
+    '<form method="dialog"><button>Close</button><button>OK</button></form>',
+    "<div><button onClick={t}>Show</button></div>",
+  ]) assert.deepEqual(scan("a.tsx", raw), [], raw);
+  // a loading indicator with nothing announcing it: once per file, at the first one
+  const pay = '<button disabled={busy}>\n  <span className="spinner" aria-hidden="true" />\n  {busy ? "Memproses…" : "Bayar"}\n</button>';
+  const wait = scan("Pay.tsx", pay);
+  assert.deepEqual(at(wait), ["warn RX-IX-02 2:3"]);
+  assert.match(wait[0].message, /a loading indicator that only shows: .* aria-busy on the region that is loading/);
+  assert.deepEqual(at(scan("a.html", '<div class="card skeleton"></div>\n<p>Memuat data…</p>')), ["warn RX-IX-02 1:1"]);
+  for (const raw of [
+    '<div aria-busy={busy}><Spinner /></div>',
+    '<p role="status">{busy ? "Memproses…" : ""}</p>',
+    'import { Spinner } from "@chakra-ui/react";\nexport const A = () => <Spinner />;',
+    '<img loading="lazy" alt="" src={s} /><p>Loading times vary by region</p>',
+  ]) assert.deepEqual(scan("a.tsx", raw), [], raw);
+  // a dialog the file shows no keyboard way out of: once per file, at the dialog
+  const sheet = '<div className="sheet" role="dialog" aria-modal="true">\n  <h2>Filter</h2>\n</div>';
+  const shut = scan("Sheet.tsx", sheet);
+  assert.deepEqual(at(shut), ["warn RX-A11Y-03 1:1"]);
+  assert.match(shut[0].message, /a dialog with no keyboard way out in this file: close it on Esc and keep Tab inside it/);
+  assert.deepEqual(at(scan("a.html", "<dialog open>Saved</dialog>")), ["warn RX-A11Y-03 1:1"]);
+  for (const raw of [
+    '<div role="dialog" onKeyDown={(e) => e.key === "Escape" && close()}>x</div>',
+    '<dialog ref={r} onCancel={close}>x</dialog>',
+    'import * as Dialog from "@radix-ui/react-dialog";\nexport const A = () => <Dialog.Content role="dialog">x</Dialog.Content>;',
+    '<Sheet role="dialog">x</Sheet>',
+  ]) assert.deepEqual(scan("a.tsx", raw), [], raw);
+  assert.deepEqual(scan("a.html", "<dialog id=d>x</dialog><script>d.showModal()</script>"), []);
+  // an HTML page whose script is in a file may do it there: not judged
+  assert.deepEqual(scan("a.html", '<div role="dialog">x</div><div class="spinner"></div><script src="app.js"></script>'), []);
+  // Vue, Svelte, and Astro get none of these checks
+  for (const ext of ["vue", "svelte", "astro"]) assert.deepEqual(scan(`a.${ext}`, '<form><button @click="t">Show</button><button>Go</button></form><div class="spinner"></div><div role="dialog">x</div>'), [], ext);
 });
 
 test("focus outlines: flagged on controls, not on focus targets or with a replacement", () => {
@@ -133,7 +178,8 @@ test("motion: endless loops, transition properties and length, and translucency"
   assert.deepEqual(rules(scan("a.tsx", "animate={{ y: 4 }} transition={{ repeat: Infinity }}")), ["warn RX-A11Y-08"]);
   // a loading indicator may loop while the wait lasts
   assert.deepEqual(scan("a.css", ".spinner { animation: spin 1s linear infinite }"), []);
-  assert.deepEqual(scan("a.tsx", '<div className="skeleton animate-pulse" />'), []);
+  // (nothing announces this skeleton, which RX-IX-02 reports)
+  assert.deepEqual(rules(scan("a.tsx", '<div className="skeleton animate-pulse" />')), ["warn RX-IX-02"]);
   assert.deepEqual(scan("a.css", ".toast { animation: in 200ms ease-out }"), []);
 
   assert.deepEqual(rules(scan("a.css", ".x { transition: all 0.2s }")), ["warn RX-UI-11"]);

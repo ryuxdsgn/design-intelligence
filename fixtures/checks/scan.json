@@ -504,7 +504,16 @@
    "skip": [],
    "design": null
   },
-  "output": []
+  "output": [
+   {
+    "level": "warn",
+    "rule": "RX-A11Y-03",
+    "file": "a.tsx",
+    "line": 2,
+    "column": 3,
+    "message": "a dialog with no keyboard way out in this file: close it on Esc and keep Tab inside it while it is open (showModal() on a <dialog> does both), or use a dialog component that does"
+   }
+  ]
  },
  {
   "input": {
@@ -797,6 +806,368 @@
     {
      "path": "a.tsx",
      "raw": "<h1>A</h1><h2>B</h2><h3>C</h3><h2>D</h2>"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": []
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "Login.tsx",
+     "raw": "<form>\n  <input type=\"password\" />\n  <button onClick={toggle}>Show password</button>\n  <button>Sign in</button>\n</form>"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": [
+   {
+    "level": "warn",
+    "rule": "RX-A11Y-04",
+    "file": "Login.tsx",
+    "line": 3,
+    "column": 3,
+    "message": "a <button> with no type inside a <form> submits the form when pressed: add type=\"button\", or type=\"submit\" if it sends the form"
+   }
+  ]
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.html",
+     "raw": "<form><button>Add item</button><input type=\"submit\" value=\"Save\"></form>"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": [
+   {
+    "level": "warn",
+    "rule": "RX-A11Y-04",
+    "file": "a.html",
+    "line": 1,
+    "column": 7,
+    "message": "a <button> with no type inside a <form> submits the form when pressed: add type=\"button\", or type=\"submit\" if it sends the form"
+   }
+  ]
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.tsx",
+     "raw": "<form><button type=\"button\" onClick={t}>Show</button><button type={kind}>Go</button><button {...rest}>More</button><button>Save</button></form>"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": []
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.tsx",
+     "raw": "<form method=\"dialog\"><button>Close</button><button>OK</button></form>"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": []
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.tsx",
+     "raw": "<div><button onClick={t}>Show</button></div>"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": []
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "Pay.tsx",
+     "raw": "<button disabled={busy}>\n  <span className=\"spinner\" aria-hidden=\"true\" />\n  {busy ? \"Memproses…\" : \"Bayar\"}\n</button>"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": [
+   {
+    "level": "warn",
+    "rule": "RX-IX-02",
+    "file": "Pay.tsx",
+    "line": 2,
+    "column": 3,
+    "message": "a loading indicator that only shows: nothing in this file tells a screen reader about the wait; put aria-busy on the region that is loading, or the in-progress text in a role=\"status\" element"
+   }
+  ]
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.html",
+     "raw": "<div class=\"card skeleton\"></div>\n<p>Memuat data…</p>"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": [
+   {
+    "level": "warn",
+    "rule": "RX-IX-02",
+    "file": "a.html",
+    "line": 1,
+    "column": 1,
+    "message": "a loading indicator that only shows: nothing in this file tells a screen reader about the wait; put aria-busy on the region that is loading, or the in-progress text in a role=\"status\" element"
+   }
+  ]
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.tsx",
+     "raw": "<div aria-busy={busy}><Spinner /></div>"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": []
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.tsx",
+     "raw": "<p role=\"status\">{busy ? \"Memproses…\" : \"\"}</p>"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": []
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.tsx",
+     "raw": "import { Spinner } from \"@chakra-ui/react\";\nexport const A = () => <Spinner />;"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": []
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.tsx",
+     "raw": "<img loading=\"lazy\" alt=\"\" src={s} /><p>Loading times vary by region</p>"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": []
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "Sheet.tsx",
+     "raw": "<div className=\"sheet\" role=\"dialog\" aria-modal=\"true\">\n  <h2>Filter</h2>\n</div>"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": [
+   {
+    "level": "warn",
+    "rule": "RX-A11Y-03",
+    "file": "Sheet.tsx",
+    "line": 1,
+    "column": 1,
+    "message": "a dialog with no keyboard way out in this file: close it on Esc and keep Tab inside it while it is open (showModal() on a <dialog> does both), or use a dialog component that does"
+   }
+  ]
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.html",
+     "raw": "<dialog open>Saved</dialog>"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": [
+   {
+    "level": "warn",
+    "rule": "RX-A11Y-03",
+    "file": "a.html",
+    "line": 1,
+    "column": 1,
+    "message": "a dialog with no keyboard way out in this file: close it on Esc and keep Tab inside it while it is open (showModal() on a <dialog> does both), or use a dialog component that does"
+   }
+  ]
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.tsx",
+     "raw": "<div role=\"dialog\" onKeyDown={(e) => e.key === \"Escape\" && close()}>x</div>"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": []
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.tsx",
+     "raw": "<dialog ref={r} onCancel={close}>x</dialog>"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": []
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.tsx",
+     "raw": "import * as Dialog from \"@radix-ui/react-dialog\";\nexport const A = () => <Dialog.Content role=\"dialog\">x</Dialog.Content>;"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": []
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.tsx",
+     "raw": "<Sheet role=\"dialog\">x</Sheet>"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": []
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.html",
+     "raw": "<dialog id=d>x</dialog><script>d.showModal()</script>"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": []
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.html",
+     "raw": "<div role=\"dialog\">x</div><div class=\"spinner\"></div><script src=\"app.js\"></script>"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": []
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.vue",
+     "raw": "<form><button @click=\"t\">Show</button><button>Go</button></form><div class=\"spinner\"></div><div role=\"dialog\">x</div>"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": []
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.svelte",
+     "raw": "<form><button @click=\"t\">Show</button><button>Go</button></form><div class=\"spinner\"></div><div role=\"dialog\">x</div>"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": []
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.astro",
+     "raw": "<form><button @click=\"t\">Show</button><button>Go</button></form><div class=\"spinner\"></div><div role=\"dialog\">x</div>"
     }
    ],
    "folder": false,
@@ -1168,7 +1539,16 @@
    "skip": [],
    "design": null
   },
-  "output": []
+  "output": [
+   {
+    "level": "warn",
+    "rule": "RX-IX-02",
+    "file": "a.tsx",
+    "line": 1,
+    "column": 1,
+    "message": "a loading indicator that only shows: nothing in this file tells a screen reader about the wait; put aria-busy on the region that is loading, or the in-progress text in a role=\"status\" element"
+   }
+  ]
  },
  {
   "input": {
