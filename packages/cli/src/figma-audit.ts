@@ -275,13 +275,32 @@ export async function figmaAudit(figma, pageName) {
   return { page: page.name, screens: screens.map((s) => s.name), counts: c, images: [...images.entries()].map(([h, s]) => ({ image: h.slice(0, 8), screens: [...s] })), annotations, findings: findings.slice(0, 80), more: Math.max(0, findings.length - 80), gate };
 }
 
-/** The file shipped as scripts/figma-audit.js: the function plus the two lines use_figma runs. */
+/** The script use_figma runs: the function plus the two lines that call it. Shipped inside scripts/figma-audit.md
+ *  (figmaAuditMarkdown), because the Claude plugin directory refuses script files from unverified organizations. */
 export function figmaAuditScript(): string {
-  return `// RYUX Figma audit: read-only. Send this whole file as the code of one use_figma call, after setting PAGE.
+  return `// RYUX Figma audit: read-only. Send this whole block as the code of one use_figma call, after setting PAGE.
 // It measures the page's screens and returns counts, findings, and a gate line to copy into the Delivery Gate.
 // Fix every "fail" (and each "warn" you agree with), then run it again; the last run's line goes in the gate.
 const PAGE = ""; // the page to audit, by name ("" = the first page)
 const figmaAudit = ${figmaAudit.toString()};
 return await figmaAudit(figma, PAGE);
+`;
+}
+
+/** scripts/figma-audit.md: the script in one fenced block, longer than any backtick run inside it. */
+export function figmaAuditMarkdown(): string {
+  const code = figmaAuditScript().replace(/\n$/, "");
+  const longest = Math.max(2, ...(code.match(/`+/g) ?? []).map((r) => r.length));
+  const fence = "`".repeat(longest + 1);
+  return `# RYUX Figma audit script
+
+Read-only. Copy the code block below, unchanged, as the \`code\` of one \`use_figma\` call. Set \`PAGE\` to the
+page to audit first ("" audits the first page). It returns counts, findings, and the gate line for the Delivery
+Gate. It is kept in Markdown because the Claude plugin directory accepts no script files from this publisher;
+the same code ships in the npm package as \`ryux audit\` for FigCraft files.
+
+${fence}js
+${code}
+${fence}
 `;
 }
