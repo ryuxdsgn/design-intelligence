@@ -147,10 +147,10 @@ fn overlap(a: Rect, b: Rect) -> f64 {
 }
 
 // Math.min/max return NaN when either side is NaN; f64::min/max do not.
-fn min_js(a: f64, b: f64) -> f64 {
+pub(crate) fn min_js(a: f64, b: f64) -> f64 {
     if a.is_nan() || b.is_nan() { f64::NAN } else { a.min(b) }
 }
-fn max_js(a: f64, b: f64) -> f64 {
+pub(crate) fn max_js(a: f64, b: f64) -> f64 {
     if a.is_nan() || b.is_nan() { f64::NAN } else { a.max(b) }
 }
 fn jsmax0(a: f64) -> f64 {
@@ -161,30 +161,35 @@ fn inside(a: Rect, b: Rect) -> bool {
     a.x >= b.x && a.y >= b.y && a.x + a.w <= b.x + b.w && a.y + a.h <= b.y + b.h
 }
 
+/// A colour: channels from 0 to 1 here; the rendered checks (probe.rs) keep 0 to 255, which `over` does not mind.
 #[derive(Clone, Copy)]
-struct Rgb {
-    r: f64,
-    g: f64,
-    b: f64,
+pub(crate) struct Rgb {
+    pub r: f64,
+    pub g: f64,
+    pub b: f64,
 }
 
 fn rgb(v: Option<&Value>) -> Rgb {
     let v = v.unwrap_or(&Value::Null);
     Rgb { r: num(v.get("r")), g: num(v.get("g")), b: num(v.get("b")) }
 }
-fn lin(v: f64) -> f64 {
-    if v <= 0.03928 { v / 12.92 } else { ((v + 0.055) / 1.055).powf(2.4) }
-}
-fn lum(k: Rgb) -> f64 {
+/// Relative luminance of channels from 0 to 1. `knee` is where the sRGB curve turns linear: 0.03928 in WCAG 2.0,
+/// as the canvas audit was written; the rendered checks use sRGB's own 0.04045.
+pub(crate) fn luminance(k: Rgb, knee: f64) -> f64 {
+    let lin = |v: f64| if v <= knee { v / 12.92 } else { ((v + 0.055) / 1.055).powf(2.4) };
     0.2126 * lin(k.r) + 0.7152 * lin(k.g) + 0.0722 * lin(k.b)
 }
-fn ratio(a: Rgb, b: Rgb) -> f64 {
-    let (p, q) = (lum(a), lum(b));
+/// The contrast ratio of two luminances, the lighter one on top.
+pub(crate) fn contrast(p: f64, q: f64) -> f64 {
     // [p, q].sort((p, q) => q - p): a NaN comparison leaves the order as it is.
     let (x, y) = if q - p > 0.0 { (q, p) } else { (p, q) };
     (x + 0.05) / (y + 0.05)
 }
-fn over(top: Rgb, a: f64, under: Rgb) -> Rgb {
+fn ratio(a: Rgb, b: Rgb) -> f64 {
+    contrast(luminance(a, 0.03928), luminance(b, 0.03928))
+}
+/// `top` with opacity `a` over `under`.
+pub(crate) fn over(top: Rgb, a: f64, under: Rgb) -> Rgb {
     Rgb { r: top.r * a + under.r * (1.0 - a), g: top.g * a + under.g * (1.0 - a), b: top.b * a + under.b * (1.0 - a) }
 }
 

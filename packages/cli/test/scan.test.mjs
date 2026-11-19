@@ -9,7 +9,8 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { SOURCE_CHECKS, SYNTAX_CHECKS } from "../dist/checks.js";
 import { readDirection as directionIn, scan as scanEngine, scanShared } from "../dist/engine.js";
-import { recordDirection, recordScan, toSource } from "./golden.mjs";
+import { FIXTURES, chromium, probePage, recordDirection, recordScan, recording, toSource } from "./golden.mjs";
+import { BASICS, PAGES, QUIET, SLOP, bar } from "./pages.mjs";
 import { RULES } from "../dist/intelligence/content.js";
 import { VERSION } from "../dist/product.js";
 
@@ -355,19 +356,7 @@ test("scan <url> without Playwright says how to add it and exits 1", () => {
 test("scan <url> measures overflow, contrast, targets, and collisions, and skips what it cannot know", (t) => {
   const dir = mkdtempSync(join(tmpdir(), "ryux-page-"));
   const page = join(dir, "page.html");
-  writeFileSync(
-    page,
-    `<!doctype html><meta name="viewport" content="width=device-width"><style>
-body{margin:0;font:16px sans-serif;background:#fff}.wide{width:600px}.grey{color:#bbb}
-.hero{position:relative;height:80px}.hero img{position:absolute;inset:0;width:100%;height:100%}.hero p{position:relative;color:#fff}
-.icons button{width:16px;height:16px;padding:0;margin:0;border:0}.over{position:relative}.over span{position:absolute;top:0;left:0}
-.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}</style>
-<div class="wide">wide</div><p class="grey">grey text</p><p>dark text</p>
-<div class="hero"><img alt="" src="data:image/gif;base64,R0lGODlhAQABAAAAACw="><p>white on a photo</p></div>
-<div class="icons"><button aria-label="a"></button><button aria-label="b"></button></div>
-<p>Read <a href="#">the terms</a> first.</p><div class="over"><b>Rp50.000</b><span>Big sale</span></div>
-<div class="sr">hidden header</div><span>hidden header</span><button disabled style="color:#ccc">Off</button>`,
-  );
+  writeFileSync(page, BASICS);
   const r = run(process.env.RYUX_PLAYWRIGHT_CWD ?? join(dirname(cli), "..", "..", ".."), ["scan", `file://${page}`, "--widths", "320", "--json"]);
   if (/needs Playwright|could not start Chromium/.test(r.out)) {
     rmSync(dir, { recursive: true, force: true });
@@ -391,15 +380,7 @@ test("scan <url> fails text a bar cuts on the first screen or still covers at th
   const dir = mkdtempSync(join(tmpdir(), "ryux-bar-"));
   const page = (pad) => {
     const path = join(dir, `bar-${pad}.html`);
-    writeFileSync(
-      path,
-      `<!doctype html><meta name="viewport" content="width=device-width"><style>
-body{margin:0;font:16px/20px sans-serif;background:#fff;color:#111}.phone{position:relative;height:600px;overflow:hidden}
-.content{height:100%;overflow-y:auto;padding-bottom:${pad}px;box-sizing:border-box}.gap{height:${pad ? 400 : 510}px}.tail{height:400px}
-.bar{position:absolute;left:0;right:0;bottom:0;height:80px;background:#fff;border-top:1px solid #ccc}</style>
-<div class="phone"><div class="content"><div class="gap"></div><p style="margin:0">Total Rp 170.000</p><div class="tail"></div><p style="margin:0">Last line here</p></div>
-<div class="bar"><span>Total Rp 170.000</span> <button>Confirm booking</button></div></div>`,
-    );
+    writeFileSync(path, bar(pad));
     const r = run(process.env.RYUX_PLAYWRIGHT_CWD ?? join(dirname(cli), "..", "..", ".."), ["scan", `file://${path}`, "--widths", "390", "--json"]);
     return r;
   };
@@ -417,22 +398,13 @@ body{margin:0;font:16px/20px sans-serif;background:#fff;color:#111}.phone{positi
 // Visual tells (knowledge/anti-slop.md): warn once per page, never at a single, reasoned use.
 test("scan <url> warns each visual tell once per page, and stays quiet on one reasoned use", (t) => {
   const dir = mkdtempSync(join(tmpdir(), "ryux-tells-"));
-  const page = (name, body) => {
+  const page = (name, html) => {
     const path = join(dir, `${name}.html`);
-    writeFileSync(path, `<!doctype html><meta name="viewport" content="width=device-width"><style>
-body{margin:0;font:16px/1.5 sans-serif;background:#05060a;color:#eee}.mono{font-family:Menlo,monospace}
-.glow{box-shadow:0 0 24px rgba(168,85,247,.7)}.glass{backdrop-filter:blur(12px)}
-.wash{height:240px;background:linear-gradient(135deg,#3b82f6,#a855f7)}.pill{display:inline-block;border-radius:999px;padding:4px 12px;background:#222}
-.card{border:1px solid #333;border-radius:12px;padding:16px;min-height:80px}.cta{background:#39ff14;color:#000;padding:12px 20px;display:inline-block}
-h1{font-size:48px;margin:8px 0}h1 em{font-family:Georgia,serif;font-style:italic}</style>${body}`);
+    writeFileSync(path, html);
     return run(process.env.RYUX_PLAYWRIGHT_CWD ?? join(dirname(cli), "..", "..", ".."), ["scan", `file://${path}`, "--widths", "390,1280", "--json"]);
   };
   const tells = (r) => JSON.parse(r.out).findings.filter((f) => f.level === "warn" && /^RX-(AS-05|UI-10|UI-26|UI-01)$/.test(f.rule)).map((f) => `${f.rule} ${f.message.split(/[:(]/)[0].trim()}`);
-  const slop = page("slop", `<div class="wash"><span class="pill">AI-powered writing</span><h1>Write <em>faster</em> today</h1>
-<a class="cta glow" href="#">Start free</a> <span class="glow">one</span> <span class="glow">two</span></div>
-<nav class="glass">a</nav><div class="glass">b</div><div class="glass">c</div>
-<p class="mono">Built for teams who ship.</p><p class="mono">Every word in its place.</p><p class="mono">Write once, publish anywhere.</p>
-<section class="card"><div class="card">Plan one</div><div class="card">Plan two</div></section>`);
+  const slop = page("slop", SLOP);
   if (/needs Playwright|could not start Chromium/.test(slop.out)) {
     rmSync(dir, { recursive: true, force: true });
     return t.skip("no Playwright browser here");
@@ -447,11 +419,50 @@ h1{font-size:48px;margin:8px 0}h1 em{font-family:Georgia,serif;font-style:italic
     "RX-UI-10 an italic serif word inside the heading",
     "RX-UI-26 a near-black page with a neon accent",
   ]);
-  const quiet = page("quiet", `<style>body{background:#fafafa;color:#111}</style><span class="pill">Beta</span><h1>Write faster today</h1><a class="cta glow" href="#">Start free</a>
-<nav class="glass">a</nav><p>Run <code class="mono">npx ryux scan</code> to check.</p>
-<section class="card"><div class="card">One framed shot</div></section>`);
+  const quiet = page("quiet", QUIET);
   assert.deepEqual(tells(quiet), []);
   rmSync(dir, { recursive: true, force: true });
+});
+
+// The rendered checks run in ryux-core; the page only reads (cli/page-probe.ts). Each test page is rendered in
+// Chromium as `ryux scan <url>` renders it, read by the shipped extract, and judged by ryux-core; the judgement must
+// be the one recorded in fixtures/checks/probe.json, which golden.test.mjs and `cargo test` replay without a browser.
+// With RYUX_RECORD=1 this test writes probe.json, so recording without Playwright fails instead of dropping it. The
+// boxes depend on this Chromium and its fonts: on another machine, a different extract can mean a different judgement.
+test("probe parity: the shipped extract in Chromium, judged by ryux-core, gives every recorded result", async (t) => {
+  const browser = await (await chromium())?.launch().catch(() => null);
+  if (!browser) {
+    assert.ok(!recording, "recording fixtures/checks/probe.json needs Playwright with its Chromium (RYUX_PLAYWRIGHT_CWD)");
+    return t.skip("no Playwright browser here");
+  }
+  const recorded = recording ? [] : JSON.parse(readFileSync(join(FIXTURES, "probe.json"), "utf8"));
+  const dir = mkdtempSync(join(tmpdir(), "ryux-probe-"));
+  let k = 0;
+  try {
+    for (const p of PAGES) {
+      const file = join(dir, `${p.name}.html`);
+      writeFileSync(file, p.html);
+      for (const width of p.widths) {
+        const ctx = await browser.newContext({ viewport: { width, height: width <= 480 ? 844 : 900 }, reducedMotion: "reduce" });
+        const page = await ctx.newPage();
+        await page.goto(`file://${file}`, { waitUntil: "networkidle", timeout: 30_000 });
+        await page.waitForTimeout(300);
+        const { extract, out } = await probePage(page);
+        await ctx.close();
+        const bytes = JSON.stringify(extract).length;
+        t.diagnostic(`${p.name} at ${width}px: extract ${bytes} bytes, ${out.findings.length} findings`);
+        assert.ok(bytes < 16_000, `${p.name} at ${width}px: extract ${bytes} bytes`);
+        if (recording) continue;
+        const want = recorded[k++];
+        assert.ok(want, `probe.json has no case for ${p.name} at ${width}px`);
+        assert.deepEqual(out, want.output, `${p.name} at ${width}px${JSON.stringify(extract) === JSON.stringify(want.input) ? "" : " (the extract differs from the recorded one: another Chromium or other fonts?)"}`);
+      }
+    }
+    if (!recording) assert.equal(k, recorded.length, "every recorded case has a test page");
+  } finally {
+    await browser.close();
+    rmSync(dir, { recursive: true, force: true });
+  }
 });
 
 test("SVG art: no viewBox fails; fixed size, raster, text, and editor metadata warn once each", () => {

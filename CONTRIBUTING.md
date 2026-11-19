@@ -22,7 +22,7 @@ part follows the [Code of Conduct](./CODE_OF_CONDUCT.md).
 ## Set up
 
 You need Node 22, pnpm, and Rust with the WebAssembly target and wasm-pack. The CLI's checks (scan,
-design drift, and the canvas audit) run in `crates/ryux-core`, built to WebAssembly by `pnpm test`
+design drift, the rendered page checks, and the canvas audit) run in `crates/ryux-core`, built to WebAssembly by `pnpm test`
 (or `pnpm build:wasm`); the CLI does not run without it. `packages/cli/src/checks.ts` lists what the
 checks look for, for `ryux scan --list-rules` and the rule text.
 
@@ -44,12 +44,17 @@ and review the diff in `fixtures/checks`: the node tests and `cargo test` replay
 syntax checks (`crates/ryux-core/src/jsx.rs`, on the oxc parser) have unit tests there and CLI tests in
 `packages/cli/test/scan.test.mjs`. The Figma audit script agents run inside Figma
 (`packages/cli/src/figma-audit.ts`) is still JavaScript and must agree with ryux-core's audit.
+The browser is different: for `ryux scan <url>`, the script in the page (`packages/cli/src/cli/page-probe.ts`)
+only reads boxes, computed styles, text, and hit tests, and `crates/ryux-core/src/probe.rs` judges them. Its parity
+test (`packages/cli/test/scan.test.mjs`) renders the pages in `packages/cli/test/pages.mjs` with Playwright, so
+recording fixtures needs Playwright with Chromium where the tests run (`RYUX_PLAYWRIGHT_CWD`, or the repo root);
+without it, that test skips, and CI replays `fixtures/checks/probe.json` only.
 
 ## Where things live
 
 ```
 packages/cli/src/   the source: CLI, scan, and every rule and skill file
-crates/ryux-core/   the deterministic checks in Rust (scan, drift, canvas audit, JSX syntax checks)
+crates/ryux-core/   the deterministic checks in Rust (scan, drift, rendered pages, canvas audit, JSX syntax checks)
 crates/ryux-wasm/   their WebAssembly entry, loaded by the CLI
 fixtures/checks/    recorded inputs and outputs the checks must match
 skills/ryux/        generated from packages/cli/src, do not edit by hand

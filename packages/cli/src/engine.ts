@@ -11,6 +11,7 @@ interface Core {
   unused(input: string): string;
   readDirection(md: string): string;
   audit(input: string): string;
+  probe(input: string): string;
 }
 
 let core: Core | undefined;
@@ -78,4 +79,13 @@ export function unused(sources: RawSource[], design: Direction): { colours: stri
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function audit(figma: any, page: string): Promise<any> {
   return answer(rust().audit(JSON.stringify(await neutralCanvas(figma, page))));
+}
+
+/** The rendered checks over what probeExtract read in the page (cli/page-probe.ts): the findings and the ignored
+ *  regions, or what the page must do first (`ask`), when the extract has no `answers` yet. */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function probe(extract: Record<string, unknown>): any {
+  // A lone surrogate in page text cannot cross as JSON; it becomes U+FFFD, as String.prototype.toWellFormed does.
+  const lone = /[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?<![\uD800-\uDBFF])[\uDC00-\uDFFF]/g;
+  return answer(rust().probe(JSON.stringify(extract, (_k, v) => (typeof v === "string" ? v.replace(lone, "\uFFFD") : v))));
 }

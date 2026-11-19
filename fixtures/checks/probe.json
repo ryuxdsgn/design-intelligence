@@ -1,0 +1,7267 @@
+[
+ {
+  "input": {
+   "vw": 320,
+   "vh": 844,
+   "scrollWidth": 600,
+   "scrollingElement": 0,
+   "top": 2,
+   "styles": [
+    {
+     "color": "rgb(0, 0, 0)",
+     "fontFamily": "Times"
+    },
+    {
+     "backgroundColor": "rgb(255, 255, 255)",
+     "color": "rgb(0, 0, 0)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "color": "rgb(0, 0, 0)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "color": "rgb(187, 187, 187)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "position": "relative",
+     "color": "rgb(0, 0, 0)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "overflow": "clip",
+     "overflowY": "clip",
+     "position": "absolute",
+     "color": "rgb(0, 0, 0)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "position": "relative",
+     "color": "rgb(255, 255, 255)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "display": "inline-block",
+     "backgroundColor": "rgb(239, 239, 239)",
+     "fontSize": 13.3333,
+     "color": "rgb(0, 0, 0)",
+     "fontFamily": "Arial"
+    },
+    {
+     "display": "inline",
+     "color": "rgb(0, 0, 238)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "display": "inline",
+     "fontWeight": 700,
+     "color": "rgb(0, 0, 0)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "position": "absolute",
+     "color": "rgb(0, 0, 0)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "clip": "rect(0px, 0px, 0px, 0px)",
+     "overflow": "hidden",
+     "overflowY": "hidden",
+     "position": "absolute",
+     "color": "rgb(0, 0, 0)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "display": "inline",
+     "color": "rgb(0, 0, 0)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "display": "inline-block",
+     "backgroundColor": "rgba(239, 239, 239, 0.3)",
+     "fontSize": 13.3333,
+     "borderTopWidth": 2,
+     "color": "rgb(204, 204, 204)",
+     "borderTopColor": "rgba(118, 118, 118, 0.3)",
+     "fontFamily": "Arial"
+    }
+   ],
+   "els": [
+    {
+     "p": null,
+     "t": "HTML",
+     "s": 0,
+     "r": [
+      0,
+      0,
+      320,
+      291
+     ]
+    },
+    {
+     "p": 0,
+     "t": "BODY",
+     "s": 1,
+     "r": [
+      0,
+      0,
+      320,
+      291
+     ]
+    },
+    {
+     "p": 1,
+     "t": "DIV",
+     "s": 2,
+     "r": [
+      0,
+      0,
+      600,
+      18
+     ],
+     "c": "wide"
+    },
+    {
+     "p": 1,
+     "t": "P",
+     "s": 3,
+     "r": [
+      0,
+      34,
+      320,
+      18
+     ],
+     "c": "grey"
+    },
+    {
+     "p": 1,
+     "t": "P",
+     "s": 2,
+     "r": [
+      0,
+      68,
+      320,
+      18
+     ]
+    },
+    {
+     "p": 1,
+     "t": "DIV",
+     "s": 4,
+     "r": [
+      0,
+      102,
+      320,
+      80
+     ],
+     "c": "hero"
+    },
+    {
+     "p": 5,
+     "t": "IMG",
+     "s": 5,
+     "r": [
+      0,
+      102,
+      320,
+      80
+     ]
+    },
+    {
+     "p": 5,
+     "t": "P",
+     "s": 6,
+     "r": [
+      0,
+      102,
+      320,
+      18
+     ]
+    },
+    {
+     "p": 1,
+     "t": "DIV",
+     "s": 2,
+     "r": [
+      0,
+      182,
+      320,
+      20
+     ],
+     "c": "icons"
+    },
+    {
+     "p": 8,
+     "t": "BUTTON",
+     "s": 7,
+     "r": [
+      0,
+      182,
+      16,
+      16
+     ],
+     "ctl": 1,
+     "nm": "a"
+    },
+    {
+     "p": 8,
+     "t": "BUTTON",
+     "s": 7,
+     "r": [
+      16,
+      182,
+      16,
+      16
+     ],
+     "ctl": 1,
+     "nm": "b"
+    },
+    {
+     "p": 1,
+     "t": "P",
+     "s": 2,
+     "r": [
+      0,
+      218,
+      320,
+      18
+     ]
+    },
+    {
+     "p": 11,
+     "t": "A",
+     "s": 8,
+     "r": [
+      42.703125,
+      218,
+      66.6875,
+      18
+     ],
+     "ctl": 1,
+     "nm": "the terms",
+     "sib": 1
+    },
+    {
+     "p": 1,
+     "t": "DIV",
+     "s": 4,
+     "r": [
+      0,
+      252,
+      320,
+      18
+     ],
+     "c": "over"
+    },
+    {
+     "p": 13,
+     "t": "B",
+     "s": 9,
+     "r": [
+      0,
+      252,
+      70.265625,
+      18
+     ]
+    },
+    {
+     "p": 13,
+     "t": "SPAN",
+     "s": 10,
+     "r": [
+      0,
+      252,
+      56.921875,
+      18
+     ]
+    },
+    {
+     "p": 1,
+     "t": "DIV",
+     "s": 11,
+     "r": [
+      0,
+      270,
+      1,
+      1
+     ],
+     "c": "sr",
+     "sh": 36,
+     "ch": 1
+    },
+    {
+     "p": 1,
+     "t": "SPAN",
+     "s": 12,
+     "r": [
+      0,
+      271,
+      102.3125,
+      18
+     ]
+    },
+    {
+     "p": 1,
+     "t": "BUTTON",
+     "s": 13,
+     "r": [
+      102.3125,
+      270,
+      33.546875,
+      21
+     ],
+     "dis": 1,
+     "ctl": 1,
+     "nm": "Off"
+    }
+   ],
+   "texts": [
+    {
+     "e": 2,
+     "x": "wide",
+     "r": [
+      0,
+      0,
+      32.90625,
+      18
+     ],
+     "open": [
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2
+     ],
+     "end": {
+      "r": [
+       0,
+       0,
+       32.90625,
+       18
+      ],
+      "h": [
+       2,
+       2,
+       2,
+       2,
+       2,
+       2,
+       2,
+       2,
+       2,
+       2,
+       2,
+       2,
+       2,
+       2,
+       2
+      ]
+     }
+    },
+    {
+     "e": 3,
+     "x": "grey text",
+     "r": [
+      0,
+      34,
+      61.359375,
+      18
+     ],
+     "open": [
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3
+     ],
+     "end": {
+      "r": [
+       0,
+       34,
+       61.359375,
+       18
+      ],
+      "h": [
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3
+      ]
+     }
+    },
+    {
+     "e": 4,
+     "x": "dark text",
+     "r": [
+      0,
+      68,
+      61.359375,
+      18
+     ],
+     "open": [
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4
+     ],
+     "end": {
+      "r": [
+       0,
+       68,
+       61.359375,
+       18
+      ],
+      "h": [
+       4,
+       4,
+       4,
+       4,
+       4,
+       4,
+       4,
+       4,
+       4,
+       4,
+       4,
+       4,
+       4,
+       4,
+       4
+      ]
+     }
+    },
+    {
+     "e": 7,
+     "x": "white on a photo",
+     "r": [
+      0,
+      102,
+      117.421875,
+      18
+     ],
+     "open": [
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7
+     ],
+     "end": {
+      "r": [
+       0,
+       102,
+       117.421875,
+       18
+      ],
+      "h": [
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7
+      ]
+     }
+    },
+    {
+     "e": 11,
+     "x": "Read first.",
+     "r": [
+      0,
+      218,
+      144.0625,
+      18
+     ],
+     "open": [
+      11,
+      12,
+      12,
+      12,
+      11,
+      11,
+      12,
+      12,
+      12,
+      11,
+      11,
+      12,
+      12,
+      12,
+      11
+     ],
+     "end": {
+      "r": [
+       0,
+       218,
+       144.0625,
+       18
+      ],
+      "h": [
+       11,
+       12,
+       12,
+       12,
+       11,
+       11,
+       12,
+       12,
+       12,
+       11,
+       11,
+       12,
+       12,
+       12,
+       11
+      ]
+     }
+    },
+    {
+     "e": 12,
+     "x": "the terms",
+     "r": [
+      42.703125,
+      218,
+      66.6875,
+      18
+     ],
+     "open": [
+      12,
+      12,
+      12,
+      12,
+      12,
+      12,
+      12,
+      12,
+      12,
+      12,
+      12,
+      12,
+      12,
+      12,
+      12
+     ],
+     "end": {
+      "r": [
+       42.703125,
+       218,
+       66.6875,
+       18
+      ],
+      "h": [
+       12,
+       12,
+       12,
+       12,
+       12,
+       12,
+       12,
+       12,
+       12,
+       12,
+       12,
+       12,
+       12,
+       12,
+       12
+      ]
+     }
+    },
+    {
+     "e": 14,
+     "x": "Rp50.000",
+     "r": [
+      0,
+      252,
+      70.265625,
+      18
+     ],
+     "open": [
+      15,
+      15,
+      15,
+      15,
+      14,
+      15,
+      15,
+      15,
+      15,
+      14,
+      15,
+      15,
+      15,
+      15,
+      14
+     ],
+     "end": {
+      "r": [
+       0,
+       252,
+       70.265625,
+       18
+      ],
+      "h": [
+       15,
+       15,
+       15,
+       15,
+       14,
+       15,
+       15,
+       15,
+       15,
+       14,
+       15,
+       15,
+       15,
+       15,
+       14
+      ]
+     }
+    },
+    {
+     "e": 15,
+     "x": "Big sale",
+     "r": [
+      0,
+      252,
+      56.921875,
+      18
+     ],
+     "open": [
+      15,
+      15,
+      15,
+      15,
+      15,
+      15,
+      15,
+      15,
+      15,
+      15,
+      15,
+      15,
+      15,
+      15,
+      15
+     ],
+     "end": {
+      "r": [
+       0,
+       252,
+       56.921875,
+       18
+      ],
+      "h": [
+       15,
+       15,
+       15,
+       15,
+       15,
+       15,
+       15,
+       15,
+       15,
+       15,
+       15,
+       15,
+       15,
+       15,
+       15
+      ]
+     }
+    },
+    {
+     "e": 16,
+     "x": "hidden header",
+     "r": [
+      0,
+      270,
+      49.828125,
+      36
+     ],
+     "open": [
+      17,
+      17,
+      17,
+      17,
+      17,
+      17,
+      17,
+      17,
+      17,
+      17,
+      0,
+      0,
+      0,
+      0,
+      0
+     ],
+     "end": {
+      "r": [
+       0,
+       270,
+       49.828125,
+       36
+      ],
+      "h": [
+       17,
+       17,
+       17,
+       17,
+       17,
+       17,
+       17,
+       17,
+       17,
+       17,
+       0,
+       0,
+       0,
+       0,
+       0
+      ]
+     }
+    },
+    {
+     "e": 17,
+     "x": "hidden header",
+     "r": [
+      0,
+      271,
+      102.3125,
+      18
+     ],
+     "open": [
+      17,
+      17,
+      17,
+      17,
+      17,
+      17,
+      17,
+      17,
+      17,
+      17,
+      17,
+      17,
+      17,
+      17,
+      17
+     ],
+     "end": {
+      "r": [
+       0,
+       271,
+       102.3125,
+       18
+      ],
+      "h": [
+       17,
+       17,
+       17,
+       17,
+       17,
+       17,
+       17,
+       17,
+       17,
+       17,
+       17,
+       17,
+       17,
+       17,
+       17
+      ]
+     }
+    },
+    {
+     "e": 18,
+     "x": "Off",
+     "r": [
+      110.3125,
+      273,
+      17.546875,
+      15
+     ],
+     "open": [
+      18,
+      18,
+      18,
+      18,
+      18,
+      18,
+      18,
+      18,
+      18,
+      18,
+      18,
+      18,
+      18,
+      18,
+      18
+     ],
+     "end": {
+      "r": [
+       110.3125,
+       273,
+       17.546875,
+       15
+      ],
+      "h": [
+       18,
+       18,
+       18,
+       18,
+       18,
+       18,
+       18,
+       18,
+       18,
+       18,
+       18,
+       18,
+       18,
+       18,
+       18
+      ]
+     }
+    }
+   ],
+   "chains": {
+    "open": {
+     "13": {
+      "position": "relative",
+      "width": 320,
+      "top": 252
+     },
+     "15": {
+      "position": "absolute",
+      "width": 56.921875,
+      "top": 252,
+      "op": 13,
+      "text": "Big sale"
+     },
+     "17": {
+      "position": "static",
+      "width": 102.3125,
+      "top": 271
+     }
+    },
+    "end": {
+     "13": {
+      "position": "relative",
+      "width": 320,
+      "top": 252
+     },
+     "15": {
+      "position": "absolute",
+      "width": 56.921875,
+      "top": 252,
+      "op": 13
+     },
+     "17": {
+      "position": "static",
+      "width": 102.3125,
+      "top": 271
+     }
+    }
+   },
+   "answers": {
+    "under": {
+     "1": 1,
+     "3": 6
+    },
+    "grow": {}
+   }
+  },
+  "output": {
+   "findings": [
+    {
+     "rule": "RX-RD-01",
+     "level": "fail",
+     "selector": "div.wide",
+     "message": "the page scrolls sideways: 600px of content in 320px; widest: div.wide (to 600px)"
+    },
+    {
+     "rule": "RX-A11Y-01",
+     "level": "fail",
+     "selector": "p.grey",
+     "message": "\"grey text\": contrast 1.92:1 (#bbbbbb on #ffffff), needs 4.5:1"
+    },
+    {
+     "rule": "RX-A11Y-02",
+     "level": "fail",
+     "selector": "div.icons > button",
+     "message": "\"a\": target 16x16px, under 24x24 and crowded by its neighbours; 44x44 is the preferred hit area"
+    },
+    {
+     "rule": "RX-A11Y-02",
+     "level": "fail",
+     "selector": "div.icons > button",
+     "message": "\"b\": target 16x16px, under 24x24 and crowded by its neighbours; 44x44 is the preferred hit area"
+    },
+    {
+     "rule": "RX-QA-03",
+     "level": "warn",
+     "selector": "div.over > b",
+     "message": "\"Rp50.000\" overlaps \"Big sale\" (div.over > span)"
+    }
+   ],
+   "ignored": []
+  }
+ },
+ {
+  "input": {
+   "vw": 390,
+   "vh": 844,
+   "scrollWidth": 390,
+   "scrollingElement": 0,
+   "top": 4,
+   "styles": [
+    {
+     "color": "rgb(0, 0, 0)",
+     "fontFamily": "Times"
+    },
+    {
+     "backgroundColor": "rgb(255, 255, 255)",
+     "color": "rgb(17, 17, 17)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "overflow": "hidden",
+     "overflowY": "hidden",
+     "position": "relative",
+     "color": "rgb(17, 17, 17)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "overflow": "auto",
+     "overflowY": "auto",
+     "color": "rgb(17, 17, 17)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "color": "rgb(17, 17, 17)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "position": "absolute",
+     "backgroundColor": "rgb(255, 255, 255)",
+     "borderTopWidth": 1,
+     "color": "rgb(17, 17, 17)",
+     "borderTopColor": "rgb(204, 204, 204)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "display": "inline",
+     "color": "rgb(17, 17, 17)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "display": "inline-block",
+     "backgroundColor": "rgb(239, 239, 239)",
+     "fontSize": 13.3333,
+     "borderTopWidth": 2,
+     "color": "rgb(0, 0, 0)",
+     "fontFamily": "Arial"
+    }
+   ],
+   "els": [
+    {
+     "p": null,
+     "t": "HTML",
+     "s": 0,
+     "r": [
+      0,
+      0,
+      390,
+      600
+     ]
+    },
+    {
+     "p": 0,
+     "t": "BODY",
+     "s": 1,
+     "r": [
+      0,
+      0,
+      390,
+      600
+     ]
+    },
+    {
+     "p": 1,
+     "t": "DIV",
+     "s": 2,
+     "r": [
+      0,
+      0,
+      390,
+      600
+     ],
+     "c": "phone"
+    },
+    {
+     "p": 2,
+     "t": "DIV",
+     "s": 3,
+     "r": [
+      0,
+      0,
+      390,
+      600
+     ],
+     "c": "content",
+     "sh": 950,
+     "ch": 600
+    },
+    {
+     "p": 3,
+     "t": "DIV",
+     "s": 4,
+     "r": [
+      0,
+      0,
+      390,
+      510
+     ],
+     "c": "gap"
+    },
+    {
+     "p": 3,
+     "t": "P",
+     "s": 4,
+     "r": [
+      0,
+      510,
+      390,
+      20
+     ]
+    },
+    {
+     "p": 3,
+     "t": "DIV",
+     "s": 4,
+     "r": [
+      0,
+      530,
+      390,
+      400
+     ],
+     "c": "tail"
+    },
+    {
+     "p": 3,
+     "t": "P",
+     "s": 4,
+     "r": [
+      0,
+      930,
+      390,
+      20
+     ]
+    },
+    {
+     "p": 2,
+     "t": "DIV",
+     "s": 5,
+     "r": [
+      0,
+      519,
+      390,
+      81
+     ],
+     "c": "bar"
+    },
+    {
+     "p": 8,
+     "t": "SPAN",
+     "s": 6,
+     "r": [
+      0,
+      521,
+      120.984375,
+      18
+     ]
+    },
+    {
+     "p": 8,
+     "t": "BUTTON",
+     "s": 7,
+     "r": [
+      125.4375,
+      520,
+      113.0625,
+      21
+     ],
+     "ctl": 1,
+     "nm": "Confirm booking"
+    }
+   ],
+   "texts": [
+    {
+     "e": 5,
+     "x": "Total Rp 170.000",
+     "r": [
+      0,
+      511,
+      120.984375,
+      18
+     ],
+     "open": [
+      5,
+      5,
+      5,
+      5,
+      5,
+      8,
+      8,
+      8,
+      8,
+      8,
+      9,
+      9,
+      9,
+      9,
+      9
+     ],
+     "end": {
+      "r": [
+       0,
+       161,
+       120.984375,
+       18
+      ],
+      "h": [
+       5,
+       5,
+       5,
+       5,
+       5,
+       5,
+       5,
+       5,
+       5,
+       5,
+       5,
+       5,
+       5,
+       5,
+       5
+      ]
+     }
+    },
+    {
+     "e": 7,
+     "x": "Last line here",
+     "r": [
+      0,
+      931,
+      96.0625,
+      18
+     ],
+     "end": {
+      "r": [
+       0,
+       581,
+       96.0625,
+       18
+      ],
+      "h": [
+       8,
+       8,
+       8,
+       8,
+       8,
+       8,
+       8,
+       8,
+       8,
+       8,
+       8,
+       8,
+       8,
+       8,
+       8
+      ]
+     }
+    },
+    {
+     "e": 9,
+     "x": "Total Rp 170.000",
+     "r": [
+      0,
+      521,
+      120.984375,
+      18
+     ],
+     "open": [
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9
+     ],
+     "end": {
+      "r": [
+       0,
+       521,
+       120.984375,
+       18
+      ],
+      "h": [
+       9,
+       9,
+       9,
+       9,
+       9,
+       9,
+       9,
+       9,
+       9,
+       9,
+       9,
+       9,
+       9,
+       9,
+       9
+      ]
+     }
+    },
+    {
+     "e": 10,
+     "x": "Confirm booking",
+     "r": [
+      133.4375,
+      523,
+      97.0625,
+      15
+     ],
+     "open": [
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10
+     ],
+     "end": {
+      "r": [
+       133.4375,
+       523,
+       97.0625,
+       15
+      ],
+      "h": [
+       10,
+       10,
+       10,
+       10,
+       10,
+       10,
+       10,
+       10,
+       10,
+       10,
+       10,
+       10,
+       10,
+       10,
+       10
+      ]
+     }
+    }
+   ],
+   "chains": {
+    "open": {
+     "2": {
+      "position": "relative",
+      "width": 390,
+      "top": 0
+     },
+     "8": {
+      "position": "absolute",
+      "width": 390,
+      "top": 519,
+      "op": 2,
+      "text": "Total Rp 170.000 Confirm booking"
+     },
+     "9": {
+      "position": "static",
+      "width": 120.984375,
+      "top": 521
+     }
+    },
+    "end": {
+     "2": {
+      "position": "relative",
+      "width": 390,
+      "top": 0
+     },
+     "8": {
+      "position": "absolute",
+      "width": 390,
+      "top": 519,
+      "op": 2
+     }
+    }
+   }
+  },
+  "output": {
+   "findings": [
+    {
+     "rule": "RX-A11Y-02",
+     "level": "warn",
+     "selector": "div.phone > div.bar > button",
+     "message": "\"Confirm booking\": target 113x21px, under 24x24 (spaced enough to pass WCAG 2.5.8); 44x44 is the preferred hit area"
+    },
+    {
+     "rule": "RX-QA-03",
+     "level": "warn",
+     "selector": "div.phone > div.content > p",
+     "message": "\"Total Rp 170.000\" overlaps \"Total Rp 170.000\" (div.phone > div.bar > span)"
+    },
+    {
+     "rule": "RX-QA-03",
+     "level": "fail",
+     "selector": "div.phone > div.content > p",
+     "message": "\"Total Rp 170.000\" is cut by the div.phone > div.bar bar on the first screen, which shows \"Total 170.000\" again: the same content twice, one copy sliced"
+    },
+    {
+     "rule": "RX-QA-03",
+     "level": "fail",
+     "selector": "div.phone > div.content > p",
+     "message": "\"Last line here\" stays under the div.phone > div.bar bar with the page scrolled to its end: it can never be read; add bottom space the height of the bar"
+    }
+   ],
+   "ignored": []
+  }
+ },
+ {
+  "input": {
+   "vw": 390,
+   "vh": 844,
+   "scrollWidth": 390,
+   "scrollingElement": 0,
+   "top": 4,
+   "styles": [
+    {
+     "color": "rgb(0, 0, 0)",
+     "fontFamily": "Times"
+    },
+    {
+     "backgroundColor": "rgb(255, 255, 255)",
+     "color": "rgb(17, 17, 17)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "overflow": "hidden",
+     "overflowY": "hidden",
+     "position": "relative",
+     "color": "rgb(17, 17, 17)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "overflow": "auto",
+     "overflowY": "auto",
+     "color": "rgb(17, 17, 17)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "color": "rgb(17, 17, 17)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "position": "absolute",
+     "backgroundColor": "rgb(255, 255, 255)",
+     "borderTopWidth": 1,
+     "color": "rgb(17, 17, 17)",
+     "borderTopColor": "rgb(204, 204, 204)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "display": "inline",
+     "color": "rgb(17, 17, 17)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "display": "inline-block",
+     "backgroundColor": "rgb(239, 239, 239)",
+     "fontSize": 13.3333,
+     "borderTopWidth": 2,
+     "color": "rgb(0, 0, 0)",
+     "fontFamily": "Arial"
+    }
+   ],
+   "els": [
+    {
+     "p": null,
+     "t": "HTML",
+     "s": 0,
+     "r": [
+      0,
+      0,
+      390,
+      600
+     ]
+    },
+    {
+     "p": 0,
+     "t": "BODY",
+     "s": 1,
+     "r": [
+      0,
+      0,
+      390,
+      600
+     ]
+    },
+    {
+     "p": 1,
+     "t": "DIV",
+     "s": 2,
+     "r": [
+      0,
+      0,
+      390,
+      600
+     ],
+     "c": "phone"
+    },
+    {
+     "p": 2,
+     "t": "DIV",
+     "s": 3,
+     "r": [
+      0,
+      0,
+      390,
+      600
+     ],
+     "c": "content",
+     "sh": 936,
+     "ch": 600
+    },
+    {
+     "p": 3,
+     "t": "DIV",
+     "s": 4,
+     "r": [
+      0,
+      0,
+      390,
+      400
+     ],
+     "c": "gap"
+    },
+    {
+     "p": 3,
+     "t": "P",
+     "s": 4,
+     "r": [
+      0,
+      400,
+      390,
+      20
+     ]
+    },
+    {
+     "p": 3,
+     "t": "DIV",
+     "s": 4,
+     "r": [
+      0,
+      420,
+      390,
+      400
+     ],
+     "c": "tail"
+    },
+    {
+     "p": 3,
+     "t": "P",
+     "s": 4,
+     "r": [
+      0,
+      820,
+      390,
+      20
+     ]
+    },
+    {
+     "p": 2,
+     "t": "DIV",
+     "s": 5,
+     "r": [
+      0,
+      519,
+      390,
+      81
+     ],
+     "c": "bar"
+    },
+    {
+     "p": 8,
+     "t": "SPAN",
+     "s": 6,
+     "r": [
+      0,
+      521,
+      120.984375,
+      18
+     ]
+    },
+    {
+     "p": 8,
+     "t": "BUTTON",
+     "s": 7,
+     "r": [
+      125.4375,
+      520,
+      113.0625,
+      21
+     ],
+     "ctl": 1,
+     "nm": "Confirm booking"
+    }
+   ],
+   "texts": [
+    {
+     "e": 5,
+     "x": "Total Rp 170.000",
+     "r": [
+      0,
+      401,
+      120.984375,
+      18
+     ],
+     "open": [
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5
+     ],
+     "end": {
+      "r": [
+       0,
+       65,
+       120.984375,
+       18
+      ],
+      "h": [
+       5,
+       5,
+       5,
+       5,
+       5,
+       5,
+       5,
+       5,
+       5,
+       5,
+       5,
+       5,
+       5,
+       5,
+       5
+      ]
+     }
+    },
+    {
+     "e": 7,
+     "x": "Last line here",
+     "r": [
+      0,
+      821,
+      96.0625,
+      18
+     ],
+     "open": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+     ],
+     "end": {
+      "r": [
+       0,
+       485,
+       96.0625,
+       18
+      ],
+      "h": [
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7
+      ]
+     }
+    },
+    {
+     "e": 9,
+     "x": "Total Rp 170.000",
+     "r": [
+      0,
+      521,
+      120.984375,
+      18
+     ],
+     "open": [
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9
+     ],
+     "end": {
+      "r": [
+       0,
+       521,
+       120.984375,
+       18
+      ],
+      "h": [
+       9,
+       9,
+       9,
+       9,
+       9,
+       9,
+       9,
+       9,
+       9,
+       9,
+       9,
+       9,
+       9,
+       9,
+       9
+      ]
+     }
+    },
+    {
+     "e": 10,
+     "x": "Confirm booking",
+     "r": [
+      133.4375,
+      523,
+      97.0625,
+      15
+     ],
+     "open": [
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10
+     ],
+     "end": {
+      "r": [
+       133.4375,
+       523,
+       97.0625,
+       15
+      ],
+      "h": [
+       10,
+       10,
+       10,
+       10,
+       10,
+       10,
+       10,
+       10,
+       10,
+       10,
+       10,
+       10,
+       10,
+       10,
+       10
+      ]
+     }
+    }
+   ],
+   "chains": {
+    "open": {},
+    "end": {}
+   }
+  },
+  "output": {
+   "findings": [
+    {
+     "rule": "RX-A11Y-02",
+     "level": "warn",
+     "selector": "div.phone > div.bar > button",
+     "message": "\"Confirm booking\": target 113x21px, under 24x24 (spaced enough to pass WCAG 2.5.8); 44x44 is the preferred hit area"
+    }
+   ],
+   "ignored": []
+  }
+ },
+ {
+  "input": {
+   "vw": 390,
+   "vh": 844,
+   "scrollWidth": 390,
+   "scrollingElement": 0,
+   "top": 2,
+   "styles": [
+    {
+     "color": "rgb(0, 0, 0)",
+     "fontFamily": "Times"
+    },
+    {
+     "backgroundColor": "rgb(5, 6, 10)",
+     "color": "rgb(238, 238, 238)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "backgroundImage": "linear-gradient(135deg, rgb(59, 130, 246), rgb(168, 85, 247))",
+     "color": "rgb(238, 238, 238)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "display": "inline-block",
+     "backgroundColor": "rgb(34, 34, 34)",
+     "borderTopLeftRadius": 999,
+     "color": "rgb(238, 238, 238)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "fontSize": 48,
+     "fontWeight": 700,
+     "color": "rgb(238, 238, 238)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "display": "inline",
+     "fontStyle": "italic",
+     "fontSize": 48,
+     "fontWeight": 700,
+     "color": "rgb(238, 238, 238)",
+     "fontFamily": "Georgia, serif"
+    },
+    {
+     "display": "inline-block",
+     "backgroundColor": "rgb(57, 255, 20)",
+     "boxShadow": "rgba(168, 85, 247, 0.7) 0px 0px 24px 0px",
+     "color": "rgb(0, 0, 0)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "display": "inline",
+     "boxShadow": "rgba(168, 85, 247, 0.7) 0px 0px 24px 0px",
+     "color": "rgb(238, 238, 238)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "backdropFilter": "blur(12px)",
+     "color": "rgb(238, 238, 238)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "color": "rgb(238, 238, 238)",
+     "fontFamily": "Menlo, monospace"
+    },
+    {
+     "borderTopLeftRadius": 12,
+     "borderTopWidth": 1,
+     "color": "rgb(238, 238, 238)",
+     "borderTopColor": "rgb(51, 51, 51)",
+     "fontFamily": "sans-serif"
+    }
+   ],
+   "els": [
+    {
+     "p": null,
+     "t": "HTML",
+     "s": 0,
+     "r": [
+      0,
+      0,
+      390,
+      710
+     ]
+    },
+    {
+     "p": 0,
+     "t": "BODY",
+     "s": 1,
+     "r": [
+      0,
+      0,
+      390,
+      710
+     ]
+    },
+    {
+     "p": 1,
+     "t": "DIV",
+     "s": 2,
+     "r": [
+      0,
+      0,
+      390,
+      240
+     ],
+     "c": "wash"
+    },
+    {
+     "p": 2,
+     "t": "SPAN",
+     "s": 3,
+     "r": [
+      0,
+      0,
+      156.5,
+      32
+     ],
+     "c": "pill",
+     "pt": "AI-powered writing"
+    },
+    {
+     "p": 2,
+     "t": "H1",
+     "s": 4,
+     "r": [
+      0,
+      40,
+      390,
+      144
+     ]
+    },
+    {
+     "p": 4,
+     "t": "EM",
+     "s": 5,
+     "r": [
+      132.5,
+      48,
+      147.171875,
+      55
+     ],
+     "it": "faster"
+    },
+    {
+     "p": 2,
+     "t": "A",
+     "s": 6,
+     "r": [
+      0,
+      192,
+      105.8125,
+      48
+     ],
+     "c": "cta",
+     "ctl": 1,
+     "nm": "Start free"
+    },
+    {
+     "p": 2,
+     "t": "SPAN",
+     "s": 7,
+     "r": [
+      110.265625,
+      207,
+      26.703125,
+      18
+     ],
+     "c": "glow"
+    },
+    {
+     "p": 2,
+     "t": "SPAN",
+     "s": 7,
+     "r": [
+      141.421875,
+      207,
+      24.90625,
+      18
+     ],
+     "c": "glow"
+    },
+    {
+     "p": 1,
+     "t": "NAV",
+     "s": 8,
+     "r": [
+      0,
+      240,
+      390,
+      24
+     ],
+     "c": "glass"
+    },
+    {
+     "p": 1,
+     "t": "DIV",
+     "s": 8,
+     "r": [
+      0,
+      264,
+      390,
+      24
+     ],
+     "c": "glass"
+    },
+    {
+     "p": 1,
+     "t": "DIV",
+     "s": 8,
+     "r": [
+      0,
+      288,
+      390,
+      24
+     ],
+     "c": "glass"
+    },
+    {
+     "p": 1,
+     "t": "P",
+     "s": 9,
+     "r": [
+      0,
+      328,
+      390,
+      24
+     ],
+     "c": "mono"
+    },
+    {
+     "p": 1,
+     "t": "P",
+     "s": 9,
+     "r": [
+      0,
+      368,
+      390,
+      24
+     ],
+     "c": "mono"
+    },
+    {
+     "p": 1,
+     "t": "P",
+     "s": 9,
+     "r": [
+      0,
+      408,
+      390,
+      24
+     ],
+     "c": "mono"
+    },
+    {
+     "p": 1,
+     "t": "SECTION",
+     "s": 10,
+     "r": [
+      0,
+      448,
+      390,
+      262
+     ],
+     "c": "card"
+    },
+    {
+     "p": 15,
+     "t": "DIV",
+     "s": 10,
+     "r": [
+      17,
+      465,
+      356,
+      114
+     ],
+     "c": "card"
+    },
+    {
+     "p": 15,
+     "t": "DIV",
+     "s": 10,
+     "r": [
+      17,
+      579,
+      356,
+      114
+     ],
+     "c": "card"
+    }
+   ],
+   "texts": [
+    {
+     "e": 3,
+     "x": "AI-powered writing",
+     "r": [
+      12,
+      7,
+      132.5,
+      18
+     ],
+     "open": [
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3
+     ],
+     "end": {
+      "r": [
+       12,
+       7,
+       132.5,
+       18
+      ],
+      "h": [
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3
+      ]
+     }
+    },
+    {
+     "e": 4,
+     "x": "Write today",
+     "r": [
+      0,
+      48,
+      279.671875,
+      127
+     ],
+     "open": [
+      4,
+      4,
+      5,
+      5,
+      5,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4
+     ],
+     "end": {
+      "r": [
+       0,
+       48,
+       279.671875,
+       127
+      ],
+      "h": [
+       4,
+       4,
+       5,
+       5,
+       5,
+       4,
+       4,
+       4,
+       4,
+       4,
+       4,
+       4,
+       4,
+       4,
+       4
+      ]
+     }
+    },
+    {
+     "e": 5,
+     "x": "faster",
+     "r": [
+      132.5,
+      48,
+      147.171875,
+      55
+     ],
+     "open": [
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5
+     ],
+     "end": {
+      "r": [
+       132.5,
+       48,
+       147.171875,
+       55
+      ],
+      "h": [
+       5,
+       5,
+       5,
+       5,
+       5,
+       5,
+       5,
+       5,
+       5,
+       5,
+       5,
+       5,
+       5,
+       5,
+       5
+      ]
+     }
+    },
+    {
+     "e": 6,
+     "x": "Start free",
+     "r": [
+      20,
+      207,
+      65.8125,
+      18
+     ],
+     "open": [
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6
+     ],
+     "end": {
+      "r": [
+       20,
+       207,
+       65.8125,
+       18
+      ],
+      "h": [
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6
+      ]
+     }
+    },
+    {
+     "e": 7,
+     "x": "one",
+     "r": [
+      110.265625,
+      207,
+      26.703125,
+      18
+     ],
+     "open": [
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7
+     ],
+     "end": {
+      "r": [
+       110.265625,
+       207,
+       26.703125,
+       18
+      ],
+      "h": [
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7
+      ]
+     }
+    },
+    {
+     "e": 8,
+     "x": "two",
+     "r": [
+      141.421875,
+      207,
+      24.90625,
+      18
+     ],
+     "open": [
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8
+     ],
+     "end": {
+      "r": [
+       141.421875,
+       207,
+       24.90625,
+       18
+      ],
+      "h": [
+       8,
+       8,
+       8,
+       8,
+       8,
+       8,
+       8,
+       8,
+       8,
+       8,
+       8,
+       8,
+       8,
+       8,
+       8
+      ]
+     }
+    },
+    {
+     "e": 9,
+     "x": "a",
+     "r": [
+      0,
+      243,
+      8.90625,
+      18
+     ],
+     "open": [
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9
+     ],
+     "end": {
+      "r": [
+       0,
+       243,
+       8.90625,
+       18
+      ],
+      "h": [
+       9,
+       9,
+       9,
+       9,
+       9,
+       9,
+       9,
+       9,
+       9,
+       9,
+       9,
+       9,
+       9,
+       9,
+       9
+      ]
+     }
+    },
+    {
+     "e": 10,
+     "x": "b",
+     "r": [
+      0,
+      267,
+      8.90625,
+      18
+     ],
+     "open": [
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10
+     ],
+     "end": {
+      "r": [
+       0,
+       267,
+       8.90625,
+       18
+      ],
+      "h": [
+       10,
+       10,
+       10,
+       10,
+       10,
+       10,
+       10,
+       10,
+       10,
+       10,
+       10,
+       10,
+       10,
+       10,
+       10
+      ]
+     }
+    },
+    {
+     "e": 11,
+     "x": "c",
+     "r": [
+      0,
+      291,
+      8,
+      18
+     ],
+     "open": [
+      11,
+      11,
+      11,
+      11,
+      11,
+      11,
+      11,
+      11,
+      11,
+      11,
+      11,
+      11,
+      11,
+      11,
+      11
+     ],
+     "end": {
+      "r": [
+       0,
+       291,
+       8,
+       18
+      ],
+      "h": [
+       11,
+       11,
+       11,
+       11,
+       11,
+       11,
+       11,
+       11,
+       11,
+       11,
+       11,
+       11,
+       11,
+       11,
+       11
+      ]
+     }
+    },
+    {
+     "e": 12,
+     "x": "Built for teams who ship.",
+     "r": [
+      0,
+      330,
+      240.828125,
+      19
+     ],
+     "open": [
+      12,
+      12,
+      12,
+      12,
+      12,
+      12,
+      12,
+      12,
+      12,
+      12,
+      12,
+      12,
+      12,
+      12,
+      12
+     ],
+     "end": {
+      "r": [
+       0,
+       330,
+       240.828125,
+       19
+      ],
+      "h": [
+       12,
+       12,
+       12,
+       12,
+       12,
+       12,
+       12,
+       12,
+       12,
+       12,
+       12,
+       12,
+       12,
+       12,
+       12
+      ]
+     }
+    },
+    {
+     "e": 13,
+     "x": "Every word in its place.",
+     "r": [
+      0,
+      370,
+      231.1875,
+      19
+     ],
+     "open": [
+      13,
+      13,
+      13,
+      13,
+      13,
+      13,
+      13,
+      13,
+      13,
+      13,
+      13,
+      13,
+      13,
+      13,
+      13
+     ],
+     "end": {
+      "r": [
+       0,
+       370,
+       231.1875,
+       19
+      ],
+      "h": [
+       13,
+       13,
+       13,
+       13,
+       13,
+       13,
+       13,
+       13,
+       13,
+       13,
+       13,
+       13,
+       13,
+       13,
+       13
+      ]
+     }
+    },
+    {
+     "e": 14,
+     "x": "Write once, publish anywhere.",
+     "r": [
+      0,
+      410,
+      279.359375,
+      19
+     ],
+     "open": [
+      14,
+      14,
+      14,
+      14,
+      14,
+      14,
+      14,
+      14,
+      14,
+      14,
+      14,
+      14,
+      14,
+      14,
+      14
+     ],
+     "end": {
+      "r": [
+       0,
+       410,
+       279.359375,
+       19
+      ],
+      "h": [
+       14,
+       14,
+       14,
+       14,
+       14,
+       14,
+       14,
+       14,
+       14,
+       14,
+       14,
+       14,
+       14,
+       14,
+       14
+      ]
+     }
+    },
+    {
+     "e": 16,
+     "x": "Plan one",
+     "r": [
+      34,
+      485,
+      63.171875,
+      18
+     ],
+     "open": [
+      16,
+      16,
+      16,
+      16,
+      16,
+      16,
+      16,
+      16,
+      16,
+      16,
+      16,
+      16,
+      16,
+      16,
+      16
+     ],
+     "end": {
+      "r": [
+       34,
+       485,
+       63.171875,
+       18
+      ],
+      "h": [
+       16,
+       16,
+       16,
+       16,
+       16,
+       16,
+       16,
+       16,
+       16,
+       16,
+       16,
+       16,
+       16,
+       16,
+       16
+      ]
+     }
+    },
+    {
+     "e": 17,
+     "x": "Plan two",
+     "r": [
+      34,
+      599,
+      61.375,
+      18
+     ],
+     "open": [
+      17,
+      17,
+      17,
+      17,
+      17,
+      17,
+      17,
+      17,
+      17,
+      17,
+      17,
+      17,
+      17,
+      17,
+      17
+     ],
+     "end": {
+      "r": [
+       34,
+       599,
+       61.375,
+       18
+      ],
+      "h": [
+       17,
+       17,
+       17,
+       17,
+       17,
+       17,
+       17,
+       17,
+       17,
+       17,
+       17,
+       17,
+       17,
+       17,
+       17
+      ]
+     }
+    }
+   ],
+   "chains": {
+    "open": {},
+    "end": {}
+   }
+  },
+  "output": {
+   "findings": [
+    {
+     "rule": "RX-AS-05",
+     "level": "warn",
+     "selector": "div.wash > a.cta",
+     "message": "3 elements glow (a coloured shadow around them, not below): div.wash > a.cta, div.wash > span.glow, div.wash > span.glow; a glow marks the one element that needs attention, so keep it on one or none",
+     "once": "glow"
+    },
+    {
+     "rule": "RX-AS-05",
+     "level": "warn",
+     "selector": "nav.glass",
+     "message": "3 layers blur what is behind them: nav.glass, div.glass, div.glass; glass earns its place on the one surface that must show what is under it, and its text keeps contrast",
+     "once": "glass"
+    },
+    {
+     "rule": "RX-UI-10",
+     "level": "warn",
+     "selector": "div.wash",
+     "message": "a blue-to-purple gradient behind a large area: it carries no meaning on its own; take colour from the brand's roles, or keep it only when the direction chose it",
+     "once": "wash"
+    },
+    {
+     "rule": "RX-UI-26",
+     "level": "warn",
+     "selector": "page",
+     "message": "a near-black page with a neon accent (rgb 57, 255, 20) and glow: the look an AI product gets by default; keep it only when the direction chose it over two others",
+     "once": "neon"
+    },
+    {
+     "rule": "RX-AS-05",
+     "level": "warn",
+     "selector": "div.wash > span.pill",
+     "message": "a pill above the heading (\"AI-powered writing\") with no status in it: say something the heading does not (a version, a date, beta), or cut it",
+     "once": "pill"
+    },
+    {
+     "rule": "RX-UI-10",
+     "level": "warn",
+     "selector": "p.mono",
+     "message": "3 pieces of prose are set in monospace (\"Built for teams who ship.\"): keep monospace for code, IDs, and aligned figures",
+     "once": "mono"
+    },
+    {
+     "rule": "RX-UI-10",
+     "level": "warn",
+     "selector": "div.wash > h1 > em",
+     "message": "an italic serif word inside the heading (\"faster\"): a common generated accent; choose type for the product's voice, and keep it only when the direction names it",
+     "once": "serif"
+    },
+    {
+     "rule": "RX-UI-01",
+     "level": "warn",
+     "selector": "section.card",
+     "message": "cards sit inside a card (one box, the first holds 2): one container per real group; separate inside it with spacing or a divider",
+     "once": "cards"
+    }
+   ],
+   "ignored": []
+  }
+ },
+ {
+  "input": {
+   "vw": 1280,
+   "vh": 900,
+   "scrollWidth": 1280,
+   "scrollingElement": 0,
+   "top": 2,
+   "styles": [
+    {
+     "color": "rgb(0, 0, 0)",
+     "fontFamily": "Times"
+    },
+    {
+     "backgroundColor": "rgb(5, 6, 10)",
+     "color": "rgb(238, 238, 238)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "backgroundImage": "linear-gradient(135deg, rgb(59, 130, 246), rgb(168, 85, 247))",
+     "color": "rgb(238, 238, 238)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "display": "inline-block",
+     "backgroundColor": "rgb(34, 34, 34)",
+     "borderTopLeftRadius": 999,
+     "color": "rgb(238, 238, 238)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "fontSize": 48,
+     "fontWeight": 700,
+     "color": "rgb(238, 238, 238)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "display": "inline",
+     "fontStyle": "italic",
+     "fontSize": 48,
+     "fontWeight": 700,
+     "color": "rgb(238, 238, 238)",
+     "fontFamily": "Georgia, serif"
+    },
+    {
+     "display": "inline-block",
+     "backgroundColor": "rgb(57, 255, 20)",
+     "boxShadow": "rgba(168, 85, 247, 0.7) 0px 0px 24px 0px",
+     "color": "rgb(0, 0, 0)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "display": "inline",
+     "boxShadow": "rgba(168, 85, 247, 0.7) 0px 0px 24px 0px",
+     "color": "rgb(238, 238, 238)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "backdropFilter": "blur(12px)",
+     "color": "rgb(238, 238, 238)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "color": "rgb(238, 238, 238)",
+     "fontFamily": "Menlo, monospace"
+    },
+    {
+     "borderTopLeftRadius": 12,
+     "borderTopWidth": 1,
+     "color": "rgb(238, 238, 238)",
+     "borderTopColor": "rgb(51, 51, 51)",
+     "fontFamily": "sans-serif"
+    }
+   ],
+   "els": [
+    {
+     "p": null,
+     "t": "HTML",
+     "s": 0,
+     "r": [
+      0,
+      0,
+      1280,
+      710
+     ]
+    },
+    {
+     "p": 0,
+     "t": "BODY",
+     "s": 1,
+     "r": [
+      0,
+      0,
+      1280,
+      710
+     ]
+    },
+    {
+     "p": 1,
+     "t": "DIV",
+     "s": 2,
+     "r": [
+      0,
+      0,
+      1280,
+      240
+     ],
+     "c": "wash"
+    },
+    {
+     "p": 2,
+     "t": "SPAN",
+     "s": 3,
+     "r": [
+      0,
+      0,
+      156.5,
+      32
+     ],
+     "c": "pill",
+     "pt": "AI-powered writing"
+    },
+    {
+     "p": 2,
+     "t": "H1",
+     "s": 4,
+     "r": [
+      0,
+      40,
+      1280,
+      72
+     ]
+    },
+    {
+     "p": 4,
+     "t": "EM",
+     "s": 5,
+     "r": [
+      132.5,
+      48,
+      147.171875,
+      55
+     ],
+     "it": "faster"
+    },
+    {
+     "p": 2,
+     "t": "A",
+     "s": 6,
+     "r": [
+      0,
+      120,
+      105.8125,
+      48
+     ],
+     "c": "cta",
+     "ctl": 1,
+     "nm": "Start free"
+    },
+    {
+     "p": 2,
+     "t": "SPAN",
+     "s": 7,
+     "r": [
+      110.265625,
+      135,
+      26.703125,
+      18
+     ],
+     "c": "glow"
+    },
+    {
+     "p": 2,
+     "t": "SPAN",
+     "s": 7,
+     "r": [
+      141.421875,
+      135,
+      24.90625,
+      18
+     ],
+     "c": "glow"
+    },
+    {
+     "p": 1,
+     "t": "NAV",
+     "s": 8,
+     "r": [
+      0,
+      240,
+      1280,
+      24
+     ],
+     "c": "glass"
+    },
+    {
+     "p": 1,
+     "t": "DIV",
+     "s": 8,
+     "r": [
+      0,
+      264,
+      1280,
+      24
+     ],
+     "c": "glass"
+    },
+    {
+     "p": 1,
+     "t": "DIV",
+     "s": 8,
+     "r": [
+      0,
+      288,
+      1280,
+      24
+     ],
+     "c": "glass"
+    },
+    {
+     "p": 1,
+     "t": "P",
+     "s": 9,
+     "r": [
+      0,
+      328,
+      1280,
+      24
+     ],
+     "c": "mono"
+    },
+    {
+     "p": 1,
+     "t": "P",
+     "s": 9,
+     "r": [
+      0,
+      368,
+      1280,
+      24
+     ],
+     "c": "mono"
+    },
+    {
+     "p": 1,
+     "t": "P",
+     "s": 9,
+     "r": [
+      0,
+      408,
+      1280,
+      24
+     ],
+     "c": "mono"
+    },
+    {
+     "p": 1,
+     "t": "SECTION",
+     "s": 10,
+     "r": [
+      0,
+      448,
+      1280,
+      262
+     ],
+     "c": "card"
+    },
+    {
+     "p": 15,
+     "t": "DIV",
+     "s": 10,
+     "r": [
+      17,
+      465,
+      1246,
+      114
+     ],
+     "c": "card"
+    },
+    {
+     "p": 15,
+     "t": "DIV",
+     "s": 10,
+     "r": [
+      17,
+      579,
+      1246,
+      114
+     ],
+     "c": "card"
+    }
+   ],
+   "texts": [
+    {
+     "e": 3,
+     "x": "AI-powered writing",
+     "r": [
+      12,
+      7,
+      132.5,
+      18
+     ],
+     "open": [
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3
+     ],
+     "end": {
+      "r": [
+       12,
+       7,
+       132.5,
+       18
+      ],
+      "h": [
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3
+      ]
+     }
+    },
+    {
+     "e": 4,
+     "x": "Write today",
+     "r": [
+      0,
+      48,
+      421.03125,
+      55
+     ],
+     "open": [
+      4,
+      4,
+      5,
+      4,
+      4,
+      4,
+      4,
+      5,
+      4,
+      4,
+      4,
+      4,
+      5,
+      4,
+      4
+     ],
+     "end": {
+      "r": [
+       0,
+       48,
+       421.03125,
+       55
+      ],
+      "h": [
+       4,
+       4,
+       5,
+       4,
+       4,
+       4,
+       4,
+       5,
+       4,
+       4,
+       4,
+       4,
+       5,
+       4,
+       4
+      ]
+     }
+    },
+    {
+     "e": 5,
+     "x": "faster",
+     "r": [
+      132.5,
+      48,
+      147.171875,
+      55
+     ],
+     "open": [
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5
+     ],
+     "end": {
+      "r": [
+       132.5,
+       48,
+       147.171875,
+       55
+      ],
+      "h": [
+       5,
+       5,
+       5,
+       5,
+       5,
+       5,
+       5,
+       5,
+       5,
+       5,
+       5,
+       5,
+       5,
+       5,
+       5
+      ]
+     }
+    },
+    {
+     "e": 6,
+     "x": "Start free",
+     "r": [
+      20,
+      135,
+      65.8125,
+      18
+     ],
+     "open": [
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6
+     ],
+     "end": {
+      "r": [
+       20,
+       135,
+       65.8125,
+       18
+      ],
+      "h": [
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6
+      ]
+     }
+    },
+    {
+     "e": 7,
+     "x": "one",
+     "r": [
+      110.265625,
+      135,
+      26.703125,
+      18
+     ],
+     "open": [
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7
+     ],
+     "end": {
+      "r": [
+       110.265625,
+       135,
+       26.703125,
+       18
+      ],
+      "h": [
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7
+      ]
+     }
+    },
+    {
+     "e": 8,
+     "x": "two",
+     "r": [
+      141.421875,
+      135,
+      24.90625,
+      18
+     ],
+     "open": [
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8
+     ],
+     "end": {
+      "r": [
+       141.421875,
+       135,
+       24.90625,
+       18
+      ],
+      "h": [
+       8,
+       8,
+       8,
+       8,
+       8,
+       8,
+       8,
+       8,
+       8,
+       8,
+       8,
+       8,
+       8,
+       8,
+       8
+      ]
+     }
+    },
+    {
+     "e": 9,
+     "x": "a",
+     "r": [
+      0,
+      243,
+      8.90625,
+      18
+     ],
+     "open": [
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9
+     ],
+     "end": {
+      "r": [
+       0,
+       243,
+       8.90625,
+       18
+      ],
+      "h": [
+       9,
+       9,
+       9,
+       9,
+       9,
+       9,
+       9,
+       9,
+       9,
+       9,
+       9,
+       9,
+       9,
+       9,
+       9
+      ]
+     }
+    },
+    {
+     "e": 10,
+     "x": "b",
+     "r": [
+      0,
+      267,
+      8.90625,
+      18
+     ],
+     "open": [
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10
+     ],
+     "end": {
+      "r": [
+       0,
+       267,
+       8.90625,
+       18
+      ],
+      "h": [
+       10,
+       10,
+       10,
+       10,
+       10,
+       10,
+       10,
+       10,
+       10,
+       10,
+       10,
+       10,
+       10,
+       10,
+       10
+      ]
+     }
+    },
+    {
+     "e": 11,
+     "x": "c",
+     "r": [
+      0,
+      291,
+      8,
+      18
+     ],
+     "open": [
+      11,
+      11,
+      11,
+      11,
+      11,
+      11,
+      11,
+      11,
+      11,
+      11,
+      11,
+      11,
+      11,
+      11,
+      11
+     ],
+     "end": {
+      "r": [
+       0,
+       291,
+       8,
+       18
+      ],
+      "h": [
+       11,
+       11,
+       11,
+       11,
+       11,
+       11,
+       11,
+       11,
+       11,
+       11,
+       11,
+       11,
+       11,
+       11,
+       11
+      ]
+     }
+    },
+    {
+     "e": 12,
+     "x": "Built for teams who ship.",
+     "r": [
+      0,
+      330,
+      240.828125,
+      19
+     ],
+     "open": [
+      12,
+      12,
+      12,
+      12,
+      12,
+      12,
+      12,
+      12,
+      12,
+      12,
+      12,
+      12,
+      12,
+      12,
+      12
+     ],
+     "end": {
+      "r": [
+       0,
+       330,
+       240.828125,
+       19
+      ],
+      "h": [
+       12,
+       12,
+       12,
+       12,
+       12,
+       12,
+       12,
+       12,
+       12,
+       12,
+       12,
+       12,
+       12,
+       12,
+       12
+      ]
+     }
+    },
+    {
+     "e": 13,
+     "x": "Every word in its place.",
+     "r": [
+      0,
+      370,
+      231.1875,
+      19
+     ],
+     "open": [
+      13,
+      13,
+      13,
+      13,
+      13,
+      13,
+      13,
+      13,
+      13,
+      13,
+      13,
+      13,
+      13,
+      13,
+      13
+     ],
+     "end": {
+      "r": [
+       0,
+       370,
+       231.1875,
+       19
+      ],
+      "h": [
+       13,
+       13,
+       13,
+       13,
+       13,
+       13,
+       13,
+       13,
+       13,
+       13,
+       13,
+       13,
+       13,
+       13,
+       13
+      ]
+     }
+    },
+    {
+     "e": 14,
+     "x": "Write once, publish anywhere.",
+     "r": [
+      0,
+      410,
+      279.359375,
+      19
+     ],
+     "open": [
+      14,
+      14,
+      14,
+      14,
+      14,
+      14,
+      14,
+      14,
+      14,
+      14,
+      14,
+      14,
+      14,
+      14,
+      14
+     ],
+     "end": {
+      "r": [
+       0,
+       410,
+       279.359375,
+       19
+      ],
+      "h": [
+       14,
+       14,
+       14,
+       14,
+       14,
+       14,
+       14,
+       14,
+       14,
+       14,
+       14,
+       14,
+       14,
+       14,
+       14
+      ]
+     }
+    },
+    {
+     "e": 16,
+     "x": "Plan one",
+     "r": [
+      34,
+      485,
+      63.171875,
+      18
+     ],
+     "open": [
+      16,
+      16,
+      16,
+      16,
+      16,
+      16,
+      16,
+      16,
+      16,
+      16,
+      16,
+      16,
+      16,
+      16,
+      16
+     ],
+     "end": {
+      "r": [
+       34,
+       485,
+       63.171875,
+       18
+      ],
+      "h": [
+       16,
+       16,
+       16,
+       16,
+       16,
+       16,
+       16,
+       16,
+       16,
+       16,
+       16,
+       16,
+       16,
+       16,
+       16
+      ]
+     }
+    },
+    {
+     "e": 17,
+     "x": "Plan two",
+     "r": [
+      34,
+      599,
+      61.375,
+      18
+     ],
+     "open": [
+      17,
+      17,
+      17,
+      17,
+      17,
+      17,
+      17,
+      17,
+      17,
+      17,
+      17,
+      17,
+      17,
+      17,
+      17
+     ],
+     "end": {
+      "r": [
+       34,
+       599,
+       61.375,
+       18
+      ],
+      "h": [
+       17,
+       17,
+       17,
+       17,
+       17,
+       17,
+       17,
+       17,
+       17,
+       17,
+       17,
+       17,
+       17,
+       17,
+       17
+      ]
+     }
+    }
+   ],
+   "chains": {
+    "open": {},
+    "end": {}
+   }
+  },
+  "output": {
+   "findings": [
+    {
+     "rule": "RX-AS-05",
+     "level": "warn",
+     "selector": "div.wash > a.cta",
+     "message": "3 elements glow (a coloured shadow around them, not below): div.wash > a.cta, div.wash > span.glow, div.wash > span.glow; a glow marks the one element that needs attention, so keep it on one or none",
+     "once": "glow"
+    },
+    {
+     "rule": "RX-AS-05",
+     "level": "warn",
+     "selector": "nav.glass",
+     "message": "3 layers blur what is behind them: nav.glass, div.glass, div.glass; glass earns its place on the one surface that must show what is under it, and its text keeps contrast",
+     "once": "glass"
+    },
+    {
+     "rule": "RX-UI-10",
+     "level": "warn",
+     "selector": "div.wash",
+     "message": "a blue-to-purple gradient behind a large area: it carries no meaning on its own; take colour from the brand's roles, or keep it only when the direction chose it",
+     "once": "wash"
+    },
+    {
+     "rule": "RX-UI-26",
+     "level": "warn",
+     "selector": "page",
+     "message": "a near-black page with a neon accent (rgb 57, 255, 20) and glow: the look an AI product gets by default; keep it only when the direction chose it over two others",
+     "once": "neon"
+    },
+    {
+     "rule": "RX-AS-05",
+     "level": "warn",
+     "selector": "div.wash > span.pill",
+     "message": "a pill above the heading (\"AI-powered writing\") with no status in it: say something the heading does not (a version, a date, beta), or cut it",
+     "once": "pill"
+    },
+    {
+     "rule": "RX-UI-10",
+     "level": "warn",
+     "selector": "p.mono",
+     "message": "3 pieces of prose are set in monospace (\"Built for teams who ship.\"): keep monospace for code, IDs, and aligned figures",
+     "once": "mono"
+    },
+    {
+     "rule": "RX-UI-10",
+     "level": "warn",
+     "selector": "div.wash > h1 > em",
+     "message": "an italic serif word inside the heading (\"faster\"): a common generated accent; choose type for the product's voice, and keep it only when the direction names it",
+     "once": "serif"
+    },
+    {
+     "rule": "RX-UI-01",
+     "level": "warn",
+     "selector": "section.card",
+     "message": "cards sit inside a card (one box, the first holds 2): one container per real group; separate inside it with spacing or a divider",
+     "once": "cards"
+    }
+   ],
+   "ignored": []
+  }
+ },
+ {
+  "input": {
+   "vw": 390,
+   "vh": 844,
+   "scrollWidth": 390,
+   "scrollingElement": 0,
+   "top": 1,
+   "styles": [
+    {
+     "color": "rgb(0, 0, 0)",
+     "fontFamily": "Times"
+    },
+    {
+     "backgroundColor": "rgb(250, 250, 250)",
+     "color": "rgb(17, 17, 17)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "display": "inline-block",
+     "backgroundColor": "rgb(34, 34, 34)",
+     "borderTopLeftRadius": 999,
+     "color": "rgb(17, 17, 17)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "fontSize": 48,
+     "fontWeight": 700,
+     "color": "rgb(17, 17, 17)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "display": "inline-block",
+     "backgroundColor": "rgb(57, 255, 20)",
+     "boxShadow": "rgba(168, 85, 247, 0.7) 0px 0px 24px 0px",
+     "color": "rgb(0, 0, 0)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "backdropFilter": "blur(12px)",
+     "color": "rgb(17, 17, 17)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "color": "rgb(17, 17, 17)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "display": "inline",
+     "color": "rgb(17, 17, 17)",
+     "fontFamily": "Menlo, monospace"
+    },
+    {
+     "borderTopLeftRadius": 12,
+     "borderTopWidth": 1,
+     "color": "rgb(17, 17, 17)",
+     "borderTopColor": "rgb(51, 51, 51)",
+     "fontFamily": "sans-serif"
+    }
+   ],
+   "els": [
+    {
+     "p": null,
+     "t": "HTML",
+     "s": 0,
+     "r": [
+      0,
+      0,
+      390,
+      468
+     ]
+    },
+    {
+     "p": 0,
+     "t": "BODY",
+     "s": 1,
+     "r": [
+      0,
+      0,
+      390,
+      468
+     ]
+    },
+    {
+     "p": 1,
+     "t": "SPAN",
+     "s": 2,
+     "r": [
+      0,
+      0,
+      56.921875,
+      32
+     ],
+     "c": "pill",
+     "pt": "Beta"
+    },
+    {
+     "p": 1,
+     "t": "H1",
+     "s": 3,
+     "r": [
+      0,
+      40,
+      390,
+      144
+     ]
+    },
+    {
+     "p": 1,
+     "t": "A",
+     "s": 4,
+     "r": [
+      0,
+      192,
+      105.8125,
+      48
+     ],
+     "c": "cta",
+     "ctl": 1,
+     "nm": "Start free"
+    },
+    {
+     "p": 1,
+     "t": "NAV",
+     "s": 5,
+     "r": [
+      0,
+      240,
+      390,
+      24
+     ],
+     "c": "glass"
+    },
+    {
+     "p": 1,
+     "t": "P",
+     "s": 6,
+     "r": [
+      0,
+      280,
+      390,
+      24
+     ]
+    },
+    {
+     "p": 6,
+     "t": "CODE",
+     "s": 7,
+     "r": [
+      33.796875,
+      282,
+      125.234375,
+      19
+     ],
+     "c": "mono"
+    },
+    {
+     "p": 1,
+     "t": "SECTION",
+     "s": 8,
+     "r": [
+      0,
+      320,
+      390,
+      148
+     ],
+     "c": "card"
+    },
+    {
+     "p": 8,
+     "t": "DIV",
+     "s": 8,
+     "r": [
+      17,
+      337,
+      356,
+      114
+     ],
+     "c": "card"
+    }
+   ],
+   "texts": [
+    {
+     "e": 2,
+     "x": "Beta",
+     "r": [
+      12,
+      7,
+      32.921875,
+      18
+     ],
+     "open": [
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2
+     ],
+     "end": {
+      "r": [
+       12,
+       7,
+       32.921875,
+       18
+      ],
+      "h": [
+       2,
+       2,
+       2,
+       2,
+       2,
+       2,
+       2,
+       2,
+       2,
+       2,
+       2,
+       2,
+       2,
+       2,
+       2
+      ]
+     }
+    },
+    {
+     "e": 3,
+     "x": "Write faster today",
+     "r": [
+      0,
+      48,
+      263.234375,
+      127
+     ],
+     "open": [
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3
+     ],
+     "end": {
+      "r": [
+       0,
+       48,
+       263.234375,
+       127
+      ],
+      "h": [
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3
+      ]
+     }
+    },
+    {
+     "e": 4,
+     "x": "Start free",
+     "r": [
+      20,
+      207,
+      65.8125,
+      18
+     ],
+     "open": [
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4
+     ],
+     "end": {
+      "r": [
+       20,
+       207,
+       65.8125,
+       18
+      ],
+      "h": [
+       4,
+       4,
+       4,
+       4,
+       4,
+       4,
+       4,
+       4,
+       4,
+       4,
+       4,
+       4,
+       4,
+       4,
+       4
+      ]
+     }
+    },
+    {
+     "e": 5,
+     "x": "a",
+     "r": [
+      0,
+      243,
+      8.90625,
+      18
+     ],
+     "open": [
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5
+     ],
+     "end": {
+      "r": [
+       0,
+       243,
+       8.90625,
+       18
+      ],
+      "h": [
+       5,
+       5,
+       5,
+       5,
+       5,
+       5,
+       5,
+       5,
+       5,
+       5,
+       5,
+       5,
+       5,
+       5,
+       5
+      ]
+     }
+    },
+    {
+     "e": 6,
+     "x": "Run to check.",
+     "r": [
+      0,
+      282,
+      227.515625,
+      19
+     ],
+     "open": [
+      6,
+      7,
+      7,
+      6,
+      6,
+      6,
+      7,
+      7,
+      6,
+      6,
+      6,
+      7,
+      7,
+      6,
+      6
+     ],
+     "end": {
+      "r": [
+       0,
+       282,
+       227.515625,
+       19
+      ],
+      "h": [
+       6,
+       7,
+       7,
+       6,
+       6,
+       6,
+       7,
+       7,
+       6,
+       6,
+       6,
+       7,
+       7,
+       6,
+       6
+      ]
+     }
+    },
+    {
+     "e": 7,
+     "x": "npx ryux scan",
+     "r": [
+      33.796875,
+      282,
+      125.234375,
+      19
+     ],
+     "open": [
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7
+     ],
+     "end": {
+      "r": [
+       33.796875,
+       282,
+       125.234375,
+       19
+      ],
+      "h": [
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7
+      ]
+     }
+    },
+    {
+     "e": 9,
+     "x": "One framed shot",
+     "r": [
+      34,
+      357,
+      119.171875,
+      18
+     ],
+     "open": [
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9
+     ],
+     "end": {
+      "r": [
+       34,
+       357,
+       119.171875,
+       18
+      ],
+      "h": [
+       9,
+       9,
+       9,
+       9,
+       9,
+       9,
+       9,
+       9,
+       9,
+       9,
+       9,
+       9,
+       9,
+       9,
+       9
+      ]
+     }
+    }
+   ],
+   "chains": {
+    "open": {},
+    "end": {}
+   },
+   "answers": {
+    "under": {
+     "0": 1
+    },
+    "grow": {}
+   }
+  },
+  "output": {
+   "findings": [
+    {
+     "rule": "RX-A11Y-01",
+     "level": "fail",
+     "selector": "span.pill",
+     "message": "\"Beta\": contrast 1.19:1 (#111111 on #222222), needs 4.5:1"
+    }
+   ],
+   "ignored": []
+  }
+ },
+ {
+  "input": {
+   "vw": 1280,
+   "vh": 900,
+   "scrollWidth": 1280,
+   "scrollingElement": 0,
+   "top": 1,
+   "styles": [
+    {
+     "color": "rgb(0, 0, 0)",
+     "fontFamily": "Times"
+    },
+    {
+     "backgroundColor": "rgb(250, 250, 250)",
+     "color": "rgb(17, 17, 17)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "display": "inline-block",
+     "backgroundColor": "rgb(34, 34, 34)",
+     "borderTopLeftRadius": 999,
+     "color": "rgb(17, 17, 17)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "fontSize": 48,
+     "fontWeight": 700,
+     "color": "rgb(17, 17, 17)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "display": "inline-block",
+     "backgroundColor": "rgb(57, 255, 20)",
+     "boxShadow": "rgba(168, 85, 247, 0.7) 0px 0px 24px 0px",
+     "color": "rgb(0, 0, 0)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "backdropFilter": "blur(12px)",
+     "color": "rgb(17, 17, 17)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "color": "rgb(17, 17, 17)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "display": "inline",
+     "color": "rgb(17, 17, 17)",
+     "fontFamily": "Menlo, monospace"
+    },
+    {
+     "borderTopLeftRadius": 12,
+     "borderTopWidth": 1,
+     "color": "rgb(17, 17, 17)",
+     "borderTopColor": "rgb(51, 51, 51)",
+     "fontFamily": "sans-serif"
+    }
+   ],
+   "els": [
+    {
+     "p": null,
+     "t": "HTML",
+     "s": 0,
+     "r": [
+      0,
+      0,
+      1280,
+      396
+     ]
+    },
+    {
+     "p": 0,
+     "t": "BODY",
+     "s": 1,
+     "r": [
+      0,
+      0,
+      1280,
+      396
+     ]
+    },
+    {
+     "p": 1,
+     "t": "SPAN",
+     "s": 2,
+     "r": [
+      0,
+      0,
+      56.921875,
+      32
+     ],
+     "c": "pill",
+     "pt": "Beta"
+    },
+    {
+     "p": 1,
+     "t": "H1",
+     "s": 3,
+     "r": [
+      0,
+      40,
+      1280,
+      72
+     ]
+    },
+    {
+     "p": 1,
+     "t": "A",
+     "s": 4,
+     "r": [
+      0,
+      120,
+      105.8125,
+      48
+     ],
+     "c": "cta",
+     "ctl": 1,
+     "nm": "Start free"
+    },
+    {
+     "p": 1,
+     "t": "NAV",
+     "s": 5,
+     "r": [
+      0,
+      168,
+      1280,
+      24
+     ],
+     "c": "glass"
+    },
+    {
+     "p": 1,
+     "t": "P",
+     "s": 6,
+     "r": [
+      0,
+      208,
+      1280,
+      24
+     ]
+    },
+    {
+     "p": 6,
+     "t": "CODE",
+     "s": 7,
+     "r": [
+      33.796875,
+      210,
+      125.234375,
+      19
+     ],
+     "c": "mono"
+    },
+    {
+     "p": 1,
+     "t": "SECTION",
+     "s": 8,
+     "r": [
+      0,
+      248,
+      1280,
+      148
+     ],
+     "c": "card"
+    },
+    {
+     "p": 8,
+     "t": "DIV",
+     "s": 8,
+     "r": [
+      17,
+      265,
+      1246,
+      114
+     ],
+     "c": "card"
+    }
+   ],
+   "texts": [
+    {
+     "e": 2,
+     "x": "Beta",
+     "r": [
+      12,
+      7,
+      32.921875,
+      18
+     ],
+     "open": [
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2
+     ],
+     "end": {
+      "r": [
+       12,
+       7,
+       32.921875,
+       18
+      ],
+      "h": [
+       2,
+       2,
+       2,
+       2,
+       2,
+       2,
+       2,
+       2,
+       2,
+       2,
+       2,
+       2,
+       2,
+       2,
+       2
+      ]
+     }
+    },
+    {
+     "e": 3,
+     "x": "Write faster today",
+     "r": [
+      0,
+      48,
+      404.578125,
+      55
+     ],
+     "open": [
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3
+     ],
+     "end": {
+      "r": [
+       0,
+       48,
+       404.578125,
+       55
+      ],
+      "h": [
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3
+      ]
+     }
+    },
+    {
+     "e": 4,
+     "x": "Start free",
+     "r": [
+      20,
+      135,
+      65.8125,
+      18
+     ],
+     "open": [
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4
+     ],
+     "end": {
+      "r": [
+       20,
+       135,
+       65.8125,
+       18
+      ],
+      "h": [
+       4,
+       4,
+       4,
+       4,
+       4,
+       4,
+       4,
+       4,
+       4,
+       4,
+       4,
+       4,
+       4,
+       4,
+       4
+      ]
+     }
+    },
+    {
+     "e": 5,
+     "x": "a",
+     "r": [
+      0,
+      171,
+      8.90625,
+      18
+     ],
+     "open": [
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5
+     ],
+     "end": {
+      "r": [
+       0,
+       171,
+       8.90625,
+       18
+      ],
+      "h": [
+       5,
+       5,
+       5,
+       5,
+       5,
+       5,
+       5,
+       5,
+       5,
+       5,
+       5,
+       5,
+       5,
+       5,
+       5
+      ]
+     }
+    },
+    {
+     "e": 6,
+     "x": "Run to check.",
+     "r": [
+      0,
+      210,
+      227.515625,
+      19
+     ],
+     "open": [
+      6,
+      7,
+      7,
+      6,
+      6,
+      6,
+      7,
+      7,
+      6,
+      6,
+      6,
+      7,
+      7,
+      6,
+      6
+     ],
+     "end": {
+      "r": [
+       0,
+       210,
+       227.515625,
+       19
+      ],
+      "h": [
+       6,
+       7,
+       7,
+       6,
+       6,
+       6,
+       7,
+       7,
+       6,
+       6,
+       6,
+       7,
+       7,
+       6,
+       6
+      ]
+     }
+    },
+    {
+     "e": 7,
+     "x": "npx ryux scan",
+     "r": [
+      33.796875,
+      210,
+      125.234375,
+      19
+     ],
+     "open": [
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7
+     ],
+     "end": {
+      "r": [
+       33.796875,
+       210,
+       125.234375,
+       19
+      ],
+      "h": [
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7
+      ]
+     }
+    },
+    {
+     "e": 9,
+     "x": "One framed shot",
+     "r": [
+      34,
+      285,
+      119.171875,
+      18
+     ],
+     "open": [
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9
+     ],
+     "end": {
+      "r": [
+       34,
+       285,
+       119.171875,
+       18
+      ],
+      "h": [
+       9,
+       9,
+       9,
+       9,
+       9,
+       9,
+       9,
+       9,
+       9,
+       9,
+       9,
+       9,
+       9,
+       9,
+       9
+      ]
+     }
+    }
+   ],
+   "chains": {
+    "open": {},
+    "end": {}
+   },
+   "answers": {
+    "under": {
+     "0": 1
+    },
+    "grow": {}
+   }
+  },
+  "output": {
+   "findings": [
+    {
+     "rule": "RX-A11Y-01",
+     "level": "fail",
+     "selector": "span.pill",
+     "message": "\"Beta\": contrast 1.19:1 (#111111 on #222222), needs 4.5:1"
+    }
+   ],
+   "ignored": []
+  }
+ },
+ {
+  "input": {
+   "vw": 320,
+   "vh": 844,
+   "scrollWidth": 320,
+   "scrollingElement": 0,
+   "top": 2,
+   "styles": [
+    {
+     "color": "rgb(0, 0, 0)",
+     "fontFamily": "Times"
+    },
+    {
+     "backgroundColor": "rgb(255, 255, 255)",
+     "color": "rgb(34, 34, 34)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "position": "sticky",
+     "backgroundColor": "rgb(255, 255, 255)",
+     "color": "rgb(34, 34, 34)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "display": "inline",
+     "color": "rgb(34, 34, 34)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "fontSize": 10,
+     "color": "rgb(34, 34, 34)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "fontSize": 9.5,
+     "color": "rgb(34, 34, 34)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "color": "rgba(0, 0, 0, 0.3)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "backgroundColor": "rgba(0, 0, 255, 0.1)",
+     "color": "rgb(34, 34, 34)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "color": "rgb(153, 153, 170)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "fontSize": 20,
+     "fontWeight": 700,
+     "color": "rgb(153, 153, 153)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "color": "rgb(34, 34, 34)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "display": "inline-block",
+     "color": "rgb(0, 0, 238)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "display": "inline-block",
+     "overflow": "auto",
+     "overflowY": "auto",
+     "backgroundColor": "rgb(255, 255, 255)",
+     "fontSize": 14,
+     "borderTopWidth": 1,
+     "color": "rgb(0, 0, 0)",
+     "borderTopColor": "rgb(118, 118, 118)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "position": "relative",
+     "color": "rgb(34, 34, 34)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "display": "inline",
+     "fontWeight": 700,
+     "color": "rgb(34, 34, 34)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "position": "absolute",
+     "fontStyle": "italic",
+     "color": "rgb(34, 34, 34)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "color": "rgb(221, 221, 221)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "display": "inline-block",
+     "backgroundColor": "rgb(239, 239, 239)",
+     "fontSize": 13.3333,
+     "borderTopWidth": 2,
+     "color": "rgb(0, 0, 0)",
+     "fontFamily": "Arial"
+    }
+   ],
+   "els": [
+    {
+     "p": null,
+     "t": "HTML",
+     "s": 0,
+     "r": [
+      0,
+      0,
+      320,
+      1847.984375
+     ],
+     "sh": 1848,
+     "ch": 844
+    },
+    {
+     "p": 0,
+     "t": "BODY",
+     "s": 1,
+     "r": [
+      0,
+      0,
+      320,
+      1847.984375
+     ]
+    },
+    {
+     "p": 1,
+     "t": "HEADER",
+     "s": 2,
+     "r": [
+      0,
+      0,
+      320,
+      40
+     ]
+    },
+    {
+     "p": 2,
+     "t": "SPAN",
+     "s": 3,
+     "r": [
+      0,
+      2,
+      63.171875,
+      18
+     ]
+    },
+    {
+     "p": 1,
+     "t": "P",
+     "s": 4,
+     "r": [
+      0,
+      50,
+      320,
+      14
+     ],
+     "c": "tiny"
+    },
+    {
+     "p": 1,
+     "t": "P",
+     "s": 4,
+     "r": [
+      0,
+      74,
+      320,
+      14
+     ],
+     "c": "tiny"
+    },
+    {
+     "p": 1,
+     "t": "P",
+     "s": 5,
+     "r": [
+      0,
+      98,
+      320,
+      13.296875
+     ],
+     "c": "tinier"
+    },
+    {
+     "p": 1,
+     "t": "P",
+     "s": 6,
+     "r": [
+      0,
+      127.296875,
+      320,
+      22.390625
+     ],
+     "c": "faint"
+    },
+    {
+     "p": 1,
+     "t": "P",
+     "s": 6,
+     "r": [
+      0,
+      165.6875,
+      320,
+      22.390625
+     ],
+     "c": "faint"
+    },
+    {
+     "p": 1,
+     "t": "DIV",
+     "s": 7,
+     "r": [
+      0,
+      204.078125,
+      320,
+      67.171875
+     ],
+     "c": "tint"
+    },
+    {
+     "p": 9,
+     "t": "P",
+     "s": 8,
+     "r": [
+      0,
+      204.078125,
+      320,
+      67.171875
+     ]
+    },
+    {
+     "p": 1,
+     "t": "P",
+     "s": 9,
+     "r": [
+      0,
+      291.25,
+      320,
+      28
+     ],
+     "c": "big"
+    },
+    {
+     "p": 1,
+     "t": "DIV",
+     "s": 10,
+     "r": [
+      0,
+      339.25,
+      320,
+      22.390625
+     ],
+     "c": "row"
+    },
+    {
+     "p": 12,
+     "t": "A",
+     "s": 11,
+     "r": [
+      0,
+      339.25,
+      18,
+      18
+     ],
+     "sh": 22,
+     "ch": 18,
+     "ctl": 1,
+     "nm": "satu"
+    },
+    {
+     "p": 12,
+     "t": "A",
+     "s": 11,
+     "r": [
+      48,
+      339.25,
+      18,
+      18
+     ],
+     "sh": 22,
+     "ch": 18,
+     "ctl": 1,
+     "nm": "dua"
+    },
+    {
+     "p": 1,
+     "t": "DIV",
+     "s": 10,
+     "r": [
+      0,
+      361.640625,
+      320,
+      22.390625
+     ],
+     "c": "tight"
+    },
+    {
+     "p": 15,
+     "t": "A",
+     "s": 11,
+     "r": [
+      0,
+      361.640625,
+      18,
+      18
+     ],
+     "sh": 22,
+     "ch": 18,
+     "ctl": 1,
+     "nm": "x"
+    },
+    {
+     "p": 15,
+     "t": "A",
+     "s": 11,
+     "r": [
+      18,
+      361.640625,
+      18,
+      18
+     ],
+     "sh": 22,
+     "ch": 18,
+     "ctl": 1,
+     "nm": "y"
+    },
+    {
+     "p": 1,
+     "t": "LABEL",
+     "s": 3,
+     "r": [
+      0,
+      416.03125,
+      56.046875,
+      18
+     ]
+    },
+    {
+     "p": 1,
+     "t": "TEXTAREA",
+     "s": 12,
+     "r": [
+      56.046875,
+      384.03125,
+      206,
+      46
+     ],
+     "id": "n1",
+     "ctl": 1,
+     "nm": "textarea"
+    },
+    {
+     "p": 1,
+     "t": "TEXTAREA",
+     "s": 12,
+     "r": [
+      0,
+      436.421875,
+      206,
+      46
+     ],
+     "c": "grow",
+     "ctl": 1,
+     "nm": "Catatan tumbuh"
+    },
+    {
+     "p": 1,
+     "t": "TEXTAREA",
+     "s": 12,
+     "r": [
+      0,
+      488.8125,
+      206,
+      46
+     ],
+     "ctl": 1,
+     "nm": "tetap",
+     "ro": 1
+    },
+    {
+     "p": 1,
+     "t": "DIV",
+     "s": 13,
+     "r": [
+      0,
+      541.203125,
+      320,
+      30
+     ],
+     "c": "stack"
+    },
+    {
+     "p": 22,
+     "t": "B",
+     "s": 14,
+     "r": [
+      0,
+      543.203125,
+      150.28125,
+      18
+     ]
+    },
+    {
+     "p": 22,
+     "t": "I",
+     "s": 15,
+     "r": [
+      0,
+      541.203125,
+      141.4375,
+      22.390625
+     ]
+    },
+    {
+     "p": 1,
+     "t": "DIV",
+     "s": 10,
+     "r": [
+      0,
+      587.203125,
+      320,
+      60.78125
+     ],
+     "c": "panel",
+     "ig": 1
+    },
+    {
+     "p": 25,
+     "t": "P",
+     "s": 16,
+     "r": [
+      0,
+      587.203125,
+      320,
+      22.390625
+     ]
+    },
+    {
+     "p": 25,
+     "t": "BUTTON",
+     "s": 17,
+     "r": [
+      0,
+      634.59375,
+      16,
+      10
+     ],
+     "ctl": 1,
+     "nm": "button"
+    },
+    {
+     "p": 1,
+     "t": "DIV",
+     "s": 10,
+     "r": [
+      0,
+      647.984375,
+      320,
+      1200
+     ]
+    }
+   ],
+   "texts": [
+    {
+     "e": 3,
+     "x": "Pesanan",
+     "r": [
+      0,
+      2,
+      63.171875,
+      18
+     ],
+     "open": [
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3
+     ],
+     "end": {
+      "r": [
+       0,
+       2,
+       63.171875,
+       18
+      ],
+      "h": [
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3
+      ]
+     }
+    },
+    {
+     "e": 4,
+     "x": "Syarat berlaku untuk semua pesanan",
+     "r": [
+      0,
+      51,
+      165.671875,
+      12
+     ],
+     "open": [
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4
+     ]
+    },
+    {
+     "e": 5,
+     "x": "Harga sudah termasuk pajak",
+     "r": [
+      0,
+      75,
+      127.859375,
+      12
+     ],
+     "open": [
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5
+     ]
+    },
+    {
+     "e": 6,
+     "x": "v2",
+     "r": [
+      0,
+      99,
+      10.046875,
+      10
+     ],
+     "open": [
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6
+     ]
+    },
+    {
+     "e": 7,
+     "x": "Teks pudar satu",
+     "r": [
+      0,
+      129.296875,
+      112.953125,
+      18
+     ],
+     "open": [
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7
+     ]
+    },
+    {
+     "e": 8,
+     "x": "Teks pudar dua",
+     "r": [
+      0,
+      167.6875,
+      109.40625,
+      18
+     ],
+     "open": [
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8
+     ]
+    },
+    {
+     "e": 10,
+     "x": "Teks di atas latar berlapis yang sangat panjang sekali sampai harus dipotong di pesan",
+     "r": [
+      0,
+      206.078125,
+      285.53125,
+      62.78125
+     ],
+     "open": [
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10
+     ]
+    },
+    {
+     "e": 11,
+     "x": "Judul besar abu-abu",
+     "r": [
+      0,
+      293.25,
+      195.59375,
+      23
+     ],
+     "open": [
+      11,
+      11,
+      11,
+      11,
+      11,
+      11,
+      11,
+      11,
+      11,
+      11,
+      11,
+      11,
+      11,
+      11,
+      11
+     ]
+    },
+    {
+     "e": 13,
+     "x": "1",
+     "r": [
+      0,
+      341.25,
+      8.90625,
+      18
+     ],
+     "open": [
+      13,
+      13,
+      13,
+      13,
+      13,
+      13,
+      13,
+      13,
+      13,
+      13,
+      13,
+      13,
+      13,
+      13,
+      13
+     ]
+    },
+    {
+     "e": 14,
+     "x": "2",
+     "r": [
+      48,
+      341.25,
+      8.90625,
+      18
+     ],
+     "open": [
+      14,
+      14,
+      14,
+      14,
+      14,
+      14,
+      14,
+      14,
+      14,
+      14,
+      14,
+      14,
+      14,
+      14,
+      14
+     ]
+    },
+    {
+     "e": 16,
+     "x": "x",
+     "r": [
+      0,
+      363.640625,
+      8,
+      18
+     ],
+     "open": [
+      16,
+      16,
+      16,
+      16,
+      16,
+      16,
+      16,
+      16,
+      16,
+      16,
+      16,
+      16,
+      16,
+      16,
+      16
+     ]
+    },
+    {
+     "e": 17,
+     "x": "y",
+     "r": [
+      18,
+      363.640625,
+      8,
+      18
+     ],
+     "open": [
+      17,
+      17,
+      17,
+      17,
+      17,
+      17,
+      17,
+      17,
+      17,
+      17,
+      17,
+      17,
+      17,
+      17,
+      17
+     ]
+    },
+    {
+     "e": 18,
+     "x": "Catatan",
+     "r": [
+      0,
+      416.03125,
+      56.046875,
+      18
+     ],
+     "open": [
+      18,
+      18,
+      18,
+      18,
+      18,
+      18,
+      18,
+      18,
+      18,
+      18,
+      18,
+      18,
+      18,
+      18,
+      18
+     ]
+    },
+    {
+     "e": 21,
+     "x": "tetap",
+     "r": [
+      0,
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "e": 23,
+     "x": "Ringkasan pesanan",
+     "r": [
+      0,
+      543.203125,
+      150.28125,
+      18
+     ],
+     "open": [
+      24,
+      24,
+      24,
+      24,
+      24,
+      24,
+      24,
+      24,
+      24,
+      24,
+      24,
+      24,
+      24,
+      24,
+      24
+     ]
+    },
+    {
+     "e": 24,
+     "x": "Ringkasan pesanan",
+     "r": [
+      0,
+      543.203125,
+      141.4375,
+      18
+     ],
+     "open": [
+      24,
+      24,
+      24,
+      24,
+      24,
+      24,
+      24,
+      24,
+      24,
+      24,
+      24,
+      24,
+      24,
+      24,
+      24
+     ]
+    },
+    {
+     "e": 26,
+     "x": "panel skenario",
+     "r": [
+      0,
+      589.203125,
+      104.078125,
+      18
+     ],
+     "open": [
+      26,
+      26,
+      26,
+      26,
+      26,
+      26,
+      26,
+      26,
+      26,
+      26,
+      26,
+      26,
+      26,
+      26,
+      26
+     ]
+    }
+   ],
+   "chains": {
+    "open": {
+     "22": {
+      "position": "relative",
+      "width": 320,
+      "top": 541.203125
+     },
+     "24": {
+      "position": "absolute",
+      "width": 141.4375,
+      "top": 541.203125,
+      "op": 22,
+      "text": "Ringkasan pesanan"
+     }
+    },
+    "end": {}
+   },
+   "answers": {
+    "under": {
+     "4": 1,
+     "5": 1,
+     "6": 9,
+     "7": 1
+    },
+    "grow": {
+     "19": {
+      "before": 46,
+      "after": 46,
+      "hidden": 120,
+      "name": "Catatan"
+     },
+     "20": {
+      "before": 46,
+      "after": 46,
+      "hidden": 120,
+      "name": "Catatan tumbuh"
+     }
+    }
+   }
+  },
+  "output": {
+   "findings": [
+    {
+     "rule": "RX-A11Y-01",
+     "level": "fail",
+     "selector": "p.faint",
+     "message": "\"Teks pudar satu\": contrast 2.11:1 (#b3b3b3 on #ffffff), needs 4.5:1; 1 more with the same colors"
+    },
+    {
+     "rule": "RX-A11Y-01",
+     "level": "fail",
+     "selector": "div.tint > p",
+     "message": "\"Teks di atas latar berlapis yang sang...\": contrast 2.28:1 (#9999aa on #e6e6ff), needs 4.5:1"
+    },
+    {
+     "rule": "RX-A11Y-01",
+     "level": "fail",
+     "selector": "p.big",
+     "message": "\"Judul besar abu-abu\": contrast 2.85:1 (#999999 on #ffffff), needs 3:1"
+    },
+    {
+     "rule": "RX-A11Y-02",
+     "level": "warn",
+     "selector": "p.tiny",
+     "message": "\"Syarat berlaku untuk semua pesanan\": 10px text (2 elements); body text is 14 to 16px on mobile, below 12px is hard to read"
+    },
+    {
+     "rule": "RX-A11Y-02",
+     "level": "warn",
+     "selector": "p.tinier",
+     "message": "\"v2\": 9.5px text; body text is 14 to 16px on mobile, below 12px is hard to read"
+    },
+    {
+     "rule": "RX-A11Y-02",
+     "level": "fail",
+     "selector": "div.row > a",
+     "message": "\"satu\": target 18x18px, under 24x24 and crowded by its neighbours; 44x44 is the preferred hit area"
+    },
+    {
+     "rule": "RX-A11Y-02",
+     "level": "warn",
+     "selector": "div.row > a",
+     "message": "\"dua\": target 18x18px, under 24x24 (spaced enough to pass WCAG 2.5.8); 44x44 is the preferred hit area"
+    },
+    {
+     "rule": "RX-A11Y-02",
+     "level": "fail",
+     "selector": "div.tight > a",
+     "message": "\"x\": target 18x18px, under 24x24 and crowded by its neighbours; 44x44 is the preferred hit area"
+    },
+    {
+     "rule": "RX-A11Y-02",
+     "level": "fail",
+     "selector": "div.tight > a",
+     "message": "\"y\": target 18x18px, under 24x24 and crowded by its neighbours; 44x44 is the preferred hit area"
+    },
+    {
+     "rule": "RX-QA-03",
+     "level": "warn",
+     "selector": "div.stack > b",
+     "message": "\"Ringkasan pesanan\" overlaps \"Ringkasan pesanan\" (div.stack > i)"
+    },
+    {
+     "rule": "RX-FM-05",
+     "level": "warn",
+     "selector": "textarea#n1",
+     "message": "\"Catatan\": with 8 lines it stays 46px tall and hides 120px of text past its edge; let it grow (field-sizing: content, or set the height from scrollHeight on input)"
+    },
+    {
+     "rule": "RX-FM-05",
+     "level": "warn",
+     "selector": "textarea.grow",
+     "message": "\"Catatan tumbuh\": with 8 lines it stays 46px tall and hides 120px of text past its edge; let it grow (field-sizing: content, or set the height from scrollHeight on input)"
+    }
+   ],
+   "ignored": [
+    "div.panel"
+   ]
+  }
+ },
+ {
+  "input": {
+   "vw": 1280,
+   "vh": 900,
+   "scrollWidth": 1280,
+   "scrollingElement": 0,
+   "top": 2,
+   "styles": [
+    {
+     "color": "rgb(0, 0, 0)",
+     "fontFamily": "Times"
+    },
+    {
+     "backgroundColor": "rgb(255, 255, 255)",
+     "color": "rgb(34, 34, 34)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "position": "sticky",
+     "backgroundColor": "rgb(255, 255, 255)",
+     "color": "rgb(34, 34, 34)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "display": "inline",
+     "color": "rgb(34, 34, 34)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "fontSize": 10,
+     "color": "rgb(34, 34, 34)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "fontSize": 9.5,
+     "color": "rgb(34, 34, 34)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "color": "rgba(0, 0, 0, 0.3)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "backgroundColor": "rgba(0, 0, 255, 0.1)",
+     "color": "rgb(34, 34, 34)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "color": "rgb(153, 153, 170)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "fontSize": 20,
+     "fontWeight": 700,
+     "color": "rgb(153, 153, 153)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "color": "rgb(34, 34, 34)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "display": "inline-block",
+     "color": "rgb(0, 0, 238)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "display": "inline-block",
+     "overflow": "auto",
+     "overflowY": "auto",
+     "backgroundColor": "rgb(255, 255, 255)",
+     "fontSize": 14,
+     "borderTopWidth": 1,
+     "color": "rgb(0, 0, 0)",
+     "borderTopColor": "rgb(118, 118, 118)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "position": "relative",
+     "color": "rgb(34, 34, 34)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "display": "inline",
+     "fontWeight": 700,
+     "color": "rgb(34, 34, 34)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "position": "absolute",
+     "fontStyle": "italic",
+     "color": "rgb(34, 34, 34)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "color": "rgb(221, 221, 221)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "display": "inline-block",
+     "backgroundColor": "rgb(239, 239, 239)",
+     "fontSize": 13.3333,
+     "borderTopWidth": 2,
+     "color": "rgb(0, 0, 0)",
+     "fontFamily": "Arial"
+    }
+   ],
+   "els": [
+    {
+     "p": null,
+     "t": "HTML",
+     "s": 0,
+     "r": [
+      0,
+      0,
+      1280,
+      1698.421875
+     ],
+     "sh": 1698,
+     "ch": 900
+    },
+    {
+     "p": 0,
+     "t": "BODY",
+     "s": 1,
+     "r": [
+      0,
+      0,
+      1280,
+      1698.421875
+     ]
+    },
+    {
+     "p": 1,
+     "t": "HEADER",
+     "s": 2,
+     "r": [
+      0,
+      0,
+      1280,
+      40
+     ]
+    },
+    {
+     "p": 2,
+     "t": "SPAN",
+     "s": 3,
+     "r": [
+      0,
+      2,
+      63.171875,
+      18
+     ]
+    },
+    {
+     "p": 1,
+     "t": "P",
+     "s": 4,
+     "r": [
+      0,
+      50,
+      1280,
+      14
+     ],
+     "c": "tiny"
+    },
+    {
+     "p": 1,
+     "t": "P",
+     "s": 4,
+     "r": [
+      0,
+      74,
+      1280,
+      14
+     ],
+     "c": "tiny"
+    },
+    {
+     "p": 1,
+     "t": "P",
+     "s": 5,
+     "r": [
+      0,
+      98,
+      1280,
+      13.296875
+     ],
+     "c": "tinier"
+    },
+    {
+     "p": 1,
+     "t": "P",
+     "s": 6,
+     "r": [
+      0,
+      127.296875,
+      1280,
+      22.390625
+     ],
+     "c": "faint"
+    },
+    {
+     "p": 1,
+     "t": "P",
+     "s": 6,
+     "r": [
+      0,
+      165.6875,
+      1280,
+      22.390625
+     ],
+     "c": "faint"
+    },
+    {
+     "p": 1,
+     "t": "DIV",
+     "s": 7,
+     "r": [
+      0,
+      204.078125,
+      1280,
+      22.390625
+     ],
+     "c": "tint"
+    },
+    {
+     "p": 9,
+     "t": "P",
+     "s": 8,
+     "r": [
+      0,
+      204.078125,
+      1280,
+      22.390625
+     ]
+    },
+    {
+     "p": 1,
+     "t": "P",
+     "s": 9,
+     "r": [
+      0,
+      246.46875,
+      1280,
+      28
+     ],
+     "c": "big"
+    },
+    {
+     "p": 1,
+     "t": "DIV",
+     "s": 10,
+     "r": [
+      0,
+      294.46875,
+      1280,
+      22.390625
+     ],
+     "c": "row"
+    },
+    {
+     "p": 12,
+     "t": "A",
+     "s": 11,
+     "r": [
+      0,
+      294.46875,
+      18,
+      18
+     ],
+     "sh": 22,
+     "ch": 18,
+     "ctl": 1,
+     "nm": "satu"
+    },
+    {
+     "p": 12,
+     "t": "A",
+     "s": 11,
+     "r": [
+      48,
+      294.46875,
+      18,
+      18
+     ],
+     "sh": 22,
+     "ch": 18,
+     "ctl": 1,
+     "nm": "dua"
+    },
+    {
+     "p": 1,
+     "t": "DIV",
+     "s": 10,
+     "r": [
+      0,
+      316.859375,
+      1280,
+      22.390625
+     ],
+     "c": "tight"
+    },
+    {
+     "p": 15,
+     "t": "A",
+     "s": 11,
+     "r": [
+      0,
+      316.859375,
+      18,
+      18
+     ],
+     "sh": 22,
+     "ch": 18,
+     "ctl": 1,
+     "nm": "x"
+    },
+    {
+     "p": 15,
+     "t": "A",
+     "s": 11,
+     "r": [
+      18,
+      316.859375,
+      18,
+      18
+     ],
+     "sh": 22,
+     "ch": 18,
+     "ctl": 1,
+     "nm": "y"
+    },
+    {
+     "p": 1,
+     "t": "LABEL",
+     "s": 3,
+     "r": [
+      0,
+      371.25,
+      56.046875,
+      18
+     ]
+    },
+    {
+     "p": 1,
+     "t": "TEXTAREA",
+     "s": 12,
+     "r": [
+      56.046875,
+      339.25,
+      206,
+      46
+     ],
+     "id": "n1",
+     "ctl": 1,
+     "nm": "textarea"
+    },
+    {
+     "p": 1,
+     "t": "TEXTAREA",
+     "s": 12,
+     "r": [
+      266.5,
+      339.25,
+      206,
+      46
+     ],
+     "c": "grow",
+     "ctl": 1,
+     "nm": "Catatan tumbuh"
+    },
+    {
+     "p": 1,
+     "t": "TEXTAREA",
+     "s": 12,
+     "r": [
+      472.5,
+      339.25,
+      206,
+      46
+     ],
+     "ctl": 1,
+     "nm": "tetap",
+     "ro": 1
+    },
+    {
+     "p": 1,
+     "t": "DIV",
+     "s": 13,
+     "r": [
+      0,
+      391.640625,
+      1280,
+      30
+     ],
+     "c": "stack"
+    },
+    {
+     "p": 22,
+     "t": "B",
+     "s": 14,
+     "r": [
+      0,
+      393.640625,
+      150.28125,
+      18
+     ]
+    },
+    {
+     "p": 22,
+     "t": "I",
+     "s": 15,
+     "r": [
+      0,
+      391.640625,
+      141.4375,
+      22.390625
+     ]
+    },
+    {
+     "p": 1,
+     "t": "DIV",
+     "s": 10,
+     "r": [
+      0,
+      437.640625,
+      1280,
+      60.78125
+     ],
+     "c": "panel",
+     "ig": 1
+    },
+    {
+     "p": 25,
+     "t": "P",
+     "s": 16,
+     "r": [
+      0,
+      437.640625,
+      1280,
+      22.390625
+     ]
+    },
+    {
+     "p": 25,
+     "t": "BUTTON",
+     "s": 17,
+     "r": [
+      0,
+      485.03125,
+      16,
+      10
+     ],
+     "ctl": 1,
+     "nm": "button"
+    },
+    {
+     "p": 1,
+     "t": "DIV",
+     "s": 10,
+     "r": [
+      0,
+      498.421875,
+      1280,
+      1200
+     ]
+    }
+   ],
+   "texts": [
+    {
+     "e": 3,
+     "x": "Pesanan",
+     "r": [
+      0,
+      2,
+      63.171875,
+      18
+     ],
+     "open": [
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3
+     ],
+     "end": {
+      "r": [
+       0,
+       2,
+       63.171875,
+       18
+      ],
+      "h": [
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3
+      ]
+     }
+    },
+    {
+     "e": 4,
+     "x": "Syarat berlaku untuk semua pesanan",
+     "r": [
+      0,
+      51,
+      165.671875,
+      12
+     ],
+     "open": [
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4
+     ]
+    },
+    {
+     "e": 5,
+     "x": "Harga sudah termasuk pajak",
+     "r": [
+      0,
+      75,
+      127.859375,
+      12
+     ],
+     "open": [
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5
+     ]
+    },
+    {
+     "e": 6,
+     "x": "v2",
+     "r": [
+      0,
+      99,
+      10.046875,
+      10
+     ],
+     "open": [
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6
+     ]
+    },
+    {
+     "e": 7,
+     "x": "Teks pudar satu",
+     "r": [
+      0,
+      129.296875,
+      112.953125,
+      18
+     ],
+     "open": [
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7
+     ]
+    },
+    {
+     "e": 8,
+     "x": "Teks pudar dua",
+     "r": [
+      0,
+      167.6875,
+      109.40625,
+      18
+     ],
+     "open": [
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8
+     ]
+    },
+    {
+     "e": 10,
+     "x": "Teks di atas latar berlapis yang sangat panjang sekali sampai harus dipotong di pesan",
+     "r": [
+      0,
+      206.078125,
+      610.171875,
+      18
+     ],
+     "open": [
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10
+     ]
+    },
+    {
+     "e": 11,
+     "x": "Judul besar abu-abu",
+     "r": [
+      0,
+      248.46875,
+      195.59375,
+      23
+     ],
+     "open": [
+      11,
+      11,
+      11,
+      11,
+      11,
+      11,
+      11,
+      11,
+      11,
+      11,
+      11,
+      11,
+      11,
+      11,
+      11
+     ]
+    },
+    {
+     "e": 13,
+     "x": "1",
+     "r": [
+      0,
+      296.46875,
+      8.90625,
+      18
+     ],
+     "open": [
+      13,
+      13,
+      13,
+      13,
+      13,
+      13,
+      13,
+      13,
+      13,
+      13,
+      13,
+      13,
+      13,
+      13,
+      13
+     ]
+    },
+    {
+     "e": 14,
+     "x": "2",
+     "r": [
+      48,
+      296.46875,
+      8.90625,
+      18
+     ],
+     "open": [
+      14,
+      14,
+      14,
+      14,
+      14,
+      14,
+      14,
+      14,
+      14,
+      14,
+      14,
+      14,
+      14,
+      14,
+      14
+     ]
+    },
+    {
+     "e": 16,
+     "x": "x",
+     "r": [
+      0,
+      318.859375,
+      8,
+      18
+     ],
+     "open": [
+      16,
+      16,
+      16,
+      16,
+      16,
+      16,
+      16,
+      16,
+      16,
+      16,
+      16,
+      16,
+      16,
+      16,
+      16
+     ]
+    },
+    {
+     "e": 17,
+     "x": "y",
+     "r": [
+      18,
+      318.859375,
+      8,
+      18
+     ],
+     "open": [
+      17,
+      17,
+      17,
+      17,
+      17,
+      17,
+      17,
+      17,
+      17,
+      17,
+      17,
+      17,
+      17,
+      17,
+      17
+     ]
+    },
+    {
+     "e": 18,
+     "x": "Catatan",
+     "r": [
+      0,
+      371.25,
+      56.046875,
+      18
+     ],
+     "open": [
+      18,
+      18,
+      18,
+      18,
+      18,
+      18,
+      18,
+      18,
+      18,
+      18,
+      18,
+      18,
+      18,
+      18,
+      18
+     ]
+    },
+    {
+     "e": 21,
+     "x": "tetap",
+     "r": [
+      0,
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "e": 23,
+     "x": "Ringkasan pesanan",
+     "r": [
+      0,
+      393.640625,
+      150.28125,
+      18
+     ],
+     "open": [
+      24,
+      24,
+      24,
+      24,
+      24,
+      24,
+      24,
+      24,
+      24,
+      24,
+      24,
+      24,
+      24,
+      24,
+      24
+     ]
+    },
+    {
+     "e": 24,
+     "x": "Ringkasan pesanan",
+     "r": [
+      0,
+      393.640625,
+      141.4375,
+      18
+     ],
+     "open": [
+      24,
+      24,
+      24,
+      24,
+      24,
+      24,
+      24,
+      24,
+      24,
+      24,
+      24,
+      24,
+      24,
+      24,
+      24
+     ]
+    },
+    {
+     "e": 26,
+     "x": "panel skenario",
+     "r": [
+      0,
+      439.640625,
+      104.078125,
+      18
+     ],
+     "open": [
+      26,
+      26,
+      26,
+      26,
+      26,
+      26,
+      26,
+      26,
+      26,
+      26,
+      26,
+      26,
+      26,
+      26,
+      26
+     ]
+    }
+   ],
+   "chains": {
+    "open": {
+     "22": {
+      "position": "relative",
+      "width": 1280,
+      "top": 391.640625
+     },
+     "24": {
+      "position": "absolute",
+      "width": 141.4375,
+      "top": 391.640625,
+      "op": 22,
+      "text": "Ringkasan pesanan"
+     }
+    },
+    "end": {}
+   },
+   "answers": {
+    "under": {
+     "4": 1,
+     "5": 1,
+     "6": 9,
+     "7": 1
+    },
+    "grow": {
+     "19": {
+      "before": 46,
+      "after": 46,
+      "hidden": 120,
+      "name": "Catatan"
+     },
+     "20": {
+      "before": 46,
+      "after": 46,
+      "hidden": 120,
+      "name": "Catatan tumbuh"
+     }
+    }
+   }
+  },
+  "output": {
+   "findings": [
+    {
+     "rule": "RX-A11Y-01",
+     "level": "fail",
+     "selector": "p.faint",
+     "message": "\"Teks pudar satu\": contrast 2.11:1 (#b3b3b3 on #ffffff), needs 4.5:1; 1 more with the same colors"
+    },
+    {
+     "rule": "RX-A11Y-01",
+     "level": "fail",
+     "selector": "div.tint > p",
+     "message": "\"Teks di atas latar berlapis yang sang...\": contrast 2.28:1 (#9999aa on #e6e6ff), needs 4.5:1"
+    },
+    {
+     "rule": "RX-A11Y-01",
+     "level": "fail",
+     "selector": "p.big",
+     "message": "\"Judul besar abu-abu\": contrast 2.85:1 (#999999 on #ffffff), needs 3:1"
+    },
+    {
+     "rule": "RX-A11Y-02",
+     "level": "warn",
+     "selector": "p.tiny",
+     "message": "\"Syarat berlaku untuk semua pesanan\": 10px text (2 elements); body text is 14 to 16px on mobile, below 12px is hard to read"
+    },
+    {
+     "rule": "RX-A11Y-02",
+     "level": "warn",
+     "selector": "p.tinier",
+     "message": "\"v2\": 9.5px text; body text is 14 to 16px on mobile, below 12px is hard to read"
+    },
+    {
+     "rule": "RX-A11Y-02",
+     "level": "fail",
+     "selector": "div.row > a",
+     "message": "\"satu\": target 18x18px, under 24x24 and crowded by its neighbours; 44x44 is the preferred hit area"
+    },
+    {
+     "rule": "RX-A11Y-02",
+     "level": "warn",
+     "selector": "div.row > a",
+     "message": "\"dua\": target 18x18px, under 24x24 (spaced enough to pass WCAG 2.5.8); 44x44 is the preferred hit area"
+    },
+    {
+     "rule": "RX-A11Y-02",
+     "level": "fail",
+     "selector": "div.tight > a",
+     "message": "\"x\": target 18x18px, under 24x24 and crowded by its neighbours; 44x44 is the preferred hit area"
+    },
+    {
+     "rule": "RX-A11Y-02",
+     "level": "fail",
+     "selector": "div.tight > a",
+     "message": "\"y\": target 18x18px, under 24x24 and crowded by its neighbours; 44x44 is the preferred hit area"
+    },
+    {
+     "rule": "RX-QA-03",
+     "level": "warn",
+     "selector": "div.stack > b",
+     "message": "\"Ringkasan pesanan\" overlaps \"Ringkasan pesanan\" (div.stack > i)"
+    },
+    {
+     "rule": "RX-FM-05",
+     "level": "warn",
+     "selector": "textarea#n1",
+     "message": "\"Catatan\": with 8 lines it stays 46px tall and hides 120px of text past its edge; let it grow (field-sizing: content, or set the height from scrollHeight on input)"
+    },
+    {
+     "rule": "RX-FM-05",
+     "level": "warn",
+     "selector": "textarea.grow",
+     "message": "\"Catatan tumbuh\": with 8 lines it stays 46px tall and hides 120px of text past its edge; let it grow (field-sizing: content, or set the height from scrollHeight on input)"
+    }
+   ],
+   "ignored": [
+    "div.panel"
+   ]
+  }
+ }
+]

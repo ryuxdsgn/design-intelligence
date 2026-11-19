@@ -9,9 +9,9 @@ import { tmpdir } from "node:os";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { figmaAudit } from "../dist/figma-audit.js";
-import { SOURCE_CHECKS, SYNTAX_CHECKS } from "../dist/checks.js";
+import { RENDER_CHECKS, SOURCE_CHECKS, SYNTAX_CHECKS } from "../dist/checks.js";
 import { FIXTURES, core, hydrate } from "./golden.mjs";
-import { audit, readDirection, scanShared as scan, unused } from "../dist/engine.js";
+import { audit, probe, readDirection, scanShared as scan, unused } from "../dist/engine.js";
 
 const load = (check) => JSON.parse(readFileSync(join(FIXTURES, `${check}.json`), "utf8"));
 const plain = (v) => JSON.parse(JSON.stringify(v ?? null));
@@ -45,6 +45,24 @@ test("the catalogue lists ryux-core's detectors: same rules, levels, and folder-
   const ours = (list) => list.map((d) => ({ rule: d.rule, level: d.level, folder: Boolean(d.folder) }));
   assert.deepEqual(ours(SOURCE_CHECKS), JSON.parse(core.detectors()));
   assert.deepEqual(ours(SYNTAX_CHECKS), JSON.parse(core.syntaxDetectors()));
+  // The rendered checks: every row but script errors (RX-QA-08), which the CLI reports itself (cli/page-scan.ts).
+  assert.deepEqual(RENDER_CHECKS.filter((d) => d.rule !== "RX-QA-08").map((d) => ({ rule: d.rule, level: d.level })), JSON.parse(core.renderChecks()));
+});
+
+test("golden through ryux-core: the rendered checks over recorded page extracts", () => {
+  const cases = load("probe");
+  assert.ok(cases.length > 0);
+  const rows = JSON.parse(core.renderChecks());
+  for (const { input, output } of cases) {
+    assert.deepEqual(plain(probe(input)), output, `${input.vw}px`);
+    // Every finding names a rule and level the catalogue lists (targets and small text warn under RX-A11Y-02's row).
+    for (const f of output.findings) assert.ok(rows.some((r) => r.rule === f.rule), f.rule);
+    // Without its answers, the extract asks for exactly the hit tests and fills recorded with it.
+    if (input.answers) {
+      const { answers, ...bare } = input;
+      assert.deepEqual(probe(bare).ask, { under: Object.keys(answers.under).map(Number), grow: Object.keys(answers.grow).map(Number) });
+    }
+  }
 });
 
 test("the checks have one engine: RYUX_ENGINE is ignored and nothing names it", () => {
