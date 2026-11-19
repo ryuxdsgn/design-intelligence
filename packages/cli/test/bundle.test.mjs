@@ -643,3 +643,12 @@ test("B3: a revamp of a product with a direction stays inside the brand, keeps i
   const product = files["knowledge/product.md"];
   assert.match(ruleSection(product, "### RX-PR-02"), /Copy the product already ships is a source[^\n]*keep it[^\n]*unconfirmed/i);
 });
+
+test("B3 rerun: not waiting still runs the timed pick; a revamp keeps the field pattern, the title's context, and reaches the next task", () => {
+  const files = renderBundle();
+  assert.match(files["capabilities/design.md"], /"do not wait"[^\n]*is not a reason to skip[^\n]*/i);
+  const r20 = ruleSection(files["knowledge/ux.md"], "RX-UX-20");
+  assert.match(r20, /a field keeps the product's surface pattern/i);
+  assert.match(r20, /the title keeps the context/i);
+  assert.match(r20, /ends where the next task starts/i);
+});
