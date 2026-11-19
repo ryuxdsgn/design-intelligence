@@ -631,3 +631,24 @@ test("the skill ships only Markdown, JSON, and images (plugin directory policy),
     assert.notEqual(read(f, "utf8").slice(0, 2), "#!", f);
   }
 });
+
+test("B3: a revamp of a product with a direction stays inside the brand, keeps its shipped facts and behaviour", () => {
+  const files = renderBundle();
+  const design = files["capabilities/design.md"];
+  assert.match(design, /A revamp is not a new look[^\n]*structures[^\n]*alternatives\.html/i);
+  const r20 = ruleSection(files["knowledge/ux.md"], "RX-UX-20");
+  assert.match(r20, /no new ornament or motif on a task screen/i);
+  assert.match(r20, /when a button is enabled[^\n]*retry[^\n]*one tap/i);
+  assert.match(r20, /opens a confirmation names the step[^\n]*not the result/i);
+  const product = files["knowledge/product.md"];
+  assert.match(ruleSection(product, "### RX-PR-02"), /Copy the product already ships is a source[^\n]*keep it[^\n]*unconfirmed/i);
+});
+
+test("B3 rerun: not waiting still runs the timed pick; a revamp keeps the field pattern, the title's context, and reaches the next task", () => {
+  const files = renderBundle();
+  assert.match(files["capabilities/design.md"], /"do not wait"[^\n]*is not a reason to skip[^\n]*/i);
+  const r20 = ruleSection(files["knowledge/ux.md"], "RX-UX-20");
+  assert.match(r20, /a field keeps the product's surface pattern/i);
+  assert.match(r20, /the title keeps the context/i);
+  assert.match(r20, /reaches the next task on the screens that exist[^\n]*adds no screen/i);
+});

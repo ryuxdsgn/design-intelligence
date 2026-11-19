@@ -86,7 +86,8 @@ The six stages of the core workflow (SKILL.md), as Design runs them.
    and no \`direction:\` block, read their visual language first (capabilities/analyze.md), write it as
    the \`direction:\` block with status observed and the files it came from, tell the user in one line,
    and build on it. Offer new directions only when the user asks for a new look, and then keep what
-   works (RX-UX-10).
+   works (RX-UX-10). A revamp is not a new look: its alternatives are structures (stage 4, alternatives.html with
+   \`--recommend\`), and its visual change stays inside the brand (RX-UX-20).
    **Direction is the user's call** (RX-UI-26): when neither the prompt, DESIGN.md, nor a product that
    exists sets the UI direction, the next message offers three directions as style tiles and waits; the motion direction
    rides with it. Show the tiles as one static HTML page (\`directions.html\` in the project folder; no server,
@@ -203,6 +204,7 @@ The six stages of the core workflow (SKILL.md), as Design runs them.
    the page shows it marked and a 60-second countdown. A \`pick: <n>\` line is the user's click. A
    \`recommended: <n>\` line means no answer in time: build the recommendation and say in the reply that the
    user did not answer and you used it, never as the user's choice. Any other line falls back to the text flow.
+   A reply such as "do not wait" or "continue with your recommendation" is not a reason to skip the page and the pick: the countdown is the not-waiting path, so write the page, run \`pick\`, and build what it returns.
    Build only the chosen one
    into the full design (states, widths, Visual Brief, RX-UI-10), write the Design Direction
    below, and mark the others on the canvas as not chosen. When the user has already said to pick for
