@@ -495,7 +495,7 @@ test("router: flows, journeys, and change size are reachable", () => {
 test("review fixes: change size, questions, journey evidence", () => {
   const b = renderBundle();
   const ux = b["knowledge/ux.md"];
-  const r20 = ux.slice(ux.indexOf("RX-UX-20"), ux.indexOf("RX-UX-20") + 2500);
+  const r20 = ux.slice(ux.indexOf("RX-UX-20"), ux.indexOf("### ", ux.indexOf("RX-UX-20") + 10));
   // 1. only improve or restyle asks are sized; features and bug fixes are not
   assert.match(r20, /adding a feature, fixing a bug, or a named small edit[^.]*is none of the three/i);
   // 2. the Polish asks already name a size
@@ -525,12 +525,12 @@ test("fix round 1: screen-ready flows and journeys, a revamp that changes the lo
   assert.match(ux, /phases agree with the map's own recommendations/i);
   assert.match(ux, /one actor[^\n]*no second persona/i);
   // B2: a revamp
-  const r20 = ux.slice(ux.indexOf("RX-UX-20"), ux.indexOf("RX-UX-20") + 4000);
+  const r20 = ux.slice(ux.indexOf("RX-UX-20"), ux.indexOf("### ", ux.indexOf("RX-UX-20") + 10));
   assert.match(r20, /changes the visual language[^\n]*type scale[^\n]*surfaces[^\n]*component shapes/i);
   assert.match(r20, /brand anchors[^\n]*logo[^\n]*primary accent/i);
   assert.match(r20, /every state[^\n]*error/i);
   assert.match(r20, /disclosure never hides what a state needs/i);
-  assert.match(r20, /floating control that covers content/i);
+  assert.match(r20, /floating control covers content or the docked action bar/i);
 });
 
 test("structural alternatives close with ryux pick and a 60 s recommendation, reported honestly", () => {
@@ -538,4 +538,27 @@ test("structural alternatives close with ryux pick and a 60 s recommendation, re
   assert.match(d, /pick alternatives\.html --recommend <n>/);
   assert.match(d, /`recommended: <n>` line[^\n]*no answer/i);
   assert.match(d, /never as the user's choice/i);
+});
+
+test("a revamp lists its states, renders each before and after, and an error state keeps what is known", () => {
+  const ux = renderBundle()["knowledge/ux.md"];
+  const r20 = ux.slice(ux.indexOf("RX-UX-20"), ux.indexOf("### ", ux.indexOf("RX-UX-20") + 10));
+  assert.match(r20, /list the states first[^\n]*RX-EC-01[^\n]*before and after/i);
+  assert.match(r20, /a state left as it was is named in the reply with its reason/i);
+  assert.match(r20, /error or offline state keeps what is known[^\n]*last status[^\n]*RX-EC-06/i);
+  assert.match(r20, /- Check: [^\n]*every state in the matrix/i);
+});
+
+test("revamp round 3: only the data the app has, Help stays, names states, and the owner's layout notes", () => {
+  const ux = renderBundle()["knowledge/ux.md"];
+  const r20 = ux.slice(ux.indexOf("RX-UX-20"), ux.indexOf("### ", ux.indexOf("RX-UX-20") + 10));
+  assert.match(r20, /from data the app already has/i);
+  assert.match(r20, /data the app does not keep[^\n]*proposal[^\n]*not build/i);
+  assert.match(r20, /Help stays active/i);
+  assert.match(r20, /list the states first, by name, in the reply/i);
+  assert.match(r20, /just placed[^\n]*items/i);
+  assert.match(r20, /late[^\n]*hero[^\n]*not only an accent/i);
+  assert.match(r20, /stepper[^\n]*320[^\n]*200%/i);
+  assert.match(r20, /toast[^\n]*docked/i);
+  assert.match(r20, /thumb/i);
 });
