@@ -35,7 +35,7 @@ The six stages of the core workflow (SKILL.md), as Design runs them.
    and no scripts of its own, Google Fonts allowed): per direction its palette swatches, type pairing, one card, one primary
    button, and its signature, numbered as in the message. Give each direction's choice control a `data-ryux-pick="<n>"` attribute (its
    number; the page shows its heading as the name, or `data-ryux-pick-name`), and add a regenerate control `data-ryux-pick="regenerate"` labelled "None of these — make three new". Render it once to check it.
-   **Close the loop with `ryux pick`:** run `npx @ryuxdsgn/design-intelligence pick directions.html` as is (it waits for the click and times out by itself, so no `timeout` or other wrapper, which macOS does not have) and read its one line of
+   **Close the loop with `ryux pick`:** run `npx @ryuxdsgn/design-intelligence pick directions.html` as is, without `-y` (an install that confirms itself can be refused by the agent's permission check; it waits for the click and times out by itself, so no `timeout` or other wrapper, which macOS does not have) and read its one line of
    output. A clean `pick: <n>` line is the user's choice, straight from a click, with no copy-paste; build that direction. A
    `regenerate` line means explore three new directions, rewrite the page, and run `ryux pick` again, until a pick. On anything
    else — a `fallback:` line, a non-zero exit, no output, or the command not installed — fall back to the current text flow: open
@@ -141,7 +141,7 @@ The six stages of the core workflow (SKILL.md), as Design runs them.
    wins a tie. "It looks better" is not a reason. Then stop and let the user choose, with the alternatives as
    options and your recommendation first (stage 1, "Ask as choices"). When the alternatives are on a page
    (`alternatives.html`, each choice control with `data-ryux-pick="<n>"` as for directions), run
-   `npx @ryuxdsgn/design-intelligence pick alternatives.html --recommend <n>` with your recommendation's number:
+   `npx @ryuxdsgn/design-intelligence pick alternatives.html --recommend <n>`, without `-y`, with your recommendation's number:
    the page shows it marked and a 60-second countdown. A `pick: <n>` line is the user's click. A
    `recommended: <n>` line means no answer in time: build the recommendation and say in the reply that the
    user did not answer and you used it, never as the user's choice. Any other line falls back to the text flow.
