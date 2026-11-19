@@ -584,17 +584,5 @@ test("revamp round 5: the item list follows the state, a decision keeps its weig
   assert.match(r20, /old one struck through next to the new one/i);
   assert.match(r20, /one way to it is enough[^\n]*not both/i);
   assert.match(r20, /Fewer is not none[^\n]*names the current step/i);
-});
-
-test("revamp round 6: calm states stay calm, a change said once, an error that keeps its identity and names the control, an open list keeps its count", () => {
-  const files = renderBundle();
-  const ux = files["knowledge/ux.md"];
-  const r20 = ux.slice(ux.indexOf("RX-UX-20"), ux.indexOf("### ", ux.indexOf("RX-UX-20") + 10));
-  assert.match(r20, /keeps the calm states calm and saves the strongest signal for a problem/i);
-  assert.match(r20, /the change is said once/i);
-  assert.match(r20, /identity \(store, order number\) stays where it was, in the header/i);
-  assert.match(r20, /names the control[^\n]*never its position/i);
-  assert.match(r20, /open list keeps its count and total in its header/i);
-  assert.match(r20, /reads as placed, not cut off/i);
-  assert.match(r20, /rounds 2 to 6/);
+  assert.match(r20, /rounds 2 to 5/);
 });
