@@ -32,8 +32,8 @@ test("golden: audit", async () => {
   for (const { input, output } of cases) assert.deepEqual(plain(await figmaAudit(hydrate(input), input.page)), output, input.pages.map((p) => p.children.map((f) => f.name).join(",")).join(" | "));
 });
 
-// The same contract through the engine the CLI calls: the TypeScript (the default) and ryux-core as
-// WebAssembly (RYUX_ENGINE=rust). Unused tokens are recorded over comment-blanked texts; the engine reads raw
+// The same contract through the engine the CLI calls: ryux-core as WebAssembly (the default) and the
+// TypeScript (RYUX_ENGINE=ts). Unused tokens are recorded over comment-blanked texts; the engine reads raw
 // sources, so its cases are the scan cases that carry a direction.
 for (const which of ["rust", "ts"]) {
   test(`golden through the ${which} engine: scan, direction, unused, audit`, async () => {
@@ -46,3 +46,19 @@ for (const which of ["rust", "ts"]) {
     for (const { input, output } of load("audit")) assert.deepEqual(plain(await audit(hydrate(input), input.page, which)), output);
   });
 }
+
+test("the checks run in ryux-core by default; RYUX_ENGINE=ts runs the TypeScript, RYUX_ENGINE=rust insists on ryux-core", async () => {
+  const { engine } = await import("../dist/engine.js");
+  const saved = process.env.RYUX_ENGINE;
+  try {
+    delete process.env.RYUX_ENGINE;
+    assert.equal(engine(), "rust");
+    process.env.RYUX_ENGINE = "ts";
+    assert.equal(engine(), "ts");
+    process.env.RYUX_ENGINE = "rust";
+    assert.equal(engine(), "rust");
+  } finally {
+    if (saved === undefined) delete process.env.RYUX_ENGINE;
+    else process.env.RYUX_ENGINE = saved;
+  }
+});

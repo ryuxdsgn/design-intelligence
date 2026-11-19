@@ -25,8 +25,8 @@ jobs:
         run: pnpm typecheck
       - name: Tests (bundle, rules, version, CLI install/check/init/update/remove)
         run: pnpm test
-      - name: The same tests with the checks in Rust (RYUX_ENGINE=rust)
-        run: RYUX_ENGINE=rust pnpm --filter @ryuxdsgn/design-intelligence test
+      - name: The same tests with the checks in TypeScript (RYUX_ENGINE=ts)
+        run: RYUX_ENGINE=ts pnpm --filter @ryuxdsgn/design-intelligence test
       - name: Generated skill, docs, and versions match the sources
         run: pnpm check:sync
       - name: Rust checks answer to the same fixtures (crates/ryux-core)

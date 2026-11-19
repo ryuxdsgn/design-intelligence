@@ -1,7 +1,8 @@
-// Where the deterministic checks run. By default in the TypeScript (scan.ts, drift.ts, figma-audit.ts);
-// RYUX_ENGINE=rust runs ryux-core, the Rust crate in crates/ryux-core, built to WebAssembly in ../wasm. Both
-// answer to fixtures/checks. Rust stays opt-in until it earns the default with a measured gain (owner,
-// 2026-11-18): as WebAssembly it is about twice as slow on these regex checks.
+// Where the deterministic checks run. By default in ryux-core, the Rust crate in crates/ryux-core, built to
+// WebAssembly in ../wasm (owner, 2026-11-19). RYUX_ENGINE=ts runs the TypeScript (scan.ts, drift.ts,
+// figma-audit.ts), kept for one release to compare; RYUX_ENGINE=rust insists on ryux-core and fails when it is
+// missing. Both answer to fixtures/checks. Measured 2026-11-18: as WebAssembly the regex checks run about twice as
+// slow as the TypeScript; the findings are the same.
 import { createRequire } from "node:module";
 import { neutralCanvas } from "./canvas-json.js";
 import { readDirection as tsDirection, unusedTokens, type Direction } from "./drift.js";
@@ -9,7 +10,17 @@ import { figmaAudit } from "./figma-audit.js";
 import { scanSources, toSource, type ScanFinding } from "./scan.js";
 
 export type Engine = "rust" | "ts";
-export const engine = (): Engine => (process.env.RYUX_ENGINE === "rust" ? "rust" : "ts");
+let fellBack = false;
+/** RYUX_ENGINE=ts or =rust when set; otherwise ryux-core, or the TypeScript with a note when the WebAssembly is
+ *  missing (a checkout before pnpm build:wasm). */
+export const engine = (): Engine => {
+  const asked = process.env.RYUX_ENGINE;
+  if (asked === "ts" || asked === "rust") return asked;
+  if (hasCore()) return "rust";
+  if (!fellBack) console.error("ryux: the checks ran in TypeScript: wasm/ryux_wasm.js is missing (run pnpm build:wasm).");
+  fellBack = true;
+  return "ts";
+};
 
 interface Core {
   scan(input: string): string;
@@ -20,12 +31,24 @@ interface Core {
 }
 
 let core: Core | undefined;
+let coreMissing = false;
+function hasCore(): boolean {
+  if (core) return true;
+  if (coreMissing) return false;
+  try {
+    rust();
+    return true;
+  } catch {
+    coreMissing = true;
+    return false;
+  }
+}
 function rust(): Core {
   if (core) return core;
   try {
     core = createRequire(import.meta.url)("../wasm/ryux_wasm.js") as Core;
   } catch (err) {
-    throw new Error(`RYUX's check engine (wasm/ryux_wasm.js) is missing from this install. In a checkout, run pnpm build:wasm; or leave RYUX_ENGINE unset to run the TypeScript checks. (${err instanceof Error ? err.message.split("\n")[0] : err})`);
+    throw new Error(`RYUX's check engine (wasm/ryux_wasm.js) is missing from this install. In a checkout, run pnpm build:wasm; or set RYUX_ENGINE=ts to run the TypeScript checks. (${err instanceof Error ? err.message.split("\n")[0] : err})`);
   }
   return core;
 }
@@ -62,7 +85,7 @@ export function scanShared(sources: RawSource[], opts: ScanOpts, which: Engine =
 let warned = false;
 /** The JSX and TSX syntax checks (SYNTAX_CHECKS). They exist only in ryux-core, so they run through the
  *  WebAssembly whichever engine the shared checks use. Without it (a checkout before pnpm build:wasm) they
- *  are skipped with a note, unless RYUX_ENGINE=rust asked for ryux-core. */
+ *  are skipped with a note, unless RYUX_ENGINE=rust insisted on ryux-core. */
 export function scanSyntax(sources: RawSource[], opts: ScanOpts): ScanFinding[] {
   const jsx = sources.filter((s) => /\.(?:jsx|tsx)$/i.test(s.path));
   if (!jsx.length) return [];
@@ -70,7 +93,7 @@ export function scanSyntax(sources: RawSource[], opts: ScanOpts): ScanFinding[] 
   try {
     core = rust();
   } catch (err) {
-    if (engine() === "rust") throw err;
+    if (process.env.RYUX_ENGINE === "rust") throw err;
     if (!warned) console.error("ryux scan: the JSX and TSX syntax checks were skipped: wasm/ryux_wasm.js is missing (run pnpm build:wasm).");
     warned = true;
     return [];
