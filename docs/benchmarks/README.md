@@ -57,6 +57,6 @@ below the checkout ran on **RYUX 2.22.5**; the checkout and motion ran on **2.22
 
 ## Run one yourself
 
-Each folder has the brief, the reply rule, and the criteria. Run the brief once with no skill and once after
+Each benchmark is one README: the brief, the replies, the reply rule, and the criteria. Run the brief once with no skill and once after
 `npx @ryuxdsgn/design-intelligence`. The harness used here is
 [`packages/cli/scripts/bench/`](../../packages/cli/scripts/bench/).

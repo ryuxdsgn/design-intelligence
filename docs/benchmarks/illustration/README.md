@@ -8,7 +8,7 @@
 Each one is shown at real size on a 390-wide screen. The style is each run's own proposal.
 
 ## Setup
-- **Brief:** [`prompt.txt`](prompt.txt). Any run that asked first would have got [`reply.txt`](reply.txt); none did.
+- **Brief:** [`prompt.txt`](#prompttxt). Any run that asked first would have got [`reply.txt`](#replytxt); none did.
 - **Arms:** two runs each, one empty Figma file per run, run one at a time.
   - **No skill:** skills and slash commands off.
   - **RYUX 2.22.5:** the skill installed in the folder.
@@ -98,3 +98,27 @@ and only the text was translated to English, meaning for meaning, with the same 
 example "Belum ada pesanan" became "No orders yet" on both). The art, layout, and colours are unchanged. Two lines
 that ran longer in English were set to wrap instead of clip, one on each side. The ratings above were given on the
 original Indonesian screens.
+
+## Brief and replies
+
+The exact text each run received.
+
+### prompt.txt
+
+````text
+Make the illustrations for "Sejuk", an iOS app in Jakarta for booking an AC service technician to come to your home. Users: renters and young families in Jakarta apartments and houses, often booking in a hurry because the AC already stopped cooling. Product principles: calm over urgent; plain words over technical terms.
+
+Put them in this empty Figma file: FILE_URL. Work only in that file.
+
+1. Three service icons for the service tiles, shown at 64 pt: Cuci AC, Isi freon, Perbaikan. They are one set.
+2. An empty-state illustration for the order list: "Belum ada pesanan".
+3. A success illustration for the screen "Teknisi sedang menuju rumahmu".
+
+Show each one at its real size on a simple 390-wide screen mock with its Indonesian text, and also large on its own. The style is your proposal.
+````
+
+### reply.txt
+
+````text
+I don't have more to add. Use your own judgment for anything the brief leaves open, tell me what you assumed, and go ahead and design it.
+````

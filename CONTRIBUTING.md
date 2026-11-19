@@ -87,7 +87,8 @@ Preferred, Contextual), **Do**, **Do not**, **Why**, **Not when**, **Trade-off**
 Benchmark runs in [docs/benchmarks](./docs/benchmarks) follow a few rules:
 
 - The protocol (brief, replies, what is counted) is committed **before** the first run.
-- Raw outputs are kept as the agent wrote them; any edit is listed in the run folder.
+- Each benchmark is one README, with the brief and replies inline.
+- Raw outputs are kept as the agent wrote them, as a zip in the `media` release; any edit is listed in the README.
 - Report what RYUX missed as plainly as what it got right, and scope each claim to the number of
   runs ("in 2 of 3 runs", never "RYUX always").
 - Screenshots, GIFs, and videos do not go in git. Upload them to the

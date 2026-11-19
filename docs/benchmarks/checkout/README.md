@@ -4,12 +4,12 @@ The kind of brief people really type: the product and the screen, nothing else. 
 visual direction. The question: what does the agent put on the screen for what nobody told it?
 
 ## Setup
-- **Brief** ([prompt.txt](prompt.txt)): "Design the checkout screen for Sejuk, an iOS app in Jakarta for booking an AC
+- **Brief** ([prompt.txt](#prompttxt)): "Design the checkout screen for Sejuk, an iOS app in Jakarta for booking an AC
   service technician to come to your home. One screen, 390 wide, in this empty Figma file. Work only in that file.
   Write the copy in English." The RYUX side gets "Use the ryux skill." before it.
 - **Agent:** Claude Code `claude -p`, Opus 5.5, Figma connector, one new empty Figma file per run, global skills moved
   aside. One run per side (2026-11-09).
-- **Reply rule:** a turn that ends without a 390-wide frame gets [reply.txt](reply.txt) once ("Go with the direction you
+- **Reply rule:** a turn that ends without a 390-wide frame gets [reply.txt](#replytxt) once ("Go with the direction you
   recommend and build the page."). If the Figma connector drops, the run is resumed with "The Figma connection is back.
   Continue where you stopped and finish the task in the same file." (recorded below).
 - **Criteria, written before the runs:** the owner rates the two clean screens blind (letters shuffled, no markers),
@@ -76,3 +76,19 @@ $10.30 over three turns (the second turn hit the usage limit and was resumed). T
 README's direction image; the no-skill side is the first run above.
 
 ![No skill vs RYUX, direction](https://github.com/ryuxdsgn/design-intelligence/releases/download/media/showcase--h2h-4-direction.jpg)
+
+## Brief and replies
+
+The exact text each run received.
+
+### prompt.txt
+
+````text
+Design the checkout screen for Sejuk, an iOS app in Jakarta for booking an AC service technician to come to your home. One screen, 390 wide, in this empty Figma file: <empty Figma file link>. Work only in that file. Write the copy in English.
+````
+
+### reply.txt
+
+````text
+Go with the direction you recommend and build the page.
+````
