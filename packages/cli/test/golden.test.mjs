@@ -8,9 +8,8 @@ import { mkdtempSync, readFileSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { figmaAudit } from "../dist/figma-audit.js";
 import { SOURCE_CHECKS, SYNTAX_CHECKS } from "../dist/checks.js";
-import { FIXTURES, core, hydrate } from "./golden.mjs";
+import { FIXTURES, auditCanvas, core, extract, hydrate } from "./golden.mjs";
 import { audit, readDirection, scanShared as scan, unused } from "../dist/engine.js";
 
 const load = (check) => JSON.parse(readFileSync(join(FIXTURES, `${check}.json`), "utf8"));
@@ -33,12 +32,37 @@ test("golden through ryux-core: scan, direction, drift, unused, audit", async ()
   }
   const audits = load("audit");
   assert.ok(audits.length > 0);
-  for (const { input, output } of audits) assert.deepEqual(plain(await audit(hydrate(input), input.page)), output, input.pages.map((p) => p.children.map((f) => f.name).join(",")).join(" | "));
+  for (const { input, output } of audits) assert.deepEqual(plain(audit(input)), output, input.pages.map((p) => p.children.map((f) => f.name).join(",")).join(" | "));
 });
 
-test("golden: the in-Figma audit script gives what ryux-core records", async () => {
-  // figma-audit.ts is still the script agents run in Figma; until it only extracts, it must agree with ryux-core.
-  for (const { input, output } of load("audit")) assert.deepEqual(plain(await figmaAudit(hydrate(input), input.page)), output, input.pages.map((p) => p.children.map((f) => f.name).join(",")).join(" | "));
+test("parity: the in-Figma extract, read by ryux-core, gives every recorded audit result, and is smaller", async () => {
+  // Each recorded canvas is rebuilt as fake Plugin API objects, read by the shipped script as use_figma runs it,
+  // and audited from that JSON alone, as `ryux audit canvas.json` does.
+  let full = 0;
+  let compact = 0;
+  for (const { input, output } of load("audit")) {
+    const json = JSON.stringify(await extract(hydrate(input), input.page));
+    full += JSON.stringify(input).length;
+    compact += json.length;
+    assert.equal(JSON.parse(json).truncated, undefined);
+    assert.deepEqual(JSON.parse(core.audit(json)), output, input.pages.map((p) => p.children.map((f) => f.name).join(",")).join(" | "));
+    assert.deepEqual(await auditCanvas(hydrate(input), input.page), output);
+  }
+  assert.ok(compact < full, `extract ${compact} bytes, full canvas ${full} bytes`);
+});
+
+test("the extract stops at its node limit and the audit says its counts are partial", async () => {
+  const leaf = (i) => ({ type: "RECTANGLE", name: `r${i}`, x: 0, y: i, width: 10, height: 1, visible: true, fills: [] });
+  const many = { type: "FRAME", name: "01", x: 0, y: 0, width: 390, height: 844, visible: true, fills: [], children: Array.from({ length: 4000 }, (_, i) => leaf(i)) };
+  many.findAll = () => many.children;
+  many.findOne = () => null;
+  const page = { name: "Flow", children: [many] };
+  const figma = { root: { children: [page] }, currentPage: page, setCurrentPageAsync: async () => {}, annotations: { getAnnotationCategoriesAsync: async () => [] } };
+  const out = await extract(figma, "");
+  assert.deepEqual(out.truncated, { nodes: 3000, limit: 3000 });
+  assert.equal(out.pages[0].children[0].children.length, 2999);
+  const r = JSON.parse(core.audit(JSON.stringify(out)));
+  assert.match(r.gate, / · partial: the extract stopped at 3000 nodes, so the counts cover only part of the page$/);
 });
 
 test("the catalogue lists ryux-core's detectors: same rules, levels, and folder-only flags, in order", () => {

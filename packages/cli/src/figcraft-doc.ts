@@ -1,5 +1,5 @@
 // A FigCraft document (the JSON `figcraft-cli convert file.figcraft file.json` writes) seen through the slice
-// of the Figma Plugin API that figma-audit.ts reads, so one audit measures both canvases. Read-only.
+// of the Figma Plugin API that the in-Figma extract (figma-audit.ts) reads, so one audit measures both canvases. Read-only.
 // Shape: { pages: [ids], current_page, nodes: { id: { type, name, parent, children, transform, width, height,
 // fills, strokes, effects, corners, layout, child_layout, clip, bound, styles, style, characters, annotations,
 // source } }, annotation_categories }.
@@ -34,7 +34,7 @@ function paint(p: Raw, bound: unknown): Raw {
   return { type: type.replace(/([a-z])([A-Z])/g, "$1_$2").toUpperCase(), visible, opacity: p.opacity ?? 1 };
 }
 
-/** The Figma-like `figma` object figmaAudit takes, built from a FigCraft document. */
+/** The Figma-like `figma` object figmaExtract reads, built from a FigCraft document. */
 export function figcraftCanvas(doc: Raw) {
   const raw: Record<string, Raw> = doc.nodes || {};
   const made = new Map<string, Raw>();
