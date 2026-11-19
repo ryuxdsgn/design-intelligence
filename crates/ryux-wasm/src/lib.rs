@@ -2,7 +2,7 @@
 
 use wasm_bindgen::prelude::*;
 
-/// The canvas audit over a recorded canvas (see fixtures/checks/audit.json for the shape).
+/// The canvas audit over a canvas as JSON: the in-Figma extract, or a recorded canvas (fixtures/checks/audit.json).
 #[wasm_bindgen]
 pub fn audit(input: &str) -> String {
     match serde_json_parse(input) {

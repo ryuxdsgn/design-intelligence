@@ -31,8 +31,43 @@ function save(check, input, output) {
 
 const plain = (v) => JSON.parse(JSON.stringify(v ?? null));
 
-const { neutralCanvas } = await import("../dist/canvas-json.js");
-export { neutralCanvas };
+/** A fake Figma canvas as the full neutral JSON the audit fixtures record: every own property, no functions, an
+ *  instance's main component as data, figma.mixed as {"$mixed": true}. */
+export async function neutralCanvas(figma, pageName) {
+  const neutral = async (n) => {
+    const out = {};
+    for (const [k, v] of Object.entries(n)) {
+      if (typeof v === "function" || k === "parent") continue;
+      if (typeof v === "symbol") out[k] = { $mixed: true };
+      else if (k === "children") out[k] = await Promise.all(v.map(neutral));
+      else out[k] = plain(v);
+    }
+    if (typeof n.getMainComponentAsync === "function") {
+      const mc = await n.getMainComponentAsync().catch(() => null);
+      const parent = mc?.parent;
+      out.mainComponent = mc ? { name: mc.name, parent: parent ? { type: parent.type, name: parent.name } : null } : null;
+    }
+    return out;
+  };
+  return {
+    pages: await Promise.all(figma.root.children.map(async (p) => ({ name: p.name, children: await Promise.all((p.children || []).map(neutral)) }))),
+    current: figma.currentPage.name,
+    page: pageName || "",
+    annotationCategories: plain(await figma.annotations.getAnnotationCategoriesAsync()),
+  };
+}
+
+const { figmaAuditScript } = await import("../dist/figma-audit.js");
+const AsyncFunction = Object.getPrototypeOf(async () => {}).constructor;
+/** The shipped in-Figma script, run as use_figma runs it (top-level return, `figma` in scope), on a page. */
+export const extract = (figma, pageName = "") =>
+  new AsyncFunction("figma", figmaAuditScript().replace('const PAGE = "";', `const PAGE = ${JSON.stringify(pageName)};`))(figma);
+
+/** The canvas audit as an agent runs it: the script in Figma, its JSON through ryux-core (`ryux audit`). */
+export async function auditCanvas(figma, pageName) {
+  const canvas = JSON.parse(JSON.stringify(await extract(figma, pageName)));
+  return canvas.error ? { error: canvas.error } : JSON.parse(core.audit(JSON.stringify(canvas)));
+}
 
 /** A source as the checks read it: path, raw, and ryux-core's ext and comment-blanked text. */
 export const toSource = (path, raw) => ({ path, raw, ...JSON.parse(core.source(path, raw)) });

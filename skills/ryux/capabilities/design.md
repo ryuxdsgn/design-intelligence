@@ -441,14 +441,18 @@ return { iconStrokes: strokes, iconColours: colours, unbound: [...unbound], mixe
      the code the payment provider returns for this order"). The note lives in the annotation, not as
      text inside the UI; the screen shows the asset as it will look. In another tool, use its annotation
      or comment feature. List the placeholders in the final message.
-   - In Figma, audit the page before the gate: send the code block in scripts/figma-audit.md from this skill's folder, unchanged, as the
-     code of one use_figma call (set PAGE to the flow's page). It reads the canvas and counts content images and their reuse,
+   - In Figma, audit the page before the gate, in two steps. First send the code block in scripts/figma-audit.md from
+     this skill's folder, unchanged, as the code of one use_figma call (set PAGE to the flow's page): it only reads the
+     page and returns it as JSON. Save that JSON, as returned, to a file, then run `npx @ryuxdsgn/design-intelligence
+     audit <file>.json`. The audit counts content images and their reuse,
      contrast, text cut by a bar or clipped, targets, overlays with no lift, a busy screen whose button keeps its idle
      label, unstyled text and unbound values, screens not built in auto layout and layers left outside them, empty bands,
      small uppercase labels, section cards, text under 12 px, uneven buttons in a row, and annotations. Fix each fail, fix
-     each warn or give the reason it stays, run it again, and copy its last gate line into VISUAL QA; the gate's numbers
-     come from it, not from memory. In FigCraft, save the file and run `npx @ryuxdsgn/design-intelligence audit <file>
-     --page <page>` instead: the same checks on the saved .figcraft (it needs figcraft-cli).
+     each warn or give the reason it stays, run both steps again, and copy the last gate line into VISUAL QA; the gate's
+     numbers come from it, not from memory. With no shell to run the second step, say the canvas audit was not run and
+     why, and write `figma audit: not measured (<reason>)`; never write counts it did not print. In FigCraft, save the
+     file and run `npx @ryuxdsgn/design-intelligence audit <file> --page <page>` instead: the same checks on the saved
+     .figcraft (it needs figcraft-cli).
    - Close with the Delivery Gate, saying what was not designed, such as other widths or states. If
      you wrote DESIGN.md, say so in the final message: which file, and each change as old → new ("(none) → …" for
      an added line).

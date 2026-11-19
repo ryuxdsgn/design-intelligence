@@ -1,6 +1,6 @@
-//! The canvas audit: the port of `packages/cli/src/figma-audit.ts`, over a canvas stored as plain JSON
-//! (`fixtures/checks/audit.json` shows the shape). It returns the same counts, findings, and gate line;
-//! comments here name only what differs from the TypeScript in form, not in result.
+//! The canvas audit, over a canvas stored as plain JSON (`fixtures/checks/audit.json` shows the shape): the
+//! in-Figma extract (packages/cli/src/figma-audit.ts) or a FigCraft document, read by `ryux audit`. It returns
+//! counts, findings, and the gate line. JavaScript semantics are kept where the first, JavaScript version relied on them.
 
 use crate::js::{len16, mixed, num, num_or, num_str, round, slice16, string, to_fixed, trim, truthy};
 use regex::Regex;
@@ -8,7 +8,7 @@ use serde_json::{json, Map, Value};
 use std::collections::{HashMap, HashSet};
 use std::sync::OnceLock;
 
-/// A JavaScript regex as the TypeScript writes it: `\b` is an ASCII word boundary, `i` ignores case.
+/// A JavaScript regex as the audit was first written: `\b` is an ASCII word boundary, `i` ignores case.
 fn re(pattern: &str) -> Regex {
     Regex::new(&format!("(?i){}", pattern.replace(r"\b", r"(?-u:\b)"))).expect("audit regex")
 }
@@ -701,7 +701,7 @@ pub fn audit(input: &Value) -> Value {
         counts.insert(k.to_string(), json!(c[k]));
     }
     let more = o.findings.len().saturating_sub(80);
-    json!({
+    let mut out = json!({
         "page": pname,
         "screens": screens.iter().map(|&s| t.name(s)).collect::<Vec<_>>(),
         "counts": counts,
@@ -710,5 +710,12 @@ pub fn audit(input: &Value) -> Value {
         "findings": o.findings.iter().take(80).cloned().collect::<Vec<_>>(),
         "more": more,
         "gate": gate,
-    })
+    });
+    // The in-Figma extract stops at a node limit and says so: the counts then cover only what it read.
+    if let Some(cut) = input.get("truncated").filter(|v| truthy(Some(v))) {
+        let read = num_str(num(cut.get("nodes")));
+        out["gate"] = json!(format!("{} · partial: the extract stopped at {} nodes, so the counts cover only part of the page", out["gate"].as_str().unwrap_or(""), read));
+        out["truncated"] = cut.clone();
+    }
+    out
 }

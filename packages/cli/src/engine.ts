@@ -2,7 +2,6 @@
 // ../wasm. It is the only implementation (owner, 2026-11-19); the checks answer to fixtures/checks. checks.ts
 // keeps what they look for as data, for --list-rules and the rule text.
 import { createRequire } from "node:module";
-import { neutralCanvas } from "./canvas-json.js";
 import type { Direction, ScanFinding } from "./checks.js";
 
 interface Core {
@@ -74,8 +73,8 @@ export function unused(sources: RawSource[], design: Direction): { colours: stri
   return answer(rust().unused(JSON.stringify({ sources, design })));
 }
 
-/** The canvas audit over a Figma-like canvas (figcraftCanvas). */
+/** The canvas audit over a canvas as JSON: what figmaExtract returns, in Figma or over a FigCraft document. */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export async function audit(figma: any, page: string): Promise<any> {
-  return answer(rust().audit(JSON.stringify(await neutralCanvas(figma, page))));
+export function audit(canvas: Record<string, unknown>): any {
+  return answer(rust().audit(JSON.stringify(canvas)));
 }

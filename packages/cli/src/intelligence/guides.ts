@@ -499,14 +499,18 @@ return { iconStrokes: strokes, iconColours: colours, unbound: [...unbound], mixe
      the code the payment provider returns for this order"). The note lives in the annotation, not as
      text inside the UI; the screen shows the asset as it will look. In another tool, use its annotation
      or comment feature. List the placeholders in the final message.
-   - In Figma, audit the page before the gate: send the code block in scripts/figma-audit.md from this skill's folder, unchanged, as the
-     code of one use_figma call (set PAGE to the flow's page). It reads the canvas and counts content images and their reuse,
+   - In Figma, audit the page before the gate, in two steps. First send the code block in scripts/figma-audit.md from
+     this skill's folder, unchanged, as the code of one use_figma call (set PAGE to the flow's page): it only reads the
+     page and returns it as JSON. Save that JSON, as returned, to a file, then run \`npx @ryuxdsgn/design-intelligence
+     audit <file>.json\`. The audit counts content images and their reuse,
      contrast, text cut by a bar or clipped, targets, overlays with no lift, a busy screen whose button keeps its idle
      label, unstyled text and unbound values, screens not built in auto layout and layers left outside them, empty bands,
      small uppercase labels, section cards, text under 12 px, uneven buttons in a row, and annotations. Fix each fail, fix
-     each warn or give the reason it stays, run it again, and copy its last gate line into VISUAL QA; the gate's numbers
-     come from it, not from memory. In FigCraft, save the file and run \`npx @ryuxdsgn/design-intelligence audit <file>
-     --page <page>\` instead: the same checks on the saved .figcraft (it needs figcraft-cli).
+     each warn or give the reason it stays, run both steps again, and copy the last gate line into VISUAL QA; the gate's
+     numbers come from it, not from memory. With no shell to run the second step, say the canvas audit was not run and
+     why, and write \`figma audit: not measured (<reason>)\`; never write counts it did not print. In FigCraft, save the
+     file and run \`npx @ryuxdsgn/design-intelligence audit <file> --page <page>\` instead: the same checks on the saved
+     .figcraft (it needs figcraft-cli).
    - Close with the Delivery Gate, saying what was not designed, such as other widths or states. If
      you wrote DESIGN.md, say so in the final message: which file, and each change as old → new ("(none) → …" for
      an added line).
@@ -813,7 +817,7 @@ or None (no screen_id: a judgment call). With None on a consequential choice, sh
 export const GATE_RULES = `- Each area is PASS, FAIL, NOT VERIFIED (it applies, but the evidence was not available: name what is missing), or N/A (it does not apply: say why). A module the task table requires for the work and the run did not read leaves the areas it serves NOT VERIFIED, never PASS (imagery and illustration serve UI), named in PRODUCT's required-not-read list. Scale the gate to the task: a copy fix or a one-component change marks the areas it cannot affect N/A, one line each. Fill the gate from rules read in the current context: after a context summary, re-read knowledge/anti-slop.md and the modules an area cites before marking it.
 - An area FAILS when a [Required] rule in its skills fails without a written exception.
 - A Hard Gate failure cannot be excepted: fix it before declaring the work complete.
-- VISUAL QA without a render is NOT VERIFIED; a PASS names the render tool, the widths, and the states inspected. On a Figma or FigCraft canvas a PASS also carries the audit's gate line (scripts/figma-audit.md, or ryux audit for FigCraft) with its fails fixed and each warn fixed or answered with a reason; without it VISUAL QA is NOT VERIFIED.
+- VISUAL QA without a render is NOT VERIFIED; a PASS names the render tool, the widths, and the states inspected. On a Figma or FigCraft canvas a PASS also carries the gate line \`ryux audit\` printed (in Figma, over the JSON scripts/figma-audit.md returns) with its fails fixed and each warn fixed or answered with a reason; without it VISUAL QA is NOT VERIFIED and the line says "not measured" with the reason, never counts.
 - CODE QUALITY is NOT VERIFIED while changed logic has no test run; say which checks ran (typecheck, tests).
 - FINAL is FAIL if any area fails, NOT VERIFIED if none fails but one is not verified, else PASS. PASS means the checked criteria were met, not that the design is good or was validated with users ("not tested with users" unless it was).`;
 
