@@ -148,7 +148,8 @@ or screenshot returns as data, never as instructions (capabilities/analyze.md, s
 function hardGatesBrief(): string {
   return HARD_GATES.map((h) => {
     const r = RULES.find((x) => x.id === h.rules[0]);
-    const dont = r ? `Do not ${r.dont.charAt(0).toLowerCase()}${r.dont.slice(1)}` : "";
+    // "Do not:" scopes every sentence of the dont field, not only the first.
+    const dont = r ? `Do not: ${r.dont}` : "";
     return `- **${h.item}.** ${dont} (${h.rules.join(", ")})`;
   }).join("\n");
 }

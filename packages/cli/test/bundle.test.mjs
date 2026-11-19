@@ -10,6 +10,15 @@ import { VERSION } from "../dist/product.js";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..", "..", "..");
 
+
+// One rule's section of a knowledge file: from its id to the next "### " heading (or the end).
+function ruleSection(md, id) {
+  const start = md.indexOf(id);
+  assert.ok(start >= 0, `${id} not found`);
+  const end = md.indexOf("### ", start + id.length);
+  return md.slice(start, end < 0 ? undefined : end);
+}
+
 test("the bundle has every expected file and passes validation", () => {
   const files = renderBundle();
   assert.deepEqual(Object.keys(files).sort(), expectedFiles().sort());
@@ -495,7 +504,7 @@ test("router: flows, journeys, and change size are reachable", () => {
 test("review fixes: change size, questions, journey evidence", () => {
   const b = renderBundle();
   const ux = b["knowledge/ux.md"];
-  const r20 = ux.slice(ux.indexOf("RX-UX-20"), ux.indexOf("### ", ux.indexOf("RX-UX-20") + 10));
+  const r20 = ruleSection(ux, "RX-UX-20");
   // 1. only improve or restyle asks are sized; features and bug fixes are not
   assert.match(r20, /adding a feature, fixing a bug, or a named small edit[^.]*is none of the three/i);
   // 2. the Polish asks already name a size
@@ -525,7 +534,7 @@ test("fix round 1: screen-ready flows and journeys, a revamp that changes the lo
   assert.match(ux, /phases agree with the map's own recommendations/i);
   assert.match(ux, /one actor[^\n]*no second persona/i);
   // B2: a revamp
-  const r20 = ux.slice(ux.indexOf("RX-UX-20"), ux.indexOf("### ", ux.indexOf("RX-UX-20") + 10));
+  const r20 = ruleSection(ux, "RX-UX-20");
   assert.match(r20, /changes the visual language[^\n]*type scale[^\n]*surfaces[^\n]*component shapes/i);
   assert.match(r20, /brand anchors[^\n]*logo[^\n]*primary accent/i);
   assert.match(r20, /every state[^\n]*error/i);
@@ -542,7 +551,7 @@ test("structural alternatives close with ryux pick and a 60 s recommendation, re
 
 test("a revamp lists its states, renders each before and after, and an error state keeps what is known", () => {
   const ux = renderBundle()["knowledge/ux.md"];
-  const r20 = ux.slice(ux.indexOf("RX-UX-20"), ux.indexOf("### ", ux.indexOf("RX-UX-20") + 10));
+  const r20 = ruleSection(ux, "RX-UX-20");
   assert.match(r20, /list the states first[^\n]*RX-EC-01[^\n]*before and after/i);
   assert.match(r20, /a state left as it was is named in the reply with its reason/i);
   assert.match(r20, /error or offline state keeps what is known[^\n]*last status[^\n]*RX-EC-06/i);
@@ -551,7 +560,7 @@ test("a revamp lists its states, renders each before and after, and an error sta
 
 test("revamp round 3: only the data the app has, Help stays, names states, and the owner's layout notes", () => {
   const ux = renderBundle()["knowledge/ux.md"];
-  const r20 = ux.slice(ux.indexOf("RX-UX-20"), ux.indexOf("### ", ux.indexOf("RX-UX-20") + 10));
+  const r20 = ruleSection(ux, "RX-UX-20");
   assert.match(r20, /from data the app already has/i);
   assert.match(r20, /data the app does not keep[^\n]*proposal[^\n]*not build/i);
   assert.match(r20, /Help stays active/i);
@@ -566,11 +575,11 @@ test("revamp round 3: only the data the app has, Help stays, names states, and t
 test("revamp round 4: known controls keep their place, new surfaces, each state leads with its items, a composed error, an unnamed map", () => {
   const files = renderBundle();
   const ux = files["knowledge/ux.md"];
-  const r20 = ux.slice(ux.indexOf("RX-UX-20"), ux.indexOf("### ", ux.indexOf("RX-UX-20") + 10));
+  const r20 = ruleSection(ux, "RX-UX-20");
   assert.match(r20, /controls people know[^\n]*keep their place[^\n]*reason/i);
-  assert.match(r20, /same surfaces[^\n]*(re-layout|restructure)/i);
+  assert.match(r20, /same surfaces[^\n]*restructure/i);
   assert.match(r20, /each state leads with the items it is about/i);
-  assert.match(r20, /error[^\n]*fills its space|composed for the screen/i);
+  assert.match(r20, /error state is composed for the screen/i);
   const slop = files["knowledge/anti-slop.md"];
   assert.match(slop, /street names on an illustrative map/i);
 });
@@ -578,11 +587,24 @@ test("revamp round 4: known controls keep their place, new surfaces, each state 
 test("revamp round 5: the item list follows the state, a decision keeps its weight, the old time struck through, one way to help, the stepper names the step", () => {
   const files = renderBundle();
   const ux = files["knowledge/ux.md"];
-  const r20 = ux.slice(ux.indexOf("RX-UX-20"), ux.indexOf("### ", ux.indexOf("RX-UX-20") + 10));
-  assert.match(r20, /item list follows the state[^\n]*summary[^\n]*wait/i);
+  const r20 = ruleSection(ux, "RX-UX-20");
+  assert.match(r20, /list follows the state[^\n]*summary[^\n]*wait/i);
   assert.match(r20, /asks for a decision keeps more weight than an ordinary item/i);
   assert.match(r20, /old one struck through next to the new one/i);
-  assert.match(r20, /one way to it is enough[^\n]*not both/i);
+  assert.match(r20, /one way to it is enough[^\n]*do not add a second help row/i);
   assert.match(r20, /Fewer is not none[^\n]*names the current step/i);
   assert.match(r20, /rounds 2 to 5/);
+});
+
+test("review of #99: the hard-gate brief keeps every dont sentence a don't, and RX-UX-20 settles its own conflicts", () => {
+  const files = renderBundle();
+  const skill = files["SKILL.md"];
+  const line = skill.split("\n").find((l) => l.startsWith("- **Placeholder copy shipped as final.**"));
+  assert.ok(line, "placeholder hard gate line");
+  assert.match(line, /^- \*\*Placeholder copy shipped as final\.\*\* Do not: /);
+  const r20 = ruleSection(files["knowledge/ux.md"], "RX-UX-20");
+  assert.match(r20, /already has two[^\n]*keep the one people know[^\n]*reply/i);
+  assert.match(r20, /struck through[^\n]*text label a screen reader reads/i);
+  assert.match(r20, /unless DESIGN\.md or the brand system sets them/i);
+  assert.match(r20, /Check:[^\n]*moved control[^\n]*reason[^\n]*current step[^\n]*old time/i);
 });
