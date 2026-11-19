@@ -442,6 +442,43 @@ export const RULES: Rule[] = [
       tradeoff: "efficiency for the practiced user (density, accelerators) can cost the newcomer clarity; RX-UX-11 serves both",
       check: "the Frame criteria name the cadence and the dominant quality; Critique weighs its findings with that lens",
     },
+    {
+      num: 18,
+      title: "A user flow shows every path, not only the happy one",
+      level: "required",
+      when: "a flow is designed, changed, or asked for (a user flow, task flow, or wireflow)",
+      do: "Read the screens or routes first when the product exists, then draw the flow for one task in one product:\n  - The entry point: where the user arrives from and what they came to do.\n  - The steps, each a user action and the system's response.\n  - The decisions, each with every answer it can take.\n  - Every failure branch the brief or the product can produce (a payment that fails, a slot that is taken, data that does not match), each with its way back to the task.\n  - The end point: what done looks like to the user, and what they see there.\n  - Write it as a Mermaid flowchart with a list of the failure branches and their ways back (knowledge/ux.md, User flows and journey maps); draw it in Figma or FigJam only when it is connected and asked for.",
+      dont: "Draw only the happy path, leave a failure branch without a way back, or end the flow at the last button instead of at what the user sees when it is done.",
+      why: "A flow is where missing states and dead ends show up before they are built; the happy path alone hides exactly the screens that fail in use.",
+      basis: "NNGroup User Journeys vs. User Flows (Kaplan, 2023): a flow is one task in one product, the user's steps and the system's responses; RYUX critical states and interaction outcomes (RX-EC-01, RX-IX-01); written for RYUX",
+      notWhen: "a single screen with no branches, where the view x state matrix (RX-EC-01) covers it",
+      tradeoff: "a full flow takes longer than a happy path; the failure branches are what the build would otherwise discover late",
+      check: "the flow names its entry, decisions, failure branches with ways back, and its end; each failure branch maps to a state in the design",
+    },
+    {
+      num: 19,
+      title: "A journey map says where every row comes from",
+      level: "required",
+      when: "a user journey map or customer journey map is asked for",
+      do: "Before making it, ask what the brief and the repo do not answer: the actor, the scenario and its goal, where the journey starts and ends, and what data exists (interviews, analytics, support tickets, research).\n  - Its parts follow NNGroup: the actor; the scenario and expectations; the phases; per phase the actions, thoughts (mindsets), and emotions; and the opportunities. The touchpoints and an owner per opportunity are RYUX additions.\n  - With research from the user or the ryux MCP (search_research), each cell cites its source (a study with its page and sample, an analytics report, a ticket set) as in the core evidence model. When research covers only some cells, it is a mixed map: cited cells and asumsi cells side by side, and the title says mixed.\n  - With none, the map is titled assumption-based (a hypothesis map): every thought, emotion, and pain point is marked as a guess, and the map ends with how to test the riskiest guesses (RX-UX-12).\n  - Use the table in knowledge/ux.md, User flows and journey maps.",
+      dont: "Write emotions, quotes, or pain points as if users said them when no one asked them, invent percentages or scores, or leave out the source row.",
+      why: "A journey map is only as reliable as the evidence behind it; an invented emotion reads like research and sends the design after a problem nobody has.",
+      basis: "NNGroup Journey Mapping 101 (Wang and Gibbons): actor, scenario and expectations, phases, actions, mindsets and emotions, opportunities; research-based maps and hypothesis maps that make assumptions explicit; owner decision 2026-11-19 (ask first; research through the MCP or labelled persona assumptions)",
+      tradeoff: "a map marked as guesses looks less finished; it says what to research next instead of hiding it",
+      check: "every row has a source (a cited study, user data, or asumsi); an assumption-based map is titled so and ends with tests",
+    },
+    {
+      num: 20,
+      title: "Name the size of the change: polish, revamp, or redesign",
+      level: "required",
+      when: "the ask is to improve or restyle an existing screen, page, or flow",
+      do: "Name which of three changes the request is, and keep what that size keeps. Adding a feature, fixing a bug, or a named small edit (rename a button, add a filter) is none of the three: do it without asking.\n  - Polish: the flow and the basic look stay; details, hierarchy, and states are tidied (capabilities/build.md, Polish).\n  - Revamp: the flow and the functions stay; the look and the screen structure change a lot. Run capabilities/design.md, stages 2 to 5, with the flow locked, and in a code project then implement it through capabilities/build.md.\n    - A revamp changes the visual language, not only the layout: the type scale and pairing, surfaces, component shapes, icons, and density; a re-layout in the same paint is a polish.\n    - The brand anchors stay unless the user says otherwise: the logo, the name, and the primary accent. Record each change to the DESIGN.md direction as old -> new.\n    - It covers every state, the error, empty, loading, and offline states as much as the happy one.\n    - Disclosure never hides what a state needs (the step times that explain a late order stay visible while it is late), and the status keeps its weight when a figure becomes the hero.\n    - Clear the standing clutter: stacked notes, and a floating control that covers content.\n  - Redesign: the flow, the information architecture, and the problem itself may be rethought, starting from evidence (research, analytics, a Critique), and drawn as a new flow (RX-UX-18).\n  - The asks listed under Polish (premium, cleaner, easier to find, a find-it or mood ask) name polish.\n  - When the request names none (perbaiki, bikin lebih bagus, improve this), ask once before changing anything, with the three options and what each would change on this screen. When it names one, do not ask.\n  - RX-UX-10 applies to all three: list what works, and change only what has a named problem.",
+      dont: "Turn a polish into a revamp, change the flow or functions in a revamp, start a redesign without evidence, or guess the size of an ambiguous request.",
+      why: "The three sizes promise different risks: users relearn nothing after a polish, the look after a revamp, and the task itself after a redesign; a wrong guess either breaks what people know or under-delivers.",
+      basis: "owner definitions 2026-11-19; NNGroup Radical Redesign or Incremental Change? (Loranger, 2015): improve incrementally by default, overhaul only when evidence shows small fixes cannot solve it",
+      tradeoff: "one question before work on an ambiguous request; it costs less than redoing the wrong size",
+      check: "the reply names the size; an ambiguous request got one question before the first change; a revamp keeps the flow and handlers",
+    },
   ]),
 
   ...skill("interaction", [
@@ -2168,6 +2205,7 @@ export const ACTIVATION: { task: string; skills: SkillId[] }[] = [
   { task: "AI feature (generated answers, summaries, drafts)", skills: ["product", "ux", "content", "edge-cases", "anti-slop"] },
   { task: "Copy only (UI text, chat, announcements)", skills: ["content", "anti-slop"] },
   { task: "Visual refinement", skills: ["ui", "design-system", "visual-qa", "anti-slop"] },
+  { task: "User flow or journey map", skills: ["product", "ux", "edge-cases", "content"] },
 ];
 
 export const ALL_SKILL_IDS: SkillId[] = SKILLS.map((s) => s.id);

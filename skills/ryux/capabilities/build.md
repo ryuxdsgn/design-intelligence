@@ -48,7 +48,7 @@ workflow (SKILL.md); Frame, Explore, and Evaluate happen in Design.
    colours, type, radius, or durations shows as drift): fix every fail, and fix each warn or give the reason it stays. For a new flow or a consequential change, add the
    usability test plan (RX-UX-12) unless the design already has one.
 
-**Refining what exists.** When the ask improves a screen that works ("polish this", "make the total
+**Polish: refining what exists.** When the ask improves a screen that works ("polish this", "make the total
 easier to find", "make it feel more premium") and gives no new design, steps 2 and 4 run this way:
 - **Diagnose first.** Render the target at the size it is used and write three to five findings in
   the Critique schema (capabilities/critique.md, step 8: severity, evidence, the smallest fix that
@@ -75,3 +75,5 @@ easier to find", "make it feel more premium") and gives no new design, steps 2 a
   answer.
 - A fix ask (polish, clean up) where no finding reaches severity 2 gets "no change needed" and the
   findings; a mood ask still gets its first-glance change.
+- A revamp or a redesign is not a polish: it runs capabilities/design.md first (RX-UX-20), and an ask
+  that names no size gets one question before any change.

@@ -120,6 +120,21 @@
   "title": "The dominant usability quality follows the usage cadence"
  },
  {
+  "id": "RX-UX-18",
+  "level": "required",
+  "title": "A user flow shows every path, not only the happy one"
+ },
+ {
+  "id": "RX-UX-19",
+  "level": "required",
+  "title": "A journey map says where every row comes from"
+ },
+ {
+  "id": "RX-UX-20",
+  "level": "required",
+  "title": "Name the size of the change: polish, revamp, or redesign"
+ },
+ {
   "id": "RX-IX-01",
   "level": "required",
   "title": "Before, during, result, recovery"

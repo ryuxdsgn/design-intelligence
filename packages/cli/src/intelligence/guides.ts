@@ -21,14 +21,13 @@ from DESIGN.md and the repo's screens). Pick the entry point, read its file, the
 | Entry point | When | Read |
 | --- | --- | --- |
 | **Analyze** | understand a screen, product, or flow that exists | \`capabilities/analyze.md\` |
-| **Design** | create or improve UI and UX without code: Figma, pen.dev, mockups, copy; write or update DESIGN.md from a brief or references | \`capabilities/design.md\` |
-| **Build** | implement or change the interface in code; refine a screen that works (polish, premium, easier to find) | \`capabilities/build.md\` |
+| **Design** | create or improve UI and UX without code: Figma, pen.dev, mockups, copy, user flows, journey maps; a revamp or redesign; write or update DESIGN.md from a brief or references | \`capabilities/design.md\` |
+| **Build** | implement or change the interface in code; polish a screen that works (premium, easier to find); a change of unnamed size asks first: polish, revamp, or redesign (RX-UX-20) | \`capabilities/build.md\` |
 | **Critique** | find what should change first, and why; a heuristic evaluation | \`capabilities/critique.md\` |
 | **QA** | verify a build against the intended design | \`capabilities/qa.md\` |
 
-Knowledge modules (\`knowledge/\`): product, ux, interaction, forms, edge-cases, content, ui, imagery (images, motion,
-expressive surfaces), illustration, design-system, accessibility, responsive, frontend, and anti-slop. Evidence comes from the brief, the
-project, product data, standards, and the ryux MCP when connected; none is required. Every entry point ends at the quality gates: the Hard
+Knowledge modules (\`knowledge/\`): product, ux, interaction, forms, edge-cases, content, ui, imagery (images, motion, expressive surfaces),
+illustration, design-system, accessibility, responsive, frontend, and anti-slop. Evidence comes from the brief, the project, product data, standards, and the ryux MCP when connected; none is required. Every entry point ends at the quality gates: the Hard
 Gates below and the Delivery Gate, with anti-slop as the last check, never the starting point. Keep them apart:
 Analyze says what exists, Design what to do, Critique if it is right, QA if it matches.`;
 
@@ -71,6 +70,8 @@ The six stages of the core workflow (SKILL.md), as Design runs them.
    Read the product docs first (the router, stage 1). Ask only when a missing answer materially
    affects the user flow, what the product can do, or whether the content is correct, those
    questions alone, most consequential first, at most three, in one message, before designing.
+   A user flow or journey map asks as in knowledge/ux.md (RX-UX-18, RX-UX-19), up to four for a user flow or journey map; a revamp runs stages 2
+   to 5 with the flow locked, a redesign may redraw the flow from evidence (RX-UX-20).
    A product rule that changes which states or actions the screen has (refunds, fees, what happens
    on failure) is a major decision. **Market:** when the prompt, DESIGN.md, and the product docs
    name no market, ask with no market as the recommended default; RYUX's examples are Indonesian
@@ -735,7 +736,7 @@ workflow (SKILL.md); Frame, Explore, and Evaluate happen in Design.
    colours, type, radius, or durations shows as drift): fix every fail, and fix each warn or give the reason it stays. For a new flow or a consequential change, add the
    usability test plan (RX-UX-12) unless the design already has one.
 
-**Refining what exists.** When the ask improves a screen that works ("polish this", "make the total
+**Polish: refining what exists.** When the ask improves a screen that works ("polish this", "make the total
 easier to find", "make it feel more premium") and gives no new design, steps 2 and 4 run this way:
 - **Diagnose first.** Render the target at the size it is used and write three to five findings in
   the Critique schema (capabilities/critique.md, step 8: severity, evidence, the smallest fix that
@@ -761,7 +762,9 @@ easier to find", "make it feel more premium") and gives no new design, steps 2 a
   bar cuts or covers fails, whatever the code says. Report what changed, why, what stayed, and that
   answer.
 - A fix ask (polish, clean up) where no finding reaches severity 2 gets "no change needed" and the
-  findings; a mood ask still gets its first-glance change.`;
+  findings; a mood ask still gets its first-glance change.
+- A revamp or a redesign is not a polish: it runs capabilities/design.md first (RX-UX-20), and an ask
+  that names no size gets one question before any change.`;
 
 export const CORE_EVIDENCE = `Say where every claim comes from:
 
@@ -921,6 +924,70 @@ usability; qualitative for why and how to fix, quantitative for how many and how
 | How do many people feel about it? | assess | survey, customer feedback |
 
 Most projects need more than one method. A single method, or none, is a choice to write down.
+
+## User flows and journey maps
+
+A user flow is one task in one product: the steps and the system's answers, minutes long (RX-UX-18). A journey
+map is a goal across channels and days, with what the person thinks and feels (RX-UX-19). Use a flow to design
+screens, a journey map to decide which moments are worth designing; the flow is a deep dive into one phase.
+
+**Before a flow or a journey map, ask** once, at most four questions, and only what the brief, DESIGN.md, and
+the repo do not already answer:
+1. Who is the actor, and what situation are they in?
+2. What is the scenario, and what goal ends it?
+3. Where does it start (the trigger) and where does it end?
+4. What data exists: interviews, analytics, support tickets, research (ryux MCP \`search_research\`)?
+
+Put it in the file the user names, else docs/ in the project; Figma or FigJam only when connected and asked.
+
+**A flow, as Mermaid.** Decisions are diamonds; every failure branch returns to the task or ends with a way
+out. Labels in the interface language. A short example (buying a prepaid electricity token):
+
+\`\`\`mermaid
+flowchart TD
+  A[Token listrik hampir habis: buka aplikasi] --> B[Masukkan nomor meter]
+  B --> C{Nomor meter ditemukan?}
+  C -- Tidak --> C2[Pesan: cek nomor di meteran] --> B
+  C -- Ya --> D[Lihat nama pelanggan, pilih nominal]
+  D --> E[Bayar]
+  E --> F{Pembayaran berhasil?}
+  F -- Tidak --> F2[Saldo tetap, coba metode lain] --> E
+  F -- Ya --> G{Token terbit?}
+  G -- Belum --> G2[Status diproses: token menyusul di riwayat dan notifikasi, saldo aman]
+  G -- Ya --> H[Token 20 digit tampil, bisa disalin: selesai]
+\`\`\`
+
+**Make it ready for screens.** A flow or journey deliverable goes on to design, so it also carries:
+- the success criteria, written before any structure is chosen;
+- for the riskiest decision in the flow (when the price is final, when the user pays, what happens on a
+  mismatch), two or three flow structures side by side, with the recommendation, the runner-up, and when to switch;
+- the assumptions in one table: each with its confidence, impact if wrong, and how to validate it;
+- a screen list: per screen its primary and secondary action and the states it must have (RX-EC-01).
+Keep one actor for one journey: no second persona until evidence says a second group behaves differently.
+
+Under it, list each failure branch with its way back ("pembayaran gagal: saldo tidak terpotong, coba metode
+lain") so each maps to a state in the design (RX-EC-01).
+
+**A journey map, as a table.** Columns are the phases; rows are the lenses. Above it: the actor, the scenario
+and expectations, and whether the map is research-based or assumption-based. The Source row says where each
+cell comes from (each cell cites its source): a cited study or user data, or "asumsi"; a mixed map has both.
+
+| Lens | Sadar token menipis | Membeli | Menunggu token | Memasukkan token | Setelahnya |
+| --- | --- | --- | --- | --- | --- |
+| Actions | ... | ... | ... | ... | ... |
+| Thoughts | ... | ... | ... | ... | ... |
+| Emotions | ... | ... | ... | ... | ... |
+| Touchpoints | ... | ... | ... | ... | ... |
+| Pain points | ... | ... | ... | ... | ... |
+| Opportunities (owner) | ... | ... | ... | ... | ... |
+| Source | asumsi | asumsi | ... | ... | ... |
+
+The phases agree with the map's own recommendations: when an opportunity says to defer a step (sign-up after
+the first order), the phases and the flow show it deferred, not as its own phase.
+
+An assumption-based map marks each guessed cell (asumsi) and ends with how to test the riskiest guesses: who
+to ask, the method (knowledge/ux.md, research methods), and the answer that would change the map. In Figma or
+FigJam, draw the same rows and columns when it is connected and asked for.
 
 Does not cover: per-action behavior (see ryux-interaction), forms (see ryux-forms), or states
 (see ryux-edge-cases).`,

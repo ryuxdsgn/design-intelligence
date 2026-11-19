@@ -78,6 +78,70 @@ usability; qualitative for why and how to fix, quantitative for how many and how
 
 Most projects need more than one method. A single method, or none, is a choice to write down.
 
+## User flows and journey maps
+
+A user flow is one task in one product: the steps and the system's answers, minutes long (RX-UX-18). A journey
+map is a goal across channels and days, with what the person thinks and feels (RX-UX-19). Use a flow to design
+screens, a journey map to decide which moments are worth designing; the flow is a deep dive into one phase.
+
+**Before a flow or a journey map, ask** once, at most four questions, and only what the brief, DESIGN.md, and
+the repo do not already answer:
+1. Who is the actor, and what situation are they in?
+2. What is the scenario, and what goal ends it?
+3. Where does it start (the trigger) and where does it end?
+4. What data exists: interviews, analytics, support tickets, research (ryux MCP `search_research`)?
+
+Put it in the file the user names, else docs/ in the project; Figma or FigJam only when connected and asked.
+
+**A flow, as Mermaid.** Decisions are diamonds; every failure branch returns to the task or ends with a way
+out. Labels in the interface language. A short example (buying a prepaid electricity token):
+
+```mermaid
+flowchart TD
+  A[Token listrik hampir habis: buka aplikasi] --> B[Masukkan nomor meter]
+  B --> C{Nomor meter ditemukan?}
+  C -- Tidak --> C2[Pesan: cek nomor di meteran] --> B
+  C -- Ya --> D[Lihat nama pelanggan, pilih nominal]
+  D --> E[Bayar]
+  E --> F{Pembayaran berhasil?}
+  F -- Tidak --> F2[Saldo tetap, coba metode lain] --> E
+  F -- Ya --> G{Token terbit?}
+  G -- Belum --> G2[Status diproses: token menyusul di riwayat dan notifikasi, saldo aman]
+  G -- Ya --> H[Token 20 digit tampil, bisa disalin: selesai]
+```
+
+**Make it ready for screens.** A flow or journey deliverable goes on to design, so it also carries:
+- the success criteria, written before any structure is chosen;
+- for the riskiest decision in the flow (when the price is final, when the user pays, what happens on a
+  mismatch), two or three flow structures side by side, with the recommendation, the runner-up, and when to switch;
+- the assumptions in one table: each with its confidence, impact if wrong, and how to validate it;
+- a screen list: per screen its primary and secondary action and the states it must have (RX-EC-01).
+Keep one actor for one journey: no second persona until evidence says a second group behaves differently.
+
+Under it, list each failure branch with its way back ("pembayaran gagal: saldo tidak terpotong, coba metode
+lain") so each maps to a state in the design (RX-EC-01).
+
+**A journey map, as a table.** Columns are the phases; rows are the lenses. Above it: the actor, the scenario
+and expectations, and whether the map is research-based or assumption-based. The Source row says where each
+cell comes from (each cell cites its source): a cited study or user data, or "asumsi"; a mixed map has both.
+
+| Lens | Sadar token menipis | Membeli | Menunggu token | Memasukkan token | Setelahnya |
+| --- | --- | --- | --- | --- | --- |
+| Actions | ... | ... | ... | ... | ... |
+| Thoughts | ... | ... | ... | ... | ... |
+| Emotions | ... | ... | ... | ... | ... |
+| Touchpoints | ... | ... | ... | ... | ... |
+| Pain points | ... | ... | ... | ... | ... |
+| Opportunities (owner) | ... | ... | ... | ... | ... |
+| Source | asumsi | asumsi | ... | ... | ... |
+
+The phases agree with the map's own recommendations: when an opportunity says to defer a step (sign-up after
+the first order), the phases and the flow show it deferred, not as its own phase.
+
+An assumption-based map marks each guessed cell (asumsi) and ends with how to test the riskiest guesses: who
+to ask, the method (knowledge/ux.md, research methods), and the answer that would change the map. In Figma or
+FigJam, draw the same rows and columns when it is connected and asked for.
+
 Does not cover: per-action behavior (see `knowledge/interaction.md`), forms (see `knowledge/forms.md`), or states
 (see `knowledge/edge-cases.md`).
 
@@ -239,3 +303,52 @@ How Indonesian apps sequence and structure this flow: `get_flow` for a reference
 - Not when: the cadence is unknown and no evidence sets it: write it as an open question and design for the first use
 - Trade-off: efficiency for the practiced user (density, accelerators) can cost the newcomer clarity; RX-UX-11 serves both
 - Check: the Frame criteria name the cadence and the dominant quality; Critique weighs its findings with that lens
+
+### RX-UX-18 [Required] A user flow shows every path, not only the happy one
+
+- When: a flow is designed, changed, or asked for (a user flow, task flow, or wireflow)
+- Do: Read the screens or routes first when the product exists, then draw the flow for one task in one product:
+  - The entry point: where the user arrives from and what they came to do.
+  - The steps, each a user action and the system's response.
+  - The decisions, each with every answer it can take.
+  - Every failure branch the brief or the product can produce (a payment that fails, a slot that is taken, data that does not match), each with its way back to the task.
+  - The end point: what done looks like to the user, and what they see there.
+  - Write it as a Mermaid flowchart with a list of the failure branches and their ways back (knowledge/ux.md, User flows and journey maps); draw it in Figma or FigJam only when it is connected and asked for.
+- Do not: Draw only the happy path, leave a failure branch without a way back, or end the flow at the last button instead of at what the user sees when it is done.
+- Why: A flow is where missing states and dead ends show up before they are built; the happy path alone hides exactly the screens that fail in use. (NNGroup User Journeys vs. User Flows (Kaplan, 2023): a flow is one task in one product, the user's steps and the system's responses; RYUX critical states and interaction outcomes (RX-EC-01, RX-IX-01); written for RYUX)
+- Not when: a single screen with no branches, where the view x state matrix (RX-EC-01) covers it
+- Trade-off: a full flow takes longer than a happy path; the failure branches are what the build would otherwise discover late
+- Check: the flow names its entry, decisions, failure branches with ways back, and its end; each failure branch maps to a state in the design
+
+### RX-UX-19 [Required] A journey map says where every row comes from
+
+- When: a user journey map or customer journey map is asked for
+- Do: Before making it, ask what the brief and the repo do not answer: the actor, the scenario and its goal, where the journey starts and ends, and what data exists (interviews, analytics, support tickets, research).
+  - Its parts follow NNGroup: the actor; the scenario and expectations; the phases; per phase the actions, thoughts (mindsets), and emotions; and the opportunities. The touchpoints and an owner per opportunity are RYUX additions.
+  - With research from the user or the ryux MCP (search_research), each cell cites its source (a study with its page and sample, an analytics report, a ticket set) as in the core evidence model. When research covers only some cells, it is a mixed map: cited cells and asumsi cells side by side, and the title says mixed.
+  - With none, the map is titled assumption-based (a hypothesis map): every thought, emotion, and pain point is marked as a guess, and the map ends with how to test the riskiest guesses (RX-UX-12).
+  - Use the table in knowledge/ux.md, User flows and journey maps.
+- Do not: Write emotions, quotes, or pain points as if users said them when no one asked them, invent percentages or scores, or leave out the source row.
+- Why: A journey map is only as reliable as the evidence behind it; an invented emotion reads like research and sends the design after a problem nobody has. (NNGroup Journey Mapping 101 (Wang and Gibbons): actor, scenario and expectations, phases, actions, mindsets and emotions, opportunities; research-based maps and hypothesis maps that make assumptions explicit; owner decision 2026-11-19 (ask first; research through the MCP or labelled persona assumptions))
+- Trade-off: a map marked as guesses looks less finished; it says what to research next instead of hiding it
+- Check: every row has a source (a cited study, user data, or asumsi); an assumption-based map is titled so and ends with tests
+
+### RX-UX-20 [Required] Name the size of the change: polish, revamp, or redesign
+
+- When: the ask is to improve or restyle an existing screen, page, or flow
+- Do: Name which of three changes the request is, and keep what that size keeps. Adding a feature, fixing a bug, or a named small edit (rename a button, add a filter) is none of the three: do it without asking.
+  - Polish: the flow and the basic look stay; details, hierarchy, and states are tidied (capabilities/build.md, Polish).
+  - Revamp: the flow and the functions stay; the look and the screen structure change a lot. Run capabilities/design.md, stages 2 to 5, with the flow locked, and in a code project then implement it through capabilities/build.md.
+    - A revamp changes the visual language, not only the layout: the type scale and pairing, surfaces, component shapes, icons, and density; a re-layout in the same paint is a polish.
+    - The brand anchors stay unless the user says otherwise: the logo, the name, and the primary accent. Record each change to the DESIGN.md direction as old -> new.
+    - It covers every state, the error, empty, loading, and offline states as much as the happy one.
+    - Disclosure never hides what a state needs (the step times that explain a late order stay visible while it is late), and the status keeps its weight when a figure becomes the hero.
+    - Clear the standing clutter: stacked notes, and a floating control that covers content.
+  - Redesign: the flow, the information architecture, and the problem itself may be rethought, starting from evidence (research, analytics, a Critique), and drawn as a new flow (RX-UX-18).
+  - The asks listed under Polish (premium, cleaner, easier to find, a find-it or mood ask) name polish.
+  - When the request names none (perbaiki, bikin lebih bagus, improve this), ask once before changing anything, with the three options and what each would change on this screen. When it names one, do not ask.
+  - RX-UX-10 applies to all three: list what works, and change only what has a named problem.
+- Do not: Turn a polish into a revamp, change the flow or functions in a revamp, start a redesign without evidence, or guess the size of an ambiguous request.
+- Why: The three sizes promise different risks: users relearn nothing after a polish, the look after a revamp, and the task itself after a redesign; a wrong guess either breaks what people know or under-delivers. (owner definitions 2026-11-19; NNGroup Radical Redesign or Incremental Change? (Loranger, 2015): improve incrementally by default, overhaul only when evidence shows small fixes cannot solve it)
+- Trade-off: one question before work on an ambiguous request; it costs less than redoing the wrong size
+- Check: the reply names the size; an ambiguous request got one question before the first change; a revamp keeps the flow and handlers

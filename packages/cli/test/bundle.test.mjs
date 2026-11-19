@@ -462,3 +462,73 @@ test("Explore closes the direction loop with ryux pick and keeps the text fallba
   assert.match(f, /fall ?back|the current text flow/i);
   assert.match(f, /no scripts of its own/);
 });
+
+test("ux: flows, journey maps, and the size of a change", () => {
+  const ux = renderBundle()["knowledge/ux.md"];
+  for (const id of ["RX-UX-18", "RX-UX-19", "RX-UX-20"]) assert.match(ux, new RegExp(id));
+  assert.match(ux, /RX-UX-18[\s\S]*failure branch/i);
+  assert.match(ux, /RX-UX-18[\s\S]*read the screens or routes/i);
+  assert.match(ux, /RX-UX-19[\s\S]*assumption-based/i);
+  assert.match(ux, /RX-UX-19[\s\S]*search_research/);
+  assert.match(ux, /RX-UX-20[\s\S]*Polish[\s\S]*Revamp[\s\S]*Redesign/);
+  assert.match(ux, /RX-UX-20[\s\S]*names none/i);
+});
+
+test("ux: flow and journey templates", () => {
+  const ux = renderBundle()["knowledge/ux.md"];
+  assert.match(ux, /```mermaid\nflowchart/);
+  assert.match(ux, /\| *Lens *\|/);
+  assert.match(ux, /asumsi/i);
+  assert.match(ux, /Before a flow or a journey map, ask/);
+});
+
+test("router: flows, journeys, and change size are reachable", () => {
+  const b = renderBundle();
+  assert.match(b["SKILL.md"], /journey map/i);
+  assert.match(b["SKILL.md"], /RX-UX-20/);
+  assert.match(b["SKILL.md"], /\| User flow or journey map \|/);
+  assert.ok(b["SKILL.md"].split("\n").length <= 180);
+  assert.match(b["capabilities/build.md"], /Polish: refining what exists[\s\S]*Diagnose first[\s\S]*Fix by impact/);
+  assert.match(b["capabilities/design.md"], /RX-UX-20/);
+});
+
+test("review fixes: change size, questions, journey evidence", () => {
+  const b = renderBundle();
+  const ux = b["knowledge/ux.md"];
+  const r20 = ux.slice(ux.indexOf("RX-UX-20"), ux.indexOf("RX-UX-20") + 2500);
+  // 1. only improve or restyle asks are sized; features and bug fixes are not
+  assert.match(r20, /adding a feature, fixing a bug, or a named small edit[^.]*is none of the three/i);
+  // 2. the Polish asks already name a size
+  assert.match(r20, /premium, cleaner, easier to find[^\n]*name polish/i);
+  // 3. a revamp in code explores inside the direction, then builds
+  assert.match(r20, /flow locked, and in a code project then implement it through capabilities\/build\.md/i);
+  // 4. one question budget, stated in Design stage 1
+  assert.match(b["capabilities/design.md"], /up to four for a user flow or journey map/);
+  // 5. the output place is a default, not a question
+  assert.doesNotMatch(ux, /Where should it go/);
+  assert.match(ux, /Put it in the file the user names, else docs\//);
+  // 6. parts NN/g does not list are attributed to RYUX
+  assert.match(ux, /touchpoints and an owner per opportunity are RYUX additions/i);
+  // 7. evidence per cell, mixed maps allowed
+  assert.match(ux, /each cell cites its source/i);
+  assert.match(ux, /mixed map/i);
+  // 8. the pending branch ends where the user sees it, not at the success end
+  assert.doesNotMatch(ux, /G2\[[^\]]*\] --> H/);
+});
+
+test("fix round 1: screen-ready flows and journeys, a revamp that changes the look and every state", () => {
+  const ux = renderBundle()["knowledge/ux.md"];
+  // B1: what the owner found useful
+  assert.match(ux, /screen list[^\n]*primary and secondary action[^\n]*states/i);
+  assert.match(ux, /two or three flow structures[^\n]*recommendation[^\n]*runner-up[^\n]*when to switch/i);
+  assert.match(ux, /confidence[^\n]*impact if wrong[^\n]*how to validate/i);
+  assert.match(ux, /phases agree with the map's own recommendations/i);
+  assert.match(ux, /one actor[^\n]*no second persona/i);
+  // B2: a revamp
+  const r20 = ux.slice(ux.indexOf("RX-UX-20"), ux.indexOf("RX-UX-20") + 4000);
+  assert.match(r20, /changes the visual language[^\n]*type scale[^\n]*surfaces[^\n]*component shapes/i);
+  assert.match(r20, /brand anchors[^\n]*logo[^\n]*primary accent/i);
+  assert.match(r20, /every state[^\n]*error/i);
+  assert.match(r20, /disclosure never hides what a state needs/i);
+  assert.match(r20, /floating control that covers content/i);
+});

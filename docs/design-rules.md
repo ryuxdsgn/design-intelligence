@@ -81,6 +81,7 @@ then findings with evidence, impact, recommendation, and confidence, structured 
 | AI feature (generated answers, summaries, drafts) | `knowledge/product.md`, `knowledge/ux.md`, `knowledge/content.md`, `knowledge/edge-cases.md`, `knowledge/anti-slop.md` |
 | Copy only (UI text, chat, announcements) | `knowledge/content.md`, `knowledge/anti-slop.md` |
 | Visual refinement | `knowledge/ui.md`, `knowledge/design-system.md`, `capabilities/qa.md`, `knowledge/anti-slop.md` |
+| User flow or journey map | `knowledge/product.md`, `knowledge/ux.md`, `knowledge/edge-cases.md`, `knowledge/content.md` |
 | Review or critique | `capabilities/critique.md` (Design Read + heuristic_eval), plus `capabilities/qa.md` |
 <!-- activation:end -->
 
@@ -207,13 +208,13 @@ line below for its exact source.
 <!-- provenance:start -->
 | Source cited | Rules citing it | Rules citing only this |
 | --- | --- | --- |
-| Public standard or research | 96 | 57 |
+| Public standard or research | 99 | 60 |
 | Industry practice | 28 | 6 |
 | Observed in a RYUX run | 18 | 7 |
 | Pattern also in another MIT ruleset (text written for RYUX) | 4 | 3 |
 | RYUX principle, taxonomy, or review | 75 | 23 |
 
-All 155 rules cite a source; 59 cite more than one kind, so the "Rules citing it" column adds up to more than 155.
+All 158 rules cite a source; 59 cite more than one kind, so the "Rules citing it" column adds up to more than 158.
 <!-- provenance:end -->
 
 ## Rules
@@ -221,7 +222,7 @@ All 155 rules cite a source; 59 cite more than one kind, so the "Rules citing it
 Generated from `packages/cli/src/content.ts` by `pnpm sync:skills`. Edit the rules there, not here.
 
 <!-- rules:start -->
-155 rules across 15 modules: 65 Required, 39 Preferred, 51 Contextual; 18 Hard Gates and 14 Quality Locks.
+158 rules across 15 modules: 68 Required, 39 Preferred, 51 Contextual; 18 Hard Gates and 14 Quality Locks.
 
 ### Product thinking (RX-PR) · `knowledge/product.md`
 
@@ -509,6 +510,55 @@ Gate area UX. Covers information architecture, navigation, flows, grouping, disc
 - Not when: the cadence is unknown and no evidence sets it: write it as an open question and design for the first use
 - Trade-off: efficiency for the practiced user (density, accelerators) can cost the newcomer clarity; RX-UX-11 serves both
 - Check: the Frame criteria name the cadence and the dominant quality; Critique weighs its findings with that lens
+
+#### RX-UX-18 [Required] A user flow shows every path, not only the happy one
+
+- When: a flow is designed, changed, or asked for (a user flow, task flow, or wireflow)
+- Do: Read the screens or routes first when the product exists, then draw the flow for one task in one product:
+  - The entry point: where the user arrives from and what they came to do.
+  - The steps, each a user action and the system's response.
+  - The decisions, each with every answer it can take.
+  - Every failure branch the brief or the product can produce (a payment that fails, a slot that is taken, data that does not match), each with its way back to the task.
+  - The end point: what done looks like to the user, and what they see there.
+  - Write it as a Mermaid flowchart with a list of the failure branches and their ways back (knowledge/ux.md, User flows and journey maps); draw it in Figma or FigJam only when it is connected and asked for.
+- Do not: Draw only the happy path, leave a failure branch without a way back, or end the flow at the last button instead of at what the user sees when it is done.
+- Why: A flow is where missing states and dead ends show up before they are built; the happy path alone hides exactly the screens that fail in use. (NNGroup User Journeys vs. User Flows (Kaplan, 2023): a flow is one task in one product, the user's steps and the system's responses; RYUX critical states and interaction outcomes (RX-EC-01, RX-IX-01); written for RYUX)
+- Not when: a single screen with no branches, where the view x state matrix (RX-EC-01) covers it
+- Trade-off: a full flow takes longer than a happy path; the failure branches are what the build would otherwise discover late
+- Check: the flow names its entry, decisions, failure branches with ways back, and its end; each failure branch maps to a state in the design
+
+#### RX-UX-19 [Required] A journey map says where every row comes from
+
+- When: a user journey map or customer journey map is asked for
+- Do: Before making it, ask what the brief and the repo do not answer: the actor, the scenario and its goal, where the journey starts and ends, and what data exists (interviews, analytics, support tickets, research).
+  - Its parts follow NNGroup: the actor; the scenario and expectations; the phases; per phase the actions, thoughts (mindsets), and emotions; and the opportunities. The touchpoints and an owner per opportunity are RYUX additions.
+  - With research from the user or the ryux MCP (search_research), each cell cites its source (a study with its page and sample, an analytics report, a ticket set) as in the core evidence model. When research covers only some cells, it is a mixed map: cited cells and asumsi cells side by side, and the title says mixed.
+  - With none, the map is titled assumption-based (a hypothesis map): every thought, emotion, and pain point is marked as a guess, and the map ends with how to test the riskiest guesses (RX-UX-12).
+  - Use the table in knowledge/ux.md, User flows and journey maps.
+- Do not: Write emotions, quotes, or pain points as if users said them when no one asked them, invent percentages or scores, or leave out the source row.
+- Why: A journey map is only as reliable as the evidence behind it; an invented emotion reads like research and sends the design after a problem nobody has. (NNGroup Journey Mapping 101 (Wang and Gibbons): actor, scenario and expectations, phases, actions, mindsets and emotions, opportunities; research-based maps and hypothesis maps that make assumptions explicit; owner decision 2026-11-19 (ask first; research through the MCP or labelled persona assumptions))
+- Trade-off: a map marked as guesses looks less finished; it says what to research next instead of hiding it
+- Check: every row has a source (a cited study, user data, or asumsi); an assumption-based map is titled so and ends with tests
+
+#### RX-UX-20 [Required] Name the size of the change: polish, revamp, or redesign
+
+- When: the ask is to improve or restyle an existing screen, page, or flow
+- Do: Name which of three changes the request is, and keep what that size keeps. Adding a feature, fixing a bug, or a named small edit (rename a button, add a filter) is none of the three: do it without asking.
+  - Polish: the flow and the basic look stay; details, hierarchy, and states are tidied (capabilities/build.md, Polish).
+  - Revamp: the flow and the functions stay; the look and the screen structure change a lot. Run capabilities/design.md, stages 2 to 5, with the flow locked, and in a code project then implement it through capabilities/build.md.
+    - A revamp changes the visual language, not only the layout: the type scale and pairing, surfaces, component shapes, icons, and density; a re-layout in the same paint is a polish.
+    - The brand anchors stay unless the user says otherwise: the logo, the name, and the primary accent. Record each change to the DESIGN.md direction as old -> new.
+    - It covers every state, the error, empty, loading, and offline states as much as the happy one.
+    - Disclosure never hides what a state needs (the step times that explain a late order stay visible while it is late), and the status keeps its weight when a figure becomes the hero.
+    - Clear the standing clutter: stacked notes, and a floating control that covers content.
+  - Redesign: the flow, the information architecture, and the problem itself may be rethought, starting from evidence (research, analytics, a Critique), and drawn as a new flow (RX-UX-18).
+  - The asks listed under Polish (premium, cleaner, easier to find, a find-it or mood ask) name polish.
+  - When the request names none (perbaiki, bikin lebih bagus, improve this), ask once before changing anything, with the three options and what each would change on this screen. When it names one, do not ask.
+  - RX-UX-10 applies to all three: list what works, and change only what has a named problem.
+- Do not: Turn a polish into a revamp, change the flow or functions in a revamp, start a redesign without evidence, or guess the size of an ambiguous request.
+- Why: The three sizes promise different risks: users relearn nothing after a polish, the look after a revamp, and the task itself after a redesign; a wrong guess either breaks what people know or under-delivers. (owner definitions 2026-11-19; NNGroup Radical Redesign or Incremental Change? (Loranger, 2015): improve incrementally by default, overhaul only when evidence shows small fixes cannot solve it)
+- Trade-off: one question before work on an ambiguous request; it costs less than redoing the wrong size
+- Check: the reply names the size; an ambiguous request got one question before the first change; a revamp keeps the flow and handlers
 
 ---
 
