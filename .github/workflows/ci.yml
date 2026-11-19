@@ -21,9 +21,18 @@ jobs:
         run: rustup target add wasm32-unknown-unknown
       - name: wasm-pack (pinned)
         run: npm install -g wasm-pack@0.15.1
+      # `ryux scan <url>` renders pages in Playwright's Chromium. It is installed outside the workspace, as a user's
+      # project would have it, so RYUX keeps no Playwright dependency; the render tests fail here instead of skipping.
+      - name: Playwright with Chromium (pinned), outside the workspace
+        run: |
+          npm install --prefix "$RUNNER_TEMP/pw" --no-save playwright@1.64.1
+          cd "$RUNNER_TEMP/pw" && npx playwright install --with-deps chromium
       - name: Typecheck
         run: pnpm typecheck
-      - name: Tests (bundle, rules, version, CLI install/check/init/update/remove)
+      - name: Tests (bundle, rules, version, CLI install/check/init/update/remove, rendered pages)
+        env:
+          RYUX_PLAYWRIGHT_CWD: ${{ runner.temp }}/pw
+          RYUX_REQUIRE_BROWSER: "1"
         run: pnpm test
       - name: Generated skill, docs, and versions match the sources
         run: pnpm check:sync

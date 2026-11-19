@@ -352,7 +352,11 @@ test("scan <url> without Playwright says how to add it and exits 1", () => {
 });
 
 // Needs Playwright with its Chromium where the CLI runs: RYUX_PLAYWRIGHT_CWD, or the repo root.
-// Skipped when neither has one, so CI without a browser still passes.
+// Skipped when neither has one; with RYUX_REQUIRE_BROWSER=1 (as in CI) a missing browser fails instead.
+const noBrowser = (t) => {
+  assert.ok(process.env.RYUX_REQUIRE_BROWSER !== "1", "RYUX_REQUIRE_BROWSER=1, but no Playwright browser was found (RYUX_PLAYWRIGHT_CWD)");
+  return t.skip("no Playwright browser here");
+};
 test("scan <url> measures overflow, contrast, targets, and collisions, and skips what it cannot know", (t) => {
   const dir = mkdtempSync(join(tmpdir(), "ryux-page-"));
   const page = join(dir, "page.html");
@@ -360,7 +364,7 @@ test("scan <url> measures overflow, contrast, targets, and collisions, and skips
   const r = run(process.env.RYUX_PLAYWRIGHT_CWD ?? join(dirname(cli), "..", "..", ".."), ["scan", `file://${page}`, "--widths", "320", "--json"]);
   if (/needs Playwright|could not start Chromium/.test(r.out)) {
     rmSync(dir, { recursive: true, force: true });
-    return t.skip("no Playwright browser here");
+    return noBrowser(t);
   }
   const found = JSON.parse(r.out).findings.map((f) => `${f.level} ${f.rule} ${f.message.split(/[:(]/)[0].trim()}`);
   assert.equal(r.code, 1);
@@ -387,7 +391,7 @@ test("scan <url> fails text a bar cuts on the first screen or still covers at th
   const cut = page(0);
   if (/needs Playwright|could not start Chromium/.test(cut.out)) {
     rmSync(dir, { recursive: true, force: true });
-    return t.skip("no Playwright browser here");
+    return noBrowser(t);
   }
   const bars = (r) => JSON.parse(r.out).findings.filter((f) => f.rule === "RX-QA-03" && f.level === "fail").map((f) => f.message.split(" bar ")[1].split(/[,:]/)[0]);
   assert.deepEqual(bars(cut).sort(), ["on the first screen", "with the page scrolled to its end"]);
@@ -407,7 +411,7 @@ test("scan <url> warns each visual tell once per page, and stays quiet on one re
   const slop = page("slop", SLOP);
   if (/needs Playwright|could not start Chromium/.test(slop.out)) {
     rmSync(dir, { recursive: true, force: true });
-    return t.skip("no Playwright browser here");
+    return noBrowser(t);
   }
   assert.deepEqual(tells(slop).sort(), [
     "RX-AS-05 3 elements glow",
@@ -433,7 +437,7 @@ test("probe parity: the shipped extract in Chromium, judged by ryux-core, gives 
   const browser = await (await chromium())?.launch().catch(() => null);
   if (!browser) {
     assert.ok(!recording, "recording fixtures/checks/probe.json needs Playwright with its Chromium (RYUX_PLAYWRIGHT_CWD)");
-    return t.skip("no Playwright browser here");
+    return noBrowser(t);
   }
   const recorded = recording ? [] : JSON.parse(readFileSync(join(FIXTURES, "probe.json"), "utf8"));
   const dir = mkdtempSync(join(tmpdir(), "ryux-probe-"));
