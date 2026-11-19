@@ -562,3 +562,15 @@ test("revamp round 3: only the data the app has, Help stays, names states, and t
   assert.match(r20, /toast[^\n]*docked/i);
   assert.match(r20, /thumb/i);
 });
+
+test("revamp round 4: known controls keep their place, new surfaces, each state leads with its items, a composed error, an unnamed map", () => {
+  const files = renderBundle();
+  const ux = files["knowledge/ux.md"];
+  const r20 = ux.slice(ux.indexOf("RX-UX-20"), ux.indexOf("### ", ux.indexOf("RX-UX-20") + 10));
+  assert.match(r20, /controls people know[^\n]*keep their place[^\n]*reason/i);
+  assert.match(r20, /same surfaces[^\n]*(re-layout|restructure)/i);
+  assert.match(r20, /each state leads with the items it is about/i);
+  assert.match(r20, /error[^\n]*fills its space|composed for the screen/i);
+  const slop = files["knowledge/anti-slop.md"];
+  assert.match(slop, /street names on an illustrative map/i);
+});
