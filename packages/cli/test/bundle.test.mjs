@@ -650,5 +650,5 @@ test("B3 rerun: not waiting still runs the timed pick; a revamp keeps the field 
   const r20 = ruleSection(files["knowledge/ux.md"], "RX-UX-20");
   assert.match(r20, /a field keeps the product's surface pattern/i);
   assert.match(r20, /the title keeps the context/i);
-  assert.match(r20, /ends where the next task starts/i);
+  assert.match(r20, /reaches the next task on the screens that exist[^\n]*adds no screen/i);
 });
