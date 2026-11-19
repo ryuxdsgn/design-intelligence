@@ -1,20 +1,12 @@
-// Tests for the canvas audit: each check on a wrong and a right fake canvas, read by the shipped in-Figma script
-// (scripts/figma-audit.md) and measured by ryux-core, as `ryux audit` does; and the CLI around it. Run on the
-// built dist.
+// Tests for the Figma audit (ryux-core's audit; scripts/figma-audit.md in Figma): each check on a wrong and a right fake canvas, and
+// the shipped script running as use_figma runs it. Run on the built dist.
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { spawnSync } from "node:child_process";
-import { mkdtempSync, readFileSync, writeFileSync } from "node:fs";
-import { tmpdir } from "node:os";
-import { dirname, join } from "node:path";
-import { fileURLToPath } from "node:url";
 import { figmaAuditScript } from "../dist/figma-audit.js";
-import { auditCanvas, extract, recordAudit } from "./golden.mjs";
+import { audit as auditCanvas } from "../dist/engine.js";
+import { recordAudit } from "./golden.mjs";
 import { renderBundle } from "../dist/render.js";
 import { RULES } from "../dist/intelligence/content.js";
-
-const here = dirname(fileURLToPath(import.meta.url));
-const cli = join(here, "..", "dist", "cli", "index.js");
 
 const white = { type: "SOLID", color: { r: 1, g: 1, b: 1 } };
 const ink = { type: "SOLID", color: { r: 0.08, g: 0.07, b: 0.06 } };
@@ -42,12 +34,10 @@ const figmaAudit = recordAudit(auditCanvas);
 const audit = async (frames, cats) => figmaAudit(canvas(frames, cats), "Flow");
 const rules = (r) => r.findings.map((f) => `${f.level} ${f.rule}`);
 
-test("every check names a rule that exists, and the in-Figma script names none: it only reads", () => {
+test("every check names a rule that exists", () => {
   const ids = new Set(RULES.map((r) => r.id));
-  const named = new Set(readFileSync(join(here, "..", "..", "..", "crates", "ryux-core", "src", "audit.rs"), "utf8").match(/RX-[A-Z0-9]+-\d{2}/g));
-  assert.ok(named.size >= 8, [...named].join(", "));
-  for (const id of named) assert.ok(ids.has(id), id);
-  assert.doesNotMatch(figmaAuditScript(), /RX-[A-Z0-9]+-\d{2}|findings|gate/);
+  const src = figmaAuditScript();
+  for (const id of new Set(src.match(/RX-[A-Z0-9]+-\d{2}/g))) assert.ok(ids.has(id), id);
 });
 
 test("contrast: pale text on white fails, ink passes, text over an image is not measured", async () => {
@@ -113,51 +103,18 @@ test("tokens and annotations are counted for the gate", async () => {
   assert.match(r.gate, /annotations Sample data 1/);
 });
 
-test("the shipped script runs as use_figma runs it, returns plain JSON, and says which page is missing", async () => {
+test("the shipped script runs as use_figma runs it, and says which page is missing", async () => {
   // Shipped as Markdown (the plugin directory refuses script files): one fenced block, the script unchanged.
   const md = renderBundle()["scripts/figma-audit.md"];
   const blocks = [...md.matchAll(/^(`{3,})js\n([\s\S]*?)\n\1$/gm)];
   assert.equal(blocks.length, 1);
   const src = blocks[0][2] + "\n";
   assert.equal(src, figmaAuditScript());
-  assert.match(md, /npx @ryuxdsgn\/design-intelligence audit canvas\.json/);
-  assert.match(md, /figma audit: not measured \(<reason>\)/);
   const AsyncFunction = Object.getPrototypeOf(async () => {}).constructor;
   const ok = await new AsyncFunction("figma", src.replace('const PAGE = "";', 'const PAGE = "Flow";'))(canvas([screen("01", [])]));
-  assert.deepEqual(JSON.parse(JSON.stringify(ok)), ok, "nothing JSON drops: no functions, symbols, or undefined");
-  assert.equal(ok.page, "Flow");
-  assert.equal(ok.gate, undefined, "the script measures nothing itself");
+  assert.match(ok.gate, /^figma audit \(Flow\): screens 1/);
   const missing = await new AsyncFunction("figma", src.replace('const PAGE = "";', 'const PAGE = "Nope";'))(canvas([]));
   assert.match(missing.error, /no page named "Nope"/);
-});
-
-test("ryux audit reads the script's JSON: the gate line, --json, exit codes, and a page the extract does not hold", () => {
-  const dir = mkdtempSync(join(tmpdir(), "ryux-audit-"));
-  const run = (args) => {
-    const r = spawnSync("node", [cli, "audit", ...args], { cwd: dir, encoding: "utf8", env: { ...process.env, NO_COLOR: "1" } });
-    return { code: r.status, out: r.stdout, err: r.stderr };
-  };
-  return (async () => {
-    const pale = { type: "SOLID", color: { r: 0.78, g: 0.78, b: 0.78 } };
-    writeFileSync(join(dir, "ok.json"), JSON.stringify(await extract(canvas([screen("01", [text("Title", "Panggung", [16, 60, 200, 20])])]), "")));
-    writeFileSync(join(dir, "bad.json"), JSON.stringify(await extract(canvas([screen("01", [text("Hint", "Pick a seat", [16, 100, 200, 20], { fills: [pale] })])]), "")));
-    writeFileSync(join(dir, "missing.json"), JSON.stringify(await extract(canvas([]), "Nope")));
-    const ok = run(["ok.json"]);
-    assert.equal(ok.code, 0, ok.err);
-    assert.match(ok.out, /^\nfigma audit \(Flow\): screens 1 · /);
-    const bad = run(["bad.json"]);
-    assert.equal(bad.code, 1);
-    assert.match(bad.out, /^fail RX-A11Y-01 +01 \/ Hint: "Pick a seat" [\d.]+:1, needs 4\.5:1\n/);
-    const json = JSON.parse(run(["bad.json", "--json"]).out);
-    assert.equal(json.counts.contrastFails, 1);
-    assert.match(json.gate, /^figma audit \(Flow\)/);
-    const wrongPage = run(["ok.json", "--page", "Other"]);
-    assert.equal(wrongPage.code, 2);
-    assert.match(wrongPage.err, /holds the page "Flow" only: set PAGE = "Other"/);
-    const missing = run(["missing.json"]);
-    assert.equal(missing.code, 2);
-    assert.match(missing.err, /no page named "Nope"; pages: Flow/);
-  })();
 });
 
 test("an unnamed dialog painted over a full-screen scrim is an overlay", async () => {
@@ -294,12 +251,6 @@ test("figcraft: a FigCraft document is read through the same audit (boxes, style
   const shot = fig.root.children[0].children[0];
   assert.deepEqual(shot.children[3].children[1].absoluteBoundingBox, { x: 1264, y: 612, width: 60, height: 20 }, "boxes compose the parents' transforms");
   const r = await figmaAudit(fig, "Rak");
-  const dir = mkdtempSync(join(tmpdir(), "ryux-figcraft-"));
-  writeFileSync(join(dir, "doc.json"), JSON.stringify(doc));
-  const viaCli = spawnSync("node", [cli, "audit", "doc.json", "--page", "Rak", "--json"], { cwd: dir, encoding: "utf8" });
-  const fromCli = JSON.parse(viaCli.stdout);
-  assert.equal(fromCli.gate, r.gate.replace(/^figma audit/, "figcraft audit"), "the CLI reads a FigCraft document through the same extract");
-  assert.deepEqual(fromCli.counts, r.counts);
   assert.equal(r.counts.screens, 1, "the component at page level is not a screen");
   assert.equal(r.counts.rawEffects, 0, "a shadow from an effect style counts as styled");
   assert.equal(r.counts.unstyledText, 1, "the Share label has no text style");

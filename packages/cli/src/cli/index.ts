@@ -840,10 +840,9 @@ Commands:
   scan        Check source files for rules a machine can see (Rupiah format, alt text, zoom, focus, ...).
               No LLM, no network. Default path: this folder. Give a URL to measure the rendered page
               (sideways scroll, contrast, target size, colliding text, text under a bar); that needs Playwright.
-  audit       Measure a design's screens with the canvas audit (contrast, targets, text cut by a bar,
-              auto layout, empty bands, small text, ...). Takes the .json the Figma script returns
-              (scripts/figma-audit.md), a .figcraft (needs figcraft-cli), or the .json it converts to.
-              No LLM, no network.
+  audit       Measure a FigCraft design file's screens with the Figma audit's checks (contrast, targets,
+              text cut by a bar, auto layout, empty bands, small text, ...). Takes .figcraft (needs
+              figcraft-cli) or the .json it converts to. No LLM, no network.
   pick        Open an HTML page (e.g. a directions page) in the browser and wait for a click;
               print the chosen number. Used by the Design step to pick a direction without copy-paste.
   update      Update an install to this version (also migrates RYUX 1.x folders).
@@ -861,7 +860,7 @@ Options:
   --yes                skip the confirmation (remove)
   --dry-run            list what install or init would create or update, and write nothing
   --json               print check's, scan's, or audit's findings as JSON (for agents and CI)
-  --page <name>        audit: the page to measure in a FigCraft file (default its current page)
+  --page <name>        audit: the page to measure (default the file's current page)
   --hook               install: run ryux scan after each edit, for Claude Code, Codex, Cursor, and OpenCode (opt-in)
   --list-rules         scan: list what each check looks for
   --design [file]      scan: compare colours, fonts, radius, and durations with DESIGN.md's direction
@@ -889,7 +888,6 @@ Examples:
   ${CLI_CMD} scan src
   ${CLI_CMD} scan http://localhost:3000/checkout
   ${CLI_CMD} scan --list-rules
-  ${CLI_CMD} audit canvas.json
   ${CLI_CMD} audit flow.figcraft --page Rak
   ${CLI_CMD} install --agent claude --hook
 

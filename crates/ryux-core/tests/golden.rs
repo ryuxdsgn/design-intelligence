@@ -24,22 +24,6 @@ fn golden_audit() {
 }
 
 #[test]
-fn a_cut_extract_says_its_counts_are_partial() {
-    let mut input = serde_json::json!({
-        "pages": [{ "name": "Flow", "children": [{ "type": "FRAME", "name": "01", "x": 0, "y": 0, "width": 390, "height": 844, "children": [] }] }],
-        "current": "Flow", "page": "", "annotationCategories": []
-    });
-    let whole = ryux_core::audit(&input);
-    assert!(whole.get("truncated").is_none());
-    assert!(!whole["gate"].as_str().unwrap().contains("partial"));
-    input["truncated"] = serde_json::json!({ "nodes": 3000, "limit": 3000 });
-    let cut = ryux_core::audit(&input);
-    assert_eq!(cut["truncated"]["nodes"], 3000);
-    assert!(cut["gate"].as_str().unwrap().ends_with(" · partial: the extract stopped at 3000 nodes, so the counts cover only part of the page"));
-    assert_eq!(cut["counts"], whole["counts"]);
-}
-
-#[test]
 fn every_rule_the_audit_names_exists() {
     let path = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../../fixtures/rules.json");
     let rules: Vec<Value> = serde_json::from_str(&std::fs::read_to_string(path).unwrap()).unwrap();
