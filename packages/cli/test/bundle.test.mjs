@@ -614,3 +614,20 @@ test("ryux pick runs without -y, since an auto-confirm install can be refused by
   assert.match(d, /pick directions\.html` as is, without `-y`/);
   assert.match(d, /pick alternatives\.html --recommend <n>`, without `-y`,/);
 });
+
+test("the skill ships only Markdown, JSON, and images (plugin directory policy), and the audit script stays out of AGENTS.md", async () => {
+  const files = renderBundle();
+  assert.ok(files["scripts/figma-audit.md"]);
+  assert.equal(files["scripts/figma-audit.js"], undefined);
+  for (const k of Object.keys(files)) assert.match(k, /\.(md|json)$/, k);
+  const { renderAgentsBlock } = await import("../dist/render.js");
+  assert.doesNotMatch(renderAgentsBlock(), /const figmaAudit/);
+  assert.match(files["capabilities/design.md"], /scripts\/figma-audit\.md/);
+  assert.doesNotMatch(Object.values(files).join("\n"), /figma-audit\.js/);
+  const { readdirSync, readFileSync: read, statSync } = await import("node:fs");
+  const walk = (d) => readdirSync(d).flatMap((n) => (statSync(join(d, n)).isDirectory() ? walk(join(d, n)) : [join(d, n)]));
+  for (const f of walk(join(root, "plugins", "ryux"))) {
+    assert.match(f, /\.(md|json|png)$/, f);
+    assert.notEqual(read(f, "utf8").slice(0, 2), "#!", f);
+  }
+});

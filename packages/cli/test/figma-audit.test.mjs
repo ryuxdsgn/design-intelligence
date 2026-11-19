@@ -103,7 +103,11 @@ test("tokens and annotations are counted for the gate", async () => {
 });
 
 test("the shipped script runs as use_figma runs it, and says which page is missing", async () => {
-  const src = renderBundle()["scripts/figma-audit.js"];
+  // Shipped as Markdown (the plugin directory refuses script files): one fenced block, the script unchanged.
+  const md = renderBundle()["scripts/figma-audit.md"];
+  const blocks = [...md.matchAll(/^(`{3,})js\n([\s\S]*?)\n\1$/gm)];
+  assert.equal(blocks.length, 1);
+  const src = blocks[0][2] + "\n";
   assert.equal(src, figmaAuditScript());
   const AsyncFunction = Object.getPrototypeOf(async () => {}).constructor;
   const ok = await new AsyncFunction("figma", src.replace('const PAGE = "";', 'const PAGE = "Flow";'))(canvas([screen("01", [])]));

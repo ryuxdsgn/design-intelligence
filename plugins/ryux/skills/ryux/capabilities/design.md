@@ -439,8 +439,8 @@ return { iconStrokes: strokes, iconColours: colours, unbound: [...unbound], mixe
      the code the payment provider returns for this order"). The note lives in the annotation, not as
      text inside the UI; the screen shows the asset as it will look. In another tool, use its annotation
      or comment feature. List the placeholders in the final message.
-   - In Figma, audit the page before the gate: send scripts/figma-audit.js from this skill's folder as the code of
-     one use_figma call (set PAGE to the flow's page). It reads the canvas and counts content images and their reuse,
+   - In Figma, audit the page before the gate: send the code block in scripts/figma-audit.md from this skill's folder, unchanged, as the
+     code of one use_figma call (set PAGE to the flow's page). It reads the canvas and counts content images and their reuse,
      contrast, text cut by a bar or clipped, targets, overlays with no lift, a busy screen whose button keeps its idle
      label, unstyled text and unbound values, screens not built in auto layout and layers left outside them, empty bands,
      small uppercase labels, section cards, text under 12 px, uneven buttons in a row, and annotations. Fix each fail, fix

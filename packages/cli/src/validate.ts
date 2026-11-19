@@ -15,7 +15,7 @@ export function expectedFiles(): string[] {
     "SKILL.md",
     ...["analyze", "design", "build", "critique", "qa"].map((c) => `capabilities/${c}.md`),
     ...SKILLS.filter((s) => s.id !== "visual-qa").map((s) => `knowledge/${s.id}.md`),
-    "scripts/figma-audit.js",
+    "scripts/figma-audit.md",
   ];
 }
 

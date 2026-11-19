@@ -1,4 +1,12 @@
-// RYUX Figma audit: read-only. Send this whole file as the code of one use_figma call, after setting PAGE.
+# RYUX Figma audit script
+
+Read-only. Copy the code block below, unchanged, as the `code` of one `use_figma` call. Set `PAGE` to the
+page to audit first ("" audits the first page). It returns counts, findings, and the gate line for the Delivery
+Gate. It is kept in Markdown because the Claude plugin directory accepts no script files from this publisher;
+the same code ships in the npm package as `ryux audit` for FigCraft files.
+
+```js
+// RYUX Figma audit: read-only. Send this whole block as the code of one use_figma call, after setting PAGE.
 // It measures the page's screens and returns counts, findings, and a gate line to copy into the Delivery Gate.
 // Fix every "fail" (and each "warn" you agree with), then run it again; the last run's line goes in the gate.
 const PAGE = ""; // the page to audit, by name ("" = the first page)
@@ -332,3 +340,4 @@ const figmaAudit = async function figmaAudit(figma, pageName) {
     return { page: page.name, screens: screens.map((s) => s.name), counts: c, images: [...images.entries()].map(([h, s]) => ({ image: h.slice(0, 8), screens: [...s] })), annotations, findings: findings.slice(0, 80), more: Math.max(0, findings.length - 80), gate };
 };
 return await figmaAudit(figma, PAGE);
+```

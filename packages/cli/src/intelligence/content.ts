@@ -1584,7 +1584,7 @@ export const RULES: Rule[] = [
       dont: "Position layers absolutely inside a component, set a fixed width that clips a long label, or show it only at the comfortable width it was drawn at; build a screen as loose layers placed by x and y, or leave test layers and spare instances on the page.",
       why: "A component or screen that does not resize the way the code does gets detached in the design file and rebuilt in code; a screen of loose layers breaks when one text grows, and every later fix moves numbers by hand.",
       basis: "Design-system practice; Figma auto layout (help.figma.com); RX-RD-01; ryux design-system trial 2026-11-13 (Figma): every component in auto layout, none shown at its smallest width; owner review 2026-11-16 of two Figma flows (Panggung and Rak, OpenCode with DeepSeek, one run each): 0 of 16 screens in auto layout, every layer placed by x and y, a test layer and a spare status bar left on the page, a later tidy pass found 38 text boxes shorter than their text; written for RYUX",
-      check: "the sheet shows each component at its smallest width with its longest label; render it; nothing clipped, overflowing, or wrapped where it must not; on a Figma page, scripts/figma-audit.js counts screens built in auto layout, loose layers, layers outside the screens, and effects without a style",
+      check: "the sheet shows each component at its smallest width with its longest label; render it; nothing clipped, overflowing, or wrapped where it must not; on a Figma page, scripts/figma-audit.md counts screens built in auto layout, loose layers, layers outside the screens, and effects without a style",
     },
     {
       num: 13,
