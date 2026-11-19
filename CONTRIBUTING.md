@@ -42,7 +42,9 @@ and into `packages/cli/src/checks.ts` when it adds, removes, or reorders a detec
 two lists equal). Record the new behaviour with `pnpm --filter @ryuxdsgn/design-intelligence record:fixtures`
 and review the diff in `fixtures/checks`: the node tests and `cargo test` replay it. The JSX and TSX
 syntax checks (`crates/ryux-core/src/jsx.rs`, on the oxc parser) have unit tests there and CLI tests in
-`packages/cli/test/scan.test.mjs`. The Figma audit script agents run inside Figma
+`packages/cli/test/scan.test.mjs`. The markup detectors (alt text, clickable div or span, icon-only button,
+heading levels, positive tabindex) read JSX and TSX with oxc and HTML with html5ever
+(`crates/ryux-core/src/markup.rs`); Vue, Svelte, Astro, and a JSX file oxc cannot parse stay on the patterns in `scan.rs`. The Figma audit script agents run inside Figma
 (`packages/cli/src/figma-audit.ts`) is still JavaScript and must agree with ryux-core's audit.
 The browser is different: for `ryux scan <url>`, the script in the page (`packages/cli/src/cli/page-probe.ts`)
 only reads boxes, computed styles, text, and hit tests, and `crates/ryux-core/src/probe.rs` judges them. Its parity
