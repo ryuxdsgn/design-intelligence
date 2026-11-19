@@ -28,7 +28,8 @@ The six stages of the core workflow (SKILL.md), as Design runs them.
    and no `direction:` block, read their visual language first (capabilities/analyze.md), write it as
    the `direction:` block with status observed and the files it came from, tell the user in one line,
    and build on it. Offer new directions only when the user asks for a new look, and then keep what
-   works (RX-UX-10).
+   works (RX-UX-10). A revamp is not a new look: its alternatives are structures (stage 4, alternatives.html with
+   `--recommend`), and its visual change stays inside the brand (RX-UX-20).
    **Direction is the user's call** (RX-UI-26): when neither the prompt, DESIGN.md, nor a product that
    exists sets the UI direction, the next message offers three directions as style tiles and waits; the motion direction
    rides with it. Show the tiles as one static HTML page (`directions.html` in the project folder; no server,
