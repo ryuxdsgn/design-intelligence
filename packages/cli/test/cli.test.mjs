@@ -212,3 +212,73 @@ test("a wrongly used command exits with 2", () => {
   assert.equal(run(dir, "install", "--agent", "nope").code, 2);
   rmSync(dir, { recursive: true, force: true });
 });
+
+// `ryux audit` on a FigCraft document: one screen with one heading, nothing to report.
+const solid = (r, g, b) => ({ type: "solid", visible: true, opacity: 1, color: { r, g, b, a: 1 } });
+const neutralDoc = {
+  pages: [1], current_page: 1, annotation_categories: [],
+  nodes: {
+    1: { id: 1, type: "page", name: "Home", children: [2] },
+    2: { id: 2, type: "frame", name: "01-home", parent: 1, transform: [1, 0, 0, 1, 0, 0], width: 390, height: 844, clip: true, fills: [solid(1, 1, 1)], layout: { mode: "vertical", gap: 16, padding: [24, 16, 24, 16] }, children: [3] },
+    3: { id: 3, type: "text", name: "Title", parent: 2, transform: [1, 0, 0, 1, 16, 24], width: 200, height: 28, characters: "Orders", fills: [solid(0.1, 0.1, 0.1)], style: { font_size: 22 } },
+  },
+};
+const GATE = /^figcraft audit \((?<page>[^)]+)\): screens (?<screens>\d+) · .+ · (?<fail>\d+) fail, (?<warn>\d+) warn$/m;
+
+test("audit: a neutral canvas exits 0 with one gate line; --json carries the same gate", () => {
+  const dir = project();
+  writeFileSync(join(dir, "doc.json"), JSON.stringify(neutralDoc));
+  const r = run(dir, "audit", "doc.json");
+  assert.equal(r.code, 0, r.out);
+  const gate = r.out.trim().split("\n");
+  assert.equal(gate.length, 1, r.out);
+  assert.deepEqual({ ...GATE.exec(gate[0]).groups }, { page: "Home", screens: "1", fail: "0", warn: "0" });
+  assert.match(gate[0], /contrast fails 0 .* targets under 24 0, under 44 0 .* annotations none/);
+  const j = run(dir, "audit", "doc.json", "--json");
+  assert.equal(j.code, 0, j.out);
+  const out = JSON.parse(j.out);
+  assert.deepEqual(out.findings, []);
+  assert.equal(out.gate, gate[0]);
+  rmSync(dir, { recursive: true, force: true });
+});
+
+test("audit: a missing file, an unknown page, another format, or no file at all fails and says why", () => {
+  const dir = project();
+  const missing = run(dir, "audit", "nope.json");
+  assert.equal(missing.code, 1, missing.out);
+  assert.match(missing.out, /no such file or directory, open .*nope\.json/);
+  assert.doesNotMatch(missing.out, GATE);
+  writeFileSync(join(dir, "doc.json"), JSON.stringify(neutralDoc));
+  const page = run(dir, "audit", "doc.json", "--page", "Checkout");
+  assert.equal(page.code, 1, page.out);
+  assert.match(page.out, /no page named "Checkout"; pages: Home/);
+  writeFileSync(join(dir, "doc.fig"), "");
+  const other = run(dir, "audit", "doc.fig");
+  assert.equal(other.code, 1, other.out);
+  assert.match(other.out, /audit reads a \.figcraft file or the \.json figcraft-cli converts it to, not doc\.fig/);
+  const none = run(dir, "audit");
+  assert.equal(none.code, 2, none.out);
+  assert.match(none.out, /^Usage: ryux audit <file\.figcraft \| file\.json>/m);
+  rmSync(dir, { recursive: true, force: true });
+});
+
+const figcraftCli = spawnSync(process.env.FIGCRAFT_CLI || "figcraft-cli", ["--version"], { encoding: "utf8" }).status === 0;
+
+test("audit: a .figcraft file goes through figcraft-cli and gets the same gate line", { skip: figcraftCli ? false : "figcraft-cli is not on PATH" }, () => {
+  const dir = project();
+  const script = [
+    { command: "frame.create", params: { x: 0, y: 0, width: 390, height: 844, name: "01-home" } },
+    { command: "text.create", params: { text: "Orders", x: 16, y: 24, parent: 2, props: { fontSize: 22 } } },
+  ];
+  writeFileSync(join(dir, "make.json"), JSON.stringify(script));
+  const made = spawnSync(process.env.FIGCRAFT_CLI || "figcraft-cli", ["run", join(dir, "make.json"), "--out", join(dir, "home.figcraft"), "--automation-write-root", dir], { encoding: "utf8" });
+  assert.equal(made.status, 0, made.stderr);
+  const r = run(dir, "audit", "home.figcraft");
+  assert.equal(r.code, 0, r.out);
+  const gate = r.out.trim().split("\n").at(-1);
+  const g = GATE.exec(gate)?.groups;
+  assert.ok(g, r.out);
+  assert.equal(g.screens, "1");
+  assert.equal(g.fail, "0");
+  rmSync(dir, { recursive: true, force: true });
+});

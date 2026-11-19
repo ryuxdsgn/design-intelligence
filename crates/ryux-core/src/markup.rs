@@ -22,6 +22,15 @@ pub struct Markup {
     pub headings: Vec<(usize, i64)>,
     /// A positive tabindex: offset of the attribute (or property) and the value as written in the message.
     pub tabindex: Vec<(usize, String)>,
+    /// A `<button>` with no type inside a `<form>`, other than the one taken as the form's submit.
+    pub untyped: Vec<usize>,
+    /// The first loading indicator: a spinner, loader, loading, or skeleton class or component, or "Loading…" text.
+    pub loading: Option<usize>,
+    /// The first dialog: an element with a dialog role, or a `<dialog>`.
+    pub dialog: Option<usize>,
+    /// An HTML page that loads a script from a file (`<script src>`): what it does at run time, such as closing a
+    /// dialog on Esc or setting aria-busy, is in that file, out of this one's sight.
+    pub external_script: bool,
 }
 
 /// The file read as structure, or None when it stays on the patterns (not JSX, TSX, or HTML; or oxc gave up).
@@ -56,6 +65,65 @@ fn positive(v: &str) -> Option<String> {
     (n > 0).then(|| n.to_string())
 }
 
+/// The words of a class, component, or identifier: split at non-alphanumerics, digits, and camelCase
+/// ("LoadingSkeleton" gives loading and skeleton, "Loader2" gives loader, "KEY_ESCAPE" gives key and escape).
+pub fn words(s: &str) -> Vec<String> {
+    let c: Vec<char> = s.chars().collect();
+    let mut out = Vec::new();
+    let mut cur = String::new();
+    for (i, &ch) in c.iter().enumerate() {
+        if !ch.is_ascii_alphabetic() {
+            if !cur.is_empty() {
+                out.push(std::mem::take(&mut cur).to_ascii_lowercase());
+            }
+            continue;
+        }
+        let prev = if i > 0 { c[i - 1] } else { ' ' };
+        let next = c.get(i + 1).copied().unwrap_or(' ');
+        // a new word at aB, and at the B of ABc
+        let starts = ch.is_ascii_uppercase() && (prev.is_ascii_lowercase() || (prev.is_ascii_uppercase() && next.is_ascii_lowercase()));
+        if starts && !cur.is_empty() {
+            out.push(std::mem::take(&mut cur).to_ascii_lowercase());
+        }
+        cur.push(ch);
+    }
+    if !cur.is_empty() {
+        out.push(cur.to_ascii_lowercase());
+    }
+    out
+}
+
+/// A class or component name that says it is a loading indicator.
+fn loader_name(s: &str) -> bool {
+    words(s).iter().any(|w| matches!(w.as_str(), "spinner" | "loader" | "loading" | "skeleton"))
+}
+
+/// Visible text that says something is loading: "Loading…", "Memuat data...", "Memproses…".
+fn loading_text(s: &str) -> bool {
+    let t = trim(s);
+    let lower = t.to_lowercase();
+    t.chars().count() <= 60 && ["loading", "memuat", "memproses"].iter().any(|w| lower.starts_with(w)) && (t.ends_with('…') || t.ends_with("..."))
+}
+
+/// The typeless buttons of one form to flag: all of them, but when nothing in the form is an explicit submit,
+/// the last one with no click handler is taken as the form's submit button and left alone. A form with
+/// method="dialog" closes its dialog on purpose and is skipped.
+fn untyped_in_form(dialog_method: bool, explicit_submit: bool, buttons: &[(usize, bool)]) -> Vec<usize> {
+    if dialog_method {
+        return Vec::new();
+    }
+    let submit = if explicit_submit { None } else { buttons.iter().rposition(|b| !b.1) };
+    buttons.iter().enumerate().filter(|(i, _)| Some(*i) != submit).map(|(_, b)| b.0).collect()
+}
+
+/// An import path whose components are icons, which draw and announce nothing. A Spinner or Skeleton from any
+/// other import (a UI kit, or this project's own components) may announce itself where it is defined; that file is
+/// checked on its own, so here it is not counted as an indicator.
+fn icon_package(source: &str) -> bool {
+    let s = source.to_ascii_lowercase();
+    !s.starts_with('.') && (s.contains("icon") || s.contains("lucide") || s.contains("feather"))
+}
+
 /// What a button's content says about its name, gathered over its descendants.
 #[derive(Default)]
 struct Inside {
@@ -68,8 +136,10 @@ mod jsx {
     use super::*;
     use oxc_allocator::Allocator;
     use oxc_ast::ast::{
-        AssignmentExpression, AssignmentTarget, Expression, JSXAttributeItem, JSXAttributeValue, JSXChild, JSXElement, JSXExpression, JSXOpeningElement,
+        AssignmentExpression, AssignmentTarget, Expression, ImportDeclaration, ImportDeclarationSpecifier, JSXAttributeItem, JSXAttributeValue, JSXChild, JSXElement,
+        JSXExpression, JSXFragment, JSXOpeningElement, StringLiteral, TemplateElement,
     };
+    use std::collections::HashMap;
     use oxc_ast_visit::{walk, Visit};
     use oxc_parser::Parser;
     use oxc_span::{GetSpan, SourceType, Span};
@@ -77,6 +147,43 @@ mod jsx {
     struct Reader<'s> {
         src: &'s str,
         out: Markup,
+        /// The forms the visit is inside, innermost last.
+        forms: Vec<Form>,
+        /// Loading indicators: offset, and for a component the name it is imported under.
+        loaders: Vec<(usize, Option<String>)>,
+        /// Imported names and the path each comes from.
+        imports: HashMap<String, String>,
+    }
+
+    #[derive(Default)]
+    struct Form {
+        dialog_method: bool,
+        explicit_submit: bool,
+        /// Typeless buttons: offset, and whether it has a click handler.
+        buttons: Vec<(usize, bool)>,
+    }
+
+    /// The strings in an expression (literals and template text), not those in JSX inside it.
+    struct Strings<'s> {
+        src: &'s str,
+        out: Vec<(usize, String)>,
+    }
+
+    impl<'a> Visit<'a> for Strings<'_> {
+        fn visit_string_literal(&mut self, s: &StringLiteral<'a>) {
+            self.out.push((s.span.start as usize, s.value.as_str().unwrap_or_default().to_string()));
+        }
+        fn visit_template_element(&mut self, t: &TemplateElement<'a>) {
+            self.out.push((t.span.start as usize, text(self.src, t.span).to_string()));
+        }
+        fn visit_jsx_element(&mut self, _: &JSXElement<'a>) {}
+        fn visit_jsx_fragment(&mut self, _: &JSXFragment<'a>) {}
+    }
+
+    fn strings(src: &str, e: &JSXExpression) -> Vec<(usize, String)> {
+        let mut s = Strings { src, out: Vec::new() };
+        s.visit_jsx_expression(e);
+        s.out
     }
 
     fn text(src: &str, span: Span) -> &str {
@@ -216,7 +323,28 @@ mod jsx {
                 "h1" | "h2" | "h3" | "h4" | "h5" | "h6" => self.out.headings.push((at, name[1..].parse().unwrap())),
                 _ => {}
             }
+            self.markup_checks(el, name, at, &a);
+            if name == "form" {
+                let dialog_method = matches!(a.get("method"), Some(Value::Str(m)) if m.eq_ignore_ascii_case("dialog"));
+                self.forms.push(Form { dialog_method, ..Default::default() });
+                walk::walk_jsx_element(self, el);
+                let f = self.forms.pop().unwrap();
+                self.out.untyped.extend(untyped_in_form(f.dialog_method, f.explicit_submit, &f.buttons));
+                return;
+            }
             walk::walk_jsx_element(self, el);
+        }
+
+        fn visit_import_declaration(&mut self, d: &ImportDeclaration<'a>) {
+            let from = d.source.value.as_str().unwrap_or_default().to_string();
+            for sp in d.specifiers.iter().flatten() {
+                let local = match sp {
+                    ImportDeclarationSpecifier::ImportSpecifier(s) => &s.local,
+                    ImportDeclarationSpecifier::ImportDefaultSpecifier(s) => &s.local,
+                    ImportDeclarationSpecifier::ImportNamespaceSpecifier(s) => &s.local,
+                };
+                self.imports.insert(local.name.as_str().to_string(), from.clone());
+            }
         }
 
         // el.tabIndex = 2, which the pattern also caught
@@ -238,14 +366,80 @@ mod jsx {
         }
     }
 
+    impl Reader<'_> {
+        /// The button, loading, and dialog checks' reading of one element.
+        fn markup_checks(&mut self, el: &JSXElement, name: &str, at: usize, a: &Attrs) {
+            let src = self.src;
+            let lower = name.starts_with(|c: char| c.is_ascii_lowercase());
+            // a submit the form names itself: <button type="submit">, <input type="image">, <Button type="submit">
+            if matches!(a.get("type"), Some(Value::Str(t)) if t.eq_ignore_ascii_case("submit") || t.eq_ignore_ascii_case("image")) {
+                if let Some(f) = self.forms.last_mut() {
+                    f.explicit_submit = true;
+                }
+            }
+            if name == "button" && !a.has("type") && !a.spread && !a.has("form") {
+                if let Some(f) = self.forms.last_mut() {
+                    f.buttons.push((at, a.has("onClick")));
+                }
+            }
+            if self.out.dialog.is_none() && ((lower && matches!(a.get("role"), Some(Value::Str(r)) if dialog_role(r))) || name == "dialog") {
+                self.out.dialog = Some(at);
+            }
+            // a loading class (className="spinner", cn("skeleton", x)), a component (<Spinner />), or a web component
+            for item in &el.opening_element.attributes {
+                let JSXAttributeItem::Attribute(attr) = item else { continue };
+                let n = text(src, attr.name.span());
+                if n != "className" && n != "class" {
+                    continue;
+                }
+                let found = match &attr.value {
+                    Some(JSXAttributeValue::StringLiteral(s)) => loader_name(s.value.as_str().unwrap_or_default()),
+                    Some(JSXAttributeValue::ExpressionContainer(c)) => strings(src, &c.expression).iter().any(|(_, s)| loader_name(s)),
+                    _ => false,
+                };
+                if found {
+                    self.loaders.push((at, None));
+                }
+            }
+            if !lower {
+                let last = name.rsplit('.').next().unwrap_or(name);
+                if loader_name(last) {
+                    self.loaders.push((at, Some(name.split('.').next().unwrap_or(name).to_string())));
+                }
+            } else if name.contains('-') && loader_name(name) {
+                self.loaders.push((at, None));
+            }
+            // visible text: a text child, or a string in a child expression ({busy ? "Memproses…" : "Bayar"})
+            for c in &el.children {
+                match c {
+                    JSXChild::Text(t) if loading_text(text(src, t.span)) => {
+                        let raw = text(src, t.span);
+                        let lead = raw.len() - raw.trim_start().len();
+                        self.loaders.push((u16_at(src, t.span.start as usize + lead), None));
+                    }
+                    JSXChild::ExpressionContainer(e) => {
+                        if let Some((i, _)) = strings(src, &e.expression).into_iter().find(|(_, s)| loading_text(s)) {
+                            self.loaders.push((u16_at(src, i), None));
+                        }
+                    }
+                    _ => {}
+                }
+            }
+        }
+    }
+
     fn parse(raw: &str, kind: SourceType) -> Option<Markup> {
         let alloc = Allocator::default();
         let ret = Parser::new(&alloc, raw, kind).parse();
         if ret.fatal_error {
             return None;
         }
-        let mut r = Reader { src: raw, out: Markup::default() };
+        let mut r = Reader { src: raw, out: Markup::default(), forms: Vec::new(), loaders: Vec::new(), imports: HashMap::new() };
         r.visit_program(&ret.program);
+        // an imported component counts only from an icon set; one defined in this file counts
+        let imports = &r.imports;
+        let elsewhere = |root: &Option<String>| root.as_ref().and_then(|n| imports.get(n)).is_some_and(|from| !icon_package(from));
+        r.out.loading = r.loaders.iter().filter(|l| !elsewhere(&l.1)).map(|l| l.0).min();
         Some(r.out)
     }
 
@@ -512,6 +706,7 @@ mod html {
             match t.name.as_str() {
                 // el.tabIndex = 2 in an inline script, which the pattern also caught
                 "script" => {
+                    out.external_script |= has("src");
                     let b = raw.as_bytes();
                     let close = (t.end..b.len()).find(|&i| b[i..].len() >= 8 && b[i..i + 8].eq_ignore_ascii_case(b"</script")).unwrap_or(b.len());
                     let code = &raw[t.end..close];
@@ -565,6 +760,54 @@ mod html {
                 _ => {}
             }
         }
+
+        // The button, loading, and dialog checks. Text has no place of its own here: it is placed at its element.
+        let mut loaders = Vec::new();
+        for node in doc.tree.root().descendants() {
+            if let Node::Text(s) = node.value() {
+                let parent = node.parent().filter(|p| p.value().as_element().is_some_and(|e| !matches!(e.name(), "script" | "style" | "template")));
+                if let Some(&k) = parent.and_then(|p| made.get(&p.id())) {
+                    if loading_text(s) {
+                        loaders.push(at(&tags[k]));
+                    }
+                }
+                continue;
+            }
+            let Node::Element(el) = node.value() else { continue };
+            let Some(&ti) = made.get(&node.id()) else { continue };
+            let t = &tags[ti];
+            if el.attr("class").is_some_and(loader_name) || (el.name().contains('-') && loader_name(el.name())) {
+                loaders.push(at(t));
+            }
+            if out.dialog.is_none() && (el.name() == "dialog" || el.attr("role").is_some_and(dialog_role)) {
+                out.dialog = Some(at(t));
+            }
+            if el.name() != "form" {
+                continue;
+            }
+            let dialog_method = el.attr("method").is_some_and(|m| m.trim().eq_ignore_ascii_case("dialog"));
+            let mut explicit_submit = false;
+            let mut buttons = Vec::new();
+            for d in node.descendants().skip(1) {
+                let Node::Element(e) = d.value() else { continue };
+                let Some(&k) = made.get(&d.id()) else { continue };
+                // a control of a form nested inside this one belongs to that form
+                let form = d.ancestors().find(|a| a.value().as_element().is_some_and(|x| x.name() == "form"));
+                if form.map(|f| f.id()) != Some(node.id()) {
+                    continue;
+                }
+                let kind = e.attr("type").map(|v| v.trim().to_ascii_lowercase());
+                if matches!(e.name(), "button" | "input") && matches!(kind.as_deref(), Some("submit" | "image")) {
+                    explicit_submit = true;
+                }
+                let bt = &tags[k];
+                if e.name() == "button" && kind.is_none() && e.attr("form").is_none() && !spread.test(&raw[bt.start..bt.end]) {
+                    buttons.push((at(bt), e.attrs().any(|a| CLICK.contains(&a.0))));
+                }
+            }
+            out.untyped.extend(untyped_in_form(dialog_method, explicit_submit, &buttons));
+        }
+        out.loading = loaders.into_iter().min();
         out
     }
 

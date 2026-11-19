@@ -357,6 +357,59 @@ fn rule_a11y04_heading(s: &Source, _: &Ctx) -> Vec<Hit> {
         .collect()
 }
 
+fn rule_a11y04_untyped(s: &Source, _: &Ctx) -> Vec<Hit> {
+    // Vue, Svelte, and Astro have no tree here, and no pattern stands in for one.
+    let Some(m) = structure(s) else { return Vec::new() };
+    m.untyped.iter().map(|&i| hit(i, "a <button> with no type inside a <form> submits the form when pressed: add type=\"button\", or type=\"submit\" if it sends the form")).collect()
+}
+
+/// Anything in the file that tells assistive technology about a wait. Read broadly, over the text: a mention
+/// anywhere keeps the file quiet, since a false alarm costs more here than a miss.
+const ANNOUNCED: &str = r#"aria-busy|ariaBusy|aria-live|ariaLive|\brole\s*[=:]\s*\{?\s*["'`](?:status|alert|progressbar)\b|setAttribute\(\s*["']role["']\s*,\s*["'](?:status|alert|progressbar)\b|<output\b|<progress\b"#;
+
+fn rule_ix02_loading(s: &Source, _: &Ctx) -> Vec<Hit> {
+    let Some(at) = structure(s).filter(|m| !m.external_script).and_then(|m| m.loading) else { return Vec::new() };
+    if re(ANNOUNCED, "").test(&s.text) {
+        return Vec::new();
+    }
+    vec![hit(at, "a loading indicator that only shows: nothing in this file tells a screen reader about the wait; put aria-busy on the region that is loading, or the in-progress text in a role=\"status\" element")]
+}
+
+/// Dialog and focus libraries that close on Esc and keep focus inside.
+const DIALOG_LIBRARY: &str = r#"["'](?:focus-trap|focus-trap-react|react-focus-lock|@radix-ui/react-dialog|@radix-ui/react-alert-dialog|@headlessui/react|react-aria|react-aria-components|@reach/dialog|@ark-ui/[\w-]+|vaul|react-modal)(?:/[\w./-]*)?["']"#;
+
+/// A keyboard way out of a dialog, as the file shows it: an Esc key check, the native modal dialog (showModal,
+/// or a cancel handler), aria-modal with a key handler, a known library, or a word that names Esc or focus
+/// containment in an identifier (useEscape, closeOnEsc, onEscapeKeyDown, FocusTrap, FocusScope, inert).
+fn dialog_way_out(text: &str) -> bool {
+    if re(r#"\b(?:keyCode|which)\s*===?\s*27\b|\b27\s*===?\s*[\w.]*\b(?:keyCode|which)\b|\.showModal\s*\(|\bon[Cc]ancel\b|addEventListener\(\s*["'`]cancel["'`]"#, "").test(text) || re(DIALOG_LIBRARY, "").test(text) {
+        return true;
+    }
+    if re(r"aria-modal|ariaModal", "").test(text) && re(r#"\bon[Kk]ey(?:[Dd]own|[Uu]p)\b|["'`]key(?:down|up)["'`]|\buseHotkeys\b|\buseKey\w*"#, "").test(text) {
+        return true;
+    }
+    let mut prev: Option<String> = None;
+    for token in re(r"[A-Za-z_$][\w$]*", "g").matches(text) {
+        for w in markup::words(&token) {
+            let pair = prev.as_deref().map(|p| (p, w.as_str()));
+            if matches!(w.as_str(), "esc" | "escape" | "inert") || matches!(pair, Some(("focus", "trap" | "lock" | "scope")) | Some(("trap", "focus"))) {
+                return true;
+            }
+            prev = Some(w);
+        }
+        prev = None;
+    }
+    false
+}
+
+fn rule_a11y03_dialog(s: &Source, _: &Ctx) -> Vec<Hit> {
+    let Some(at) = structure(s).filter(|m| !m.external_script).and_then(|m| m.dialog) else { return Vec::new() };
+    if dialog_way_out(&s.text) {
+        return Vec::new();
+    }
+    vec![hit(at, "a dialog with no keyboard way out in this file: close it on Esc and keep Tab inside it while it is open (showModal() on a <dialog> does both), or use a dialog component that does")]
+}
+
 fn first(s: &Source, pattern: &str, message: impl Fn(&str) -> String) -> Vec<Hit> {
     re(pattern, "").exec(&s.text).map_or(Vec::new(), |m| vec![hit(m.index, message(m.g(0)))])
 }
@@ -561,10 +614,13 @@ fn detectors() -> &'static [Detector] {
         Detector { rule: "RX-A11Y-02", level: "warn", exts: visual, folder: false, find: rule_a11y02_small },
         Detector { rule: "RX-A11Y-03", level: "fail", exts: markup, folder: false, find: rule_a11y03_tabindex },
         Detector { rule: "RX-A11Y-03", level: "warn", exts: markup_style, folder: false, find: rule_a11y03_outline },
+        Detector { rule: "RX-A11Y-03", level: "warn", exts: markup, folder: false, find: rule_a11y03_dialog },
         Detector { rule: "RX-A11Y-04", level: "fail", exts: markup, folder: false, find: rule_a11y04_img },
         Detector { rule: "RX-A11Y-04", level: "warn", exts: markup, folder: false, find: rule_a11y04_click },
         Detector { rule: "RX-A11Y-04", level: "warn", exts: markup, folder: false, find: rule_a11y04_icon },
         Detector { rule: "RX-A11Y-04", level: "warn", exts: markup, folder: false, find: rule_a11y04_heading },
+        Detector { rule: "RX-A11Y-04", level: "warn", exts: markup, folder: false, find: rule_a11y04_untyped },
+        Detector { rule: "RX-IX-02", level: "warn", exts: markup, folder: false, find: rule_ix02_loading },
         Detector { rule: "RX-FM-05", level: "warn", exts: markup_script, folder: true, find: rule_fm05 },
         Detector { rule: "RX-A11Y-08", level: "warn", exts: visual, folder: true, find: rule_a11y08_motion },
         Detector { rule: "RX-A11Y-08", level: "warn", exts: visual, folder: false, find: rule_a11y08_loop },
@@ -721,4 +777,163 @@ fn run(sources: &[Source], opts: ScanOptions, detectors: &[Detector]) -> Vec<Val
 pub fn catalogue(syntax: bool) -> Value {
     let list = if syntax { syntax_detectors() } else { detectors() };
     Value::Array(list.iter().map(|d| json!({ "rule": d.rule, "level": d.level, "folder": d.folder })).collect())
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    /// The findings of one rule in one file whose message says `says`, as "line:column".
+    fn found(path: &str, raw: &str, rule: &str, says: &str) -> Vec<String> {
+        let opts = ScanOptions { folder: false, skip: HashSet::new(), design: None };
+        scan_sources(&[to_source(path, raw)], opts)
+            .into_iter()
+            .filter(|f| f["rule"] == rule && f["message"].as_str().unwrap().contains(says))
+            .map(|f| format!("{}:{}", f["line"], f["column"]))
+            .collect()
+    }
+
+    fn button(path: &str, raw: &str) -> Vec<String> {
+        found(path, raw, "RX-A11Y-04", "with no type inside a <form>")
+    }
+
+    #[test]
+    fn a_typeless_button_in_a_form_warns_at_its_tag() {
+        let show = "<form>\n  <input type=\"password\" />\n  <button onClick={toggle}>Show</button>\n  <button>Sign in</button>\n</form>";
+        assert_eq!(button("a.tsx", show), vec!["3:3"]);
+        let html = "<form>\n<input type=password>\n<button onclick=\"t()\">Show</button>\n<button>Sign in</button>\n</form>";
+        assert_eq!(button("a.html", html), vec!["3:1"]);
+        // with an explicit submit, no typeless button is the submit: each one warns, once
+        assert_eq!(button("a.tsx", "<form><button>Add item</button><button>Remove</button><button type=\"submit\">Save</button></form>"), vec!["1:7", "1:32"]);
+        assert_eq!(button("a.html", "<form><button>Add item</button><input type=submit value=Save></form>"), vec!["1:7"]);
+        // a button deep inside the form's JSX tree still belongs to it
+        assert_eq!(button("a.jsx", "<form><Field><div><button onClick={add}>Add</button></div></Field><Button type=\"submit\">Save</Button></form>"), vec!["1:19"]);
+    }
+
+    #[test]
+    fn a_button_with_a_type_a_spread_or_no_form_is_left_alone() {
+        for ok in [
+            "<form><button type=\"button\" onClick={t}>Show</button><button type={kind}>Go</button><button type=\"submit\">Sign in</button></form>",
+            "<form><button {...props}>Show</button><button type=\"submit\">Go</button></form>",
+            // the form's only button, or its last with no click handler, is taken as its submit
+            "<form><input /><button>Sign in</button></form>",
+            "<form><button type=\"button\">Cancel</button><button>Save</button></form>",
+            // no literal <form> in this JSX tree
+            "<Form><button onClick={t}>Show</button></Form>",
+            "<div><button onClick={t}>Show</button></div>",
+            // a form with method="dialog" closes its dialog on purpose; form= points elsewhere
+            "<form method=\"dialog\"><button>Close</button><button>OK</button></form>",
+            "<form><button form=\"other\" onClick={t}>x</button><button type=\"submit\">Go</button></form>",
+        ] {
+            assert!(button("a.tsx", ok).is_empty(), "{ok}");
+        }
+        assert!(button("a.html", "<form><button type=button onclick=t()>Show</button><button>Sign in</button></form>").is_empty());
+        assert!(button("a.html", "<form><button {...attrs}>Show</button><button type=submit>Go</button></form>").is_empty());
+        assert!(button("a.html", "<button onclick=t()>Show</button>").is_empty());
+        // inside a string it is text
+        assert!(button("a.tsx", "const s = '<form><button>a</button><button>b</button></form>';").is_empty());
+    }
+
+    fn loading(path: &str, raw: &str) -> Vec<String> {
+        found(path, raw, "RX-IX-02", "loading indicator")
+    }
+
+    #[test]
+    fn a_loading_indicator_nothing_announces_warns_once_at_the_first() {
+        assert_eq!(loading("a.tsx", "<div>\n  <div className=\"card-skeleton\" />\n  <Spinner />\n</div>"), vec!["2:3"]);
+        assert_eq!(loading("a.tsx", "<button disabled={busy}>{busy ? \"Memproses…\" : \"Bayar\"}</button>"), vec!["1:33"]);
+        assert_eq!(loading("a.tsx", "const A = () => <p>\n  Loading...\n</p>;"), vec!["2:3"]);
+        assert_eq!(loading("a.tsx", "<div className={cn(\"h-4\", busy && \"loading\")} />"), vec!["1:1"]);
+        assert_eq!(loading("a.tsx", "import { Loader2 } from \"lucide-react\";\nconst A = () => <Loader2 className=\"animate-spin\" />;"), vec!["2:17"]);
+        assert_eq!(loading("a.tsx", "function Spinner() { return null; }\nconst A = () => <Spinner />;"), vec!["2:17"]);
+        assert_eq!(loading("a.html", "<p>x</p>\n<div class=\"spinner\"></div><p>Memuat data…</p>"), vec!["2:1"]);
+        assert_eq!(loading("a.html", "<loading-dots></loading-dots>"), vec!["1:1"]);
+    }
+
+    #[test]
+    fn a_loading_indicator_that_is_announced_or_is_not_one_is_left_alone() {
+        for ok in [
+            "<div aria-busy={busy}><Spinner /></div>",
+            "<div className=\"spinner\" role=\"status\" />",
+            "<div className=\"spinner\" /><p role=\"alert\">{e}</p>",
+            "<div role=\"progressbar\" className=\"loader\" />",
+            "<p aria-live=\"polite\">Loading…</p>",
+            "<div className=\"skeleton\" /><output>{n}</output>",
+            "<progress value={p} />",
+            // a kit's Spinner, or this project's own, may announce itself where it is defined
+            "import { Spinner } from \"@chakra-ui/react\";\nconst A = () => <Spinner />;",
+            "import { SkeletonList } from \"../components\";\nconst A = () => <SkeletonList rows={4} />;",
+            "import * as UI from \"@/components/ui\";\nconst A = () => <UI.Spinner />;",
+            // words that only contain the letters, attributes, and plain text
+            "<img loading=\"lazy\" src={s} alt=\"\" /><div className=\"uploader\" /><p>Loading times vary</p><p aria-label=\"Loading…\">x</p>",
+            "const s = '<div className=\"spinner\">';",
+        ] {
+            assert!(loading("a.tsx", ok).is_empty(), "{ok}");
+        }
+        assert!(loading("a.html", "<div class=\"spinner\"></div><script>el.setAttribute('aria-busy', 'true')</script>").is_empty());
+        assert!(loading("a.html", "<script>const t = 'Loading…'</script><style>.spinner{}</style>").is_empty());
+        assert!(loading("a.html", "<div class=spinner></div><script type=module src=./main.js></script>").is_empty());
+        // Vue, Svelte, and Astro get no tree checks
+        for ext in ["vue", "svelte", "astro"] {
+            assert!(loading(&format!("a.{ext}"), "<div class=\"spinner\"></div>").is_empty());
+        }
+    }
+
+    fn dialog(path: &str, raw: &str) -> Vec<String> {
+        found(path, raw, "RX-A11Y-03", "no keyboard way out")
+    }
+
+    #[test]
+    fn a_dialog_with_no_keyboard_way_out_warns_once_at_its_tag() {
+        assert_eq!(dialog("a.tsx", "<div>\n  <div role=\"dialog\" aria-modal=\"true\">x</div>\n  <div role=\"alertdialog\">y</div>\n</div>"), vec!["2:3"]);
+        assert_eq!(dialog("a.tsx", "<motion.div role=\"dialog\" onClick={close}>x</motion.div>"), vec!["1:1"]);
+        assert_eq!(dialog("a.html", "<p>x</p><dialog open>Saved</dialog><script>d.show()</script>"), vec!["1:9"]);
+        // aria-modal alone, or a key handler for another key, is no way out
+        assert_eq!(dialog("a.tsx", "<div role=\"dialog\" onKeyDown={(e) => e.key === \"Enter\" && go()}>x</div>"), vec!["1:1"]);
+    }
+
+    #[test]
+    fn a_dialog_that_closes_on_esc_or_traps_focus_is_left_alone() {
+        for ok in [
+            "<div role=\"dialog\" onKeyDown={(e) => e.key === \"Escape\" && close()}>x</div>",
+            "<div role=\"dialog\" onKeyDown={(e) => { if (e.keyCode === 27) close(); }}>x</div>",
+            "<div role=\"dialog\" onKeyDown={(e) => e.which == 27 && close()}>x</div>",
+            "useHotkeys('esc', close); const a = <div role=\"dialog\">x</div>;",
+            "useEscapeKey(close); const a = <div role=\"dialog\">x</div>;",
+            "<div role=\"dialog\" aria-modal=\"true\" onKeyDown={trap}>x</div>",
+            "<dialog ref={r} onCancel={close}>x</dialog>",
+            "r.current.showModal(); const a = <dialog ref={r}>x</dialog>;",
+            "import FocusTrap from \"focus-trap-react\";\nconst a = <FocusTrap><div role=\"dialog\">x</div></FocusTrap>;",
+            "import * as Dialog from \"@radix-ui/react-dialog\";\nconst a = <Dialog.Content role=\"dialog\">x</Dialog.Content>;",
+            "import { Dialog } from \"@headlessui/react\";\nconst a = <div role=\"dialog\"><Dialog /></div>;",
+            "import { Drawer } from \"vaul\";\nconst a = <div role=\"dialog\" />;",
+            "import { Modal } from \"react-aria-components\";\nconst a = <div role=\"dialog\" />;",
+            "<main inert={open} /><div role=\"dialog\">x</div>",
+            // a component with a dialog role is the component's business
+            "<Sheet role=\"dialog\">x</Sheet>",
+            "<Dialog open={o}>x</Dialog>",
+            // a dialog in a string is text
+            "const s = '<div role=\"dialog\">';",
+        ] {
+            assert!(dialog("a.tsx", ok).is_empty(), "{ok}");
+        }
+        assert!(dialog("a.html", "<dialog id=d>x</dialog><script>d.showModal()</script>").is_empty());
+        // a page whose script is in a file may close it there; an inline script is read
+        assert!(dialog("a.html", "<div role=dialog>x</div><script src=\"app.js\"></script>").is_empty());
+        assert_eq!(dialog("a.html", "<div role=dialog>x</div><script>open()</script>").len(), 1);
+        assert!(dialog("a.html", "<div role=dialog>x</div><script>addEventListener('keydown', (e) => { if (e.key === 'Escape') close() })</script>").is_empty());
+        // "desc" and "escrow" are not Esc
+        assert_eq!(dialog("a.tsx", "const desc = escrow; const a = <div role=\"dialog\">x</div>;").len(), 1);
+        for ext in ["vue", "svelte", "astro"] {
+            assert!(dialog(&format!("a.{ext}"), "<div role=\"dialog\">x</div>").is_empty());
+        }
+    }
+
+    #[test]
+    fn words_split_at_case_digits_and_punctuation() {
+        assert_eq!(
+            markup::words("LoadingSkeleton Loader2 KEY_ESCAPE onEscapeKeyDown HTMLDialog"),
+            vec!["loading", "skeleton", "loader", "key", "escape", "on", "escape", "key", "down", "html", "dialog"]
+        );
+    }
 }
