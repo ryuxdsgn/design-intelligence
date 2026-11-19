@@ -103,19 +103,19 @@ Optional sources (the ryux MCP, Figma, a browser, screenshots, other reference l
 
 ## Hard Gates (always apply; no written exception, fix before delivery)
 
-- **Fake data or fake metrics.** Do not invent "48.000+ users", "4,8★", or "+12%". (RX-AS-01)
-- **Fake testimonials or people.** Do not make up testimonials, reviewers, or customer photos. (RX-AS-02)
-- **Invented business rules or product requirements.** Do not invent business rules, policies, guarantees, metrics, user data, permissions, pricing, requirements, or API behavior, or name a tool, command, integration, platform, or page the product does not have. Do not present an unconfirmed capability as a confirmed one. Do not show an undecided rule as a plain sentence on screen because it is listed as an assumption somewhere else. Do not add precision a source does not give (a day to a month, one figure for a range). (RX-PR-02, RX-FE-02)
-- **Placeholder copy shipped as final.** Do not put [REAL DATA], XXX, or lorem text on the canvas where sample data would do, or ship sample data or placeholder copy as final. A sample-data label does not turn a fee, policy, or claim into a fact (RX-PR-02). On a marketing surface, set "Sample data", "Example amount", or "OJK logo" as visible text. In a code prototype, leave a sample account or token number unlabelled on screen because a comment says it is sample. On a design canvas, leave an empty dashed box where a logo goes: it reads as forgotten; place the real mark, or ask, and say what is missing in an annotation outside the screen. (RX-AS-03)
-- **Fake urgency or scarcity.** Do not write "only 2 left", "offer ends tonight", or fake countdowns with nothing behind them. (RX-AS-04)
-- **Missing critical states.** Do not ship only the filled, happy-path screen. (RX-EC-01)
-- **Broken responsive behavior.** Do not design for one width only, test a native iOS app at 320, or hand off a set of frames that only prove the layout did not break. (RX-RD-01)
-- **Accessibility failures.** Do not put light grey text on white or white text on a pale accent. (RX-A11Y-01, RX-A11Y-02, RX-A11Y-03, RX-A11Y-04)
-- **Competing primary actions.** Do not put two equal-weight calls to action side by side. (RX-PR-03)
-- **Unexplained interaction behavior.** Do not ship an action whose in-progress, result, or failure behavior is undefined. (RX-IX-01)
-- **Duplicate components.** Do not create a near-duplicate component or pattern for one screen. (RX-DS-01)
-- **Build or typecheck fails.** Do not hand off code that does not build or typecheck, silence an error to make it pass (a type cast, a disabled rule, a skipped test), or call it done without running the checks. (RX-FE-16)
-- **Primary task cannot be completed.** Do not hand off a primary flow with a dead end: a button that does nothing, a submit that never resolves, a step that cannot be reached, or an error with no way back. (RX-QA-08)
+- **Fake data or fake metrics.** Do not: Invent "48.000+ users", "4,8★", or "+12%". (RX-AS-01)
+- **Fake testimonials or people.** Do not: Make up testimonials, reviewers, or customer photos. (RX-AS-02)
+- **Invented business rules or product requirements.** Do not: Invent business rules, policies, guarantees, metrics, user data, permissions, pricing, requirements, or API behavior, or name a tool, command, integration, platform, or page the product does not have. Do not present an unconfirmed capability as a confirmed one. Do not show an undecided rule as a plain sentence on screen because it is listed as an assumption somewhere else. Do not add precision a source does not give (a day to a month, one figure for a range). (RX-PR-02, RX-FE-02)
+- **Placeholder copy shipped as final.** Do not: Put [REAL DATA], XXX, or lorem text on the canvas where sample data would do, or ship sample data or placeholder copy as final. A sample-data label does not turn a fee, policy, or claim into a fact (RX-PR-02). On a marketing surface, set "Sample data", "Example amount", or "OJK logo" as visible text. In a code prototype, leave a sample account or token number unlabelled on screen because a comment says it is sample. Put street names on an illustrative map: they read as a real map; show the route, the pins, and an "Illustrative map" label. On a design canvas, leave an empty dashed box where a logo goes: it reads as forgotten; place the real mark, or ask, and say what is missing in an annotation outside the screen. (RX-AS-03)
+- **Fake urgency or scarcity.** Do not: Write "only 2 left", "offer ends tonight", or fake countdowns with nothing behind them. (RX-AS-04)
+- **Missing critical states.** Do not: Ship only the filled, happy-path screen. (RX-EC-01)
+- **Broken responsive behavior.** Do not: Design for one width only, test a native iOS app at 320, or hand off a set of frames that only prove the layout did not break. (RX-RD-01)
+- **Accessibility failures.** Do not: Put light grey text on white or white text on a pale accent. (RX-A11Y-01, RX-A11Y-02, RX-A11Y-03, RX-A11Y-04)
+- **Competing primary actions.** Do not: Put two equal-weight calls to action side by side. (RX-PR-03)
+- **Unexplained interaction behavior.** Do not: Ship an action whose in-progress, result, or failure behavior is undefined. (RX-IX-01)
+- **Duplicate components.** Do not: Create a near-duplicate component or pattern for one screen. (RX-DS-01)
+- **Build or typecheck fails.** Do not: Hand off code that does not build or typecheck, silence an error to make it pass (a type cast, a disabled rule, a skipped test), or call it done without running the checks. (RX-FE-16)
+- **Primary task cannot be completed.** Do not: Hand off a primary flow with a dead end: a button that does nothing, a submit that never resolves, a step that cannot be reached, or an error with no way back. (RX-QA-08)
 
 ## Task table: which knowledge to read
 
