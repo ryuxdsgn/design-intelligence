@@ -529,6 +529,25 @@ test("scan <url> measures overflow, contrast, targets, and collisions, and skips
   rmSync(dir, { recursive: true, force: true });
 });
 
+// Front-end bench, 2026-11-20: Tailwind 4 colours reach the page as lab() and oklch(), and the contrast check read a
+// green "Bayar" button with white text as white on white in all six runs. Same Playwright requirement as above.
+test("scan <url> reads lab() and oklch() colours for contrast", (t) => {
+  const dir = mkdtempSync(join(tmpdir(), "ryux-lab-"));
+  const path = join(dir, "lab.html");
+  writeFileSync(path, `<!doctype html><html lang="id"><body style="margin:0;padding:24px;font:16px sans-serif">
+<button style="background:lab(44.5 -41 11);color:#fff;border:0;padding:12px 24px">Bayar</button>
+<p style="background:oklch(0.98 0.01 90);color:oklch(0.9 0.01 90);padding:8px">pale on pale</p>
+<p style="color:lab(8 0.6 -2)">dark text</p></body></html>`);
+  const r = run(process.env.RYUX_PLAYWRIGHT_CWD ?? join(dirname(cli), "..", "..", ".."), ["scan", `file://${path}`, "--widths", "390", "--json"]);
+  if (/needs Playwright|could not start Chromium/.test(r.out)) {
+    rmSync(dir, { recursive: true, force: true });
+    return noBrowser(t);
+  }
+  const contrast = JSON.parse(r.out).findings.filter((f) => f.rule === "RX-A11Y-01").map((f) => f.message.split(":")[0]);
+  assert.deepEqual(contrast, ['"pale on pale"']);
+  rmSync(dir, { recursive: true, force: true });
+});
+
 // Refine bench R2/R2b, 2026-11-13: a sticky total bar sliced the card's own Total row twice, and a
 // written before/after check did not see it. Same Playwright requirement as above.
 test("scan <url> fails text a bar cuts on the first screen or still covers at the end, not padded content", (t) => {
