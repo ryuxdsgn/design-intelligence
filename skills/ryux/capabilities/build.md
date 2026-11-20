@@ -43,9 +43,9 @@ workflow (SKILL.md); Frame, Explore, and Evaluate happen in Design.
    When anything animates, run the motion passes in capabilities/qa.md as well. Run the counts of
    RX-AS-10 on the render and report them in the gate.
 7. **Close with the Delivery Gate.** CODE QUALITY and VISUAL QA need real checks (typecheck,
-   tests, render), or say what was not run. Run `npx @ryuxdsgn/design-intelligence scan <changed
+   tests, render), or say what was not run. Run `npx --no-install @ryuxdsgn/design-intelligence scan <changed
    paths>` as well (add `--design` when DESIGN.md has a `direction:` block, so code that strays from its
-   colours, type, radius, or durations shows as drift): fix every fail, and fix each warn or give the reason it stays. When the build runs, also run `npx @ryuxdsgn/design-intelligence scan <url> --widths 390,1280` on the page you built, the same way. For a new flow or a consequential change, add the
+   colours, type, radius, or durations shows as drift): fix every fail, and fix each warn or give the reason it stays. When the build runs, also run `npx --no-install @ryuxdsgn/design-intelligence scan <url> --widths 390,1280` on the page you built, the same way. Both use the copy of RYUX in the project (`ryux install --save-dev` adds it); never add `-y`, a download the agent's permission check can refuse. When it is not installed or the run is refused, ask the user to run it in their terminal (in Claude Code, `! <command>`) and read its output; without that output, say so in the gate. For a new flow or a consequential change, add the
    usability test plan (RX-UX-12) unless the design already has one.
 
 **Polish: refining what exists.** When the ask improves a screen that works ("polish this", "make the total

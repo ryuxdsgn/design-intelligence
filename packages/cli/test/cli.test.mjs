@@ -190,6 +190,52 @@ test("check --json reports findings with fixes, and its exit code", () => {
   rmSync(dir, { recursive: true, force: true });
 });
 
+// A stand-in package manager on PATH records what install asked it to do, so the test needs no network.
+const fakePm = (dir, name) => {
+  const bin = join(dir, ".bin-test");
+  mkdirSync(bin, { recursive: true });
+  writeFileSync(join(bin, name), `#!/bin/sh\necho "$@" > "${join(dir, "pm-args.txt")}"\n`, { mode: 0o755 });
+  return { ...process.env, NO_COLOR: "1", PATH: `${bin}:${process.env.PATH}` };
+};
+const runEnv = (cwd, env, ...args) => {
+  const r = spawnSync("node", [cli, ...args], { cwd, encoding: "utf8", env });
+  return { code: r.status, out: `${r.stdout}${r.stderr}` };
+};
+const cliVersion = JSON.parse(readFileSync(join(dirname(cli), "..", "..", "package.json"), "utf8")).version;
+
+test("install --save-dev adds the RYUX CLI to devDependencies with the project's package manager", () => {
+  const dir = project();
+  writeFileSync(join(dir, "pnpm-lock.yaml"), "lockfileVersion: '9.0'\n");
+  const env = fakePm(dir, "pnpm");
+  const plan = runEnv(dir, env, "install", "--agent", "claude", "--save-dev", "--dry-run");
+  assert.match(plan.out, new RegExp(`add @ryuxdsgn/design-intelligence@${cliVersion.replace(/\./g, "\\.")} to devDependencies \\(pnpm add -D`));
+  assert.ok(!existsSync(join(dir, "pm-args.txt")), "a dry run runs no package manager");
+  const i = runEnv(dir, env, "install", "--agent", "claude", "--save-dev");
+  assert.equal(i.code, 0, i.out);
+  assert.equal(readFileSync(join(dir, "pm-args.txt"), "utf8").trim(), `add -D @ryuxdsgn/design-intelligence@${cliVersion}`);
+  assert.match(i.out, /devDependencies/);
+  rmSync(dir, { recursive: true, force: true });
+});
+
+test("install --save-dev uses npm without a lockfile, and skips a project that already has the CLI or has no package.json", () => {
+  const dir = project();
+  const env = fakePm(dir, "npm");
+  assert.equal(runEnv(dir, env, "install", "--agent", "claude", "--save-dev").code, 0);
+  assert.equal(readFileSync(join(dir, "pm-args.txt"), "utf8").trim(), `install -D @ryuxdsgn/design-intelligence@${cliVersion}`);
+  rmSync(join(dir, "pm-args.txt"));
+  writeFileSync(join(dir, "package.json"), JSON.stringify({ name: "acme-app", devDependencies: { "@ryuxdsgn/design-intelligence": "^2.0.0" } }));
+  const again = runEnv(dir, env, "install", "--agent", "claude", "--save-dev");
+  assert.match(again.out, /already in devDependencies/);
+  assert.ok(!existsSync(join(dir, "pm-args.txt")));
+  const bare = mkdtempSync(join(tmpdir(), "ryux-test-"));
+  const b = runEnv(bare, fakePm(bare, "npm"), "install", "--agent", "claude", "--save-dev");
+  assert.equal(b.code, 0, b.out);
+  assert.match(b.out, /no package\.json/);
+  assert.ok(!existsSync(join(bare, "pm-args.txt")));
+  rmSync(dir, { recursive: true, force: true });
+  rmSync(bare, { recursive: true, force: true });
+});
+
 test("install and init --dry-run list the plan and write nothing", () => {
   const dir = project();
   writeFileSync(join(dir, "CLAUDE.md"), "# Our notes\n");

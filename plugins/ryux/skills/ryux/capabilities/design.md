@@ -447,7 +447,7 @@ return { iconStrokes: strokes, iconColours: colours, unbound: [...unbound], mixe
      label, unstyled text and unbound values, screens not built in auto layout and layers left outside them, empty bands,
      small uppercase labels, section cards, text under 12 px, uneven buttons in a row, and annotations. Fix each fail, fix
      each warn or give the reason it stays, run it again, and copy its last gate line into VISUAL QA; the gate's numbers
-     come from it, not from memory. In FigCraft, save the file and run `npx @ryuxdsgn/design-intelligence audit <file>
+     come from it, not from memory. In FigCraft, save the file and run `npx --no-install @ryuxdsgn/design-intelligence audit <file>
      --page <page>` instead: the same checks on the saved .figcraft (it needs figcraft-cli).
    - Close with the Delivery Gate, saying what was not designed, such as other widths or states. If
      you wrote DESIGN.md, say so in the final message: which file, and each change as old → new ("(none) → …" for

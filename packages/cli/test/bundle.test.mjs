@@ -122,6 +122,16 @@ test("the Delivery Gate separates verified from assumed", () => {
   assert.match(router, /or was validated with users/);
 });
 
+test("the skill runs the RYUX CLI from the project, not as a download, and says what to do when it cannot run", () => {
+  const all = Object.values(renderBundle()).join("\n");
+  // an agent's permission check can refuse a download (npx -y); the copy in the project runs with --no-install
+  assert.doesNotMatch(all, /npx -y @ryuxdsgn/);
+  for (const m of all.matchAll(/npx[^`\n]*@ryuxdsgn\/design-intelligence (scan|audit)/g)) assert.match(m[0], /npx --no-install @ryuxdsgn/, m[0]);
+  assert.match(all, /npx --no-install @ryuxdsgn\/design-intelligence scan <url> --widths 390,1280/);
+  assert.match(all, /ryux install --save-dev/);
+  assert.match(all, /ask the user to run it in their terminal/);
+});
+
 test("Design can write or update a full DESIGN.md that answers five questions", () => {
   // owner request 2026-10-27, after wallet-expressive rounds 2 and 3
   const files = renderBundle();
