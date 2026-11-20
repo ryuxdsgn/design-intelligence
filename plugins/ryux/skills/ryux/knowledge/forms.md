@@ -60,7 +60,7 @@ Real Indonesian forms for the same data (address, OTP, e-KYC): `search_screens`,
 - Not when: free-text fields where a restricted keyboard blocks valid input (names with punctuation)
 - Trade-off: inputmode varies across browsers; test on real devices
 - Check: review; ryux scan: a textarea with nothing that makes it grow (static), or one that hides 8 lines past its edge (rendered)
-- Machine check: `ryux scan` flags in .jsx, .tsx, and .html: a phone, OTP, or amount field by its name, id, or autocomplete (phone, tel, hp, whatsapp, otp, nominal, amount, one-time-code) with type text or none and no inputmode; once per file (warn); a textarea in a folder where nothing makes a textarea grow with its text (warn)
+- Machine check: `ryux scan` flags in .jsx, .tsx, and .html: a phone, OTP, or amount field by its name, id, or autocomplete (phone, tel, hp, whatsapp, otp, nominal, amount, one-time-code) with type text or none and no inputmode; once per file (warn); in .jsx, .tsx, and .html: autocomplete="off" on a field whose name, id, or type names the person's email, phone, name, or address, unless the field or its form is named for someone else (invite, recipient, member, contact); once per file (warn); a textarea in a folder where nothing makes a textarea grow with its text (warn)
 - Measured: `ryux scan <url>` flags a shown textarea that, filled with 8 lines for a moment, keeps its height and hides the text past its edge (warn)
 
 ### RX-FM-06 [Required] Submission states

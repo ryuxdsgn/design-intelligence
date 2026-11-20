@@ -589,6 +589,20 @@ fn rule_a11y07_invalid(s: &Source, _: &Ctx) -> Vec<Hit> {
     structure(s).and_then(|m| m.invalid).map_or(Vec::new(), |at| vec![hit(at, "a field marked aria-invalid with no aria-describedby or aria-errormessage: point it at the error text's id, so a screen reader reads the error with the field")])
 }
 
+fn rule_a11y04_radios(s: &Source, _: &Ctx) -> Vec<Hit> {
+    let Some((at, n)) = structure(s).and_then(|m| m.ungrouped) else { return Vec::new() };
+    let what = if n > 1 { format!("{n} groups of radio buttons, each for one question,") } else { "radio buttons for one question".to_string() };
+    vec![hit(at, format!("{what} with nothing naming the question: each option is read with its own label, but not what it answers; put them in a <fieldset> with a <legend>, or a role=\"radiogroup\" or \"group\" with aria-labelledby"))]
+}
+
+fn rule_a11y04_anchor(s: &Source, _: &Ctx) -> Vec<Hit> {
+    structure(s).and_then(|m| m.anchor).map_or(Vec::new(), |at| vec![hit(at, "a link with a click handler and no href: Tab does not reach it and Enter does not run it; use a <button> for an action, or give it the href it goes to")])
+}
+
+fn rule_fm05_autofill(s: &Source, _: &Ctx) -> Vec<Hit> {
+    structure(s).and_then(|m| m.autofill_off).map_or(Vec::new(), |at| vec![hit(at, "autocomplete=\"off\" on a field for the person's own email, phone, name, or address: it stops the browser filling it; use the matching autocomplete value (email, tel, name, street-address)")])
+}
+
 fn first(s: &Source, pattern: &str, message: impl Fn(&str) -> String) -> Vec<Hit> {
     re(pattern, "").exec(&s.text).map_or(Vec::new(), |m| vec![hit(m.index, message(m.g(0)))])
 }
@@ -799,6 +813,9 @@ fn detectors() -> &'static [Detector] {
         Detector { rule: "RX-IX-12", level: "warn", exts: markup, folder: false, find: rule_ix12_dead },
         Detector { rule: "RX-FM-05", level: "warn", exts: markup, folder: false, find: rule_fm05_keyboard },
         Detector { rule: "RX-A11Y-07", level: "warn", exts: markup, folder: false, find: rule_a11y07_invalid },
+        Detector { rule: "RX-A11Y-04", level: "warn", exts: markup, folder: false, find: rule_a11y04_radios },
+        Detector { rule: "RX-A11Y-04", level: "warn", exts: markup, folder: false, find: rule_a11y04_anchor },
+        Detector { rule: "RX-FM-05", level: "warn", exts: markup, folder: false, find: rule_fm05_autofill },
         Detector { rule: "RX-A11Y-04", level: "fail", exts: markup, folder: false, find: rule_a11y04_img },
         Detector { rule: "RX-A11Y-04", level: "warn", exts: markup, folder: false, find: rule_a11y04_click },
         Detector { rule: "RX-A11Y-04", level: "warn", exts: markup, folder: false, find: rule_a11y04_icon },
@@ -1211,6 +1228,74 @@ mod tests {
             assert!(says("a.tsx", ok).is_empty(), "{ok}");
         }
         assert!(says("a.html", "<input name=otp inputmode=numeric>").is_empty());
+    }
+
+    #[test]
+    fn radio_buttons_for_one_question_have_a_group_name() {
+        let says = |path: &str, raw: &str| found(path, raw, "RX-A11Y-04", "radio buttons");
+        // each option has its label, but nothing names the question they answer
+        assert_eq!(says("a.tsx", "<div>\n  <p>Metode bayar</p>\n  <label><input type=\"radio\" name=\"pay\" /> QRIS</label>\n  <label><input type=\"radio\" name=\"pay\" /> VA</label>\n</div>"), vec!["3:10"]);
+        assert_eq!(says("a.html", "<label><input type=radio name=s value=1>1</label><label><input type=radio name=s value=2>2</label>"), vec!["1:8"]);
+        for ok in [
+            "<fieldset><legend>Metode bayar</legend><label><input type=\"radio\" name=\"pay\" /> QRIS</label><label><input type=\"radio\" name=\"pay\" /> VA</label></fieldset>",
+            "<div role=\"radiogroup\" aria-labelledby=\"q\"><label><input type=\"radio\" name=\"pay\" /> QRIS</label><label><input type=\"radio\" name=\"pay\" /> VA</label></div>",
+            // one radio of a name, or names the parser cannot read
+            "<label><input type=\"radio\" name=\"agree\" /> Ya</label>",
+            "<>{opts.map((o) => <label key={o}><input type=\"radio\" name={q.id} /> {o}</label>)}</>",
+            // a named group, a named form, or a named landmark that holds only this group
+            "<div role=\"group\" aria-label=\"Metode bayar\"><label><input type=\"radio\" name=\"pay\" /> QRIS</label><label><input type=\"radio\" name=\"pay\" /> VA</label></div>",
+            "<form aria-label=\"Metode bayar\"><label><input type=\"radio\" name=\"pay\" /> QRIS</label><label><input type=\"radio\" name=\"pay\" /> VA</label></form>",
+            "<aside aria-label=\"Status demo\"><h2>Status</h2><form><label><input type=\"radio\" name=\"st\" /> Normal</label><label><input type=\"radio\" name=\"st\" /> Offline</label></form><button>Reset</button></aside>",
+        ] {
+            assert!(says("a.tsx", ok).is_empty(), "{ok}");
+        }
+        assert!(says("a.html", "<aside aria-label=\"Status demo\"><label><input type=radio name=st> A</label><label><input type=radio name=st> B</label></aside>").is_empty());
+        // a named landmark that holds other fields does not name this group
+        assert_eq!(says("a.tsx", "<section aria-label=\"Checkout\"><input aria-label=\"Nama\" /><label><input type=\"radio\" name=\"pay\" /> QRIS</label><label><input type=\"radio\" name=\"pay\" /> VA</label></section>"), vec!["1:66"]);
+        assert_eq!(says("a.html", "<main aria-label=\"Checkout\"><input aria-label=\"Nama\"><label><input type=radio name=pay> QRIS</label><label><input type=radio name=pay> VA</label></main>"), vec!["1:61"]);
+        // one line per file, saying how many groups it has
+        let opts = ScanOptions { folder: false, skip: HashSet::new(), design: None, context: Vec::new() };
+        let two = "<><label><input type=\"radio\" name=\"a\" />1</label><label><input type=\"radio\" name=\"a\" />2</label><label><input type=\"radio\" name=\"b\" />1</label><label><input type=\"radio\" name=\"b\" />2</label></>";
+        let m: Vec<String> = scan_sources(&[to_source("a.tsx", two)], opts).into_iter().filter(|f| f["rule"] == "RX-A11Y-04").map(|f| f["message"].as_str().unwrap().to_string()).collect();
+        assert_eq!(m.len(), 1);
+        assert!(m[0].starts_with("2 groups of radio buttons"), "{}", m[0]);
+    }
+
+    #[test]
+    fn a_link_that_runs_an_action_is_reachable_by_keyboard() {
+        let says = |path: &str, raw: &str| found(path, raw, "RX-A11Y-04", "no href");
+        assert_eq!(says("a.tsx", "<nav>\n  <a onClick={logout}>Keluar</a>\n</nav>"), vec!["2:3"]);
+        assert_eq!(says("a.html", "<a onclick=\"load()\">Muat lagi</a>"), vec!["1:1"]);
+        for ok in [
+            "<a href=\"/keluar\" onClick={track}>Keluar</a>",
+            "<a role=\"button\" tabIndex={0} onClick={logout} onKeyDown={key}>Keluar</a>",
+            "<a {...props} onClick={go}>x</a>",
+            "<button onClick={logout}>Keluar</button>",
+        ] {
+            assert!(says("a.tsx", ok).is_empty(), "{ok}");
+        }
+    }
+
+    #[test]
+    fn a_personal_field_lets_the_browser_fill_it() {
+        let says = |path: &str, raw: &str| found(path, raw, "RX-FM-05", "stops the browser filling");
+        assert_eq!(says("a.tsx", "<label>Email <input type=\"email\" name=\"email\" autoComplete=\"off\" /></label>"), vec!["1:14"]);
+        assert_eq!(says("a.tsx", "<label>Alamat <textarea name=\"alamat\" autoComplete=\"off\" /></label>"), vec!["1:15"]);
+        assert_eq!(says("a.html", "<label>Nama <input name=\"fullName\" autocomplete=\"off\"></label>"), vec!["1:13"]);
+        assert!(says("a.html", "<form action=\"/invite\"><input name=\"email\" autocomplete=\"off\"></form>").is_empty());
+        for ok in [
+            "<input name=\"email\" autoComplete=\"email\" />",
+            "<input name=\"email\" />",
+            // not the person's own data
+            "<input id=\"key-owner\" autoComplete=\"off\" /><input name=\"productName\" autoComplete=\"off\" /><input name=\"search\" autoComplete=\"off\" />",
+            "<input name=\"otp\" autoComplete=\"off\" />",
+            // someone else's address: an invite, a recipient, a member
+            "<input id=\"invite-email\" name=\"email\" type=\"email\" autoComplete=\"off\" />",
+            "<form onSubmit={invite}><label>Email <input name=\"email\" type=\"email\" autoComplete=\"off\" /></label></form>",
+            "<input name=\"recipientPhone\" autoComplete=\"off\" />",
+        ] {
+            assert!(says("a.tsx", ok).is_empty(), "{ok}");
+        }
     }
 
     #[test]
