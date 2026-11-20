@@ -127,7 +127,10 @@ test("the skill runs the RYUX CLI from the project, not as a download, and says 
   // an agent's permission check can refuse a download (npx -y); the copy in the project runs with --no-install
   assert.doesNotMatch(all, /npx -y @ryuxdsgn/);
   for (const m of all.matchAll(/npx[^`\n]*@ryuxdsgn\/design-intelligence (scan|audit)/g)) assert.match(m[0], /npx --no-install @ryuxdsgn/, m[0]);
-  assert.match(all, /npx --no-install @ryuxdsgn\/design-intelligence scan <url> --widths 390,1280/);
+  // the scan's own widths (320, 390, 1280): a page can scroll sideways at 320 only (all three B‴ runs, 2026-11-21)
+  assert.match(all, /npx --no-install @ryuxdsgn\/design-intelligence scan <url>\` on the page you built/);
+  assert.doesNotMatch(all, /scan <url> --widths/);
+  assert.match(all, /result of \`ryux scan <url>\` at 320, 390, and 1280 px/);
   assert.match(all, /ryux install --save-dev/);
   assert.match(all, /ask the user to run it in their terminal/);
 });
