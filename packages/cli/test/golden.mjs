@@ -49,7 +49,9 @@ export const recordScan = (scanShared) => (sources, opts) => {
     const texts = read.map((s) => s.text);
     save("unused", { texts, design: d }, JSON.parse(core.unused(JSON.stringify({ texts, design: d }))));
   }
-  save("scan", { sources: sources.map((s) => ({ path: s.path, raw: s.raw })), folder: !!opts.folder, skip: [...(opts.skip || [])].sort(), design: opts.design || null }, plain(out));
+  const input = { sources: sources.map((s) => ({ path: s.path, raw: s.raw })), folder: !!opts.folder, skip: [...(opts.skip || [])].sort(), design: opts.design || null };
+  if (opts.context?.length) input.context = opts.context.map((s) => ({ path: s.path, raw: s.raw }));
+  save("scan", input, plain(out));
   return out;
 };
 

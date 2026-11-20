@@ -62,8 +62,11 @@ pub fn drift(input: &str) -> String {
     out.to_string()
 }
 
-/// scanSources: `{ sources: [{ path, raw }], folder, skip, design }` → findings, in source order then
-/// line and column. The caller sorts by file name (`localeCompare`).
+/// scanSources: `{ sources: [{ path, raw }], folder, skip, design, context, wants }` → findings, in source order
+/// then line and column. The caller sorts by file name (`localeCompare`). `context` holds files the checks may consult
+/// but do not report on. With `wants: true` the answer is `{ findings, wants }`, `wants` being the files not yet
+/// given that would judge the sources more fully (scan::references); the caller reads the ones that exist and asks
+/// again.
 #[wasm_bindgen]
 pub fn scan(input: &str) -> String {
     use ryux_core::{drift::Direction, scan as s};
@@ -71,10 +74,23 @@ pub fn scan(input: &str) -> String {
         Ok(v) => v,
         Err(e) => return format!("{{\"error\":{}}}", ryux_core::js::quote(&format!("invalid input: {e}"))),
     };
-    let sources: Vec<s::Source> = v["sources"].as_array().map_or(Vec::new(), |a| a.iter().map(|x| s::to_source(x["path"].as_str().unwrap_or(""), x["raw"].as_str().unwrap_or(""))).collect());
+    let read = |k: &str| -> Vec<s::Source> { v[k].as_array().map_or(Vec::new(), |a| a.iter().map(|x| s::to_source(x["path"].as_str().unwrap_or(""), x["raw"].as_str().unwrap_or(""))).collect()) };
+    let sources = read("sources");
     let skip = v["skip"].as_array().map(|a| a.iter().filter_map(|x| x.as_str().map(String::from)).collect()).unwrap_or_default();
-    let opts = s::ScanOptions { folder: v["folder"].as_bool().unwrap_or(false), skip, design: Direction::from_json(&v["design"]) };
-    ryux_core::Json::Array(s::scan_sources(&sources, opts)).to_string()
+    let context = read("context");
+    let wants = v["wants"].as_bool().unwrap_or(false).then(|| {
+        let known: std::collections::HashSet<String> = sources.iter().chain(context.iter()).map(|x| s::norm(&x.path)).collect();
+        let mut w = s::references(&sources, false);
+        w.extend(s::references(&context, true));
+        w.retain(|p| !known.contains(p));
+        w
+    });
+    let opts = s::ScanOptions { folder: v["folder"].as_bool().unwrap_or(false), skip, design: Direction::from_json(&v["design"]), context };
+    let findings = ryux_core::Json::Array(s::scan_sources(&sources, opts));
+    match wants {
+        None => findings.to_string(),
+        Some(w) => format!("{{\"findings\":{findings},\"wants\":{}}}", ryux_core::Json::Array(w.into_iter().map(ryux_core::Json::String).collect())),
+    }
 }
 
 /// unusedTokens over raw sources: `{ sources: [{ path, raw }], design }` → `{ colours, fonts }`. Comments
@@ -126,6 +142,6 @@ pub fn syntax_scan(input: &str) -> String {
     };
     let sources: Vec<s::Source> = v["sources"].as_array().map_or(Vec::new(), |a| a.iter().map(|x| s::to_source(x["path"].as_str().unwrap_or(""), x["raw"].as_str().unwrap_or(""))).collect());
     let skip = v["skip"].as_array().map(|a| a.iter().filter_map(|x| x.as_str().map(String::from)).collect()).unwrap_or_default();
-    let opts = s::ScanOptions { folder: v["folder"].as_bool().unwrap_or(false), skip, design: Direction::from_json(&v["design"]) };
+    let opts = s::ScanOptions { folder: v["folder"].as_bool().unwrap_or(false), skip, design: Direction::from_json(&v["design"]), context: Vec::new() };
     ryux_core::Json::Array(s::scan_syntax(&sources, opts)).to_string()
 }

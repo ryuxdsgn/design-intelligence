@@ -20,7 +20,7 @@ test("golden through ryux-core: scan, direction, drift, unused, audit", async ()
   const scans = load("scan");
   assert.ok(scans.length > 100);
   for (const { input, output } of scans) {
-    const opts = { folder: input.folder, skip: new Set(input.skip), design: input.design || undefined };
+    const opts = { folder: input.folder, skip: new Set(input.skip), design: input.design || undefined, context: input.context };
     assert.deepEqual(plain(scan(input.sources, opts)), output, input.sources.map((s) => s.path).join(", "));
   }
   for (const { input, output } of load("direction")) assert.deepEqual(plain(readDirection(input.md)), output);

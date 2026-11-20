@@ -31,6 +31,12 @@ pub struct Source {
     pub text: String,
     /// The file read as structure, for the markup detectors (crate::markup), once.
     markup: std::cell::OnceCell<Option<Markup>>,
+    /// The file read as a module (what it defines and re-exports), once.
+    module: std::cell::OnceCell<Option<markup::Module>>,
+}
+
+fn module_of(s: &Source) -> Option<&markup::Module> {
+    s.module.get_or_init(|| if is(&s.ext, &[SCRIPT, &["jsx", "tsx", "mts", "cts"]]) { markup::module(&s.text, &s.ext) } else { None }).as_ref()
 }
 
 /// JSX, TSX, and HTML read as structure; None keeps a detector on its pattern over the text.
@@ -39,12 +45,129 @@ fn structure(s: &Source) -> Option<&Markup> {
 }
 
 #[derive(Default)]
-pub struct Ctx {
+pub struct Ctx<'a> {
     pub reduced_motion: Option<bool>,
     pub indonesian: Option<bool>,
     pub reduced_transparency: Option<bool>,
     pub growing_textarea: Option<bool>,
     pub design: Option<Direction>,
+    /// Every file the scan was given, scanned or context only, by its normalized path.
+    files: HashMap<String, &'a Source>,
+}
+
+/// A path with forward slashes, and "." and ".." resolved where they can be.
+pub fn norm(p: &str) -> String {
+    let p = p.replace('\\', "/");
+    let mut out: Vec<&str> = Vec::new();
+    for seg in p.split('/') {
+        match seg {
+            "" | "." => {}
+            ".." if out.last().is_some_and(|l| *l != "..") => {
+                out.pop();
+            }
+            s => out.push(s),
+        }
+    }
+    let joined = out.join("/");
+    if p.starts_with('/') { format!("/{joined}") } else { joined }
+}
+
+fn dir_of(path: &str) -> String {
+    let p = path.replace('\\', "/");
+    p.rfind('/').map_or(String::new(), |i| p[..i].to_string())
+}
+
+fn join(dir: &str, rel: &str) -> String {
+    norm(&if dir.is_empty() { rel.to_string() } else { format!("{dir}/{rel}") })
+}
+
+/// The file a page's `<script src>` names, when it is in the project: not another site, not the site root (which
+/// the scan cannot place), not a data: URL.
+fn local_script(dir: &str, src: &str) -> Option<String> {
+    let src = src.trim();
+    let src = src.split(['?', '#']).next().unwrap_or("");
+    if src.is_empty() || src.starts_with('/') || src.starts_with('\\') || re(r"^[A-Za-z][\w+.-]*:", "").test(src) {
+        return None;
+    }
+    Some(join(dir, src))
+}
+
+/// The files a relative import may name, in the order a bundler tries them.
+fn candidates(dir: &str, spec: &str) -> Vec<String> {
+    let base = join(dir, spec);
+    let mut out = vec![base.clone()];
+    out.extend(["tsx", "ts", "jsx", "js", "mjs"].iter().map(|e| format!("{base}.{e}")));
+    out.extend(["tsx", "ts", "jsx", "js"].iter().map(|e| format!("{base}/index.{e}")));
+    out
+}
+
+/// The files the scan would read to judge these sources fully: the scripts a page loads, the modules its loading
+/// components come from, and, with `reexports` (for files read because another named them), what those modules
+/// re-export. The caller reads the ones that exist and passes them as context; one it cannot read leaves the check
+/// quiet.
+pub fn references(sources: &[Source], reexports: bool) -> Vec<String> {
+    let mut out: Vec<String> = Vec::new();
+    for s in sources {
+        let dir = dir_of(&s.path);
+        if let Some(m) = structure(s) {
+            out.extend(m.scripts.iter().filter_map(|src| local_script(&dir, src)));
+            for (_, _, from) in &m.loaders_from {
+                if from.starts_with('.') {
+                    out.extend(candidates(&dir, from));
+                }
+            }
+        }
+        if let Some(m) = module_of(s).filter(|_| reexports) {
+            for (from, _) in &m.reexports {
+                if from.starts_with('.') {
+                    out.extend(candidates(&dir, from));
+                }
+            }
+        }
+    }
+    let mut seen = HashSet::new();
+    out.retain(|p| seen.insert(p.clone()));
+    out
+}
+
+/// The page's text with the text of every script it loads, or None when one of them is not in the scan (another
+/// site, the site root, or a file the caller did not pass): then what the page does at run time is out of sight.
+fn with_scripts(s: &Source, m: &Markup, ctx: &Ctx) -> Option<String> {
+    let dir = dir_of(&s.path);
+    let mut text = s.text.clone();
+    for src in &m.scripts {
+        let file = ctx.files.get(&local_script(&dir, src)?)?;
+        text.push('\n');
+        text.push_str(&file.text);
+    }
+    Some(text)
+}
+
+/// Whether the component `name` that `from_file` imports from `spec` announces a wait in its own markup, following
+/// re-exports; None when the scan does not have the module that defines it.
+fn announces(ctx: &Ctx, from_file: &str, spec: &str, name: &str, depth: usize) -> Option<bool> {
+    if depth > 4 || !spec.starts_with('.') {
+        return None;
+    }
+    let file = candidates(&dir_of(from_file), spec).into_iter().find_map(|c| ctx.files.get(&c).copied())?;
+    let m = module_of(file)?;
+    if let Some((_, a, b)) = m.defs.iter().find(|d| d.0 == name) {
+        return Some(re(ANNOUNCED, "").test(&file.text[*a..*b]));
+    }
+    for (from, names) in &m.reexports {
+        let there = match names {
+            None if name != "default" => name.to_string(),
+            None => continue,
+            Some(list) => match list.iter().find(|(_, exported)| exported == name) {
+                Some((imported, _)) => imported.clone(),
+                None => continue,
+            },
+        };
+        if let Some(found) = announces(ctx, &file.path, from, &there, depth + 1) {
+            return Some(found);
+        }
+    }
+    None
 }
 
 struct Hit {
@@ -367,10 +490,14 @@ fn rule_a11y04_untyped(s: &Source, _: &Ctx) -> Vec<Hit> {
 /// anywhere keeps the file quiet, since a false alarm costs more here than a miss.
 const ANNOUNCED: &str = r#"aria-busy|ariaBusy|aria-live|ariaLive|\brole\s*[=:]\s*\{?\s*["'`](?:status|alert|progressbar)\b|setAttribute\(\s*["']role["']\s*,\s*["'](?:status|alert|progressbar)\b|<output\b|<progress\b"#;
 
-fn rule_ix02_loading(s: &Source, _: &Ctx) -> Vec<Hit> {
-    let Some(at) = structure(s).filter(|m| !m.external_script).and_then(|m| m.loading) else { return Vec::new() };
-    if re(ANNOUNCED, "").test(&s.text) {
-        return Vec::new();
+fn rule_ix02_loading(s: &Source, c: &Ctx) -> Vec<Hit> {
+    let Some(m) = structure(s) else { return Vec::new() };
+    // a component from another module counts when that module has it and it announces nothing itself
+    let from = m.loaders_from.iter().filter(|(_, name, spec)| announces(c, &s.path, spec, name, 0) == Some(false)).map(|l| l.0);
+    let Some(at) = m.loading.into_iter().chain(from).min() else { return Vec::new() };
+    match with_scripts(s, m, c) {
+        Some(text) if !re(ANNOUNCED, "").test(&text) => {}
+        _ => return Vec::new(),
     }
     vec![hit(at, "a loading indicator that only shows: nothing in this file tells a screen reader about the wait; put aria-busy on the region that is loading, or the in-progress text in a role=\"status\" element")]
 }
@@ -378,36 +505,55 @@ fn rule_ix02_loading(s: &Source, _: &Ctx) -> Vec<Hit> {
 /// Dialog and focus libraries that close on Esc and keep focus inside.
 const DIALOG_LIBRARY: &str = r#"["'](?:focus-trap|focus-trap-react|react-focus-lock|@radix-ui/react-dialog|@radix-ui/react-alert-dialog|@headlessui/react|react-aria|react-aria-components|@reach/dialog|@ark-ui/[\w-]+|vaul|react-modal)(?:/[\w./-]*)?["']"#;
 
-/// A keyboard way out of a dialog, as the file shows it: an Esc key check, the native modal dialog (showModal,
-/// or a cancel handler), aria-modal with a key handler, a known library, or a word that names Esc or focus
-/// containment in an identifier (useEscape, closeOnEsc, onEscapeKeyDown, FocusTrap, FocusScope, inert).
-fn dialog_way_out(text: &str) -> bool {
-    if re(r#"\b(?:keyCode|which)\s*===?\s*27\b|\b27\s*===?\s*[\w.]*\b(?:keyCode|which)\b|\.showModal\s*\(|\bon[Cc]ancel\b|addEventListener\(\s*["'`]cancel["'`]"#, "").test(text) || re(DIALOG_LIBRARY, "").test(text) {
-        return true;
+/// What a modal dialog's file (with the scripts a page loads) shows of a keyboard way out.
+#[derive(PartialEq)]
+enum WayOut {
+    None,
+    Esc,
+    Tab,
+    Both,
+}
+
+/// Esc and Tab, as the text shows them. Both: showModal() on a native <dialog>, or a known dialog or focus library.
+/// Esc: an Esc key check (key "Escape", keyCode 27), or a word that names Esc in an identifier (useEscape,
+/// closeOnEsc, onEscapeKeyDown). A cancel handler is not one: on a native <dialog> it is Esc, but that is not judged
+/// here, and on anything else `onCancel` is a button's handler. Tab kept inside: a Tab key check (key "Tab", keyCode 9), inert on the
+/// page behind, or a word for a focus trap (trapFocus, FocusTrap, FocusScope, FocusLock).
+fn way_out(text: &str) -> WayOut {
+    if re(r"\.showModal\s*\(", "").test(text) || re(DIALOG_LIBRARY, "").test(text) {
+        return WayOut::Both;
     }
-    if re(r"aria-modal|ariaModal", "").test(text) && re(r#"\bon[Kk]ey(?:[Dd]own|[Uu]p)\b|["'`]key(?:down|up)["'`]|\buseHotkeys\b|\buseKey\w*"#, "").test(text) {
-        return true;
-    }
+    let mut esc = re(r#"\b(?:keyCode|which)\s*===?\s*27\b|\b27\s*===?\s*[\w.]*\b(?:keyCode|which)\b"#, "").test(text);
+    let mut tab = re(r#"\b(?:keyCode|which)\s*===?\s*9\b|\b9\s*===?\s*[\w.]*\b(?:keyCode|which)\b|["'`]Tab["'`]"#, "").test(text);
     let mut prev: Option<String> = None;
     for token in re(r"[A-Za-z_$][\w$]*", "g").matches(text) {
         for w in markup::words(&token) {
             let pair = prev.as_deref().map(|p| (p, w.as_str()));
-            if matches!(w.as_str(), "esc" | "escape" | "inert") || matches!(pair, Some(("focus", "trap" | "lock" | "scope")) | Some(("trap", "focus"))) {
-                return true;
-            }
+            esc |= matches!(w.as_str(), "esc" | "escape");
+            tab |= w == "inert" || w == "trap" || matches!(pair, Some(("focus", "lock" | "scope" | "guard")));
             prev = Some(w);
         }
         prev = None;
     }
-    false
+    match (esc, tab) {
+        (true, true) => WayOut::Both,
+        (true, false) => WayOut::Esc,
+        (false, true) => WayOut::Tab,
+        (false, false) => WayOut::None,
+    }
 }
 
-fn rule_a11y03_dialog(s: &Source, _: &Ctx) -> Vec<Hit> {
-    let Some(at) = structure(s).filter(|m| !m.external_script).and_then(|m| m.dialog) else { return Vec::new() };
-    if dialog_way_out(&s.text) {
-        return Vec::new();
-    }
-    vec![hit(at, "a dialog with no keyboard way out in this file: close it on Esc and keep Tab inside it while it is open (showModal() on a <dialog> does both), or use a dialog component that does")]
+fn rule_a11y03_dialog(s: &Source, c: &Ctx) -> Vec<Hit> {
+    let Some(m) = structure(s) else { return Vec::new() };
+    let Some(at) = m.dialog else { return Vec::new() };
+    let Some(text) = with_scripts(s, m, c) else { return Vec::new() };
+    let message = match way_out(&text) {
+        WayOut::Both => return Vec::new(),
+        WayOut::None => "a modal dialog that does not close on Esc and does not keep Tab inside it: close it on Esc and keep focus inside it while it is open (showModal() on a <dialog> does both), or use a dialog component that does",
+        WayOut::Esc => "a modal dialog that closes on Esc but lets Tab move to the page behind it: keep focus inside it while it is open (showModal() on a <dialog> does both), or use a dialog component that does",
+        WayOut::Tab => "a modal dialog that keeps Tab inside but does not close on Esc: close it on Esc too (showModal() on a <dialog> does both), or use a dialog component that does",
+    };
+    vec![hit(at, message)]
 }
 
 fn first(s: &Source, pattern: &str, message: impl Fn(&str) -> String) -> Vec<Hit> {
@@ -663,7 +809,7 @@ pub fn to_source(path: &str, raw: &str) -> Source {
     let u: Vec<u16> = path.encode_utf16().collect();
     let dot = u.iter().rposition(|&c| c == b'.' as u16).map_or(0, |i| i + 1);
     let ext = String::from_utf16_lossy(&u[dot..]).to_lowercase();
-    Source { path: path.to_string(), text: strip_comments(raw, &ext), ext, raw: raw.to_string(), markup: Default::default() }
+    Source { path: path.to_string(), text: strip_comments(raw, &ext), ext, raw: raw.to_string(), markup: Default::default(), module: Default::default() }
 }
 
 struct Ignores {
@@ -703,6 +849,9 @@ pub struct ScanOptions {
     pub folder: bool,
     pub skip: HashSet<String>,
     pub design: Option<Direction>,
+    /// Files the checks may consult but do not report on: the scripts a page loads, the modules a component
+    /// comes from (see `references`).
+    pub context: Vec<Source>,
 }
 
 /// Run every detector over the sources: findings by source, then line and column.
@@ -733,6 +882,7 @@ pub fn scan_syntax(sources: &[Source], opts: ScanOptions) -> Vec<Value> {
 }
 
 fn run(sources: &[Source], opts: ScanOptions, detectors: &[Detector]) -> Vec<Value> {
+    let files: HashMap<String, &Source> = sources.iter().chain(opts.context.iter()).map(|s| (norm(&s.path), s)).collect();
     let mut ctx = if opts.folder {
         Ctx {
             reduced_motion: Some(sources.iter().any(|s| re(r"prefers-reduced-motion|motion-(?:reduce|safe):|useReducedMotion|reducedMotion", "").test(&s.text))),
@@ -740,11 +890,13 @@ fn run(sources: &[Source], opts: ScanOptions, detectors: &[Detector]) -> Vec<Val
             reduced_transparency: Some(sources.iter().any(|s| re(r"prefers-reduced-transparency|prefers-contrast|contrast-more:|useReducedTransparency", "").test(&s.text))),
             growing_textarea: Some(sources.iter().any(|s| re(GROWS, "").test(&s.text))),
             design: None,
+            files: HashMap::new(),
         }
     } else {
         Ctx::default()
     };
     ctx.design = opts.design;
+    ctx.files = files;
     let mut out: Vec<(usize, usize, usize, Value)> = Vec::new();
     for (si, src) in sources.iter().enumerate() {
         let ign = ignores(&src.raw);
@@ -785,7 +937,7 @@ mod tests {
 
     /// The findings of one rule in one file whose message says `says`, as "line:column".
     fn found(path: &str, raw: &str, rule: &str, says: &str) -> Vec<String> {
-        let opts = ScanOptions { folder: false, skip: HashSet::new(), design: None };
+        let opts = ScanOptions { folder: false, skip: HashSet::new(), design: None, context: Vec::new() };
         scan_sources(&[to_source(path, raw)], opts)
             .into_iter()
             .filter(|f| f["rule"] == rule && f["message"].as_str().unwrap().contains(says))
@@ -879,54 +1031,177 @@ mod tests {
         }
     }
 
+    /// The findings of one rule in one file, with other files the scan may consult but does not report.
+    fn found_with(path: &str, raw: &str, context: &[(&str, &str)], rule: &str, says: &str) -> Vec<String> {
+        let opts = ScanOptions { folder: false, skip: HashSet::new(), design: None, context: context.iter().map(|(p, r)| to_source(p, r)).collect() };
+        scan_sources(&[to_source(path, raw)], opts)
+            .into_iter()
+            .filter(|f| f["rule"] == rule && f["message"].as_str().unwrap().contains(says))
+            .map(|f| format!("{}:{}", f["line"], f["column"]))
+            .collect()
+    }
+
     fn dialog(path: &str, raw: &str) -> Vec<String> {
-        found(path, raw, "RX-A11Y-03", "no keyboard way out")
+        found(path, raw, "RX-A11Y-03", "modal dialog")
     }
 
-    #[test]
-    fn a_dialog_with_no_keyboard_way_out_warns_once_at_its_tag() {
-        assert_eq!(dialog("a.tsx", "<div>\n  <div role=\"dialog\" aria-modal=\"true\">x</div>\n  <div role=\"alertdialog\">y</div>\n</div>"), vec!["2:3"]);
-        assert_eq!(dialog("a.tsx", "<motion.div role=\"dialog\" onClick={close}>x</motion.div>"), vec!["1:1"]);
-        assert_eq!(dialog("a.html", "<p>x</p><dialog open>Saved</dialog><script>d.show()</script>"), vec!["1:9"]);
-        // aria-modal alone, or a key handler for another key, is no way out
-        assert_eq!(dialog("a.tsx", "<div role=\"dialog\" onKeyDown={(e) => e.key === \"Enter\" && go()}>x</div>"), vec!["1:1"]);
+    fn dialog_says(path: &str, raw: &str, context: &[(&str, &str)]) -> Vec<String> {
+        let opts = ScanOptions { folder: false, skip: HashSet::new(), design: None, context: context.iter().map(|(p, r)| to_source(p, r)).collect() };
+        scan_sources(&[to_source(path, raw)], opts)
+            .into_iter()
+            .filter(|f| f["rule"] == "RX-A11Y-03" && f["message"].as_str().unwrap().contains("modal dialog"))
+            .map(|f| f["message"].as_str().unwrap().to_string())
+            .collect()
     }
 
+    const ESC: &str = "onKeyDown={(e) => e.key === \"Escape\" && close()}";
+    const TAB: &str = "onKeyDown={(e) => e.key === \"Tab\" && keep(e)}";
+
     #[test]
-    fn a_dialog_that_closes_on_esc_or_traps_focus_is_left_alone() {
+    fn only_a_modal_dialog_is_judged() {
+        // aria-modal, or a scrim around it or just before it; an alert dialog the same way
+        assert_eq!(dialog("a.tsx", "<div>\n  <div role=\"dialog\" aria-modal=\"true\">x</div>\n  <div role=\"alertdialog\" aria-modal=\"true\">y</div>\n</div>"), vec!["2:3"]);
+        assert_eq!(dialog("a.tsx", "<div role=\"alertdialog\" aria-modal=\"true\">y</div>"), vec!["1:1"]);
+        assert_eq!(dialog("a.tsx", "<>\n<div className=\"scrim\" />\n<div role=\"alertdialog\">y</div></>"), vec!["3:1"]);
+        assert_eq!(dialog("a.tsx", "<div role=\"dialog\" aria-modal={true}>x</div>"), vec!["1:1"]);
+        assert_eq!(dialog("a.tsx", "<div className=\"scrim\" onClick={close}>\n  <div className=\"sheet\" role=\"dialog\">x</div></div>"), vec!["2:3"]);
+        assert_eq!(dialog("a.tsx", "<>\n<div className=\"backdrop\" />\n<section role=\"dialog\">x</section></>"), vec!["3:1"]);
+        assert_eq!(dialog("a.html", "<div class=\"modal-overlay\" hidden></div>\n<div role=dialog>x</div>"), vec!["2:1"]);
+        assert_eq!(dialog("a.html", "<div id=\"backdrop\"><div role=dialog>x</div></div>"), vec!["1:20"]);
+        // a panel with no aria-modal and no scrim is not modal: Tab may leave it, and its Close button is the way out
         for ok in [
-            "<div role=\"dialog\" onKeyDown={(e) => e.key === \"Escape\" && close()}>x</div>",
-            "<div role=\"dialog\" onKeyDown={(e) => { if (e.keyCode === 27) close(); }}>x</div>",
-            "<div role=\"dialog\" onKeyDown={(e) => e.which == 27 && close()}>x</div>",
-            "useHotkeys('esc', close); const a = <div role=\"dialog\">x</div>;",
-            "useEscapeKey(close); const a = <div role=\"dialog\">x</div>;",
-            "<div role=\"dialog\" aria-modal=\"true\" onKeyDown={trap}>x</div>",
-            "<dialog ref={r} onCancel={close}>x</dialog>",
-            "r.current.showModal(); const a = <dialog ref={r}>x</dialog>;",
-            "import FocusTrap from \"focus-trap-react\";\nconst a = <FocusTrap><div role=\"dialog\">x</div></FocusTrap>;",
-            "import * as Dialog from \"@radix-ui/react-dialog\";\nconst a = <Dialog.Content role=\"dialog\">x</Dialog.Content>;",
-            "import { Dialog } from \"@headlessui/react\";\nconst a = <div role=\"dialog\"><Dialog /></div>;",
-            "import { Drawer } from \"vaul\";\nconst a = <div role=\"dialog\" />;",
-            "import { Modal } from \"react-aria-components\";\nconst a = <div role=\"dialog\" />;",
-            "<main inert={open} /><div role=\"dialog\">x</div>",
-            // a component with a dialog role is the component's business
-            "<Sheet role=\"dialog\">x</Sheet>",
-            "<Dialog open={o}>x</Dialog>",
-            // a dialog in a string is text
-            "const s = '<div role=\"dialog\">';",
+            "<div role=\"dialog\" aria-label=\"Help\"><button onClick={close}>Close</button></div>",
+            "<motion.div role=\"dialog\" onClick={close}>x</motion.div>",
+            "<div role=\"dialog\" aria-modal=\"false\">x</div>",
+            "<div className=\"card\" /><div role=\"dialog\">x</div>",
+            // an inline confirmation in a row or a bar: the page behind stays usable, so Tab may go there
+            "<div role=\"alertdialog\" aria-labelledby=\"c\" onKeyDown={(e) => e.key === \"Escape\" && no()} className=\"flex gap-3 rounded-xl p-3\">x</div>",
+            "<div role=\"alertdialog\" className=\"fixed inset-x-3 bottom-20 z-30 shadow-2xl\">x</div>",
         ] {
             assert!(dialog("a.tsx", ok).is_empty(), "{ok}");
         }
+        assert!(dialog("a.html", "<div id=\"chat\" role=\"dialog\" aria-label=\"Checkout assistant\"><button id=\"chat-close\">x</button></div>").is_empty());
+        // a native <dialog>: show() and open are not modal, and showModal() gives Esc and the inert page itself
+        assert!(dialog("a.html", "<p>x</p><dialog open>Saved</dialog><script>d.show()</script>").is_empty());
         assert!(dialog("a.html", "<dialog id=d>x</dialog><script>d.showModal()</script>").is_empty());
-        // a page whose script is in a file may close it there; an inline script is read
-        assert!(dialog("a.html", "<div role=dialog>x</div><script src=\"app.js\"></script>").is_empty());
-        assert_eq!(dialog("a.html", "<div role=dialog>x</div><script>open()</script>").len(), 1);
-        assert!(dialog("a.html", "<div role=dialog>x</div><script>addEventListener('keydown', (e) => { if (e.key === 'Escape') close() })</script>").is_empty());
+    }
+
+    #[test]
+    fn a_modal_dialog_needs_both_esc_and_tab_kept_inside() {
+        let m = |attrs: &str| format!("<div role=\"dialog\" aria-modal=\"true\" {attrs}>x</div>");
+        assert_eq!(dialog_says("a.tsx", &m(""), &[]), vec!["a modal dialog that does not close on Esc and does not keep Tab inside it: close it on Esc and keep focus inside it while it is open (showModal() on a <dialog> does both), or use a dialog component that does"]);
+        assert_eq!(dialog_says("a.tsx", &m(ESC), &[]), vec!["a modal dialog that closes on Esc but lets Tab move to the page behind it: keep focus inside it while it is open (showModal() on a <dialog> does both), or use a dialog component that does"]);
+        assert_eq!(dialog_says("a.tsx", &m(TAB), &[]), vec!["a modal dialog that keeps Tab inside but does not close on Esc: close it on Esc too (showModal() on a <dialog> does both), or use a dialog component that does"]);
+        // a key handler for another key is neither, and a cancel prop is a button's handler, not Esc
+        assert_eq!(dialog("a.tsx", &m("onKeyDown={(e) => e.key === \"Enter\" && go()}")).len(), 1);
+        assert!(dialog_says("a.tsx", &format!("<div className=\"sheet-scrim\" onClick={{onCancel}}>{}</div>", m("onCancel={onCancel}")), &[])[0].contains("does not close on Esc and does not keep Tab"));
         // "desc" and "escrow" are not Esc
-        assert_eq!(dialog("a.tsx", "const desc = escrow; const a = <div role=\"dialog\">x</div>;").len(), 1);
-        for ext in ["vue", "svelte", "astro"] {
-            assert!(dialog(&format!("a.{ext}"), "<div role=\"dialog\">x</div>").is_empty());
+        assert_eq!(dialog("a.tsx", &format!("const desc = escrow; const a = {};", m(TAB))).len(), 1);
+        for esc in [
+            ESC.to_string(),
+            "onKeyDown={(e) => { if (e.keyCode === 27) close(); }}".into(),
+            "onKeyDown={(e) => e.which == 27 && close()}".into(),
+        ] {
+            for tab in [TAB, "onKeyUp={(e) => e.keyCode === 9 && keep(e)}", "data-x={trapFocus}", "data-x={useFocusTrap}"] {
+                let ok = format!("<div role=\"dialog\" aria-modal=\"true\" {esc} {tab}>x</div>");
+                assert!(dialog("a.tsx", &ok).is_empty(), "{ok}");
+            }
         }
+        for ok in [
+            format!("useHotkeys('esc', close); const t = useFocusTrap(); const a = {};", m("")),
+            format!("useEscapeKey(close); const a = <><main inert={{open}} />{}</>;", m("")),
+            format!("import FocusTrap from \"focus-trap-react\";\nconst a = <FocusTrap>{}</FocusTrap>;", m("")),
+            format!("import * as Dialog from \"@radix-ui/react-dialog\";\nconst a = {};", m("")),
+            format!("import {{ Dialog }} from \"@headlessui/react\";\nconst a = {};", m("")),
+            format!("import {{ Drawer }} from \"vaul\";\nconst a = {};", m("")),
+            format!("import {{ Modal }} from \"react-aria-components\";\nconst a = {};", m("")),
+            // a component with a dialog role is the component's business
+            "<Sheet role=\"dialog\" aria-modal=\"true\">x</Sheet>".into(),
+            "<Dialog open={o}>x</Dialog>".into(),
+            // a dialog in a string is text
+            "const s = '<div role=\"dialog\" aria-modal=\"true\">';".into(),
+        ] {
+            assert!(dialog("a.tsx", &ok).is_empty(), "{ok}");
+        }
+        assert_eq!(dialog("a.html", "<div role=dialog aria-modal=true>x</div><script>open()</script>").len(), 1);
+        assert_eq!(dialog("a.html", "<div role=dialog aria-modal=true>x</div><script>addEventListener('keydown', (e) => { if (e.key === 'Escape') close() })</script>").len(), 1);
+        assert!(dialog("a.html", "<div role=dialog aria-modal=true>x</div><script>addEventListener('keydown', (e) => { if (e.key === 'Escape') close(); if (e.key === 'Tab') keep(e) })</script>").is_empty());
+        for ext in ["vue", "svelte", "astro"] {
+            assert!(dialog(&format!("a.{ext}"), "<div role=\"dialog\" aria-modal=\"true\">x</div>").is_empty());
+        }
+    }
+
+    const PAGE: &str = "<div class=\"scrim\" hidden></div>\n<section role=\"dialog\" aria-modal=\"true\" hidden></section>\n<script src=\"js/app.js\"></script>";
+
+    #[test]
+    fn a_page_is_judged_with_the_scripts_it_loads_from_the_project() {
+        let both = "document.addEventListener('keydown', (e) => { if (e.key === 'Escape') close(); if (e.key === 'Tab') trap(e); });";
+        let esc = "document.addEventListener('keydown', e => { if (e.key === 'Escape' && S.modal) closeModal(); });";
+        assert!(dialog_says("site/index.html", PAGE, &[("site/js/app.js", both)]).is_empty());
+        assert_eq!(dialog_says("site/index.html", PAGE, &[("site/js/app.js", esc)]).len(), 1);
+        assert!(dialog_says("site/index.html", PAGE, &[("site/js/app.js", esc)])[0].contains("lets Tab move"));
+        assert_eq!(dialog_says("site/index.html", PAGE, &[("site/js/app.js", "open();")]).len(), 1);
+        // paths: ./, ../, a query string, and a path written with backslashes
+        let at = |src: &str, file: &str| dialog_says("site/pages/a.html", &PAGE.replace("js/app.js", src), &[(file, esc)]).len();
+        assert_eq!(at("./app.js?v=2", "site/pages/app.js"), 1);
+        assert_eq!(at("../js/app.js", "site/js/app.js"), 1);
+        assert_eq!(dialog_says("site\\pages\\a.html", &PAGE.replace("js/app.js", "../js/app.js"), &[("site\\js\\app.js", esc)]).len(), 1);
+        // a script the scan cannot read keeps the page quiet: not given, from another site, or from the site root
+        assert!(dialog_says("site/index.html", PAGE, &[]).is_empty());
+        assert!(dialog_says("site/index.html", PAGE, &[("site/js/other.js", esc)]).is_empty());
+        for src in ["https://cdn.example.com/app.js", "//cdn.example.com/app.js", "/js/app.js"] {
+            assert!(dialog_says("site/index.html", &PAGE.replace("js/app.js", src), &[("site/js/app.js", esc)]).is_empty(), "{src}");
+        }
+        // every script it loads is read, and one it cannot read keeps it quiet
+        let two = PAGE.replace("<script src=\"js/app.js\"></script>", "<script src=\"js/a.js\"></script><script src=\"js/b.js\"></script>");
+        assert!(dialog_says("site/index.html", &two, &[("site/js/a.js", "esc();"), ("site/js/b.js", "if (e.key === 'Tab') trap(e);")]).is_empty());
+        assert!(dialog_says("site/index.html", &two, &[("site/js/a.js", esc)]).is_empty());
+        // the scripts also settle the wait
+        let wait = "<div class=\"spinner\"></div><script type=module src=\"./main.js\"></script>";
+        assert_eq!(found_with("a.html", wait, &[("main.js", "render();")], "RX-IX-02", "loading indicator"), vec!["1:1"]);
+        assert!(found_with("a.html", wait, &[("main.js", "el.setAttribute('aria-busy', 'true')")], "RX-IX-02", "loading indicator").is_empty());
+        assert!(found_with("a.html", wait, &[], "RX-IX-02", "loading indicator").is_empty());
+    }
+
+    const SKELETON: &str = "export function Skeleton({ width }: { width?: string }) {\n  return <span className=\"skeleton\" style={{ width }} aria-hidden=\"true\" />;\n}\n\nexport function SkeletonList({ rows = 3 }) {\n  return (\n    <div aria-busy=\"true\" aria-label=\"Memuat\">\n      {Array.from({ length: rows }, (_, i) => <Skeleton key={i} />)}\n    </div>\n  );\n}\n";
+
+    #[test]
+    fn an_imported_loading_component_is_judged_by_its_own_markup() {
+        let home = |name: &str, from: &str| format!("import {{ Card, {name} }} from \"{from}\";\nexport const Home = () => <Card>{{b === null ? <{name} /> : b}}</Card>;");
+        let kit = [("src/components/index.ts", "export * from \"./Card\";\nexport { Skeleton, SkeletonList } from \"./Skeleton\";\n"), ("src/components/Skeleton.tsx", SKELETON), ("src/components/Card.tsx", "export const Card = (p) => <div {...p} />;")];
+        let ix = |raw: &str, ctx: &[(&str, &str)]| found_with("src/screens/Home.tsx", raw, ctx, "RX-IX-02", "loading indicator");
+        // the Skeleton itself is aria-hidden with nothing announcing the wait; SkeletonList carries aria-busy
+        assert_eq!(ix(&home("Skeleton", "../components"), &kit), vec!["2:47"]);
+        assert!(ix(&home("SkeletonList", "../components"), &kit).is_empty());
+        // straight from its file, under another name, and through `export *`
+        assert_eq!(ix(&home("Skeleton", "../components/Skeleton"), &kit), vec!["2:47"]);
+        assert_eq!(ix("import { Skeleton as BalanceSkeleton } from \"../components\";\nexport const A = () => <BalanceSkeleton />;", &kit), vec!["2:24"]);
+        let star = [("src/components/index.ts", "export * from \"./Skeleton\";"), ("src/components/Skeleton.tsx", SKELETON)];
+        assert_eq!(ix(&home("Skeleton", "../components"), &star), vec!["2:47"]);
+        // the screen announcing the wait itself keeps it quiet
+        assert!(ix("import { Skeleton } from \"../components\";\nexport const A = () => <div aria-busy={busy}><Skeleton /></div>;", &kit).is_empty());
+        // a component the scan cannot find stays uncounted: not given, a package, or an alias
+        assert!(ix(&home("Skeleton", "../components"), &[]).is_empty());
+        assert!(ix(&home("Skeleton", "@/components"), &kit).is_empty());
+        assert!(ix("import { Spinner } from \"@chakra-ui/react\";\nconst A = () => <Spinner />;", &kit).is_empty());
+        let gone = [("src/components/index.ts", "export { Skeleton } from \"./Missing\";")];
+        assert!(ix(&home("Skeleton", "../components"), &gone).is_empty());
+    }
+
+    #[test]
+    fn the_scan_names_the_files_it_would_read() {
+        let page = to_source("site/pages/a.html", "<script src=\"../js/app.js?v=1\"></script><script src=\"https://x.io/a.js\"></script><script src=\"/root.js\"></script>");
+        assert_eq!(references(&[page], false), vec!["site/js/app.js"]);
+        let home = to_source("src/screens/Home.tsx", "import { Card, Skeleton } from \"../components\";\nimport { Spinner } from \"@chakra-ui/react\";\nimport { go } from \"./nav\";\nconst A = () => <Card><Skeleton /><Spinner /></Card>;");
+        let want = references(&[home], false);
+        assert!(want.contains(&"src/components.tsx".to_string()) && want.contains(&"src/components/index.ts".to_string()), "{want:?}");
+        assert!(!want.iter().any(|p| p.contains("nav") || p.contains("chakra")), "{want:?}");
+        // a module that re-exports names the files it re-exports from
+        let index = to_source("src/components/index.ts", "export * from \"./Card\";\nexport { Skeleton } from \"./Skeleton\";\nexport { x } from \"pkg\";");
+        assert!(references(std::slice::from_ref(&index), false).is_empty());
+        let want = references(&[index], true);
+        assert!(want.contains(&"src/components/Skeleton.tsx".to_string()) && want.contains(&"src/components/Card.tsx".to_string()), "{want:?}");
+        assert!(!want.iter().any(|p| p.contains("pkg")), "{want:?}");
     }
 
     #[test]

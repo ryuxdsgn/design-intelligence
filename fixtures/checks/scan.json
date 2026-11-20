@@ -511,7 +511,7 @@
     "file": "a.tsx",
     "line": 2,
     "column": 3,
-    "message": "a dialog with no keyboard way out in this file: close it on Esc and keep Tab inside it while it is open (showModal() on a <dialog> does both), or use a dialog component that does"
+    "message": "a modal dialog that does not close on Esc and does not keep Tab inside it: close it on Esc and keep focus inside it while it is open (showModal() on a <dialog> does both), or use a dialog component that does"
    }
   ]
  },
@@ -1023,9 +1023,46 @@
     "file": "Sheet.tsx",
     "line": 1,
     "column": 1,
-    "message": "a dialog with no keyboard way out in this file: close it on Esc and keep Tab inside it while it is open (showModal() on a <dialog> does both), or use a dialog component that does"
+    "message": "a modal dialog that does not close on Esc and does not keep Tab inside it: close it on Esc and keep focus inside it while it is open (showModal() on a <dialog> does both), or use a dialog component that does"
    }
   ]
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.tsx",
+     "raw": "<div role=\"dialog\" aria-modal=\"true\" onKeyDown={(e) => e.key === \"Escape\" && close()}>x</div>"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": [
+   {
+    "level": "warn",
+    "rule": "RX-A11Y-03",
+    "file": "a.tsx",
+    "line": 1,
+    "column": 1,
+    "message": "a modal dialog that closes on Esc but lets Tab move to the page behind it: keep focus inside it while it is open (showModal() on a <dialog> does both), or use a dialog component that does"
+   }
+  ]
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.html",
+     "raw": "<div id=\"chat\" role=\"dialog\" aria-label=\"Help\"><button>Close</button></div>"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": []
  },
  {
   "input": {
@@ -1039,23 +1076,14 @@
    "skip": [],
    "design": null
   },
-  "output": [
-   {
-    "level": "warn",
-    "rule": "RX-A11Y-03",
-    "file": "a.html",
-    "line": 1,
-    "column": 1,
-    "message": "a dialog with no keyboard way out in this file: close it on Esc and keep Tab inside it while it is open (showModal() on a <dialog> does both), or use a dialog component that does"
-   }
-  ]
+  "output": []
  },
  {
   "input": {
    "sources": [
     {
      "path": "a.tsx",
-     "raw": "<div role=\"dialog\" onKeyDown={(e) => e.key === \"Escape\" && close()}>x</div>"
+     "raw": "<div role=\"dialog\" aria-modal=\"true\" onKeyDown={(e) => { if (e.key === \"Escape\") close(); if (e.key === \"Tab\") keep(e); }}>x</div>"
     }
    ],
    "folder": false,
@@ -1069,7 +1097,7 @@
    "sources": [
     {
      "path": "a.tsx",
-     "raw": "<dialog ref={r} onCancel={close}>x</dialog>"
+     "raw": "import * as Dialog from \"@radix-ui/react-dialog\";\nexport const A = () => <Dialog.Content role=\"dialog\" aria-modal=\"true\">x</Dialog.Content>;"
     }
    ],
    "folder": false,
@@ -1083,21 +1111,7 @@
    "sources": [
     {
      "path": "a.tsx",
-     "raw": "import * as Dialog from \"@radix-ui/react-dialog\";\nexport const A = () => <Dialog.Content role=\"dialog\">x</Dialog.Content>;"
-    }
-   ],
-   "folder": false,
-   "skip": [],
-   "design": null
-  },
-  "output": []
- },
- {
-  "input": {
-   "sources": [
-    {
-     "path": "a.tsx",
-     "raw": "<Sheet role=\"dialog\">x</Sheet>"
+     "raw": "<Sheet role=\"dialog\" aria-modal=\"true\">x</Sheet>"
     }
    ],
    "folder": false,
@@ -1125,12 +1139,126 @@
    "sources": [
     {
      "path": "a.html",
-     "raw": "<div role=\"dialog\">x</div><div class=\"spinner\"></div><script src=\"app.js\"></script>"
+     "raw": "<div class=\"scrim\" hidden></div>\n<div role=\"dialog\" aria-modal=\"true\" hidden></div><div class=\"spinner\"></div>\n<script src=\"app.js\"></script>"
     }
    ],
    "folder": false,
    "skip": [],
    "design": null
+  },
+  "output": []
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.html",
+     "raw": "<div class=\"scrim\" hidden></div>\n<div role=\"dialog\" aria-modal=\"true\" hidden></div><div class=\"spinner\"></div>\n<script src=\"app.js\"></script>"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null,
+   "context": [
+    {
+     "path": "app.js",
+     "raw": "open();"
+    }
+   ]
+  },
+  "output": [
+   {
+    "level": "warn",
+    "rule": "RX-A11Y-03",
+    "file": "a.html",
+    "line": 2,
+    "column": 1,
+    "message": "a modal dialog that does not close on Esc and does not keep Tab inside it: close it on Esc and keep focus inside it while it is open (showModal() on a <dialog> does both), or use a dialog component that does"
+   },
+   {
+    "level": "warn",
+    "rule": "RX-IX-02",
+    "file": "a.html",
+    "line": 2,
+    "column": 51,
+    "message": "a loading indicator that only shows: nothing in this file tells a screen reader about the wait; put aria-busy on the region that is loading, or the in-progress text in a role=\"status\" element"
+   }
+  ]
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.html",
+     "raw": "<div class=\"scrim\" hidden></div>\n<div role=\"dialog\" aria-modal=\"true\" hidden></div><div class=\"spinner\"></div>\n<script src=\"app.js\"></script>"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null,
+   "context": [
+    {
+     "path": "app.js",
+     "raw": "on('keydown', (e) => { if (e.key === 'Escape') close(); if (e.key === 'Tab') trap(e); }); el.setAttribute('aria-busy', 'true');"
+    }
+   ]
+  },
+  "output": []
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "src/screens/Home.tsx",
+     "raw": "import { Skeleton } from \"../components\";\nexport const Home = () => <Skeleton />;"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null,
+   "context": [
+    {
+     "path": "src/components/index.ts",
+     "raw": "export * from \"./Skeleton\";"
+    },
+    {
+     "path": "src/components/Skeleton.tsx",
+     "raw": "export const Skeleton = () => <span className=\"skeleton\" aria-hidden=\"true\" />;\nexport const SkeletonList = () => <div aria-busy=\"true\"><Skeleton /></div>;"
+    }
+   ]
+  },
+  "output": [
+   {
+    "level": "warn",
+    "rule": "RX-IX-02",
+    "file": "src/screens/Home.tsx",
+    "line": 2,
+    "column": 27,
+    "message": "a loading indicator that only shows: nothing in this file tells a screen reader about the wait; put aria-busy on the region that is loading, or the in-progress text in a role=\"status\" element"
+   }
+  ]
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "src/screens/Home.tsx",
+     "raw": "import { SkeletonList } from \"../components\";\nexport const Home = () => <SkeletonList />;"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null,
+   "context": [
+    {
+     "path": "src/components/index.ts",
+     "raw": "export * from \"./Skeleton\";"
+    },
+    {
+     "path": "src/components/Skeleton.tsx",
+     "raw": "export const Skeleton = () => <span className=\"skeleton\" aria-hidden=\"true\" />;\nexport const SkeletonList = () => <div aria-busy=\"true\"><Skeleton /></div>;"
+    }
+   ]
   },
   "output": []
  },

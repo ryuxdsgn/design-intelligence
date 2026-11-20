@@ -41,9 +41,12 @@ export interface ScanOpts {
   folder: boolean;
   skip?: Set<string>;
   design?: Direction;
+  /** Files the checks may consult but do not report on: what `references` names, read from disk. */
+  context?: RawSource[];
 }
 
-const input = (sources: RawSource[], opts: ScanOpts): string => JSON.stringify({ sources, folder: opts.folder, skip: [...(opts.skip ?? [])], design: opts.design ?? null });
+const input = (sources: RawSource[], opts: ScanOpts, wants = false): string =>
+  JSON.stringify({ sources, folder: opts.folder, skip: [...(opts.skip ?? [])], design: opts.design ?? null, context: opts.context ?? [], ...(wants ? { wants } : {}) });
 const byPlace = (a: ScanFinding, b: ScanFinding): number => a.file.localeCompare(b.file) || a.line - b.line || a.column - b.column;
 
 /** The source detectors (SOURCE_CHECKS) over files, ordered by file, then line and column: the output
@@ -63,6 +66,31 @@ export function scanSyntax(sources: RawSource[], opts: ScanOpts): ScanFinding[] 
 /** Every source check: the source detectors and the syntax checks, ordered by file, then line and column. */
 export function scan(sources: RawSource[], opts: ScanOpts): ScanFinding[] {
   return [...scanShared(sources, opts), ...scanSyntax(sources, opts)].sort(byPlace);
+}
+
+const MAX_CONTEXT = 64;
+
+/** Every source check, reading the files ryux-core asks for to judge the sources fully: the scripts a page loads,
+ *  the module a loading component comes from, and its re-exports. `read` gives a file, or undefined when it does not
+ *  exist. They are consulted, not reported; the scan repeats only when a round found a file. */
+export function scanReading(sources: RawSource[], opts: ScanOpts, read: (path: string) => RawSource | undefined): ScanFinding[] {
+  const context = [...(opts.context ?? [])];
+  const tried = new Set([...sources, ...context].map((s) => s.path));
+  let findings: ScanFinding[] = [];
+  for (let round = 0; round < 5; round++) {
+    const out = answer<{ findings: ScanFinding[]; wants: string[] }>(rust().scan(input(sources, { ...opts, context }, true)));
+    findings = out.findings;
+    const fresh: RawSource[] = [];
+    for (const path of out.wants) {
+      if (tried.has(path) || context.length + fresh.length >= MAX_CONTEXT) continue;
+      tried.add(path);
+      const file = read(path);
+      if (file) fresh.push(file);
+    }
+    if (!fresh.length) break;
+    context.push(...fresh);
+  }
+  return [...findings, ...scanSyntax(sources, opts)].sort(byPlace);
 }
 
 /** The DESIGN.md direction, or null when the file has none. */
