@@ -126,6 +126,11 @@ goes back to the agent, which fixes it or adds a `ryux-ignore` comment with the 
 approve the hook in `/hooks`. A plain `scan` fails (exit 1) only on a fail. `scan --list-rules`
 lists every check.
 
+Add `--save-dev` to `install` and the CLI goes into the project's devDependencies, so the agent runs
+`npx --no-install @ryuxdsgn/design-intelligence scan` from the project. In auto mode, Claude Code can refuse a
+command that downloads a package; without the copy in the project, the agent asks you to run the scan in your
+terminal.
+
 </details>
 
 <details>

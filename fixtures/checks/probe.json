@@ -7263,5 +7263,3456 @@
     "div.panel"
    ]
   }
+ },
+ {
+  "input": {
+   "vw": 390,
+   "vh": 844,
+   "scrollWidth": 390,
+   "scrollingElement": 0,
+   "top": 2,
+   "styles": [
+    {
+     "color": "rgb(0, 0, 0)",
+     "fontFamily": "Times"
+    },
+    {
+     "backgroundColor": "rgb(255, 255, 255)",
+     "color": "rgb(17, 17, 17)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "display": "flex",
+     "color": "rgb(17, 17, 17)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "color": "rgb(17, 17, 17)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "fontSize": 32,
+     "fontWeight": 700,
+     "color": "rgb(17, 17, 17)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "borderTopWidth": 1,
+     "color": "rgb(17, 17, 17)",
+     "borderTopColor": "rgb(221, 221, 221)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "borderTopWidth": 2,
+     "color": "rgb(17, 17, 17)",
+     "borderTopColor": "rgb(239, 239, 239)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "display": "inline-block",
+     "fontSize": 13.3333,
+     "borderTopLeftRadius": 50,
+     "color": "rgb(0, 0, 0)",
+     "fontFamily": "Arial"
+    },
+    {
+     "position": "sticky",
+     "color": "rgb(17, 17, 17)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "display": "inline-block",
+     "backgroundColor": "rgb(239, 239, 239)",
+     "borderTopWidth": 2,
+     "color": "rgb(0, 0, 0)",
+     "fontFamily": "sans-serif"
+    }
+   ],
+   "els": [
+    {
+     "p": null,
+     "t": "HTML",
+     "s": 0,
+     "r": [
+      0,
+      0,
+      390,
+      1350.46875
+     ],
+     "sh": 1350,
+     "ch": 844
+    },
+    {
+     "p": 0,
+     "t": "BODY",
+     "s": 1,
+     "r": [
+      0,
+      0,
+      390,
+      1350.46875
+     ]
+    },
+    {
+     "p": 1,
+     "t": "DIV",
+     "s": 2,
+     "r": [
+      0,
+      0,
+      390,
+      1350.46875
+     ],
+     "c": "wrap"
+    },
+    {
+     "p": 2,
+     "t": "DIV",
+     "s": 3,
+     "r": [
+      24,
+      24,
+      145.796875,
+      1302.46875
+     ],
+     "c": "main"
+    },
+    {
+     "p": 3,
+     "t": "H1",
+     "s": 4,
+     "r": [
+      24,
+      45.4375,
+      145.796875,
+      48
+     ]
+    },
+    {
+     "p": 3,
+     "t": "DIV",
+     "s": 5,
+     "r": [
+      24,
+      114.875,
+      145.796875,
+      1002
+     ],
+     "c": "items"
+    },
+    {
+     "p": 3,
+     "t": "FIELDSET",
+     "s": 6,
+     "r": [
+      26,
+      1116.875,
+      141.796875,
+      209.59375
+     ]
+    },
+    {
+     "p": 6,
+     "t": "LEGEND",
+     "s": 3,
+     "r": [
+      40,
+      1116.875,
+      113.796875,
+      48
+     ]
+    },
+    {
+     "p": 6,
+     "t": "LABEL",
+     "s": 3,
+     "r": [
+      40,
+      1170.46875,
+      113.796875,
+      40
+     ]
+    },
+    {
+     "p": 8,
+     "t": "INPUT",
+     "s": 7,
+     "r": [
+      45,
+      1182.46875,
+      13,
+      13
+     ],
+     "ctl": 1,
+     "nm": "input",
+     "rg": "n:pay",
+     "gh": 1165,
+     "gl": "Metode pembayaran"
+    },
+    {
+     "p": 6,
+     "t": "LABEL",
+     "s": 3,
+     "r": [
+      40,
+      1210.46875,
+      113.796875,
+      64
+     ]
+    },
+    {
+     "p": 10,
+     "t": "INPUT",
+     "s": 7,
+     "r": [
+      45,
+      1222.46875,
+      13,
+      13
+     ],
+     "ctl": 1,
+     "nm": "input",
+     "rg": "n:pay",
+     "gh": 1165,
+     "gl": "Metode pembayaran"
+    },
+    {
+     "p": 6,
+     "t": "LABEL",
+     "s": 3,
+     "r": [
+      40,
+      1274.46875,
+      113.796875,
+      40
+     ]
+    },
+    {
+     "p": 12,
+     "t": "INPUT",
+     "s": 7,
+     "r": [
+      45,
+      1286.46875,
+      13,
+      13
+     ],
+     "ctl": 1,
+     "nm": "input",
+     "rg": "n:pay",
+     "gh": 1165,
+     "gl": "Metode pembayaran"
+    },
+    {
+     "p": 2,
+     "t": "ASIDE",
+     "s": 8,
+     "r": [
+      201.796875,
+      24,
+      164.203125,
+      132
+     ]
+    },
+    {
+     "p": 14,
+     "t": "P",
+     "s": 3,
+     "r": [
+      201.796875,
+      40,
+      164.203125,
+      24
+     ]
+    },
+    {
+     "p": 14,
+     "t": "BUTTON",
+     "s": 9,
+     "r": [
+      201.796875,
+      80,
+      164.203125,
+      76
+     ],
+     "ctl": 1,
+     "nm": "Bayar Rp1.424.000"
+    }
+   ],
+   "texts": [
+    {
+     "e": 4,
+     "x": "Checkout",
+     "r": [
+      24,
+      50.4375,
+      145.796875,
+      37
+     ],
+     "open": [
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4
+     ]
+    },
+    {
+     "e": 5,
+     "x": "Pesanan",
+     "r": [
+      25,
+      118.875,
+      63.171875,
+      18
+     ],
+     "open": [
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5
+     ]
+    },
+    {
+     "e": 7,
+     "x": "Metode pembayaran",
+     "r": [
+      42,
+      1119.875,
+      88.953125,
+      42
+     ],
+     "end": {
+      "r": [
+       42,
+       613.875,
+       88.953125,
+       42
+      ],
+      "h": [
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7
+      ]
+     }
+    },
+    {
+     "e": 8,
+     "x": "QRIS",
+     "r": [
+      61,
+      1181.46875,
+      43.5625,
+      18
+     ],
+     "end": {
+      "r": [
+       61,
+       675.46875,
+       43.5625,
+       18
+      ],
+      "h": [
+       8,
+       8,
+       8,
+       8,
+       8,
+       8,
+       8,
+       8,
+       8,
+       8,
+       8,
+       8,
+       8,
+       8,
+       8
+      ]
+     }
+    },
+    {
+     "e": 10,
+     "x": "Virtual account BCA",
+     "r": [
+      40,
+      1221.46875,
+      93.390625,
+      42
+     ],
+     "end": {
+      "r": [
+       40,
+       715.46875,
+       93.390625,
+       42
+      ],
+      "h": [
+       11,
+       10,
+       10,
+       10,
+       10,
+       10,
+       10,
+       10,
+       10,
+       10,
+       10,
+       10,
+       10,
+       10,
+       10
+      ]
+     }
+    },
+    {
+     "e": 12,
+     "x": "E-wallet",
+     "r": [
+      61,
+      1285.46875,
+      61.359375,
+      18
+     ],
+     "end": {
+      "r": [
+       61,
+       779.46875,
+       61.359375,
+       18
+      ],
+      "h": [
+       12,
+       12,
+       12,
+       12,
+       12,
+       12,
+       12,
+       12,
+       12,
+       12,
+       12,
+       12,
+       12,
+       12,
+       12
+      ]
+     }
+    },
+    {
+     "e": 15,
+     "x": "Total Rp1.424.000",
+     "r": [
+      201.796875,
+      43,
+      129.875,
+      18
+     ],
+     "open": [
+      15,
+      15,
+      15,
+      15,
+      15,
+      15,
+      15,
+      15,
+      15,
+      15,
+      15,
+      15,
+      15,
+      15,
+      15
+     ],
+     "end": {
+      "r": [
+       201.796875,
+       43,
+       129.875,
+       18
+      ],
+      "h": [
+       15,
+       15,
+       15,
+       15,
+       15,
+       15,
+       15,
+       15,
+       15,
+       15,
+       15,
+       15,
+       15,
+       15,
+       15
+      ]
+     }
+    },
+    {
+     "e": 16,
+     "x": "Bayar Rp1.424.000",
+     "r": [
+      238.078125,
+      97,
+      91.640625,
+      42
+     ],
+     "open": [
+      16,
+      16,
+      16,
+      16,
+      16,
+      16,
+      16,
+      16,
+      16,
+      16,
+      16,
+      16,
+      16,
+      16,
+      16
+     ],
+     "end": {
+      "r": [
+       238.078125,
+       97,
+       91.640625,
+       42
+      ],
+      "h": [
+       16,
+       16,
+       16,
+       16,
+       16,
+       16,
+       16,
+       16,
+       16,
+       16,
+       16,
+       16,
+       16,
+       16,
+       16
+      ]
+     }
+    }
+   ],
+   "chains": {
+    "open": {},
+    "end": {}
+   }
+  },
+  "output": {
+   "findings": [
+    {
+     "rule": "RX-A11Y-02",
+     "level": "warn",
+     "selector": "fieldset > label > input",
+     "message": "\"input\": target 13x13px, under 24x24 (spaced enough to pass WCAG 2.5.8); 44x44 is the preferred hit area"
+    },
+    {
+     "rule": "RX-A11Y-02",
+     "level": "warn",
+     "selector": "fieldset > label > input",
+     "message": "\"input\": target 13x13px, under 24x24 (spaced enough to pass WCAG 2.5.8); 44x44 is the preferred hit area"
+    },
+    {
+     "rule": "RX-A11Y-02",
+     "level": "warn",
+     "selector": "fieldset > label > input",
+     "message": "\"input\": target 13x13px, under 24x24 (spaced enough to pass WCAG 2.5.8); 44x44 is the preferred hit area"
+    }
+   ],
+   "ignored": []
+  }
+ },
+ {
+  "input": {
+   "vw": 1280,
+   "vh": 900,
+   "scrollWidth": 1280,
+   "scrollingElement": 0,
+   "top": 2,
+   "styles": [
+    {
+     "color": "rgb(0, 0, 0)",
+     "fontFamily": "Times"
+    },
+    {
+     "backgroundColor": "rgb(255, 255, 255)",
+     "color": "rgb(17, 17, 17)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "display": "flex",
+     "color": "rgb(17, 17, 17)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "color": "rgb(17, 17, 17)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "fontSize": 32,
+     "fontWeight": 700,
+     "color": "rgb(17, 17, 17)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "borderTopWidth": 1,
+     "color": "rgb(17, 17, 17)",
+     "borderTopColor": "rgb(221, 221, 221)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "borderTopWidth": 2,
+     "color": "rgb(17, 17, 17)",
+     "borderTopColor": "rgb(239, 239, 239)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "display": "inline-block",
+     "fontSize": 13.3333,
+     "borderTopLeftRadius": 50,
+     "color": "rgb(0, 0, 0)",
+     "fontFamily": "Arial"
+    },
+    {
+     "position": "sticky",
+     "color": "rgb(17, 17, 17)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "display": "inline-block",
+     "backgroundColor": "rgb(239, 239, 239)",
+     "borderTopWidth": 2,
+     "color": "rgb(0, 0, 0)",
+     "fontFamily": "sans-serif"
+    }
+   ],
+   "els": [
+    {
+     "p": null,
+     "t": "HTML",
+     "s": 0,
+     "r": [
+      0,
+      0,
+      1280,
+      1302.46875
+     ],
+     "sh": 1302,
+     "ch": 900
+    },
+    {
+     "p": 0,
+     "t": "BODY",
+     "s": 1,
+     "r": [
+      0,
+      0,
+      1280,
+      1302.46875
+     ]
+    },
+    {
+     "p": 1,
+     "t": "DIV",
+     "s": 2,
+     "r": [
+      0,
+      0,
+      1280,
+      1302.46875
+     ],
+     "c": "wrap"
+    },
+    {
+     "p": 2,
+     "t": "DIV",
+     "s": 3,
+     "r": [
+      24,
+      24,
+      880,
+      1254.46875
+     ],
+     "c": "main"
+    },
+    {
+     "p": 3,
+     "t": "H1",
+     "s": 4,
+     "r": [
+      24,
+      45.4375,
+      880,
+      48
+     ]
+    },
+    {
+     "p": 3,
+     "t": "DIV",
+     "s": 5,
+     "r": [
+      24,
+      114.875,
+      880,
+      1002
+     ],
+     "c": "items"
+    },
+    {
+     "p": 3,
+     "t": "FIELDSET",
+     "s": 6,
+     "r": [
+      26,
+      1116.875,
+      876,
+      161.59375
+     ]
+    },
+    {
+     "p": 6,
+     "t": "LEGEND",
+     "s": 3,
+     "r": [
+      40,
+      1116.875,
+      150.765625,
+      24
+     ]
+    },
+    {
+     "p": 6,
+     "t": "LABEL",
+     "s": 3,
+     "r": [
+      40,
+      1146.46875,
+      848,
+      40
+     ]
+    },
+    {
+     "p": 8,
+     "t": "INPUT",
+     "s": 7,
+     "r": [
+      45,
+      1158.46875,
+      13,
+      13
+     ],
+     "ctl": 1,
+     "nm": "input",
+     "rg": "n:pay",
+     "gh": 1141,
+     "gl": "Metode pembayaran"
+    },
+    {
+     "p": 6,
+     "t": "LABEL",
+     "s": 3,
+     "r": [
+      40,
+      1186.46875,
+      848,
+      40
+     ]
+    },
+    {
+     "p": 10,
+     "t": "INPUT",
+     "s": 7,
+     "r": [
+      45,
+      1198.46875,
+      13,
+      13
+     ],
+     "ctl": 1,
+     "nm": "input",
+     "rg": "n:pay",
+     "gh": 1141,
+     "gl": "Metode pembayaran"
+    },
+    {
+     "p": 6,
+     "t": "LABEL",
+     "s": 3,
+     "r": [
+      40,
+      1226.46875,
+      848,
+      40
+     ]
+    },
+    {
+     "p": 12,
+     "t": "INPUT",
+     "s": 7,
+     "r": [
+      45,
+      1238.46875,
+      13,
+      13
+     ],
+     "ctl": 1,
+     "nm": "input",
+     "rg": "n:pay",
+     "gh": 1141,
+     "gl": "Metode pembayaran"
+    },
+    {
+     "p": 2,
+     "t": "ASIDE",
+     "s": 8,
+     "r": [
+      936,
+      24,
+      320,
+      108
+     ]
+    },
+    {
+     "p": 14,
+     "t": "P",
+     "s": 3,
+     "r": [
+      936,
+      40,
+      320,
+      24
+     ]
+    },
+    {
+     "p": 14,
+     "t": "BUTTON",
+     "s": 9,
+     "r": [
+      936,
+      80,
+      320,
+      52
+     ],
+     "ctl": 1,
+     "nm": "Bayar Rp1.424.000"
+    }
+   ],
+   "texts": [
+    {
+     "e": 4,
+     "x": "Checkout",
+     "r": [
+      24,
+      50.4375,
+      145.796875,
+      37
+     ],
+     "open": [
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4
+     ]
+    },
+    {
+     "e": 5,
+     "x": "Pesanan",
+     "r": [
+      25,
+      118.875,
+      63.171875,
+      18
+     ],
+     "open": [
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5
+     ]
+    },
+    {
+     "e": 7,
+     "x": "Metode pembayaran",
+     "r": [
+      42,
+      1119.875,
+      146.765625,
+      18
+     ],
+     "end": {
+      "r": [
+       42,
+       717.875,
+       146.765625,
+       18
+      ],
+      "h": [
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7
+      ]
+     }
+    },
+    {
+     "e": 8,
+     "x": "QRIS",
+     "r": [
+      61,
+      1157.46875,
+      43.5625,
+      18
+     ],
+     "end": {
+      "r": [
+       61,
+       755.46875,
+       43.5625,
+       18
+      ],
+      "h": [
+       8,
+       8,
+       8,
+       8,
+       8,
+       8,
+       8,
+       8,
+       8,
+       8,
+       8,
+       8,
+       8,
+       8,
+       8
+      ]
+     }
+    },
+    {
+     "e": 10,
+     "x": "Virtual account BCA",
+     "r": [
+      61,
+      1197.46875,
+      147.34375,
+      18
+     ],
+     "end": {
+      "r": [
+       61,
+       795.46875,
+       147.34375,
+       18
+      ],
+      "h": [
+       10,
+       10,
+       10,
+       10,
+       10,
+       10,
+       10,
+       10,
+       10,
+       10,
+       10,
+       10,
+       10,
+       10,
+       10
+      ]
+     }
+    },
+    {
+     "e": 12,
+     "x": "E-wallet",
+     "r": [
+      61,
+      1237.46875,
+      61.359375,
+      18
+     ],
+     "end": {
+      "r": [
+       61,
+       835.46875,
+       61.359375,
+       18
+      ],
+      "h": [
+       12,
+       12,
+       12,
+       12,
+       12,
+       12,
+       12,
+       12,
+       12,
+       12,
+       12,
+       12,
+       12,
+       12,
+       12
+      ]
+     }
+    },
+    {
+     "e": 15,
+     "x": "Total Rp1.424.000",
+     "r": [
+      936,
+      43,
+      129.875,
+      18
+     ],
+     "open": [
+      15,
+      15,
+      15,
+      15,
+      15,
+      15,
+      15,
+      15,
+      15,
+      15,
+      15,
+      15,
+      15,
+      15,
+      15
+     ],
+     "end": {
+      "r": [
+       936,
+       43,
+       129.875,
+       18
+      ],
+      "h": [
+       15,
+       15,
+       15,
+       15,
+       15,
+       15,
+       15,
+       15,
+       15,
+       15,
+       15,
+       15,
+       15,
+       15,
+       15
+      ]
+     }
+    },
+    {
+     "e": 16,
+     "x": "Bayar Rp1.424.000",
+     "r": [
+      1027.0625,
+      97,
+      137.875,
+      18
+     ],
+     "open": [
+      16,
+      16,
+      16,
+      16,
+      16,
+      16,
+      16,
+      16,
+      16,
+      16,
+      16,
+      16,
+      16,
+      16,
+      16
+     ],
+     "end": {
+      "r": [
+       1027.0625,
+       97,
+       137.875,
+       18
+      ],
+      "h": [
+       16,
+       16,
+       16,
+       16,
+       16,
+       16,
+       16,
+       16,
+       16,
+       16,
+       16,
+       16,
+       16,
+       16,
+       16
+      ]
+     }
+    }
+   ],
+   "chains": {
+    "open": {},
+    "end": {}
+   }
+  },
+  "output": {
+   "findings": [
+    {
+     "rule": "RX-UX-15",
+     "level": "warn",
+     "selector": "fieldset > label > input",
+     "message": "\"Metode pembayaran\" (3 options) starts 258px below the first screen at 1280px, while \"Bayar Rp1.424.000\" is on it: keep the choice in the same view as the action, or have the action name what is missing"
+    },
+    {
+     "rule": "RX-A11Y-02",
+     "level": "warn",
+     "selector": "fieldset > label > input",
+     "message": "\"input\": target 13x13px, under 24x24 (spaced enough to pass WCAG 2.5.8); 44x44 is the preferred hit area"
+    },
+    {
+     "rule": "RX-A11Y-02",
+     "level": "warn",
+     "selector": "fieldset > label > input",
+     "message": "\"input\": target 13x13px, under 24x24 (spaced enough to pass WCAG 2.5.8); 44x44 is the preferred hit area"
+    },
+    {
+     "rule": "RX-A11Y-02",
+     "level": "warn",
+     "selector": "fieldset > label > input",
+     "message": "\"input\": target 13x13px, under 24x24 (spaced enough to pass WCAG 2.5.8); 44x44 is the preferred hit area"
+    }
+   ],
+   "ignored": []
+  }
+ },
+ {
+  "input": {
+   "vw": 1280,
+   "vh": 900,
+   "scrollWidth": 1280,
+   "scrollingElement": 0,
+   "top": 2,
+   "styles": [
+    {
+     "color": "rgb(0, 0, 0)",
+     "fontFamily": "Times"
+    },
+    {
+     "backgroundColor": "rgb(255, 255, 255)",
+     "color": "rgb(17, 17, 17)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "display": "flex",
+     "color": "rgb(17, 17, 17)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "color": "rgb(17, 17, 17)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "fontSize": 32,
+     "fontWeight": 700,
+     "color": "rgb(17, 17, 17)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "borderTopWidth": 1,
+     "color": "rgb(17, 17, 17)",
+     "borderTopColor": "rgb(221, 221, 221)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "borderTopWidth": 2,
+     "color": "rgb(17, 17, 17)",
+     "borderTopColor": "rgb(239, 239, 239)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "display": "inline-block",
+     "fontSize": 13.3333,
+     "borderTopLeftRadius": 50,
+     "color": "rgb(0, 0, 0)",
+     "fontFamily": "Arial"
+    },
+    {
+     "position": "sticky",
+     "color": "rgb(17, 17, 17)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "display": "inline-block",
+     "backgroundColor": "rgb(239, 239, 239)",
+     "borderTopWidth": 2,
+     "color": "rgb(0, 0, 0)",
+     "fontFamily": "sans-serif"
+    }
+   ],
+   "els": [
+    {
+     "p": null,
+     "t": "HTML",
+     "s": 0,
+     "r": [
+      0,
+      0,
+      1280,
+      422.46875
+     ]
+    },
+    {
+     "p": 0,
+     "t": "BODY",
+     "s": 1,
+     "r": [
+      0,
+      0,
+      1280,
+      422.46875
+     ]
+    },
+    {
+     "p": 1,
+     "t": "DIV",
+     "s": 2,
+     "r": [
+      0,
+      0,
+      1280,
+      422.46875
+     ],
+     "c": "wrap"
+    },
+    {
+     "p": 2,
+     "t": "DIV",
+     "s": 3,
+     "r": [
+      24,
+      24,
+      880,
+      374.46875
+     ],
+     "c": "main"
+    },
+    {
+     "p": 3,
+     "t": "H1",
+     "s": 4,
+     "r": [
+      24,
+      45.4375,
+      880,
+      48
+     ]
+    },
+    {
+     "p": 3,
+     "t": "DIV",
+     "s": 5,
+     "r": [
+      24,
+      114.875,
+      880,
+      122
+     ],
+     "c": "items"
+    },
+    {
+     "p": 3,
+     "t": "FIELDSET",
+     "s": 6,
+     "r": [
+      26,
+      236.875,
+      876,
+      161.59375
+     ]
+    },
+    {
+     "p": 6,
+     "t": "LEGEND",
+     "s": 3,
+     "r": [
+      40,
+      236.875,
+      150.765625,
+      24
+     ]
+    },
+    {
+     "p": 6,
+     "t": "LABEL",
+     "s": 3,
+     "r": [
+      40,
+      266.46875,
+      848,
+      40
+     ]
+    },
+    {
+     "p": 8,
+     "t": "INPUT",
+     "s": 7,
+     "r": [
+      45,
+      278.46875,
+      13,
+      13
+     ],
+     "ctl": 1,
+     "nm": "input",
+     "rg": "n:pay",
+     "gh": 261,
+     "gl": "Metode pembayaran"
+    },
+    {
+     "p": 6,
+     "t": "LABEL",
+     "s": 3,
+     "r": [
+      40,
+      306.46875,
+      848,
+      40
+     ]
+    },
+    {
+     "p": 10,
+     "t": "INPUT",
+     "s": 7,
+     "r": [
+      45,
+      318.46875,
+      13,
+      13
+     ],
+     "ctl": 1,
+     "nm": "input",
+     "rg": "n:pay",
+     "gh": 261,
+     "gl": "Metode pembayaran"
+    },
+    {
+     "p": 6,
+     "t": "LABEL",
+     "s": 3,
+     "r": [
+      40,
+      346.46875,
+      848,
+      40
+     ]
+    },
+    {
+     "p": 12,
+     "t": "INPUT",
+     "s": 7,
+     "r": [
+      45,
+      358.46875,
+      13,
+      13
+     ],
+     "ctl": 1,
+     "nm": "input",
+     "rg": "n:pay",
+     "gh": 261,
+     "gl": "Metode pembayaran"
+    },
+    {
+     "p": 2,
+     "t": "ASIDE",
+     "s": 8,
+     "r": [
+      936,
+      24,
+      320,
+      108
+     ]
+    },
+    {
+     "p": 14,
+     "t": "P",
+     "s": 3,
+     "r": [
+      936,
+      40,
+      320,
+      24
+     ]
+    },
+    {
+     "p": 14,
+     "t": "BUTTON",
+     "s": 9,
+     "r": [
+      936,
+      80,
+      320,
+      52
+     ],
+     "ctl": 1,
+     "nm": "Bayar Rp1.424.000"
+    }
+   ],
+   "texts": [
+    {
+     "e": 4,
+     "x": "Checkout",
+     "r": [
+      24,
+      50.4375,
+      145.796875,
+      37
+     ],
+     "open": [
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4
+     ],
+     "end": {
+      "r": [
+       24,
+       50.4375,
+       145.796875,
+       37
+      ],
+      "h": [
+       4,
+       4,
+       4,
+       4,
+       4,
+       4,
+       4,
+       4,
+       4,
+       4,
+       4,
+       4,
+       4,
+       4,
+       4
+      ]
+     }
+    },
+    {
+     "e": 5,
+     "x": "Pesanan",
+     "r": [
+      25,
+      118.875,
+      63.171875,
+      18
+     ],
+     "open": [
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5
+     ],
+     "end": {
+      "r": [
+       25,
+       118.875,
+       63.171875,
+       18
+      ],
+      "h": [
+       5,
+       5,
+       5,
+       5,
+       5,
+       5,
+       5,
+       5,
+       5,
+       5,
+       5,
+       5,
+       5,
+       5,
+       5
+      ]
+     }
+    },
+    {
+     "e": 7,
+     "x": "Metode pembayaran",
+     "r": [
+      42,
+      239.875,
+      146.765625,
+      18
+     ],
+     "open": [
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7
+     ],
+     "end": {
+      "r": [
+       42,
+       239.875,
+       146.765625,
+       18
+      ],
+      "h": [
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7
+      ]
+     }
+    },
+    {
+     "e": 8,
+     "x": "QRIS",
+     "r": [
+      61,
+      277.46875,
+      43.5625,
+      18
+     ],
+     "open": [
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8
+     ],
+     "end": {
+      "r": [
+       61,
+       277.46875,
+       43.5625,
+       18
+      ],
+      "h": [
+       8,
+       8,
+       8,
+       8,
+       8,
+       8,
+       8,
+       8,
+       8,
+       8,
+       8,
+       8,
+       8,
+       8,
+       8
+      ]
+     }
+    },
+    {
+     "e": 10,
+     "x": "Virtual account BCA",
+     "r": [
+      61,
+      317.46875,
+      147.34375,
+      18
+     ],
+     "open": [
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10
+     ],
+     "end": {
+      "r": [
+       61,
+       317.46875,
+       147.34375,
+       18
+      ],
+      "h": [
+       10,
+       10,
+       10,
+       10,
+       10,
+       10,
+       10,
+       10,
+       10,
+       10,
+       10,
+       10,
+       10,
+       10,
+       10
+      ]
+     }
+    },
+    {
+     "e": 12,
+     "x": "E-wallet",
+     "r": [
+      61,
+      357.46875,
+      61.359375,
+      18
+     ],
+     "open": [
+      12,
+      12,
+      12,
+      12,
+      12,
+      12,
+      12,
+      12,
+      12,
+      12,
+      12,
+      12,
+      12,
+      12,
+      12
+     ],
+     "end": {
+      "r": [
+       61,
+       357.46875,
+       61.359375,
+       18
+      ],
+      "h": [
+       12,
+       12,
+       12,
+       12,
+       12,
+       12,
+       12,
+       12,
+       12,
+       12,
+       12,
+       12,
+       12,
+       12,
+       12
+      ]
+     }
+    },
+    {
+     "e": 15,
+     "x": "Total Rp1.424.000",
+     "r": [
+      936,
+      43,
+      129.875,
+      18
+     ],
+     "open": [
+      15,
+      15,
+      15,
+      15,
+      15,
+      15,
+      15,
+      15,
+      15,
+      15,
+      15,
+      15,
+      15,
+      15,
+      15
+     ],
+     "end": {
+      "r": [
+       936,
+       43,
+       129.875,
+       18
+      ],
+      "h": [
+       15,
+       15,
+       15,
+       15,
+       15,
+       15,
+       15,
+       15,
+       15,
+       15,
+       15,
+       15,
+       15,
+       15,
+       15
+      ]
+     }
+    },
+    {
+     "e": 16,
+     "x": "Bayar Rp1.424.000",
+     "r": [
+      1027.0625,
+      97,
+      137.875,
+      18
+     ],
+     "open": [
+      16,
+      16,
+      16,
+      16,
+      16,
+      16,
+      16,
+      16,
+      16,
+      16,
+      16,
+      16,
+      16,
+      16,
+      16
+     ],
+     "end": {
+      "r": [
+       1027.0625,
+       97,
+       137.875,
+       18
+      ],
+      "h": [
+       16,
+       16,
+       16,
+       16,
+       16,
+       16,
+       16,
+       16,
+       16,
+       16,
+       16,
+       16,
+       16,
+       16,
+       16
+      ]
+     }
+    }
+   ],
+   "chains": {
+    "open": {},
+    "end": {}
+   }
+  },
+  "output": {
+   "findings": [
+    {
+     "rule": "RX-A11Y-02",
+     "level": "warn",
+     "selector": "fieldset > label > input",
+     "message": "\"input\": target 13x13px, under 24x24 (spaced enough to pass WCAG 2.5.8); 44x44 is the preferred hit area"
+    },
+    {
+     "rule": "RX-A11Y-02",
+     "level": "warn",
+     "selector": "fieldset > label > input",
+     "message": "\"input\": target 13x13px, under 24x24 (spaced enough to pass WCAG 2.5.8); 44x44 is the preferred hit area"
+    },
+    {
+     "rule": "RX-A11Y-02",
+     "level": "warn",
+     "selector": "fieldset > label > input",
+     "message": "\"input\": target 13x13px, under 24x24 (spaced enough to pass WCAG 2.5.8); 44x44 is the preferred hit area"
+    }
+   ],
+   "ignored": []
+  }
+ },
+ {
+  "input": {
+   "vw": 1280,
+   "vh": 900,
+   "scrollWidth": 1280,
+   "scrollingElement": 0,
+   "top": 2,
+   "styles": [
+    {
+     "color": "rgb(0, 0, 0)",
+     "fontFamily": "Times"
+    },
+    {
+     "backgroundColor": "rgb(255, 255, 255)",
+     "color": "rgb(17, 17, 17)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "display": "flex",
+     "color": "rgb(17, 17, 17)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "color": "rgb(17, 17, 17)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "fontSize": 32,
+     "fontWeight": 700,
+     "color": "rgb(17, 17, 17)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "borderTopWidth": 1,
+     "color": "rgb(17, 17, 17)",
+     "borderTopColor": "rgb(221, 221, 221)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "fontSize": 24,
+     "fontWeight": 700,
+     "color": "rgb(17, 17, 17)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "borderTopWidth": 2,
+     "color": "rgb(17, 17, 17)",
+     "borderTopColor": "rgb(239, 239, 239)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "display": "inline-block",
+     "fontSize": 13.3333,
+     "borderTopLeftRadius": 50,
+     "color": "rgb(0, 0, 0)",
+     "fontFamily": "Arial"
+    },
+    {
+     "position": "sticky",
+     "color": "rgb(17, 17, 17)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "display": "inline-block",
+     "backgroundColor": "rgb(239, 239, 239)",
+     "borderTopWidth": 2,
+     "color": "rgb(0, 0, 0)",
+     "fontFamily": "sans-serif"
+    }
+   ],
+   "els": [
+    {
+     "p": null,
+     "t": "HTML",
+     "s": 0,
+     "r": [
+      0,
+      0,
+      1280,
+      1179.875
+     ],
+     "sh": 1180,
+     "ch": 900
+    },
+    {
+     "p": 0,
+     "t": "BODY",
+     "s": 1,
+     "r": [
+      0,
+      0,
+      1280,
+      1179.875
+     ]
+    },
+    {
+     "p": 1,
+     "t": "DIV",
+     "s": 2,
+     "r": [
+      0,
+      0,
+      1280,
+      1179.875
+     ],
+     "c": "wrap"
+    },
+    {
+     "p": 2,
+     "t": "DIV",
+     "s": 3,
+     "r": [
+      24,
+      24,
+      880,
+      1131.875
+     ],
+     "c": "main"
+    },
+    {
+     "p": 3,
+     "t": "H1",
+     "s": 4,
+     "r": [
+      24,
+      45.4375,
+      880,
+      48
+     ]
+    },
+    {
+     "p": 3,
+     "t": "DIV",
+     "s": 5,
+     "r": [
+      24,
+      114.875,
+      880,
+      702
+     ],
+     "c": "items"
+    },
+    {
+     "p": 3,
+     "t": "SECTION",
+     "s": 3,
+     "r": [
+      24,
+      836.78125,
+      880,
+      319.09375
+     ]
+    },
+    {
+     "p": 6,
+     "t": "H2",
+     "s": 6,
+     "r": [
+      24,
+      836.78125,
+      880,
+      36
+     ]
+    },
+    {
+     "p": 6,
+     "t": "DIV",
+     "s": 3,
+     "r": [
+      24,
+      892.6875,
+      880,
+      60
+     ],
+     "c": "gap"
+    },
+    {
+     "p": 6,
+     "t": "DIV",
+     "s": 3,
+     "r": [
+      24,
+      952.6875,
+      880,
+      203.1875
+     ]
+    },
+    {
+     "p": 9,
+     "t": "FIELDSET",
+     "s": 7,
+     "r": [
+      26,
+      952.6875,
+      876,
+      81.59375
+     ]
+    },
+    {
+     "p": 10,
+     "t": "LEGEND",
+     "s": 3,
+     "r": [
+      40,
+      952.6875,
+      43.125,
+      24
+     ]
+    },
+    {
+     "p": 10,
+     "t": "LABEL",
+     "s": 3,
+     "r": [
+      40,
+      982.28125,
+      848,
+      40
+     ]
+    },
+    {
+     "p": 12,
+     "t": "INPUT",
+     "s": 8,
+     "r": [
+      45,
+      994.28125,
+      13,
+      13
+     ],
+     "ctl": 1,
+     "nm": "input",
+     "rg": "n:pay",
+     "gh": 873,
+     "gl": "Metode Pembayaran"
+    },
+    {
+     "p": 9,
+     "t": "FIELDSET",
+     "s": 7,
+     "r": [
+      26,
+      1034.28125,
+      876,
+      121.59375
+     ]
+    },
+    {
+     "p": 14,
+     "t": "LEGEND",
+     "s": 3,
+     "r": [
+      40,
+      1034.28125,
+      109.5625,
+      24
+     ]
+    },
+    {
+     "p": 14,
+     "t": "LABEL",
+     "s": 3,
+     "r": [
+      40,
+      1063.875,
+      848,
+      40
+     ]
+    },
+    {
+     "p": 16,
+     "t": "INPUT",
+     "s": 8,
+     "r": [
+      45,
+      1075.875,
+      13,
+      13
+     ],
+     "ctl": 1,
+     "nm": "input",
+     "rg": "n:pay",
+     "gh": 873,
+     "gl": "Metode Pembayaran"
+    },
+    {
+     "p": 14,
+     "t": "LABEL",
+     "s": 3,
+     "r": [
+      40,
+      1103.875,
+      848,
+      40
+     ]
+    },
+    {
+     "p": 18,
+     "t": "INPUT",
+     "s": 8,
+     "r": [
+      45,
+      1115.875,
+      13,
+      13
+     ],
+     "ctl": 1,
+     "nm": "input",
+     "rg": "n:pay",
+     "gh": 873,
+     "gl": "Metode Pembayaran"
+    },
+    {
+     "p": 2,
+     "t": "ASIDE",
+     "s": 9,
+     "r": [
+      936,
+      24,
+      320,
+      108
+     ]
+    },
+    {
+     "p": 20,
+     "t": "P",
+     "s": 3,
+     "r": [
+      936,
+      40,
+      320,
+      24
+     ]
+    },
+    {
+     "p": 20,
+     "t": "BUTTON",
+     "s": 10,
+     "r": [
+      936,
+      80,
+      320,
+      52
+     ],
+     "ctl": 1,
+     "nm": "Bayar Rp1.421.000"
+    }
+   ],
+   "texts": [
+    {
+     "e": 4,
+     "x": "Checkout",
+     "r": [
+      24,
+      50.4375,
+      145.796875,
+      37
+     ],
+     "open": [
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4
+     ]
+    },
+    {
+     "e": 5,
+     "x": "Pesanan",
+     "r": [
+      25,
+      118.875,
+      63.171875,
+      18
+     ],
+     "open": [
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5
+     ]
+    },
+    {
+     "e": 7,
+     "x": "Metode Pembayaran",
+     "r": [
+      24,
+      840.78125,
+      233.421875,
+      28
+     ],
+     "open": [
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7
+     ],
+     "end": {
+      "r": [
+       24,
+       560.78125,
+       233.421875,
+       28
+      ],
+      "h": [
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7
+      ]
+     }
+    },
+    {
+     "e": 11,
+     "x": "QRIS",
+     "r": [
+      42,
+      955.6875,
+      39.125,
+      18
+     ],
+     "end": {
+      "r": [
+       42,
+       675.6875,
+       39.125,
+       18
+      ],
+      "h": [
+       11,
+       11,
+       11,
+       11,
+       11,
+       11,
+       11,
+       11,
+       11,
+       11,
+       11,
+       11,
+       11,
+       11,
+       11
+      ]
+     }
+    },
+    {
+     "e": 12,
+     "x": "QRIS",
+     "r": [
+      61,
+      993.28125,
+      43.5625,
+      18
+     ],
+     "end": {
+      "r": [
+       61,
+       713.28125,
+       43.5625,
+       18
+      ],
+      "h": [
+       12,
+       12,
+       12,
+       12,
+       12,
+       12,
+       12,
+       12,
+       12,
+       12,
+       12,
+       12,
+       12,
+       12,
+       12
+      ]
+     }
+    },
+    {
+     "e": 15,
+     "x": "Virtual account",
+     "r": [
+      42,
+      1037.28125,
+      105.5625,
+      18
+     ],
+     "end": {
+      "r": [
+       42,
+       757.28125,
+       105.5625,
+       18
+      ],
+      "h": [
+       15,
+       15,
+       15,
+       15,
+       15,
+       15,
+       15,
+       15,
+       15,
+       15,
+       15,
+       15,
+       15,
+       15,
+       15
+      ]
+     }
+    },
+    {
+     "e": 16,
+     "x": "BCA",
+     "r": [
+      61,
+      1074.875,
+      37.34375,
+      18
+     ],
+     "end": {
+      "r": [
+       61,
+       794.875,
+       37.34375,
+       18
+      ],
+      "h": [
+       16,
+       16,
+       16,
+       16,
+       16,
+       16,
+       16,
+       16,
+       16,
+       16,
+       16,
+       16,
+       16,
+       16,
+       16
+      ]
+     }
+    },
+    {
+     "e": 18,
+     "x": "BNI",
+     "r": [
+      61,
+      1114.875,
+      31.125,
+      18
+     ],
+     "end": {
+      "r": [
+       61,
+       834.875,
+       31.125,
+       18
+      ],
+      "h": [
+       18,
+       18,
+       18,
+       18,
+       18,
+       18,
+       18,
+       18,
+       18,
+       18,
+       18,
+       18,
+       18,
+       18,
+       18
+      ]
+     }
+    },
+    {
+     "e": 21,
+     "x": "Total Rp1.421.000",
+     "r": [
+      936,
+      43,
+      129.875,
+      18
+     ],
+     "open": [
+      21,
+      21,
+      21,
+      21,
+      21,
+      21,
+      21,
+      21,
+      21,
+      21,
+      21,
+      21,
+      21,
+      21,
+      21
+     ],
+     "end": {
+      "r": [
+       936,
+       43,
+       129.875,
+       18
+      ],
+      "h": [
+       21,
+       21,
+       21,
+       21,
+       21,
+       21,
+       21,
+       21,
+       21,
+       21,
+       21,
+       21,
+       21,
+       21,
+       21
+      ]
+     }
+    },
+    {
+     "e": 22,
+     "x": "Bayar Rp1.421.000",
+     "r": [
+      1027.0625,
+      97,
+      137.875,
+      18
+     ],
+     "open": [
+      22,
+      22,
+      22,
+      22,
+      22,
+      22,
+      22,
+      22,
+      22,
+      22,
+      22,
+      22,
+      22,
+      22,
+      22
+     ],
+     "end": {
+      "r": [
+       1027.0625,
+       97,
+       137.875,
+       18
+      ],
+      "h": [
+       22,
+       22,
+       22,
+       22,
+       22,
+       22,
+       22,
+       22,
+       22,
+       22,
+       22,
+       22,
+       22,
+       22,
+       22
+      ]
+     }
+    }
+   ],
+   "chains": {
+    "open": {},
+    "end": {}
+   }
+  },
+  "output": {
+   "findings": [
+    {
+     "rule": "RX-A11Y-02",
+     "level": "warn",
+     "selector": "fieldset > label > input",
+     "message": "\"input\": target 13x13px, under 24x24 (spaced enough to pass WCAG 2.5.8); 44x44 is the preferred hit area"
+    },
+    {
+     "rule": "RX-A11Y-02",
+     "level": "warn",
+     "selector": "fieldset > label > input",
+     "message": "\"input\": target 13x13px, under 24x24 (spaced enough to pass WCAG 2.5.8); 44x44 is the preferred hit area"
+    },
+    {
+     "rule": "RX-A11Y-02",
+     "level": "warn",
+     "selector": "fieldset > label > input",
+     "message": "\"input\": target 13x13px, under 24x24 (spaced enough to pass WCAG 2.5.8); 44x44 is the preferred hit area"
+    }
+   ],
+   "ignored": []
+  }
+ },
+ {
+  "input": {
+   "vw": 1280,
+   "vh": 900,
+   "scrollWidth": 1280,
+   "scrollingElement": 0,
+   "top": 2,
+   "styles": [
+    {
+     "color": "rgb(0, 0, 0)",
+     "fontFamily": "Times"
+    },
+    {
+     "backgroundColor": "rgb(255, 255, 255)",
+     "color": "rgb(17, 17, 17)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "display": "flex",
+     "color": "rgb(17, 17, 17)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "color": "rgb(17, 17, 17)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "fontSize": 32,
+     "fontWeight": 700,
+     "color": "rgb(17, 17, 17)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "borderTopWidth": 1,
+     "color": "rgb(17, 17, 17)",
+     "borderTopColor": "rgb(221, 221, 221)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "fontSize": 24,
+     "fontWeight": 700,
+     "color": "rgb(17, 17, 17)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "borderTopWidth": 2,
+     "color": "rgb(17, 17, 17)",
+     "borderTopColor": "rgb(239, 239, 239)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "display": "inline-block",
+     "fontSize": 13.3333,
+     "borderTopLeftRadius": 50,
+     "color": "rgb(0, 0, 0)",
+     "fontFamily": "Arial"
+    },
+    {
+     "position": "sticky",
+     "color": "rgb(17, 17, 17)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "display": "inline-block",
+     "backgroundColor": "rgb(239, 239, 239)",
+     "borderTopWidth": 2,
+     "color": "rgb(0, 0, 0)",
+     "fontFamily": "sans-serif"
+    }
+   ],
+   "els": [
+    {
+     "p": null,
+     "t": "HTML",
+     "s": 0,
+     "r": [
+      0,
+      0,
+      1280,
+      1479.875
+     ],
+     "sh": 1480,
+     "ch": 900
+    },
+    {
+     "p": 0,
+     "t": "BODY",
+     "s": 1,
+     "r": [
+      0,
+      0,
+      1280,
+      1479.875
+     ]
+    },
+    {
+     "p": 1,
+     "t": "DIV",
+     "s": 2,
+     "r": [
+      0,
+      0,
+      1280,
+      1479.875
+     ],
+     "c": "wrap"
+    },
+    {
+     "p": 2,
+     "t": "DIV",
+     "s": 3,
+     "r": [
+      24,
+      24,
+      880,
+      1431.875
+     ],
+     "c": "main"
+    },
+    {
+     "p": 3,
+     "t": "H1",
+     "s": 4,
+     "r": [
+      24,
+      45.4375,
+      880,
+      48
+     ]
+    },
+    {
+     "p": 3,
+     "t": "DIV",
+     "s": 5,
+     "r": [
+      24,
+      114.875,
+      880,
+      1002
+     ],
+     "c": "items"
+    },
+    {
+     "p": 3,
+     "t": "SECTION",
+     "s": 3,
+     "r": [
+      24,
+      1136.78125,
+      880,
+      319.09375
+     ]
+    },
+    {
+     "p": 6,
+     "t": "H2",
+     "s": 6,
+     "r": [
+      24,
+      1136.78125,
+      880,
+      36
+     ]
+    },
+    {
+     "p": 6,
+     "t": "DIV",
+     "s": 3,
+     "r": [
+      24,
+      1192.6875,
+      880,
+      60
+     ],
+     "c": "gap"
+    },
+    {
+     "p": 6,
+     "t": "DIV",
+     "s": 3,
+     "r": [
+      24,
+      1252.6875,
+      880,
+      203.1875
+     ]
+    },
+    {
+     "p": 9,
+     "t": "FIELDSET",
+     "s": 7,
+     "r": [
+      26,
+      1252.6875,
+      876,
+      81.59375
+     ]
+    },
+    {
+     "p": 10,
+     "t": "LEGEND",
+     "s": 3,
+     "r": [
+      40,
+      1252.6875,
+      43.125,
+      24
+     ]
+    },
+    {
+     "p": 10,
+     "t": "LABEL",
+     "s": 3,
+     "r": [
+      40,
+      1282.28125,
+      848,
+      40
+     ]
+    },
+    {
+     "p": 12,
+     "t": "INPUT",
+     "s": 8,
+     "r": [
+      45,
+      1294.28125,
+      13,
+      13
+     ],
+     "ctl": 1,
+     "nm": "input",
+     "rg": "n:pay",
+     "gh": 1173,
+     "gl": "Metode Pembayaran"
+    },
+    {
+     "p": 9,
+     "t": "FIELDSET",
+     "s": 7,
+     "r": [
+      26,
+      1334.28125,
+      876,
+      121.59375
+     ]
+    },
+    {
+     "p": 14,
+     "t": "LEGEND",
+     "s": 3,
+     "r": [
+      40,
+      1334.28125,
+      109.5625,
+      24
+     ]
+    },
+    {
+     "p": 14,
+     "t": "LABEL",
+     "s": 3,
+     "r": [
+      40,
+      1363.875,
+      848,
+      40
+     ]
+    },
+    {
+     "p": 16,
+     "t": "INPUT",
+     "s": 8,
+     "r": [
+      45,
+      1375.875,
+      13,
+      13
+     ],
+     "ctl": 1,
+     "nm": "input",
+     "rg": "n:pay",
+     "gh": 1173,
+     "gl": "Metode Pembayaran"
+    },
+    {
+     "p": 14,
+     "t": "LABEL",
+     "s": 3,
+     "r": [
+      40,
+      1403.875,
+      848,
+      40
+     ]
+    },
+    {
+     "p": 18,
+     "t": "INPUT",
+     "s": 8,
+     "r": [
+      45,
+      1415.875,
+      13,
+      13
+     ],
+     "ctl": 1,
+     "nm": "input",
+     "rg": "n:pay",
+     "gh": 1173,
+     "gl": "Metode Pembayaran"
+    },
+    {
+     "p": 2,
+     "t": "ASIDE",
+     "s": 9,
+     "r": [
+      936,
+      24,
+      320,
+      108
+     ]
+    },
+    {
+     "p": 20,
+     "t": "P",
+     "s": 3,
+     "r": [
+      936,
+      40,
+      320,
+      24
+     ]
+    },
+    {
+     "p": 20,
+     "t": "BUTTON",
+     "s": 10,
+     "r": [
+      936,
+      80,
+      320,
+      52
+     ],
+     "ctl": 1,
+     "nm": "Bayar Rp1.421.000"
+    }
+   ],
+   "texts": [
+    {
+     "e": 4,
+     "x": "Checkout",
+     "r": [
+      24,
+      50.4375,
+      145.796875,
+      37
+     ],
+     "open": [
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4
+     ]
+    },
+    {
+     "e": 5,
+     "x": "Pesanan",
+     "r": [
+      25,
+      118.875,
+      63.171875,
+      18
+     ],
+     "open": [
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5
+     ]
+    },
+    {
+     "e": 7,
+     "x": "Metode Pembayaran",
+     "r": [
+      24,
+      1140.78125,
+      233.421875,
+      28
+     ],
+     "end": {
+      "r": [
+       24,
+       560.78125,
+       233.421875,
+       28
+      ],
+      "h": [
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7
+      ]
+     }
+    },
+    {
+     "e": 11,
+     "x": "QRIS",
+     "r": [
+      42,
+      1255.6875,
+      39.125,
+      18
+     ],
+     "end": {
+      "r": [
+       42,
+       675.6875,
+       39.125,
+       18
+      ],
+      "h": [
+       11,
+       11,
+       11,
+       11,
+       11,
+       11,
+       11,
+       11,
+       11,
+       11,
+       11,
+       11,
+       11,
+       11,
+       11
+      ]
+     }
+    },
+    {
+     "e": 12,
+     "x": "QRIS",
+     "r": [
+      61,
+      1293.28125,
+      43.5625,
+      18
+     ],
+     "end": {
+      "r": [
+       61,
+       713.28125,
+       43.5625,
+       18
+      ],
+      "h": [
+       12,
+       12,
+       12,
+       12,
+       12,
+       12,
+       12,
+       12,
+       12,
+       12,
+       12,
+       12,
+       12,
+       12,
+       12
+      ]
+     }
+    },
+    {
+     "e": 15,
+     "x": "Virtual account",
+     "r": [
+      42,
+      1337.28125,
+      105.5625,
+      18
+     ],
+     "end": {
+      "r": [
+       42,
+       757.28125,
+       105.5625,
+       18
+      ],
+      "h": [
+       15,
+       15,
+       15,
+       15,
+       15,
+       15,
+       15,
+       15,
+       15,
+       15,
+       15,
+       15,
+       15,
+       15,
+       15
+      ]
+     }
+    },
+    {
+     "e": 16,
+     "x": "BCA",
+     "r": [
+      61,
+      1374.875,
+      37.34375,
+      18
+     ],
+     "end": {
+      "r": [
+       61,
+       794.875,
+       37.34375,
+       18
+      ],
+      "h": [
+       16,
+       16,
+       16,
+       16,
+       16,
+       16,
+       16,
+       16,
+       16,
+       16,
+       16,
+       16,
+       16,
+       16,
+       16
+      ]
+     }
+    },
+    {
+     "e": 18,
+     "x": "BNI",
+     "r": [
+      61,
+      1414.875,
+      31.125,
+      18
+     ],
+     "end": {
+      "r": [
+       61,
+       834.875,
+       31.125,
+       18
+      ],
+      "h": [
+       18,
+       18,
+       18,
+       18,
+       18,
+       18,
+       18,
+       18,
+       18,
+       18,
+       18,
+       18,
+       18,
+       18,
+       18
+      ]
+     }
+    },
+    {
+     "e": 21,
+     "x": "Total Rp1.421.000",
+     "r": [
+      936,
+      43,
+      129.875,
+      18
+     ],
+     "open": [
+      21,
+      21,
+      21,
+      21,
+      21,
+      21,
+      21,
+      21,
+      21,
+      21,
+      21,
+      21,
+      21,
+      21,
+      21
+     ],
+     "end": {
+      "r": [
+       936,
+       43,
+       129.875,
+       18
+      ],
+      "h": [
+       21,
+       21,
+       21,
+       21,
+       21,
+       21,
+       21,
+       21,
+       21,
+       21,
+       21,
+       21,
+       21,
+       21,
+       21
+      ]
+     }
+    },
+    {
+     "e": 22,
+     "x": "Bayar Rp1.421.000",
+     "r": [
+      1027.0625,
+      97,
+      137.875,
+      18
+     ],
+     "open": [
+      22,
+      22,
+      22,
+      22,
+      22,
+      22,
+      22,
+      22,
+      22,
+      22,
+      22,
+      22,
+      22,
+      22,
+      22
+     ],
+     "end": {
+      "r": [
+       1027.0625,
+       97,
+       137.875,
+       18
+      ],
+      "h": [
+       22,
+       22,
+       22,
+       22,
+       22,
+       22,
+       22,
+       22,
+       22,
+       22,
+       22,
+       22,
+       22,
+       22,
+       22
+      ]
+     }
+    }
+   ],
+   "chains": {
+    "open": {},
+    "end": {}
+   }
+  },
+  "output": {
+   "findings": [
+    {
+     "rule": "RX-UX-15",
+     "level": "warn",
+     "selector": "fieldset > label > input",
+     "message": "\"Metode Pembayaran\" (3 options) starts 394px below the first screen at 1280px, while \"Bayar Rp1.421.000\" is on it: keep the choice in the same view as the action, or have the action name what is missing"
+    },
+    {
+     "rule": "RX-A11Y-02",
+     "level": "warn",
+     "selector": "fieldset > label > input",
+     "message": "\"input\": target 13x13px, under 24x24 (spaced enough to pass WCAG 2.5.8); 44x44 is the preferred hit area"
+    },
+    {
+     "rule": "RX-A11Y-02",
+     "level": "warn",
+     "selector": "fieldset > label > input",
+     "message": "\"input\": target 13x13px, under 24x24 (spaced enough to pass WCAG 2.5.8); 44x44 is the preferred hit area"
+    },
+    {
+     "rule": "RX-A11Y-02",
+     "level": "warn",
+     "selector": "fieldset > label > input",
+     "message": "\"input\": target 13x13px, under 24x24 (spaced enough to pass WCAG 2.5.8); 44x44 is the preferred hit area"
+    }
+   ],
+   "ignored": []
+  }
  }
 ]

@@ -415,7 +415,7 @@ export const RULES: Rule[] = [
       basis: "Gestalt proximity; Nielsen heuristics 1 (visibility of system status) and 6 (recognition rather than recall); Fitts's law (a pinned bar keeps the action in thumb reach, RX-RD-03); owner blind rating 2026-11-20 of the front-end build bench (a Next.js checkout, no skill vs RYUX, three runs each): the bar was missing in 5 of 6 runs, 2 of them with RYUX; all three RYUX runs started with no payment method and an active-looking Bayar; on desktop two RYUX runs put the methods far below the fold, away from Bayar at the top right; written for RYUX",
       notWhen: "one fixed price with no choices; a long statement or invoice read top to bottom",
       tradeoff: "a pinned bar takes vertical space on every scroll position",
-      check: "render at 390 with the most items the brief allows: the total and the primary action are visible together without scrolling, at the top of the page and at the end; with nothing chosen, the action is ready (a choice is preset) or names what is missing, and pressing it moves focus to the choice; at 1280, the choice the action needs and the action are in one viewport",
+      check: "render at 390 with the most items the brief allows: the total and the primary action are visible together without scrolling, at the top of the page and at the end; with nothing chosen, the action is ready (a choice is preset) or names what is missing, and pressing it moves focus to the choice; at 1280, the choice the action needs and the action are in one viewport (ryux scan <url> warns when the page's only radio group starts below the first screen at 1024px or wider while a button that carries an amount is on it)",
     },
     {
       num: 16,

@@ -13,7 +13,7 @@ use std::collections::{HashMap, HashSet};
 
 /// What the rendered checks look for, one row per line of RENDER_CHECKS in packages/cli/src/checks.ts (which also
 /// lists RX-QA-08, script errors, reported by the CLI itself). `cargo test` and the CLI tests hold them equal.
-pub const CATALOGUE: [(&str, &str); 10] = [
+pub const CATALOGUE: [(&str, &str); 11] = [
     ("RX-RD-01", "fail"),
     ("RX-A11Y-01", "fail"),
     ("RX-A11Y-02", "fail"),
@@ -23,6 +23,7 @@ pub const CATALOGUE: [(&str, &str); 10] = [
     ("RX-UI-10", "warn"),
     ("RX-UI-26", "warn"),
     ("RX-UI-01", "warn"),
+    ("RX-UX-15", "warn"),
     ("RX-FM-05", "warn"),
 ];
 
@@ -118,6 +119,7 @@ struct Res {
     serif: JsRe,
     sans: JsRe,
     number: regex::Regex,
+    amount: regex::Regex,
 }
 
 impl Res {
@@ -131,6 +133,7 @@ impl Res {
             inset: js(r"inset\(50%\)", ""),
             scrolls: js(r"(auto|scroll)", ""),
             pinned: js(r"^(fixed|sticky)$", ""),
+            amount: regex::Regex::new(r"(?:Rp|IDR|US\$|\$|€|£|¥|₹)\s?\d").unwrap(),
             words: js(r"[\p{L}\p{N}][\p{L}\p{N}.,:]*", "gu"),
             status: js(r"\b(beta|new|baru|v\d|\d{4}|live|soon|segera|preview)\b", "i"),
             letters: js(r"\p{L}{2}", "u"),
@@ -607,6 +610,62 @@ impl<'a> Page<'a> {
                 culprits.first().map_or("html".to_string(), |&i| self.selector(i)),
                 format!("the page scrolls sideways: {}px of content in {}px{}", num_str(sw), num_str(vw), if names.is_empty() { String::new() } else { format!("; widest: {}", names.join(", ")) }),
             ));
+        }
+
+        // A choice out of view of its action (RX-UX-15): on a wide screen, the page's only radio group starts below the
+        // first screen while a button that carries an amount is on it. A page with several choices is a form the
+        // person scrolls through; one choice and a pay button is a checkout whose choice belongs beside the button.
+        // The group's heading (its legend, or a card title just above it) on the first screen keeps it in view (owner,
+        // A2 2026-11-21).
+        if vw >= 1024.0 {
+            let mut groups: Vec<(&str, f64, usize, usize)> = Vec::new();
+            for i in 2..n {
+                let key = self.text_of(i, "rg");
+                let seen = self.shown[i] || self.parent(i).map_or(false, |p| self.shown[p]);
+                if key.is_empty() || !self.outside[i] || !seen {
+                    continue;
+                }
+                let top = self.els[i].r.y;
+                match groups.iter_mut().find(|g| g.0 == key) {
+                    Some(g) => {
+                        g.1 = g.1.min(top);
+                        g.2 += 1;
+                    }
+                    None => groups.push((key, top, 1, i)),
+                }
+            }
+            if let [(_, top, count, first)] = groups[..] {
+                let action = (2..n).find(|&i| {
+                    let el = &self.els[i];
+                    (el.tag == "BUTTON" || el.v.get("role").and_then(Value::as_str) == Some("button"))
+                        && self.shown[i]
+                        && self.outside[i]
+                        && el.r.w > 0.0
+                        && el.r.y >= 0.0
+                        && el.r.bottom() <= self.vh
+                        && self.re.amount.is_match(self.text_of(i, "nm"))
+                });
+                let heading_seen = self.els[first].v.get("gh").and_then(Value::as_f64).map_or(false, |b| b <= self.vh);
+                if let (true, false, Some(a)) = (top >= self.vh, heading_seen, action) {
+                    let label = match self.text_of(first, "gl") {
+                        "" => format!("the choice that starts with {}", quote(self.text_of(first, "ol"))),
+                        gl => quote(gl),
+                    };
+                    out.push(finding(
+                        "RX-UX-15",
+                        "warn",
+                        self.selector(first),
+                        format!(
+                            "{} ({} options) starts {}px below the first screen at {}px, while {} is on it: keep the choice in the same view as the action, or have the action name what is missing",
+                            label,
+                            count,
+                            num_str(round(top - self.vh)),
+                            num_str(vw),
+                            quote(self.text_of(a, "nm"))
+                        ),
+                    ));
+                }
+            }
         }
 
         // Text: every visible element with its own text, outside the ignored regions.

@@ -10,7 +10,7 @@ import { fileURLToPath } from "node:url";
 import { SOURCE_CHECKS, SYNTAX_CHECKS } from "../dist/checks.js";
 import { readDirection as directionIn, scan as scanEngine, scanShared } from "../dist/engine.js";
 import { FIXTURES, chromium, probePage, recordDirection, recordScan, recording, toSource } from "./golden.mjs";
-import { BASICS, PAGES, QUIET, SLOP, bar } from "./pages.mjs";
+import { BASICS, PAGES, QUIET, SLOP, bar, choice, choiceSplit } from "./pages.mjs";
 import { RULES } from "../dist/intelligence/content.js";
 import { VERSION } from "../dist/product.js";
 
@@ -566,6 +566,52 @@ test("scan <url> fails text a bar cuts on the first screen or still covers at th
   const bars = (r) => JSON.parse(r.out).findings.filter((f) => f.rule === "RX-QA-03" && f.level === "fail").map((f) => f.message.split(" bar ")[1].split(/[,:]/)[0]);
   assert.deepEqual(bars(cut).sort(), ["on the first screen", "with the page scrolled to its end"]);
   assert.deepEqual(bars(page(96)), []);
+  rmSync(dir, { recursive: true, force: true });
+});
+
+// Front-end bench, 2026-11-20: on 5 of 6 rated checkout pages the payment methods sat below the first screen at
+// 1280 px while "Bayar Rp…" stood in the sticky side column; the owner flagged all 5, and not the one with the
+// methods in view. Same Playwright requirement as above.
+test("scan <url> warns when the only choice sits below the first screen on desktop while the action with the total is on it", (t) => {
+  const dir = mkdtempSync(join(tmpdir(), "ryux-choice-"));
+  const scanAt = (low, width) => {
+    const path = join(dir, `choice-${low}.html`);
+    writeFileSync(path, choice(low));
+    return run(process.env.RYUX_PLAYWRIGHT_CWD ?? join(dirname(cli), "..", "..", ".."), ["scan", `file://${path}`, "--widths", String(width), "--json"]);
+  };
+  const low = scanAt(true, 1280);
+  if (/needs Playwright|could not start Chromium/.test(low.out)) {
+    rmSync(dir, { recursive: true, force: true });
+    return noBrowser(t);
+  }
+  const ux15 = (r) => JSON.parse(r.out).findings.filter((f) => f.rule === "RX-UX-15").map((f) => `${f.level} ${f.message}`);
+  const found = ux15(low);
+  assert.equal(found.length, 1);
+  assert.match(found[0], /^warn "Metode pembayaran" \(3 options\) starts \d+px below the first screen at 1280px, while "Bayar Rp1\.424\.000" is on it/);
+  assert.deepEqual(ux15(scanAt(false, 1280)), [], "the choice in view");
+  assert.deepEqual(ux15(scanAt(true, 390)), [], "a phone screen scrolls to its choice");
+  rmSync(dir, { recursive: true, force: true });
+});
+
+// Owner, A2 (2026-11-21): the payment card's heading on the first screen keeps the choice in view, though its first
+// option starts just below it.
+test("scan <url> counts a choice as in view when its heading is on the first screen, and warns when the heading is below too", (t) => {
+  const dir = mkdtempSync(join(tmpdir(), "ryux-choice-split-"));
+  const scanAt = (inView) => {
+    const path = join(dir, `split-${inView}.html`);
+    writeFileSync(path, choiceSplit(inView));
+    return run(process.env.RYUX_PLAYWRIGHT_CWD ?? join(dirname(cli), "..", "..", ".."), ["scan", `file://${path}`, "--widths", "1280", "--json"]);
+  };
+  const low = scanAt(false);
+  if (/needs Playwright|could not start Chromium/.test(low.out)) {
+    rmSync(dir, { recursive: true, force: true });
+    return noBrowser(t);
+  }
+  const ux15 = (r) => JSON.parse(r.out).findings.filter((f) => f.rule === "RX-UX-15").map((f) => `${f.level} ${f.message}`);
+  const found = ux15(low);
+  assert.equal(found.length, 1);
+  assert.match(found[0], /^warn "Metode Pembayaran" \(3 options\) starts \d+px below the first screen at 1280px/);
+  assert.deepEqual(ux15(scanAt(true)), [], "the heading is on the first screen");
   rmSync(dir, { recursive: true, force: true });
 });
 

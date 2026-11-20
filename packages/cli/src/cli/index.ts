@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import { spawnSync } from "node:child_process";
 import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { homedir } from "node:os";
 import { join, relative, sep } from "node:path";
@@ -146,6 +147,40 @@ function agentsAt(scope: Scope, requireInstall: boolean): string[] {
   }).map((a) => a.id);
 }
 
+const PKG = "@ryuxdsgn/design-intelligence";
+
+// The RYUX CLI as a devDependency, so an agent runs it with `npx --no-install` instead of a download its permission
+// check can refuse. Uses the project's package manager, read from its lockfile; npm when there is none.
+function saveDevPlan(root: string): { skip: string } | { cmd: string; args: string[] } {
+  const pkgFile = join(root, "package.json");
+  if (!existsSync(pkgFile)) return { skip: `--save-dev skipped: no package.json in ${root}` };
+  try {
+    const pkg = JSON.parse(readFileSync(pkgFile, "utf8")) as { dependencies?: object; devDependencies?: object };
+    if (pkg.devDependencies && PKG in pkg.devDependencies) return { skip: `${PKG} is already in devDependencies` };
+    if (pkg.dependencies && PKG in pkg.dependencies) return { skip: `${PKG} is already in dependencies` };
+  } catch {
+    return { skip: "--save-dev skipped: package.json does not parse" };
+  }
+  const spec = `${PKG}@${VERSION}`;
+  const has = (f: string) => existsSync(join(root, f));
+  if (has("pnpm-lock.yaml")) return { cmd: "pnpm", args: ["add", "-D", spec] };
+  if (has("yarn.lock")) return { cmd: "yarn", args: ["add", "-D", spec] };
+  if (has("bun.lock") || has("bun.lockb")) return { cmd: "bun", args: ["add", "-d", spec] };
+  return { cmd: "npm", args: ["install", "-D", spec] };
+}
+
+function saveDev(root: string, quiet: boolean): string {
+  const plan = saveDevPlan(root);
+  if ("skip" in plan) return plan.skip;
+  const r = spawnSync(plan.cmd, plan.args, { cwd: root, stdio: quiet ? "pipe" : "inherit", encoding: "utf8" });
+  const line = `${plan.cmd} ${plan.args.join(" ")}`;
+  if (r.status !== 0) {
+    process.exitCode = 1;
+    return pc.red(`${line} failed${r.error ? `: ${r.error.message}` : ""}; the skill still works, and agents fall back to asking you to run the scan`);
+  }
+  return `added ${PKG}@${VERSION} to devDependencies (${line})`;
+}
+
 function parseFlags(argv: string[]): Flags {
   const flags: Flags = {};
   for (let i = 0; i < argv.length; i++) {
@@ -233,15 +268,27 @@ async function runInstall(flags: Flags): Promise<void> {
   }
   const hooks: HookAgent[] = hook ? hookable : [];
 
+  let dev = Boolean(flags["save-dev"]) && !scope.global;
+  if (!nonInteractive && !scope.global && !("skip" in saveDevPlan(scope.root))) {
+    const d = await p.confirm({ message: `Add the RYUX CLI to this project's devDependencies? Agents then run ryux scan from the project instead of downloading it, which their permission check can refuse.`, initialValue: false });
+    if (p.isCancel(d)) return cancel();
+    dev = d;
+  }
+
   if (flags["dry-run"]) {
     const plan = await planInstall(agents, scope);
     const present = await hookAgents(scope.root, scope.global);
     for (const a of hooks) plan.push(`${present.includes(a) ? "update" : "add"} the scan hook in ${hookFile(a, scope.global)} (runs ryux scan after each edit)`);
+    if (dev) {
+      const d = saveDevPlan(scope.root);
+      plan.push("skip" in d ? d.skip : `add ${PKG}@${VERSION} to devDependencies (${d.cmd} ${d.args.join(" ")})`);
+    }
     console.log(`Dry run: nothing was written. ${CLI_CMD} ${flags.init ? "init" : "install"} would:\n${plan.map((l) => `  ${l}`).join("\n")}`);
     return;
   }
   const written = await install(agents, scope);
   for (const a of hooks) written.push(await installHook(scope.root, a, scope.global));
+  if (dev) written.push(saveDev(scope.root, nonInteractive));
   const summary = written.map((w) => pc.green("✓ ") + w).join("\n");
   if (nonInteractive) console.log(summary);
   else p.note(summary, "Installed");
@@ -862,6 +909,7 @@ Options:
   --json               print check's, scan's, or audit's findings as JSON (for agents and CI)
   --page <name>        audit: the page to measure (default the file's current page)
   --hook               install: run ryux scan after each edit, for Claude Code, Codex, Cursor, and OpenCode (opt-in)
+  --save-dev           install: add the RYUX CLI to the project's devDependencies, so agents run it with npx --no-install (opt-in)
   --list-rules         scan: list what each check looks for
   --design [file]      scan: compare colours, fonts, radius, and durations with DESIGN.md's direction
   --ignore <ids>       scan: skip rules, e.g. RX-DS-03 (or a ryux-ignore RX-.. comment in the file)

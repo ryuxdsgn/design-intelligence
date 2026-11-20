@@ -116,6 +116,31 @@ export async function probeExtract() {
     // A link set inline: whether its block has text besides the link (a link in a sentence).
     if (e.tagName === "A" && e.parentElement && getComputedStyle(e).display === "inline") o.sib = e.parentElement.textContent.replace(e.textContent, "").trim().length > 0 ? 1 : 0;
     if (e.tagName === "TEXTAREA" && e.readOnly) o.ro = 1;
+    // A radio button: its group (the name, or the group element around it) and the group's label.
+    if ((e.tagName === "INPUT" && e.type === "radio") || role === "radio") {
+      // The group element that holds every radio of the name (a group split into sub-fieldsets is named by the outer one).
+      const peers = e.tagName === "INPUT" && e.name ? [...document.querySelectorAll(`input[type=radio][name="${CSS.escape(e.name)}"]`)] : [e];
+      let box = e.closest("[role=radiogroup],fieldset");
+      while (box && !peers.every((x) => box.contains(x))) box = box.parentElement?.closest("[role=radiogroup],fieldset") ?? null;
+      o.rg = e.tagName === "INPUT" && e.name ? `n:${e.name}` : `g:${at(box)}`;
+      const ids = box?.getAttribute("aria-labelledby")?.split(/\s+/) ?? [];
+      const named = ids.map((id) => document.getElementById(id)?.textContent ?? "").join(" ");
+      // The element that names the group on screen: its legend, the element it is labelled by, or else the last heading
+      // before its first option within three levels above the element that holds all its options (a card's title).
+      let head = box?.querySelector(":scope > legend") ?? (ids[0] ? document.getElementById(ids[0]) : null);
+      if (!head && !box?.getAttribute("aria-label")) {
+        let hold = box ?? peers[0].parentElement;
+        while (hold && !peers.every((x) => hold.contains(x))) hold = hold.parentElement;
+        for (let up = 0, a = hold; a && up <= 3 && !head; up++, a = a.parentElement) {
+          const before = [...a.querySelectorAll("h1,h2,h3,h4,h5,h6,[role=heading]")].filter((h) => h.compareDocumentPosition(peers[0]) & Node.DOCUMENT_POSITION_FOLLOWING);
+          head = before.at(-1) ?? null;
+        }
+      }
+      if (head) o.gh = Math.round(head.getBoundingClientRect().bottom);
+      const gl = (box?.querySelector(":scope > legend")?.textContent || box?.getAttribute("aria-label") || named || head?.textContent || "").trim().replace(/\s+/g, " ");
+      if (gl) o.gl = cap(gl);
+      else o.ol = cap((e.labels?.[0]?.innerText || e.getAttribute("aria-label") || "").trim().replace(/\s+/g, " "));
+    }
     return o;
   });
   // Text the visual tells quote: what sits before each H1 and H2, and italic words inside them.
