@@ -556,6 +556,19 @@ fn rule_a11y03_dialog(s: &Source, c: &Ctx) -> Vec<Hit> {
     vec![hit(at, message)]
 }
 
+/// An inline confirmation (an alertdialog that is not modal) that nothing moves focus into: no autofocus in its own
+/// markup, and no .focus() call in its file or the scripts a page loads. Quiet when a page loads a script the scan
+/// cannot read. Whether alertdialog is the right role for it is not judged.
+fn rule_a11y03_alert(s: &Source, c: &Ctx) -> Vec<Hit> {
+    let Some(m) = structure(s) else { return Vec::new() };
+    let Some(at) = m.alert else { return Vec::new() };
+    let Some(text) = with_scripts(s, m, c) else { return Vec::new() };
+    if re(r"\.focus\s*\(", "").test(&text) {
+        return Vec::new();
+    }
+    vec![hit(at, "an inline confirmation (role=\"alertdialog\") that nothing moves focus into: a screen reader announces it only when focus moves inside, and its key handlers hear keys only then; when it opens, put focus on one of its buttons (autoFocus, or .focus() from a script)")]
+}
+
 fn first(s: &Source, pattern: &str, message: impl Fn(&str) -> String) -> Vec<Hit> {
     re(pattern, "").exec(&s.text).map_or(Vec::new(), |m| vec![hit(m.index, message(m.g(0)))])
 }
@@ -761,6 +774,7 @@ fn detectors() -> &'static [Detector] {
         Detector { rule: "RX-A11Y-03", level: "fail", exts: markup, folder: false, find: rule_a11y03_tabindex },
         Detector { rule: "RX-A11Y-03", level: "warn", exts: markup_style, folder: false, find: rule_a11y03_outline },
         Detector { rule: "RX-A11Y-03", level: "warn", exts: markup, folder: false, find: rule_a11y03_dialog },
+        Detector { rule: "RX-A11Y-03", level: "warn", exts: markup, folder: false, find: rule_a11y03_alert },
         Detector { rule: "RX-A11Y-04", level: "fail", exts: markup, folder: false, find: rule_a11y04_img },
         Detector { rule: "RX-A11Y-04", level: "warn", exts: markup, folder: false, find: rule_a11y04_click },
         Detector { rule: "RX-A11Y-04", level: "warn", exts: markup, folder: false, find: rule_a11y04_icon },
@@ -1084,6 +1098,37 @@ mod tests {
         // a native <dialog>: show() and open are not modal, and showModal() gives Esc and the inert page itself
         assert!(dialog("a.html", "<p>x</p><dialog open>Saved</dialog><script>d.show()</script>").is_empty());
         assert!(dialog("a.html", "<dialog id=d>x</dialog><script>d.showModal()</script>").is_empty());
+    }
+
+    #[test]
+    fn an_inline_confirmation_moves_focus_into_it() {
+        let says = |path: &str, raw: &str| found(path, raw, "RX-A11Y-03", "inline confirmation");
+        // nothing moves focus in: a screen reader says nothing of it, and a key handler on it never hears a key
+        assert_eq!(says("a.tsx", "<div>\n  <div role=\"alertdialog\" aria-labelledby=\"c\"><p id=\"c\">Delete?</p><button onClick={no}>Cancel</button></div>\n</div>"), vec!["2:3"]);
+        assert_eq!(says("a.html", "<div role=alertdialog><p>Delete?</p><button>Cancel</button></div>"), vec!["1:1"]);
+        // once per file
+        assert_eq!(says("a.tsx", "<>\n<div role=\"alertdialog\">a</div>\n<div role=\"alertdialog\">b</div></>"), vec!["2:1"]);
+        for ok in [
+            // focus moves to one of its buttons, or a script moves it
+            "<div role=\"alertdialog\"><button onClick={no}>Cancel</button><Button autoFocus onClick={yes}>Delete</Button></div>",
+            "<div role=\"alertdialog\" ref={box} tabIndex={-1}>x</div>; useEffect(() => box.current?.focus(), []);",
+            // a modal one is the modal dialog check's, and a dialog that is not an alert is a panel
+            "<div role=\"alertdialog\" aria-modal=\"true\">x</div>",
+            "<div role=\"dialog\">x</div>",
+        ] {
+            assert!(says("a.tsx", ok).is_empty(), "{ok}");
+        }
+        assert!(says("a.html", "<div role=alertdialog><button autofocus>Cancel</button></div>").is_empty());
+        assert!(says("a.html", "<div id=c role=alertdialog>x</div><script>c.querySelector('button').focus()</script>").is_empty());
+        // a script the scan cannot read may move it
+        assert!(says("a.html", "<div role=alertdialog>x</div><script src=\"https://cdn.example.com/a.js\"></script>").is_empty());
+        let opts = ScanOptions { folder: false, skip: HashSet::new(), design: None, context: Vec::new() };
+        let messages: Vec<String> = scan_sources(&[to_source("a.tsx", "<div role=\"alertdialog\">x</div>")], opts)
+            .into_iter()
+            .filter(|f| f["rule"] == "RX-A11Y-03")
+            .map(|f| f["message"].as_str().unwrap().to_string())
+            .collect();
+        assert_eq!(messages, vec!["an inline confirmation (role=\"alertdialog\") that nothing moves focus into: a screen reader announces it only when focus moves inside, and its key handlers hear keys only then; when it opens, put focus on one of its buttons (autoFocus, or .focus() from a script)"]);
     }
 
     #[test]
