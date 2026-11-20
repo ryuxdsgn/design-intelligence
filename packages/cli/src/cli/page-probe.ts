@@ -116,6 +116,18 @@ export async function probeExtract() {
     // A link set inline: whether its block has text besides the link (a link in a sentence).
     if (e.tagName === "A" && e.parentElement && getComputedStyle(e).display === "inline") o.sib = e.parentElement.textContent.replace(e.textContent, "").trim().length > 0 ? 1 : 0;
     if (e.tagName === "TEXTAREA" && e.readOnly) o.ro = 1;
+    // A radio button: its group (the name, or the group element around it) and the group's label.
+    if ((e.tagName === "INPUT" && e.type === "radio") || role === "radio") {
+      // The group element that holds every radio of the name (a group split into sub-fieldsets is named by the outer one).
+      const peers = e.tagName === "INPUT" && e.name ? [...document.querySelectorAll(`input[type=radio][name="${CSS.escape(e.name)}"]`)] : [e];
+      let box = e.closest("[role=radiogroup],fieldset");
+      while (box && !peers.every((x) => box.contains(x))) box = box.parentElement?.closest("[role=radiogroup],fieldset") ?? null;
+      o.rg = e.tagName === "INPUT" && e.name ? `n:${e.name}` : `g:${at(box)}`;
+      const named = box?.getAttribute("aria-labelledby")?.split(/\s+/).map((id) => document.getElementById(id)?.textContent ?? "").join(" ");
+      const gl = (box?.querySelector(":scope > legend")?.textContent || box?.getAttribute("aria-label") || named || "").trim().replace(/\s+/g, " ");
+      if (gl) o.gl = cap(gl);
+      else o.ol = cap((e.labels?.[0]?.innerText || e.getAttribute("aria-label") || "").trim().replace(/\s+/g, " "));
+    }
     return o;
   });
   // Text the visual tells quote: what sits before each H1 and H2, and italic words inside them.

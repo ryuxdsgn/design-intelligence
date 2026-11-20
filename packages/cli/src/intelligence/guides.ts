@@ -741,7 +741,7 @@ workflow (SKILL.md); Frame, Explore, and Evaluate happen in Design.
 7. **Close with the Delivery Gate.** CODE QUALITY and VISUAL QA need real checks (typecheck,
    tests, render), or say what was not run. Run \`npx @ryuxdsgn/design-intelligence scan <changed
    paths>\` as well (add \`--design\` when DESIGN.md has a \`direction:\` block, so code that strays from its
-   colours, type, radius, or durations shows as drift): fix every fail, and fix each warn or give the reason it stays. For a new flow or a consequential change, add the
+   colours, type, radius, or durations shows as drift): fix every fail, and fix each warn or give the reason it stays. When the build runs, also run \`npx @ryuxdsgn/design-intelligence scan <url> --widths 390,1280\` on the page you built, the same way. For a new flow or a consequential change, add the
    usability test plan (RX-UX-12) unless the design already has one.
 
 **Polish: refining what exists.** When the ask improves a screen that works ("polish this", "make the total
@@ -813,7 +813,7 @@ or None (no screen_id: a judgment call). With None on a consequential choice, sh
 export const GATE_RULES = `- Each area is PASS, FAIL, NOT VERIFIED (it applies, but the evidence was not available: name what is missing), or N/A (it does not apply: say why). A module the task table requires for the work and the run did not read leaves the areas it serves NOT VERIFIED, never PASS (imagery and illustration serve UI), named in PRODUCT's required-not-read list. Scale the gate to the task: a copy fix or a one-component change marks the areas it cannot affect N/A, one line each. Fill the gate from rules read in the current context: after a context summary, re-read knowledge/anti-slop.md and the modules an area cites before marking it.
 - An area FAILS when a [Required] rule in its skills fails without a written exception.
 - A Hard Gate failure cannot be excepted: fix it before declaring the work complete.
-- VISUAL QA without a render is NOT VERIFIED; a PASS names the render tool, the widths, and the states inspected. On a Figma or FigCraft canvas a PASS also carries the audit's gate line (scripts/figma-audit.md, or ryux audit for FigCraft) with its fails fixed and each warn fixed or answered with a reason; without it VISUAL QA is NOT VERIFIED.
+- VISUAL QA without a render is NOT VERIFIED; a PASS names the render tool, the widths, and the states inspected. For a build that runs, a PASS also carries the result of \`ryux scan <url>\` at 390 and 1280 px with its fails fixed and each warn fixed or answered with a reason; when it cannot run (no Playwright, no permission), say why, and VISUAL QA is NOT VERIFIED. On a Figma or FigCraft canvas a PASS also carries the audit's gate line (scripts/figma-audit.md, or ryux audit for FigCraft) with its fails fixed and each warn fixed or answered with a reason; without it VISUAL QA is NOT VERIFIED.
 - CODE QUALITY is NOT VERIFIED while changed logic has no test run; say which checks ran (typecheck, tests).
 - FINAL is FAIL if any area fails, NOT VERIFIED if none fails but one is not verified, else PASS. PASS means the checked criteria were met, not that the design is good or was validated with users ("not tested with users" unless it was).`;
 

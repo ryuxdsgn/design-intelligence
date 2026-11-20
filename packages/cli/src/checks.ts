@@ -100,6 +100,7 @@ export const RENDER_CHECKS: Check[] = [
   { rule: "RX-UI-10", level: "warn", looksFor: "visual tells, once per page: a blue-to-purple gradient behind a large area, prose set in monospace, or an italic serif word inside a display heading" },
   { rule: "RX-UI-26", level: "warn", looksFor: "a near-black page whose action colour is a saturated neon, with glow: the default look of an AI product" },
   { rule: "RX-UI-01", level: "warn", looksFor: "a bordered or shadowed, rounded box that holds another one (cards inside cards)" },
+  { rule: "RX-UX-15", level: "warn", looksFor: "at 1024px and wider, the page's only choice (one radio group) starts below the first screen while a button that carries an amount (\"Bayar Rp1.424.000\") is on it" },
   { rule: "RX-FM-05", level: "warn", looksFor: "a shown textarea that, filled with 8 lines for a moment, keeps its height and hides the text past its edge" },
   { rule: "RX-QA-08", level: "warn", looksFor: "script errors thrown while the page loads" },
 ];

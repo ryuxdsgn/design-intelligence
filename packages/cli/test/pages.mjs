@@ -64,6 +64,18 @@ textarea{width:200px;height:40px;font:14px/20px sans-serif}.grow{field-sizing:co
 <div data-ryux-ignore class="panel"><p style="color:#ddd">panel skenario</p><button style="width:10px;height:10px"></button></div>
 <div style="height:1200px"></div>`;
 
+/** A desktop checkout: the pay button carries the total in a sticky side column; the only choice on the page (the
+ *  payment method) starts below the first screen when `low`, and above the button's row when not. */
+export const choice = (low) => `${head}<style>
+body{margin:0;font:16px/1.5 sans-serif;color:#111;background:#fff}.wrap{display:flex;gap:32px;padding:24px;align-items:flex-start}
+.main{flex:1}.items{height:${low ? 1000 : 120}px;border:1px solid #ddd}aside{position:sticky;top:24px;width:320px}
+aside button{width:100%;padding:12px;font:inherit}label{display:block;padding:8px 0}</style>
+<div class="wrap"><div class="main"><h1>Checkout</h1><div class="items">Pesanan</div>
+<fieldset><legend>Metode pembayaran</legend>
+<label><input type="radio" name="pay" value="qris"> QRIS</label><label><input type="radio" name="pay" value="va"> Virtual account BCA</label>
+<label><input type="radio" name="pay" value="ew"> E-wallet</label></fieldset></div>
+<aside><p>Total Rp1.424.000</p><button>Bayar Rp1.424.000</button></aside></div>`;
+
 /** Every page with the widths the tests render it at. */
 export const PAGES = [
   { name: "basics", html: BASICS, widths: [320] },
@@ -72,4 +84,6 @@ export const PAGES = [
   { name: "slop", html: SLOP, widths: [390, 1280] },
   { name: "quiet", html: QUIET, widths: [390, 1280] },
   { name: "more", html: MORE, widths: [320, 1280] },
+  { name: "choice-low", html: choice(true), widths: [390, 1280] },
+  { name: "choice-high", html: choice(false), widths: [1280] },
 ];
