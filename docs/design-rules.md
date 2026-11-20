@@ -208,13 +208,13 @@ line below for its exact source.
 <!-- provenance:start -->
 | Source cited | Rules citing it | Rules citing only this |
 | --- | --- | --- |
-| Public standard or research | 99 | 60 |
+| Public standard or research | 101 | 60 |
 | Industry practice | 28 | 6 |
 | Observed in a RYUX run | 18 | 7 |
-| Pattern also in another MIT ruleset (text written for RYUX) | 4 | 3 |
-| RYUX principle, taxonomy, or review | 75 | 23 |
+| Pattern also in another MIT ruleset (text written for RYUX) | 4 | 2 |
+| RYUX principle, taxonomy, or review | 75 | 22 |
 
-All 158 rules cite a source; 59 cite more than one kind, so the "Rules citing it" column adds up to more than 158.
+All 158 rules cite a source; 61 cite more than one kind, so the "Rules citing it" column adds up to more than 158.
 <!-- provenance:end -->
 
 ## Rules
@@ -482,13 +482,14 @@ Gate area UX. Covers information architecture, navigation, flows, grouping, disc
 - Do: Show the total in the bar that holds the primary action, pinned to the bottom on a phone, and update it as the user picks; the line items and fees stay on the review screen or open from the total.
   - Say what the total covers when part of it is unknown ("+ biaya perbaikan setelah dicek"), next to the figure.
   - A summary above the list may repeat the choice, never the only place the total lives.
-  - The action is ready, or says why not, before it is pressed. A choice the action needs (a payment method) starts on the last one used or, with no history, the one most users pick, with its cost shown (RX-IX-17); when no choice can be assumed, the bar names what is missing ("Pilih metode pembayaran") and pressing the action moves focus to that choice with the message beside it.
+  - The action is ready, or says why not, before it is pressed. A choice the action needs (a payment method) starts on the last one used or, with no history, the one most users pick, with its cost shown (RX-IX-17); when no choice can be assumed, the bar names what is missing in the action's own label, not in small text under a button that still reads "Bayar Rp…" ("Pilih metode pembayaran" until one is picked), and pressing the action moves focus to that choice with the message beside it.
+  - The bar and the summary beside the action name the chosen method next to the total, with a way to change it ("Bayar dengan QRIS · Ganti"), so what is paid and how are read together.
   - On a wide screen the choice the action depends on stays in the same view as the action: beside it in the side column, or above it, never below the fold while the action sits at the top right.
 - Do not: Put the only total above the list it sums, where it moves as items are added and scrolls away from the button that commits to it. Leave a required choice empty under a button that looks ready, or put the choice a screen-height away from the button on desktop.
-- Why: People check the price at the moment they commit; a total next to the button is read with it, and one at the top must be remembered or scrolled back to, and loses its context as the list grows. (Gestalt proximity; Nielsen heuristics 1 (visibility of system status) and 6 (recognition rather than recall); Fitts's law (a pinned bar keeps the action in thumb reach, RX-RD-03); owner blind rating 2026-11-20 of the front-end build bench (a Next.js checkout, no skill vs RYUX, three runs each): the bar was missing in 5 of 6 runs, 2 of them with RYUX; all three RYUX runs started with no payment method and an active-looking Bayar; on desktop two RYUX runs put the methods far below the fold, away from Bayar at the top right; written for RYUX)
+- Why: People check the price at the moment they commit; a total next to the button is read with it, and one at the top must be remembered or scrolled back to, and loses its context as the list grows. (Gestalt proximity; Nielsen heuristics 1 (visibility of system status) and 6 (recognition rather than recall); Fitts's law (a pinned bar keeps the action in thumb reach, RX-RD-03); owner blind rating 2026-11-20 of the front-end build bench (a Next.js checkout, no skill vs RYUX, three runs each): the bar was missing in 5 of 6 runs, 2 of them with RYUX; all three RYUX runs started with no payment method and an active-looking Bayar; on desktop two RYUX runs put the methods far below the fold, away from Bayar at the top right; owner blind rating 2026-11-21 (round 3, six RYUX runs): the method named beside the total ("Dibayar dengan QRIS", "Dengan Virtual Account BCA" in the bar) and a "Ganti metode" link praised, a summary that never names the preselected method noted, a label that reads "Pilih metode pembayaran" until a choice praised and helper text under an active Bayar called ambiguous; NNGroup radio-button defaults (preselect the method most orders use) and mobile checkout (fees in the summary, where they are read); written for RYUX)
 - Not when: one fixed price with no choices; a long statement or invoice read top to bottom
 - Trade-off: a pinned bar takes vertical space on every scroll position
-- Check: render at 390 with the most items the brief allows: the total and the primary action are visible together without scrolling, at the top of the page and at the end; with nothing chosen, the action is ready (a choice is preset) or names what is missing, and pressing it moves focus to the choice; at 1280, the choice the action needs and the action are in one viewport (ryux scan <url> warns when the page's only radio group starts below the first screen at 1024px or wider while a button that carries an amount is on it)
+- Check: render at 390 with the most items the brief allows: the total and the primary action are visible together without scrolling, at the top of the page and at the end; with nothing chosen, the action is ready (a choice is preset) or its label names what is missing, and pressing it moves focus to the choice; with a method chosen, its name sits next to the total; at 1280, the choice the action needs and the action are in one viewport (ryux scan <url> warns when the page's only radio group starts below the first screen at 1024px or wider while a button that carries an amount is on it)
 - Measured: `ryux scan <url>` flags at 1024px and wider, the page's only choice (one radio group) starts below the first screen while a button that carries an amount ("Bayar Rp1.424.000") is on it (warn)
 
 #### RX-UX-16 [Preferred] What decides is shown; details open on demand
@@ -660,9 +661,10 @@ Gate area UX. Covers before, during, result, recovery; feedback, confirmation, n
 #### RX-IX-12 [Required] Every control leads somewhere real
 
 - Do: Give every link, button, tab, menu item, and form a destination or an effect that exists: a page or section that is there, an action that runs. A control whose target is not built yet is removed, or shown disabled with the reason.
+  - An option that promises what comes next ("Isi data kartu di halaman ini") shows it in place when chosen.
 - Do not: Ship navigation to sections that do not exist, buttons that do nothing, or forms that pretend to submit.
-- Why: A dead control breaks trust the moment someone tries it, and it hides what the product really does. (pattern also in anti-slop (MIT) R-24, R-26; written for RYUX)
-- Check: click every control in the render; review
+- Why: A dead control breaks trust the moment someone tries it, and it hides what the product really does. (pattern also in anti-slop (MIT) R-24, R-26; NNGroup progressive disclosure (the secondary part appears when asked for); owner blind rating 2026-11-21: a card option promised a form that never appeared; written for RYUX)
+- Check: click every control in the render, and pick every option that promises a next step; review
 - Machine check: `ryux scan` flags in .jsx, .tsx, and .html: a link to "#", "", or javascript: with no click handler, or an empty click handler (onClick={() => {}}); not with spread props, not in a directions preview (directions.html), and in HTML only on a page with no script; once per file (warn); in .jsx, .tsx, and .html: a <button> with a bare disabled (not an expression) and no title or aria-describedby saying why; not with spread props, and in HTML only on a page with no script; once per file (warn)
 
 #### RX-IX-13 [Required] Each transition means one thing
@@ -733,11 +735,12 @@ Gate area UX. Covers labels, layout, validation, input preservation, autofill, s
 #### RX-FM-03 [Required] Validate near the field, keep the input
 
 - Do: Validate close to the field when it helps, and keep everything the user typed when something fails.
-- Do not: Clear the form or only report errors after a full submit.
-- Why: Re-entering data is the most frustrating part of a failed form. (NNGroup inline-validation research)
+  - Show an error after the person acts: on leaving a field they filled, or on pressing the action. A required field or choice nobody has touched is neutral, never red on first load ("Pilih metode pembayaran dulu" in red before any tap).
+- Do not: Clear the form, only report errors after a full submit, or show an error before the person has done anything.
+- Why: Re-entering data is the most frustrating part of a failed form. (NNGroup inline-validation research; NNGroup hostile error messages (an error before the user could have erred reads as scolding); owner blind rating 2026-11-21 of a checkout that showed the missing-method warning in red on load)
 - Not when: while the user is still typing; validate after they leave the field or the format is complete
 - Trade-off: early validation can nag; late validation can surprise
-- Check: review
+- Check: render the first load: no error styling before input; review
 
 #### RX-FM-05 [Preferred] The right keyboard and autofill
 
@@ -753,12 +756,13 @@ Gate area UX. Covers labels, layout, validation, input preservation, autofill, s
 #### RX-FM-06 [Required] Submission states
 
 - Do: On submit, prevent double submission, show progress, then show success with what happens next, or failure with the input kept and a retry.
+  - While busy, the button keeps its label and adds a spinner, at the same width; a busy label that does not fit ("Mengecek…" cut to "Cek..." in a short Pakai button) is a defect.
   - After a purchase, success answers what comes next for the thing bought: where and when it is used (a gate, the doors, a pickup point), what to bring, and where to find it again. A fact the product has not given (a gate, an ID rule, a re-entry rule) is a slot marked to confirm, never an invented rule (RX-PR-02).
 - Do not: Leave the submit button live during a request, end on a blank screen, end a purchase on a receipt with no next step, or fill its next step with venue or policy rules nobody gave.
-- Why: Submission is where users lose work and trust. (Nielsen heuristics 1 and 9; owner review 2026-11-15 of a concert-ticket flow (Panggung, RYUX 2.22.12, OpenCode with DeepSeek, one run; a DeepSeek review, not blind, checked by hand against the exports): the ticket had a seat and a QR code but no gate or door time; the review praised another run for venue rules that run had invented)
+- Why: Submission is where users lose work and trust. (Nielsen heuristics 1 and 9; owner review 2026-11-15 of a concert-ticket flow (Panggung, RYUX 2.22.12, OpenCode with DeepSeek, one run; a DeepSeek review, not blind, checked by hand against the exports): the ticket had a seat and a QR code but no gate or door time; the review praised another run for venue rules that run had invented; NNGroup button states (loading keeps the label, spinner beside it); owner blind rating 2026-11-21: a promo button's busy label cut to "Cek...")
 - Not when: instant local saves with no network round trip
 - Trade-off: more states to build and test
-- Check: review
+- Check: render the busy state at 390: the label fits; review
 
 #### RX-FM-08 [Contextual] OTP: channel choice and paste
 
@@ -774,8 +778,9 @@ Gate area UX. Covers labels, layout, validation, input preservation, autofill, s
 
 - When: the form collects a delivery address
 - Do: Support landmarks, block or RT/RW, and courier notes alongside the map pin.
-- Do not: Rely on a map pin alone.
-- Why: Many Indonesian addresses are found by landmark rather than by street number. (ryux reference screens)
+  - With saved addresses, the change control opens the saved addresses to pick from, the current one marked; adding or editing is a second action inside it ("Tambah alamat", "Ubah"), not the only form.
+- Do not: Rely on a map pin alone, or make changing the address mean retyping it.
+- Why: Many Indonesian addresses are found by landmark rather than by street number. (ryux reference screens; NNGroup recognition over recall (pick from saved items); owner blind rating 2026-11-21: an address dialog that was only an edit form)
 - Not when: delivery uses precise coordinates only (a pickup locker)
 - Trade-off: more fields to fill
 - Check: review
@@ -1057,8 +1062,9 @@ Gate area UI. Covers the visual system of a product: hierarchy, type, layout, de
   - Keep a screen's main content to two or three text sizes, the most important the largest, and count them on the render (RX-AS-10).
   - State the shape lock in one sentence, a radius per component role ("action buttons pill, cards 16, inputs 12, sheets 28").
   - Keep emphasis inside the type family (weight or size), not a second face dropped into one word.
+  - One body size across blocks: an address or a summary stands out by weight or position, not by its own larger size.
 - Do not: Pick spacing and sizes one element at a time.
-- Why: A scale produces rhythm and makes hierarchy legible. (Material Design 8dp grid; NNGroup principles of visual design (scale: two or three sizes); shape lock and in-family emphasis: pattern also in appllama-app-design-skill (MIT); written for RYUX)
+- Why: A scale produces rhythm and makes hierarchy legible. (Material Design 8dp grid; NNGroup principles of visual design (scale: two or three sizes, each matching its importance); owner blind rating 2026-11-21: an address block set larger than the body around it; shape lock and in-family emphasis: pattern also in appllama-app-design-skill (MIT); written for RYUX)
 - Not when: a one-off marketing piece outside the product
 - Trade-off: a scale limits choices; occasional exceptions need a written reason
 - Check: count radii and type faces (RX-AS-10); review
@@ -1729,11 +1735,12 @@ Gate area RESPONSIVE. Covers prioritize, simplify, reorganize; tables, overlays,
 #### RX-RD-02 [Required] Prioritize, simplify, reorganize
 
 - Do: As space shrinks, decide what matters most, simplify what remains, then reorganize: stack, collapse, or move secondary content behind a control. Keep text size.
+  - On a phone a row's name keeps its line: a side value (a fee, a badge) moves under the name before the name wraps ("BCA Virtual / Account" beside "+Rp4.000").
 - Do not: Squeeze the desktop layout into a smaller viewport.
-- Why: Shrinking keeps the layout and loses the reader. (WCAG 2.2 SC 1.4.10; responsive design practice)
+- Why: Shrinking keeps the layout and loses the reader. (WCAG 2.2 SC 1.4.10; responsive design practice; owner blind rating 2026-11-21: payment names wrapped to two lines at 390 in two runs)
 - Not when: the content is already simple enough to stack as is
 - Trade-off: mobile users may need a tap to reach secondary content
-- Check: visual QA
+- Check: render at 390: option names on one line; visual QA
 
 #### RX-RD-03 [Required] Safe areas and thumb reach
 

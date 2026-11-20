@@ -122,6 +122,18 @@ test("the Delivery Gate separates verified from assumed", () => {
   assert.match(router, /or was validated with users/);
 });
 
+test("checkout lessons from the owner's third rating sit in the rules they belong to", () => {
+  const all = Object.values(renderBundle()).join("\n");
+  assert.match(all, /name the chosen method next to the total/); // RX-UX-15
+  assert.match(all, /in the action's own label, not in small text under a button that still reads "Bayar/); // RX-UX-15
+  assert.match(all, /never red on first load/); // RX-FM-03
+  assert.match(all, /keeps its label and adds a spinner/); // RX-FM-06
+  assert.match(all, /An option that promises what comes next/); // RX-IX-12
+  assert.match(all, /One body size across blocks/); // RX-UI-03
+  assert.match(all, /opens the saved addresses to pick from/); // RX-FM-09
+  assert.match(all, /a row's name keeps its line/); // RX-RD-02
+});
+
 test("the skill runs the RYUX CLI from the project, not as a download, and says what to do when it cannot run", () => {
   const all = Object.values(renderBundle()).join("\n");
   // an agent's permission check can refuse a download (npx -y); the copy in the project runs with --no-install

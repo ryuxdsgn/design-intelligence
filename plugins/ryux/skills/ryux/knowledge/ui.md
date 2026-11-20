@@ -143,8 +143,9 @@ A design direction from comparable screens: `extract_design_direction` (patterns
   - Keep a screen's main content to two or three text sizes, the most important the largest, and count them on the render (RX-AS-10).
   - State the shape lock in one sentence, a radius per component role ("action buttons pill, cards 16, inputs 12, sheets 28").
   - Keep emphasis inside the type family (weight or size), not a second face dropped into one word.
+  - One body size across blocks: an address or a summary stands out by weight or position, not by its own larger size.
 - Do not: Pick spacing and sizes one element at a time.
-- Why: A scale produces rhythm and makes hierarchy legible. (Material Design 8dp grid; NNGroup principles of visual design (scale: two or three sizes); shape lock and in-family emphasis: pattern also in appllama-app-design-skill (MIT); written for RYUX)
+- Why: A scale produces rhythm and makes hierarchy legible. (Material Design 8dp grid; NNGroup principles of visual design (scale: two or three sizes, each matching its importance); owner blind rating 2026-11-21: an address block set larger than the body around it; shape lock and in-family emphasis: pattern also in appllama-app-design-skill (MIT); written for RYUX)
 - Not when: a one-off marketing piece outside the product
 - Trade-off: a scale limits choices; occasional exceptions need a written reason
 - Check: count radii and type faces (RX-AS-10); review

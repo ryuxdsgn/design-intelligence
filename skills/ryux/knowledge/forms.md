@@ -46,11 +46,12 @@ Real Indonesian forms for the same data (address, OTP, e-KYC): `search_screens`,
 ### RX-FM-03 [Required] Validate near the field, keep the input
 
 - Do: Validate close to the field when it helps, and keep everything the user typed when something fails.
-- Do not: Clear the form or only report errors after a full submit.
-- Why: Re-entering data is the most frustrating part of a failed form. (NNGroup inline-validation research)
+  - Show an error after the person acts: on leaving a field they filled, or on pressing the action. A required field or choice nobody has touched is neutral, never red on first load ("Pilih metode pembayaran dulu" in red before any tap).
+- Do not: Clear the form, only report errors after a full submit, or show an error before the person has done anything.
+- Why: Re-entering data is the most frustrating part of a failed form. (NNGroup inline-validation research; NNGroup hostile error messages (an error before the user could have erred reads as scolding); owner blind rating 2026-11-21 of a checkout that showed the missing-method warning in red on load)
 - Not when: while the user is still typing; validate after they leave the field or the format is complete
 - Trade-off: early validation can nag; late validation can surprise
-- Check: review
+- Check: render the first load: no error styling before input; review
 
 ### RX-FM-05 [Preferred] The right keyboard and autofill
 
@@ -66,12 +67,13 @@ Real Indonesian forms for the same data (address, OTP, e-KYC): `search_screens`,
 ### RX-FM-06 [Required] Submission states
 
 - Do: On submit, prevent double submission, show progress, then show success with what happens next, or failure with the input kept and a retry.
+  - While busy, the button keeps its label and adds a spinner, at the same width; a busy label that does not fit ("Mengecek…" cut to "Cek..." in a short Pakai button) is a defect.
   - After a purchase, success answers what comes next for the thing bought: where and when it is used (a gate, the doors, a pickup point), what to bring, and where to find it again. A fact the product has not given (a gate, an ID rule, a re-entry rule) is a slot marked to confirm, never an invented rule (RX-PR-02).
 - Do not: Leave the submit button live during a request, end on a blank screen, end a purchase on a receipt with no next step, or fill its next step with venue or policy rules nobody gave.
-- Why: Submission is where users lose work and trust. (Nielsen heuristics 1 and 9; owner review 2026-11-15 of a concert-ticket flow (Panggung, RYUX 2.22.12, OpenCode with DeepSeek, one run; a DeepSeek review, not blind, checked by hand against the exports): the ticket had a seat and a QR code but no gate or door time; the review praised another run for venue rules that run had invented)
+- Why: Submission is where users lose work and trust. (Nielsen heuristics 1 and 9; owner review 2026-11-15 of a concert-ticket flow (Panggung, RYUX 2.22.12, OpenCode with DeepSeek, one run; a DeepSeek review, not blind, checked by hand against the exports): the ticket had a seat and a QR code but no gate or door time; the review praised another run for venue rules that run had invented; NNGroup button states (loading keeps the label, spinner beside it); owner blind rating 2026-11-21: a promo button's busy label cut to "Cek...")
 - Not when: instant local saves with no network round trip
 - Trade-off: more states to build and test
-- Check: review
+- Check: render the busy state at 390: the label fits; review
 
 ### RX-FM-08 [Contextual] OTP: channel choice and paste
 
@@ -87,8 +89,9 @@ Real Indonesian forms for the same data (address, OTP, e-KYC): `search_screens`,
 
 - When: the form collects a delivery address
 - Do: Support landmarks, block or RT/RW, and courier notes alongside the map pin.
-- Do not: Rely on a map pin alone.
-- Why: Many Indonesian addresses are found by landmark rather than by street number. (ryux reference screens)
+  - With saved addresses, the change control opens the saved addresses to pick from, the current one marked; adding or editing is a second action inside it ("Tambah alamat", "Ubah"), not the only form.
+- Do not: Rely on a map pin alone, or make changing the address mean retyping it.
+- Why: Many Indonesian addresses are found by landmark rather than by street number. (ryux reference screens; NNGroup recognition over recall (pick from saved items); owner blind rating 2026-11-21: an address dialog that was only an edit form)
 - Not when: delivery uses precise coordinates only (a pickup locker)
 - Trade-off: more fields to fill
 - Check: review

@@ -146,9 +146,10 @@ How local apps handle the same action and its states, and local payment patterns
 ### RX-IX-12 [Required] Every control leads somewhere real
 
 - Do: Give every link, button, tab, menu item, and form a destination or an effect that exists: a page or section that is there, an action that runs. A control whose target is not built yet is removed, or shown disabled with the reason.
+  - An option that promises what comes next ("Isi data kartu di halaman ini") shows it in place when chosen.
 - Do not: Ship navigation to sections that do not exist, buttons that do nothing, or forms that pretend to submit.
-- Why: A dead control breaks trust the moment someone tries it, and it hides what the product really does. (pattern also in anti-slop (MIT) R-24, R-26; written for RYUX)
-- Check: click every control in the render; review
+- Why: A dead control breaks trust the moment someone tries it, and it hides what the product really does. (pattern also in anti-slop (MIT) R-24, R-26; NNGroup progressive disclosure (the secondary part appears when asked for); owner blind rating 2026-11-21: a card option promised a form that never appeared; written for RYUX)
+- Check: click every control in the render, and pick every option that promises a next step; review
 - Machine check: `ryux scan` flags in .jsx, .tsx, and .html: a link to "#", "", or javascript: with no click handler, or an empty click handler (onClick={() => {}}); not with spread props, not in a directions preview (directions.html), and in HTML only on a page with no script; once per file (warn); in .jsx, .tsx, and .html: a <button> with a bare disabled (not an expression) and no title or aria-describedby saying why; not with spread props, and in HTML only on a page with no script; once per file (warn)
 
 ### RX-IX-13 [Required] Each transition means one thing
