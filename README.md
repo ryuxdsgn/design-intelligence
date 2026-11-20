@@ -97,7 +97,8 @@ that writes DESIGN.md, your project's direction (`npx @ryuxdsgn/design-intellige
 <details>
 <summary><b>Scan your code</b></summary>
 
-`scan` checks what a machine can see, with no LLM and no API key. A fail exits 1, so it works in CI.
+`scan` checks what a machine can see, with no LLM and no API key. The checks are written in Rust and run as
+WebAssembly inside the CLI, so `npx` needs no Rust install. A fail exits 1, so it works in CI.
 
 ```text
 $ npx @ryuxdsgn/design-intelligence scan src
