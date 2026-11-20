@@ -570,7 +570,7 @@ fn rule_a11y03_alert(s: &Source, c: &Ctx) -> Vec<Hit> {
 }
 
 fn rule_fm01_label(s: &Source, _: &Ctx) -> Vec<Hit> {
-    structure(s).and_then(|m| m.unlabeled).map_or(Vec::new(), |at| vec![hit(at, "a form field with no label tied to it (a placeholder or text beside it is not one): give it a <label> with htmlFor, or put it inside the <label>; where the context already names it, such as a lone search box, an aria-label")])
+    structure(s).map_or(Vec::new(), |m| m.unlabeled.iter().map(|&at| hit(at, "a form field with no label tied to it (a placeholder or text beside it is not one): give it a <label> with htmlFor, or put it inside the <label>; where the context already names it, such as a lone search box, an aria-label")).collect())
 }
 
 fn rule_ix12_dead(s: &Source, _: &Ctx) -> Vec<Hit> {
@@ -593,6 +593,28 @@ fn rule_a11y04_radios(s: &Source, _: &Ctx) -> Vec<Hit> {
     let Some((at, n)) = structure(s).and_then(|m| m.ungrouped) else { return Vec::new() };
     let what = if n > 1 { format!("{n} groups of radio buttons, each for one question,") } else { "radio buttons for one question".to_string() };
     vec![hit(at, format!("{what} with nothing naming the question: each option is read with its own label, but not what it answers; put them in a <fieldset> with a <legend>, or a role=\"radiogroup\" or \"group\" with aria-labelledby"))]
+}
+
+fn rule_a11y04_checks(s: &Source, _: &Ctx) -> Vec<Hit> {
+    let Some((at, n)) = structure(s).and_then(|m| m.ungrouped_checks) else { return Vec::new() };
+    let what = if n > 1 { format!("{n} groups of checkboxes, each for one question,") } else { "checkboxes for one question".to_string() };
+    vec![hit(at, format!("{what} with nothing naming the question: each option is read with its own label, but not what it answers; put them in a <fieldset> with a <legend>, or a role=\"group\" with aria-labelledby"))]
+}
+
+fn rule_a11y04_lone_radio(s: &Source, _: &Ctx) -> Vec<Hit> {
+    structure(s).and_then(|m| m.lone_radio).map_or(Vec::new(), |at| vec![hit(at, "a single radio button with no other option of its name: once picked it cannot be unpicked; use a checkbox for a yes or no, or show the one option as text")])
+}
+
+fn rule_a11y04_lang(s: &Source, _: &Ctx) -> Vec<Hit> {
+    // a run's working folder for generated assets (contact sheets) is not a page anyone ships
+    if norm(&s.path).split('/').any(|p| p == "assets-src") {
+        return Vec::new();
+    }
+    structure(s).and_then(|m| m.no_lang).map_or(Vec::new(), |at| vec![hit(at, "<html> with no lang: a screen reader reads the page in its own default language and may mispronounce it; set lang to the page's language (lang=\"id\" for Indonesian)")])
+}
+
+fn rule_ix12_disabled(s: &Source, _: &Ctx) -> Vec<Hit> {
+    structure(s).and_then(|m| m.disabled).map_or(Vec::new(), |at| vec![hit(at, "a button shown disabled for good, with no reason given: say why and when it opens up (aria-describedby to that text, or a title), or remove it until it works")])
 }
 
 fn rule_a11y04_anchor(s: &Source, _: &Ctx) -> Vec<Hit> {
@@ -816,6 +838,10 @@ fn detectors() -> &'static [Detector] {
         Detector { rule: "RX-A11Y-04", level: "warn", exts: markup, folder: false, find: rule_a11y04_radios },
         Detector { rule: "RX-A11Y-04", level: "warn", exts: markup, folder: false, find: rule_a11y04_anchor },
         Detector { rule: "RX-FM-05", level: "warn", exts: markup, folder: false, find: rule_fm05_autofill },
+        Detector { rule: "RX-A11Y-04", level: "warn", exts: markup, folder: false, find: rule_a11y04_checks },
+        Detector { rule: "RX-A11Y-04", level: "warn", exts: markup, folder: false, find: rule_a11y04_lone_radio },
+        Detector { rule: "RX-A11Y-04", level: "warn", exts: markup, folder: false, find: rule_a11y04_lang },
+        Detector { rule: "RX-IX-12", level: "warn", exts: markup, folder: false, find: rule_ix12_disabled },
         Detector { rule: "RX-A11Y-04", level: "fail", exts: markup, folder: false, find: rule_a11y04_img },
         Detector { rule: "RX-A11Y-04", level: "warn", exts: markup, folder: false, find: rule_a11y04_click },
         Detector { rule: "RX-A11Y-04", level: "warn", exts: markup, folder: false, find: rule_a11y04_icon },
@@ -1149,8 +1175,9 @@ mod tests {
         assert_eq!(says("a.tsx", "<div><p>Kota</p><select name=\"city\"><option>A</option></select></div>"), vec!["1:17"]);
         assert_eq!(says("a.html", "<label>Catatan</label>\n<textarea name=n></textarea>"), vec!["2:1"]);
         assert_eq!(says("a.html", "<label for=\"a\">A</label><input id=\"b\">"), vec!["1:25"]);
-        // once per file
-        assert_eq!(says("a.tsx", "<>\n<input />\n<input /></>"), vec!["2:1"]);
+        // one finding per field, so fixing one does not hide the next
+        assert_eq!(says("a.tsx", "<>\n<input />\n<input /></>"), vec!["2:1", "3:1"]);
+        assert_eq!(says("a.html", "<input name=a>\n<input name=b>"), vec!["1:1", "2:1"]);
         for ok in [
             "<label>Email <input name=\"email\" /></label>",
             "<><label htmlFor=\"e\">Email</label><input id=\"e\" /></>",
@@ -1170,6 +1197,10 @@ mod tests {
             // not on screen
             "<input type=\"file\" id=\"f\" hidden /><input type=\"file\" aria-hidden=\"true\" tabIndex={-1} />",
             "<input aria-hidden=\"true\" disabled /><input style={{ display: \"none\" }} />",
+            // a utility class that sets display none (Tailwind's hidden)
+            "<input ref={fileRef} type=\"file\" className=\"hidden\" /><input type=\"file\" className={cn(\"hidden\", x)} />",
+            // visibility hidden is off screen too
+            "<input className=\"invisible\" />",
         ] {
             assert!(says("a.tsx", ok).is_empty(), "{ok}");
         }
@@ -1177,6 +1208,17 @@ mod tests {
         assert!(says("a.html", "<label>E <input></label>").is_empty());
         assert!(says("a.html", "<input type=file hidden><input type=file aria-hidden=true tabindex=-1>").is_empty());
         assert!(says("a.html", "<input style=\"display: none\">").is_empty());
+        assert!(says("a.html", "<input type=file class=\"hidden\">").is_empty());
+        // a class that only contains the word is not it, and sr-only is on the page for a screen reader
+        assert_eq!(says("a.tsx", "<input className=\"overflow-hidden\" />"), vec!["1:1"]);
+        assert_eq!(says("a.tsx", "<input className=\"sr-only\" />"), vec!["1:1"]);
+        // hidden until a breakpoint or state shows it, or hidden only from one size up: on screen at some size
+        assert_eq!(says("a.tsx", "<input className=\"hidden md:block\" />"), vec!["1:1"]);
+        assert_eq!(says("a.tsx", "<input className=\"hidden peer-checked:flex\" />"), vec!["1:1"]);
+        assert_eq!(says("a.tsx", "<input className=\"md:hidden\" />"), vec!["1:1"]);
+        assert_eq!(says("a.html", "<input class=\"hidden lg:inline-block\">"), vec!["1:1"]);
+        // opacity 0 is still read by a screen reader
+        assert_eq!(says("a.tsx", "<input className=\"opacity-0\" />"), vec!["1:1"]);
         // aria-hidden alone hides it from a screen reader, not from the keyboard: still a field with no name
         assert_eq!(says("a.tsx", "<input aria-hidden=\"true\" />"), vec!["1:1"]);
         assert_eq!(says("a.html", "<input aria-hidden=true>"), vec!["1:1"]);
@@ -1259,6 +1301,69 @@ mod tests {
         let m: Vec<String> = scan_sources(&[to_source("a.tsx", two)], opts).into_iter().filter(|f| f["rule"] == "RX-A11Y-04").map(|f| f["message"].as_str().unwrap().to_string()).collect();
         assert_eq!(m.len(), 1);
         assert!(m[0].starts_with("2 groups of radio buttons"), "{}", m[0]);
+    }
+
+    #[test]
+    fn checkboxes_for_one_question_have_a_group_name() {
+        let says = |path: &str, raw: &str| found(path, raw, "RX-A11Y-04", "checkboxes");
+        assert_eq!(says("a.tsx", "<div>\n  <p>Minat</p>\n  <label><input type=\"checkbox\" name=\"topic\" /> UI</label>\n  <label><input type=\"checkbox\" name=\"topic\" /> UX</label>\n</div>"), vec!["3:10"]);
+        assert_eq!(says("a.html", "<label><input type=checkbox name=t[]>A</label><label><input type=checkbox name=t[]>B</label>"), vec!["1:8"]);
+        for ok in [
+            "<fieldset><legend>Minat</legend><label><input type=\"checkbox\" name=\"topic\" /> UI</label><label><input type=\"checkbox\" name=\"topic\" /> UX</label></fieldset>",
+            // separate yes/no choices each name themselves
+            "<label><input type=\"checkbox\" name=\"agree\" /> Setuju</label><label><input type=\"checkbox\" name=\"news\" /> Kabar</label>",
+        ] {
+            assert!(says("a.tsx", ok).is_empty(), "{ok}");
+        }
+        // radio buttons are still told apart from checkboxes
+        assert!(found("a.tsx", "<><label><input type=\"radio\" name=\"x\" />A</label><label><input type=\"checkbox\" name=\"x\" />B</label></>", "RX-A11Y-04", "radio buttons").is_empty());
+    }
+
+    #[test]
+    fn a_page_says_its_language() {
+        let says = |path: &str, raw: &str| found(path, raw, "RX-A11Y-04", "no lang");
+        assert_eq!(says("a.html", "<!doctype html>\n<html>\n<head><title>Bayar</title></head><body>x</body></html>"), vec!["2:1"]);
+        assert!(says("a.html", "<!doctype html><html lang=\"id\"><body>x</body></html>").is_empty());
+        // a fragment with no <html> is not a page
+        assert!(says("a.html", "<div>x</div>").is_empty());
+        // a root layout in JSX renders the page's <html>
+        assert_eq!(says("app/layout.tsx", "export default function L({ children }) {\n  return <html><body>{children}</body></html>;\n}"), vec!["2:10"]);
+        assert!(says("app/layout.tsx", "export default function L({ children }) { return <html lang={locale}><body>{children}</body></html>; }").is_empty());
+        // a run's working folder for generated assets is not a page anyone ships
+        assert!(says("run/assets-src/sheet.html", "<html><body><img src=a.svg></body></html>").is_empty());
+    }
+
+    #[test]
+    fn a_button_shown_disabled_says_why() {
+        let says = |path: &str, raw: &str| found(path, raw, "RX-IX-12", "disabled");
+        assert_eq!(says("a.tsx", "<div>\n  <button disabled>Ekspor PDF</button>\n</div>"), vec!["2:3"]);
+        assert_eq!(says("a.html", "<button disabled>Ekspor</button>"), vec!["1:1"]);
+        for ok in [
+            // a state that changes is not a control shown disabled for good
+            "<button disabled={busy}>Simpan</button>",
+            "<button disabled title=\"Tersedia setelah verifikasi\">Ekspor</button>",
+            "<><button disabled aria-describedby=\"why\">Ekspor</button><p id=\"why\">Tersedia setelah verifikasi</p></>",
+            "<button {...rest} disabled>x</button>",
+        ] {
+            assert!(says("a.tsx", ok).is_empty(), "{ok}");
+        }
+    }
+
+    #[test]
+    fn a_lone_radio_button_has_another_option() {
+        let says = |path: &str, raw: &str| found(path, raw, "RX-A11Y-04", "single radio button");
+        assert_eq!(says("a.tsx", "<form>\n  <label><input type=\"radio\" name=\"ship\" defaultChecked /> Reguler</label>\n</form>"), vec!["2:10"]);
+        assert_eq!(says("a.html", "<label><input type=radio name=ship checked> Reguler</label>"), vec!["1:8"]);
+        for ok in [
+            "<label><input type=\"radio\" name=\"ship\" /> A</label><label><input type=\"radio\" name=\"ship\" /> B</label>",
+            // one radio written once and rendered for each option
+            "<>{opts.map((o) => <label key={o}><input type=\"radio\" name=\"ship\" /> {o}</label>)}</>",
+            "<input type=\"radio\" name={n} />",
+        ] {
+            assert!(says("a.tsx", ok).is_empty(), "{ok}");
+        }
+        // a page with a script may add the other options
+        assert!(says("a.html", "<label><input type=radio name=ship> A</label><script>add()</script>").is_empty());
     }
 
     #[test]

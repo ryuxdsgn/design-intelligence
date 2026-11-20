@@ -42,7 +42,7 @@ pub struct Markup {
     /// The first field a person types into or picks from (input, select, textarea) with no label tied to it: not
     /// inside a <label>, no label for its id, and no aria-label, aria-labelledby, or title. A placeholder is not a
     /// label. An id or a label's for that is an expression may match, so such a field is left alone.
-    pub unlabeled: Option<usize>,
+    pub unlabeled: Vec<usize>,
     /// The first control that goes nowhere: a link to "#", "", or javascript: with no click handler, or a click
     /// handler that is an empty function. In HTML, only on a page with no script, which may give it its handler.
     pub dead: Option<usize>,
@@ -55,6 +55,16 @@ pub struct Markup {
     /// radiogroup or group, a named form, or a named landmark that holds no other field: each option has its
     /// label, but nothing names the question. With it, how many such groups the file has.
     pub ungrouped: Option<(usize, usize)>,
+    /// The same for checkboxes that share a name (topics[]): options of one question.
+    pub ungrouped_checks: Option<(usize, usize)>,
+    /// The first radio button whose name no other radio button has, outside any expression that may render it more
+    /// than once; in HTML, only on a page with no script.
+    pub lone_radio: Option<usize>,
+    /// The <html> of a page with no lang.
+    pub no_lang: Option<usize>,
+    /// The first <button> disabled for good (a bare disabled, not an expression) with no title or
+    /// aria-describedby saying why; in HTML, only on a page with no script, which may enable it.
+    pub disabled: Option<usize>,
     /// The first <a> with a click handler and no href or tabindex: Tab does not reach it.
     pub anchor: Option<usize>,
     /// The first field for the person's own data (email, phone, name, address, by its name, id, or type) with
@@ -154,9 +164,24 @@ fn landmark(tag: &str, role: Option<&str>) -> bool {
         || role.is_some_and(|r| matches!(r.trim(), "region" | "complementary" | "navigation" | "main" | "form" | "search"))
 }
 
-/// The fields a named landmark holds are all radio buttons of one name: then its name is that group's name.
-fn one_radio_group(fields: &[(bool, Option<String>)]) -> bool {
-    !fields.is_empty() && fields.iter().all(|f| f.0 && f.1.is_some() && f.1 == fields[0].1)
+/// The fields a named landmark holds (type, name) are all radio buttons, or all checkboxes, of one name: then its
+/// name is that group's name.
+/// A class list that takes a field off screen: Tailwind's hidden (display none) or invisible (visibility hidden),
+/// with no variant (md:, peer-checked:, …) that shows it again. A variant hidden (md:hidden) hides it at one size only.
+fn off_screen_class(c: &str) -> bool {
+    let words: Vec<&str> = c.split_whitespace().collect();
+    let shows = |w: &&str| w.rsplit_once(':').is_some_and(|(_, v)| matches!(v, "block" | "flex" | "grid" | "inline" | "inline-block" | "inline-flex" | "inline-grid" | "table" | "contents" | "flow-root" | "visible"));
+    words.iter().any(|w| matches!(*w, "hidden" | "invisible")) && !words.iter().any(shows)
+}
+
+fn one_group(fields: &[(Option<String>, Option<String>)]) -> bool {
+    !fields.is_empty()
+        && fields.iter().all(|f| matches!(f.0.as_deref(), Some("radio" | "checkbox")) && f.0 == fields[0].0 && f.1.is_some() && f.1 == fields[0].1)
+}
+
+/// Names that only one radio button has, among those not inside an expression.
+fn lone(radios: &[(usize, String, bool)], repeated: &std::collections::HashSet<String>) -> Option<usize> {
+    radios.iter().filter(|r| !repeated.contains(&r.1) && radios.iter().filter(|x| x.1 == r.1).count() == 1).map(|r| r.0).min()
 }
 
 /// A field, form, or form handler named for someone else: an invite, a recipient, a member, a contact.
@@ -256,7 +281,7 @@ mod jsx {
     use oxc_allocator::Allocator;
     use oxc_ast::ast::{
         ArrowFunctionBody, AssignmentExpression, AssignmentTarget, Expression, ImportDeclaration, ImportDeclarationSpecifier, JSXAttributeItem, JSXAttributeValue, JSXChild, JSXElement,
-        JSXExpression, JSXFragment, JSXOpeningElement, StringLiteral, TemplateElement,
+        JSXExpression, JSXExpressionContainer, JSXFragment, JSXOpeningElement, StringLiteral, TemplateElement,
     };
     use std::collections::HashMap;
     use oxc_ast_visit::{walk, Visit};
@@ -285,6 +310,11 @@ mod jsx {
         groups: usize,
         /// Radio buttons with a literal name: offset, name, and whether a group holds it.
         radios: Vec<(usize, String, bool)>,
+        /// Checkboxes with a literal name, the same way.
+        checks: Vec<(usize, String, bool)>,
+        /// How many JSX expressions ({…}) the visit is inside, and the radio names met inside one (opts.map(…)).
+        exprs: usize,
+        repeated: std::collections::HashSet<String>,
     }
 
     #[derive(Default)]
@@ -317,7 +347,7 @@ mod jsx {
     /// The fields inside an element: whether each is a radio button, and its literal name.
     struct Controls<'s> {
         src: &'s str,
-        out: Vec<(bool, Option<String>)>,
+        out: Vec<(Option<String>, Option<String>)>,
     }
 
     impl<'a> Visit<'a> for Controls<'_> {
@@ -334,7 +364,7 @@ mod jsx {
                         Some(Value::Str(v)) => Some(v.clone()),
                         _ => None,
                     };
-                    self.out.push((kind.as_deref() == Some("radio"), n));
+                    self.out.push((kind, n));
                 }
             }
             walk::walk_jsx_element(self, el);
@@ -522,7 +552,7 @@ mod jsx {
                 || (named && landmark(name, role) && {
                     let mut c = Controls { src, out: Vec::new() };
                     walk::walk_jsx_element(&mut c, el);
-                    one_radio_group(&c.out)
+                    one_group(&c.out)
                 });
             self.groups += usize::from(group);
             if name == "label" {
@@ -544,6 +574,12 @@ mod jsx {
             if let Some(top) = self.around.last_mut() {
                 top.1 = named_scrim;
             }
+        }
+
+        fn visit_jsx_expression_container(&mut self, c: &JSXExpressionContainer<'a>) {
+            self.exprs += 1;
+            walk::walk_jsx_expression_container(self, c);
+            self.exprs -= 1;
         }
 
         fn visit_jsx_fragment(&mut self, f: &JSXFragment<'a>) {
@@ -594,10 +630,26 @@ mod jsx {
                 return;
             }
             let field = matches!(name, "select" | "textarea") || (name == "input" && (!a.has("type") || s("type").is_some_and(|t| typed_field(Some(t)))));
-            if name == "input" && s("type").is_some_and(|t| t.trim().eq_ignore_ascii_case("radio")) {
+            let kind = s("type").map(|t| t.trim().to_ascii_lowercase());
+            if name == "input" && matches!(kind.as_deref(), Some("radio" | "checkbox")) {
                 if let Some(n) = s("name") {
-                    self.radios.push((at, n.to_string(), self.groups > 0));
+                    let entry = (at, n.to_string(), self.groups > 0);
+                    if kind.as_deref() == Some("radio") {
+                        if self.exprs > 0 {
+                            self.repeated.insert(n.to_string());
+                        }
+                        self.radios.push(entry);
+                    } else {
+                        self.checks.push(entry);
+                    }
                 }
+            }
+            if self.out.no_lang.is_none() && name == "html" && !a.has("lang") && !a.spread {
+                self.out.no_lang = Some(at);
+            }
+            if self.out.disabled.is_none() && name == "button" && matches!(a.get("disabled"), Some(Value::Bool(true)) | Some(Value::Str(_)))
+                && !a.has("title") && !a.has("aria-describedby") {
+                self.out.disabled = Some(at);
             }
             if self.out.anchor.is_none() && name == "a" && CLICK.iter().any(|c| a.has(c)) && !a.has("href") && !a.has("tabIndex") {
                 self.out.anchor = Some(at);
@@ -615,7 +667,8 @@ mod jsx {
                 JSXAttributeItem::Attribute(at) => text(self.src, at.name.span()) == "style" && no_display(text(self.src, at.span)),
                 _ => false,
             });
-            let shown = !a.has("hidden") && !(aria_hidden && keyboard_out) && !display_none;
+            let hidden_class = class_strings(self.src, &el.opening_element, &["className", "class"]).iter().any(|c| off_screen_class(c));
+            let shown = !a.has("hidden") && !(aria_hidden && keyboard_out) && !display_none && !hidden_class;
             if field && shown {
                 if self.labels == 0 && !a.has("aria-label") && !a.has("aria-labelledby") && !a.has("title") {
                     let id = match a.get("id") {
@@ -744,14 +797,16 @@ mod jsx {
         if ret.fatal_error {
             return None;
         }
-        let mut r = Reader { src: raw, out: Markup::default(), forms: Vec::new(), loaders: Vec::new(), imports: HashMap::new(), around: Vec::new(), labels: 0, fors: Vec::new(), fields: Vec::new(), groups: 0, radios: Vec::new() };
+        let mut r = Reader { src: raw, out: Markup::default(), forms: Vec::new(), loaders: Vec::new(), imports: HashMap::new(), around: Vec::new(), labels: 0, fors: Vec::new(), fields: Vec::new(), groups: 0, radios: Vec::new(), checks: Vec::new(), exprs: 0, repeated: Default::default() };
         r.visit_program(&ret.program);
-        r.out.unlabeled = r.fields.iter().find(|(_, id)| match id {
+        r.out.unlabeled = r.fields.iter().filter(|(_, id)| match id {
             None => true,
             Some(None) => false,
             Some(Some(id)) => !r.fors.iter().any(|f| f.as_ref().is_none_or(|f| f == id)),
-        }).map(|f| f.0);
+        }).map(|f| f.0).collect();
         r.out.ungrouped = ungrouped_radios(&r.radios);
+        r.out.ungrouped_checks = ungrouped_radios(&r.checks);
+        r.out.lone_radio = lone(&r.radios, &r.repeated);
         // a component imported from an icon set, or defined in this file, counts here; one from another module is
         // judged by its own markup there (loaders_from)
         let mut here = Vec::new();
@@ -1156,6 +1211,8 @@ mod html {
         let fors: std::collections::HashSet<String> = doc.tree.root().descendants().filter_map(|n| n.value().as_element().filter(|e| e.name() == "label").and_then(|e| e.attr("for")).map(|f| f.to_string())).collect();
         let scripted = tags.iter().any(|t| t.name == "script");
         let mut radios: Vec<(usize, String, bool)> = Vec::new();
+        let mut checks: Vec<(usize, String, bool)> = Vec::new();
+        out.no_lang = tags.iter().find(|t| t.name == "html").filter(|t| !t.attrs.iter().any(|a| a.0 == "lang")).map(at);
         // The button, loading, and dialog checks. Text has no place of its own here: it is placed at its element.
         let mut loaders = Vec::new();
         for node in doc.tree.root().descendants() {
@@ -1190,12 +1247,13 @@ mod html {
             }
             let field = matches!(el.name(), "select" | "textarea") || (el.name() == "input" && typed_field(el.attr("type")));
             let keyboard_out = el.attr("disabled").is_some() || el.attr("tabindex").is_some_and(|v| v.trim().starts_with('-'));
-            let shown = el.attr("hidden").is_none() && !(el.attr("aria-hidden").is_some_and(hidden) && keyboard_out) && !el.attr("style").is_some_and(no_display);
+            let hidden_class = el.attr("class").is_some_and(off_screen_class);
+            let shown = el.attr("hidden").is_none() && !(el.attr("aria-hidden").is_some_and(hidden) && keyboard_out) && !el.attr("style").is_some_and(no_display) && !hidden_class;
             if field && shown && !spread.test(&raw[t.start..t.end]) {
                 let in_label = node.ancestors().any(|p| p.value().as_element().is_some_and(|e| e.name() == "label"));
                 let named = ["aria-label", "aria-labelledby", "title"].iter().any(|n| el.attr(n).is_some());
-                if out.unlabeled.is_none() && !in_label && !named && !el.attr("id").is_some_and(|id| fors.contains(id)) {
-                    out.unlabeled = Some(at(t));
+                if !in_label && !named && !el.attr("id").is_some_and(|id| fors.contains(id)) {
+                    out.unlabeled.push(at(t));
                 }
                 let text_keyboard = el.name() == "input" && el.attr("type").is_none_or(|k| k.trim().eq_ignore_ascii_case("text"));
                 if out.keyboard.is_none() && text_keyboard && el.attr("inputmode").is_none() && ["name", "id", "autocomplete"].iter().any(|n| el.attr(n).is_some_and(number_name)) {
@@ -1205,19 +1263,27 @@ mod html {
                     out.invalid = Some(at(t));
                 }
             }
-            if el.name() == "input" && el.attr("type").is_some_and(|t| t.trim().eq_ignore_ascii_case("radio")) {
+            let kind = el.attr("type").map(|t| t.trim().to_ascii_lowercase());
+            if el.name() == "input" && matches!(kind.as_deref(), Some("radio" | "checkbox")) {
                 if let Some(n) = el.attr("name") {
                     let grouped = node.ancestors().any(|p| p.value().as_element().is_some_and(|e| {
                         let named = e.attr("aria-label").is_some() || e.attr("aria-labelledby").is_some();
                         e.name() == "fieldset"
                             || (named && (e.attr("role").is_some_and(|r| matches!(r.trim(), "radiogroup" | "group")) || e.name() == "form"))
                             || (named && landmark(e.name(), e.attr("role")) && {
-                                let fields: Vec<(bool, Option<String>)> = p.descendants().filter_map(|d| d.value().as_element().filter(|x| matches!(x.name(), "input" | "select" | "textarea") && (x.name() != "input" || typed_field(x.attr("type")))).map(|x| (x.attr("type").is_some_and(|t| t.trim().eq_ignore_ascii_case("radio")), x.attr("name").map(|n| n.to_string())))).collect();
-                                one_radio_group(&fields)
+                                let fields: Vec<(Option<String>, Option<String>)> = p.descendants().filter_map(|d| d.value().as_element().filter(|x| matches!(x.name(), "input" | "select" | "textarea") && (x.name() != "input" || typed_field(x.attr("type")))).map(|x| (x.attr("type").map(|t| t.trim().to_ascii_lowercase()), x.attr("name").map(|n| n.to_string())))).collect();
+                                one_group(&fields)
                             })
                     }));
-                    radios.push((at(t), n.to_string(), grouped));
+                    if kind.as_deref() == Some("radio") {
+                        radios.push((at(t), n.to_string(), grouped));
+                    } else {
+                        checks.push((at(t), n.to_string(), grouped));
+                    }
                 }
+            }
+            if out.disabled.is_none() && !scripted && el.name() == "button" && el.attr("disabled").is_some() && el.attr("title").is_none() && el.attr("aria-describedby").is_none() && !spread.test(&raw[t.start..t.end]) {
+                out.disabled = Some(at(t));
             }
             if out.anchor.is_none() && el.name() == "a" && el.attrs().any(|a| CLICK.contains(&a.0)) && el.attr("href").is_none() && el.attr("tabindex").is_none() {
                 out.anchor = Some(at(t));
@@ -1257,6 +1323,10 @@ mod html {
         }
         out.loading = loaders.into_iter().min();
         out.ungrouped = ungrouped_radios(&radios);
+        out.ungrouped_checks = ungrouped_radios(&checks);
+        if !scripted {
+            out.lone_radio = lone(&radios, &Default::default());
+        }
         out
     }
 
