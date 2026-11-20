@@ -482,11 +482,13 @@ Gate area UX. Covers information architecture, navigation, flows, grouping, disc
 - Do: Show the total in the bar that holds the primary action, pinned to the bottom on a phone, and update it as the user picks; the line items and fees stay on the review screen or open from the total.
   - Say what the total covers when part of it is unknown ("+ biaya perbaikan setelah dicek"), next to the figure.
   - A summary above the list may repeat the choice, never the only place the total lives.
-- Do not: Put the only total above the list it sums, where it moves as items are added and scrolls away from the button that commits to it.
-- Why: People check the price at the moment they commit; a total next to the button is read with it, and one at the top must be remembered or scrolled back to, and loses its context as the list grows. (Gestalt proximity; Nielsen heuristics 1 (visibility of system status) and 6 (recognition rather than recall); Fitts's law (a pinned bar keeps the action in thumb reach, RX-RD-03); written for RYUX)
+  - The action is ready, or says why not, before it is pressed. A choice the action needs (a payment method) starts on the last one used or, with no history, the one most users pick, with its cost shown (RX-IX-17); when no choice can be assumed, the bar names what is missing ("Pilih metode pembayaran") and pressing the action moves focus to that choice with the message beside it.
+  - On a wide screen the choice the action depends on stays in the same view as the action: beside it in the side column, or above it, never below the fold while the action sits at the top right.
+- Do not: Put the only total above the list it sums, where it moves as items are added and scrolls away from the button that commits to it. Leave a required choice empty under a button that looks ready, or put the choice a screen-height away from the button on desktop.
+- Why: People check the price at the moment they commit; a total next to the button is read with it, and one at the top must be remembered or scrolled back to, and loses its context as the list grows. (Gestalt proximity; Nielsen heuristics 1 (visibility of system status) and 6 (recognition rather than recall); Fitts's law (a pinned bar keeps the action in thumb reach, RX-RD-03); owner blind rating 2026-11-20 of the front-end build bench (a Next.js checkout, no skill vs RYUX, three runs each): the bar was missing in 5 of 6 runs, 2 of them with RYUX; all three RYUX runs started with no payment method and an active-looking Bayar; on desktop two RYUX runs put the methods far below the fold, away from Bayar at the top right; written for RYUX)
 - Not when: one fixed price with no choices; a long statement or invoice read top to bottom
 - Trade-off: a pinned bar takes vertical space on every scroll position
-- Check: render at 390 with the most items the brief allows: the total and the primary action are visible together without scrolling
+- Check: render at 390 with the most items the brief allows: the total and the primary action are visible together without scrolling, at the top of the page and at the end; with nothing chosen, the action is ready (a choice is preset) or names what is missing, and pressing it moves focus to the choice; at 1280, the choice the action needs and the action are in one viewport
 
 #### RX-UX-16 [Preferred] What decides is shown; details open on demand
 
@@ -704,11 +706,12 @@ Gate area UX. Covers before, during, result, recovery; feedback, confirmation, n
 - Do: Show each price-changing choice with its current value and its cost inline on the screen that shows the total, so the user sees what they pay for before they confirm.
   - Each choice is made once: the next step shows the chosen value with a way to change it, and does not ask again (a payment method picked at checkout is not offered again in the pay sheet).
   - The screen where the total is confirmed shows every choice behind it, including one made earlier (the courier chosen in the bag is a line at checkout).
+  - When the brief sets no cost for an option the market usually charges for (a virtual account fee, cash on delivery, a faster courier), do not leave it out: an option with no cost reads as free. Ask when the answer changes the flow; in a prototype, show the cost with a sample label beside it ("Biaya contoh") and the summary row it adds (RX-PR-02).
 - Do not: Hide a choice that changes the price behind a list row or a later screen, show the total without the choices that make it up, or ask for the same choice on two steps in a row.
-- Why: People check a total against the choices behind it; a cost they cannot see next to the total reads as a surprise fee. (ryux run: blind review of a delivery checkout 2026-10-20; NNGroup visual hierarchy; owner review 2026-11-16 of a secondhand-book flow (Rak, RYUX with #78, OpenCode with DeepSeek, one run): the payment method was chosen at checkout and offered again in the pay sheet, and the courier chosen in the bag was not shown at checkout; written for RYUX)
+- Why: People check a total against the choices behind it; a cost they cannot see next to the total reads as a surprise fee. (ryux run: blind review of a delivery checkout 2026-10-20; NNGroup visual hierarchy; owner review 2026-11-16 of a secondhand-book flow (Rak, RYUX with #78, OpenCode with DeepSeek, one run): the payment method was chosen at checkout and offered again in the pay sheet, and the courier chosen in the bag was not shown at checkout; owner blind rating 2026-11-20 of the front-end build bench (Next.js checkout, three runs per arm): all three RYUX runs left the virtual account fee out because the brief set none, and the owner read the missing fee as a gap, where the no-skill runs showed it (unlabelled); written for RYUX)
 - Not when: a single fixed price with no choices on the screen
 - Trade-off: a longer checkout screen; group the choices so the total stays visible
-- Check: review the checkout render: every price-changing choice visible next to the total
+- Check: review the checkout render: every price-changing choice visible next to the total; every option the market charges for shows its cost, sourced or labelled sample beside it
 
 ---
 
