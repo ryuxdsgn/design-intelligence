@@ -1054,6 +1054,103 @@
   "input": {
    "sources": [
     {
+     "path": "a.tsx",
+     "raw": "<div role=\"dialog\" aria-modal=\"true\" onKeyDown={(e) => e.key === \"Tab\" && keep(e)}>x</div>"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": [
+   {
+    "level": "warn",
+    "rule": "RX-A11Y-03",
+    "file": "a.tsx",
+    "line": 1,
+    "column": 1,
+    "message": "a modal dialog that keeps Tab inside but does not close on Esc: close it on Esc too (showModal() on a <dialog> does both), or use a dialog component that does"
+   }
+  ]
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "Keys.tsx",
+     "raw": "<li>\n  <div role=\"alertdialog\" aria-labelledby=\"c\"><p id=\"c\">Cabut key?</p><button onClick={no}>Batal</button></div>\n</li>"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": [
+   {
+    "level": "warn",
+    "rule": "RX-A11Y-03",
+    "file": "Keys.tsx",
+    "line": 2,
+    "column": 3,
+    "message": "an inline confirmation (role=\"alertdialog\") that nothing moves focus into: a screen reader announces it only when focus moves inside, and its key handlers hear keys only then; when it opens, put focus on one of its buttons (autoFocus, or .focus() from a script)"
+   }
+  ]
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.html",
+     "raw": "<div role=alertdialog><p>Hapus?</p><button>Batal</button></div>"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": [
+   {
+    "level": "warn",
+    "rule": "RX-A11Y-03",
+    "file": "a.html",
+    "line": 1,
+    "column": 1,
+    "message": "an inline confirmation (role=\"alertdialog\") that nothing moves focus into: a screen reader announces it only when focus moves inside, and its key handlers hear keys only then; when it opens, put focus on one of its buttons (autoFocus, or .focus() from a script)"
+   }
+  ]
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.tsx",
+     "raw": "<div role=\"alertdialog\"><button onClick={no}>Batal</button><Button autoFocus onClick={yes}>Cabut</Button></div>"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": []
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.tsx",
+     "raw": "<div role=\"alertdialog\" ref={box} tabIndex={-1}>x</div>; useEffect(() => box.current?.focus(), []);"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": []
+ },
+ {
+  "input": {
+   "sources": [
+    {
      "path": "a.html",
      "raw": "<div id=\"chat\" role=\"dialog\" aria-label=\"Help\"><button>Close</button></div>"
     }

@@ -141,6 +141,19 @@ test("markup checks the owner named on 2026-11-18: a button that submits by acci
   const esc = scan("a.tsx", '<div role="dialog" aria-modal="true" onKeyDown={(e) => e.key === "Escape" && close()}>x</div>');
   assert.deepEqual(at(esc), ["warn RX-A11Y-03 1:1"]);
   assert.match(esc[0].message, /closes on Esc but lets Tab move to the page behind it/);
+  // Tab kept inside, but no Esc
+  const tab = scan("a.tsx", '<div role="dialog" aria-modal="true" onKeyDown={(e) => e.key === "Tab" && keep(e)}>x</div>');
+  assert.deepEqual(at(tab), ["warn RX-A11Y-03 1:1"]);
+  assert.match(tab[0].message, /keeps Tab inside but does not close on Esc: close it on Esc too/);
+  // an inline confirmation (alertdialog, not modal) that nothing moves focus into; autoFocus or .focus() is enough
+  const ask = scan("Keys.tsx", '<li>\n  <div role="alertdialog" aria-labelledby="c"><p id="c">Cabut key?</p><button onClick={no}>Batal</button></div>\n</li>');
+  assert.deepEqual(at(ask), ["warn RX-A11Y-03 2:3"]);
+  assert.match(ask[0].message, /an inline confirmation \(role="alertdialog"\) that nothing moves focus into: .* put focus on one of its buttons/);
+  assert.deepEqual(at(scan("a.html", "<div role=alertdialog><p>Hapus?</p><button>Batal</button></div>")), ["warn RX-A11Y-03 1:1"]);
+  for (const raw of [
+    '<div role="alertdialog"><button onClick={no}>Batal</button><Button autoFocus onClick={yes}>Cabut</Button></div>',
+    '<div role="alertdialog" ref={box} tabIndex={-1}>x</div>; useEffect(() => box.current?.focus(), []);',
+  ]) assert.deepEqual(scan("a.tsx", raw), [], raw);
   // not modal: a panel with no aria-modal and no scrim, and a <dialog> opened with show() or open
   assert.deepEqual(scan("a.html", '<div id="chat" role="dialog" aria-label="Help"><button>Close</button></div>'), []);
   assert.deepEqual(scan("a.html", "<dialog open>Saved</dialog>"), []);
