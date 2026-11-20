@@ -95,8 +95,8 @@ test("markup detectors: a label a script fills, a scrim around a dialog, one hea
 test("accessibility in markup: zoom, tabindex, alt, clickable div, icon button, headings", () => {
   assert.deepEqual(rules(scan("a.html", '<meta name="viewport" content="width=device-width, maximum-scale=1">')), ["fail RX-A11Y-02"]);
   assert.deepEqual(scan("a.html", '<meta name="viewport" content="width=device-width, initial-scale=1">'), []);
-  assert.deepEqual(rules(scan("a.tsx", "<input tabIndex={2} />")), ["fail RX-A11Y-03"]);
-  assert.deepEqual(scan("a.tsx", "<input tabIndex={0} /><h2 tabIndex={-1}>x</h2>"), []);
+  assert.deepEqual(rules(scan("a.tsx", "<input aria-label=\"Kode\" tabIndex={2} />")), ["fail RX-A11Y-03"]);
+  assert.deepEqual(scan("a.tsx", "<input aria-label=\"Kode\" tabIndex={0} /><h2 tabIndex={-1}>x</h2>"), []);
   assert.deepEqual(rules(scan("a.tsx", '<img src="/a.png">')), ["fail RX-A11Y-04"]);
   assert.deepEqual(scan("a.tsx", '<img alt="" src={x} onLoad={() => a > b} /><img {...props} />'), []);
   assert.deepEqual(rules(scan("a.tsx", "<div onClick={go}>Buka</div>")), ["warn RX-A11Y-04"]);
@@ -110,7 +110,7 @@ test("accessibility in markup: zoom, tabindex, alt, clickable div, icon button, 
 test("markup checks the owner named on 2026-11-18: a button that submits by accident, a wait only shown, a dialog with no way out", () => {
   const at = (findings) => findings.map((f) => `${f.level} ${f.rule} ${f.line}:${f.column}`);
   // a typeless button in a form submits it; the form's last typeless button with no click handler is its submit
-  const login = '<form>\n  <input type="password" />\n  <button onClick={toggle}>Show password</button>\n  <button>Sign in</button>\n</form>';
+  const login = '<form>\n  <input type="password" aria-label="Password" />\n  <button onClick={toggle}>Show password</button>\n  <button>Sign in</button>\n</form>';
   const typed = scan("Login.tsx", login);
   assert.deepEqual(at(typed), ["warn RX-A11Y-04 3:3"]);
   assert.match(typed[0].message, /a <button> with no type inside a <form> submits the form when pressed: add type="button"/);
@@ -178,6 +178,35 @@ test("markup checks the owner named on 2026-11-18: a button that submits by acci
   for (const ext of ["vue", "svelte", "astro"]) assert.deepEqual(scan(`a.${ext}`, '<form><button @click="t">Show</button><button>Go</button></form><div class="spinner"></div><div role="dialog">x</div>'), [], ext);
 });
 
+test("field and control checks the owner rated on 2026-11-20: a field with no label, a link to nowhere, the keyboard, an error not tied", () => {
+  const at = (findings) => findings.map((f) => `${f.level} ${f.rule} ${f.line}:${f.column}`);
+  // a placeholder is not a label; a wrapper component with htmlFor is
+  const chat = scan("Chat.tsx", '<form>\n  <input id="msg" placeholder="Tanya soal pengiriman…" />\n  <button>Kirim</button>\n</form>');
+  assert.deepEqual(at(chat), ["warn RX-FM-01 2:3"]);
+  assert.match(chat[0].message, /a form field with no label tied to it \(a placeholder or text beside it is not one\)/);
+  assert.deepEqual(at(scan("a.html", '<textarea id="out" readonly></textarea>')), ["warn RX-FM-01 1:1"]);
+  for (const raw of [
+    '<Field label="Pemilik" htmlFor="owner"><input id="owner" /></Field>',
+    '<label>Email <input name="email" /></label>',
+    '<input type="file" hidden /><input aria-hidden="true" tabIndex={-1} />',
+  ]) assert.deepEqual(scan("a.tsx", raw), [], raw);
+  // a link to "#" with no handler, or an empty handler; a directions preview is a sample
+  const dead = scan("Footer.tsx", '<footer>\n  <a href="#">Syarat</a>\n</footer>');
+  assert.deepEqual(at(dead), ["warn RX-IX-12 2:3"]);
+  assert.match(dead[0].message, /a control that goes nowhere/);
+  assert.deepEqual(at(scan("a.tsx", "<button onClick={() => {}}>Simpan</button>")), ["warn RX-IX-12 1:1"]);
+  assert.deepEqual(scan("directions.html", '<a class="btn" href="#">Jadwalkan demo</a>'), []);
+  // a phone number with the text keyboard
+  const phone = scan("a.tsx", '<label>No. HP <input name="phone" /></label>');
+  assert.deepEqual(at(phone), ["warn RX-FM-05 1:15"]);
+  assert.match(phone[0].message, /use type="tel" for a phone number/);
+  assert.deepEqual(scan("a.tsx", '<label>No. HP <input type="tel" name="phone" /></label>'), []);
+  // aria-invalid with nothing pointing at the error
+  const bad = scan("a.tsx", "<label>Email <input aria-invalid={!!error} /></label>");
+  assert.deepEqual(at(bad), ["warn RX-A11Y-07 1:14"]);
+  assert.deepEqual(scan("a.tsx", '<label>Email <input aria-invalid={!!error} aria-describedby="email-error" /></label>'), []);
+});
+
 test("focus outlines: flagged on controls, not on focus targets or with a replacement", () => {
   assert.deepEqual(rules(scan("a.tsx", '<button className="outline-none">Simpan</button>')), ["warn RX-A11Y-03"]);
   assert.deepEqual(scan("a.tsx", '<button className="outline-none focus-visible:ring-2">x</button><h2 tabIndex={-1} className="outline-none">x</h2><div className="outline-none">x</div>'), []);
@@ -225,11 +254,11 @@ test("motion: endless loops, transition properties and length, and translucency"
   assert.deepEqual(folder([["a.css", ".bar { backdrop-filter: blur(20px) }"], ["b.css", "@media (prefers-reduced-transparency: reduce) { .bar { background: #fff } }"]]), []);
   assert.deepEqual(scan("a.css", ".bar { backdrop-filter: blur(20px) }"), [], "single files skip folder checks");
   // RX-FM-05: a textarea needs something in the folder that makes it grow
-  assert.deepEqual(folder([["a.html", '<textarea id="note" rows="5"></textarea>']]), ["warn RX-FM-05"]);
-  assert.deepEqual(folder([["a.html", '<textarea id="note"></textarea>'], ["b.css", "textarea { field-sizing: content }"]]), []);
+  assert.deepEqual(folder([["a.html", '<textarea id="note" rows="5" aria-label="Note"></textarea>']]), ["warn RX-FM-05"]);
+  assert.deepEqual(folder([["a.html", '<textarea id="note" aria-label="Note"></textarea>'], ["b.css", "textarea { field-sizing: content }"]]), []);
   assert.deepEqual(folder([["a.tsx", "<Textarea minRows={3} />"]]), []);
-  assert.deepEqual(folder([["a.html", "<textarea></textarea>"], ["b.js", "t.style.height = t.scrollHeight + 'px'"]]), []);
-  assert.deepEqual(scan("a.html", "<textarea></textarea>"), [], "single files skip the textarea check");
+  assert.deepEqual(folder([["a.html", "<textarea aria-label=\"Note\"></textarea>"], ["b.js", "t.style.height = t.scrollHeight + 'px'"]]), []);
+  assert.deepEqual(scan("a.html", "<textarea aria-label=\"Note\"></textarea>"), [], "single files skip the textarea check");
 });
 
 test("comments are not scanned, and ryux-ignore switches a rule off", () => {

@@ -149,6 +149,7 @@ How local apps handle the same action and its states, and local payment patterns
 - Do not: Ship navigation to sections that do not exist, buttons that do nothing, or forms that pretend to submit.
 - Why: A dead control breaks trust the moment someone tries it, and it hides what the product really does. (pattern also in anti-slop (MIT) R-24, R-26; written for RYUX)
 - Check: click every control in the render; review
+- Machine check: `ryux scan` flags in .jsx, .tsx, and .html: a link to "#", "", or javascript: with no click handler, or an empty click handler (onClick={() => {}}); not with spread props, not in a directions preview (directions.html), and in HTML only on a page with no script; once per file (warn)
 
 ### RX-IX-13 [Required] Each transition means one thing
 

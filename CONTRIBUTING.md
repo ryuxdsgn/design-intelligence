@@ -45,9 +45,10 @@ syntax checks (`crates/ryux-core/src/jsx.rs`, on the oxc parser) have unit tests
 `packages/cli/test/scan.test.mjs`. The markup detectors (alt text, clickable div or span, icon-only button,
 heading levels, positive tabindex) read JSX and TSX with oxc and HTML with html5ever
 (`crates/ryux-core/src/markup.rs`); Vue, Svelte, Astro, and a JSX file oxc cannot parse stay on the patterns in `scan.rs`.
-Four checks run only on that tree, with no pattern for Vue, Svelte, or Astro: a button with no type in a form, a
-loading indicator nothing announces, a modal dialog with no Esc or no Tab kept inside, and an inline confirmation
-nothing moves focus into. The last three read past the file: the scripts a page loads, and the module an imported
+Eight checks run only on that tree, with no pattern for Vue, Svelte, or Astro: a button with no type in a form, a
+loading indicator nothing announces, a modal dialog with no Esc or no Tab kept inside, an inline confirmation
+nothing moves focus into, a field with no label tied to it, a link or button that goes nowhere, a phone, OTP, or
+amount field with the text keyboard, and a field marked invalid with nothing pointing at its error. The dialog, confirmation, and loading checks read past the file: the scripts a page loads, and the module an imported
 loading component comes from. Rust names the files (`scan::references`), the CLI reads the ones that exist and
 passes them back as context, and a file it cannot read leaves the check quiet.
 

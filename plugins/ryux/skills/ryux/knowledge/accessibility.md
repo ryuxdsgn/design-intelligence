@@ -76,6 +76,7 @@ Standards are the main evidence (WCAG 2.2 success criteria); reference screens s
 - Do not: Show errors only as red borders or as text that is not associated with the field, or leave focus on the page after a failed submit.
 - Why: An error the user cannot perceive cannot be fixed, and a keyboard or screen reader user who lost focus has to find the field again before trying. (WCAG 2.2 SC 3.3.1, 4.1.3, and 2.4.3; ryux editor, sign-in, 2026-11-13: the submit button, disabled while signing in, dropped focus to the page body after a wrong password (Playwright, phone emulation))
 - Check: submit once with a wrong value, keyboard only: the error is announced and focus lands on the field to fix, not the page body
+- Machine check: `ryux scan` flags in .jsx, .tsx, and .html: a field marked aria-invalid (not "false") with no aria-describedby or aria-errormessage; once per file (warn)
 
 ### RX-A11Y-08 [Required] Respect reduced motion
 
