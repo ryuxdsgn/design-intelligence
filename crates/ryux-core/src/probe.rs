@@ -615,6 +615,8 @@ impl<'a> Page<'a> {
         // A choice out of view of its action (RX-UX-15): on a wide screen, the page's only radio group starts below the
         // first screen while a button that carries an amount is on it. A page with several choices is a form the
         // person scrolls through; one choice and a pay button is a checkout whose choice belongs beside the button.
+        // The group's heading (its legend, or a card title just above it) on the first screen keeps it in view (owner,
+        // A2 2026-11-21).
         if vw >= 1024.0 {
             let mut groups: Vec<(&str, f64, usize, usize)> = Vec::new();
             for i in 2..n {
@@ -643,7 +645,8 @@ impl<'a> Page<'a> {
                         && el.r.bottom() <= self.vh
                         && self.re.amount.is_match(self.text_of(i, "nm"))
                 });
-                if let (true, Some(a)) = (top >= self.vh, action) {
+                let heading_seen = self.els[first].v.get("gh").and_then(Value::as_f64).map_or(false, |b| b <= self.vh);
+                if let (true, false, Some(a)) = (top >= self.vh, heading_seen, action) {
                     let label = match self.text_of(first, "gl") {
                         "" => format!("the choice that starts with {}", quote(self.text_of(first, "ol"))),
                         gl => quote(gl),

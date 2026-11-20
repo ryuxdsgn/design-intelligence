@@ -76,6 +76,20 @@ aside button{width:100%;padding:12px;font:inherit}label{display:block;padding:8p
 <label><input type="radio" name="pay" value="ew"> E-wallet</label></fieldset></div>
 <aside><p>Total Rp1.424.000</p><button>Bayar Rp1.424.000</button></aside></div>`;
 
+/** The A2 shape: the payment card's heading (an h2, not a legend) and a group split into sub-fieldsets by kind. With
+ *  `inView` the heading sits on the first screen at 1280x900 and the first option just below it; without, both are
+ *  below. */
+export const choiceSplit = (inView) => `${head}<style>
+body{margin:0;font:16px/1.5 sans-serif;color:#111;background:#fff}.wrap{display:flex;gap:32px;padding:24px;align-items:flex-start}
+.main{flex:1}.items{height:${inView ? 700 : 1000}px;border:1px solid #ddd}aside{position:sticky;top:24px;width:320px}
+aside button{width:100%;padding:12px;font:inherit}label{display:block;padding:8px 0}.gap{height:60px}</style>
+<div class="wrap"><div class="main"><h1>Checkout</h1><div class="items">Pesanan</div>
+<section><h2>Metode Pembayaran</h2><div class="gap"></div><div>
+<fieldset><legend>QRIS</legend><label><input type="radio" name="pay" value="qris" checked> QRIS</label></fieldset>
+<fieldset><legend>Virtual account</legend><label><input type="radio" name="pay" value="bca"> BCA</label>
+<label><input type="radio" name="pay" value="bni"> BNI</label></fieldset></div></section></div>
+<aside><p>Total Rp1.421.000</p><button>Bayar Rp1.421.000</button></aside></div>`;
+
 /** Every page with the widths the tests render it at. */
 export const PAGES = [
   { name: "basics", html: BASICS, widths: [320] },
@@ -86,4 +100,6 @@ export const PAGES = [
   { name: "more", html: MORE, widths: [320, 1280] },
   { name: "choice-low", html: choice(true), widths: [390, 1280] },
   { name: "choice-high", html: choice(false), widths: [1280] },
+  { name: "choice-split-in-view", html: choiceSplit(true), widths: [1280] },
+  { name: "choice-split-low", html: choiceSplit(false), widths: [1280] },
 ];
