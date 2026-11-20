@@ -30,8 +30,8 @@ pub struct Markup {
     /// Loading components imported from another module (not an icon set): offset, the name that module exports
     /// it under ("default" for a default import), and the import path. Each is judged by its own markup there.
     pub loaders_from: Vec<(usize, String, String)>,
-    /// The first modal dialog: an element with a dialog role and aria-modal, an alertdialog, or a dialog with a
-    /// scrim around it or just before it. A panel with none of these is not modal, and a native `<dialog>` is
+    /// The first modal dialog: an element with a dialog or alertdialog role and aria-modal, or with a scrim around
+    /// it or just before it. An alertdialog with neither is an inline confirmation, not modal. A panel with none of these is not modal, and a native `<dialog>` is
     /// modal only through showModal(), which gives Esc and the inert page itself.
     pub dialog: Option<usize>,
     /// The `src` of every `<script src>` an HTML page loads, as written: what it does at run time, such as closing a
@@ -67,10 +67,6 @@ fn modal_value(v: &str) -> bool {
     v.trim().to_ascii_lowercase().starts_with("true")
 }
 
-/// role="alertdialog": a modal dialog by definition.
-fn alert_role(v: &str) -> bool {
-    v.trim_start().starts_with("alertdialog")
-}
 
 /// The file read as structure, or None when it stays on the patterns (not JSX, TSX, or HTML; or oxc gave up).
 pub fn read(raw: &str, ext: &str) -> Option<Markup> {
@@ -461,7 +457,7 @@ mod jsx {
                     Some(Value::Other) => true,
                     _ => false,
                 };
-                if modal || scrimmed || matches!(a.get("role"), Some(Value::Str(r)) if alert_role(r)) {
+                if modal || scrimmed {
                     self.out.dialog = Some(at);
                 }
             }
@@ -939,7 +935,7 @@ mod html {
                 let named = |e: &scraper::node::Element| ["class", "id"].iter().any(|n| e.attr(n).is_some_and(scrim_name));
                 let parent = node.parent().and_then(|p| p.value().as_element().map(|e| named(e) || e.attrs().any(|a| CLICK.contains(&a.0)))).unwrap_or(false);
                 let before = node.prev_siblings().find_map(|p| p.value().as_element().map(named)).unwrap_or(false);
-                if el.attr("aria-modal").is_some_and(modal_value) || el.attr("role").is_some_and(alert_role) || parent || before {
+                if el.attr("aria-modal").is_some_and(modal_value) || parent || before {
                     out.dialog = Some(at(t));
                 }
             }

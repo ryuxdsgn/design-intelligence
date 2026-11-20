@@ -511,7 +511,7 @@
     "file": "a.tsx",
     "line": 2,
     "column": 3,
-    "message": "a modal dialog with no keyboard way out: close it on Esc and keep Tab inside it while it is open (showModal() on a <dialog> does both), or use a dialog component that does"
+    "message": "a modal dialog that does not close on Esc and does not keep Tab inside it: close it on Esc and keep focus inside it while it is open (showModal() on a <dialog> does both), or use a dialog component that does"
    }
   ]
  },
@@ -1023,7 +1023,7 @@
     "file": "Sheet.tsx",
     "line": 1,
     "column": 1,
-    "message": "a modal dialog with no keyboard way out: close it on Esc and keep Tab inside it while it is open (showModal() on a <dialog> does both), or use a dialog component that does"
+    "message": "a modal dialog that does not close on Esc and does not keep Tab inside it: close it on Esc and keep focus inside it while it is open (showModal() on a <dialog> does both), or use a dialog component that does"
    }
   ]
  },
@@ -1173,7 +1173,7 @@
     "file": "a.html",
     "line": 2,
     "column": 1,
-    "message": "a modal dialog with no keyboard way out: close it on Esc and keep Tab inside it while it is open (showModal() on a <dialog> does both), or use a dialog component that does"
+    "message": "a modal dialog that does not close on Esc and does not keep Tab inside it: close it on Esc and keep focus inside it while it is open (showModal() on a <dialog> does both), or use a dialog component that does"
    },
    {
     "level": "warn",

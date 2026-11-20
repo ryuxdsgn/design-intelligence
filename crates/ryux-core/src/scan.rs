@@ -549,7 +549,7 @@ fn rule_a11y03_dialog(s: &Source, c: &Ctx) -> Vec<Hit> {
     let Some(text) = with_scripts(s, m, c) else { return Vec::new() };
     let message = match way_out(&text) {
         WayOut::Both => return Vec::new(),
-        WayOut::None => "a modal dialog with no keyboard way out: close it on Esc and keep Tab inside it while it is open (showModal() on a <dialog> does both), or use a dialog component that does",
+        WayOut::None => "a modal dialog that does not close on Esc and does not keep Tab inside it: close it on Esc and keep focus inside it while it is open (showModal() on a <dialog> does both), or use a dialog component that does",
         WayOut::Esc => "a modal dialog that closes on Esc but lets Tab move to the page behind it: keep focus inside it while it is open (showModal() on a <dialog> does both), or use a dialog component that does",
         WayOut::Tab => "a modal dialog that keeps Tab inside but does not close on Esc: close it on Esc too (showModal() on a <dialog> does both), or use a dialog component that does",
     };
@@ -1059,9 +1059,10 @@ mod tests {
 
     #[test]
     fn only_a_modal_dialog_is_judged() {
-        // aria-modal, an alert dialog, or a scrim around it or just before it
-        assert_eq!(dialog("a.tsx", "<div>\n  <div role=\"dialog\" aria-modal=\"true\">x</div>\n  <div role=\"alertdialog\">y</div>\n</div>"), vec!["2:3"]);
-        assert_eq!(dialog("a.tsx", "<div role=\"alertdialog\">y</div>"), vec!["1:1"]);
+        // aria-modal, or a scrim around it or just before it; an alert dialog the same way
+        assert_eq!(dialog("a.tsx", "<div>\n  <div role=\"dialog\" aria-modal=\"true\">x</div>\n  <div role=\"alertdialog\" aria-modal=\"true\">y</div>\n</div>"), vec!["2:3"]);
+        assert_eq!(dialog("a.tsx", "<div role=\"alertdialog\" aria-modal=\"true\">y</div>"), vec!["1:1"]);
+        assert_eq!(dialog("a.tsx", "<>\n<div className=\"scrim\" />\n<div role=\"alertdialog\">y</div></>"), vec!["3:1"]);
         assert_eq!(dialog("a.tsx", "<div role=\"dialog\" aria-modal={true}>x</div>"), vec!["1:1"]);
         assert_eq!(dialog("a.tsx", "<div className=\"scrim\" onClick={close}>\n  <div className=\"sheet\" role=\"dialog\">x</div></div>"), vec!["2:3"]);
         assert_eq!(dialog("a.tsx", "<>\n<div className=\"backdrop\" />\n<section role=\"dialog\">x</section></>"), vec!["3:1"]);
@@ -1073,6 +1074,9 @@ mod tests {
             "<motion.div role=\"dialog\" onClick={close}>x</motion.div>",
             "<div role=\"dialog\" aria-modal=\"false\">x</div>",
             "<div className=\"card\" /><div role=\"dialog\">x</div>",
+            // an inline confirmation in a row or a bar: the page behind stays usable, so Tab may go there
+            "<div role=\"alertdialog\" aria-labelledby=\"c\" onKeyDown={(e) => e.key === \"Escape\" && no()} className=\"flex gap-3 rounded-xl p-3\">x</div>",
+            "<div role=\"alertdialog\" className=\"fixed inset-x-3 bottom-20 z-30 shadow-2xl\">x</div>",
         ] {
             assert!(dialog("a.tsx", ok).is_empty(), "{ok}");
         }
@@ -1085,12 +1089,12 @@ mod tests {
     #[test]
     fn a_modal_dialog_needs_both_esc_and_tab_kept_inside() {
         let m = |attrs: &str| format!("<div role=\"dialog\" aria-modal=\"true\" {attrs}>x</div>");
-        assert_eq!(dialog_says("a.tsx", &m(""), &[]), vec!["a modal dialog with no keyboard way out: close it on Esc and keep Tab inside it while it is open (showModal() on a <dialog> does both), or use a dialog component that does"]);
+        assert_eq!(dialog_says("a.tsx", &m(""), &[]), vec!["a modal dialog that does not close on Esc and does not keep Tab inside it: close it on Esc and keep focus inside it while it is open (showModal() on a <dialog> does both), or use a dialog component that does"]);
         assert_eq!(dialog_says("a.tsx", &m(ESC), &[]), vec!["a modal dialog that closes on Esc but lets Tab move to the page behind it: keep focus inside it while it is open (showModal() on a <dialog> does both), or use a dialog component that does"]);
         assert_eq!(dialog_says("a.tsx", &m(TAB), &[]), vec!["a modal dialog that keeps Tab inside but does not close on Esc: close it on Esc too (showModal() on a <dialog> does both), or use a dialog component that does"]);
         // a key handler for another key is neither, and a cancel prop is a button's handler, not Esc
         assert_eq!(dialog("a.tsx", &m("onKeyDown={(e) => e.key === \"Enter\" && go()}")).len(), 1);
-        assert!(dialog_says("a.tsx", &format!("<div className=\"sheet-scrim\" onClick={{onCancel}}>{}</div>", m("onCancel={onCancel}")), &[])[0].contains("no keyboard way out"));
+        assert!(dialog_says("a.tsx", &format!("<div className=\"sheet-scrim\" onClick={{onCancel}}>{}</div>", m("onCancel={onCancel}")), &[])[0].contains("does not close on Esc and does not keep Tab"));
         // "desc" and "escrow" are not Esc
         assert_eq!(dialog("a.tsx", &format!("const desc = escrow; const a = {};", m(TAB))).len(), 1);
         for esc in [

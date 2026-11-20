@@ -136,7 +136,7 @@ test("markup checks the owner named on 2026-11-18: a button that submits by acci
   const sheet = '<div className="sheet" role="dialog" aria-modal="true">\n  <h2>Filter</h2>\n</div>';
   const shut = scan("Sheet.tsx", sheet);
   assert.deepEqual(at(shut), ["warn RX-A11Y-03 1:1"]);
-  assert.match(shut[0].message, /a modal dialog with no keyboard way out: close it on Esc and keep Tab inside it/);
+  assert.match(shut[0].message, /a modal dialog that does not close on Esc and does not keep Tab inside it: close it on Esc and keep focus inside it/);
   // Esc alone leaves Tab free to move to the page behind a modal
   const esc = scan("a.tsx", '<div role="dialog" aria-modal="true" onKeyDown={(e) => e.key === "Escape" && close()}>x</div>');
   assert.deepEqual(at(esc), ["warn RX-A11Y-03 1:1"]);
