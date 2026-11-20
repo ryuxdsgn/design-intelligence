@@ -45,11 +45,19 @@ syntax checks (`crates/ryux-core/src/jsx.rs`, on the oxc parser) have unit tests
 `packages/cli/test/scan.test.mjs`. The markup detectors (alt text, clickable div or span, icon-only button,
 heading levels, positive tabindex) read JSX and TSX with oxc and HTML with html5ever
 (`crates/ryux-core/src/markup.rs`); Vue, Svelte, Astro, and a JSX file oxc cannot parse stay on the patterns in `scan.rs`.
-Three checks run only on that tree, with no pattern for Vue, Svelte, or Astro: a button with no type in a form, a
-loading indicator nothing announces, and a modal dialog with no Esc or no Tab kept inside. Those two read past the
-file: the scripts a page loads, and the module an imported loading component comes from. Rust names the files
-(`scan::references`), the CLI reads the ones that exist and passes them back as context, and a file it cannot read
-leaves the check quiet. The Figma audit script agents run inside Figma
+Four checks run only on that tree, with no pattern for Vue, Svelte, or Astro: a button with no type in a form, a
+loading indicator nothing announces, a modal dialog with no Esc or no Tab kept inside, and an inline confirmation
+nothing moves focus into. The last three read past the file: the scripts a page loads, and the module an imported
+loading component comes from. Rust names the files (`scan::references`), the CLI reads the ones that exist and
+passes them back as context, and a file it cannot read leaves the check quiet.
+
+A check's message says what the code is missing, and claims no more than the code shows: "does not close on Esc
+and does not keep Tab inside it", not "no keyboard way out" for a dialog whose Cancel button Tab can reach. The fix
+it suggests must not make the interface worse when followed: a check that tells an inline confirmation to keep
+focus inside would lock the page around a row that was meant to stay usable. When the code leaves either in
+doubt, the check stays quiet.
+
+The Figma audit script agents run inside Figma
 (`packages/cli/src/figma-audit.ts`) is still JavaScript and must agree with ryux-core's audit.
 The browser is different: for `ryux scan <url>`, the script in the page (`packages/cli/src/cli/page-probe.ts`)
 only reads boxes, computed styles, text, and hit tests, and `crates/ryux-core/src/probe.rs` judges them. Its parity
