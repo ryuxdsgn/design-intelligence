@@ -41,7 +41,7 @@ Real Indonesian forms for the same data (address, OTP, e-KYC): `search_screens`,
 - Not when: a lone search field beside a labeled button, where context names it; still give it an accessible name
 - Trade-off: labels above fields make the form taller
 - Check: review
-- Machine check: `ryux scan` flags in .jsx, .tsx, and .html: a field (input, select, textarea; not type hidden, submit, button, reset, or image) on screen (not hidden, display none, or aria-hidden with tabindex -1 or disabled) with no label tied to it: not inside a <label>, and no <label> or wrapper component with htmlFor equal to its id, no aria-label, aria-labelledby, or title; a placeholder is not a label; not with spread props or an id the parser cannot read; once per file (warn)
+- Machine check: `ryux scan` flags in .jsx, .tsx, and .html: a field (input, select, textarea; not type hidden, submit, button, reset, or image) on screen (not hidden, display none, a hidden or invisible class with no variant that shows it again, or aria-hidden with tabindex -1 or disabled) with no label tied to it: not inside a <label>, and no <label> or wrapper component with htmlFor equal to its id, no aria-label, aria-labelledby, or title; a placeholder is not a label; not with spread props or an id the parser cannot read; once per field (warn)
 
 ### RX-FM-03 [Required] Validate near the field, keep the input
 
