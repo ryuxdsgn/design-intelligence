@@ -569,6 +569,26 @@ fn rule_a11y03_alert(s: &Source, c: &Ctx) -> Vec<Hit> {
     vec![hit(at, "an inline confirmation (role=\"alertdialog\") that nothing moves focus into: a screen reader announces it only when focus moves inside, and its key handlers hear keys only then; when it opens, put focus on one of its buttons (autoFocus, or .focus() from a script)")]
 }
 
+fn rule_fm01_label(s: &Source, _: &Ctx) -> Vec<Hit> {
+    structure(s).and_then(|m| m.unlabeled).map_or(Vec::new(), |at| vec![hit(at, "a form field with no label tied to it (a placeholder or text beside it is not one): give it a <label> with htmlFor, or put it inside the <label>; where the context already names it, such as a lone search box, an aria-label")])
+}
+
+fn rule_ix12_dead(s: &Source, _: &Ctx) -> Vec<Hit> {
+    // a directions preview (the page `ryux pick` opens) shows what a call to action would look like; it is not one
+    if s.path.rsplit(['/', '\\']).next().is_some_and(|n| n.eq_ignore_ascii_case("directions.html")) {
+        return Vec::new();
+    }
+    structure(s).and_then(|m| m.dead).map_or(Vec::new(), |at| vec![hit(at, "a control that goes nowhere (a link to \"#\" with no click handler, or an empty click handler): link it to a page or section that exists, give it the action it names, or remove it, or show it disabled with the reason, until that exists")])
+}
+
+fn rule_fm05_keyboard(s: &Source, _: &Ctx) -> Vec<Hit> {
+    structure(s).and_then(|m| m.keyboard).map_or(Vec::new(), |at| vec![hit(at, "a phone, OTP, or amount field that opens the text keyboard: use type=\"tel\" for a phone number, and inputMode=\"numeric\" for a one-time code or an amount")])
+}
+
+fn rule_a11y07_invalid(s: &Source, _: &Ctx) -> Vec<Hit> {
+    structure(s).and_then(|m| m.invalid).map_or(Vec::new(), |at| vec![hit(at, "a field marked aria-invalid with no aria-describedby or aria-errormessage: point it at the error text's id, so a screen reader reads the error with the field")])
+}
+
 fn first(s: &Source, pattern: &str, message: impl Fn(&str) -> String) -> Vec<Hit> {
     re(pattern, "").exec(&s.text).map_or(Vec::new(), |m| vec![hit(m.index, message(m.g(0)))])
 }
@@ -775,6 +795,10 @@ fn detectors() -> &'static [Detector] {
         Detector { rule: "RX-A11Y-03", level: "warn", exts: markup_style, folder: false, find: rule_a11y03_outline },
         Detector { rule: "RX-A11Y-03", level: "warn", exts: markup, folder: false, find: rule_a11y03_dialog },
         Detector { rule: "RX-A11Y-03", level: "warn", exts: markup, folder: false, find: rule_a11y03_alert },
+        Detector { rule: "RX-FM-01", level: "warn", exts: markup, folder: false, find: rule_fm01_label },
+        Detector { rule: "RX-IX-12", level: "warn", exts: markup, folder: false, find: rule_ix12_dead },
+        Detector { rule: "RX-FM-05", level: "warn", exts: markup, folder: false, find: rule_fm05_keyboard },
+        Detector { rule: "RX-A11Y-07", level: "warn", exts: markup, folder: false, find: rule_a11y07_invalid },
         Detector { rule: "RX-A11Y-04", level: "fail", exts: markup, folder: false, find: rule_a11y04_img },
         Detector { rule: "RX-A11Y-04", level: "warn", exts: markup, folder: false, find: rule_a11y04_click },
         Detector { rule: "RX-A11Y-04", level: "warn", exts: markup, folder: false, find: rule_a11y04_icon },
@@ -1098,6 +1122,110 @@ mod tests {
         // a native <dialog>: show() and open are not modal, and showModal() gives Esc and the inert page itself
         assert!(dialog("a.html", "<p>x</p><dialog open>Saved</dialog><script>d.show()</script>").is_empty());
         assert!(dialog("a.html", "<dialog id=d>x</dialog><script>d.showModal()</script>").is_empty());
+    }
+
+    #[test]
+    fn a_field_has_a_label_tied_to_it() {
+        let says = |path: &str, raw: &str| found(path, raw, "RX-FM-01", "no label tied to it");
+        // a placeholder is not a label, and text beside a field is not tied to it
+        assert_eq!(says("a.tsx", "<form>\n  <input name=\"email\" placeholder=\"Email\" />\n</form>"), vec!["2:3"]);
+        assert_eq!(says("a.tsx", "<div><p>Kota</p><select name=\"city\"><option>A</option></select></div>"), vec!["1:17"]);
+        assert_eq!(says("a.html", "<label>Catatan</label>\n<textarea name=n></textarea>"), vec!["2:1"]);
+        assert_eq!(says("a.html", "<label for=\"a\">A</label><input id=\"b\">"), vec!["1:25"]);
+        // once per file
+        assert_eq!(says("a.tsx", "<>\n<input />\n<input /></>"), vec!["2:1"]);
+        for ok in [
+            "<label>Email <input name=\"email\" /></label>",
+            "<><label htmlFor=\"e\">Email</label><input id=\"e\" /></>",
+            "<input aria-label=\"Cari\" type=\"search\" />",
+            "<><span id=\"l\">Nominal</span><input aria-labelledby=\"l\" /></>",
+            "<input title=\"Kode\" />",
+            "<input {...field} />",
+            // ids the parser cannot read: a label may well match
+            "<><label htmlFor={id}>Email</label><input id={id} /></>",
+            "<input id={`${name}-input`} />",
+            // not a field a person types into or picks
+            "<input type=\"hidden\" name=\"t\" /><input type=\"submit\" value=\"Kirim\" /><input type=\"button\" value=\"x\" />",
+            // a component names its own label
+            "<Input label=\"Email\" />",
+            // a wrapper component that renders the label for the id
+            "<Field label=\"Pemilik\" htmlFor=\"owner\"><input id=\"owner\" /></Field>",
+            // not on screen
+            "<input type=\"file\" id=\"f\" hidden /><input type=\"file\" aria-hidden=\"true\" tabIndex={-1} />",
+            "<input aria-hidden=\"true\" disabled /><input style={{ display: \"none\" }} />",
+        ] {
+            assert!(says("a.tsx", ok).is_empty(), "{ok}");
+        }
+        assert!(says("a.html", "<label for=e>E</label><input id=e>").is_empty());
+        assert!(says("a.html", "<label>E <input></label>").is_empty());
+        assert!(says("a.html", "<input type=file hidden><input type=file aria-hidden=true tabindex=-1>").is_empty());
+        assert!(says("a.html", "<input style=\"display: none\">").is_empty());
+        // aria-hidden alone hides it from a screen reader, not from the keyboard: still a field with no name
+        assert_eq!(says("a.tsx", "<input aria-hidden=\"true\" />"), vec!["1:1"]);
+        assert_eq!(says("a.html", "<input aria-hidden=true>"), vec!["1:1"]);
+        // a field's id must be the one a label or wrapper names
+        assert_eq!(says("a.tsx", "<><Field htmlFor=\"name\"><input id=\"name\" /></Field><input id=\"phone\" /></>"), vec!["1:52"]);
+    }
+
+    #[test]
+    fn a_link_goes_somewhere() {
+        let says = |path: &str, raw: &str| found(path, raw, "RX-IX-12", "goes nowhere");
+        assert_eq!(says("a.tsx", "<nav>\n  <a href=\"#\">Promo</a>\n</nav>"), vec!["2:3"]);
+        assert_eq!(says("a.tsx", "<a href=\"javascript:void(0)\">x</a>"), vec!["1:1"]);
+        assert_eq!(says("a.tsx", "<button onClick={() => {}}>Simpan</button>"), vec!["1:1"]);
+        assert_eq!(says("a.html", "<footer><a href=\"#\">Syarat</a></footer>"), vec!["1:9"]);
+        for ok in [
+            "<a href=\"#\" onClick={open}>Promo</a>",
+            "<a href=\"#harga\">Harga</a>",
+            "<a href=\"/promo\">Promo</a>",
+            "<a {...props} href=\"#\">x</a>",
+            "<button onClick={() => setOpen(true)}>Buka</button>",
+            "<Link href=\"#\">x</Link>",
+        ] {
+            assert!(says("a.tsx", ok).is_empty(), "{ok}");
+        }
+        // a page with a script may give the link its handler
+        assert!(says("a.html", "<a href=\"#\" id=\"more\">Lagi</a><script>more.onclick = load</script>").is_empty());
+        assert!(says("a.html", "<a href=\"#\">x</a><script src=\"app.js\"></script>").is_empty());
+        // a directions preview shows what a call to action would look like; it is not one
+        assert!(says("directions.html", "<a class=\"btn\" href=\"#\">Jadwalkan demo</a>").is_empty());
+        assert!(says("out/run/directions.html", "<a class=\"btn\" href=\"#\">Download</a>").is_empty());
+    }
+
+    #[test]
+    fn a_number_field_opens_the_number_keyboard() {
+        let says = |path: &str, raw: &str| found(path, raw, "RX-FM-05", "the text keyboard");
+        assert_eq!(says("a.tsx", "<label>No. HP <input name=\"phone\" /></label>"), vec!["1:15"]);
+        assert_eq!(says("a.tsx", "<label>OTP <input type=\"text\" autoComplete=\"one-time-code\" /></label>"), vec!["1:12"]);
+        assert_eq!(says("a.html", "<label>Nominal <input id=\"nominal\" name=\"nominal\"></label>"), vec!["1:16"]);
+        assert_eq!(says("a.tsx", "<label>WA <input id=\"whatsappNumber\" /></label>"), vec!["1:11"]);
+        for ok in [
+            "<input type=\"tel\" name=\"phone\" />",
+            "<input inputMode=\"numeric\" name=\"otp\" />",
+            "<input type=\"number\" name=\"amount\" />",
+            "<input name=\"email\" />",
+            "<input name=\"phone\" {...rest} />",
+            // a word inside another word is not one
+            "<input name=\"telegram\" /><input name=\"description\" />",
+        ] {
+            assert!(says("a.tsx", ok).is_empty(), "{ok}");
+        }
+        assert!(says("a.html", "<input name=otp inputmode=numeric>").is_empty());
+    }
+
+    #[test]
+    fn an_invalid_field_is_tied_to_its_error() {
+        let says = |path: &str, raw: &str| found(path, raw, "RX-A11Y-07", "aria-invalid");
+        assert_eq!(says("a.tsx", "<label>Email\n  <input aria-invalid={!!error} />\n</label>"), vec!["2:3"]);
+        assert_eq!(says("a.html", "<label>E <input aria-invalid=\"true\"></label>"), vec!["1:10"]);
+        for ok in [
+            "<input aria-invalid={!!error} aria-describedby=\"email-error\" />",
+            "<input aria-invalid=\"true\" aria-errormessage=\"e\" />",
+            "<input aria-invalid=\"false\" />",
+            "<input aria-invalid={bad} {...field} />",
+        ] {
+            assert!(says("a.tsx", ok).is_empty(), "{ok}");
+        }
     }
 
     #[test]

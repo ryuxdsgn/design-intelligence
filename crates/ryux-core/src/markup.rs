@@ -39,6 +39,18 @@ pub struct Markup {
     /// The `src` of every `<script src>` an HTML page loads, as written: what it does at run time, such as closing a
     /// dialog on Esc or setting aria-busy, is in that file.
     pub scripts: Vec<String>,
+    /// The first field a person types into or picks from (input, select, textarea) with no label tied to it: not
+    /// inside a <label>, no label for its id, and no aria-label, aria-labelledby, or title. A placeholder is not a
+    /// label. An id or a label's for that is an expression may match, so such a field is left alone.
+    pub unlabeled: Option<usize>,
+    /// The first control that goes nowhere: a link to "#", "", or javascript: with no click handler, or a click
+    /// handler that is an empty function. In HTML, only on a page with no script, which may give it its handler.
+    pub dead: Option<usize>,
+    /// The first phone, OTP, or amount field (by its name, id, or autocomplete) that opens the text keyboard: type
+    /// text or none, and no inputmode.
+    pub keyboard: Option<usize>,
+    /// The first field marked aria-invalid (not "false") with no aria-describedby or aria-errormessage.
+    pub invalid: Option<usize>,
 }
 
 /// A re-export: the path, and the names as (imported, exported), or None for `export *`.
@@ -92,6 +104,30 @@ fn dialog_role(v: &str) -> bool {
 fn alert_role(v: &str) -> bool {
     let v = v.trim_start();
     v.starts_with("alertdialog") && !v["alertdialog".len()..].starts_with(|c: char| c.is_alphanumeric() || c == '_')
+}
+
+/// An input type a person types into or picks from; None (no type) is text.
+fn typed_field(kind: Option<&str>) -> bool {
+    !matches!(kind.map(|k| k.trim().to_ascii_lowercase()).as_deref(), Some("hidden" | "submit" | "button" | "reset" | "image"))
+}
+
+/// A name, id, or autocomplete value that names a phone number, a one-time code, or an amount.
+fn number_name(v: &str) -> bool {
+    let auto = v.trim().to_ascii_lowercase();
+    auto.starts_with("tel") && (auto.len() == 3 || auto[3..].starts_with('-')) || auto == "one-time-code"
+        || words(v).iter().any(|w| matches!(w.as_str(), "phone" | "tel" | "telepon" | "hp" | "handphone" | "whatsapp" | "otp" | "nominal" | "amount"))
+}
+
+/// A style that sets display to none: `display: none` in CSS, or `display: "none"` in a style object.
+fn no_display(style: &str) -> bool {
+    let s: String = style.chars().filter(|c| !c.is_whitespace() && *c != '"' && *c != '\'').collect::<String>().to_ascii_lowercase();
+    s.contains("display:none")
+}
+
+/// A link target that goes nowhere: "#", "", or javascript:.
+fn nowhere(href: &str) -> bool {
+    let h = href.trim();
+    h.is_empty() || h == "#" || h.to_ascii_lowercase().starts_with("javascript:")
 }
 
 /// `aria-hidden="true"` as the patterns read it: the value starts with "true".
@@ -179,7 +215,7 @@ mod jsx {
     use super::*;
     use oxc_allocator::Allocator;
     use oxc_ast::ast::{
-        AssignmentExpression, AssignmentTarget, Expression, ImportDeclaration, ImportDeclarationSpecifier, JSXAttributeItem, JSXAttributeValue, JSXChild, JSXElement,
+        ArrowFunctionBody, AssignmentExpression, AssignmentTarget, Expression, ImportDeclaration, ImportDeclarationSpecifier, JSXAttributeItem, JSXAttributeValue, JSXChild, JSXElement,
         JSXExpression, JSXFragment, JSXOpeningElement, StringLiteral, TemplateElement,
     };
     use std::collections::HashMap;
@@ -199,6 +235,12 @@ mod jsx {
         /// For each element being visited, innermost last: whether it is a scrim (a scrim class or id, or a click
         /// handler) and whether the sibling just before the current child was one (by class or id).
         around: Vec<(bool, bool)>,
+        /// How many <label> elements the visit is inside.
+        labels: usize,
+        /// Each label's htmlFor: the id, or None for an expression.
+        fors: Vec<Option<String>>,
+        /// Fields with no label of their own: offset, and the id (None: no id; Some(None): an expression).
+        fields: Vec<(usize, Option<Option<String>>)>,
     }
 
     #[derive(Default)]
@@ -389,8 +431,19 @@ mod jsx {
                 _ => {}
             }
             self.markup_checks(el, name, at, &a, parent || before);
+            self.field_checks(el, name, at, &a);
             self.around.push((named_scrim || CLICK.iter().any(|c| a.has(c)), false));
-            if name == "form" {
+            // a label's htmlFor, or a wrapper component's (<Field htmlFor="owner">) that renders the label
+            match a.get("htmlFor").or(if name == "label" { a.get("for") } else { None }) {
+                Some(Value::Str(f)) => self.fors.push(Some(f.clone())),
+                Some(_) => self.fors.push(None),
+                None => {}
+            }
+            if name == "label" {
+                self.labels += 1;
+                walk::walk_jsx_element(self, el);
+                self.labels -= 1;
+            } else if name == "form" {
                 let dialog_method = matches!(a.get("method"), Some(Value::Str(m)) if m.eq_ignore_ascii_case("dialog"));
                 self.forms.push(Form { dialog_method, ..Default::default() });
                 walk::walk_jsx_element(self, el);
@@ -443,6 +496,76 @@ mod jsx {
     }
 
     impl Reader<'_> {
+        /// The field and link checks' reading of one element.
+        fn field_checks(&mut self, el: &JSXElement, name: &str, at: usize, a: &Attrs) {
+            let s = |n: &str| match a.get(n) {
+                Some(Value::Str(v)) => Some(v.as_str()),
+                _ => None,
+            };
+            if a.spread {
+                return;
+            }
+            let field = matches!(name, "select" | "textarea") || (name == "input" && (!a.has("type") || s("type").is_some_and(|t| typed_field(Some(t)))));
+            // not on screen: hidden, display none, or aria-hidden with the keyboard kept out too (aria-hidden alone
+            // still lets Tab reach a field a screen reader cannot name)
+            let aria_hidden = matches!(a.get("aria-hidden"), Some(Value::Str(v)) if hidden(v)) || matches!(a.get("aria-hidden"), Some(Value::Bool(true)));
+            let keyboard_out = a.has("disabled") || matches!(a.get("tabIndex"), Some(Value::Num(n)) if *n < 0.0) || matches!(a.get("tabIndex"), Some(Value::Str(v)) if v.trim().starts_with('-'));
+            let display_none = el.opening_element.attributes.iter().any(|i| match i {
+                JSXAttributeItem::Attribute(at) => text(self.src, at.name.span()) == "style" && no_display(text(self.src, at.span)),
+                _ => false,
+            });
+            let shown = !a.has("hidden") && !(aria_hidden && keyboard_out) && !display_none;
+            if field && shown {
+                if self.labels == 0 && !a.has("aria-label") && !a.has("aria-labelledby") && !a.has("title") {
+                    let id = match a.get("id") {
+                        None => None,
+                        Some(Value::Str(v)) => Some(Some(v.clone())),
+                        Some(_) => Some(None),
+                    };
+                    self.fields.push((at, id));
+                }
+                let text_keyboard = name == "input" && (!a.has("type") || s("type").is_some_and(|t| t.trim().eq_ignore_ascii_case("text")));
+                if self.out.keyboard.is_none() && text_keyboard && !a.has("inputMode") && !a.has("inputmode")
+                    && ["name", "id", "autoComplete", "autocomplete"].iter().any(|n| s(n).is_some_and(number_name)) {
+                    self.out.keyboard = Some(at);
+                }
+                let invalid = match a.get("aria-invalid") {
+                    Some(Value::Str(v)) => v.trim() != "false",
+                    Some(Value::Bool(b)) => *b,
+                    Some(Value::Other) => true,
+                    _ => false,
+                };
+                if self.out.invalid.is_none() && invalid && !a.has("aria-describedby") && !a.has("aria-errormessage") {
+                    self.out.invalid = Some(at);
+                }
+            }
+            if self.out.dead.is_some() {
+                return;
+            }
+            let lower = name.starts_with(|c: char| c.is_ascii_lowercase());
+            let handler = CLICK.iter().any(|c| a.has(c));
+            if lower && name == "a" && !handler && s("href").is_some_and(nowhere) {
+                self.out.dead = Some(at);
+                return;
+            }
+            // onClick={() => {}} or onClick={function () {}}
+            for item in &el.opening_element.attributes {
+                let JSXAttributeItem::Attribute(attr) = item else { continue };
+                if text(self.src, attr.name.span()) != "onClick" {
+                    continue;
+                }
+                let Some(JSXAttributeValue::ExpressionContainer(c)) = &attr.value else { continue };
+                let empty = match &c.expression {
+                    JSXExpression::ArrowFunctionExpression(f) => matches!(&f.body, ArrowFunctionBody::FunctionBody(b) if b.statements.is_empty()),
+                    JSXExpression::FunctionExpression(f) => f.body.as_ref().is_some_and(|b| b.statements.is_empty()),
+                    _ => false,
+                };
+                if empty {
+                    self.out.dead = Some(at);
+                }
+            }
+        }
+
         /// The button, loading, and dialog checks' reading of one element.
         fn markup_checks(&mut self, el: &JSXElement, name: &str, at: usize, a: &Attrs, scrimmed: bool) {
             let src = self.src;
@@ -520,8 +643,13 @@ mod jsx {
         if ret.fatal_error {
             return None;
         }
-        let mut r = Reader { src: raw, out: Markup::default(), forms: Vec::new(), loaders: Vec::new(), imports: HashMap::new(), around: Vec::new() };
+        let mut r = Reader { src: raw, out: Markup::default(), forms: Vec::new(), loaders: Vec::new(), imports: HashMap::new(), around: Vec::new(), labels: 0, fors: Vec::new(), fields: Vec::new() };
         r.visit_program(&ret.program);
+        r.out.unlabeled = r.fields.iter().find(|(_, id)| match id {
+            None => true,
+            Some(None) => false,
+            Some(Some(id)) => !r.fors.iter().any(|f| f.as_ref().is_none_or(|f| f == id)),
+        }).map(|f| f.0);
         // a component imported from an icon set, or defined in this file, counts here; one from another module is
         // judged by its own markup there (loaders_from)
         let mut here = Vec::new();
@@ -923,6 +1051,8 @@ mod html {
             }
         }
 
+        let fors: std::collections::HashSet<String> = doc.tree.root().descendants().filter_map(|n| n.value().as_element().filter(|e| e.name() == "label").and_then(|e| e.attr("for")).map(|f| f.to_string())).collect();
+        let scripted = tags.iter().any(|t| t.name == "script");
         // The button, loading, and dialog checks. Text has no place of its own here: it is placed at its element.
         let mut loaders = Vec::new();
         for node in doc.tree.root().descendants() {
@@ -954,6 +1084,26 @@ mod html {
                 if out.alert.is_none() && !modal && !focus && el.attr("role").is_some_and(alert_role) {
                     out.alert = Some(at(t));
                 }
+            }
+            let field = matches!(el.name(), "select" | "textarea") || (el.name() == "input" && typed_field(el.attr("type")));
+            let keyboard_out = el.attr("disabled").is_some() || el.attr("tabindex").is_some_and(|v| v.trim().starts_with('-'));
+            let shown = el.attr("hidden").is_none() && !(el.attr("aria-hidden").is_some_and(hidden) && keyboard_out) && !el.attr("style").is_some_and(no_display);
+            if field && shown && !spread.test(&raw[t.start..t.end]) {
+                let in_label = node.ancestors().any(|p| p.value().as_element().is_some_and(|e| e.name() == "label"));
+                let named = ["aria-label", "aria-labelledby", "title"].iter().any(|n| el.attr(n).is_some());
+                if out.unlabeled.is_none() && !in_label && !named && !el.attr("id").is_some_and(|id| fors.contains(id)) {
+                    out.unlabeled = Some(at(t));
+                }
+                let text_keyboard = el.name() == "input" && el.attr("type").is_none_or(|k| k.trim().eq_ignore_ascii_case("text"));
+                if out.keyboard.is_none() && text_keyboard && el.attr("inputmode").is_none() && ["name", "id", "autocomplete"].iter().any(|n| el.attr(n).is_some_and(number_name)) {
+                    out.keyboard = Some(at(t));
+                }
+                if out.invalid.is_none() && el.attr("aria-invalid").is_some_and(|v| v.trim() != "false") && el.attr("aria-describedby").is_none() && el.attr("aria-errormessage").is_none() {
+                    out.invalid = Some(at(t));
+                }
+            }
+            if out.dead.is_none() && !scripted && el.name() == "a" && el.attr("href").is_some_and(nowhere) && !el.attrs().any(|a| CLICK.contains(&a.0)) {
+                out.dead = Some(at(t));
             }
             if el.name() != "form" {
                 continue;

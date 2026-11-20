@@ -634,7 +634,7 @@
    "sources": [
     {
      "path": "a.tsx",
-     "raw": "<input tabIndex={2} />"
+     "raw": "<input aria-label=\"Kode\" tabIndex={2} />"
     }
    ],
    "folder": false,
@@ -647,7 +647,7 @@
     "rule": "RX-A11Y-03",
     "file": "a.tsx",
     "line": 1,
-    "column": 8,
+    "column": 26,
     "message": "tabindex 2: keep focus order the same as the visual order; use 0 or the DOM order"
    }
   ]
@@ -657,7 +657,7 @@
    "sources": [
     {
      "path": "a.tsx",
-     "raw": "<input tabIndex={0} /><h2 tabIndex={-1}>x</h2>"
+     "raw": "<input aria-label=\"Kode\" tabIndex={0} /><h2 tabIndex={-1}>x</h2>"
     }
    ],
    "folder": false,
@@ -819,7 +819,7 @@
    "sources": [
     {
      "path": "Login.tsx",
-     "raw": "<form>\n  <input type=\"password\" />\n  <button onClick={toggle}>Show password</button>\n  <button>Sign in</button>\n</form>"
+     "raw": "<form>\n  <input type=\"password\" aria-label=\"Password\" />\n  <button onClick={toggle}>Show password</button>\n  <button>Sign in</button>\n</form>"
     }
    ],
    "folder": false,
@@ -1393,6 +1393,228 @@
     {
      "path": "a.astro",
      "raw": "<form><button @click=\"t\">Show</button><button>Go</button></form><div class=\"spinner\"></div><div role=\"dialog\">x</div>"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": []
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "Chat.tsx",
+     "raw": "<form>\n  <input id=\"msg\" placeholder=\"Tanya soal pengiriman…\" />\n  <button>Kirim</button>\n</form>"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": [
+   {
+    "level": "warn",
+    "rule": "RX-FM-01",
+    "file": "Chat.tsx",
+    "line": 2,
+    "column": 3,
+    "message": "a form field with no label tied to it (a placeholder or text beside it is not one): give it a <label> with htmlFor, or put it inside the <label>; where the context already names it, such as a lone search box, an aria-label"
+   }
+  ]
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.html",
+     "raw": "<textarea id=\"out\" readonly></textarea>"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": [
+   {
+    "level": "warn",
+    "rule": "RX-FM-01",
+    "file": "a.html",
+    "line": 1,
+    "column": 1,
+    "message": "a form field with no label tied to it (a placeholder or text beside it is not one): give it a <label> with htmlFor, or put it inside the <label>; where the context already names it, such as a lone search box, an aria-label"
+   }
+  ]
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.tsx",
+     "raw": "<Field label=\"Pemilik\" htmlFor=\"owner\"><input id=\"owner\" /></Field>"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": []
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.tsx",
+     "raw": "<label>Email <input name=\"email\" /></label>"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": []
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.tsx",
+     "raw": "<input type=\"file\" hidden /><input aria-hidden=\"true\" tabIndex={-1} />"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": []
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "Footer.tsx",
+     "raw": "<footer>\n  <a href=\"#\">Syarat</a>\n</footer>"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": [
+   {
+    "level": "warn",
+    "rule": "RX-IX-12",
+    "file": "Footer.tsx",
+    "line": 2,
+    "column": 3,
+    "message": "a control that goes nowhere (a link to \"#\" with no click handler, or an empty click handler): link it to a page or section that exists, give it the action it names, or remove it, or show it disabled with the reason, until that exists"
+   }
+  ]
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.tsx",
+     "raw": "<button onClick={() => {}}>Simpan</button>"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": [
+   {
+    "level": "warn",
+    "rule": "RX-IX-12",
+    "file": "a.tsx",
+    "line": 1,
+    "column": 1,
+    "message": "a control that goes nowhere (a link to \"#\" with no click handler, or an empty click handler): link it to a page or section that exists, give it the action it names, or remove it, or show it disabled with the reason, until that exists"
+   }
+  ]
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "directions.html",
+     "raw": "<a class=\"btn\" href=\"#\">Jadwalkan demo</a>"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": []
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.tsx",
+     "raw": "<label>No. HP <input name=\"phone\" /></label>"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": [
+   {
+    "level": "warn",
+    "rule": "RX-FM-05",
+    "file": "a.tsx",
+    "line": 1,
+    "column": 15,
+    "message": "a phone, OTP, or amount field that opens the text keyboard: use type=\"tel\" for a phone number, and inputMode=\"numeric\" for a one-time code or an amount"
+   }
+  ]
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.tsx",
+     "raw": "<label>No. HP <input type=\"tel\" name=\"phone\" /></label>"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": []
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.tsx",
+     "raw": "<label>Email <input aria-invalid={!!error} /></label>"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": [
+   {
+    "level": "warn",
+    "rule": "RX-A11Y-07",
+    "file": "a.tsx",
+    "line": 1,
+    "column": 14,
+    "message": "a field marked aria-invalid with no aria-describedby or aria-errormessage: point it at the error text's id, so a screen reader reads the error with the field"
+   }
+  ]
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.tsx",
+     "raw": "<label>Email <input aria-invalid={!!error} aria-describedby=\"email-error\" /></label>"
     }
    ],
    "folder": false,
@@ -2006,7 +2228,7 @@
    "sources": [
     {
      "path": "a.html",
-     "raw": "<textarea id=\"note\" rows=\"5\"></textarea>"
+     "raw": "<textarea id=\"note\" rows=\"5\" aria-label=\"Note\"></textarea>"
     }
    ],
    "folder": true,
@@ -2029,7 +2251,7 @@
    "sources": [
     {
      "path": "a.html",
-     "raw": "<textarea id=\"note\"></textarea>"
+     "raw": "<textarea id=\"note\" aria-label=\"Note\"></textarea>"
     },
     {
      "path": "b.css",
@@ -2061,7 +2283,7 @@
    "sources": [
     {
      "path": "a.html",
-     "raw": "<textarea></textarea>"
+     "raw": "<textarea aria-label=\"Note\"></textarea>"
     },
     {
      "path": "b.js",
@@ -2079,7 +2301,7 @@
    "sources": [
     {
      "path": "a.html",
-     "raw": "<textarea></textarea>"
+     "raw": "<textarea aria-label=\"Note\"></textarea>"
     }
    ],
    "folder": false,

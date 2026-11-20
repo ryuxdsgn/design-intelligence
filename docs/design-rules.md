@@ -660,6 +660,7 @@ Gate area UX. Covers before, during, result, recovery; feedback, confirmation, n
 - Do not: Ship navigation to sections that do not exist, buttons that do nothing, or forms that pretend to submit.
 - Why: A dead control breaks trust the moment someone tries it, and it hides what the product really does. (pattern also in anti-slop (MIT) R-24, R-26; written for RYUX)
 - Check: click every control in the render; review
+- Machine check: `ryux scan` flags in .jsx, .tsx, and .html: a link to "#", "", or javascript: with no click handler, or an empty click handler (onClick={() => {}}); not with spread props, not in a directions preview (directions.html), and in HTML only on a page with no script; once per file (warn)
 
 #### RX-IX-13 [Required] Each transition means one thing
 
@@ -723,6 +724,7 @@ Gate area UX. Covers labels, layout, validation, input preservation, autofill, s
 - Not when: a lone search field beside a labeled button, where context names it; still give it an accessible name
 - Trade-off: labels above fields make the form taller
 - Check: review
+- Machine check: `ryux scan` flags in .jsx, .tsx, and .html: a field (input, select, textarea; not type hidden, submit, button, reset, or image) on screen (not hidden, display none, or aria-hidden with tabindex -1 or disabled) with no label tied to it: not inside a <label>, and no <label> or wrapper component with htmlFor equal to its id, no aria-label, aria-labelledby, or title; a placeholder is not a label; not with spread props or an id the parser cannot read; once per file (warn)
 
 #### RX-FM-03 [Required] Validate near the field, keep the input
 
@@ -741,7 +743,7 @@ Gate area UX. Covers labels, layout, validation, input preservation, autofill, s
 - Not when: free-text fields where a restricted keyboard blocks valid input (names with punctuation)
 - Trade-off: inputmode varies across browsers; test on real devices
 - Check: review; ryux scan: a textarea with nothing that makes it grow (static), or one that hides 8 lines past its edge (rendered)
-- Machine check: `ryux scan` flags a textarea in a folder where nothing makes a textarea grow with its text (warn)
+- Machine check: `ryux scan` flags in .jsx, .tsx, and .html: a phone, OTP, or amount field by its name, id, or autocomplete (phone, tel, hp, whatsapp, otp, nominal, amount, one-time-code) with type text or none and no inputmode; once per file (warn); a textarea in a folder where nothing makes a textarea grow with its text (warn)
 - Measured: `ryux scan <url>` flags a shown textarea that, filled with 8 lines for a moment, keeps its height and hides the text past its edge (warn)
 
 #### RX-FM-06 [Required] Submission states
@@ -1688,6 +1690,7 @@ Gate area ACCESSIBILITY. Covers semantics, keyboard, focus, contrast, targets, n
 - Do not: Show errors only as red borders or as text that is not associated with the field, or leave focus on the page after a failed submit.
 - Why: An error the user cannot perceive cannot be fixed, and a keyboard or screen reader user who lost focus has to find the field again before trying. (WCAG 2.2 SC 3.3.1, 4.1.3, and 2.4.3; ryux editor, sign-in, 2026-11-13: the submit button, disabled while signing in, dropped focus to the page body after a wrong password (Playwright, phone emulation))
 - Check: submit once with a wrong value, keyboard only: the error is announced and focus lands on the field to fix, not the page body
+- Machine check: `ryux scan` flags in .jsx, .tsx, and .html: a field marked aria-invalid (not "false") with no aria-describedby or aria-errormessage; once per file (warn)
 
 #### RX-A11Y-08 [Required] Respect reduced motion
 
