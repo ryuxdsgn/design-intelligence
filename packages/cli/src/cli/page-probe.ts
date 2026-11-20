@@ -57,19 +57,37 @@ export async function probeExtract() {
   };
   const styles = [];
   const styleIndex = new Map();
+  // Chromium serializes lab(), oklch(), color(), and other CSS Color 4 values as written (Tailwind 4 uses them), and
+  // the checks read rgb(). Paint each one on a 1x1 canvas and read the pixel back as rgb() or rgba().
+  const paint = document.createElement("canvas").getContext("2d", { willReadFrequently: true });
+  const rgbCache = new Map();
+  const toRgb = (c) => {
+    if (!rgbCache.has(c)) {
+      paint.clearRect(0, 0, 1, 1);
+      paint.fillStyle = "#000";
+      paint.fillStyle = c;
+      paint.fillRect(0, 0, 1, 1);
+      const [r, g, b, a] = paint.getImageData(0, 0, 1, 1).data;
+      rgbCache.set(c, a === 255 ? `rgb(${r}, ${g}, ${b})` : a === 0 ? "rgba(0, 0, 0, 0)" : `rgba(${r}, ${g}, ${b}, ${Math.round((a / 255) * 1000) / 1000})`);
+    }
+    return rgbCache.get(c);
+  };
+  const MODERN = /\b(?:lab|lch|oklab|oklch|color|hwb|hsla?)\((?:[^()]|\([^()]*\))*\)/g;
+  const plain = (v) => (typeof v === "string" && v.includes("(") ? v.replace(MODERN, toRgb) : v);
   const styleOf = (el) => {
     const cs = getComputedStyle(el);
     const s = {};
     for (const k of ["display", "visibility", "opacity", "clip", "clipPath", "overflow", "overflowY", "position", "backgroundColor", "backgroundImage", "mixBlendMode", "filter", "fontStyle", "boxShadow", "textShadow"]) {
-      if (cs[k] !== DEFAULTS[k]) s[k] = cs[k];
+      const v = k === "backgroundColor" || k === "boxShadow" || k === "textShadow" ? plain(cs[k]) : cs[k];
+      if (v !== DEFAULTS[k]) s[k] = v;
     }
     const backdrop = cs.backdropFilter || cs.webkitBackdropFilter || "";
     if (backdrop !== DEFAULTS.backdropFilter) s.backdropFilter = backdrop;
     const n = { fontSize: Number.parseFloat(cs.fontSize), fontWeight: Number(cs.fontWeight), borderTopLeftRadius: Number.parseFloat(cs.borderTopLeftRadius), borderTopWidth: Number.parseFloat(cs.borderTopWidth) };
     for (const [k, v] of Object.entries(n)) if (!Object.is(v, DEFAULTS[k])) s[k] = v;
-    s.color = cs.color;
-    if (cs.webkitTextFillColor !== cs.color) s.textFill = cs.webkitTextFillColor;
-    if (cs.borderTopColor !== cs.color) s.borderTopColor = cs.borderTopColor;
+    s.color = plain(cs.color);
+    if (cs.webkitTextFillColor !== cs.color) s.textFill = plain(cs.webkitTextFillColor);
+    if (cs.borderTopColor !== cs.color) s.borderTopColor = plain(cs.borderTopColor);
     s.fontFamily = cs.fontFamily;
     const key = JSON.stringify(s);
     if (!styleIndex.has(key)) {
