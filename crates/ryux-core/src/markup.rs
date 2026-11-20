@@ -51,6 +51,15 @@ pub struct Markup {
     pub keyboard: Option<usize>,
     /// The first field marked aria-invalid (not "false") with no aria-describedby or aria-errormessage.
     pub invalid: Option<usize>,
+    /// The first radio button of a name shared by two or more, none of them inside a <fieldset> or a named
+    /// radiogroup or group, a named form, or a named landmark that holds no other field: each option has its
+    /// label, but nothing names the question. With it, how many such groups the file has.
+    pub ungrouped: Option<(usize, usize)>,
+    /// The first <a> with a click handler and no href or tabindex: Tab does not reach it.
+    pub anchor: Option<usize>,
+    /// The first field for the person's own data (email, phone, name, address, by its name, id, or type) with
+    /// autocomplete="off".
+    pub autofill_off: Option<usize>,
 }
 
 /// A re-export: the path, and the names as (imported, exported), or None for `export *`.
@@ -122,6 +131,37 @@ fn number_name(v: &str) -> bool {
 fn no_display(style: &str) -> bool {
     let s: String = style.chars().filter(|c| !c.is_whitespace() && *c != '"' && *c != '\'').collect::<String>().to_ascii_lowercase();
     s.contains("display:none")
+}
+
+/// A name, id, or type that names the person's own data the browser can fill: email, phone, name, or address.
+fn personal_name(v: &str) -> bool {
+    let w = words(v);
+    w.iter().any(|w| matches!(w.as_str(), "email" | "phone" | "tel" | "telepon" | "hp" | "whatsapp" | "nama" | "address" | "alamat" | "postal" | "zip" | "kodepos"))
+        || (w.iter().any(|w| w == "name") && w.iter().all(|w| matches!(w.as_str(), "name" | "full" | "first" | "last" | "given" | "family")))
+}
+
+/// Radio buttons that share a name with another and are all outside a group: the first one's offset, and how
+/// many names are like that.
+fn ungrouped_radios(radios: &[(usize, String, bool)]) -> Option<(usize, usize)> {
+    let bad: Vec<&(usize, String, bool)> = radios.iter().filter(|(_, n, _)| radios.iter().filter(|r| &r.1 == n).count() > 1 && !radios.iter().any(|r| &r.1 == n && r.2)).collect();
+    let names: std::collections::HashSet<&String> = bad.iter().map(|r| &r.1).collect();
+    bad.iter().map(|r| r.0).min().map(|at| (at, names.len()))
+}
+
+/// A landmark element or role, which a screen reader announces with its name when focus enters it.
+fn landmark(tag: &str, role: Option<&str>) -> bool {
+    matches!(tag, "aside" | "section" | "nav" | "main" | "header" | "footer")
+        || role.is_some_and(|r| matches!(r.trim(), "region" | "complementary" | "navigation" | "main" | "form" | "search"))
+}
+
+/// The fields a named landmark holds are all radio buttons of one name: then its name is that group's name.
+fn one_radio_group(fields: &[(bool, Option<String>)]) -> bool {
+    !fields.is_empty() && fields.iter().all(|f| f.0 && f.1.is_some() && f.1 == fields[0].1)
+}
+
+/// A field, form, or form handler named for someone else: an invite, a recipient, a member, a contact.
+fn someone_else(v: &str) -> bool {
+    words(v).iter().any(|w| matches!(w.as_str(), "invite" | "invitee" | "invitation" | "recipient" | "member" | "guest" | "contact" | "to" | "cc" | "friend" | "referral" | "referee"))
 }
 
 /// A link target that goes nowhere: "#", "", or javascript:.
@@ -241,10 +281,16 @@ mod jsx {
         fors: Vec<Option<String>>,
         /// Fields with no label of their own: offset, and the id (None: no id; Some(None): an expression).
         fields: Vec<(usize, Option<Option<String>>)>,
+        /// How many fieldsets or named groups the visit is inside.
+        groups: usize,
+        /// Radio buttons with a literal name: offset, name, and whether a group holds it.
+        radios: Vec<(usize, String, bool)>,
     }
 
     #[derive(Default)]
     struct Form {
+        /// Named for someone else (onSubmit={invite}, action="/invite"): its fields hold another person's details.
+        other: bool,
         dialog_method: bool,
         explicit_submit: bool,
         /// Typeless buttons: offset, and whether it has a click handler.
@@ -266,6 +312,33 @@ mod jsx {
         }
         fn visit_jsx_element(&mut self, _: &JSXElement<'a>) {}
         fn visit_jsx_fragment(&mut self, _: &JSXFragment<'a>) {}
+    }
+
+    /// The fields inside an element: whether each is a radio button, and its literal name.
+    struct Controls<'s> {
+        src: &'s str,
+        out: Vec<(bool, Option<String>)>,
+    }
+
+    impl<'a> Visit<'a> for Controls<'_> {
+        fn visit_jsx_element(&mut self, el: &JSXElement<'a>) {
+            let name = text(self.src, el.opening_element.name.span());
+            if matches!(name, "input" | "select" | "textarea") {
+                let a = attrs(self.src, &el.opening_element);
+                let kind = match a.get("type") {
+                    Some(Value::Str(t)) => Some(t.trim().to_ascii_lowercase()),
+                    _ => None,
+                };
+                if name != "input" || typed_field(kind.as_deref()) {
+                    let n = match a.get("name") {
+                        Some(Value::Str(v)) => Some(v.clone()),
+                        _ => None,
+                    };
+                    self.out.push((kind.as_deref() == Some("radio"), n));
+                }
+            }
+            walk::walk_jsx_element(self, el);
+        }
     }
 
     fn strings(src: &str, e: &JSXExpression) -> Vec<(usize, String)> {
@@ -439,19 +512,34 @@ mod jsx {
                 Some(_) => self.fors.push(None),
                 None => {}
             }
+            let named = a.has("aria-label") || a.has("aria-labelledby");
+            let role = match a.get("role") {
+                Some(Value::Str(r)) => Some(r.as_str()),
+                _ => None,
+            };
+            let group = name == "fieldset"
+                || (named && (role.is_some_and(|r| matches!(r.trim(), "radiogroup" | "group")) || name == "form"))
+                || (named && landmark(name, role) && {
+                    let mut c = Controls { src, out: Vec::new() };
+                    walk::walk_jsx_element(&mut c, el);
+                    one_radio_group(&c.out)
+                });
+            self.groups += usize::from(group);
             if name == "label" {
                 self.labels += 1;
                 walk::walk_jsx_element(self, el);
                 self.labels -= 1;
             } else if name == "form" {
                 let dialog_method = matches!(a.get("method"), Some(Value::Str(m)) if m.eq_ignore_ascii_case("dialog"));
-                self.forms.push(Form { dialog_method, ..Default::default() });
+                let other = open.attributes.iter().any(|i| matches!(i, JSXAttributeItem::Attribute(at) if someone_else(text(src, at.span))));
+                self.forms.push(Form { dialog_method, other, ..Default::default() });
                 walk::walk_jsx_element(self, el);
                 let f = self.forms.pop().unwrap();
                 self.out.untyped.extend(untyped_in_form(f.dialog_method, f.explicit_submit, &f.buttons));
             } else {
                 walk::walk_jsx_element(self, el);
             }
+            self.groups -= usize::from(group);
             self.around.pop();
             if let Some(top) = self.around.last_mut() {
                 top.1 = named_scrim;
@@ -506,6 +594,19 @@ mod jsx {
                 return;
             }
             let field = matches!(name, "select" | "textarea") || (name == "input" && (!a.has("type") || s("type").is_some_and(|t| typed_field(Some(t)))));
+            if name == "input" && s("type").is_some_and(|t| t.trim().eq_ignore_ascii_case("radio")) {
+                if let Some(n) = s("name") {
+                    self.radios.push((at, n.to_string(), self.groups > 0));
+                }
+            }
+            if self.out.anchor.is_none() && name == "a" && CLICK.iter().any(|c| a.has(c)) && !a.has("href") && !a.has("tabIndex") {
+                self.out.anchor = Some(at);
+            }
+            let others = self.forms.iter().any(|f| f.other) || ["name", "id", "placeholder"].iter().any(|n| s(n).is_some_and(someone_else));
+            if self.out.autofill_off.is_none() && field && !others && s("autoComplete").or(s("autocomplete")).is_some_and(|v| v.trim().eq_ignore_ascii_case("off"))
+                && ["name", "id", "type"].iter().any(|n| s(n).is_some_and(personal_name)) {
+                self.out.autofill_off = Some(at);
+            }
             // not on screen: hidden, display none, or aria-hidden with the keyboard kept out too (aria-hidden alone
             // still lets Tab reach a field a screen reader cannot name)
             let aria_hidden = matches!(a.get("aria-hidden"), Some(Value::Str(v)) if hidden(v)) || matches!(a.get("aria-hidden"), Some(Value::Bool(true)));
@@ -643,13 +744,14 @@ mod jsx {
         if ret.fatal_error {
             return None;
         }
-        let mut r = Reader { src: raw, out: Markup::default(), forms: Vec::new(), loaders: Vec::new(), imports: HashMap::new(), around: Vec::new(), labels: 0, fors: Vec::new(), fields: Vec::new() };
+        let mut r = Reader { src: raw, out: Markup::default(), forms: Vec::new(), loaders: Vec::new(), imports: HashMap::new(), around: Vec::new(), labels: 0, fors: Vec::new(), fields: Vec::new(), groups: 0, radios: Vec::new() };
         r.visit_program(&ret.program);
         r.out.unlabeled = r.fields.iter().find(|(_, id)| match id {
             None => true,
             Some(None) => false,
             Some(Some(id)) => !r.fors.iter().any(|f| f.as_ref().is_none_or(|f| f == id)),
         }).map(|f| f.0);
+        r.out.ungrouped = ungrouped_radios(&r.radios);
         // a component imported from an icon set, or defined in this file, counts here; one from another module is
         // judged by its own markup there (loaders_from)
         let mut here = Vec::new();
@@ -1053,6 +1155,7 @@ mod html {
 
         let fors: std::collections::HashSet<String> = doc.tree.root().descendants().filter_map(|n| n.value().as_element().filter(|e| e.name() == "label").and_then(|e| e.attr("for")).map(|f| f.to_string())).collect();
         let scripted = tags.iter().any(|t| t.name == "script");
+        let mut radios: Vec<(usize, String, bool)> = Vec::new();
         // The button, loading, and dialog checks. Text has no place of its own here: it is placed at its element.
         let mut loaders = Vec::new();
         for node in doc.tree.root().descendants() {
@@ -1102,6 +1205,28 @@ mod html {
                     out.invalid = Some(at(t));
                 }
             }
+            if el.name() == "input" && el.attr("type").is_some_and(|t| t.trim().eq_ignore_ascii_case("radio")) {
+                if let Some(n) = el.attr("name") {
+                    let grouped = node.ancestors().any(|p| p.value().as_element().is_some_and(|e| {
+                        let named = e.attr("aria-label").is_some() || e.attr("aria-labelledby").is_some();
+                        e.name() == "fieldset"
+                            || (named && (e.attr("role").is_some_and(|r| matches!(r.trim(), "radiogroup" | "group")) || e.name() == "form"))
+                            || (named && landmark(e.name(), e.attr("role")) && {
+                                let fields: Vec<(bool, Option<String>)> = p.descendants().filter_map(|d| d.value().as_element().filter(|x| matches!(x.name(), "input" | "select" | "textarea") && (x.name() != "input" || typed_field(x.attr("type")))).map(|x| (x.attr("type").is_some_and(|t| t.trim().eq_ignore_ascii_case("radio")), x.attr("name").map(|n| n.to_string())))).collect();
+                                one_radio_group(&fields)
+                            })
+                    }));
+                    radios.push((at(t), n.to_string(), grouped));
+                }
+            }
+            if out.anchor.is_none() && el.name() == "a" && el.attrs().any(|a| CLICK.contains(&a.0)) && el.attr("href").is_none() && el.attr("tabindex").is_none() {
+                out.anchor = Some(at(t));
+            }
+            let others = ["name", "id", "placeholder"].iter().any(|n| el.attr(n).is_some_and(someone_else))
+                || node.ancestors().any(|p| p.value().as_element().is_some_and(|e| e.name() == "form" && e.attrs().any(|a| someone_else(a.1))));
+            if out.autofill_off.is_none() && field && !others && el.attr("autocomplete").is_some_and(|v| v.trim().eq_ignore_ascii_case("off")) && ["name", "id", "type"].iter().any(|n| el.attr(n).is_some_and(personal_name)) {
+                out.autofill_off = Some(at(t));
+            }
             if out.dead.is_none() && !scripted && el.name() == "a" && el.attr("href").is_some_and(nowhere) && !el.attrs().any(|a| CLICK.contains(&a.0)) {
                 out.dead = Some(at(t));
             }
@@ -1131,6 +1256,7 @@ mod html {
             out.untyped.extend(untyped_in_form(dialog_method, explicit_submit, &buttons));
         }
         out.loading = loaders.into_iter().min();
+        out.ungrouped = ungrouped_radios(&radios);
         out
     }
 

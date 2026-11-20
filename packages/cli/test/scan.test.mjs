@@ -207,6 +207,29 @@ test("field and control checks the owner rated on 2026-11-20: a field with no la
   assert.deepEqual(scan("a.tsx", '<label>Email <input aria-invalid={!!error} aria-describedby="email-error" /></label>'), []);
 });
 
+test("group, link, and autofill checks the owner rated on 2026-11-20: radios with no question, a link Tab skips, autofill turned off", () => {
+  const at = (findings) => findings.map((f) => `${f.level} ${f.rule} ${f.line}:${f.column}`);
+  // each option has a label, but nothing names the question; one line per file, with the count
+  const pay = scan("Pay.html", '<section>\n  <h2>Metode bayar</h2>\n  <label><input type="radio" name="pay"> QRIS</label>\n  <label><input type="radio" name="pay"> VA</label>\n</section>');
+  assert.deepEqual(at(pay), ["warn RX-A11Y-04 3:10"]);
+  assert.match(pay[0].message, /^radio buttons for one question with nothing naming the question/);
+  const two = scan("a.tsx", '<><label><input type="radio" name="a" />1</label><label><input type="radio" name="a" />2</label><label><input type="radio" name="b" />1</label><label><input type="radio" name="b" />2</label></>');
+  assert.match(two[0].message, /^2 groups of radio buttons, each for one question,/);
+  for (const raw of [
+    '<fieldset><legend>Metode bayar</legend><label><input type="radio" name="pay" /> QRIS</label><label><input type="radio" name="pay" /> VA</label></fieldset>',
+    '<aside aria-label="Status demo"><form><label><input type="radio" name="st" /> Normal</label><label><input type="radio" name="st" /> Offline</label></form></aside>',
+  ]) assert.deepEqual(scan("a.tsx", raw), [], raw);
+  // a link with a click handler and no href
+  const link = scan("Nav.tsx", "<nav>\n  <a onClick={logout}>Keluar</a>\n</nav>");
+  assert.deepEqual(at(link), ["warn RX-A11Y-04 2:3"]);
+  assert.match(link[0].message, /a link with a click handler and no href: Tab does not reach it/);
+  // autofill off on the person's own email, not on an invite
+  const own = scan("a.tsx", '<label>Email <input type="email" name="email" autoComplete="off" /></label>');
+  assert.deepEqual(at(own), ["warn RX-FM-05 1:14"]);
+  assert.match(own[0].message, /autocomplete="off" on a field for the person's own email/);
+  assert.deepEqual(scan("a.tsx", '<form onSubmit={invite}><label>Email <input type="email" name="email" autoComplete="off" /></label></form>'), []);
+});
+
 test("focus outlines: flagged on controls, not on focus targets or with a replacement", () => {
   assert.deepEqual(rules(scan("a.tsx", '<button className="outline-none">Simpan</button>')), ["warn RX-A11Y-03"]);
   assert.deepEqual(scan("a.tsx", '<button className="outline-none focus-visible:ring-2">x</button><h2 tabIndex={-1} className="outline-none">x</h2><div className="outline-none">x</div>'), []);

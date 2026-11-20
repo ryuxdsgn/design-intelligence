@@ -1627,6 +1627,140 @@
   "input": {
    "sources": [
     {
+     "path": "Pay.html",
+     "raw": "<section>\n  <h2>Metode bayar</h2>\n  <label><input type=\"radio\" name=\"pay\"> QRIS</label>\n  <label><input type=\"radio\" name=\"pay\"> VA</label>\n</section>"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": [
+   {
+    "level": "warn",
+    "rule": "RX-A11Y-04",
+    "file": "Pay.html",
+    "line": 3,
+    "column": 10,
+    "message": "radio buttons for one question with nothing naming the question: each option is read with its own label, but not what it answers; put them in a <fieldset> with a <legend>, or a role=\"radiogroup\" or \"group\" with aria-labelledby"
+   }
+  ]
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.tsx",
+     "raw": "<><label><input type=\"radio\" name=\"a\" />1</label><label><input type=\"radio\" name=\"a\" />2</label><label><input type=\"radio\" name=\"b\" />1</label><label><input type=\"radio\" name=\"b\" />2</label></>"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": [
+   {
+    "level": "warn",
+    "rule": "RX-A11Y-04",
+    "file": "a.tsx",
+    "line": 1,
+    "column": 10,
+    "message": "2 groups of radio buttons, each for one question, with nothing naming the question: each option is read with its own label, but not what it answers; put them in a <fieldset> with a <legend>, or a role=\"radiogroup\" or \"group\" with aria-labelledby"
+   }
+  ]
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.tsx",
+     "raw": "<fieldset><legend>Metode bayar</legend><label><input type=\"radio\" name=\"pay\" /> QRIS</label><label><input type=\"radio\" name=\"pay\" /> VA</label></fieldset>"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": []
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.tsx",
+     "raw": "<aside aria-label=\"Status demo\"><form><label><input type=\"radio\" name=\"st\" /> Normal</label><label><input type=\"radio\" name=\"st\" /> Offline</label></form></aside>"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": []
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "Nav.tsx",
+     "raw": "<nav>\n  <a onClick={logout}>Keluar</a>\n</nav>"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": [
+   {
+    "level": "warn",
+    "rule": "RX-A11Y-04",
+    "file": "Nav.tsx",
+    "line": 2,
+    "column": 3,
+    "message": "a link with a click handler and no href: Tab does not reach it and Enter does not run it; use a <button> for an action, or give it the href it goes to"
+   }
+  ]
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.tsx",
+     "raw": "<label>Email <input type=\"email\" name=\"email\" autoComplete=\"off\" /></label>"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": [
+   {
+    "level": "warn",
+    "rule": "RX-FM-05",
+    "file": "a.tsx",
+    "line": 1,
+    "column": 14,
+    "message": "autocomplete=\"off\" on a field for the person's own email, phone, name, or address: it stops the browser filling it; use the matching autocomplete value (email, tel, name, street-address)"
+   }
+  ]
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.tsx",
+     "raw": "<form onSubmit={invite}><label>Email <input type=\"email\" name=\"email\" autoComplete=\"off\" /></label></form>"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": []
+ },
+ {
+  "input": {
+   "sources": [
+    {
      "path": "a.tsx",
      "raw": "<button className=\"outline-none\">Simpan</button>"
     }
