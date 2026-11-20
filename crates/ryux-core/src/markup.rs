@@ -34,6 +34,8 @@ pub struct Markup {
     /// it or just before it. An alertdialog with neither is an inline confirmation, not modal. A panel with none of these is not modal, and a native `<dialog>` is
     /// modal only through showModal(), which gives Esc and the inert page itself.
     pub dialog: Option<usize>,
+    /// The first inline confirmation: an alertdialog that is not modal, with no autofocus on it or inside it.
+    pub alert: Option<usize>,
     /// The `src` of every `<script src>` an HTML page loads, as written: what it does at run time, such as closing a
     /// dialog on Esc or setting aria-busy, is in that file.
     pub scripts: Vec<String>,
@@ -84,6 +86,12 @@ const RUNTIME: [&str; 6] = ["id", "data-bind", "data-text", "data-i18n", "x-text
 fn dialog_role(v: &str) -> bool {
     let v = v.trim_start();
     ["alertdialog", "dialog"].iter().any(|r| v.starts_with(r) && !v[r.len()..].starts_with(|c: char| c.is_alphanumeric() || c == '_'))
+}
+
+/// `role="alertdialog"`: a confirmation that asks before an action.
+fn alert_role(v: &str) -> bool {
+    let v = v.trim_start();
+    v.starts_with("alertdialog") && !v["alertdialog".len()..].starts_with(|c: char| c.is_alphanumeric() || c == '_')
 }
 
 /// `aria-hidden="true"` as the patterns read it: the value starts with "true".
@@ -450,16 +458,18 @@ mod jsx {
                     f.buttons.push((at, a.has("onClick")));
                 }
             }
-            if self.out.dialog.is_none() && lower && matches!(a.get("role"), Some(Value::Str(r)) if dialog_role(r)) {
-                let modal = match a.get("aria-modal") {
-                    Some(Value::Str(v)) => modal_value(v),
-                    Some(Value::Bool(b)) => *b,
-                    Some(Value::Other) => true,
-                    _ => false,
-                };
-                if modal || scrimmed {
-                    self.out.dialog = Some(at);
-                }
+            let modal = match a.get("aria-modal") {
+                Some(Value::Str(v)) => modal_value(v),
+                Some(Value::Bool(b)) => *b,
+                Some(Value::Other) => true,
+                _ => false,
+            };
+            if self.out.dialog.is_none() && lower && (modal || scrimmed) && matches!(a.get("role"), Some(Value::Str(r)) if dialog_role(r)) {
+                self.out.dialog = Some(at);
+            }
+            // its own markup, nested elements included: an autoFocus there moves focus in when it opens
+            if self.out.alert.is_none() && lower && !modal && !scrimmed && matches!(a.get("role"), Some(Value::Str(r)) if alert_role(r)) && !text(src, el.span).contains("autoFocus") {
+                self.out.alert = Some(at);
             }
             // a loading class (className="spinner", cn("skeleton", x)), a component (<Spinner />), or a web component
             for item in &el.opening_element.attributes {
@@ -931,12 +941,18 @@ mod html {
             if el.attr("class").is_some_and(loader_name) || (el.name().contains('-') && loader_name(el.name())) {
                 loaders.push(at(t));
             }
-            if out.dialog.is_none() && el.attr("role").is_some_and(dialog_role) {
+            if el.attr("role").is_some_and(dialog_role) {
                 let named = |e: &scraper::node::Element| ["class", "id"].iter().any(|n| e.attr(n).is_some_and(scrim_name));
                 let parent = node.parent().and_then(|p| p.value().as_element().map(|e| named(e) || e.attrs().any(|a| CLICK.contains(&a.0)))).unwrap_or(false);
                 let before = node.prev_siblings().find_map(|p| p.value().as_element().map(named)).unwrap_or(false);
-                if el.attr("aria-modal").is_some_and(modal_value) || parent || before {
+                let modal = el.attr("aria-modal").is_some_and(modal_value) || parent || before;
+                if out.dialog.is_none() && modal {
                     out.dialog = Some(at(t));
+                }
+                // an inline confirmation: an autofocus on it or inside it moves focus in when it opens
+                let focus = node.descendants().any(|d| d.value().as_element().is_some_and(|e| e.attr("autofocus").is_some()));
+                if out.alert.is_none() && !modal && !focus && el.attr("role").is_some_and(alert_role) {
+                    out.alert = Some(at(t));
                 }
             }
             if el.name() != "form" {
