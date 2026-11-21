@@ -6,7 +6,7 @@
 //! kept where the first, JavaScript version relied on them.
 
 use crate::audit::{contrast, luminance, max_js, min_js, over, Rgb};
-use crate::js::{len16, num, num_str, round, slice16, to_fixed};
+use crate::js::{len16, num, num_str, round, slice16};
 use crate::jsre::{js, JsRe};
 use serde_json::{json, Map, Value};
 use std::collections::{HashMap, HashSet};
@@ -111,7 +111,6 @@ struct Res {
     inset: JsRe,
     scrolls: JsRe,
     pinned: JsRe,
-    words: JsRe,
     status: JsRe,
     letters: JsRe,
     mono: JsRe,
@@ -134,7 +133,6 @@ impl Res {
             scrolls: js(r"(auto|scroll)", ""),
             pinned: js(r"^(fixed|sticky)$", ""),
             amount: regex::Regex::new(r"(?:Rp|IDR|US\$|\$|€|£|¥|₹)\s?\d").unwrap(),
-            words: js(r"[\p{L}\p{N}][\p{L}\p{N}.,:]*", "gu"),
             status: js(r"\b(beta|new|baru|v\d|\d{4}|live|soon|segera|preview)\b", "i"),
             letters: js(r"\p{L}{2}", "u"),
             mono: js(r"mono|courier|consolas|menlo", "i"),
@@ -800,7 +798,7 @@ impl<'a> Page<'a> {
         for (_, g) in &groups {
             let t = texts[g.t];
             let more = if g.count > 1 { format!("; {} more with the same colors", g.count - 1) } else { String::new() };
-            out.push(finding("RX-A11Y-01", "fail", self.selector(t.e), format!("{}: contrast {}:1 ({} on {}), needs {}:1{more}", quote(t.x), to_fixed((g.ratio * 100.0).floor() / 100.0, 2), hex(g.fg), hex(g.bg), num_str(g.need))));
+            out.push(finding("RX-A11Y-01", "fail", self.selector(t.e), format!("{}: contrast {}:1 ({} on {}), needs {}:1{more}", quote(t.x), crate::audit::ratio_text(g.ratio, g.need), hex(g.fg), hex(g.bg), num_str(g.need))));
         }
         for (size, k, count) in &small {
             let t = texts[*k];

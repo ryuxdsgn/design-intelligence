@@ -206,6 +206,11 @@ fn ratio(a: Rgb, b: Rgb) -> f64 {
     contrast(luminance(a, 0.03928), luminance(b, 0.03928))
 }
 /// `top` with opacity `a` over `under`.
+/// A failing ratio to two places, cut rather than rounded when rounding would reach the need (4.495 is "4.49", not "4.50").
+pub(crate) fn ratio_text(r: f64, need: f64) -> String {
+    let shown = to_fixed(r, 2);
+    if shown.parse::<f64>().is_ok_and(|v| v >= need) { to_fixed((r * 100.0).floor() / 100.0, 2) } else { shown }
+}
 pub(crate) fn over(top: Rgb, a: f64, under: Rgb) -> Rgb {
     Rgb { r: top.r * a + under.r * (1.0 - a), g: top.g * a + under.g * (1.0 - a), b: top.b * a + under.b * (1.0 - a) }
 }
@@ -448,7 +453,7 @@ pub fn audit(input: &Value) -> Value {
             let need = if large { 3.0 } else { 4.5 };
             if rt < need {
                 o.inc("contrastFails", 1);
-                o.add("RX-A11Y-01", "fail", &fname, &t.name(n), format!("\"{}\" {}:1, needs {}:1", short(&t.chars(n), 40), to_fixed((rt * 100.0).floor() / 100.0, 2), num_str(need)));
+                o.add("RX-A11Y-01", "fail", &fname, &t.name(n), format!("\"{}\" {}:1, needs {}:1", short(&t.chars(n), 40), ratio_text(rt, need), num_str(need)));
             }
         }
 

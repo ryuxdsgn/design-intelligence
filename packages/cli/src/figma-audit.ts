@@ -133,7 +133,7 @@ export async function figmaAudit(figma, pageName) {
       const style = MIXED(t.fontName) ? "" : t.fontName.style;
       const large = t.fontSize >= 24 || (t.fontSize >= 18.66 && /bold|black|heavy|semi/i.test(style));
       const r = ratio(fg, bg), need = large ? 3 : 4.5;
-      if (r < need) { c.contrastFails++; add("RX-A11Y-01", "fail", frame, t, `"${short(t.characters)}" ${(Math.floor(r * 100) / 100).toFixed(2)}:1, needs ${need}:1`); }
+      if (r < need) { c.contrastFails++; add("RX-A11Y-01", "fail", frame, t, `"${short(t.characters)}" ${Number(r.toFixed(2)) >= need ? (Math.floor(r * 100) / 100).toFixed(2) : r.toFixed(2)}:1, needs ${need}:1`); }
     }
 
     // Text cut by an opaque bar painted above it, and text partly outside a clipping container.
