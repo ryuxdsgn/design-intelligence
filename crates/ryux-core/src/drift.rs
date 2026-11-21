@@ -44,7 +44,8 @@ struct Res {
     weight_tail: JsRe,
     comma_end: JsRe,
     upper: JsRe,
-    number: JsRe,
+    item: JsRe,
+    measure: JsRe,
     section: JsRe,
     next: JsRe,
     direction: JsRe,
@@ -85,7 +86,8 @@ fn res() -> &'static Res {
         weight_tail: js(r"[,/].*$", ""),
         comma_end: js(r",$", ""),
         upper: js(r"^[A-Z]", ""),
-        number: js(r"\d+(?:\.\d+)?", "g"),
+        item: js(r"^\s*-\s*(.+)$", ""),
+        measure: js(r"(\d+(?:\.\d+)?)\s*(px|rem|em|ms|s)?\b", "gi"),
         section: js(r"^## Visual and motion language\b", "m"),
         next: js(r"^## ", "m"),
         direction: js(r"^\s*direction:\s*$", "m"),
@@ -147,10 +149,6 @@ fn family(value: &str) -> Option<String> {
     }
     let name = words.join(" ");
     if r.upper.test(&name) { Some(name) } else { None }
-}
-
-fn numbers(s: &str) -> Vec<f64> {
-    res().number.matches(s).iter().map(|n| n.parse::<f64>().unwrap()).collect()
 }
 
 /// `s.search(re)` as a byte offset, or None.
@@ -245,12 +243,22 @@ pub fn read_direction(md: &str) -> Option<Direction> {
         unread.push("type (no family names under type:)".into());
     }
 
-    let radius = lines.iter().find(|l| r.radius_line.test(l)).map(|l| numbers(&r.radius_line.replace(l, "")));
+    // a key's values: on its line ([8, 12] or 8, 12), or a YAML list under it (- 8), each in its unit
+    let listed = |key: &JsRe, unit: &dyn Fn(f64, &str) -> f64| -> Option<Vec<f64>> {
+        let at = lines.iter().position(|l| key.test(l))?;
+        let rest = key.replace(&lines[at], "");
+        let block = trim(&rest).is_empty();
+        let text = if block { under(&lines, at).iter().filter_map(|l| r.item.exec(l).map(|m| m.g(1).to_string())).collect::<Vec<_>>().join(", ") } else { rest };
+        let v: Vec<f64> = r.measure.match_all(&text).iter().map(|h| unit(h.g(1).parse::<f64>().unwrap(), &h.g(2).to_ascii_lowercase())).collect();
+        // `radius: []` says there are none; a key with nothing on it or under it says nothing
+        if block && v.is_empty() { None } else { Some(v) }
+    };
+    let radius = listed(&r.radius_line, &|v, u| if u == "rem" || u == "em" { v * 16.0 } else { v });
     if radius.is_none() {
         unread.push("shape.radius (add radius: [..] in px to check it)".into());
     }
 
-    let mut durations = lines.iter().find(|l| r.dur_line.test(l)).map(|l| numbers(&r.dur_line.replace(l, "")));
+    let mut durations = listed(&r.dur_line, &|v, u| if u == "s" { round(v * 1000.0) } else { v });
     if durations.is_none() {
         let text = match key("motion", false) {
             Some(at) => std::iter::once(lines[at].clone()).chain(under(&lines, at)).collect::<Vec<_>>().join(" "),
@@ -403,4 +411,31 @@ pub fn unused_tokens(texts: &[String], dir: &Direction) -> Value {
         "colours": dir.colours.iter().filter(|c| !used.contains(c)).collect::<Vec<_>>(),
         "fonts": dir.fonts.iter().filter(|f| !flat.contains(&norm_font(f))).collect::<Vec<_>>(),
     })
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn dir(body: &str) -> Direction {
+        read_direction(&format!("# X\n\n## Visual and motion language\n\n```yaml\ndirection:\n  colour:\n    primary: \"#0f766e\"\n  type:\n    families: [Inter]\n{body}```\n")).unwrap()
+    }
+
+    #[test]
+    fn a_yaml_list_under_its_key_is_read() {
+        let d = dir("  shape:\n    radius:\n      - 8\n      - 12\n  motion:\n    durations:\n      - 150\n      - 240ms\n");
+        assert_eq!(d.radius, Some(vec![8.0, 12.0]));
+        assert_eq!(d.durations, Some(vec![150.0, 240.0]));
+        assert!(drift_radius(".a{border-radius: 8px}", &d).is_empty());
+        assert!(drift_durations(".a{transition: opacity 150ms}", &d).is_empty());
+    }
+
+    #[test]
+    fn rem_and_seconds_in_design_md_are_read_as_px_and_ms() {
+        let d = dir("  shape:\n    radius: [0.5rem, 12px, 1rem]\n  motion:\n    durations: [0.15s, 240ms]\n");
+        assert_eq!(d.radius, Some(vec![8.0, 12.0, 16.0]));
+        assert_eq!(d.durations, Some(vec![150.0, 240.0]));
+        assert!(drift_durations(".a{transition: opacity 0.15s}", &d).is_empty());
+        assert_eq!(drift_radius(".a{border-radius: 10px}", &d).len(), 1);
+    }
 }
