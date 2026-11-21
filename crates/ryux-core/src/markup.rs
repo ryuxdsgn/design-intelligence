@@ -280,6 +280,7 @@ mod jsx {
     use super::*;
     use oxc_allocator::Allocator;
     use oxc_ast::ast::{
+        CallExpression,
         ArrowFunctionBody, AssignmentExpression, AssignmentTarget, Expression, ImportDeclaration, ImportDeclarationSpecifier, JSXAttributeItem, JSXAttributeValue, JSXChild, JSXElement,
         JSXExpression, JSXExpressionContainer, JSXFragment, JSXOpeningElement, StringLiteral, TemplateElement,
     };
@@ -505,8 +506,11 @@ mod jsx {
                 JSXChild::Fragment(f) => inside(src, &f.children, into),
                 JSXChild::Element(e) => {
                     let name = text(src, e.opening_element.name.span());
-                    into.icon |= name == "svg" || name == "i" || name.starts_with(|c: char| c.is_ascii_uppercase());
                     let a = attrs(src, &e.opening_element);
+                    // a component that takes a message (<FormattedMessage id>, <Trans i18nKey>) renders text
+                    let says = name.starts_with(|c: char| c.is_ascii_uppercase()) && ["id", "message", "defaultMessage", "i18nKey", "text", "label"].iter().any(|k| a.has(k));
+                    into.words |= says;
+                    into.icon |= !says && (name == "svg" || name == "i" || name.starts_with(|c: char| c.is_ascii_uppercase()));
                     into.named |= a.has("aria-label")
                         || match a.get("alt") {
                             Some(Value::Str(s)) => !s.is_empty(),
@@ -541,7 +545,7 @@ mod jsx {
             }
             match name {
                 "img" if !a.has("alt") && !a.spread => self.out.img.push(at),
-                "div" | "span" if CLICK.iter().any(|c| a.has(c)) && !a.has("role") && !scrim(src, &el.children) => self.out.click.push((at, name.to_string())),
+                "div" | "span" if CLICK.iter().any(|c| a.has(c)) && !a.has("role") && !a.spread && !scrim(src, &el.children) => self.out.click.push((at, name.to_string())),
                 "button" if !(a.has("aria-label") || a.has("aria-labelledby") || a.has("title") || a.spread) => {
                     let mut i = Inside::default();
                     inside(src, &el.children, &mut i);
@@ -574,7 +578,8 @@ mod jsx {
                     one_group(&c.out)
                 });
             self.groups += usize::from(group);
-            if name == "label" {
+            // <label>, or a kit's label component that renders one (<Label>, <Form.Label>)
+            if name == "label" || name.rsplit('.').next().is_some_and(|n| n.ends_with("Label") && n.starts_with(|c: char| c.is_ascii_uppercase())) {
                 self.labels += 1;
                 walk::walk_jsx_element(self, el);
                 self.labels -= 1;
@@ -593,6 +598,16 @@ mod jsx {
             if let Some(top) = self.around.last_mut() {
                 top.1 = named_scrim;
             }
+        }
+
+        // what a call is given (items.map(i => <input />)) may be rendered many times
+        fn visit_call_expression(&mut self, c: &CallExpression<'a>) {
+            self.visit_expression(&c.callee);
+            self.exprs += 1;
+            for arg in c.arguments.iter() {
+                self.visit_argument(arg);
+            }
+            self.exprs -= 1;
         }
 
         fn visit_jsx_expression_container(&mut self, c: &JSXExpressionContainer<'a>) {
@@ -658,7 +673,7 @@ mod jsx {
                 if let Some(n) = s("name") {
                     let entry = (at, n.to_string(), self.groups > 0);
                     if kind.as_deref() == Some("radio") {
-                        if self.exprs > 0 {
+                        if self.exprs > 0 || matches!(a.get("value"), Some(Value::Other)) {
                             self.repeated.insert(n.to_string());
                         }
                         self.radios.push(entry);
@@ -707,7 +722,7 @@ mod jsx {
                     self.out.keyboard = Some(at);
                 }
                 let invalid = match a.get("aria-invalid") {
-                    Some(Value::Str(v)) => v.trim() != "false",
+                    Some(Value::Str(v)) => !matches!(v.trim(), "false" | ""),
                     Some(Value::Bool(b)) => *b,
                     Some(Value::Other) => true,
                     _ => false,
@@ -1282,7 +1297,7 @@ mod html {
                 if out.keyboard.is_none() && text_keyboard && el.attr("inputmode").is_none() && ["name", "id", "autocomplete"].iter().any(|n| el.attr(n).is_some_and(number_name)) {
                     out.keyboard = Some(at(t));
                 }
-                if out.invalid.is_none() && el.attr("aria-invalid").is_some_and(|v| v.trim() != "false") && el.attr("aria-describedby").is_none() && el.attr("aria-errormessage").is_none() {
+                if out.invalid.is_none() && el.attr("aria-invalid").is_some_and(|v| !matches!(v.trim(), "false" | "")) && el.attr("aria-describedby").is_none() && el.attr("aria-errormessage").is_none() {
                     out.invalid = Some(at(t));
                 }
             }
@@ -1432,6 +1447,42 @@ mod tests {
         assert!(alert("<div role=\"alertdialog\" data-x=\"autoFocus\">Hapus?<button autoFocus={false}>Ya</button></div>"));
         assert!(!alert("<div role=\"alertdialog\">Hapus?<button autoFocus>Ya</button></div>"));
         assert!(!alert("<div role=\"alertdialog\" autoFocus={open}>Hapus?<Button>Ya</Button></div>"));
+    }
+
+    #[test]
+    fn a_radio_written_once_and_rendered_many_times_is_not_alone() {
+        let lone = |s: &str| read(s, "tsx").unwrap().lone_radio.is_some();
+        assert!(!lone("const opts = items.map(i => <input type=\"radio\" name=\"a\" />);"));
+        assert!(!lone("function Opt({v}) { return <label><input type=\"radio\" name=\"plan\" value={v} />{v}</label> }"));
+        assert!(lone("<form><label><input type=\"radio\" name=\"plan\" value=\"pro\" />Pro</label></form>"));
+    }
+
+    #[test]
+    fn a_label_component_names_the_field_it_wraps() {
+        assert!(read("<Label><input name=\"q\" /></Label>", "tsx").unwrap().unlabeled.is_empty());
+        assert!(read("<Form.Label>Nama<input name=\"q\" /></Form.Label>", "tsx").unwrap().unlabeled.is_empty());
+        assert_eq!(read("<Card><input name=\"q\" /></Card>", "tsx").unwrap().unlabeled.len(), 1);
+    }
+
+    #[test]
+    fn a_text_component_in_a_button_is_its_name_not_an_icon() {
+        let icon = |s: &str| !read(s, "tsx").unwrap().icon.is_empty();
+        assert!(!icon("<button><FormattedMessage id=\"save\" /></button>"));
+        assert!(!icon("<button><Trans i18nKey=\"save\" /></button>"));
+        assert!(icon("<button><Plus /></button>"));
+    }
+
+    #[test]
+    fn a_spread_may_give_a_clickable_div_its_role() {
+        assert!(read("<div onClick={f} {...props}>x</div>", "tsx").unwrap().click.is_empty());
+        assert_eq!(read("<div onClick={f}>x</div>", "tsx").unwrap().click.len(), 1);
+    }
+
+    #[test]
+    fn an_empty_aria_invalid_is_false() {
+        assert!(read("<input aria-label=\"q\" aria-invalid=\"\" />", "tsx").unwrap().invalid.is_none());
+        assert!(read("<input aria-label=\"q\" aria-invalid=\"\">", "html").unwrap().invalid.is_none());
+        assert!(read("<input aria-label=\"q\" aria-invalid=\"true\">", "html").unwrap().invalid.is_some());
     }
 
     #[test]
