@@ -133,7 +133,7 @@ export async function figmaAudit(figma, pageName) {
       const style = MIXED(t.fontName) ? "" : t.fontName.style;
       const large = t.fontSize >= 24 || (t.fontSize >= 18.66 && /bold|black|heavy|semi/i.test(style));
       const r = ratio(fg, bg), need = large ? 3 : 4.5;
-      if (r < need) { c.contrastFails++; add("RX-A11Y-01", "fail", frame, t, `"${short(t.characters)}" ${r.toFixed(2)}:1, needs ${need}:1`); }
+      if (r < need) { c.contrastFails++; add("RX-A11Y-01", "fail", frame, t, `"${short(t.characters)}" ${Number(r.toFixed(2)) >= need ? (Math.floor(r * 100) / 100).toFixed(2) : r.toFixed(2)}:1, needs ${need}:1`); }
     }
 
     // Text cut by an opaque bar painted above it, and text partly outside a clipping container.
@@ -200,8 +200,10 @@ export async function figmaAudit(figma, pageName) {
       if (m >= 44) continue;
       if (m < 24) c.targetsUnder24++; else c.targetsUnder44++;
       const kind = names.has(e.n) ? nm(e.n).slice(e.n.name.length + 1) : e.n.name;
-      const key = `${kind}|${Math.round(b.width)}x${Math.round(b.height)}`;
-      if (!small.has(key)) small.set(key, { e, size: key.split("|")[1], m, n: 0, kind });
+      // the size as it is, to a tenth (23.6 is under 24, not "24"), and grouped by the limit it misses
+      const size = `${Math.round(b.width * 10) / 10}x${Math.round(b.height * 10) / 10}`;
+      const key = `${kind}|${m < 24 ? 24 : 44}|${size}`;
+      if (!small.has(key)) small.set(key, { e, size, m, n: 0, kind });
       small.get(key).n++;
     }
     for (const g of small.values()) {

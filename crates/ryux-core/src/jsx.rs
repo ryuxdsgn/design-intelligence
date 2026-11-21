@@ -10,6 +10,10 @@ use oxc_span::{GetSpan, SourceType};
 
 /// Props that start a drag.
 const DRAG: [&str; 4] = ["onPointerDown", "onMouseDown", "onTouchStart", "onDragStart"];
+thread_local! {
+    /// `{(e) => e.preventDefault()}` or `{e => { e.preventDefault(); e.stopPropagation(); }}`, and nothing else.
+    static ONLY_DEFAULT: regex::Regex = regex::Regex::new(r"^\{\s*(?:\(\s*\w*\s*(?::\s*[\w.<>]+)?\s*\)|\w+)\s*=>\s*\{?\s*(?:\w+\.(?:preventDefault|stopPropagation)\(\)\s*;?\s*)+\}?\s*\}$").unwrap();
+}
 /// Props that give an element a keyboard way, or a role that says what it is.
 const KEYBOARD: [&str; 4] = ["onKeyDown", "onKeyUp", "tabIndex", "role"];
 /// Native controls: the browser gives them keyboard behaviour.
@@ -38,7 +42,14 @@ impl<'a> Visit<'a> for Finder<'_> {
                 match a {
                     JSXAttributeItem::Attribute(at) => {
                         if let JSXAttributeName::Identifier(n) = &at.name {
-                            names.push(n.name.as_str());
+                            let name = n.name.as_str();
+                            // a handler written in place that only keeps the press from doing its default (focus,
+                            // text selection) does not start a drag: (e) => e.preventDefault()
+                            let only_default = at.value.as_ref().is_some_and(|v| ONLY_DEFAULT.with(|re| re.is_match(&self.src[v.span().start as usize..v.span().end as usize])));
+                            if DRAG.contains(&name) && name != "onDragStart" && only_default {
+                                continue;
+                            }
+                            names.push(name);
                         }
                     }
                     // {...bind()} may carry the keyboard props: not this check's call
@@ -88,6 +99,12 @@ mod tests {
         ] {
             assert!(tags(&format!("const a = {ok};")).is_empty(), "{ok}");
         }
+        // a handler written in place that does nothing a drag does (no move, capture, or position) is not one
+        assert!(tags("const a = <div className=\"toolbar\" onMouseDown={(e) => e.preventDefault()}><button>B</button></div>;").is_empty());
+        assert_eq!(tags("const a = <div onPointerDown={(e) => { e.currentTarget.setPointerCapture(e.pointerId); }} />;"), vec!["div:onPointerDown"]);
+        assert_eq!(tags("const a = <div onMouseDown={(e) => setX(e.clientX)} />;"), vec!["div:onMouseDown"]);
+        assert_eq!(tags("const a = <div onPointerDown={(e) => !wide && controls.start(e)} />;"), vec!["div:onPointerDown"]);
+        assert!(tags("const a = <div onMouseDown={e => { e.preventDefault(); e.stopPropagation(); }} />;").is_empty());
         // inside a string it is text, not an element
         assert!(tags("const s = '<div onPointerDown={x}>';").is_empty());
         // offsets are UTF-16, as in JavaScript

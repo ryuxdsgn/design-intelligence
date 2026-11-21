@@ -38,6 +38,9 @@ struct Res {
     hex: JsRe,
     weight: JsRe,
     norm_font: JsRe,
+    colour_fn: JsRe,
+    variable: JsRe,
+    url_before: JsRe,
     quotes: JsRe,
     split_space: JsRe,
     lead: JsRe,
@@ -78,6 +81,9 @@ fn res() -> &'static Res {
     static R: OnceLock<Res> = OnceLock::new();
     R.get_or_init(|| Res {
         hex: js(r"#(?:[0-9a-f]{8}|[0-9a-f]{6}|[0-9a-f]{3})\b", "gi"),
+        url_before: js(r#"url\(\s*["']?\s*$"#, "i"),
+        variable: js(r"(?:variable|vf)$", ""),
+        colour_fn: js(r"\b(rgba?|hsla?|oklch)\(([^)]*)\)", "gi"),
         weight: js(r"^(?:thin|hairline|extralight|ultralight|light|regular|normal|book|medium|semibold|demibold|bold|extrabold|ultrabold|black|heavy|italic|variable)$", "i"),
         norm_font: js(r"[\s_-]+", "g"),
         quotes: js(r#"^["']|["']$"#, "g"),
@@ -120,6 +126,41 @@ fn res() -> &'static Res {
 const NOT_FONT_KEYS: [&str; 9] = ["figures", "scale", "max_measure", "measure", "sizes", "size", "tracking", "leading", "notes"];
 const NEUTRAL: [&str; 2] = ["#ffffff", "#000000"];
 const STYLE_EXTS: [&str; 4] = ["css", "scss", "sass", "less"];
+
+/// rgb(), hsl(), or oklch() as hex (alpha dropped), or None when the arguments do not read.
+fn colour_fn(name: &str, args: &str) -> Option<String> {
+    let parts: Vec<&str> = args.split(|c: char| c == ',' || c == '/' || c.is_whitespace()).filter(|p| !p.is_empty()).collect();
+    let val = |i: usize, scale: f64| -> Option<f64> {
+        let p = parts.get(i)?;
+        let (n, pct) = match p.strip_suffix('%') { Some(n) => (n, true), None => (p.trim_end_matches("deg"), false) };
+        let v: f64 = n.parse().ok()?;
+        Some(if pct { v / 100.0 * scale } else { v })
+    };
+    let name = name.to_ascii_lowercase();
+    let rgb: [f64; 3] = if name.starts_with("rgb") {
+        [val(0, 255.0)?, val(1, 255.0)?, val(2, 255.0)?]
+    } else if name.starts_with("hsl") {
+        let (h, sat, l) = (val(0, 360.0)?.rem_euclid(360.0), val(1, 1.0)?, val(2, 1.0)?);
+        let f = |n: f64| {
+            let k = (n + h / 30.0) % 12.0;
+            l - sat * l.min(1.0 - l) * (k - 3.0).min(9.0 - k).clamp(-1.0, 1.0)
+        };
+        [f(0.0) * 255.0, f(8.0) * 255.0, f(4.0) * 255.0]
+    } else {
+        // oklch → oklab → linear sRGB → sRGB
+        let (l, c, h) = (val(0, 1.0)?, val(1, 0.4)?, val(2, 360.0)?.to_radians());
+        let (a, b) = (c * h.cos(), c * h.sin());
+        let l_ = (l + 0.3963377774 * a + 0.2158037573 * b).powi(3);
+        let m_ = (l - 0.1055613458 * a - 0.0638541728 * b).powi(3);
+        let s_ = (l - 0.0894841775 * a - 1.2914855480 * b).powi(3);
+        let lin = [4.0767416621 * l_ - 3.3077115913 * m_ + 0.2309699292 * s_, -1.2684380046 * l_ + 2.6097574011 * m_ - 0.3413193965 * s_, -0.0041960863 * l_ - 0.7034186147 * m_ + 1.7076147010 * s_];
+        lin.map(|v| {
+            let v = v.clamp(0.0, 1.0);
+            (if v <= 0.0031308 { 12.92 * v } else { 1.055 * v.powf(1.0 / 2.4) - 0.055 }) * 255.0
+        })
+    };
+    Some(format!("#{}", rgb.iter().map(|v| format!("{:02x}", v.round().clamp(0.0, 255.0) as u8)).collect::<String>()))
+}
 
 /// #abc → #aabbcc; alpha is dropped.
 pub fn norm_hex(hex: &str) -> String {
@@ -213,7 +254,11 @@ pub fn read_direction(md: &str) -> Option<Direction> {
         lines.iter().position(|l| indent(l) == top && re.test(l))
     };
 
-    let colours = unique(r.hex.matches(&block).iter().map(|h| norm_hex(h)).collect());
+    // hex, and rgb(), hsl(), or oklch() written as hex, in the order the block names them
+    let mut found: Vec<(usize, String)> = r.hex.match_all(&block).iter().map(|h| (h.start, norm_hex(h.g(0)))).collect();
+    found.extend(r.colour_fn.match_all(&block).iter().filter_map(|h| colour_fn(h.g(1), h.g(2)).map(|c| (h.start, c))));
+    found.sort_by_key(|f| f.0);
+    let colours = unique(found.into_iter().map(|f| f.1).collect());
     if colours.is_empty() {
         unread.push("colour (no hex values)".into());
     }
@@ -244,8 +289,10 @@ pub fn read_direction(md: &str) -> Option<Direction> {
     }
 
     // a key's values: on its line ([8, 12] or 8, 12), or a YAML list under it (- 8), each in its unit
+    // shape.radius when the block has one, before a component's radius
+    let shape = key("shape", true).map(|at| (at, at + 1 + under(&lines, at).len()));
     let listed = |key: &JsRe, unit: &dyn Fn(f64, &str) -> f64| -> Option<Vec<f64>> {
-        let at = lines.iter().position(|l| key.test(l))?;
+        let at = shape.and_then(|(a, b)| (a..b).find(|&i| key.test(&lines[i]))).or_else(|| lines.iter().position(|l| key.test(l)))?;
         let rest = key.replace(&lines[at], "");
         let block = trim(&rest).is_empty();
         let text = if block { under(&lines, at).iter().filter_map(|l| r.item.exec(l).map(|m| m.g(1).to_string())).collect::<Vec<_>>().join(", ") } else { rest };
@@ -304,6 +351,10 @@ pub fn drift_colours(text: &str, ext: &str, dir: &Direction) -> Vec<Hit> {
         if ![4, 7, 9].contains(&len16(hex)) {
             return;
         }
+        // url(#fade) names an element, not a colour
+        if r.url_before.test(&slice16(text, index.saturating_sub(8), Some(index))) {
+            return;
+        }
         let n = norm_hex(hex);
         if dir.colours.contains(&n) || NEUTRAL.contains(&n.as_str()) {
             return;
@@ -341,7 +392,9 @@ pub fn drift_fonts(text: &str, dir: &Direction) -> Vec<Hit> {
         if first.is_empty() || r.generic.test(&first) || r.font_var.test(&first) {
             continue;
         }
-        if known.contains(&norm_font(&first)) {
+        // a variable cut ("Inter Variable", InterVariable, "Inter VF") is the family
+        let cut = r.variable.replace(&norm_font(&first), "");
+        if known.contains(&norm_font(&first)) || known.contains(&cut) {
             continue;
         }
         out.push(Hit {
@@ -406,10 +459,15 @@ pub fn drift_durations(text: &str, dir: &Direction) -> Vec<Hit> {
 pub fn unused_tokens(texts: &[String], dir: &Direction) -> Value {
     let all = texts.join("\n");
     let used: Vec<String> = res().hex.matches(&all).iter().map(|h| norm_hex(h)).collect();
-    let flat = norm_font(&all);
+    // a family is used where its name stands as a word ("Inter", Inter_Tight for "Inter Tight"), not inside one ("interface")
+    let lower = all.to_lowercase();
+    let named = |f: &str| {
+        let words: Vec<String> = f.to_lowercase().split_whitespace().map(fancy_regex::escape).map(|w| w.into_owned()).collect();
+        fancy_regex::Regex::new(&format!(r"(?<![\p{{L}}\p{{N}}]){}(?![\p{{L}}\p{{N}}])", words.join(r"[\s_-]*"))).map_or(false, |re| re.is_match(&lower).unwrap_or(false))
+    };
     json!({
         "colours": dir.colours.iter().filter(|c| !used.contains(c)).collect::<Vec<_>>(),
-        "fonts": dir.fonts.iter().filter(|f| !flat.contains(&norm_font(f))).collect::<Vec<_>>(),
+        "fonts": dir.fonts.iter().filter(|f| !named(f)).collect::<Vec<_>>(),
     })
 }
 
@@ -437,5 +495,41 @@ mod tests {
         assert_eq!(d.durations, Some(vec![150.0, 240.0]));
         assert!(drift_durations(".a{transition: opacity 0.15s}", &d).is_empty());
         assert_eq!(drift_radius(".a{border-radius: 10px}", &d).len(), 1);
+    }
+
+    #[test]
+    fn a_variable_cut_of_a_family_is_that_family() {
+        let d = dir("");
+        assert!(drift_fonts(".a{font-family: 'Inter Variable', sans-serif;}", &d).is_empty());
+        assert!(drift_fonts(".a{font-family: InterVariable, sans-serif;}", &d).is_empty());
+        assert_eq!(drift_fonts(".a{font-family: 'Inter Tight', sans-serif;}", &d).len(), 1);
+    }
+
+    #[test]
+    fn a_family_is_used_only_where_its_name_is_a_word() {
+        let d = dir("");
+        assert_eq!(unused_tokens(&["interface Props { a: string }".to_string()], &d)["fonts"], json!(["Inter"]));
+        assert_eq!(unused_tokens(&[".a{font-family:\"Inter\",sans-serif}".to_string()], &d)["fonts"], json!([]));
+        assert_eq!(unused_tokens(&["const inter = Inter({ subsets: [\"latin\"] })".to_string()], &d)["fonts"], json!([]));
+    }
+
+    #[test]
+    fn a_reference_to_an_id_is_not_a_colour() {
+        let d = dir("");
+        assert!(drift_colours(".a{fill: url(#bad); stroke:url( '#fee' )}", "css", &d).is_empty());
+        assert_eq!(drift_colours(".a{color: #bad}", "css", &d).len(), 1);
+    }
+
+    #[test]
+    fn the_shape_radius_wins_over_a_component_radius() {
+        let d = read_direction("# X\n\n## Visual and motion language\n\n```yaml\ndirection:\n  colour:\n    primary: \"#0f766e\"\n  components:\n    button:\n      radius: 999\n  shape:\n    radius: [8, 12]\n  type:\n    families: [Inter]\n```\n").unwrap();
+        assert_eq!(d.radius, Some(vec![8.0, 12.0]));
+    }
+
+    #[test]
+    fn rgb_hsl_and_oklch_colours_are_read_as_hex() {
+        let d = read_direction("# X\n\n## Visual and motion language\n\n```yaml\ndirection:\n  colour:\n    primary: rgb(15, 118, 110)\n    accent: hsl(0 100% 50%)\n    ink: oklch(0.2 0 0)\n    paper: oklch(100% 0 0)\n  type:\n    families: [Inter]\n```\n").unwrap();
+        assert_eq!(d.colours, vec!["#0f766e", "#ff0000", "#161616", "#ffffff"]);
+        assert!(!d.unread.iter().any(|u| u.starts_with("colour")));
     }
 }

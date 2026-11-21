@@ -347,7 +347,7 @@ fn rule_a11y02_small(s: &Source, _: &Ctx) -> Vec<Hit> {
     matches(&s.text, &[(r#"font-size\s*:\s*(\d+(?:\.\d+)?)px|\btext-\[(\d+(?:\.\d+)?)px\]|fontSize\s*:\s*["'`]?(\d+(?:\.\d+)?)(?:px)?["'`]?(?=\s*[,}])"#, "", |m| {
         let raw = if m.has(1) { m.g(1) } else if m.has(2) { m.g(2) } else { m.g(3) };
         let v = parse_float(raw);
-        if v < 12.0 { Some(format!("{}px text: body text is 14 to 16px on mobile; below 12px is hard to read", num_str(v))) } else { None }
+        if v > 0.0 && v < 12.0 { Some(format!("{}px text: body text is 14 to 16px on mobile; below 12px is hard to read", num_str(v))) } else { None }
     })])
 }
 
@@ -708,6 +708,10 @@ fn hex_lookbehind_ok(before: &str) -> bool {
     if quoted_attr {
         return false;
     }
+    // a link or a reference to an id: href="#add", to="#top", url(#fade)
+    if re(r#"(?:\b(?:href|src|to|action|formAction)\s*=\s*\{?\s*["'`]|url\(\s*["']?)$"#, "i").test(before) {
+        return false;
+    }
     if before.ends_with(['"', '\'', '`']) {
         return true;
     }
@@ -1001,7 +1005,8 @@ fn ignores(raw: &str, text: &str) -> Ignores {
 fn line_col(raw: &str, index: usize) -> (usize, usize) {
     let before = &raw[..byte_at(raw, index)];
     let line = before.matches('\n').count() + 1;
-    let last = before.rfind('\n').map_or(-1, |b| len16(&before[..b]) as isize);
+    // a byte order mark at the start is not a column an editor shows
+    let last = before.rfind('\n').map_or(if raw.starts_with('\u{FEFF}') { 0 } else { -1 }, |b| len16(&before[..b]) as isize);
     (line, (index as isize - last) as usize)
 }
 
@@ -1704,6 +1709,26 @@ mod tests {
         for text in ["const help = \"add ryux-ignore to skip a line\";", "<div data-ryux-ignore>"] {
             assert_eq!(rules(&format!("{text}\n{price}")), all, "{text}");
         }
+    }
+
+    #[test]
+    fn a_link_target_is_not_a_colour() {
+        let one_off = |raw: &str| found("a.tsx", raw, "RX-DS-03", "one-off");
+        assert!(one_off("<a href=\"#add\">a</a><a href='#bad'>b</a><use xlink:href=\"#fee\" /><Link to=\"#cafe\" /><p style={{ fill: \"url(#dad)\" }} />").is_empty());
+        assert_eq!(one_off("const a = { color: \"#add\", bg: \"#bad\", border: \"#fee\" };").len(), 1);
+    }
+
+    #[test]
+    fn font_size_zero_hides_text_and_is_not_small_text() {
+        assert!(found("a.tsx", "const s = { fontSize: 0 };", "RX-A11Y-02", "").is_empty());
+        assert!(found("a.css", ".a{font-size:0px}", "RX-A11Y-02", "").is_empty());
+        assert_eq!(found("a.css", ".a{font-size:10px}", "RX-A11Y-02", "").len(), 1);
+    }
+
+    #[test]
+    fn a_byte_order_mark_does_not_move_the_first_line() {
+        assert_eq!(rupiah("a.ts", "\u{FEFF}const p = \"Rp 10.000,00\";"), vec!["1:12"]);
+        assert_eq!(rupiah("a.ts", "\u{FEFF}\nconst p = \"Rp 10.000,00\";"), vec!["2:12"]);
     }
 
     #[test]

@@ -3449,14 +3449,6 @@
     "line": 1,
     "column": 21,
     "message": "#12abef is not a direction colour in DESIGN.md: use the token, or add it to DESIGN.md's direction (colour) if the direction changed on purpose"
-   },
-   {
-    "level": "warn",
-    "rule": "RX-DS-03",
-    "file": "x.tsx",
-    "line": 1,
-    "column": 21,
-    "message": "3 one-off colors (#12abef, #abc, #def): use the color tokens, or define them by role"
    }
   ]
  },

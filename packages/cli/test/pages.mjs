@@ -79,6 +79,11 @@ aside button{width:100%;padding:12px;font:inherit}label{display:block;padding:8p
 /** The A2 shape: the payment card's heading (an h2, not a legend) and a group split into sub-fieldsets by kind. With
  *  `inView` the heading sits on the first screen at 1280x900 and the first option just below it; without, both are
  *  below. */
+/** A page with no background under color-scheme: dark, so the browser's dark canvas is behind its light text. */
+export const DARK_CANVAS = `${head}<meta name="color-scheme" content="dark"><style>body{margin:0;font:16px sans-serif;color:#eee}</style><p>Bayar sekarang</p>`;
+/** Dark text in a wrapper faded to 25%: grey on white as it shows. */
+export const FADED = `${head}<style>body{margin:0;font:16px sans-serif;background:#fff;color:#000}.soon{opacity:.25}</style><div class="soon"><p>Segera hadir</p></div><p>Bayar sekarang</p>`;
+
 export const choiceSplit = (inView) => `${head}<style>
 body{margin:0;font:16px/1.5 sans-serif;color:#111;background:#fff}.wrap{display:flex;gap:32px;padding:24px;align-items:flex-start}
 .main{flex:1}.items{height:${inView ? 700 : 1000}px;border:1px solid #ddd}aside{position:sticky;top:24px;width:320px}
@@ -102,4 +107,6 @@ export const PAGES = [
   { name: "choice-high", html: choice(false), widths: [1280] },
   { name: "choice-split-in-view", html: choiceSplit(true), widths: [1280] },
   { name: "choice-split-low", html: choiceSplit(false), widths: [1280] },
+  { name: "dark-canvas", html: DARK_CANVAS, widths: [390] },
+  { name: "faded", html: FADED, widths: [390] },
 ];

@@ -111,7 +111,9 @@ export async function probeExtract() {
     if (e.scrollHeight > e.clientHeight) Object.assign(o, { sh: e.scrollHeight, ch: e.clientHeight });
     if (i > 1 && e.matches(CONTROL)) {
       o.ctl = 1;
-      o.nm = cap((e.getAttribute("aria-label") || e.textContent || e.tagName.toLowerCase()).trim().replace(/\s+/g, " "));
+      const pushes = e.tagName === "INPUT" && (e.type === "submit" || e.type === "button");
+      if (pushes) o.ty = e.type;
+      o.nm = cap((e.getAttribute("aria-label") || (pushes ? e.value : "") || e.textContent || e.tagName.toLowerCase()).trim().replace(/\s+/g, " "));
     }
     // A link set inline: whether its block has text besides the link (a link in a sentence).
     if (e.tagName === "A" && e.parentElement && getComputedStyle(e).display === "inline") o.sib = e.parentElement.textContent.replace(e.textContent, "").trim().length > 0 ? 1 : 0;
@@ -208,7 +210,14 @@ export async function probeExtract() {
 
   // probeAnswer reads the same elements.
   window.__ryuxProbe = { all, nodesOf };
+  // The colour behind a page with no background: white, or the dark canvas under color-scheme: dark.
+  const probe = document.createElement("div");
+  probe.style.cssText = "position:absolute;width:0;height:0;background-color:Canvas";
+  document.documentElement.appendChild(probe);
+  const canvas = getComputedStyle(probe).backgroundColor;
+  probe.remove();
   return {
+    ...(canvas !== "rgb(255, 255, 255)" ? { canvas } : {}),
     vw,
     vh,
     scrollWidth: root.scrollWidth,

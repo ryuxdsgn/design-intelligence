@@ -280,3 +280,16 @@ test("a screen inside a section inside a section is a screen", async () => {
   assert.equal(r.counts.screens, 1);
   assert.deepEqual(rules(r), ["fail RX-A11Y-01"]);
 });
+
+test("targets: a fractional size is shown as it is and grouped with its own limit", async () => {
+  const b = (y, h) => node("FRAME", "Button", [10, y, 80, h], { strokes: [pale], layoutMode: "HORIZONTAL" }, [text("Label", "Pilih", [20, y, 40, Math.min(h, 20)])]);
+  const r = await audit([screen("01", [b(100, 23.6), b(200, 24.4), b(300, 43.7)])]);
+  const msgs = r.findings.filter((f) => f.rule === "RX-A11Y-02").map((f) => `${f.level} ${f.message}`);
+  assert.deepEqual(msgs, ['fail "Button" 80x23.6, under 24x24', 'warn "Button" 80x24.4, under 44x44', 'warn "Button" 80x43.7, under 44x44']);
+});
+
+test("contrast: a ratio just under the need is never written as the need", async () => {
+  const g = 0.4656;
+  const r = await audit([screen("01", [text("Hint", "Pilih kursi", [16, 100, 200, 20], { fills: [{ type: "SOLID", color: { r: g, g, b: g } }] })])]);
+  assert.match(r.findings[0].message, /" 4\.49:1, needs 4\.5:1$/);
+});
