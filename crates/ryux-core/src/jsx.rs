@@ -10,6 +10,8 @@ use oxc_span::{GetSpan, SourceType};
 
 /// Props that start a drag.
 const DRAG: [&str; 4] = ["onPointerDown", "onMouseDown", "onTouchStart", "onDragStart"];
+/// What a drag handler does: follow the pointer, capture it, or read where it is.
+const DRAG_WORK: [&str; 10] = ["move", "Move", "drag", "Drag", "Capture", "clientX", "clientY", "pageX", "pageY", "touches"];
 /// Props that give an element a keyboard way, or a role that says what it is.
 const KEYBOARD: [&str; 4] = ["onKeyDown", "onKeyUp", "tabIndex", "role"];
 /// Native controls: the browser gives them keyboard behaviour.
@@ -38,7 +40,14 @@ impl<'a> Visit<'a> for Finder<'_> {
                 match a {
                     JSXAttributeItem::Attribute(at) => {
                         if let JSXAttributeName::Identifier(n) = &at.name {
-                            names.push(n.name.as_str());
+                            let name = n.name.as_str();
+                            // a handler written in place shows what it does: one with no move, capture, or position
+                            // (e.preventDefault() to keep focus) does not start a drag
+                            let inline = at.value.as_ref().map(|v| &self.src[v.span().start as usize..v.span().end as usize]).filter(|v| v.contains("=>") || v.contains("function"));
+                            if DRAG.contains(&name) && name != "onDragStart" && inline.is_some_and(|v| !DRAG_WORK.iter().any(|w| v.contains(w))) {
+                                continue;
+                            }
+                            names.push(name);
                         }
                     }
                     // {...bind()} may carry the keyboard props: not this check's call
@@ -88,6 +97,10 @@ mod tests {
         ] {
             assert!(tags(&format!("const a = {ok};")).is_empty(), "{ok}");
         }
+        // a handler written in place that does nothing a drag does (no move, capture, or position) is not one
+        assert!(tags("const a = <div className=\"toolbar\" onMouseDown={(e) => e.preventDefault()}><button>B</button></div>;").is_empty());
+        assert_eq!(tags("const a = <div onPointerDown={(e) => { e.currentTarget.setPointerCapture(e.pointerId); }} />;"), vec!["div:onPointerDown"]);
+        assert_eq!(tags("const a = <div onMouseDown={(e) => setX(e.clientX)} />;"), vec!["div:onMouseDown"]);
         // inside a string it is text, not an element
         assert!(tags("const s = '<div onPointerDown={x}>';").is_empty());
         // offsets are UTF-16, as in JavaScript
