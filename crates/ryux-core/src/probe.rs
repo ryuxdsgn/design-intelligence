@@ -800,7 +800,7 @@ impl<'a> Page<'a> {
         for (_, g) in &groups {
             let t = texts[g.t];
             let more = if g.count > 1 { format!("; {} more with the same colors", g.count - 1) } else { String::new() };
-            out.push(finding("RX-A11Y-01", "fail", self.selector(t.e), format!("{}: contrast {}:1 ({} on {}), needs {}:1{more}", quote(t.x), to_fixed(g.ratio, 2), hex(g.fg), hex(g.bg), num_str(g.need))));
+            out.push(finding("RX-A11Y-01", "fail", self.selector(t.e), format!("{}: contrast {}:1 ({} on {}), needs {}:1{more}", quote(t.x), to_fixed((g.ratio * 100.0).floor() / 100.0, 2), hex(g.fg), hex(g.bg), num_str(g.need))));
         }
         for (size, k, count) in &small {
             let t = texts[*k];
