@@ -406,30 +406,49 @@ impl<'a> Page<'a> {
     fn colours(&self, text: &str) -> Vec<Colour> {
         self.re.rgba_all.matches(text).iter().filter_map(|m| self.rgba(m)).collect()
     }
-    /// The solid colour behind an element, or None when an image, gradient, blend, or filter makes it unknown.
-    fn background(&self, i: usize) -> Option<Colour> {
-        let mut layers = Vec::new();
+    /// The colours an element's pixel shows, behind its text and with its text on top (`fg`), or None when an
+    /// image, gradient, blend, or filter makes it unknown. Each layer is its background over what is behind it,
+    /// and an element's opacity fades it with all it holds, its own background and text included.
+    fn painted(&self, i: usize, fg: Option<Colour>) -> Option<(Colour, Colour)> {
+        let mut chain = Vec::new();
         let mut e = Some(i);
         while let Some(x) = e {
+            chain.push(x);
+            e = self.parent(x);
+        }
+        let op = |x: usize| {
+            let o = js_number(&self.re, self.s(x, "opacity"));
+            if o.is_finite() { o.clamp(0.0, 1.0) } else { 1.0 }
+        };
+        let bg = |x: usize| self.rgba(self.s(x, "backgroundColor")).filter(|c| c[3] > 0.0);
+        // the nearest opaque background with no fading at or above it hides everything behind it
+        let mut faded_above = vec![false; chain.len() + 1];
+        for k in (0..chain.len()).rev() {
+            faded_above[k] = faded_above[k + 1] || op(chain[k]) < 1.0;
+        }
+        let stop = (0..chain.len()).find(|&k| !faded_above[k] && bg(chain[k]).is_some_and(|c| c[3] >= 1.0));
+        let chain = &chain[..stop.map_or(chain.len(), |k| k + 1)];
+        for &x in chain {
             let filter = self.s(x, "filter");
             if self.s(x, "backgroundImage") != "none" || self.s(x, "mixBlendMode") != "normal" || (!filter.is_empty() && filter != "none") {
                 return None;
             }
-            if let Some(c) = self.rgba(self.s(x, "backgroundColor")) {
-                if c[3] > 0.0 {
-                    layers.push(c);
-                    if c[3] >= 1.0 {
-                        break;
-                    }
-                }
-            }
-            e = self.parent(x);
         }
-        let mut colour = [255.0, 255.0, 255.0, 1.0];
-        for layer in layers.iter().rev() {
-            colour = blend(*layer, colour);
+        // from the outermost layer in: what the element at `k` and all it holds paint over `behind`
+        fn paint(chain: &[usize], k: usize, behind: Colour, fg: Option<Colour>, op: &dyn Fn(usize) -> f64, bg: &dyn Fn(usize) -> Option<Colour>) -> Colour {
+            let x = chain[k];
+            let mut c = bg(x).map_or(behind, |b| blend(b, behind));
+            c = if k > 0 { paint(chain, k - 1, c, fg, op, bg) } else { fg.map_or(c, |f| blend(f, c)) };
+            let o = op(x);
+            if o >= 1.0 { c } else { [c[0] * o + behind[0] * (1.0 - o), c[1] * o + behind[1] * (1.0 - o), c[2] * o + behind[2] * (1.0 - o), 1.0] }
         }
-        Some(colour)
+        let white = [255.0, 255.0, 255.0, 1.0];
+        let top = chain.len() - 1;
+        Some((paint(chain, top, white, None, &op, &bg), paint(chain, top, white, fg, &op, &bg)))
+    }
+    /// The solid colour behind an element's text.
+    fn background(&self, i: usize) -> Option<Colour> {
+        self.painted(i, None).map(|p| p.0)
     }
     fn scroller_of(&self, i: usize) -> Option<usize> {
         let mut e = self.parent(i);
@@ -685,8 +704,8 @@ impl<'a> Page<'a> {
             if self.disabled[t.e] || self.or_color(t.e, "textFill") == "rgba(0, 0, 0, 0)" {
                 continue;
             }
-            let (Some(bg), Some(fg_raw)) = (self.background(t.e), self.rgba(self.color(t.e))) else { continue };
-            let fg = if fg_raw[3] < 1.0 { blend(fg_raw, bg) } else { fg_raw };
+            let Some(fg_raw) = self.rgba(self.color(t.e)) else { continue };
+            let Some((bg, fg)) = self.painted(t.e, Some(fg_raw)) else { continue };
             let ratio = contrast(lum(fg), lum(bg));
             let large = size >= 24.0 || (size >= 18.66 && self.n(t.e, "fontWeight") >= 700.0);
             let need = if large { 3.0 } else { 4.5 };
@@ -995,6 +1014,38 @@ impl<'a> Page<'a> {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    /// A page of one text under a wrapper with `wrap` styles, inside a white body.
+    fn faded(wrap: Value, text: Value) -> Vec<String> {
+        let r = serde_json::json!([0, 0, 300, 40]);
+        let input = serde_json::json!({
+            "vw": 320, "vh": 844, "scrollWidth": 320, "scrollingElement": 0,
+            "styles": [{"color": "rgb(0, 0, 0)"}, {"backgroundColor": "rgb(255, 255, 255)", "color": "rgb(0, 0, 0)"}, wrap, text],
+            "els": [{"t": "HTML", "s": 0, "r": r}, {"t": "BODY", "p": 0, "s": 1, "r": r}, {"t": "DIV", "p": 1, "s": 2, "r": r}, {"t": "P", "p": 2, "s": 3, "r": r}],
+            "texts": [{"e": 3, "x": "Bayar sekarang", "r": r}],
+            "answers": {}
+        });
+        probe(&input)["findings"].as_array().unwrap().iter().filter(|f| f["rule"] == "RX-A11Y-01").map(|f| f["message"].as_str().unwrap().to_string()).collect()
+    }
+
+    #[test]
+    fn contrast_counts_the_opacity_of_the_text_and_its_ancestors() {
+        let black = serde_json::json!({"color": "rgb(0, 0, 0)"});
+        assert!(faded(serde_json::json!({}), black.clone()).is_empty());
+        assert_eq!(faded(serde_json::json!({}), serde_json::json!({"color": "rgb(187, 187, 187)"})).len(), 1);
+        // black text in a wrapper at 25% shows as light grey on white
+        let m = faded(serde_json::json!({"opacity": "0.25"}), black.clone());
+        assert_eq!(m.len(), 1, "{m:?}");
+        assert!(m[0].contains("on #ffffff"), "{m:?}");
+        // the text's own opacity too
+        assert_eq!(faded(serde_json::json!({}), serde_json::json!({"color": "rgb(0, 0, 0)", "opacity": "0.3"})).len(), 1);
+        // a faded card fades its own background with the text: dark card at 40% over white, white text
+        let m = faded(serde_json::json!({"opacity": "0.4", "backgroundColor": "rgb(0, 0, 0)"}), serde_json::json!({"color": "rgb(255, 255, 255)"}));
+        assert_eq!(m.len(), 1, "{m:?}");
+        assert!(!m[0].contains("on #000000"), "{m:?}");
+        // opacity 0.9 keeps black readable
+        assert!(faded(serde_json::json!({"opacity": "0.9"}), black).is_empty());
+    }
 
     #[test]
     fn javascript_numbers_and_shadows() {
