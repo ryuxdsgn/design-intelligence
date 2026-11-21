@@ -54,11 +54,12 @@ How reference flows adapt across widths when captured: `get_flow`, `search_scree
 ### RX-RD-02 [Required] Prioritize, simplify, reorganize
 
 - Do: As space shrinks, decide what matters most, simplify what remains, then reorganize: stack, collapse, or move secondary content behind a control. Keep text size.
+  - On a phone a row's name keeps its line: a side value (a fee, a badge) moves under the name before the name wraps ("BCA Virtual / Account" beside "+Rp4.000").
 - Do not: Squeeze the desktop layout into a smaller viewport.
-- Why: Shrinking keeps the layout and loses the reader. (WCAG 2.2 SC 1.4.10; responsive design practice)
+- Why: Shrinking keeps the layout and loses the reader. (WCAG 2.2 SC 1.4.10; responsive design practice; owner blind rating 2026-11-21: payment names wrapped to two lines at 390 in two runs)
 - Not when: the content is already simple enough to stack as is
 - Trade-off: mobile users may need a tap to reach secondary content
-- Check: visual QA
+- Check: render at 390: option names on one line; visual QA
 
 ### RX-RD-03 [Required] Safe areas and thumb reach
 
