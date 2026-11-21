@@ -459,11 +459,30 @@ mod jsx {
         }
     }
 
+    /// An autoFocus attribute (not `autoFocus={false}`) on the element or inside it.
+    fn autofocus(src: &str, el: &JSXElement) -> bool {
+        struct Find<'s> {
+            src: &'s str,
+            found: bool,
+        }
+        impl<'a> Visit<'a> for Find<'_> {
+            fn visit_jsx_opening_element(&mut self, o: &JSXOpeningElement<'a>) {
+                let a = attrs(self.src, o);
+                self.found |= ["autoFocus", "autofocus"].iter().any(|n| a.get(n).is_some_and(|v| !matches!(v, Value::Bool(false))));
+                walk::walk_jsx_opening_element(self, o);
+            }
+        }
+        let mut f = Find { src, found: false };
+        f.visit_jsx_element(el);
+        f.found
+    }
+
     /// The first child that is not blank text, when it is an element whose role is a dialog.
     fn scrim(src: &str, children: &[JSXChild]) -> bool {
         for c in children {
             match c {
                 JSXChild::Text(t) if trim(text(src, t.span)).is_empty() => continue,
+                JSXChild::Fragment(f) => return scrim(src, &f.children),
                 JSXChild::Element(e) => {
                     return match attrs(src, &e.opening_element).get("role") {
                         Some(Value::Str(s)) => dialog_role(s),
@@ -582,10 +601,14 @@ mod jsx {
             self.exprs -= 1;
         }
 
+        // a fragment adds no element: its children are its parent's, after what came before it
         fn visit_jsx_fragment(&mut self, f: &JSXFragment<'a>) {
-            self.around.push((false, false));
+            self.around.push(self.around.last().copied().unwrap_or((false, false)));
             walk::walk_jsx_fragment(self, f);
-            self.around.pop();
+            let (_, last) = self.around.pop().unwrap_or((false, false));
+            if let Some(top) = self.around.last_mut() {
+                top.1 = last;
+            }
         }
 
         fn visit_import_declaration(&mut self, d: &ImportDeclaration<'a>) {
@@ -668,7 +691,7 @@ mod jsx {
                 _ => false,
             });
             let hidden_class = class_strings(self.src, &el.opening_element, &["className", "class"]).iter().any(|c| off_screen_class(c));
-            let shown = !a.has("hidden") && !(aria_hidden && keyboard_out) && !display_none && !hidden_class;
+            let shown = !matches!(a.get("hidden"), Some(v) if !matches!(v, Value::Bool(false))) && !(aria_hidden && keyboard_out) && !display_none && !hidden_class;
             if field && shown {
                 if self.labels == 0 && !a.has("aria-label") && !a.has("aria-labelledby") && !a.has("title") {
                     let id = match a.get("id") {
@@ -745,7 +768,7 @@ mod jsx {
                 self.out.dialog = Some(at);
             }
             // its own markup, nested elements included: an autoFocus there moves focus in when it opens
-            if self.out.alert.is_none() && lower && !modal && !scrimmed && matches!(a.get("role"), Some(Value::Str(r)) if alert_role(r)) && !text(src, el.span).contains("autoFocus") {
+            if self.out.alert.is_none() && lower && !modal && !scrimmed && matches!(a.get("role"), Some(Value::Str(r)) if alert_role(r)) && !autofocus(src, el) {
                 self.out.alert = Some(at);
             }
             // a loading class (className="spinner", cn("skeleton", x)), a component (<Spinner />), or a web component
@@ -1380,6 +1403,35 @@ mod tests {
         assert_eq!(read("<><div onClick={c} /><div role=\"dialog\">x</div></>", "tsx").unwrap().click.len(), 1);
         assert!(read("<div onClick={c}>\n  <div role=\"dialog\">x</div></div>", "tsx").unwrap().click.is_empty());
         assert!(read("<div onclick=\"c()\"> <!-- sheet --> <div role=\"dialog\">x</div></div>", "html").unwrap().click.is_empty());
+    }
+
+    #[test]
+    fn a_fragment_is_not_a_wall_between_a_scrim_and_its_dialog() {
+        let m = read("<div className=\"backdrop\" onClick={close}><><div role=\"dialog\">x</div></></div>", "tsx").unwrap();
+        assert!(m.click.is_empty() && m.dialog.is_some(), "{:?} {:?}", m.click, m.dialog);
+        let m = read("<div>{open && <><div className=\"backdrop\" /><div role=\"dialog\">x</div></>}</div>", "tsx").unwrap();
+        assert!(m.dialog.is_some());
+        // a scrim before the fragment is the dialog's scrim too
+        let m = read("<div><div className=\"backdrop\" /><><div role=\"dialog\">x</div></></div>", "tsx").unwrap();
+        assert!(m.dialog.is_some());
+        // and a fragment still reads as its parent's children: nothing before it, no scrim
+        assert!(read("<div><><div role=\"dialog\">x</div></></div>", "tsx").unwrap().dialog.is_none());
+    }
+
+    #[test]
+    fn hidden_false_is_on_screen() {
+        assert_eq!(read("<input hidden={false} name=\"email\" />", "tsx").unwrap().unlabeled.len(), 1);
+        assert!(read("<input hidden name=\"email\" />", "tsx").unwrap().unlabeled.is_empty());
+        assert!(read("<input hidden={true} name=\"email\" />", "tsx").unwrap().unlabeled.is_empty());
+    }
+
+    #[test]
+    fn an_inline_confirmation_is_focused_only_by_an_autofocus_attribute() {
+        let alert = |s: &str| read(s, "tsx").unwrap().alert.is_some();
+        assert!(alert("<div role=\"alertdialog\">{/* autoFocus later */}Hapus?<button>Ya</button></div>"));
+        assert!(alert("<div role=\"alertdialog\" data-x=\"autoFocus\">Hapus?<button autoFocus={false}>Ya</button></div>"));
+        assert!(!alert("<div role=\"alertdialog\">Hapus?<button autoFocus>Ya</button></div>"));
+        assert!(!alert("<div role=\"alertdialog\" autoFocus={open}>Hapus?<Button>Ya</Button></div>"));
     }
 
     #[test]
