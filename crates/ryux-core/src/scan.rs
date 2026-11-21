@@ -861,17 +861,93 @@ fn detectors() -> &'static [Detector] {
     D
 }
 
-/// Blank out comments (keeping UTF-16 length and line breaks) so commented-out code is not scanned.
-pub fn strip_comments(raw: &str, ext: &str) -> String {
-    let blank = |s: &str| -> String { s.chars().map(|c| if c == '\n' { "\n".to_string() } else { " ".repeat(c.len_utf16()) }).collect() };
+fn blank(s: &str) -> String {
+    s.chars().map(|c| if c == '\n' { "\n".to_string() } else { " ".repeat(c.len_utf16()) }).collect()
+}
+
+/// The comments the parser finds in a script, blanked; `None` when it cannot read the script.
+fn js_comments(code: &str, kind: oxc_span::SourceType) -> Option<String> {
+    let alloc = oxc_allocator::Allocator::default();
+    let ret = oxc_parser::Parser::new(&alloc, code, kind).parse();
+    if ret.fatal_error || !ret.diagnostics.is_empty() {
+        return None;
+    }
+    let mut out = String::with_capacity(code.len());
+    let mut last = 0;
+    for c in ret.program.comments.iter() {
+        let (a, b) = (c.span.start as usize, c.span.end as usize);
+        if a < last || b > code.len() {
+            return None;
+        }
+        out.push_str(&code[last..a]);
+        out.push_str(&blank(&code[a..b]));
+        last = b;
+    }
+    out.push_str(&code[last..]);
+    Some(out)
+}
+
+/// Comments by pattern, for a part no parser reads: `/* */` and `<!-- -->`, and `//` unless `line` is false.
+fn comments_by_pattern(raw: &str, line: bool) -> String {
     let mut text = raw.to_string();
     for p in [r"\/\*[\s\S]*?\*\/", r"<!--[\s\S]*?-->"] {
         text = replace_with(re(p, "g"), &text, |h| blank(h.g(0)));
     }
-    if ext != "css" {
+    if line {
         text = replace_with(re(r#"(^|[^:\\"'`])(\/\/[^\n]*)"#, "g"), &text, |h| format!("{}{}", h.g(1), blank(h.g(2))));
     }
     text
+}
+
+fn script_kind(ext: &str) -> Option<oxc_span::SourceType> {
+    use oxc_span::SourceType;
+    Some(match ext {
+        "js" | "mjs" | "cjs" | "jsx" => SourceType::jsx(),
+        "ts" | "mts" | "cts" => SourceType::ts(),
+        "tsx" => SourceType::tsx(),
+        _ => return None,
+    })
+}
+
+/// A page's `<style>` and `<script>` parts, each blanked by its own comment syntax; the rest by pattern
+/// (`<!-- -->` only in plain HTML, where `/*` and `//` are text).
+fn page_comments(raw: &str, ext: &str) -> String {
+    let plain = ext == "html" || ext == "htm";
+    let mut out = String::with_capacity(raw.len());
+    let mut last = 0;
+    let rest = |s: &str| if plain { replace_with(re(r"<!--[\s\S]*?-->", "g"), s, |h| blank(h.g(0))) } else { comments_by_pattern(s, true) };
+    for h in re(r"(<style\b[^>]*>)([\s\S]*?)(<\/style\s*>)|(<script\b[^>]*>)([\s\S]*?)(<\/script\s*>)", "gi").match_all(raw) {
+        out.push_str(&rest(&raw[last..h.start]));
+        let style = h.has(1);
+        let g = if style { 1 } else { 4 };
+        let (open, body, close) = (h.g(g), h.g(g + 1), h.g(g + 2));
+        let lang = re(r#"\blang\s*=\s*["']?([a-z]+)"#, "i").exec(open).map(|m| m.g(1).to_lowercase());
+        let body = if style {
+            comments_by_pattern(body, matches!(lang.as_deref(), Some("scss" | "sass" | "less")))
+        } else {
+            let kind = match lang.as_deref() { Some("ts") => oxc_span::SourceType::ts(), Some("tsx") => oxc_span::SourceType::tsx(), _ => oxc_span::SourceType::mjs() };
+            js_comments(body, kind).unwrap_or_else(|| comments_by_pattern(body, true))
+        };
+        out.push_str(open);
+        out.push_str(&body);
+        out.push_str(close);
+        last = h.end;
+    }
+    out.push_str(&rest(&raw[last..]));
+    out
+}
+
+/// Blank out comments (keeping UTF-16 length and line breaks) so commented-out code is not scanned. Scripts are
+/// read by the parser, so "/*" or "//" inside a string stays text.
+pub fn strip_comments(raw: &str, ext: &str) -> String {
+    if let Some(kind) = script_kind(ext) {
+        return js_comments(raw, kind).unwrap_or_else(|| comments_by_pattern(raw, true));
+    }
+    match ext {
+        "html" | "htm" | "vue" | "svelte" | "astro" => page_comments(raw, ext),
+        "css" => comments_by_pattern(raw, false),
+        _ => comments_by_pattern(raw, true),
+    }
 }
 
 fn replace_with(r: &JsRe, s: &str, f: impl Fn(&crate::jsre::Hit) -> String) -> String {
@@ -898,12 +974,15 @@ struct Ignores {
     lines: HashMap<usize, HashSet<String>>,
 }
 
-fn ignores(raw: &str) -> Ignores {
+/// `ryux-ignore` notes. A note is in a comment (`text` has it blanked) and skips the rules whose IDs follow it on
+/// that line, in any case and with a reason anywhere; with no ID it skips every rule. It covers its own line and
+/// the next.
+fn ignores(raw: &str, text: &str) -> Ignores {
     let mut file = HashSet::new();
     let mut lines: HashMap<usize, HashSet<String>> = HashMap::new();
-    for (i, line) in raw.split('\n').enumerate() {
-        let Some(m) = re(r"ryux-ignore(-file)?((?:[\s,]+RX-[A-Z0-9]+-\d+)*)", "").exec(line) else { continue };
-        let mut ids = re(r"RX-[A-Z0-9]+-\d+", "g").matches(m.g(2));
+    for (i, (line, stripped)) in raw.split('\n').zip(text.split('\n')).enumerate() {
+        let Some(m) = re(r"(?<![\w-])ryux-ignore(-file)?\b", "").match_all(line).into_iter().find(|m| stripped.get(m.start..m.end).is_some_and(|t| t.trim().is_empty())) else { continue };
+        let mut ids: Vec<String> = re(r"\bRX-[A-Z0-9]+-\d+\b", "gi").matches(&line[m.end..]).into_iter().map(|id| id.to_uppercase()).collect();
         if ids.is_empty() {
             ids = vec!["*".into()];
         }
@@ -980,7 +1059,7 @@ fn run(sources: &[Source], opts: ScanOptions, detectors: &[Detector]) -> Vec<Val
     ctx.files = files;
     let mut out: Vec<(usize, usize, usize, Value)> = Vec::new();
     for (si, src) in sources.iter().enumerate() {
-        let ign = ignores(&src.raw);
+        let ign = ignores(&src.raw, &src.text);
         for d in detectors {
             if !(d.exts)(&src.ext) || opts.skip.contains(d.rule) || ign.file.contains(d.rule) || ign.file.contains("*") {
                 continue;
@@ -1565,6 +1644,66 @@ mod tests {
         let want = references(&[index], true);
         assert!(want.contains(&"src/components/Skeleton.tsx".to_string()) && want.contains(&"src/components/Card.tsx".to_string()), "{want:?}");
         assert!(!want.iter().any(|p| p.contains("pkg")), "{want:?}");
+    }
+
+    fn rupiah(path: &str, raw: &str) -> Vec<String> {
+        found(path, raw, "RX-CD-02", "")
+    }
+
+    #[test]
+    fn a_comment_marker_inside_a_string_is_text_not_a_comment() {
+        // a route or a glob holds "/*"; the code after it is still read
+        assert_eq!(rupiah("a.tsx", "<Route path=\"/docs/*\" element={<Docs />} />;\nconst p = <p>Rp 10.000,00</p>;\n/** helper */\nexport const x = 1;"), vec!["2:14"]);
+        assert_eq!(rupiah("a.ts", "const g = \"src/**/*.ts\";\nconst p = \"Rp 10.000,00\";\n/* end */"), vec!["2:12"]);
+        // "//" in a string is text too
+        assert_eq!(rupiah("a.ts", "const u = \"a // Rp 10.000,00\";"), vec!["1:17"]);
+        // real comments are still not read, and columns after them do not move
+        assert!(rupiah("a.tsx", "/* Rp 10.000,00 */\n// Rp 10.000,00\nconst A = () => <p>{/* Rp 10.000,00 */}</p>;").is_empty());
+        assert_eq!(rupiah("a.ts", "/* é */ const p = \"Rp 10.000,00\";"), vec!["1:20"]);
+        // a file the parser cannot read still has its comments blanked
+        assert!(rupiah("a.ts", "const = ;\n// Rp 10.000,00").is_empty());
+    }
+
+    #[test]
+    fn a_page_reads_css_and_scripts_by_their_own_comment_syntax() {
+        // "//" in CSS is a URL, not a comment
+        assert_eq!(rupiah("a.html", "<style>.a{background:url(//cdn.x/a.png)} .b{}</style><p>Rp 10.000,00</p>"), vec!["1:57"]);
+        assert_eq!(rupiah("a.vue", "<template><p>Rp 10.000,00</p></template>\n<style>.a{background:url(//cdn.x/a.png)}</style>"), vec!["1:14"]);
+        // a script's string holds "/*"
+        assert_eq!(rupiah("a.html", "<script>const r = \"/docs/*\";</script>\n<p>Rp 10.000,00</p>\n<script>/* x */</script>"), vec!["2:4"]);
+        // comments are still blanked in each part
+        assert!(rupiah("a.html", "<!-- <p>Rp 10.000,00</p> -->\n<style>/* Rp 10.000,00 */</style>\n<script>// Rp 10.000,00\n</script>").is_empty());
+        // SCSS and Less have line comments
+        assert!(rupiah("a.vue", "<style lang=\"scss\">\n// Rp 10.000,00\n</style>").is_empty());
+        assert!(rupiah("a.scss", "// Rp 10.000,00").is_empty());
+    }
+
+    #[test]
+    fn ryux_ignore_skips_only_the_rules_it_names() {
+        let price = "<p>Rp 10.000,00 <img src=\"a.png\" /></p>";
+        let rules = |raw: &str| -> Vec<String> {
+            let opts = ScanOptions { folder: false, skip: HashSet::new(), design: None, context: Vec::new() };
+            let mut r: Vec<String> = scan_sources(&[to_source("a.tsx", raw)], opts).into_iter().map(|f| f["rule"].as_str().unwrap().to_string()).collect();
+            r.dedup();
+            r
+        };
+        let all = rules(price);
+        assert!(all.contains(&"RX-CD-02".to_string()) && all.len() > 1, "{all:?}");
+        let rest: Vec<String> = all.iter().filter(|r| *r != "RX-CD-02").cloned().collect();
+        for note in [
+            "{/* ryux-ignore RX-CD-02 harga dari API */}",
+            "{/* ryux-ignore: RX-CD-02 harga dari API */}",
+            "{/* ryux-ignore rx-cd-02 */}",
+            "{/* ryux-ignore (harga dari API) RX-CD-02 */}",
+        ] {
+            assert_eq!(rules(&format!("{note}\n{price}")), rest, "{note}");
+        }
+        // no ID: every rule, as before
+        assert!(rules(&format!("{{/* ryux-ignore harga dari API */}}\n{price}")).is_empty());
+        // the words in code or text are not a note
+        for text in ["const help = \"add ryux-ignore to skip a line\";", "<div data-ryux-ignore>"] {
+            assert_eq!(rules(&format!("{text}\n{price}")), all, "{text}");
+        }
     }
 
     #[test]
