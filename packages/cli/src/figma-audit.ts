@@ -28,7 +28,11 @@ export async function figmaAudit(figma, pageName) {
   const overlap = (a, b) => Math.max(0, Math.min(a.x + a.width, b.x + b.width) - Math.max(a.x, b.x)) * Math.max(0, Math.min(a.y + a.height, b.y + b.height) - Math.max(a.y, b.y));
   const short = (s, n = 40) => (s.length > n ? `${s.slice(0, n - 1)}…` : s);
   const hasComponents = (f) => "findOne" in f && !!f.findOne((n) => n.type === "COMPONENT" || n.type === "COMPONENT_SET");
-  const screens = page.children.flatMap((n) => (n.type === "SECTION" ? n.children : [n])).filter((n) => n.type === "FRAME" && n.visible !== false && !hasComponents(n));
+  // the page's layers, with sections (and sections in sections) opened
+  const opened = (ns) => ns.flatMap((n) => (n.type === "SECTION" ? opened(n.children) : [n]));
+  // the descendants on screen: a hidden layer and all it holds are left out
+  const findShown = (n, fn) => { const out = []; const go = (m) => { for (const k of m.children || []) { if (k.visible === false) continue; if (fn(k)) out.push(k); go(k); } }; go(n); return out; };
+  const screens = opened(page.children).filter((n) => n.type === "FRAME" && n.visible !== false && !hasComponents(n));
 
   const findings = [];
   const add = (rule, level, frame, node, message) => findings.push({ rule, level, frame: frame.name, node: node ? node.name : "", message });
@@ -87,7 +91,7 @@ export async function figmaAudit(figma, pageName) {
     if (loose.length <= 2) c.layoutScreens++;
     else add("RX-DS-12", loose.length > 5 ? "fail" : "warn", frame, loose[0].n, `${loose.length} layers placed by x and y outside auto layout (e.g. "${short(loose[0].n.name, 30)}"); build the screen from auto layout sections`);
     for (const e of nodes) if (e.n !== frame && !e.inInstance && Array.isArray(e.n.effects) && e.n.effects.some((x) => x.visible !== false) && !e.n.effectStyleId) c.rawEffects++;
-    const text = (n) => ("findAll" in n ? n.findAll((t) => t.type === "TEXT" && t.visible !== false).map((t) => t.characters).join(" ") : n.characters || "").trim();
+    const text = (n) => ("findAll" in n ? findShown(n, (t) => t.type === "TEXT" && t.visible !== false).map((t) => t.characters).join(" ") : n.characters || "").trim();
     const opaque = (e) => { const ps = visiblePaints(e.n.fills); return e.a >= 0.9 && ps.some((p) => p.type !== "SOLID" || (p.opacity ?? 1) >= 0.9); };
 
     for (const e of nodes) {
@@ -111,8 +115,8 @@ export async function figmaAudit(figma, pageName) {
     for (const e of nodes) {
       const t = e.n;
       if (t.type !== "TEXT" || !t.characters.trim() || MIXED(t.fills) || MIXED(t.fontSize)) continue;
-      const tp = visiblePaints(t.fills).find((p) => p.type === "SOLID");
-      if (!tp) continue;
+      const solid = visiblePaints(t.fills).filter((p) => p.type === "SOLID");
+      if (!solid.length) continue;
       const b = box(t), cx = b.x + b.width / 2, cy = b.y + b.height / 2;
       let bg = { r: 1, g: 1, b: 1 }, unknown = false;
       for (const u of nodes.slice(0, order.get(t))) {
@@ -124,7 +128,8 @@ export async function figmaAudit(figma, pageName) {
         }
       }
       if (unknown) { c.contrastUnknown++; continue; }
-      const fg = over(tp.color, (tp.opacity ?? 1) * e.a, bg);
+      // the fills bottom to top, so the top one shows; the layer's opacity fades them together
+      const fg = solid.length === 1 ? over(solid[0].color, (solid[0].opacity ?? 1) * e.a, bg) : over(solid.reduce((k, p) => over(p.color, p.opacity ?? 1, k), bg), e.a, bg);
       const style = MIXED(t.fontName) ? "" : t.fontName.style;
       const large = t.fontSize >= 24 || (t.fontSize >= 18.66 && /bold|black|heavy|semi/i.test(style));
       const r = ratio(fg, bg), need = large ? 3 : 4.5;
@@ -234,8 +239,8 @@ export async function figmaAudit(figma, pageName) {
     const rows = new Map();
     for (const e of outermost(/\b(button|btn|cta)\b/i)) { const parent = e.ancestors[e.ancestors.length - 1]; if (!rows.has(parent)) rows.set(parent, []); rows.get(parent).push(e.n); }
     const cy = (n) => box(n).y + box(n).height / 2;
-    const label = (n) => ("findAll" in n ? n.findAll((t) => t.type === "TEXT" && t.visible !== false && t.characters.trim())[0] : null);
-    const icon = (n) => "findAll" in n && n.findAll((t) => t.visible !== false && (t.type === "VECTOR" || t.type === "BOOLEAN_OPERATION" || /\bicon\b/i.test(t.name))).length > 0;
+    const label = (n) => ("findAll" in n ? findShown(n, (t) => t.type === "TEXT" && t.visible !== false && t.characters.trim())[0] : null);
+    const icon = (n) => "findAll" in n && findShown(n, (t) => t.visible !== false && (t.type === "VECTOR" || t.type === "BOOLEAN_OPERATION" || /\bicon\b/i.test(t.name))).length > 0;
     for (const row of rows.values()) {
       const line = row.filter((n) => row.some((o) => o !== n && Math.abs(cy(o) - cy(n)) < 8));
       if (line.length < 2) continue;
@@ -254,7 +259,7 @@ export async function figmaAudit(figma, pageName) {
   }
 
   // Nothing on the page outside the screens but components and the frames or sections that hold them.
-  for (const n of page.children.flatMap((m) => (m.type === "SECTION" ? m.children : [m]))) {
+  for (const n of opened(page.children)) {
     if (screens.includes(n) || n.type === "COMPONENT" || n.type === "COMPONENT_SET" || hasComponents(n) || n.visible === false) continue;
     c.strayLayers++;
     add("RX-DS-12", "warn", { name: page.name }, n, `"${short(n.name, 30)}" sits on the page outside the screens; delete it or move it into the parts frame`);

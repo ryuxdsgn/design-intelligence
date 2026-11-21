@@ -258,3 +258,25 @@ test("figcraft: a FigCraft document is read through the same audit (boxes, style
   assert.deepEqual(r.annotations, { "Sample data": 1 });
   assert.match(r.findings.find((f) => f.rule === "RX-UI-15").message, /"Save QR", "Share"\): labels 8 px apart, an icon in some, not all/);
 });
+
+test("contrast: a text shows its top fill, so white over ink on white fails", async () => {
+  const on = (fills) => audit([screen("01", [text("Total", "Rp1.250.000", [16, 100, 200, 20], { fills })])]);
+  assert.deepEqual(rules(await on([ink, white])), ["fail RX-A11Y-01"]);
+  assert.deepEqual(rules(await on([white, ink])), []);
+});
+
+test("a hidden layer's insides are not on screen: a hidden busy label or icon counts for nothing", async () => {
+  const busy = text("Status", "Confirming payment", [100, 700, 200, 20]);
+  const loading = node("FRAME", "Loading", [120, 780, 150, 20], { visible: false }, [text("Label", "Paying…", [120, 780, 150, 20], { fills: [white] })]);
+  const button = node("INSTANCE", "Button", [20, 764, 350, 52], { fills: [ink] }, [text("Label", "Pay Rp1.250.000", [120, 780, 150, 20], { fills: [white] }), loading]);
+  assert.deepEqual(rules(await audit([screen("08", [busy, button])])), ["warn RX-IX-02"]);
+  const btn = (name, x, hiddenIcon) => node("FRAME", name, [x, 600, 160, 44], { strokes: [pale] }, [...(hiddenIcon ? [node("FRAME", "Icon", [x + 40, 612, 20, 20], { visible: false }, [node("VECTOR", "Share", [x + 40, 612, 20, 20])])] : []), text("Label", name.replace(" button", ""), [x + 64, 612, 80, 20])]);
+  assert.deepEqual(rules(await audit([screen("06", [btn("Save QR button", 16, false), btn("Share button", 200, true)])])), []);
+});
+
+test("a screen inside a section inside a section is a screen", async () => {
+  const section = (name, children) => node("SECTION", name, [0, 0, 1000, 1000], {}, children);
+  const r = await audit([section("Flow", [section("Checkout", [screen("01", [text("Hint", "Pick a seat", [16, 100, 200, 20], { fills: [pale] })])])])]);
+  assert.equal(r.counts.screens, 1);
+  assert.deepEqual(rules(r), ["fail RX-A11Y-01"]);
+});

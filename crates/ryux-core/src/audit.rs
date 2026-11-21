@@ -122,6 +122,23 @@ impl<'a> Tree<'a> {
         }
         out
     }
+    /// The descendants on screen: like `find_all`, but a hidden layer and all it holds are left out.
+    fn find_shown(&self, i: usize, f: &mut dyn FnMut(usize) -> bool) -> Vec<usize> {
+        let mut out = Vec::new();
+        let mut stack: Vec<usize> = self.kids[i].iter().flatten().rev().copied().collect();
+        while let Some(c) = stack.pop() {
+            if !self.visible(c) {
+                continue;
+            }
+            if f(c) {
+                out.push(c);
+            }
+            if let Some(ks) = &self.kids[c] {
+                stack.extend(ks.iter().rev());
+            }
+        }
+        out
+    }
     fn has_components(&self, i: usize) -> bool {
         self.kids[i].is_some() && !self.find_all(i, &mut |n| matches!(self.ty(n), "COMPONENT" | "COMPONENT_SET")).is_empty()
     }
@@ -242,7 +259,20 @@ pub fn audit(input: &Value) -> Value {
     };
     static RES: OnceLock<Res> = OnceLock::new();
     let r = RES.get_or_init(Res::new);
-    let flat: Vec<usize> = proots.iter().flat_map(|&n| if t.ty(n) == "SECTION" { t.kids[n].clone().unwrap_or_default() } else { vec![n] }).collect();
+    // the page's layers, with sections (and sections in sections) opened
+    fn open(t: &Tree, n: usize, out: &mut Vec<usize>) {
+        if t.ty(n) == "SECTION" {
+            for &k in t.kids[n].iter().flatten() {
+                open(t, k, out);
+            }
+        } else {
+            out.push(n);
+        }
+    }
+    let mut flat: Vec<usize> = Vec::new();
+    for &n in proots.iter() {
+        open(&t, n, &mut flat);
+    }
     let screens: Vec<usize> = flat.iter().copied().filter(|&n| t.ty(n) == "FRAME" && t.visible(n) && !t.has_components(n)).collect();
 
     let mut o = Out { findings: Vec::new(), c: COUNTS.iter().map(|k| (*k, 0)).collect() };
@@ -325,7 +355,7 @@ pub fn audit(input: &Value) -> Value {
         }
         let text_of = |n: usize| -> String {
             if t.kids[n].is_some() {
-                let parts: Vec<String> = t.find_all(n, &mut |x| t.ty(x) == "TEXT" && t.visible(x)).iter().map(|&x| string(t.get(x, "characters"))).collect();
+                let parts: Vec<String> = t.find_shown(n, &mut |x| t.ty(x) == "TEXT" && t.visible(x)).iter().map(|&x| string(t.get(x, "characters"))).collect();
                 trim(&parts.join(" ")).to_string()
             } else {
                 let c = t.get(n, "characters");
@@ -376,7 +406,10 @@ pub fn audit(input: &Value) -> Value {
                 continue;
             }
             let ps = visible_paints(t.get(n, "fills"));
-            let Some(tp) = ps.iter().find(|p| p.get("type").and_then(Value::as_str) == Some("SOLID")) else { continue };
+            let solid: Vec<&&Value> = ps.iter().filter(|p| p.get("type").and_then(Value::as_str) == Some("SOLID")).collect();
+            if solid.is_empty() {
+                continue;
+            }
             let b = t.bx(n);
             let (cx, cy) = (b.x + b.w / 2.0, b.y + b.h / 2.0);
             let mut bg = Rgb { r: 1.0, g: 1.0, b: 1.0 };
@@ -401,7 +434,13 @@ pub fn audit(input: &Value) -> Value {
                 o.inc("contrastUnknown", 1);
                 continue;
             }
-            let fg = over(rgb(tp.get("color")), num_or(tp.get("opacity"), 1.0) * e.a, bg);
+            // the fills bottom to top, so the top one shows; the layer's opacity fades them together
+            let fg = if solid.len() == 1 {
+                over(rgb(solid[0].get("color")), num_or(solid[0].get("opacity"), 1.0) * e.a, bg)
+            } else {
+                let paint = solid.iter().fold(bg, |c, p| over(rgb(p.get("color")), num_or(p.get("opacity"), 1.0), c));
+                over(paint, e.a, bg)
+            };
             let style = if mixed(t.get(n, "fontName")) { String::new() } else { string(t.get(n, "fontName").and_then(|f| f.get("style"))) };
             let fs = num(t.get(n, "fontSize"));
             let large = fs >= 24.0 || (fs >= 18.66 && r.heavy.is_match(&style));
@@ -618,9 +657,9 @@ pub fn audit(input: &Value) -> Value {
         let cy = |n: usize| { let b = t.bx(n); b.y + b.h / 2.0 };
         let label = |n: usize| -> Option<usize> {
             if t.kids[n].is_none() { return None; }
-            t.find_all(n, &mut |x| t.ty(x) == "TEXT" && t.visible(x) && !trim(&string(t.get(x, "characters"))).is_empty()).first().copied()
+            t.find_shown(n, &mut |x| t.ty(x) == "TEXT" && t.visible(x) && !trim(&string(t.get(x, "characters"))).is_empty()).first().copied()
         };
-        let icon = |n: usize| t.kids[n].is_some() && !t.find_all(n, &mut |x| t.visible(x) && (matches!(t.ty(x), "VECTOR" | "BOOLEAN_OPERATION") || r.icon.is_match(&t.name(x)))).is_empty();
+        let icon = |n: usize| t.kids[n].is_some() && !t.find_shown(n, &mut |x| t.visible(x) && (matches!(t.ty(x), "VECTOR" | "BOOLEAN_OPERATION") || r.icon.is_match(&t.name(x)))).is_empty();
         let spread = |xs: &[f64]| xs.iter().copied().fold(f64::NEG_INFINITY, max_js) - xs.iter().copied().fold(f64::INFINITY, min_js);
         for (_, row) in &rows {
             let line: Vec<usize> = row.iter().copied().filter(|&n| row.iter().any(|&o2| o2 != n && (cy(o2) - cy(n)).abs() < 8.0)).collect();
