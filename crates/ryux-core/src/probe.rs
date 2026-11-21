@@ -200,6 +200,8 @@ fn hypot(a: f64, b: f64) -> f64 {
 }
 
 struct Page<'a> {
+    /// The colour behind a page with no background of its own: white, or the dark canvas of `color-scheme: dark`.
+    canvas: Colour,
     re: Res,
     vw: f64,
     vh: f64,
@@ -277,16 +279,41 @@ impl<'a> Page<'a> {
                     .collect()
             });
         let top = idx(input.get("top")).filter(|t| *t < els.len());
+        // indexes the extract never sends past the elements are dropped, not followed
+        let n = els.len();
+        let texts: Vec<Text> = texts
+            .into_iter()
+            .map(|mut t| {
+                let keep = |h: Vec<Option<usize>>| h.into_iter().map(|x| x.filter(|x| *x < n)).collect::<Vec<_>>();
+                t.open = t.open.map(keep);
+                t.end = t.end.map(|(r, h)| (r, keep(h)));
+                t
+            })
+            .collect();
+        let bounded = |mut m: HashMap<usize, Link<'a>>| {
+            m.retain(|k, _| *k < n);
+            for l in m.values_mut() {
+                l.op = l.op.filter(|o| *o < n);
+            }
+            m
+        };
+        let re = Res::new();
+        let canvas = input.get("canvas").and_then(Value::as_str).and_then(|c| re.rgba.exec(c).map(|_| c)).map(|c| {
+            let m = re.rgba.exec(c).unwrap();
+            let parts: Vec<f64> = re.split.split(m.g(1)).into_iter().filter(|p| !p.is_empty()).map(|p| js_number(&re, &p)).collect();
+            [parts.first().copied().unwrap_or(255.0), parts.get(1).copied().unwrap_or(255.0), parts.get(2).copied().unwrap_or(255.0), 1.0]
+        });
         let mut page = Page {
-            re: Res::new(),
+            canvas: canvas.unwrap_or([255.0, 255.0, 255.0, 1.0]),
+            re,
             vw: num(input.get("vw")),
             vh: num(input.get("vh")),
             scroll_width: num(input.get("scrollWidth")),
             top,
             kids,
             texts,
-            open: links(&input["chains"]["open"]),
-            end: links(&input["chains"]["end"]),
+            open: bounded(links(&input["chains"]["open"])),
+            end: bounded(links(&input["chains"]["end"])),
             scrolling: idx(input.get("scrollingElement")),
             shown: Vec::new(),
             outside: Vec::new(),
@@ -442,13 +469,28 @@ impl<'a> Page<'a> {
             let o = op(x);
             if o >= 1.0 { c } else { [c[0] * o + behind[0] * (1.0 - o), c[1] * o + behind[1] * (1.0 - o), c[2] * o + behind[2] * (1.0 - o), 1.0] }
         }
-        let white = [255.0, 255.0, 255.0, 1.0];
         let top = chain.len() - 1;
-        Some((paint(chain, top, white, None, &op, &bg), paint(chain, top, white, fg, &op, &bg)))
+        Some((paint(chain, top, self.canvas, None, &op, &bg), paint(chain, top, self.canvas, fg, &op, &bg)))
+    }
+    /// The page's own colour: what is on top of its first line, unless that is a fixed or sticky bar over it.
+    fn page_background(&self) -> Option<Colour> {
+        let top = self.top.filter(|&t| !self.pinned[t]).unwrap_or(BODY);
+        self.background(top).or_else(|| self.background(BODY))
     }
     /// The solid colour behind an element's text.
     fn background(&self, i: usize) -> Option<Colour> {
         self.painted(i, None).map(|p| p.0)
+    }
+    /// Inside an element (below <body>) that clips or scrolls sideways, so it does not widen the page.
+    fn clipped_sideways(&self, i: usize) -> bool {
+        let mut e = self.parent(i);
+        while let Some(x) = e.filter(|&x| x > BODY) {
+            if self.s(x, "overflow").split_whitespace().next().is_some_and(|o| o != "visible") {
+                return true;
+            }
+            e = self.parent(x);
+        }
+        false
     }
     fn scroller_of(&self, i: usize) -> Option<usize> {
         let mut e = self.parent(i);
@@ -555,6 +597,14 @@ impl Res {
 }
 
 /// `shadow.split(/,(?![^(]*\))/)`: at commas outside parentheses.
+/// The words of `text` (longer than two letters) that the bar shows too, as whole words in any case.
+fn repeated_words(text: &str, bar: &str) -> Vec<String> {
+    static WORDS: std::sync::OnceLock<JsRe> = std::sync::OnceLock::new();
+    let words = WORDS.get_or_init(|| crate::jsre::js(r"[\p{L}\p{N}][\p{L}\p{N}.,:]*", "gu"));
+    let in_bar: Vec<String> = words.matches(bar).into_iter().map(|w| w.to_lowercase()).collect();
+    words.matches(text).into_iter().filter(|w| len16(w) > 2 && in_bar.contains(&w.to_lowercase())).collect()
+}
+
 fn split_shadows(s: &str) -> Vec<String> {
     let mut out = Vec::new();
     let mut last = 0;
@@ -619,7 +669,7 @@ impl<'a> Page<'a> {
                 .filter(|&i| {
                     let r = self.els[i].r;
                     let p = self.parent(i).map(|p| self.els[p].r);
-                    r.right() > vw + 1.0 && r.w > 0.0 && p.map_or(true, |p| p.right() <= vw + 1.0) && self.shown[i]
+                    r.right() > vw + 1.0 && r.w > 0.0 && p.map_or(true, |p| p.right() <= vw + 1.0) && self.shown[i] && !self.clipped_sideways(i)
                 })
                 .collect();
             let names: Vec<String> = culprits.iter().take(3).map(|&i| format!("{} (to {}px)", self.selector(i), num_str(round(self.els[i].r.right())))).collect();
@@ -656,7 +706,9 @@ impl<'a> Page<'a> {
             if let [(_, top, count, first)] = groups[..] {
                 let action = (2..n).find(|&i| {
                     let el = &self.els[i];
-                    (el.tag == "BUTTON" || el.v.get("role").and_then(Value::as_str) == Some("button"))
+                    (matches!(el.tag, "BUTTON" | "A")
+                        || (el.tag == "INPUT" && matches!(el.v.get("ty").and_then(Value::as_str), Some("submit" | "button")))
+                        || el.v.get("role").and_then(Value::as_str) == Some("button"))
                         && self.shown[i]
                         && self.outside[i]
                         && el.r.w > 0.0
@@ -723,7 +775,7 @@ impl<'a> Page<'a> {
         };
         let under = &answers["under"];
         let covered = |t: &Text| -> bool {
-            match under.get(t.i.to_string()).and_then(|v| idx(Some(v))) {
+            match under.get(t.i.to_string()).and_then(|v| idx(Some(v))).filter(|b| *b < self.els.len()) {
                 Some(b) => !self.contains(b, t.e),
                 None => false,
             }
@@ -825,7 +877,7 @@ impl<'a> Page<'a> {
                 continue;
             }
             let bar_text = self.open.get(&bar).and_then(|l| l.text).unwrap_or("");
-            let repeated: Vec<String> = self.re.words.matches(t.x).into_iter().filter(|w| len16(w) > 2 && bar_text.contains(w.as_str())).collect();
+            let repeated = repeated_words(t.x, bar_text);
             let joined = repeated.join(" ");
             if !repeated.is_empty() && len16(&joined) >= 6.min(len16(t.x)) {
                 out.push(finding(
@@ -897,7 +949,7 @@ impl<'a> Page<'a> {
         }
 
         // A dark page whose one accent is a saturated neon, glowing: the default look of an AI product.
-        let page_bg = self.background(self.top.unwrap_or(BODY)).or_else(|| self.background(BODY));
+        let page_bg = self.page_background();
         if page_bg.map_or(false, |bg| lum(bg) < 0.03) {
             let neon = visible
                 .iter()
@@ -1045,6 +1097,95 @@ mod tests {
         assert!(!m[0].contains("on #000000"), "{m:?}");
         // opacity 0.9 keeps black readable
         assert!(faded(serde_json::json!({"opacity": "0.9"}), black).is_empty());
+    }
+
+    /// A page from styles and elements after <html> and <body> (parents by index), with the texts given.
+    fn page(extra: Value, styles: Value, els: Value, texts: Value) -> Value {
+        let mut st = vec![serde_json::json!({"color": "rgb(0, 0, 0)"}), serde_json::json!({"backgroundColor": "rgb(255, 255, 255)", "color": "rgb(0, 0, 0)"})];
+        st.extend(styles.as_array().unwrap().iter().cloned());
+        let r = serde_json::json!([0, 0, 320, 844]);
+        let mut all = vec![serde_json::json!({"t": "HTML", "s": 0, "r": r}), serde_json::json!({"t": "BODY", "p": 0, "s": 1, "r": r})];
+        all.extend(els.as_array().unwrap().iter().cloned());
+        let mut input = serde_json::json!({"vw": 320, "vh": 844, "scrollWidth": 320, "scrollingElement": 0, "styles": st, "els": all, "texts": texts, "answers": {}});
+        for (k, v) in extra.as_object().unwrap() {
+            input[k] = v.clone();
+        }
+        probe(&input)
+    }
+    fn rules_of(out: &Value, rule: &str) -> Vec<String> {
+        out["findings"].as_array().unwrap().iter().filter(|f| f["rule"] == rule).map(|f| f["message"].as_str().unwrap().to_string()).collect()
+    }
+
+    #[test]
+    fn a_bar_repeats_whole_words_not_letters() {
+        assert!(repeated_words("Platform fee", "Bayar for now").is_empty());
+        assert_eq!(repeated_words("Total Rp1.250.000", "Bayar Rp1.250.000"), vec!["Rp1.250.000"]);
+        assert_eq!(repeated_words("TOTAL bayar", "Total"), vec!["TOTAL"]);
+    }
+
+    #[test]
+    fn the_page_colour_is_not_a_fixed_header_over_it() {
+        let dark = serde_json::json!({"position": "fixed", "backgroundColor": "rgb(10, 10, 10)"});
+        let out = page(serde_json::json!({"top": 2}), serde_json::json!([dark]), serde_json::json!([{"t": "HEADER", "p": 1, "s": 2, "r": [0, 0, 320, 60]}]), serde_json::json!([]));
+        let input = serde_json::json!({"vw": 320, "vh": 844, "styles": [{}, {"backgroundColor": "rgb(255, 255, 255)"}, {"position": "fixed", "backgroundColor": "rgb(10, 10, 10)"}],
+            "els": [{"t": "HTML", "s": 0, "r": [0, 0, 320, 844]}, {"t": "BODY", "p": 0, "s": 1, "r": [0, 0, 320, 844]}, {"t": "HEADER", "p": 1, "s": 2, "r": [0, 0, 320, 60]}], "top": 2});
+        let p = Page::read(&input).unwrap();
+        assert_eq!(p.page_background().map(hex), Some("#ffffff".to_string()));
+        assert!(out.get("error").is_none());
+    }
+
+    #[test]
+    fn a_dark_canvas_is_the_colour_behind_a_page_with_no_background() {
+        let mk = |canvas: Option<&str>| {
+            let mut input = serde_json::json!({"vw": 320, "vh": 844, "scrollWidth": 320, "styles": [{"color": "rgb(255, 255, 255)"}],
+                "els": [{"t": "HTML", "s": 0, "r": [0, 0, 320, 844]}, {"t": "BODY", "p": 0, "s": 0, "r": [0, 0, 320, 844]}, {"t": "P", "p": 1, "s": 0, "r": [0, 0, 300, 40]}],
+                "texts": [{"e": 2, "x": "Bayar sekarang", "r": [0, 0, 300, 40]}], "answers": {}});
+            if let Some(c) = canvas {
+                input["canvas"] = c.into();
+            }
+            rules_of(&probe(&input), "RX-A11Y-01")
+        };
+        assert_eq!(mk(None).len(), 1, "white text on the default white canvas");
+        assert!(mk(Some("rgb(18, 18, 18)")).is_empty());
+    }
+
+    #[test]
+    fn an_index_past_the_elements_is_ignored_not_a_crash() {
+        let out = page(serde_json::json!({"chains": {"open": {"999": {"position": "fixed", "op": 999}}}}), serde_json::json!([{"color": "rgb(187, 187, 187)"}]),
+            serde_json::json!([{"t": "P", "p": 1, "s": 2, "r": [0, 0, 300, 40]}]), serde_json::json!([{"e": 2, "x": "Bayar", "r": [0, 0, 300, 40], "open": [999, 5000, null]}]));
+        assert!(out.get("error").is_none());
+        let out = page(serde_json::json!({"answers": {"under": {"0": 999}}}), serde_json::json!([{"color": "rgb(187, 187, 187)"}]),
+            serde_json::json!([{"t": "P", "p": 1, "s": 2, "r": [0, 0, 300, 40]}]), serde_json::json!([{"e": 2, "x": "Bayar", "r": [0, 0, 300, 40]}]));
+        assert_eq!(rules_of(&out, "RX-A11Y-01").len(), 1);
+    }
+
+    #[test]
+    fn sideways_scroll_names_what_overflows_the_page_not_what_a_scroller_holds() {
+        let out = page(serde_json::json!({"scrollWidth": 700}), serde_json::json!([{"overflow": "auto hidden"}, {}, {}]),
+            serde_json::json!([
+                {"t": "DIV", "p": 1, "s": 2, "c": "carousel", "r": [0, 0, 320, 100]},
+                {"t": "DIV", "p": 2, "s": 3, "c": "slide", "r": [0, 0, 900, 100]},
+                {"t": "TABLE", "p": 1, "s": 4, "c": "wide", "r": [0, 200, 700, 100]}
+            ]), serde_json::json!([]));
+        let m = rules_of(&out, "RX-RD-01");
+        assert_eq!(m.len(), 1);
+        assert!(m[0].contains("wide") && !m[0].contains("slide"), "{m:?}");
+    }
+
+    #[test]
+    fn a_pay_link_or_submit_input_is_the_action_too() {
+        let wide = |action: Value| {
+            let out = page(serde_json::json!({"vw": 1280, "vh": 900, "scrollWidth": 1280}), serde_json::json!([{}]),
+                serde_json::json!([
+                    {"t": "INPUT", "p": 1, "s": 2, "rg": "pay", "ol": "QRIS", "r": [0, 1200, 20, 20]},
+                    {"t": "INPUT", "p": 1, "s": 2, "rg": "pay", "ol": "BCA", "r": [0, 1240, 20, 20]},
+                    action
+                ]), serde_json::json!([]));
+            rules_of(&out, "RX-UX-15").len()
+        };
+        assert_eq!(wide(serde_json::json!({"t": "BUTTON", "p": 1, "s": 2, "ctl": 1, "nm": "Bayar Rp1.250.000", "r": [900, 700, 200, 48]})), 1);
+        assert_eq!(wide(serde_json::json!({"t": "A", "p": 1, "s": 2, "ctl": 1, "nm": "Bayar Rp1.250.000", "r": [900, 700, 200, 48]})), 1);
+        assert_eq!(wide(serde_json::json!({"t": "INPUT", "p": 1, "s": 2, "ctl": 1, "ty": "submit", "nm": "Bayar Rp1.250.000", "r": [900, 700, 200, 48]})), 1);
     }
 
     #[test]

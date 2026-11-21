@@ -10,7 +10,7 @@ import { fileURLToPath } from "node:url";
 import { SOURCE_CHECKS, SYNTAX_CHECKS } from "../dist/checks.js";
 import { readDirection as directionIn, scan as scanEngine, scanShared } from "../dist/engine.js";
 import { FIXTURES, chromium, probePage, recordDirection, recordScan, recording, toSource } from "./golden.mjs";
-import { BASICS, PAGES, QUIET, SLOP, bar, choice, choiceSplit } from "./pages.mjs";
+import { BASICS, DARK_CANVAS, FADED, PAGES, QUIET, SLOP, bar, choice, choiceSplit } from "./pages.mjs";
 import { RULES } from "../dist/intelligence/content.js";
 import { VERSION } from "../dist/product.js";
 
@@ -612,6 +612,26 @@ test("scan <url> counts a choice as in view when its heading is on the first scr
   assert.equal(found.length, 1);
   assert.match(found[0], /^warn "Metode Pembayaran" \(3 options\) starts \d+px below the first screen at 1280px/);
   assert.deepEqual(ux15(scanAt(true)), [], "the heading is on the first screen");
+  rmSync(dir, { recursive: true, force: true });
+});
+
+test("scan <url> measures contrast on the dark canvas a dark color scheme gives, and through an element's opacity", (t) => {
+  const dir = mkdtempSync(join(tmpdir(), "ryux-canvas-"));
+  const contrast = (html) => {
+    const path = join(dir, `p${Math.random().toString(36).slice(2)}.html`);
+    writeFileSync(path, html);
+    return run(process.env.RYUX_PLAYWRIGHT_CWD ?? join(dirname(cli), "..", "..", ".."), ["scan", `file://${path}`, "--widths", "390", "--json"]);
+  };
+  const dark = contrast(DARK_CANVAS);
+  if (/needs Playwright|could not start Chromium/.test(dark.out)) {
+    rmSync(dir, { recursive: true, force: true });
+    return noBrowser(t);
+  }
+  const a11y01 = (r) => JSON.parse(r.out).findings.filter((f) => f.rule === "RX-A11Y-01").map((f) => f.message);
+  assert.deepEqual(a11y01(dark), [], "light text on the dark canvas");
+  const faded = a11y01(contrast(FADED));
+  assert.equal(faded.length, 1);
+  assert.match(faded[0], /^"Segera hadir": contrast/);
   rmSync(dir, { recursive: true, force: true });
 });
 
