@@ -274,20 +274,51 @@ export async function probeAnswer(ask) {
 /** A text over an image or a gradient, made ready for a screenshot of what is behind it: scrolled into view, its
  *  glyphs (and its children's) made transparent. Returns the box to photograph (`clip`, in the viewport) and the
  *  boxes of its lines inside it (`lines`, at most 12), so only what is behind the text's own lines is sampled, not
- *  the rest of a heading it wraps inside; or null when none of it is in view. probeShow puts it back. */
+ *  the rest of a heading it wraps inside; or null when none of it is in view. When the page has redrawn the text
+ *  since the extract, it waits until the page is still (500 ms with no change, 3 s at most) and finds the element
+ *  again at the same place with the same text, once. probeShow puts it back. */
 export async function probeHide(i) {
   const frame = () => new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
-  const t = window.__ryuxProbe.nodesOf[i];
-  if (!t || !t.nodes.every((n) => n.isConnected)) return null;
+  const probe = window.__ryuxProbe;
+  const own = (el) => [...el.childNodes].filter((n) => n.nodeType === 3 && n.textContent.trim());
+  const words = (nodes) => nodes.map((n) => n.textContent).join(" ").replace(/\s+/g, " ").trim();
+  const still = () => new Promise((done) => {
+    let quiet;
+    const end = () => { watch.disconnect(); clearTimeout(quiet); clearTimeout(cap); done(); };
+    const watch = new MutationObserver(() => { clearTimeout(quiet); quiet = setTimeout(end, 500); });
+    watch.observe(document, { subtree: true, childList: true, characterData: true, attributes: true });
+    quiet = setTimeout(end, 500);
+    const cap = setTimeout(end, 3000);
+  });
+  const again = async (t) => {
+    await still();
+    const at = probe.all.indexOf(t.el);
+    const now = [document.documentElement, document.body, ...document.body.querySelectorAll("*")];
+    const el = now[at];
+    const nodes = el ? own(el) : [];
+    return nodes.length && words(nodes) === words(t.nodes) ? { el, nodes } : null;
+  };
+  let t = probe.nodesOf[i];
+  if (!t) return null;
   if (!document.getElementById("ryux-hide")) {
     const style = document.createElement("style");
     style.id = "ryux-hide";
     style.textContent = "[data-ryux-hide],[data-ryux-hide] *{color:transparent!important;-webkit-text-fill-color:transparent!important;text-shadow:none!important;caret-color:transparent!important}";
     document.head.appendChild(style);
   }
-  t.el.scrollIntoView({ block: "center" });
-  t.el.setAttribute("data-ryux-hide", "");
-  await frame();
+  for (let tries = 0; ; tries++) {
+    if (!t.nodes.every((n) => n.isConnected)) {
+      if (tries > 1) return null;
+      t = await again(t);
+      if (!t) return null;
+      probe.nodesOf[i] = t;
+      continue;
+    }
+    t.el.scrollIntoView({ block: "center" });
+    t.el.setAttribute("data-ryux-hide", "");
+    await frame();
+    if (t.nodes.every((n) => n.isConnected)) break;
+  }
   const vw = document.documentElement.clientWidth;
   const vh = window.innerHeight;
   const seen = [];

@@ -2884,13 +2884,7 @@
      "rule": "RX-A11Y-01",
      "level": "fail",
      "selector": "div.wash > span.glow",
-     "message": "\"one\": contrast 3.54:1 (#eeeeee on #7e66f6, the weakest tenth of the gradient behind it), needs 4.5:1"
-    },
-    {
-     "rule": "RX-A11Y-01",
-     "level": "fail",
-     "selector": "div.wash > span.glow",
-     "message": "\"two\": contrast 3.52:1 (#eeeeee on #7c67f7, the weakest tenth of the gradient behind it), needs 4.5:1"
+     "message": "\"one\": contrast 3.54:1 (#eeeeee on #7e66f6, the weakest tenth of the gradient behind it), needs 4.5:1; 1 more in the same color over the same gradient"
     },
     {
      "rule": "RX-AS-05",
@@ -4002,13 +3996,7 @@
      "rule": "RX-A11Y-01",
      "level": "fail",
      "selector": "div.wash > span.glow",
-     "message": "\"one\": contrast 3.39:1 (#eeeeee on #5477f5, the weakest tenth of the gradient behind it), needs 4.5:1"
-    },
-    {
-     "rule": "RX-A11Y-01",
-     "level": "fail",
-     "selector": "div.wash > span.glow",
-     "message": "\"two\": contrast 3.36:1 (#eeeeee on #5478f6, the weakest tenth of the gradient behind it), needs 4.5:1"
+     "message": "\"one\": contrast 3.39:1 (#eeeeee on #5477f5, the weakest tenth of the gradient behind it), needs 4.5:1; 1 more in the same color over the same gradient"
     },
     {
      "rule": "RX-AS-05",
@@ -11166,6 +11154,11 @@
      "fontWeight": 700,
      "color": "rgb(46, 107, 62)",
      "fontFamily": "sans-serif"
+    },
+    {
+     "display": "none",
+     "color": "rgb(17, 17, 17)",
+     "fontFamily": "sans-serif"
     }
    ],
    "els": [
@@ -11177,7 +11170,7 @@
       0,
       0,
       390,
-      498
+      580
      ]
     },
     {
@@ -11188,7 +11181,7 @@
       0,
       0,
       390,
-      498
+      580
      ]
     },
     {
@@ -11309,6 +11302,41 @@
       390,
       333.5,
       92
+     ]
+    },
+    {
+     "p": 1,
+     "t": "DIV",
+     "s": 2,
+     "r": [
+      0,
+      498,
+      390,
+      82
+     ],
+     "id": "redraw",
+     "c": "band"
+    },
+    {
+     "p": 12,
+     "t": "P",
+     "s": 3,
+     "r": [
+      16,
+      530,
+      358,
+      18
+     ]
+    },
+    {
+     "p": 1,
+     "t": "SCRIPT",
+     "s": 10,
+     "r": [
+      0,
+      0,
+      0,
+      0
      ]
     }
    ],
@@ -11624,6 +11652,58 @@
        10
       ]
      }
+    },
+    {
+     "e": 13,
+     "x": "Digambar ulang",
+     "r": [
+      16,
+      530,
+      112.953125,
+      18
+     ],
+     "open": [
+      13,
+      13,
+      13,
+      13,
+      13,
+      13,
+      13,
+      13,
+      13,
+      13,
+      13,
+      13,
+      13,
+      13,
+      13
+     ],
+     "end": {
+      "r": [
+       16,
+       530,
+       112.953125,
+       18
+      ],
+      "h": [
+       13,
+       13,
+       13,
+       13,
+       13,
+       13,
+       13,
+       13,
+       13,
+       13,
+       13,
+       13,
+       13,
+       13,
+       13
+      ]
+     }
     }
    ],
    "chains": {
@@ -11645,6 +11725,9 @@
      },
      "5": {
       "px": "faf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecf6d9c8f6d9c8f6d9c8f6d9c8f6d9c8f6d9c8f6d9c8f6d9c8f6d9c8f6d9c8f6d9c8f6d9c8f6d9c8f6d9c8f6d9c8f6d9c8f6d9c8f6d9c8f6d9c8f6d9c8f6d9c8f6d9c8f6d9c8f6d9c8faf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecf6d9c8f6d9c8f6d9c8f6d9c8f6d9c8f6d9c8f6d9c8f6d9c8f6d9c8f6d9c8f6d9c8f6d9c8f6d9c8f6d9c8f6d9c8f6d9c8f6d9c8f6d9c8f6d9c8f6d9c8f6d9c8f6d9c8f6d9c8f6d9c8"
+     },
+     "6": {
+      "px": "f3d84aefd64bedd44cebd24de7d04de5ce4ee2cc4fdfca50ddc851dbc652d7c452d5c253d3c054cfbe54cdbc56cbba56c7b857c5b658c2b459bfb259bdb05abaae5bb7ac5cb5aa5df2d84af0d64beed54cead24ce8d04ee6cf4fe2cc4fe0ca50dcc850dac651d8c553d4c253d2c053d0bf55ccbc55caba56c8b957c4b657c2b459c0b35abcb05abaae5cb8ad5cb4aa5cf3d84af0d64bedd44cead24de7d04de5ce4ee3cc4fe0ca50ddc851dac651d7c452d5c253d3c154d0be55cdbc56caba56c7b857c5b658c2b459c0b259bdb05abaae5bb7ac5cb5aa5df2d84af0d64ceed54cead24ce8d04ee6cf4ee2cc4fe0cb50dcc750dac651d8c453d4c253d2c053d0bf55ccbc55caba56c8b957c4b658c2b459c0b35abcb05abaae5bb8ad5cb4aa5cf2d84aefd64bedd44cebd24de7d04de5ce4ee3cc4fdfca50ddc851dbc652d7c452d5c253d2c054cfbe55cdbc56cbba56c7b857c5b658c2b459bfb259bdb05abaae5bb7ac5cb5aa5df2d84af0d64beed54cead24ce8d04ee6cf4fe2cc4fe0ca50dcc850dac651d8c553d4c253d2c053d0be55ccbc55caba56c8b957c4b658c2b459c0b35abcb05abaae5cb8ad5cb4aa5c"
      }
     }
    }
@@ -11665,9 +11748,15 @@
     },
     {
      "rule": "RX-A11Y-01",
+     "level": "fail",
+     "selector": "div#redraw > p",
+     "message": "\"Digambar ulang\": contrast 1.47:1 (#ffffff on #eed54c, the weakest tenth of the gradient behind it), needs 4.5:1"
+    },
+    {
+     "rule": "RX-A11Y-01",
      "level": "warn",
      "selector": "div.band > p.mix",
-     "message": "1 text not measured for contrast (under a blend mode or a filter, over a picture the page could not photograph (out of view, or redrawn by the page), or past the 40 measured), first \"Teks berbaur\": check them by eye over the busiest part of what is behind",
+     "message": "1 text not measured for contrast (under a blend mode or a filter other than a colour one, over a picture the page could not photograph (out of view, or redrawn by the page), or past the 40 measured), first \"Teks berbaur\": check them by eye over the busiest part of what is behind",
      "once": "contrast-unmeasured"
     }
    ],

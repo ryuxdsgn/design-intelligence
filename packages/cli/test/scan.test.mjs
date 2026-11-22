@@ -643,10 +643,11 @@ test("scan <url> measures text over a gradient or an image on its pixels, and na
   rmSync(dir, { recursive: true, force: true });
   if (/needs Playwright|could not start Chromium/.test(r.out)) return noBrowser(t);
   const a11y01 = JSON.parse(r.out).findings.filter((f) => f.rule === "RX-A11Y-01").map((f) => `${f.level} ${f.message}`);
-  assert.equal(a11y01.length, 3, a11y01.join("\n"));
+  assert.equal(a11y01.length, 4, a11y01.join("\n"));
   assert.match(a11y01[0], /^fail "Promo akhir tahun": contrast [\d.]+:1 \(#ffffff on #[0-9a-f]{6}, the weakest tenth of the gradient behind it\), needs 4\.5:1$/);
   assert.match(a11y01[1], /^fail "Foto terang di belakang": contrast [\d.]+:1 \(#ffffff on #f5f5f4, the weakest tenth of the image behind it\)/);
-  assert.match(a11y01[2], /^warn 1 text not measured for contrast \(under a blend mode or a filter.*first "Teks berbaur"/);
+  assert.match(a11y01[2], /^fail "Digambar ulang": contrast [\d.]+:1 \(#ffffff on #[0-9a-f]{6}, the weakest tenth of the gradient behind it\)/, "a text the page redrew is found again");
+  assert.match(a11y01[3], /^warn 1 text not measured for contrast \(under a blend mode or a filter.*first "Teks berbaur"/);
 });
 
 // Visual tells (knowledge/anti-slop.md): warn once per page, never at a single, reasoned use.
