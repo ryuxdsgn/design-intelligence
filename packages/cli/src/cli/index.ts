@@ -23,6 +23,7 @@ import { runScan } from "./scan.js";
 import { runPick } from "./pick.js";
 import { runAudit } from "./audit.js";
 import { runReportCheck } from "./report-check.js";
+import { DEFAULT_CACHE, fetchLatestFromNpm, updateNotice } from "./update-notice.js";
 import { readFile, readdir } from "node:fs/promises";
 
 type Flags = Record<string, string | boolean>;
@@ -432,11 +433,19 @@ async function runCheck(flags: Flags): Promise<void> {
     } else add("warn", CONTEXT_FILE, "no RYUX project context", "setup");
   }
   for (const a of await hookAgents(scope.root, scope.global)) add("ok", hookFile(a, scope.global), "scan hook present");
+  const notice = await updateNotice({
+    current: VERSION,
+    now: Date.now(),
+    cacheFile: process.env.RYUX_UPDATE_CACHE || DEFAULT_CACHE,
+    fetchLatest: () => fetchLatestFromNpm(),
+    env: process.env,
+  });
+  if (notice) add("warn", "npm", notice.message);
 
   const ok = !findings.some((f) => f.level === "fail");
   if (!ok) process.exitCode = 1;
   if (flags.json) {
-    console.log(JSON.stringify({ ok, cli: VERSION, scope: scope.global ? "global" : "project", installs, findings }, null, 2));
+    console.log(JSON.stringify({ ok, cli: VERSION, ...(notice ? { latest: notice.latest } : {}), scope: scope.global ? "global" : "project", installs, findings }, null, 2));
     return;
   }
   const mark = { ok: pc.green("✓"), warn: pc.yellow("!"), fail: pc.red("✗") };
