@@ -43,7 +43,9 @@ like a developer (code, file paths, framework names), be as technical as they ar
 4. **Left alone on purpose**: up to 5 things you considered and did not change, each with the reason; leave the
    section out when there were none.
 5. **Gate**: one line, such as `Gate: 9 PASS · 2 NOT VERIFIED (scan not run: no copy in the project) · detail
-   below`. A FAIL is named in the gate line and its fix is a row; it is never only under Detail. Count the gate
+   below`. A FAIL is named in the gate line and its fix is a row; it is never only under Detail. In every language the line
+   starts with `Gate:` and gives a number before each status word (PASS, FAIL, NOT VERIFIED, N/A), never "the rest"
+   or "lolos", so `ryux report-check` can compare it with the detail. Count the gate
    line from the Detail block after writing it, each area once, so the numbers match; an area with a caveat is NOT
    VERIFIED, not PASS. An area is PASS only when its module was read and the check ran. A promise the business has
    not decided is a FAIL in CONTENT (a delivery time, a price, "free"), not NOT VERIFIED. Say how something was checked as it was: a Playwright render at 390 px is not "on an

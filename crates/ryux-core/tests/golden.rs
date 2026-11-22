@@ -130,3 +130,17 @@ fn golden_scan() {
     }
     assert_eq!(bad, 0, "{bad} of {} scan cases differ", cases.len());
 }
+
+#[test]
+fn golden_report() {
+    let cases = load("report");
+    assert!(!cases.is_empty());
+    let mut failed = Vec::new();
+    for (i, case) in cases.iter().enumerate() {
+        let got = ryux_core::report_check(&case["input"]);
+        if got != case["output"] {
+            failed.push(format!("case {i} ({}):\n  want {}\n  got  {}", case["name"], case["output"], got));
+        }
+    }
+    assert!(failed.is_empty(), "{} of {} cases differ:\n{}", failed.len(), cases.len(), failed.join("\n"));
+}

@@ -22,6 +22,7 @@ import { HOOK_AGENTS, hookAgents, hookFile, installHook, removeHook, type HookAg
 import { runScan } from "./scan.js";
 import { runPick } from "./pick.js";
 import { runAudit } from "./audit.js";
+import { runReportCheck } from "./report-check.js";
 import { readFile, readdir } from "node:fs/promises";
 
 type Flags = Record<string, string | boolean>;
@@ -278,7 +279,7 @@ async function runInstall(flags: Flags): Promise<void> {
   if (flags["dry-run"]) {
     const plan = await planInstall(agents, scope);
     const present = await hookAgents(scope.root, scope.global);
-    for (const a of hooks) plan.push(`${present.includes(a) ? "update" : "add"} the scan hook in ${hookFile(a, scope.global)} (runs ryux scan after each edit)`);
+    for (const a of hooks) plan.push(`${present.includes(a) ? "update" : "add"} the scan hook in ${hookFile(a, scope.global)} (runs ryux scan after each edit${a === "claude" ? ", and checks the report's gate line before the agent stops" : ""})`);
     if (dev) {
       const d = saveDevPlan(scope.root);
       plan.push("skip" in d ? d.skip : `add ${PKG}@${VERSION} to devDependencies (${d.cmd} ${d.args.join(" ")})`);
@@ -890,6 +891,8 @@ Commands:
   audit       Measure a FigCraft design file's screens with the Figma audit's checks (contrast, targets,
               text cut by a bar, auto layout, empty bands, small text, ...). Takes .figcraft (needs
               figcraft-cli) or the .json it converts to. No LLM, no network.
+  report-check  Check that a RYUX report's one-line gate counts the same areas as its detail block.
+              Reads a file or stdin; --hook is the Claude Code Stop hook that install --hook adds.
   pick        Open an HTML page (e.g. a directions page) in the browser and wait for a click;
               print the chosen number. Used by the Design step to pick a direction without copy-paste.
   update      Update an install to this version (also migrates RYUX 1.x folders).
@@ -909,6 +912,7 @@ Options:
   --json               print check's, scan's, or audit's findings as JSON (for agents and CI)
   --page <name>        audit: the page to measure (default the file's current page)
   --hook               install: run ryux scan after each edit, for Claude Code, Codex, Cursor, and OpenCode (opt-in)
+                       (Claude Code also gets a Stop hook: ryux report-check, see below)
   --save-dev           install: add the RYUX CLI to the project's devDependencies, so agents run it with npx --no-install (opt-in)
   --list-rules         scan: list what each check looks for
   --design [file]      scan: compare colours, fonts, radius, and durations with DESIGN.md's direction
@@ -956,6 +960,8 @@ async function main(): Promise<void> {
   const flags = parseFlags(first && first.startsWith("--") ? argv : argv.slice(1));
 
   switch (cmd) {
+    case "report-check":
+      return runReportCheck(argv.slice(1));
     case "update":
       return runUpdate(flags);
     case "check":

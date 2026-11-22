@@ -142,7 +142,12 @@ export async function installHook(root: string, agent: HookAgent, global = false
   const s = await read(root, agent);
   if (!s) throw new Error(`${spec.file} is not valid JSON; fix it, then run this again`);
   const existing = ours(s, agent);
-  if (existing.some((e) => commands(e).includes(command(agent)))) return `${spec.file} (scan hook already present)`;
+  const before = JSON.stringify(s);
+  if (agent === "claude") addReportHook(s);
+  if (existing.some((e) => commands(e).includes(command(agent)))) {
+    if (JSON.stringify(s) !== before) await writeFileEnsured(join(root, spec.file), `${JSON.stringify(s, null, 2)}\n`);
+    return `${spec.file} (scan hook already present)`;
+  }
   const kept = (s.hooks?.[spec.event] ?? []).filter((e) => !existing.includes(e));
   const entry: HookEntry = spec.flat ? { matcher: spec.matcher, command: command(agent) } : { matcher: spec.matcher, hooks: [{ type: "command", command: command(agent) }] };
   s.hooks = { ...s.hooks, [spec.event]: [...kept, entry] };
@@ -151,12 +156,39 @@ export async function installHook(root: string, agent: HookAgent, global = false
   return `${spec.file} (scan hook ${existing.length ? "updated" : "added"})`;
 }
 
+// Claude Code only: a Stop hook that checks the report before the agent stops (report-check --hook).
+const reportCommand = (): string => `${CLI_CMD.replace("npx ", "npx -y ")}@${VERSION} report-check --hook`;
+const isReport = (c: unknown): boolean => typeof c === "string" && c.includes("@ryuxdsgn/design-intelligence") && c.includes("report-check --hook");
+const reportEntries = (s: Settings): HookEntry[] => (s.hooks?.Stop ?? []).filter((e) => commands(e).some(isReport));
+
+function addReportHook(s: Settings): void {
+  const existing = reportEntries(s);
+  if (existing.some((e) => commands(e).includes(reportCommand()))) return;
+  const kept = (s.hooks?.Stop ?? []).filter((e) => !existing.includes(e));
+  s.hooks = { ...s.hooks, Stop: [...kept, { hooks: [{ type: "command", command: reportCommand() }] }] };
+}
+
+function dropReportHook(s: Settings): boolean {
+  const mine = reportEntries(s);
+  if (!mine.length) return false;
+  const kept = s.hooks!.Stop!.filter((e) => !mine.includes(e));
+  if (kept.length) s.hooks!.Stop = kept;
+  else delete s.hooks!.Stop;
+  if (!Object.keys(s.hooks!).length) delete s.hooks;
+  return true;
+}
+
 /** Remove the RYUX entry and any hook lists it leaves empty. True when something was removed. */
 export async function removeHook(root: string, agent: HookAgent, global = false): Promise<boolean> {
   const spec = HOOK_SPECS[agent];
   if (agent === "opencode") return (await hasHook(root, agent, global)) && removePath(join(root, hookFile(agent, global)));
   const s = await read(root, agent);
-  if (!s || !ours(s, agent).length) return false;
+  if (!s) return false;
+  const report = agent === "claude" && dropReportHook(s);
+  if (!ours(s, agent).length) {
+    if (report) await writeFileEnsured(join(root, spec.file), `${JSON.stringify(s, null, 2)}\n`);
+    return report;
+  }
   const kept = s.hooks![spec.event]!.filter((e) => !ours(s, agent).includes(e));
   if (kept.length) s.hooks![spec.event] = kept;
   else delete s.hooks![spec.event];
