@@ -5,9 +5,15 @@ or is wrong, why, what they decide, and what to do next. The Delivery Gate still
 Detail, at the end.
 
 Headings and column names follow the reply's language. In Indonesian: **Penilaian** (Read), **Temuan** (Findings) with
-the columns `# | Di mana | Sekarang | Ubah jadi | Kenapa` (and **Bobot** for Weight), **Perlu keputusan Anda**,
+the columns `# | Di mana | Sekarang | Ubah jadi | Kenapa` for proposals and `# | Di mana | Sebelum | Sesudah | Kenapa`
+for changes already made (and **Bobot** for Weight), **Perlu keputusan Anda**,
 **Sengaja tidak diubah**, Gate, **Berikutnya** (Next), and **Rincian** (Detail). The English names below are the
 same sections.
+
+Write for the person who asked. Use plain words by default: most people reading this are not developers. Keep the
+exact place and value (a developer needs `index.html:305`), but put what it means first ("the store buttons in the
+hero, `index.html:305`"). Explain a technical term in a few words, or leave it under Detail. When the person writes
+like a developer (code, file paths, framework names), be as technical as they are.
 
 1. **Read**: two or three sentences. The biggest failure or open gap is the Read's first sentence (for example "nobody
    can download yet: the store links are empty"), never after the table. Then: does the result fit the chosen
@@ -39,7 +45,8 @@ same sections.
 5. **Gate**: one line, such as `Gate: 9 PASS · 2 NOT VERIFIED (scan not run: no copy in the project) · detail
    below`. A FAIL is named in the gate line and its fix is a row; it is never only under Detail. Count the gate
    line from the Detail block after writing it, each area once, so the numbers match; an area with a caveat is NOT
-   VERIFIED, not PASS. Say how something was checked as it was: a Playwright render at 390 px is not "on an
+   VERIFIED, not PASS. An area is PASS only when its module was read and the check ran. A promise the business has
+   not decided is a FAIL in CONTENT (a delivery time, a price, "free"), not NOT VERIFIED. Say how something was checked as it was: a Playwright render at 390 px is not "on an
    iPhone".
 6. **Next**: one line with the reply that moves on, offered in the reply's language and accepted in either: `kerjakan semua` or `kerjakan 1, 3` (`fix all`, `fix 1, 3`)
    applies those rows, re-checks, and reports again with only the rows that changed; `cek <page>` runs this report on

@@ -49,7 +49,8 @@ workflow (SKILL.md); Frame, Explore, and Evaluate happen in Design.
    usability test plan (RX-UX-12) unless the design already has one.
    In the findings table, mark each row done (`✓`) or proposed (`?`) in its first cell (`1 ✓`, `2 ?`): done is a
    change made this turn; proposed is one outside the request or one that needs the person's go-ahead, and
-   `kerjakan` or `fix` applies proposed rows only. On a new page the rows are the shaping decisions (direction, hierarchy,
+   `kerjakan` or `fix` applies proposed rows only. Done rows use Before / After (Sebelum / Sesudah) in place of
+   Now / Change, so a finished change never reads as a proposal. On a new page the rows are the shaping decisions (direction, hierarchy,
    primary action, the one signature detail) with Now as "new"; they carry the rationale (RX-PR-14) in the reply.
    A weakness you find that you can fix within the request is fixed before the report and shows as a done row;
    one outside the request is a proposed row; one that is the person's call goes under Decisions for you. A

@@ -768,3 +768,16 @@ test("owner notes 2026-11-22: failure first, honest counts, checked-as, no rule 
   assert.doesNotMatch(c, /Visibility of system status \(RX-IX-02\)/);
   assert.doesNotMatch(b["capabilities/qa.md"].replace(/\s+/g, " "), /Tokens over one-off values \(RX-DS-03\)/);
 });
+
+test("round 2 notes: Before/After for done rows, PASS needs the module read, plain words for the person who asked", () => {
+  const b = renderBundle();
+  const r = b["report.md"].replace(/\s+/g, " ");
+  assert.match(r, /Sebelum \| Sesudah/);
+  assert.match(r, /an area is PASS only when its module was read and the check ran/i);
+  assert.match(r, /a promise the business has not decided is a FAIL in CONTENT/i);
+  assert.match(r, /Write for the person who asked/);
+  assert.match(r, /plain words by default/);
+  assert.match(r, /writes like a developer/);
+  const build = b["capabilities/build.md"].replace(/\s+/g, " ");
+  assert.match(build, /done rows use Before \/ After/i);
+});
