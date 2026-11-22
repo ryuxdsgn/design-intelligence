@@ -194,7 +194,8 @@ beat a long list.
 
 ### 8. Report
 
-Each finding uses this schema:
+Report with the shared report (report.md): Read, Findings, Decisions for you, Left alone on purpose, Gate, Next,
+Detail. Work each finding out in this schema first; the schema is what the row and its Weight are made from:
 
 | Field | Content |
 | --- | --- |
@@ -210,41 +211,22 @@ Each finding uses this schema:
 | Source | the RYUX rule ID, plus a screen_id, a standard (WCAG SC), or "this design" |
 | Verify by | how a revision would show it is fixed: re-render and check X, measure Y, test Z |
 
-```
-Verdict: one sentence (what works, the biggest risk)
+The findings table has one more column, **Weight**: the severity word and the status, such as `High · Confirmed`
+or `Medium · Hypothesis`. The table holds at most 7 rows, most severe first; a finding the cap leaves out goes under Detail.
 
-What was reviewed and how
-  Source:      Figma frame "Checkout" (node 1:2) / https://... / pen.dev frame "..."
-  Analysis:    `capabilities/analyze.md`, desktop 1440 and mobile 390, via Playwright
-  Not tested:  hover and focus states, live data, screen reader
+| # | Where | Now | Change | Why | Weight |
+|---|---|---|---|---|---|
+| 1 | Pay step, "Bayar" button | No status while the payment verifies (no loading or progress element in any frame provided) | Show status with a time estimate; disable the button while verifying | Visibility of system status (RX-IX-02): a buyer paying by QRIS who sees nothing may tap twice and pay twice | High · Confirmed |
 
-Design Read
-  Clarity       Strong    · ...
-  Confidence    Weak      · ...
-  (all nine)
-
-Findings (most severe first, at most 12)
-  C-01 · severity 3 high · Interaction · confidence Medium · Hypothesis
-    Finding:         The design shows no status while the payment verifies
-    Evidence:        no loading or progress element in any frame provided (Observed in the
-                     frames; the build was not tested)
-    Impact:          buyers paying by QRIS may tap twice and pay twice
-    Recommendation:  show status with a time estimate; disable the button while verifying
-    Source:          RX-IX-02; a screen_id from the ryux MCP, when connected
-    Verify by:       a verifying-state frame exists and the button reads as disabled in it
-
-Not verifiable from this source
-  - ...
-
-Optional ideas (preferences, not defects)
-  - ...
-
-What works (keep it)
-  - ...
-
-Fix priorities
-  1. C-01 ...
-```
+- **Where** names the source too (Figma frame and node, URL, file:line); **Change** is the Recommendation; **Why**
+  carries the Impact and the principle, named and applied; Evidence goes in **Now**.
+- **Read**: the verdict (what works, the biggest risk) in two or three sentences, judged across the nine Design
+  Read dimensions; they are not printed as nine lines.
+- **Left alone on purpose** holds what works (keep it) and the optional ideas you chose not to raise as findings.
+- Under **Detail**: what was reviewed and how (source, analysis, widths, tool, what was not tested), Not
+  verifiable from this source, each finding's Confidence, Source, and Verify by, the Optional ideas
+  (preferences, not defects), and the fix priorities when they differ from the row order.
+  Not verifiable from this source and each row's Verify by are never dropped: they stay in the reply, under Detail.
 
 ## Heuristic evaluation mode
 

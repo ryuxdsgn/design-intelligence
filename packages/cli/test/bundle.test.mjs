@@ -715,3 +715,14 @@ test("Build closes with report.md: done or proposed rows, shaping decisions on a
   assert.match(b, /never invented/);
   assert.match(b, /scan <changed paths>/);
 });
+
+test("Critique reports in the shared table with Weight, at most 7, honesty labels kept", () => {
+  const c = renderBundle()["capabilities/critique.md"].replace(/\s+/g, " ");
+  assert.match(c, /\| # \| Where \| Now \| Change \| Why \| Weight \|/);
+  assert.match(c, /High · Confirmed/);
+  assert.match(c, /at most 7/);
+  assert.match(c, /Verify by[^.]*under Detail/);
+  assert.match(c, /Not verifiable from this source[^.]*under Detail/);
+  assert.match(c, /## Heuristic evaluation mode/);
+  assert.doesNotMatch(c, /at most 12/);
+});
