@@ -42,11 +42,18 @@ workflow (SKILL.md); Frame, Explore, and Evaluate happen in Design.
    around the change.
    When anything animates, run the motion passes in capabilities/qa.md as well. Run the counts of
    RX-AS-10 on the render and report them in the gate.
-7. **Close with the Delivery Gate.** CODE QUALITY and VISUAL QA need real checks (typecheck,
+7. **Close with the report (report.md).** Run the checks first: CODE QUALITY and VISUAL QA need real checks (typecheck,
    tests, render), or say what was not run. Run `npx --no-install @ryuxdsgn/design-intelligence scan <changed
    paths>` as well (add `--design` when DESIGN.md has a `direction:` block, so code that strays from its
    colours, type, radius, or durations shows as drift): fix every fail, and fix each warn or give the reason it stays. When the build runs, also run `npx --no-install @ryuxdsgn/design-intelligence scan <url>` on the page you built, the same way. Both use the copy of RYUX in the project (`ryux install --save-dev` adds it) and nothing is downloaded. When there is no copy, or the command is not permitted, do not run it another way: say in the gate that it did not run and why, and name the command so the user can decide. For a new flow or a consequential change, add the
    usability test plan (RX-UX-12) unless the design already has one.
+   In the findings table, mark each row done (`✓`) or proposed (`?`) in its first cell (`1 ✓`, `2 ?`): done is a
+   change made this turn; proposed is one outside the request or one that needs the person's go-ahead, and
+   `kerjakan` applies proposed rows only. On a new page the rows are the shaping decisions (direction, hierarchy,
+   primary action, the one signature detail) with Now as "new"; they carry the rationale (RX-PR-14) in the reply.
+   A weakness you find that you can fix within the request is fixed before the report and shows as a done row;
+   one outside the request is a proposed row; one that is the person's call goes under Decisions for you. A
+   weakness is never invented to fill the Read.
 
 **Polish: refining what exists.** When the ask improves a screen that works ("polish this", "make the total
 easier to find", "make it feel more premium") and gives no new design, steps 2 and 4 run this way:

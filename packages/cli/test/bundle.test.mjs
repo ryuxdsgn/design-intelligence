@@ -705,3 +705,13 @@ test("the report the person reads: Read, findings, decisions, left alone, one ga
   assert.match(router, /report\.md/);
   assert.ok(router.split("\n").length <= 180);
 });
+
+test("Build closes with report.md: done or proposed rows, shaping decisions on a new page, weaknesses fixed first", () => {
+  const b = renderBundle()["capabilities/build.md"].replace(/\s+/g, " ");
+  assert.match(b, /Close with the report \(report\.md\)/);
+  assert.match(b, /done \(`✓`\) or proposed \(`\?`\)/);
+  assert.match(b, /`kerjakan` applies proposed rows only/);
+  assert.match(b, /on a new page the rows are the shaping decisions/i);
+  assert.match(b, /never invented/);
+  assert.match(b, /scan <changed paths>/);
+});
