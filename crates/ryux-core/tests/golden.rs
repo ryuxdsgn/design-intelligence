@@ -52,6 +52,8 @@ fn the_probe_asks_before_it_judges_what_the_page_must_do() {
         let keys = |v: &Value| v.as_object().unwrap().keys().map(|k| k.parse::<u64>().unwrap()).collect::<Vec<_>>();
         assert_eq!(ask["under"], serde_json::json!(keys(&answers["under"])));
         assert_eq!(ask["grow"], serde_json::json!(keys(&answers["grow"])));
+        let behind = if answers.get("behind").is_some() { keys(&answers["behind"]) } else { Vec::new() };
+        assert_eq!(ask["behind"], serde_json::json!(behind));
     }
 }
 

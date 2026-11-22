@@ -95,6 +95,16 @@ aside button{width:100%;padding:12px;font:inherit}label{display:block;padding:8p
 <label><input type="radio" name="pay" value="bni"> BNI</label></fieldset></div></section></div>
 <aside><p>Total Rp1.421.000</p><button>Bayar Rp1.421.000</button></aside></div>`;
 
+/** Text over pictures: white over a gradient that starts in yellow, under the text (fails), over a dark one (passes), over a light
+ *  image (fails), and under a blend mode (not measured). */
+export const BEHIND = `${head}<style>
+body{margin:0;font:16px sans-serif;background:#fff;color:#111}.band{padding:16px}
+.sunset{background:linear-gradient(90deg,#fde047,#1e3a8a);color:#fff}.night{background:linear-gradient(90deg,#0f172a,#334155);color:#fff}
+.photo{background:#000 url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='10'><rect width='10' height='10' fill='%23f5f5f4'/></svg>") center/cover;color:#fff}
+.mix{mix-blend-mode:difference;color:#fff}</style>
+<div class="band sunset"><p>Promo akhir tahun</p></div><div class="band night"><p>Tetap terbaca</p></div>
+<div class="band photo"><p>Foto terang di belakang</p></div><div class="band"><p class="mix">Teks berbaur</p></div>`;
+
 /** Every page with the widths the tests render it at. */
 export const PAGES = [
   { name: "basics", html: BASICS, widths: [320] },
@@ -109,4 +119,5 @@ export const PAGES = [
   { name: "choice-split-low", html: choiceSplit(false), widths: [1280] },
   { name: "dark-canvas", html: DARK_CANVAS, widths: [390] },
   { name: "faded", html: FADED, widths: [390] },
+  { name: "behind", html: BEHIND, widths: [390] },
 ];

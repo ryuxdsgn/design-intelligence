@@ -10,7 +10,7 @@ import { fileURLToPath } from "node:url";
 import { SOURCE_CHECKS, SYNTAX_CHECKS } from "../dist/checks.js";
 import { readDirection as directionIn, scan as scanEngine, scanShared } from "../dist/engine.js";
 import { FIXTURES, chromium, probePage, recordDirection, recordScan, recording, toSource } from "./golden.mjs";
-import { BASICS, DARK_CANVAS, FADED, PAGES, QUIET, SLOP, bar, choice, choiceSplit } from "./pages.mjs";
+import { BASICS, BEHIND, DARK_CANVAS, FADED, PAGES, QUIET, SLOP, bar, choice, choiceSplit } from "./pages.mjs";
 import { RULES } from "../dist/intelligence/content.js";
 import { VERSION } from "../dist/product.js";
 
@@ -633,6 +633,20 @@ test("scan <url> measures contrast on the dark canvas a dark color scheme gives,
   assert.equal(faded.length, 1);
   assert.match(faded[0], /^"Segera hadir": contrast/);
   rmSync(dir, { recursive: true, force: true });
+});
+
+test("scan <url> measures text over a gradient or an image on its pixels, and names what it could not measure", (t) => {
+  const dir = mkdtempSync(join(tmpdir(), "ryux-behind-"));
+  const path = join(dir, "behind.html");
+  writeFileSync(path, BEHIND);
+  const r = run(process.env.RYUX_PLAYWRIGHT_CWD ?? join(dirname(cli), "..", "..", ".."), ["scan", `file://${path}`, "--widths", "390", "--json"]);
+  rmSync(dir, { recursive: true, force: true });
+  if (/needs Playwright|could not start Chromium/.test(r.out)) return noBrowser(t);
+  const a11y01 = JSON.parse(r.out).findings.filter((f) => f.rule === "RX-A11Y-01").map((f) => `${f.level} ${f.message}`);
+  assert.equal(a11y01.length, 3, a11y01.join("\n"));
+  assert.match(a11y01[0], /^fail "Promo akhir tahun": contrast [\d.]+:1 \(#ffffff on #[0-9a-f]{6}, the weakest tenth of the gradient behind it\), needs 4\.5:1$/);
+  assert.match(a11y01[1], /^fail "Foto terang di belakang": contrast [\d.]+:1 \(#ffffff on #f5f5f4, the weakest tenth of the image behind it\)/);
+  assert.match(a11y01[2], /^warn 1 text not measured for contrast \(under a blend mode or a filter.*first "Teks berbaur"/);
 });
 
 // Visual tells (knowledge/anti-slop.md): warn once per page, never at a single, reasoned use.

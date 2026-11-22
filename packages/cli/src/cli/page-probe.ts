@@ -22,11 +22,13 @@ export interface ProbeResult {
   ignored: string[];
 }
 
-/** What ryux-core asks the page to do before it can judge: texts (by index in `texts`) to hit-test in view, and
- *  textareas (by element index) to fill. */
+/** What ryux-core asks the page to do before it can judge: texts (by index in `texts`) to hit-test in view,
+ *  textareas (by element index) to fill, and texts over an image or a gradient whose pixels it needs (`behind`,
+ *  answered by page-scan.ts with probeHide, a screenshot, and probePixels). */
 export interface ProbeAsk {
   under: number[];
   grow: number[];
+  behind?: number[];
 }
 
 /** The page as JSON, at the current viewport. Elements are in document order: 0 is <html>, 1 is <body>, then every
@@ -267,4 +269,65 @@ export async function probeAnswer(ask) {
   }
   await frame();
   return { under, grow };
+}
+
+/** A text over an image or a gradient, made ready for a screenshot of what is behind it: scrolled into view, its
+ *  glyphs (and its children's) made transparent. Returns the box of the text in the viewport, or null when none of
+ *  it is in view. probeShow puts it back. */
+export async function probeHide(i) {
+  const frame = () => new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
+  const t = window.__ryuxProbe.nodesOf[i];
+  if (!t || !t.nodes.every((n) => n.isConnected)) return null;
+  if (!document.getElementById("ryux-hide")) {
+    const style = document.createElement("style");
+    style.id = "ryux-hide";
+    style.textContent = "[data-ryux-hide],[data-ryux-hide] *{color:transparent!important;-webkit-text-fill-color:transparent!important;text-shadow:none!important;caret-color:transparent!important}";
+    document.head.appendChild(style);
+  }
+  t.el.scrollIntoView({ block: "center" });
+  t.el.setAttribute("data-ryux-hide", "");
+  await frame();
+  const range = document.createRange();
+  range.setStartBefore(t.nodes[0]);
+  range.setEndAfter(t.nodes[t.nodes.length - 1]);
+  const r = range.getBoundingClientRect();
+  const x = Math.max(0, Math.floor(r.left));
+  const y = Math.max(0, Math.floor(r.top));
+  const width = Math.min(document.documentElement.clientWidth, Math.ceil(r.right)) - x;
+  const height = Math.min(window.innerHeight, Math.ceil(r.bottom)) - y;
+  return width >= 1 && height >= 1 ? { x, y, width, height } : null;
+}
+
+/** Undo probeHide: the text shows again, and with `last`, the page is back at the top without the hiding style. */
+export function probeShow(arg) {
+  const t = window.__ryuxProbe.nodesOf[arg.i];
+  t?.el.removeAttribute("data-ryux-hide");
+  if (arg.last) {
+    document.getElementById("ryux-hide")?.remove();
+    window.scrollTo(0, 0);
+  }
+}
+
+/** The colours of a screenshot (PNG, base64) on a grid of at most 24 by 6 points, as [r, g, b]. Decoded in the
+ *  page, so RYUX needs no image library; the judgement is ryux-core's. */
+export async function probePixels(png) {
+  const bytes = Uint8Array.from(atob(png), (c) => c.charCodeAt(0));
+  const bitmap = await createImageBitmap(new Blob([bytes], { type: "image/png" }));
+  const { width: w, height: h } = bitmap;
+  const canvas = new OffscreenCanvas(w, h);
+  const ctx = canvas.getContext("2d", { willReadFrequently: true });
+  ctx.drawImage(bitmap, 0, 0);
+  const data = ctx.getImageData(0, 0, w, h).data;
+  const cols = Math.min(24, w);
+  const rows = Math.min(6, h);
+  const px = [];
+  for (let r = 0; r < rows; r++) {
+    for (let c = 0; c < cols; c++) {
+      const x = Math.floor(((c + 0.5) * w) / cols);
+      const y = Math.floor(((r + 0.5) * h) / rows);
+      const o = (y * w + x) * 4;
+      px.push([data[o], data[o + 1], data[o + 2]]);
+    }
+  }
+  return px;
 }

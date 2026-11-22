@@ -13,9 +13,10 @@ use std::collections::{HashMap, HashSet};
 
 /// What the rendered checks look for, one row per line of RENDER_CHECKS in packages/cli/src/checks.ts (which also
 /// lists RX-QA-08, script errors, reported by the CLI itself). `cargo test` and the CLI tests hold them equal.
-pub const CATALOGUE: [(&str, &str); 11] = [
+pub const CATALOGUE: [(&str, &str); 12] = [
     ("RX-RD-01", "fail"),
     ("RX-A11Y-01", "fail"),
+    ("RX-A11Y-01", "warn"),
     ("RX-A11Y-02", "fail"),
     ("RX-QA-03", "warn"),
     ("RX-QA-03", "fail"),
@@ -164,6 +165,28 @@ fn js_number(re: &Res, s: &str) -> f64 {
 }
 
 type Colour = [f64; 4];
+
+/// Why the colours behind a text cannot be read from the styles.
+#[derive(Clone, Copy)]
+enum Unknown {
+    /// A blend mode or a filter on the way up: it changes the text and what is behind it alike.
+    Mixed,
+    /// An image or a gradient ("image" or "gradient"): only the page's pixels show it.
+    Picture(&'static str),
+}
+
+/// Texts over an image or a gradient whose pixels the page is asked for, per width; the rest are not measured.
+const MAX_BEHIND: usize = 40;
+
+/// A text under its contrast: the colours at its weakest point, and what was behind it when that was a picture.
+struct Fail {
+    k: usize,
+    ratio: f64,
+    fg: Colour,
+    bg: Colour,
+    need: f64,
+    over: Option<&'static str>,
+}
 
 /// `Math.hypot` as V8 computes it: scaled by the largest value, with a compensated sum.
 fn hypot(a: f64, b: f64) -> f64 {
@@ -435,30 +458,12 @@ impl<'a> Page<'a> {
     /// image, gradient, blend, or filter makes it unknown. Each layer is its background over what is behind it,
     /// and an element's opacity fades it with all it holds, its own background and text included.
     fn painted(&self, i: usize, fg: Option<Colour>) -> Option<(Colour, Colour)> {
-        let mut chain = Vec::new();
-        let mut e = Some(i);
-        while let Some(x) = e {
-            chain.push(x);
-            e = self.parent(x);
+        let chain = self.layers(i);
+        if self.unknown_layer(&chain).is_some() {
+            return None;
         }
-        let op = |x: usize| {
-            let o = js_number(&self.re, self.s(x, "opacity"));
-            if o.is_finite() { o.clamp(0.0, 1.0) } else { 1.0 }
-        };
+        let op = |x: usize| self.opacity(x);
         let bg = |x: usize| self.rgba(self.s(x, "backgroundColor")).filter(|c| c[3] > 0.0);
-        // the nearest opaque background with no fading at or above it hides everything behind it
-        let mut faded_above = vec![false; chain.len() + 1];
-        for k in (0..chain.len()).rev() {
-            faded_above[k] = faded_above[k + 1] || op(chain[k]) < 1.0;
-        }
-        let stop = (0..chain.len()).find(|&k| !faded_above[k] && bg(chain[k]).is_some_and(|c| c[3] >= 1.0));
-        let chain = &chain[..stop.map_or(chain.len(), |k| k + 1)];
-        for &x in chain {
-            let filter = self.s(x, "filter");
-            if self.s(x, "backgroundImage") != "none" || self.s(x, "mixBlendMode") != "normal" || (!filter.is_empty() && filter != "none") {
-                return None;
-            }
-        }
         // from the outermost layer in: what the element at `k` and all it holds paint over `behind`
         fn paint(chain: &[usize], k: usize, behind: Colour, fg: Option<Colour>, op: &dyn Fn(usize) -> f64, bg: &dyn Fn(usize) -> Option<Colour>) -> Colour {
             let x = chain[k];
@@ -468,7 +473,46 @@ impl<'a> Page<'a> {
             if o >= 1.0 { c } else { [c[0] * o + behind[0] * (1.0 - o), c[1] * o + behind[1] * (1.0 - o), c[2] * o + behind[2] * (1.0 - o), 1.0] }
         }
         let top = chain.len() - 1;
-        Some((paint(chain, top, self.canvas, None, &op, &bg), paint(chain, top, self.canvas, fg, &op, &bg)))
+        Some((paint(&chain, top, self.canvas, None, &op, &bg), paint(&chain, top, self.canvas, fg, &op, &bg)))
+    }
+    fn opacity(&self, x: usize) -> f64 {
+        let o = js_number(&self.re, self.s(x, "opacity"));
+        if o.is_finite() { o.clamp(0.0, 1.0) } else { 1.0 }
+    }
+    /// The layers that paint an element's pixel: it and its ancestors, up to the nearest opaque background with no
+    /// fading at or above it (that background hides everything behind it).
+    fn layers(&self, i: usize) -> Vec<usize> {
+        let mut chain = Vec::new();
+        let mut e = Some(i);
+        while let Some(x) = e {
+            chain.push(x);
+            e = self.parent(x);
+        }
+        let bg = |x: usize| self.rgba(self.s(x, "backgroundColor")).filter(|c| c[3] > 0.0);
+        let mut faded_above = vec![false; chain.len() + 1];
+        for k in (0..chain.len()).rev() {
+            faded_above[k] = faded_above[k + 1] || self.opacity(chain[k]) < 1.0;
+        }
+        let stop = (0..chain.len()).find(|&k| !faded_above[k] && bg(chain[k]).is_some_and(|c| c[3] >= 1.0));
+        chain.truncate(stop.map_or(chain.len(), |k| k + 1));
+        chain
+    }
+    /// What keeps the colours of these layers from being worked out from their styles: a blend mode or a filter
+    /// (`Unknown::Mixed`, which changes the text too), else the nearest image or gradient (`Unknown::Picture`, which
+    /// only the pixels show).
+    fn unknown_layer(&self, chain: &[usize]) -> Option<Unknown> {
+        let mut picture = None;
+        for &x in chain {
+            let filter = self.s(x, "filter");
+            if self.s(x, "mixBlendMode") != "normal" || (!filter.is_empty() && filter != "none") {
+                return Some(Unknown::Mixed);
+            }
+            let image = self.s(x, "backgroundImage");
+            if image != "none" && picture.is_none() {
+                picture = Some(if image.contains("url(") { "image" } else { "gradient" });
+            }
+        }
+        picture.map(Unknown::Picture)
     }
     /// The page's own colour: what is on top of its first line, unless that is a fixed or sticky bar over it.
     fn page_background(&self) -> Option<Colour> {
@@ -652,6 +696,7 @@ struct Group {
     fg: Colour,
     bg: Colour,
     need: f64,
+    over: Option<&'static str>,
 }
 
 impl<'a> Page<'a> {
@@ -742,7 +787,10 @@ impl<'a> Page<'a> {
 
         // Contrast (RX-A11Y-01) and size (RX-A11Y-02), grouped so one style used 40 times is one finding.
         let mut small: Vec<(f64, usize, usize)> = Vec::new();
-        let mut failing: Vec<(usize, f64, Colour, Colour, f64)> = Vec::new();
+        let mut failing: Vec<Fail> = Vec::new();
+        // texts over an image or a gradient, judged on the pixels the page sends back, and texts not measured
+        let mut behind: Vec<(usize, Colour, f64, &'static str)> = Vec::new();
+        let mut unmeasured: Vec<usize> = Vec::new();
         for (k, t) in texts.iter().enumerate() {
             let size = self.n(t.e, "fontSize");
             if size < 12.0 {
@@ -755,21 +803,31 @@ impl<'a> Page<'a> {
                 continue;
             }
             let Some(fg_raw) = self.rgba(self.color(t.e)) else { continue };
-            let Some((bg, fg)) = self.painted(t.e, Some(fg_raw)) else { continue };
-            let ratio = contrast(lum(fg), lum(bg));
             let large = size >= 24.0 || (size >= 18.66 && self.n(t.e, "fontWeight") >= 700.0);
             let need = if large { 3.0 } else { 4.5 };
+            let Some((bg, fg)) = self.painted(t.e, Some(fg_raw)) else {
+                match self.unknown_layer(&self.layers(t.e)) {
+                    Some(Unknown::Picture(over)) if behind.len() < MAX_BEHIND => behind.push((k, fg_raw, need, over)),
+                    _ => unmeasured.push(k),
+                }
+                continue;
+            };
+            let ratio = contrast(lum(fg), lum(bg));
             if ratio >= need {
                 continue;
             }
-            failing.push((k, ratio, fg, bg, need));
+            failing.push(Fail { k, ratio, fg, bg, need, over: None });
         }
         let textareas: Vec<usize> = (2..n).filter(|&i| self.els[i].tag == "TEXTAREA" && self.outside[i] && self.shown[i] && !self.disabled[i] && !self.flag(i, "ro")).collect();
         let Some(answers) = answers else {
-            if !failing.is_empty() || !textareas.is_empty() {
-                return json!({ "ask": { "under": failing.iter().map(|f| texts[f.0].i).collect::<Vec<_>>(), "grow": textareas } });
+            if !failing.is_empty() || !textareas.is_empty() || !behind.is_empty() {
+                return json!({ "ask": {
+                    "under": failing.iter().map(|f| texts[f.k].i).collect::<Vec<_>>(),
+                    "grow": textareas,
+                    "behind": behind.iter().map(|b| texts[b.0].i).collect::<Vec<_>>(),
+                } });
             }
-            return self.rest(out, texts, Vec::new(), &Value::Null, small);
+            return self.rest(out, texts, Vec::new(), &Value::Null, small, unmeasured);
         };
         let under = &answers["under"];
         let covered = |t: &Text| -> bool {
@@ -778,27 +836,77 @@ impl<'a> Page<'a> {
                 None => false,
             }
         };
-        let failing: Vec<_> = failing.into_iter().filter(|f| !covered(texts[f.0])).collect();
-        self.rest(out, texts, failing, &answers["grow"], small)
+        let mut failing: Vec<Fail> = failing.into_iter().filter(|f| !covered(texts[f.k])).collect();
+        // Over a picture: the page hid the text and sent the colours under it on a grid. The text, faded by its own
+        // opacity and its ancestors', is laid over each; the text fails when the weakest tenth of the grid is under
+        // the need (one stray pixel of a photo does not decide it, a light band across a tenth of the text does).
+        for (k, fg_raw, need, over) in behind {
+            let t = texts[k];
+            let pixels: Vec<Colour> = answers["behind"][t.i.to_string()]["px"]
+                .as_array()
+                .map_or(Vec::new(), |a| a.iter().filter_map(|p| Some([p.get(0)?.as_f64()?, p.get(1)?.as_f64()?, p.get(2)?.as_f64()?, 1.0])).collect());
+            if pixels.is_empty() {
+                unmeasured.push(k);
+                continue;
+            }
+            let mut fade = fg_raw[3];
+            let mut e = Some(t.e);
+            while let Some(x) = e {
+                fade *= self.opacity(x);
+                e = self.parent(x);
+            }
+            let mut seen: Vec<(f64, Colour, Colour)> = pixels
+                .iter()
+                .map(|&p| {
+                    let shown = blend([fg_raw[0], fg_raw[1], fg_raw[2], fade], p);
+                    (contrast(lum(shown), lum(p)), shown, p)
+                })
+                .collect();
+            seen.sort_by(|a, b| a.0.total_cmp(&b.0));
+            let (ratio, fg, bg) = seen[seen.len() / 10];
+            if ratio < need {
+                failing.push(Fail { k, ratio, fg, bg, need, over: Some(over) });
+            }
+        }
+        unmeasured.sort_unstable();
+        self.rest(out, texts, failing, &answers["grow"], small, unmeasured)
     }
 }
 
 impl<'a> Page<'a> {
-    fn rest(&self, mut out: Vec<Value>, texts: Vec<&Text>, failing: Vec<(usize, f64, Colour, Colour, f64)>, grow: &Value, small: Vec<(f64, usize, usize)>) -> Value {
+    fn rest(&self, mut out: Vec<Value>, texts: Vec<&Text>, failing: Vec<Fail>, grow: &Value, small: Vec<(f64, usize, usize)>, unmeasured: Vec<usize>) -> Value {
         let (vw, vh) = (self.vw, self.vh);
         let n = self.els.len();
         let mut groups: Vec<(String, Group)> = Vec::new();
-        for (k, ratio, fg, bg, need) in failing {
-            let key = format!("{}|{}|{}", hex(fg), hex(bg), num_str(need));
+        for Fail { k, ratio, fg, bg, need, over } in failing {
+            let key = format!("{}|{}|{}|{}", hex(fg), hex(bg), num_str(need), over.unwrap_or(""));
             match groups.iter_mut().find(|g| g.0 == key) {
                 Some(g) => g.1.count += 1,
-                None => groups.push((key, Group { t: k, count: 1, ratio, fg, bg, need })),
+                None => groups.push((key, Group { t: k, count: 1, ratio, fg, bg, need, over })),
             }
         }
         for (_, g) in &groups {
             let t = texts[g.t];
             let more = if g.count > 1 { format!("; {} more with the same colors", g.count - 1) } else { String::new() };
-            out.push(finding("RX-A11Y-01", "fail", self.selector(t.e), format!("{}: contrast {}:1 ({} on {}), needs {}:1{more}", quote(t.x), crate::audit::ratio_text(g.ratio, g.need), hex(g.fg), hex(g.bg), num_str(g.need))));
+            let colours = match g.over {
+                None => format!("{} on {}", hex(g.fg), hex(g.bg)),
+                Some(over) => format!("{} on {}, the weakest tenth of the {over} behind it", hex(g.fg), hex(g.bg)),
+            };
+            out.push(finding("RX-A11Y-01", "fail", self.selector(t.e), format!("{}: contrast {}:1 ({colours}), needs {}:1{more}", quote(t.x), crate::audit::ratio_text(g.ratio, g.need), num_str(g.need))));
+        }
+        // Texts whose contrast was not measured: under a blend mode or a filter, or past the texts over pictures the
+        // page is asked for. Said once, so a skipped text is never read as a passing one.
+        if let Some(&first) = unmeasured.first() {
+            let t = texts[first];
+            let count = if unmeasured.len() > 1 { format!("{} texts", unmeasured.len()) } else { "1 text".to_string() };
+            let mut f = finding(
+                "RX-A11Y-01",
+                "warn",
+                self.selector(t.e),
+                format!("{count} not measured for contrast (under a blend mode or a filter, or over more pictures than measured), first {}: check them by eye over the busiest part of what is behind", quote(t.x)),
+            );
+            f["once"] = Value::from("contrast-unmeasured");
+            out.push(f);
         }
         for (size, k, count) in &small {
             let t = texts[*k];
