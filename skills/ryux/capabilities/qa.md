@@ -20,7 +20,7 @@ design itself is good is Critique's question (`capabilities/critique.md`).
 
 | # | Where | Now | Change | Why |
 |---|---|---|---|---|
-| 1 | Card radius, order card | 8px (reference 16px) | use radius-lg | Tokens over one-off values (RX-DS-03): one card with a tighter radius reads as a different kind of object; minor |
+| 1 | `OrderCard.tsx:18`, Card radius | 8px (reference 16px) | use radius-lg | Tokens over one-off values: one card with a tighter radius reads as a different kind of object; minor |
 
 **Without a reference**, check the build against its own intent, the rules below, and the measured
 Laws of UX checks in knowledge/ux.md.

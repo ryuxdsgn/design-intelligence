@@ -211,12 +211,12 @@ Detail. Work each finding out in this schema first; the schema is what the row a
 | Source | the RYUX rule ID, plus a screen_id, a standard (WCAG SC), or "this design" |
 | Verify by | how a revision would show it is fixed: re-render and check X, measure Y, test Z |
 
-The findings table has one more column, **Weight**: the severity word and the status, such as `High · Confirmed`
+The findings table has one more column, **Weight** (Indonesian: **Bobot**): the severity word and the status, such as `High · Confirmed`
 or `Medium · Hypothesis`. The table holds at most 7 rows, most severe first; a finding the cap leaves out goes under Detail.
 
 | # | Where | Now | Change | Why | Weight |
 |---|---|---|---|---|---|
-| 1 | Pay step, "Bayar" button | No status while the payment verifies (no loading or progress element in any frame provided) | Show status with a time estimate; disable the button while verifying | Visibility of system status (RX-IX-02): a buyer paying by QRIS who sees nothing may tap twice and pay twice | High · Confirmed |
+| 1 | Pay step, "Bayar" button | No status while the payment verifies (no loading or progress element in any frame provided) | Show status with a time estimate; disable the button while verifying | Visibility of system status: a buyer paying by QRIS who sees nothing may tap twice and pay twice | High · Confirmed |
 
 - **Where** names the source too (Figma frame and node, URL, file:line); **Change** is the Recommendation; **Why**
   carries the Impact and the principle, named and applied; Evidence goes in **Now**.

@@ -748,3 +748,23 @@ test("review fixes: the report is for Build, Critique, QA only; Why keeps would-
   const build = b["capabilities/build.md"].replace(/\s+/g, " ");
   assert.match(build, /`kerjakan` or `fix` applies proposed rows only/);
 });
+
+test("owner notes 2026-11-22: failure first, honest counts, checked-as, no rule IDs in Why, local headings, short detail, who decides", () => {
+  const b = renderBundle();
+  const r = b["report.md"].replace(/\s+/g, " ");
+  assert.match(r, /The biggest failure or open gap is the Read's first sentence/);
+  assert.match(r, /count the gate line from the Detail block/i);
+  assert.match(r, /an area with a caveat is NOT VERIFIED, not PASS/);
+  assert.match(r, /a Playwright render at 390 px is not "on an iPhone"/);
+  assert.match(r, /No rule IDs in the Why/);
+  assert.match(r, /Di mana \| Sekarang \| Ubah jadi \| Kenapa/);
+  assert.match(r, /Rincian/);
+  assert.match(r, /must not do what its own Why warns against/);
+  assert.match(r, /Detail stays short/);
+  assert.match(r, /name the one person who decides/);
+  assert.doesNotMatch(r, /\(RX-PR-03\): two equal buttons/);
+  const c = b["capabilities/critique.md"].replace(/\s+/g, " ");
+  assert.match(c, /Bobot/);
+  assert.doesNotMatch(c, /Visibility of system status \(RX-IX-02\)/);
+  assert.doesNotMatch(b["capabilities/qa.md"].replace(/\s+/g, " "), /Tokens over one-off values \(RX-DS-03\)/);
+});
