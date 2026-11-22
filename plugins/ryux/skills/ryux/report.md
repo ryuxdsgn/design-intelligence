@@ -10,7 +10,7 @@ Detail, at the end.
 
    | # | Where | Now | Change | Why |
    |---|---|---|---|---|
-   | 1 | `index.html:42`, hero | Two download buttons, equal weight | One primary button for the visitor's phone; the other store as an outline button | One primary action per goal (RX-UX-..): two equal buttons split attention at the moment of choice (Hick's law). Cost: the second store is one glance further. |
+   | 1 | `index.html:42`, hero | Two download buttons, equal weight | One primary button for the visitor's phone; the other store as an outline button | One primary action per goal (RX-PR-03): two equal buttons split attention at the moment of choice (Hick's law). Cost: the second store is one glance further. |
 
    - **Where**: `file:line` and the element, or a frame name.
    - **Now** and **Change**: exact values (copy, colours, sizes, tokens), never "improve the spacing". On a new

@@ -726,3 +726,9 @@ test("Critique reports in the shared table with Weight, at most 7, honesty label
   assert.match(c, /## Heuristic evaluation mode/);
   assert.doesNotMatch(c, /at most 12/);
 });
+
+test("QA closes with report.md: one row per mismatch, expected and actual in Now and Change", () => {
+  const q = renderBundle()["capabilities/qa.md"].replace(/\s+/g, " ");
+  assert.match(q, /Close with the report \(report\.md\): one row per mismatch/);
+  assert.match(q, /Card radius/);
+});

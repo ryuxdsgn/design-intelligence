@@ -13,12 +13,14 @@ design itself is good is Critique's question (`capabilities/critique.md`).
    `capabilities/analyze.md`).
 2. Compare property by property: spacing, typography, color, size, position, components, states,
    responsive behavior.
-3. Report each deviation:
+3. Close with the report (report.md): one row per mismatch, at most 7, most severe first. Where is the area
+   and the element, Now is the build's value beside the reference's, Change is the fix, Why names what the
+   mismatch costs the person, and the severity goes in the Why or a Weight column. More mismatches than the
+   cap go under Detail.
 
-```
-Area        | Expected (reference) | Actual (build) | Deviation       | Severity | Fix
-Card radius | 16px                 | 8px            | half the radius | minor    | use radius-lg
-```
+| # | Where | Now | Change | Why |
+|---|---|---|---|---|
+| 1 | Card radius, order card | 8px (reference 16px) | use radius-lg | Tokens over one-off values (RX-DS-03): one card with a tighter radius reads as a different kind of object; minor |
 
 **Without a reference**, check the build against its own intent, the rules below, and the measured
 Laws of UX checks in knowledge/ux.md.
