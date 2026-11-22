@@ -710,7 +710,16 @@ test("probe parity: the shipped extract in Chromium, judged by ryux-core, gives 
         if (recording) continue;
         const want = recorded[k++];
         assert.ok(want, `probe.json has no case for ${p.name} at ${width}px`);
-        assert.deepEqual(out, want.output, `${p.name} at ${width}px${JSON.stringify(extract) === JSON.stringify(want.input) ? "" : " (the extract differs from the recorded one: another Chromium or other fonts?)"}`);
+        // Over a picture the weakest tenth depends on where this machine's fonts put the text, so its ratio may
+        // move a little and its background colour with it; the finding, the text colour, and the need may not.
+        const ratios = [];
+        const loose = (v) => JSON.parse(JSON.stringify(v), (key, m) => key === "message" && typeof m === "string"
+          ? m.replace(/contrast ([\d.]+):1 \((#[0-9a-f]{6}) on #[0-9a-f]{6}, the weakest tenth/, (_, r, fg) => (ratios.push(Number(r)), `contrast ~:1 (${fg} on ~, the weakest tenth`))
+          : m);
+        const [got, wanted] = [loose(out), loose(want.output)];
+        const half = ratios.length / 2;
+        ratios.slice(0, half).forEach((r, n) => assert.ok(Math.abs(r - ratios[half + n]) <= 0.15, `${p.name} at ${width}px: contrast over a picture ${r}:1, recorded ${ratios[half + n]}:1`));
+        assert.deepEqual(got, wanted, `${p.name} at ${width}px${JSON.stringify(extract) === JSON.stringify(want.input) ? "" : " (the extract differs from the recorded one: another Chromium or other fonts?)"}`);
       }
     }
     if (!recording) assert.equal(k, recorded.length, "every recorded case has a test page");
