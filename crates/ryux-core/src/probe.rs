@@ -914,7 +914,7 @@ impl<'a> Page<'a> {
                 "RX-A11Y-01",
                 "warn",
                 self.selector(t.e),
-                format!("{count} not measured for contrast (under a blend mode or a filter, over a picture that could not be photographed in view, or past the {MAX_BEHIND} measured), first {}: check them by eye over the busiest part of what is behind", quote(t.x)),
+                format!("{count} not measured for contrast (under a blend mode or a filter, over a picture the page could not photograph (out of view, or redrawn by the page), or past the {MAX_BEHIND} measured), first {}: check them by eye over the busiest part of what is behind", quote(t.x)),
             );
             f["once"] = Value::from("contrast-unmeasured");
             out.push(f);

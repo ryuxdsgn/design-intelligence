@@ -11667,7 +11667,7 @@
      "rule": "RX-A11Y-01",
      "level": "warn",
      "selector": "div.band > p.mix",
-     "message": "1 text not measured for contrast (under a blend mode or a filter, over a picture that could not be photographed in view, or past the 40 measured), first \"Teks berbaur\": check them by eye over the busiest part of what is behind",
+     "message": "1 text not measured for contrast (under a blend mode or a filter, over a picture the page could not photograph (out of view, or redrawn by the page), or past the 40 measured), first \"Teks berbaur\": check them by eye over the busiest part of what is behind",
      "once": "contrast-unmeasured"
     }
    ],
