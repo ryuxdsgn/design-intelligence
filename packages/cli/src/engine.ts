@@ -4,6 +4,7 @@
 import { createRequire } from "node:module";
 import { neutralCanvas } from "./canvas-json.js";
 import type { Direction, ScanFinding } from "./checks.js";
+import { GATE_AREAS } from "./intelligence/content.js";
 
 interface Core {
   scan(input: string): string;
@@ -12,6 +13,7 @@ interface Core {
   readDirection(md: string): string;
   audit(input: string): string;
   probe(input: string): string;
+  reportCheck(input: string): string;
 }
 
 let core: Core | undefined;
@@ -116,4 +118,17 @@ export function probe(extract: Record<string, unknown>): any {
   // A lone surrogate in page text cannot cross as JSON; it becomes U+FFFD, as String.prototype.toWellFormed does.
   const lone = /[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?<![\uD800-\uDBFF])[\uDC00-\uDFFF]/g;
   return answer(rust().probe(JSON.stringify(extract, (_k, v) => (typeof v === "string" ? v.replace(lone, "\uFFFD") : v))));
+}
+
+export type GateCounts = { PASS: number; FAIL: number; "NOT VERIFIED": number; "N/A": number };
+export interface ReportCheck {
+  ok: boolean;
+  gate: GateCounts | null;
+  detail: GateCounts | null;
+  message: string | null;
+}
+
+/** Does a RYUX report's one-line gate count the same areas as its detail block (report.md)? */
+export function reportCheck(text: string): ReportCheck {
+  return answer(rust().reportCheck(JSON.stringify({ text, areas: GATE_AREAS })));
 }

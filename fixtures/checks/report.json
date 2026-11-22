@@ -1,0 +1,302 @@
+[
+ {
+  "name": "real reply N (round 2): 9 NOT VERIFIED in the gate line, 8 in the detail",
+  "input": {
+   "text": "Belum ada yang bisa mengunduh.\n\n**Gate:** 1 FAIL (UX: tugas utama, unduh, buntu) · 1 PASS · 9 NOT VERIFIED (modul knowledge belum dibaca) · 1 N/A · rincian di bawah\n\n## Rincian\n\n**Delivery Gate**\n\n```\nPRODUCT        NOT VERIFIED · tujuan unduhan jelas\nUX             FAIL · tugas utama (unduh) buntu: STORE_LINKS kosong\nCONTENT        NOT VERIFIED · content.md tidak dibaca\nUI             NOT VERIFIED · ui.md tidak dibaca\nDESIGN SYSTEM  NOT VERIFIED · modul tidak dibaca\nACCESSIBILITY  NOT VERIFIED · modul tidak dibaca\nRESPONSIVE     NOT VERIFIED · 320 tidak dirender\nEDGE CASES     NOT VERIFIED · state link kosong ditangani\nCODE QUALITY   N/A · kritik saja, tidak ada perubahan kode\nVISUAL QA      NOT VERIFIED · Playwright 390/1280, tanpa ryux scan\nANTI-SLOP      PASS · tanpa angka palsu\nFINAL          FAIL\n```",
+   "areas": [
+    "PRODUCT",
+    "UX",
+    "CONTENT",
+    "UI",
+    "DESIGN SYSTEM",
+    "ACCESSIBILITY",
+    "RESPONSIVE",
+    "EDGE CASES",
+    "CODE QUALITY",
+    "VISUAL QA",
+    "ANTI-SLOP"
+   ]
+  },
+  "output": {
+   "ok": false,
+   "gate": {
+    "PASS": 1,
+    "FAIL": 1,
+    "NOT VERIFIED": 9,
+    "N/A": 1
+   },
+   "detail": {
+    "PASS": 1,
+    "FAIL": 1,
+    "NOT VERIFIED": 8,
+    "N/A": 1
+   },
+   "message": "The gate line does not match the detail: NOT VERIFIED is 9 in the gate line and 8 in the detail. Count the gate line again from the detail, each area once, and rewrite that line."
+  }
+ },
+ {
+  "name": "the same reply with the count fixed",
+  "input": {
+   "text": "**Gate:** 1 FAIL (UX: tugas utama, unduh, buntu) · 1 PASS · 8 NOT VERIFIED (modul knowledge belum dibaca) · 1 N/A · rincian di bawah\n\n```\nPRODUCT        NOT VERIFIED · tujuan unduhan jelas\nUX             FAIL · tugas utama (unduh) buntu: STORE_LINKS kosong\nCONTENT        NOT VERIFIED · content.md tidak dibaca\nUI             NOT VERIFIED · ui.md tidak dibaca\nDESIGN SYSTEM  NOT VERIFIED · modul tidak dibaca\nACCESSIBILITY  NOT VERIFIED · modul tidak dibaca\nRESPONSIVE     NOT VERIFIED · 320 tidak dirender\nEDGE CASES     NOT VERIFIED · state link kosong ditangani\nCODE QUALITY   N/A · kritik saja, tidak ada perubahan kode\nVISUAL QA      NOT VERIFIED · Playwright 390/1280, tanpa ryux scan\nANTI-SLOP      PASS · tanpa angka palsu\nFINAL          FAIL\n```",
+   "areas": [
+    "PRODUCT",
+    "UX",
+    "CONTENT",
+    "UI",
+    "DESIGN SYSTEM",
+    "ACCESSIBILITY",
+    "RESPONSIVE",
+    "EDGE CASES",
+    "CODE QUALITY",
+    "VISUAL QA",
+    "ANTI-SLOP"
+   ]
+  },
+  "output": {
+   "ok": true,
+   "gate": {
+    "PASS": 1,
+    "FAIL": 1,
+    "NOT VERIFIED": 8,
+    "N/A": 1
+   },
+   "detail": {
+    "PASS": 1,
+    "FAIL": 1,
+    "NOT VERIFIED": 8,
+    "N/A": 1
+   },
+   "message": null
+  }
+ },
+ {
+  "name": "no gate line: not a report, nothing to compare",
+  "input": {
+   "text": "Sudah saya ubah tombolnya.\n\n```\nPRODUCT        NOT VERIFIED · tujuan unduhan jelas\nUX             FAIL · tugas utama (unduh) buntu: STORE_LINKS kosong\nCONTENT        NOT VERIFIED · content.md tidak dibaca\nUI             NOT VERIFIED · ui.md tidak dibaca\nDESIGN SYSTEM  NOT VERIFIED · modul tidak dibaca\nACCESSIBILITY  NOT VERIFIED · modul tidak dibaca\nRESPONSIVE     NOT VERIFIED · 320 tidak dirender\nEDGE CASES     NOT VERIFIED · state link kosong ditangani\nCODE QUALITY   N/A · kritik saja, tidak ada perubahan kode\nVISUAL QA      NOT VERIFIED · Playwright 390/1280, tanpa ryux scan\nANTI-SLOP      PASS · tanpa angka palsu\nFINAL          FAIL\n```",
+   "areas": [
+    "PRODUCT",
+    "UX",
+    "CONTENT",
+    "UI",
+    "DESIGN SYSTEM",
+    "ACCESSIBILITY",
+    "RESPONSIVE",
+    "EDGE CASES",
+    "CODE QUALITY",
+    "VISUAL QA",
+    "ANTI-SLOP"
+   ]
+  },
+  "output": {
+   "ok": true,
+   "gate": null,
+   "detail": {
+    "PASS": 1,
+    "FAIL": 1,
+    "NOT VERIFIED": 8,
+    "N/A": 1
+   },
+   "message": null
+  }
+ },
+ {
+  "name": "a gate line but no detail block: nothing to compare",
+  "input": {
+   "text": "Gate: 2 PASS · detail below",
+   "areas": [
+    "PRODUCT",
+    "UX",
+    "CONTENT",
+    "UI",
+    "DESIGN SYSTEM",
+    "ACCESSIBILITY",
+    "RESPONSIVE",
+    "EDGE CASES",
+    "CODE QUALITY",
+    "VISUAL QA",
+    "ANTI-SLOP"
+   ]
+  },
+  "output": {
+   "ok": true,
+   "gate": {
+    "PASS": 2,
+    "FAIL": 0,
+    "NOT VERIFIED": 0,
+    "N/A": 0
+   },
+   "detail": null,
+   "message": null
+  }
+ },
+ {
+  "name": "English, colon separators, FINAL ignored, a repeated area counts once",
+  "input": {
+   "text": "Gate: 2 PASS · 1 FAIL (UX) · detail below\n\nUX: FAIL · dead end\nUI: PASS · ok\nUI: NOT VERIFIED · repeated later\nANTI-SLOP: PASS\nFINAL: FAIL",
+   "areas": [
+    "PRODUCT",
+    "UX",
+    "CONTENT",
+    "UI",
+    "DESIGN SYSTEM",
+    "ACCESSIBILITY",
+    "RESPONSIVE",
+    "EDGE CASES",
+    "CODE QUALITY",
+    "VISUAL QA",
+    "ANTI-SLOP"
+   ]
+  },
+  "output": {
+   "ok": true,
+   "gate": {
+    "PASS": 2,
+    "FAIL": 1,
+    "NOT VERIFIED": 0,
+    "N/A": 0
+   },
+   "detail": {
+    "PASS": 2,
+    "FAIL": 1,
+    "NOT VERIFIED": 0,
+    "N/A": 0
+   },
+   "message": null
+  }
+ },
+ {
+  "name": "two statuses differ: both named, in a fixed order",
+  "input": {
+   "text": "Gate: 3 PASS · 1 N/A\n\nUX  PASS · a\nUI  PASS · b\nCONTENT  NOT VERIFIED · c",
+   "areas": [
+    "PRODUCT",
+    "UX",
+    "CONTENT",
+    "UI",
+    "DESIGN SYSTEM",
+    "ACCESSIBILITY",
+    "RESPONSIVE",
+    "EDGE CASES",
+    "CODE QUALITY",
+    "VISUAL QA",
+    "ANTI-SLOP"
+   ]
+  },
+  "output": {
+   "ok": false,
+   "gate": {
+    "PASS": 3,
+    "FAIL": 0,
+    "NOT VERIFIED": 0,
+    "N/A": 1
+   },
+   "detail": {
+    "PASS": 2,
+    "FAIL": 0,
+    "NOT VERIFIED": 1,
+    "N/A": 0
+   },
+   "message": "The gate line does not match the detail: PASS is 3 in the gate line and 2 in the detail; NOT VERIFIED has no number in the gate line and 1 in the detail; N/A is 1 in the gate line and 0 in the detail. Count the gate line again from the detail, each area once, and rewrite that line."
+  }
+ },
+ {
+  "name": "a sentence that mentions the gate is not the gate line",
+  "input": {
+   "text": "The gate passed earlier. Gate area UX was fine.\n\nUX  PASS · a",
+   "areas": [
+    "PRODUCT",
+    "UX",
+    "CONTENT",
+    "UI",
+    "DESIGN SYSTEM",
+    "ACCESSIBILITY",
+    "RESPONSIVE",
+    "EDGE CASES",
+    "CODE QUALITY",
+    "VISUAL QA",
+    "ANTI-SLOP"
+   ]
+  },
+  "output": {
+   "ok": true,
+   "gate": null,
+   "detail": {
+    "PASS": 1,
+    "FAIL": 0,
+    "NOT VERIFIED": 0,
+    "N/A": 0
+   },
+   "message": null
+  }
+ },
+ {
+  "name": "real reply M (round 1): '4 area PASS' is read; FAIL and N/A are wrong",
+  "input": {
+   "text": "**Gate:** FINAL FAIL. UX gagal. 4 area PASS, 3 NOT VERIFIED (modul tidak dibaca), 3 N/A. Rinciannya di bawah.\n\nUX  FAIL · a\nPRODUCT  FAIL · b\nUI  PASS · c\nANTI-SLOP  PASS · d\nRESPONSIVE  PASS · e\nDESIGN SYSTEM  PASS · f\nCONTENT  NOT VERIFIED · g\nACCESSIBILITY  NOT VERIFIED · h\nVISUAL QA  NOT VERIFIED · i\nCODE QUALITY  N/A · j\nEDGE CASES  N/A · k",
+   "areas": [
+    "PRODUCT",
+    "UX",
+    "CONTENT",
+    "UI",
+    "DESIGN SYSTEM",
+    "ACCESSIBILITY",
+    "RESPONSIVE",
+    "EDGE CASES",
+    "CODE QUALITY",
+    "VISUAL QA",
+    "ANTI-SLOP"
+   ]
+  },
+  "output": {
+   "ok": false,
+   "gate": {
+    "PASS": 4,
+    "FAIL": 0,
+    "NOT VERIFIED": 3,
+    "N/A": 3
+   },
+   "detail": {
+    "PASS": 4,
+    "FAIL": 2,
+    "NOT VERIFIED": 3,
+    "N/A": 2
+   },
+   "message": "The gate line does not match the detail: FAIL has no number in the gate line and 2 in the detail; N/A is 3 in the gate line and 2 in the detail. Count the gate line again from the detail, each area once, and rewrite that line."
+  }
+ },
+ {
+  "name": "real reply R (round 1): 'sisanya NOT VERIFIED' gives no number",
+  "input": {
+   "text": "**Gate:** 3 FAIL (PRODUCT, CONTENT, EDGE CASES) · 2 N/A · sisanya NOT VERIFIED · rincian di bawah.\n\nPRODUCT  FAIL · a\nCONTENT  FAIL · b\nEDGE CASES  FAIL · c\nCODE QUALITY  N/A · d\nUX  NOT VERIFIED · e\nUI  NOT VERIFIED · f",
+   "areas": [
+    "PRODUCT",
+    "UX",
+    "CONTENT",
+    "UI",
+    "DESIGN SYSTEM",
+    "ACCESSIBILITY",
+    "RESPONSIVE",
+    "EDGE CASES",
+    "CODE QUALITY",
+    "VISUAL QA",
+    "ANTI-SLOP"
+   ]
+  },
+  "output": {
+   "ok": false,
+   "gate": {
+    "PASS": 0,
+    "FAIL": 3,
+    "NOT VERIFIED": 0,
+    "N/A": 2
+   },
+   "detail": {
+    "PASS": 0,
+    "FAIL": 3,
+    "NOT VERIFIED": 2,
+    "N/A": 1
+   },
+   "message": "The gate line does not match the detail: NOT VERIFIED has no number in the gate line and 2 in the detail; N/A is 2 in the gate line and 1 in the detail. Count the gate line again from the detail, each area once, and rewrite that line."
+  }
+ }
+]

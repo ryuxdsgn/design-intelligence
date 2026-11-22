@@ -145,3 +145,13 @@ pub fn syntax_scan(input: &str) -> String {
     let opts = s::ScanOptions { folder: v["folder"].as_bool().unwrap_or(false), skip, design: Direction::from_json(&v["design"]), context: Vec::new() };
     ryux_core::Json::Array(s::scan_syntax(&sources, opts)).to_string()
 }
+
+/// The report check: does a RYUX report's one-line gate count the same areas as its detail block?
+/// `{ text, areas }` in, `{ ok, gate, detail, message }` out (fixtures/checks/report.json).
+#[wasm_bindgen(js_name = reportCheck)]
+pub fn report_check(input: &str) -> String {
+    match serde_json_parse(input) {
+        Ok(v) => ryux_core::report_check(&v).to_string(),
+        Err(e) => format!("{{\"error\":{}}}", ryux_core::js::quote(&format!("invalid input: {e}"))),
+    }
+}

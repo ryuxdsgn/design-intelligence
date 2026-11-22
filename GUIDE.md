@@ -111,6 +111,10 @@ npx @ryuxdsgn/design-intelligence scan src --design                      # code 
 npx @ryuxdsgn/design-intelligence install --agent claude --hook          # scan each file the agent edits (also codex, cursor, opencode)
 ```
 
+In Claude Code, `--hook` also adds a Stop hook, `ryux report-check`. Before the agent finishes, it compares the
+report's one-line gate with the detail block. When the counts differ, the agent is asked once to fix that line. You can
+run the same check on a saved reply: `npx @ryuxdsgn/design-intelligence report-check reply.md`.
+
 Switch a check off for one line with a comment, `ryux-ignore RX-CD-02`, on that line or the line
 above it, and give the reason next to it.
 

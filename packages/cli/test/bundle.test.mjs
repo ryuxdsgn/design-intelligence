@@ -781,3 +781,9 @@ test("round 2 notes: Before/After for done rows, PASS needs the module read, pla
   const build = b["capabilities/build.md"].replace(/\s+/g, " ");
   assert.match(build, /done rows use Before \/ After/i);
 });
+
+test("the gate line keeps one form in every language, so ryux report-check can count it", () => {
+  const r = renderBundle()["report.md"].replace(/\s+/g, " ");
+  assert.match(r, /In every language the line starts with `Gate:` and gives a number before each status word \(PASS, FAIL, NOT VERIFIED, N\/A\)/);
+  assert.match(r, /ryux report-check/);
+});
