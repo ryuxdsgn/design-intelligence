@@ -92,7 +92,7 @@ export const SOURCE_CHECKS: Check[] = [
  *  RX-QA-08 itself. test/golden.test.mjs holds the other rows equal to ryux-core's. */
 export const RENDER_CHECKS: Check[] = [
   { rule: "RX-RD-01", level: "fail", looksFor: "a page that scrolls sideways at a scanned width, naming the widest elements" },
-  { rule: "RX-A11Y-01", level: "fail", looksFor: "text under 4.5:1 contrast (3:1 when large); over an image or a gradient, measured on the pixels behind it (its weakest tenth), up to 40 texts per width" },
+  { rule: "RX-A11Y-01", level: "fail", looksFor: "text under 4.5:1 contrast (3:1 when large); over an image or a gradient, measured on the pixels behind it (its weakest tenth), up to 40 texts per width; a text greyed by a filter is told how to leave out a logotype (data-ryux-ignore)" },
   { rule: "RX-A11Y-01", level: "warn", looksFor: "texts whose contrast was not measured, once per page: under a blend mode or a filter other than a colour one (blur, url), over a picture the page could not photograph (out of view, or redrawn by the page), or past the 40 measured" },
   { rule: "RX-A11Y-02", level: "fail", looksFor: "controls under 24x24px that are crowded by neighbours (warn when spaced as WCAG 2.5.8 allows); rendered text under 12px (warn)" },
   { rule: "RX-QA-03", level: "warn", looksFor: "text boxes of unrelated elements that overlap" },

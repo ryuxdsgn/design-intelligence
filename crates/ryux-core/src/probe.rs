@@ -614,6 +614,17 @@ impl<'a> Page<'a> {
         }
         Some(out)
     }
+    /// Whether the element or an ancestor carries a colour filter (a grey or faded logo row is the usual case).
+    fn colour_filtered(&self, i: usize) -> bool {
+        let mut e = Some(i);
+        while let Some(x) = e {
+            if self.filter_fns(x).iter().any(|(name, _)| *name != "drop-shadow") {
+                return true;
+            }
+            e = self.parent(x);
+        }
+        false
+    }
     /// `c` as painted by the element `k` steps up from `i`: tinted by the colour filters of that element and every
     /// ancestor, the innermost first.
     fn tinted(&self, c: Colour, i: usize, k: usize) -> Colour {
@@ -1071,7 +1082,10 @@ impl<'a> Page<'a> {
                 None => format!("{} on {}", hex(g.fg), hex(g.bg)),
                 Some((kind, _)) => format!("{} on {}, the weakest tenth of the {kind} behind it", hex(g.fg), hex(g.bg)),
             };
-            out.push(finding("RX-A11Y-01", "fail", self.selector(t.e), format!("{}: contrast {}:1 ({colours}), needs {}:1{more}", quote(t.x), crate::audit::ratio_text(g.ratio, g.need), num_str(g.need))));
+            // WCAG 1.4.3 exempts logotypes, and a row of logos set as text is usually greyed with a filter; the
+            // scan cannot tell a logo from a label, so it says how to leave one out instead of guessing
+            let logo = if self.colour_filtered(t.e) { "; if this is a logotype (WCAG 1.4.3 exempts them), mark its row data-ryux-ignore" } else { "" };
+            out.push(finding("RX-A11Y-01", "fail", self.selector(t.e), format!("{}: contrast {}:1 ({colours}), needs {}:1{more}{logo}", quote(t.x), crate::audit::ratio_text(g.ratio, g.need), num_str(g.need))));
         }
         // Texts whose contrast was not measured: under a blend mode or a filter, over a picture the page could not
         // photograph in view, or past the texts over pictures it is asked for. Said once, so a skipped text is never
@@ -1431,10 +1445,14 @@ mod tests {
         let m = faded(serde_json::json!({"filter": "grayscale(1) opacity(0.6)"}), grey);
         assert_eq!(m.len(), 1, "{m:?}");
         assert!(m[0].contains("contrast"), "{m:?}");
+        // a greyed text may be a logotype, which WCAG exempts: the fail says how to leave it out
+        assert!(m[0].ends_with("; if this is a logotype (WCAG 1.4.3 exempts them), mark its row data-ryux-ignore"), "{m:?}");
         // a drop shadow on a card does not change the colours inside it, nested parentheses and all
         let shadow = serde_json::json!({"filter": "drop-shadow(rgba(26, 23, 20, 0.08) 0px 1px 0px) drop-shadow(rgba(26, 23, 20, 0.1) 0px 8px 24px)"});
         assert!(faded(shadow.clone(), serde_json::json!({"color": "rgb(0, 0, 0)"})).is_empty());
-        assert_eq!(faded(shadow, serde_json::json!({"color": "rgb(187, 187, 187)"})).len(), 1);
+        let m = faded(shadow, serde_json::json!({"color": "rgb(187, 187, 187)"}));
+        assert_eq!(m.len(), 1);
+        assert!(!m[0].contains("logotype"), "a drop shadow does not grey a text: {m:?}");
         // a url filter is not measured
         assert!(faded(serde_json::json!({"filter": "url(\"#duotone\")"}), serde_json::json!({"color": "rgb(0, 0, 0)"}))[0].starts_with("1 text not measured"));
     }
