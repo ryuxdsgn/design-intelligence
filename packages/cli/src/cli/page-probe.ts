@@ -80,7 +80,7 @@ export async function probeExtract() {
     const cs = getComputedStyle(el);
     const s = {};
     for (const k of ["display", "visibility", "opacity", "clip", "clipPath", "overflow", "overflowY", "position", "backgroundColor", "backgroundImage", "mixBlendMode", "filter", "fontStyle", "boxShadow", "textShadow"]) {
-      const v = k === "backgroundColor" || k === "boxShadow" || k === "textShadow" ? plain(cs[k]) : cs[k];
+      const v = k === "backgroundColor" || k === "backgroundImage" || k === "boxShadow" || k === "textShadow" ? plain(cs[k]) : cs[k];
       if (v !== DEFAULTS[k]) s[k] = v;
     }
     const backdrop = cs.backdropFilter || cs.webkitBackdropFilter || "";
@@ -217,9 +217,39 @@ export async function probeExtract() {
   probe.style.cssText = "position:absolute;width:0;height:0;background-color:Canvas";
   document.documentElement.appendChild(probe);
   const canvas = getComputedStyle(probe).backgroundColor;
+  // The page's colour tokens: every CSS custom property its stylesheets declare that holds a colour (as rgb), and the
+  // gradients declared as tokens, so ryux-core can tell a gradient drawn from the brand's colours from one typed in.
+  const names = new Set();
+  const walk = (rules) => {
+    for (const rule of rules) {
+      if (names.size >= 600) return;
+      if (rule.style) for (const k of rule.style) if (k.startsWith("--")) names.add(k);
+      try { if (rule.cssRules) walk(rule.cssRules); } catch { /* not readable */ }
+    }
+  };
+  for (const sheet of document.styleSheets) {
+    try { walk(sheet.cssRules); } catch { /* a stylesheet from another origin */ }
+  }
+  const rootStyle = getComputedStyle(document.documentElement);
+  const colours = new Set();
+  const gradients = new Set();
+  for (const k of names) {
+    const v = rootStyle.getPropertyValue(k).trim();
+    if (!v) continue;
+    if (/gradient\(/.test(v)) {
+      probe.style.backgroundImage = "";
+      probe.style.backgroundImage = v;
+      const g = getComputedStyle(probe).backgroundImage;
+      if (g && g !== "none") gradients.add(plain(g));
+    } else if (CSS.supports("color", v) && colours.size < 300) {
+      colours.add(toRgb(v));
+    }
+  }
   probe.remove();
+  const tokens = colours.size || gradients.size ? { tokens: { colours: [...colours], gradients: [...gradients] } } : {};
   return {
     ...(canvas !== "rgb(255, 255, 255)" ? { canvas } : {}),
+    ...tokens,
     vw,
     vh,
     scrollWidth: root.scrollWidth,

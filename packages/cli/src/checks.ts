@@ -99,6 +99,7 @@ export const RENDER_CHECKS: Check[] = [
   { rule: "RX-QA-03", level: "fail", looksFor: "text a fixed or sticky bar cuts on the first screen while the bar repeats it, and text a bottom bar still covers with every scroller at its end" },
   { rule: "RX-AS-05", level: "warn", looksFor: "visual tells, once per page: three or more glowing elements (a coloured shadow around them), three or more blurred glass layers, or a pill above the main heading with no status in it" },
   { rule: "RX-UI-10", level: "warn", looksFor: "visual tells, once per page: a blue-to-purple gradient behind a large area, prose set in monospace, or an italic serif word inside a display heading" },
+  { rule: "RX-AS-10", level: "warn", looksFor: "the counts before handoff, once per page: emoji in a control, a tab, a menu, or navigation; gradients with colour that is not among the page's colour tokens (CSS custom properties); two or more blurred colour blobs with no text" },
   { rule: "RX-UI-26", level: "warn", looksFor: "a near-black page whose action colour is a saturated neon, with glow: the default look of an AI product" },
   { rule: "RX-UI-01", level: "warn", looksFor: "a bordered or shadowed, rounded box that holds another one (cards inside cards)" },
   { rule: "RX-UX-15", level: "warn", looksFor: "at 1024px and wider, the page's only choice (one radio group) starts below the first screen while a button that carries an amount (\"Bayar Rp1.424.000\") is on it" },

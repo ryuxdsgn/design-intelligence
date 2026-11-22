@@ -11758,6 +11758,560 @@
      "selector": "div.band > p.mix",
      "message": "1 text not measured for contrast (under a blend mode or a filter other than a colour one (blur, url), over a picture the page could not photograph (out of view, or redrawn by the page), or past the 40 measured), first \"Teks berbaur\": check them by eye over the busiest part of what is behind",
      "once": "contrast-unmeasured"
+    },
+    {
+     "rule": "RX-AS-10",
+     "level": "warn",
+     "selector": "div.band",
+     "message": "3 gradients and the page names no colour tokens (CSS custom properties) they could come from: div.band (#fde047, #1e3a8a), div.band (#0f172a), h1.mark > em (#f6d9c8); the count for gradients without a brand reason is 0: draw it from the brand's tokens and name the reason, or use a flat colour",
+     "once": "gradient"
+    }
+   ],
+   "ignored": []
+  }
+ },
+ {
+  "input": {
+   "tokens": {
+    "colours": [
+     "rgb(15, 118, 110)",
+     "rgb(20, 184, 166)"
+    ],
+    "gradients": [
+     "linear-gradient(90deg, rgb(15, 118, 110), rgb(34, 211, 238))"
+    ]
+   },
+   "vw": 390,
+   "vh": 844,
+   "scrollWidth": 390,
+   "scrollingElement": 0,
+   "top": 4,
+   "styles": [
+    {
+     "color": "rgb(0, 0, 0)",
+     "fontFamily": "Times"
+    },
+    {
+     "backgroundColor": "rgb(255, 255, 255)",
+     "color": "rgb(17, 17, 17)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "position": "absolute",
+     "backgroundColor": "rgb(168, 85, 247)",
+     "filter": "blur(60px)",
+     "borderTopLeftRadius": 50,
+     "color": "rgb(17, 17, 17)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "position": "absolute",
+     "backgroundColor": "rgb(34, 211, 238)",
+     "filter": "blur(60px)",
+     "borderTopLeftRadius": 50,
+     "color": "rgb(17, 17, 17)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "color": "rgb(17, 17, 17)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "display": "inline",
+     "color": "rgb(17, 17, 17)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "display": "inline-block",
+     "backgroundColor": "rgb(239, 239, 239)",
+     "fontSize": 13.3333,
+     "borderTopWidth": 2,
+     "color": "rgb(0, 0, 0)",
+     "fontFamily": "Arial"
+    },
+    {
+     "backgroundImage": "linear-gradient(135deg, rgb(249, 115, 22), rgb(219, 39, 119))",
+     "color": "rgb(17, 17, 17)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "backgroundImage": "linear-gradient(90deg, rgb(15, 118, 110), rgb(20, 184, 166))",
+     "color": "rgb(17, 17, 17)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "backgroundImage": "linear-gradient(90deg, rgb(15, 118, 110), rgb(34, 211, 238))",
+     "color": "rgb(17, 17, 17)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "backgroundColor": "rgb(214, 211, 209)",
+     "backgroundImage": "linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.6)), none",
+     "color": "rgb(17, 17, 17)",
+     "fontFamily": "sans-serif"
+    }
+   ],
+   "els": [
+    {
+     "p": null,
+     "t": "HTML",
+     "s": 0,
+     "r": [
+      0,
+      0,
+      390,
+      609
+     ]
+    },
+    {
+     "p": 0,
+     "t": "BODY",
+     "s": 1,
+     "r": [
+      0,
+      0,
+      390,
+      609
+     ]
+    },
+    {
+     "p": 1,
+     "t": "DIV",
+     "s": 2,
+     "r": [
+      0,
+      0,
+      240,
+      240
+     ],
+     "c": "blob"
+    },
+    {
+     "p": 1,
+     "t": "DIV",
+     "s": 3,
+     "r": [
+      150,
+      300,
+      240,
+      240
+     ],
+     "c": "blob"
+    },
+    {
+     "p": 1,
+     "t": "NAV",
+     "s": 4,
+     "r": [
+      0,
+      0,
+      390,
+      26
+     ]
+    },
+    {
+     "p": 4,
+     "t": "A",
+     "s": 5,
+     "r": [
+      8,
+      6,
+      84.9375,
+      18
+     ],
+     "ctl": 1,
+     "nm": "🏠 Beranda",
+     "sib": 1
+    },
+    {
+     "p": 4,
+     "t": "A",
+     "s": 5,
+     "r": [
+      108.9375,
+      6,
+      63.171875,
+      18
+     ],
+     "ctl": 1,
+     "nm": "Pesanan",
+     "sib": 1
+    },
+    {
+     "p": 1,
+     "t": "P",
+     "s": 4,
+     "r": [
+      0,
+      42,
+      390,
+      26
+     ]
+    },
+    {
+     "p": 1,
+     "t": "BUTTON",
+     "s": 6,
+     "r": [
+      0,
+      84,
+      88.5625,
+      44
+     ],
+     "ctl": 1,
+     "nm": "🚀 Mulai"
+    },
+    {
+     "p": 1,
+     "t": "BUTTON",
+     "s": 6,
+     "r": [
+      88.5625,
+      85,
+      95.09375,
+      44
+     ],
+     "ctl": 1,
+     "nm": "✓ Simpan"
+    },
+    {
+     "p": 1,
+     "t": "DIV",
+     "s": 7,
+     "r": [
+      0,
+      129,
+      390,
+      120
+     ],
+     "c": "typed"
+    },
+    {
+     "p": 1,
+     "t": "DIV",
+     "s": 8,
+     "r": [
+      0,
+      249,
+      390,
+      120
+     ],
+     "c": "drawn"
+    },
+    {
+     "p": 1,
+     "t": "DIV",
+     "s": 9,
+     "r": [
+      0,
+      369,
+      390,
+      120
+     ],
+     "c": "hero"
+    },
+    {
+     "p": 1,
+     "t": "DIV",
+     "s": 10,
+     "r": [
+      0,
+      489,
+      390,
+      120
+     ],
+     "c": "scrim"
+    }
+   ],
+   "texts": [
+    {
+     "e": 5,
+     "x": "🏠 Beranda",
+     "r": [
+      8,
+      6,
+      84.9375,
+      18
+     ],
+     "open": [
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5
+     ],
+     "end": {
+      "r": [
+       8,
+       6,
+       84.9375,
+       18
+      ],
+      "h": [
+       5,
+       5,
+       5,
+       5,
+       5,
+       5,
+       5,
+       5,
+       5,
+       5,
+       5,
+       5,
+       5,
+       5,
+       5
+      ]
+     }
+    },
+    {
+     "e": 6,
+     "x": "Pesanan",
+     "r": [
+      108.9375,
+      6,
+      63.171875,
+      18
+     ],
+     "open": [
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6
+     ],
+     "end": {
+      "r": [
+       108.9375,
+       6,
+       63.171875,
+       18
+      ],
+      "h": [
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6
+      ]
+     }
+    },
+    {
+     "e": 7,
+     "x": "Terima kasih sudah belanja 🙏",
+     "r": [
+      0,
+      48,
+      218.34375,
+      18
+     ],
+     "open": [
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7
+     ],
+     "end": {
+      "r": [
+       0,
+       48,
+       218.34375,
+       18
+      ],
+      "h": [
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7
+      ]
+     }
+    },
+    {
+     "e": 8,
+     "x": "🚀 Mulai",
+     "r": [
+      18,
+      100,
+      52.5625,
+      15
+     ],
+     "open": [
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8
+     ],
+     "end": {
+      "r": [
+       18,
+       100,
+       52.5625,
+       15
+      ],
+      "h": [
+       8,
+       8,
+       8,
+       8,
+       8,
+       8,
+       8,
+       8,
+       8,
+       8,
+       8,
+       8,
+       8,
+       8,
+       8
+      ]
+     }
+    },
+    {
+     "e": 9,
+     "x": "✓ Simpan",
+     "r": [
+      106.5625,
+      100,
+      59.09375,
+      15
+     ],
+     "open": [
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9
+     ],
+     "end": {
+      "r": [
+       106.5625,
+       100,
+       59.09375,
+       15
+      ],
+      "h": [
+       9,
+       9,
+       9,
+       9,
+       9,
+       9,
+       9,
+       9,
+       9,
+       9,
+       9,
+       9,
+       9,
+       9,
+       9
+      ]
+     }
+    }
+   ],
+   "chains": {
+    "open": {},
+    "end": {}
+   }
+  },
+  "output": {
+   "findings": [
+    {
+     "rule": "RX-AS-10",
+     "level": "warn",
+     "selector": "nav > a",
+     "message": "2 control or navigation labels carry an emoji (\"🏠 Beranda\", \"🚀 Mulai\"): the count for emoji in the interface chrome is 0; use the icon set, or the word alone",
+     "once": "emoji"
+    },
+    {
+     "rule": "RX-AS-10",
+     "level": "warn",
+     "selector": "div.typed",
+     "message": "1 gradient with colours that are not among the page's colour tokens: div.typed (#f97316, #db2777); the count for gradients without a brand reason is 0: draw it from the brand's tokens and name the reason, or use a flat colour",
+     "once": "gradient"
+    },
+    {
+     "rule": "RX-AS-10",
+     "level": "warn",
+     "selector": "div.blob",
+     "message": "2 blurred colour blobs behind the content: div.blob, div.blob; decoration with no job, the look a generated page gets by default; keep one only when the direction chose it",
+     "once": "blobs"
     }
    ],
    "ignored": []
