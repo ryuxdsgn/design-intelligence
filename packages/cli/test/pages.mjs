@@ -96,14 +96,17 @@ aside button{width:100%;padding:12px;font:inherit}label{display:block;padding:8p
 <aside><p>Total Rp1.421.000</p><button>Bayar Rp1.421.000</button></aside></div>`;
 
 /** Text over pictures: white over a gradient that starts in yellow, under the text (fails), over a dark one (passes), over a light
- *  image (fails), and under a blend mode (not measured). */
+ *  image (fails), under a blend mode (not measured), and a highlighted phrase that wraps inside a dark heading
+ *  (passes: only what is behind its own lines counts, not the heading's other words). */
 export const BEHIND = `${head}<style>
 body{margin:0;font:16px sans-serif;background:#fff;color:#111}.band{padding:16px}
 .sunset{background:linear-gradient(90deg,#fde047,#1e3a8a);color:#fff}.night{background:linear-gradient(90deg,#0f172a,#334155);color:#fff}
 .photo{background:#000 url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='10'><rect width='10' height='10' fill='%23f5f5f4'/></svg>") center/cover;color:#fff}
-.mix{mix-blend-mode:difference;color:#fff}</style>
+.mix{mix-blend-mode:difference;color:#fff}.mark{background:#faf5ec;color:#1e2a20;font-size:40px;margin:0;padding:16px}
+.mark em{font-style:normal;color:#2e6b3e;background:linear-gradient(transparent 62%,#f6d9c8 62%)}</style>
 <div class="band sunset"><p>Promo akhir tahun</p></div><div class="band night"><p>Tetap terbaca</p></div>
-<div class="band photo"><p>Foto terang di belakang</p></div><div class="band"><p class="mix">Teks berbaur</p></div>`;
+<div class="band photo"><p>Foto terang di belakang</p></div><div class="band"><p class="mix">Teks berbaur</p></div>
+<h1 class="mark">Tahu dari ladang mana <em>makanan si kecil</em> datang.</h1>`;
 
 /** Every page with the widths the tests render it at. */
 export const PAGES = [

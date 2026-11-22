@@ -1660,7 +1660,7 @@ Gate area ACCESSIBILITY. Covers semantics, keyboard, focus, contrast, targets, n
 - Do not: Put light grey text on white or white text on a pale accent.
 - Why: Low contrast fails outdoors, on cheap screens, and for low vision. (WCAG 2.2 SC 1.4.3 and 1.4.11; ryux Figma pilot critique 2026-10-28: a dark status bar over a dark food photo (1.3:1), then a white one over a light grocery photo (2.7:1) until the scrim was darkened)
 - Check: audit_ui
-- Measured: `ryux scan <url>` flags text under 4.5:1 contrast (3:1 when large); over an image or a gradient, measured on the pixels behind it (its weakest tenth), up to 40 texts per width (fail); texts whose contrast was not measured, once per page: under a blend mode or a filter, or over more pictures than measured (warn)
+- Measured: `ryux scan <url>` flags text under 4.5:1 contrast (3:1 when large); over an image or a gradient, measured on the pixels behind it (its weakest tenth), up to 40 texts per width (fail); texts whose contrast was not measured, once per page: under a blend mode or a filter, over a picture that could not be photographed in view, or past the 40 measured (warn)
 
 #### RX-A11Y-02 [Required] [Hard Gate] Readable text, reachable targets
 

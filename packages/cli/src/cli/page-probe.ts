@@ -272,8 +272,9 @@ export async function probeAnswer(ask) {
 }
 
 /** A text over an image or a gradient, made ready for a screenshot of what is behind it: scrolled into view, its
- *  glyphs (and its children's) made transparent. Returns the box of the text in the viewport, or null when none of
- *  it is in view. probeShow puts it back. */
+ *  glyphs (and its children's) made transparent. Returns the box to photograph (`clip`, in the viewport) and the
+ *  boxes of its lines inside it (`lines`, at most 12), so only what is behind the text's own lines is sampled, not
+ *  the rest of a heading it wraps inside; or null when none of it is in view. probeShow puts it back. */
 export async function probeHide(i) {
   const frame = () => new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
   const t = window.__ryuxProbe.nodesOf[i];
@@ -287,15 +288,22 @@ export async function probeHide(i) {
   t.el.scrollIntoView({ block: "center" });
   t.el.setAttribute("data-ryux-hide", "");
   await frame();
-  const range = document.createRange();
-  range.setStartBefore(t.nodes[0]);
-  range.setEndAfter(t.nodes[t.nodes.length - 1]);
-  const r = range.getBoundingClientRect();
-  const x = Math.max(0, Math.floor(r.left));
-  const y = Math.max(0, Math.floor(r.top));
-  const width = Math.min(document.documentElement.clientWidth, Math.ceil(r.right)) - x;
-  const height = Math.min(window.innerHeight, Math.ceil(r.bottom)) - y;
-  return width >= 1 && height >= 1 ? { x, y, width, height } : null;
+  const vw = document.documentElement.clientWidth;
+  const vh = window.innerHeight;
+  const seen = [];
+  for (const n of t.nodes) {
+    const range = document.createRange();
+    range.selectNodeContents(n);
+    for (const r of range.getClientRects()) {
+      const x0 = Math.max(0, r.left), y0 = Math.max(0, r.top), x1 = Math.min(vw, r.right), y1 = Math.min(vh, r.bottom);
+      if (x1 - x0 >= 1 && y1 - y0 >= 1 && seen.length < 12) seen.push([x0, y0, x1, y1]);
+    }
+  }
+  if (!seen.length) return null;
+  const x = Math.floor(Math.min(...seen.map((r) => r[0])));
+  const y = Math.floor(Math.min(...seen.map((r) => r[1])));
+  const clip = { x, y, width: Math.ceil(Math.max(...seen.map((r) => r[2]))) - x, height: Math.ceil(Math.max(...seen.map((r) => r[3]))) - y };
+  return { clip, lines: seen.map(([x0, y0, x1, y1]) => [x0 - x, y0 - y, x1 - x0, y1 - y0]) };
 }
 
 /** Undo probeHide: the text shows again, and with `last`, the page is back at the top without the hiding style. */
@@ -308,25 +316,33 @@ export function probeShow(arg) {
   }
 }
 
-/** The colours of a screenshot (PNG, base64) on a grid of at most 24 by 6 points, as [r, g, b]. Decoded in the
- *  page, so RYUX needs no image library; the judgement is ryux-core's. */
-export async function probePixels(png) {
-  const bytes = Uint8Array.from(atob(png), (c) => c.charCodeAt(0));
+/** The colours of a screenshot (`png`, base64) behind each of the text's `lines` ([x, y, width, height] in the
+ *  screenshot), on a grid of up to 24 points across each line and 6 rows shared by the lines, row by row, as one
+ *  string of rrggbb hex. Decoded in the page, so RYUX needs no image library; the judgement is ryux-core's. */
+export async function probePixels(arg) {
+  const bytes = Uint8Array.from(atob(arg.png), (c) => c.charCodeAt(0));
   const bitmap = await createImageBitmap(new Blob([bytes], { type: "image/png" }));
   const { width: w, height: h } = bitmap;
   const canvas = new OffscreenCanvas(w, h);
   const ctx = canvas.getContext("2d", { willReadFrequently: true });
   ctx.drawImage(bitmap, 0, 0);
   const data = ctx.getImageData(0, 0, w, h).data;
-  const cols = Math.min(24, w);
-  const rows = Math.min(6, h);
-  const px = [];
-  for (let r = 0; r < rows; r++) {
-    for (let c = 0; c < cols; c++) {
-      const x = Math.floor(((c + 0.5) * w) / cols);
-      const y = Math.floor(((r + 0.5) * h) / rows);
-      const o = (y * w + x) * 4;
-      px.push([data[o], data[o + 1], data[o + 2]]);
+  // the screenshot can be scaled from CSS pixels (a device scale factor)
+  const sx = w / Math.max(1, Math.max(...arg.lines.map((l) => l[0] + l[2])));
+  const sy = h / Math.max(1, Math.max(...arg.lines.map((l) => l[1] + l[3])));
+  const hex = (v) => v.toString(16).padStart(2, "0");
+  let px = "";
+  const rows = Math.max(1, Math.floor(6 / arg.lines.length));
+  for (const [lx, ly, lw, lh] of arg.lines) {
+    const cols = Math.max(1, Math.min(24, Math.floor(lw)));
+    const rs = Math.max(1, Math.min(rows, Math.floor(lh)));
+    for (let r = 0; r < rs; r++) {
+      for (let c = 0; c < cols; c++) {
+        const x = Math.min(w - 1, Math.floor((lx + ((c + 0.5) * lw) / cols) * sx));
+        const y = Math.min(h - 1, Math.floor((ly + ((r + 0.5) * lh) / rs) * sy));
+        const o = (y * w + x) * 4;
+        px += hex(data[o]) + hex(data[o + 1]) + hex(data[o + 2]);
+      }
     }
   }
   return px;

@@ -842,9 +842,19 @@ impl<'a> Page<'a> {
         // the need (one stray pixel of a photo does not decide it, a light band across a tenth of the text does).
         for (k, fg_raw, need, over) in behind {
             let t = texts[k];
-            let pixels: Vec<Colour> = answers["behind"][t.i.to_string()]["px"]
-                .as_array()
-                .map_or(Vec::new(), |a| a.iter().filter_map(|p| Some([p.get(0)?.as_f64()?, p.get(1)?.as_f64()?, p.get(2)?.as_f64()?, 1.0])).collect());
+            // rrggbb per point; a string that is not whole hex is not measured
+            let px = answers["behind"][t.i.to_string()]["px"].as_str().unwrap_or("");
+            let pixels: Vec<Colour> = if px.len() % 6 == 0 && px.bytes().all(|b| b.is_ascii_hexdigit()) {
+                px.as_bytes()
+                    .chunks(6)
+                    .map(|c| {
+                        let at = |k: usize| u8::from_str_radix(std::str::from_utf8(&c[k..k + 2]).unwrap_or("00"), 16).unwrap_or(0) as f64;
+                        [at(0), at(2), at(4), 1.0]
+                    })
+                    .collect()
+            } else {
+                Vec::new()
+            };
             if pixels.is_empty() {
                 unmeasured.push(k);
                 continue;
@@ -894,8 +904,9 @@ impl<'a> Page<'a> {
             };
             out.push(finding("RX-A11Y-01", "fail", self.selector(t.e), format!("{}: contrast {}:1 ({colours}), needs {}:1{more}", quote(t.x), crate::audit::ratio_text(g.ratio, g.need), num_str(g.need))));
         }
-        // Texts whose contrast was not measured: under a blend mode or a filter, or past the texts over pictures the
-        // page is asked for. Said once, so a skipped text is never read as a passing one.
+        // Texts whose contrast was not measured: under a blend mode or a filter, over a picture the page could not
+        // photograph in view, or past the texts over pictures it is asked for. Said once, so a skipped text is never
+        // read as a passing one.
         if let Some(&first) = unmeasured.first() {
             let t = texts[first];
             let count = if unmeasured.len() > 1 { format!("{} texts", unmeasured.len()) } else { "1 text".to_string() };
@@ -903,7 +914,7 @@ impl<'a> Page<'a> {
                 "RX-A11Y-01",
                 "warn",
                 self.selector(t.e),
-                format!("{count} not measured for contrast (under a blend mode or a filter, or over more pictures than measured), first {}: check them by eye over the busiest part of what is behind", quote(t.x)),
+                format!("{count} not measured for contrast (under a blend mode or a filter, over a picture that could not be photographed in view, or past the {MAX_BEHIND} measured), first {}: check them by eye over the busiest part of what is behind", quote(t.x)),
             );
             f["once"] = Value::from("contrast-unmeasured");
             out.push(f);

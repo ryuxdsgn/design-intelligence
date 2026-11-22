@@ -93,7 +93,7 @@ export const SOURCE_CHECKS: Check[] = [
 export const RENDER_CHECKS: Check[] = [
   { rule: "RX-RD-01", level: "fail", looksFor: "a page that scrolls sideways at a scanned width, naming the widest elements" },
   { rule: "RX-A11Y-01", level: "fail", looksFor: "text under 4.5:1 contrast (3:1 when large); over an image or a gradient, measured on the pixels behind it (its weakest tenth), up to 40 texts per width" },
-  { rule: "RX-A11Y-01", level: "warn", looksFor: "texts whose contrast was not measured, once per page: under a blend mode or a filter, or over more pictures than measured" },
+  { rule: "RX-A11Y-01", level: "warn", looksFor: "texts whose contrast was not measured, once per page: under a blend mode or a filter, over a picture that could not be photographed in view, or past the 40 measured" },
   { rule: "RX-A11Y-02", level: "fail", looksFor: "controls under 24x24px that are crowded by neighbours (warn when spaced as WCAG 2.5.8 allows); rendered text under 12px (warn)" },
   { rule: "RX-QA-03", level: "warn", looksFor: "text boxes of unrelated elements that overlap" },
   { rule: "RX-QA-03", level: "fail", looksFor: "text a fixed or sticky bar cuts on the first screen while the bar repeats it, and text a bottom bar still covers with every scroller at its end" },
