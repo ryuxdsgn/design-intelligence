@@ -7,7 +7,7 @@ import { join } from "node:path";
 import { pathToFileURL } from "node:url";
 import type { ScanFinding } from "../checks.js";
 import { probe } from "../engine.js";
-import { probeAnswer, probeExtract, type ProbeAsk, type ProbeFinding, type ProbeResult } from "./page-probe.js";
+import { probeAnswer, probeExtract, probeHide, probePixels, probeShow, type ProbeAsk, type ProbeFinding, type ProbeResult } from "./page-probe.js";
 
 interface Page {
   on(event: "pageerror", cb: (err: Error) => void): void;
@@ -15,6 +15,36 @@ interface Page {
   waitForTimeout(ms: number): Promise<void>;
   evaluate<T>(fn: () => T): Promise<T>;
   evaluate<T, A>(fn: (arg: A) => T, arg: A): Promise<T>;
+  screenshot(opts: { clip: { x: number; y: number; width: number; height: number }; animations: "disabled"; caret: "hide" }): Promise<Buffer>;
+}
+
+/** The rendered checks over the page as it is now: the shipped extract, judged by ryux-core. When ryux-core asks,
+ *  the page answers (hit tests, a filled textarea), and for each text over an image or a gradient the text is hidden
+ *  and what is behind it photographed, so ryux-core can judge the pixels; then it judges again. */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export async function judgePage(page: Page): Promise<{ extract: Record<string, unknown>; out: any }> {
+  const extract: Record<string, unknown> = await page.evaluate(probeExtract);
+  let out = probe(extract);
+  if (out.ask) {
+    const ask = out.ask as ProbeAsk;
+    const answers: Record<string, unknown> = await page.evaluate(probeAnswer, ask);
+    const behind: Record<number, { px: string } | null> = {};
+    const list = ask.behind ?? [];
+    for (const [n, i] of list.entries()) {
+      try {
+        const box = await page.evaluate(probeHide, i);
+        const shot = box ? await page.screenshot({ clip: box.clip, animations: "disabled", caret: "hide" }) : null;
+        const kept = await page.evaluate(probeShow, { i, last: n === list.length - 1 });
+        behind[i] = box && shot && kept ? { px: await page.evaluate(probePixels, { png: shot.toString("base64"), lines: box.lines }) } : null;
+      } catch {
+        behind[i] = null; // not measured; ryux-core says so
+      }
+    }
+    if (list.length) answers.behind = behind;
+    extract.answers = answers;
+    out = probe(extract);
+  }
+  return { extract, out };
 }
 interface Browser {
   newContext(opts: { viewport: { width: number; height: number }; reducedMotion: string }): Promise<{ newPage(): Promise<Page>; close(): Promise<void> }>;
@@ -84,13 +114,7 @@ export async function scanPages(urls: string[], widths: number[]): Promise<PageS
         await page.waitForTimeout(300);
         // The page only reads; ryux-core judges. When it needs a hit test or a filled textarea, it asks, the page
         // does that, and it judges again with the answers.
-        const extract: Record<string, unknown> = await page.evaluate(probeExtract);
-        let judged = probe(extract);
-        if (judged.ask) {
-          extract.answers = await page.evaluate(probeAnswer, judged.ask as ProbeAsk);
-          judged = probe(extract);
-        }
-        const result: ProbeResult = judged;
+        const result: ProbeResult = (await judgePage(page)).out;
         result.findings.forEach(add);
         if (result.ignored.length) {
           const set = ignored.get(url) ?? new Set<string>();

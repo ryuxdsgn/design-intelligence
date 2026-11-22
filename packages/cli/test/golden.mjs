@@ -109,14 +109,8 @@ export async function chromium() {
  *  by ryux-core, the page answering what ryux-core asks. Records the extract with its answers and the judgement
  *  into probe.json. */
 export async function probePage(page) {
-  const { probeExtract, probeAnswer } = await import("../dist/cli/page-probe.js");
-  const { probe } = await import("../dist/engine.js");
-  const extract = await page.evaluate(probeExtract);
-  let out = probe(extract);
-  if (out.ask) {
-    extract.answers = await page.evaluate(probeAnswer, out.ask);
-    out = probe(extract);
-  }
+  const { judgePage } = await import("../dist/cli/page-scan.js");
+  const { extract, out } = await judgePage(page);
   save("probe", extract, plain(out));
   return { extract, out };
 }

@@ -22,11 +22,13 @@ export interface ProbeResult {
   ignored: string[];
 }
 
-/** What ryux-core asks the page to do before it can judge: texts (by index in `texts`) to hit-test in view, and
- *  textareas (by element index) to fill. */
+/** What ryux-core asks the page to do before it can judge: texts (by index in `texts`) to hit-test in view,
+ *  textareas (by element index) to fill, and texts over an image or a gradient whose pixels it needs (`behind`,
+ *  answered by page-scan.ts with probeHide, a screenshot, and probePixels). */
 export interface ProbeAsk {
   under: number[];
   grow: number[];
+  behind?: number[];
 }
 
 /** The page as JSON, at the current viewport. Elements are in document order: 0 is <html>, 1 is <body>, then every
@@ -267,4 +269,116 @@ export async function probeAnswer(ask) {
   }
   await frame();
   return { under, grow };
+}
+
+/** A text over an image or a gradient, made ready for a screenshot of what is behind it: scrolled into view, its
+ *  glyphs (and its children's) made transparent. Returns the box to photograph (`clip`, in the viewport) and the
+ *  boxes of its lines inside it (`lines`, at most 12), so only what is behind the text's own lines is sampled, not
+ *  the rest of a heading it wraps inside; or null when none of it is in view. When the page has redrawn the text
+ *  since the extract, it waits until the page is still (500 ms with no change, 3 s at most) and finds the element
+ *  again at the same place with the same text, once. probeShow puts it back. */
+export async function probeHide(i) {
+  const frame = () => new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
+  const probe = window.__ryuxProbe;
+  const own = (el) => [...el.childNodes].filter((n) => n.nodeType === 3 && n.textContent.trim());
+  const words = (nodes) => nodes.map((n) => n.textContent).join(" ").replace(/\s+/g, " ").trim();
+  const still = () => new Promise((done) => {
+    let quiet;
+    const end = () => { watch.disconnect(); clearTimeout(quiet); clearTimeout(cap); done(); };
+    const watch = new MutationObserver(() => { clearTimeout(quiet); quiet = setTimeout(end, 500); });
+    watch.observe(document, { subtree: true, childList: true, characterData: true, attributes: true });
+    quiet = setTimeout(end, 500);
+    const cap = setTimeout(end, 3000);
+  });
+  const again = async (t) => {
+    await still();
+    const at = probe.all.indexOf(t.el);
+    const now = [document.documentElement, document.body, ...document.body.querySelectorAll("*")];
+    const el = now[at];
+    const nodes = el ? own(el) : [];
+    return nodes.length && words(nodes) === words(t.nodes) ? { el, nodes } : null;
+  };
+  let t = probe.nodesOf[i];
+  if (!t) return null;
+  if (!document.getElementById("ryux-hide")) {
+    const style = document.createElement("style");
+    style.id = "ryux-hide";
+    style.textContent = "[data-ryux-hide],[data-ryux-hide] *{color:transparent!important;-webkit-text-fill-color:transparent!important;text-shadow:none!important;caret-color:transparent!important}";
+    document.head.appendChild(style);
+  }
+  for (let tries = 0; ; tries++) {
+    if (!t.nodes.every((n) => n.isConnected)) {
+      if (tries > 1) return null;
+      t = await again(t);
+      if (!t) return null;
+      probe.nodesOf[i] = t;
+      continue;
+    }
+    t.el.scrollIntoView({ block: "center" });
+    t.el.setAttribute("data-ryux-hide", "");
+    await frame();
+    if (t.nodes.every((n) => n.isConnected)) break;
+  }
+  const vw = document.documentElement.clientWidth;
+  const vh = window.innerHeight;
+  const seen = [];
+  for (const n of t.nodes) {
+    const range = document.createRange();
+    range.selectNodeContents(n);
+    for (const r of range.getClientRects()) {
+      const x0 = Math.max(0, r.left), y0 = Math.max(0, r.top), x1 = Math.min(vw, r.right), y1 = Math.min(vh, r.bottom);
+      if (x1 - x0 >= 1 && y1 - y0 >= 1 && seen.length < 12) seen.push([x0, y0, x1, y1]);
+    }
+  }
+  if (!seen.length) return null;
+  const x = Math.floor(Math.min(...seen.map((r) => r[0])));
+  const y = Math.floor(Math.min(...seen.map((r) => r[1])));
+  const clip = { x, y, width: Math.ceil(Math.max(...seen.map((r) => r[2]))) - x, height: Math.ceil(Math.max(...seen.map((r) => r[3]))) - y };
+  return { clip, lines: seen.map(([x0, y0, x1, y1]) => [x0 - x, y0 - y, x1 - x0, y1 - y0]) };
+}
+
+/** Undo probeHide: the text shows again, and with `last`, the page is back at the top without the hiding style.
+ *  Returns whether the hidden text was still on the page: if the page redrew it before the screenshot, the new
+ *  text was not hidden, its glyphs are in the screenshot, and the pixels must not be used. */
+export function probeShow(arg) {
+  const t = window.__ryuxProbe.nodesOf[arg.i];
+  const kept = !!t && t.nodes.every((n) => n.isConnected) && t.el.hasAttribute("data-ryux-hide");
+  t?.el.removeAttribute("data-ryux-hide");
+  if (arg.last) {
+    document.getElementById("ryux-hide")?.remove();
+    window.scrollTo(0, 0);
+  }
+  return kept;
+}
+
+/** The colours of a screenshot (`png`, base64) behind each of the text's `lines` ([x, y, width, height] in the
+ *  screenshot), on a grid of up to 24 points across each line and 6 rows shared by the lines, row by row, as one
+ *  string of rrggbb hex. Decoded in the page, so RYUX needs no image library; the judgement is ryux-core's. */
+export async function probePixels(arg) {
+  const bytes = Uint8Array.from(atob(arg.png), (c) => c.charCodeAt(0));
+  const bitmap = await createImageBitmap(new Blob([bytes], { type: "image/png" }));
+  const { width: w, height: h } = bitmap;
+  const canvas = new OffscreenCanvas(w, h);
+  const ctx = canvas.getContext("2d", { willReadFrequently: true });
+  ctx.drawImage(bitmap, 0, 0);
+  const data = ctx.getImageData(0, 0, w, h).data;
+  // the screenshot can be scaled from CSS pixels (a device scale factor)
+  const sx = w / Math.max(1, Math.max(...arg.lines.map((l) => l[0] + l[2])));
+  const sy = h / Math.max(1, Math.max(...arg.lines.map((l) => l[1] + l[3])));
+  const hex = (v) => v.toString(16).padStart(2, "0");
+  let px = "";
+  const rows = Math.max(1, Math.floor(6 / arg.lines.length));
+  for (const [lx, ly, lw, lh] of arg.lines) {
+    const cols = Math.max(1, Math.min(24, Math.floor(lw)));
+    const rs = Math.max(1, Math.min(rows, Math.floor(lh)));
+    for (let r = 0; r < rs; r++) {
+      for (let c = 0; c < cols; c++) {
+        const x = Math.min(w - 1, Math.floor((lx + ((c + 0.5) * lw) / cols) * sx));
+        const y = Math.min(h - 1, Math.floor((ly + ((r + 0.5) * lh) / rs) * sy));
+        const o = (y * w + x) * 4;
+        px += hex(data[o]) + hex(data[o + 1]) + hex(data[o + 2]);
+      }
+    }
+  }
+  return px;
 }

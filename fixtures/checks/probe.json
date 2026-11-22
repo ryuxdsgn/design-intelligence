@@ -2858,10 +2858,34 @@
    "chains": {
     "open": {},
     "end": {}
+   },
+   "answers": {
+    "under": {},
+    "grow": {},
+    "behind": {
+     "1": {
+      "px": "467ef6467df6477df6487cf6497cf64a7cf64b7bf64c7bf64d7af64e7af64f7af65079f65179f65279f65378f65478f65577f65677f65777f65876f65876f65a75f65b75f65c75f6497cf64a7cf64a7cf64b7bf64c7bf64d7bf64f7af64f7af65079f65179f65278f65378f65478f65577f65677f65776f65876f65976f65a75f65b75f65c74f65d74f65e74f65f73f64c7bf64d7bf64d7af64f7af64f7af65179f65279f65278f65378f65478f65677f65677f65776f65876f65976f65a75f65b75f65c74f65d74f75e74f65f73f66073f66172f66272f75279f65378f65478f65578f65677f65676f65876f65876f65975f65a75f65b75f65c74f65d74f75e74f65f73f66073f76172f66172f66372f66371f66471f66570f66670f66770f65577f65677f65776f65876f65976f65a75f65b75f65c75f65c74f65d74f65e74f65f73f66073f66172f66272f66372f66471f76571f66670f66770f76770f6686ff66a6ff76a6ef65775f65875f65a74f65b74f75c73f65d73f65e73f75f72f65f72f66172f76171f66271f66371f76470f6656ff66670f7676ff6686ef6686ef6696ef6696df66c6ef66d6ef66d6df6"
+     },
+     "2": {
+      "px": "5c75f75d74f75e74f75f73f65f72f66172f66171f66371f66471f66570f66770f76870f76970f76a6ff76b6ff76c6ef76d6ef76d6df66e6cf66f6cf6706bf6726bf6726af6746af65d74f65e73f65f73f66173f76172f66372f76471f66571f76670f66770f7686ff6696ff66a6ef66b6ef66c6ef66d6df66e6df66f6cf7706cf7716cf7726bf7746bf7746af7766af75f74f76073f76173f76272f66371f66471f66570f66670f6676ff6686ff66a6ff76b6ff76c6ef76d6ef76e6ef76f6df7706df7706bf6716bf6736bf6746af6756af67669f67769f66173f76272f76372f76371f66470f66570f6666ff6686ff6686ff66a6ef66b6ef76d6ef76d6ef76f6df7706df7716cf7726cf7726bf6736af6746af67569f67669f67768f67968f66272f66371f66471f66571f76670f66870f7686ff66a6ff76a6ef66c6ef76c6df66e6df66e6cf6706cf6716cf6726bf6736bf6746af7756af7766af77769f77869f77968f77b68f76472f76571f76671f7666ff6676ff6686ff66a6ef66a6ef66c6df66d6df66f6df7706df7716cf7726cf7736cf7746bf7756bf77569f67669f67769f67868f67968f67a67f67b67f6"
+     },
+     "4": {
+      "px": "7e65f67e67f77c67f77a66f67a66f77866f67967f77867f57768f77667f67768f67768f77668f67766f77768f67766f67867f67867f77866f67867f67966f67965f57c67f77b66f67f65f77e66f77b65f57a65f67966f67a67f77966f67867f67867f57867f67867f67767f67768f77667f57867f77968f67967f77867f57867f67965f57a65f57b66f77d66f67d66f78064f67f65f67c65f77b66f67b66f67a66f67a66f77966f67866f67867f57966f77867f77765f67768f67866f57a68f77966f67a67f77966f67a67f77b66f67b65f67e65f77e66f68065f77f64f67c64f67c66f77c65f57b66f77a65f67a66f77866f67867f67866f67867f67866f77767f57967f67a67f77a66f77a66f67a66f77a66f67b65f67c65f77e65f77f66f78064f67f66f77c64f67c65f57c66f77b65f67b66f67965f57a67f67966f57a67f77967f77867f67867f67966f67b68f77a66f67a66f67966f57b65f67c65f67c65f77e66f77e65f68164f77f66f77d66f67d65f77b65f67a66f77b66f77a67f67966f67a67f77a66f57966f67967f77965f67a67f77965f57b67f77a66f67b66f77a65f57c64f57c65f67e66f77d65f7"
+     },
+     "5": {
+      "px": "7d66f77c66f67c65f57c67f77a66f57c67f77a66f67b68f77a66f57b68f77a66f67b67f77b67f67a66f77b66f67b67f77b67f77a66f67a67f77a66f67b67f77b67f67c68f78263f67e66f67d66f77d66f67d65f57c65f67b66f57b66f67b66f77c67f77b66f67a67f67b67f67b67f77a66f67c67f77b67f77b66f67b67f77b66f67c66f77b66f67b66f77b66f78464f77f65f77e66f77d65f67e66f67c66f67d66f77c66f67c66f77c67f67c66f67b66f67c66f77b66f67c67f77b65f67c67f77c67f77c66f67c67f77c66f67c66f77b66f67c66f78462f67f64f67e65f77e65f67e65f57d66f77d66f77d66f77c66f67d67f77c66f67c67f77c65f67d67f77c66f77c65f77c66f67c66f77c66f77c66f67d66f77c66f77c66f77c65f68563f78065f77f66f77e64f57e65f67d65f57d66f67c65f57d66f77d66f67d66f77b66f57d67f77d66f67d66f77d66f67d66f77d66f77c65f67d66f77d65f67d66f77c65f67d66f78563f67f65f67e65f57e65f67e66f67d66f67e65f67e66f77d66f67d65f67d66f67d65f77d66f77e66f77c65f67e66f77d66f77d65f67e66f77d65f77d66f77d65f67e66f77e66f78563f7"
+     }
+    }
    }
   },
   "output": {
    "findings": [
+    {
+     "rule": "RX-A11Y-01",
+     "level": "fail",
+     "selector": "div.wash > span.glow",
+     "message": "\"one\": contrast 3.54:1 (#eeeeee on #7e66f6, the weakest tenth of the gradient behind it), needs 4.5:1; 1 more in the same color over the same gradient"
+    },
     {
      "rule": "RX-AS-05",
      "level": "warn",
@@ -3946,10 +3970,34 @@
    "chains": {
     "open": {},
     "end": {}
+   },
+   "answers": {
+    "under": {},
+    "grow": {},
+    "behind": {
+     "1": {
+      "px": "3f80f64080f64080f64080f64180f64280f6427ff6427ff6437ff6437ff6447ff6447ef6447ef6457ef6457ef6457ef6467ef6467df6477ef6477df6477df6487df6487df6497df64180f64180f6417ff6427ff6427ff6437ff6437ff6437ef6447ef6447ef6457ef6457ef6457ef6467ef6467ef6467df6477df6477df6487df6487cf6487cf6497cf64a7cf64a7cf6417ef6417ef6427ef6437ef6447ef6447ef6447df6447df6457df6457df6467df6467cf6467cf6477cf6487cf6487bf6487bf6487bf6487bf6487bf64a7cf64a7cf64b7cf64b7cf65378f65478f65477f65578f65577f65677f65677f65777f65777f65777f65876f65876f75976f65976f65975f65a75f65a75f65a75f65b75f65b74f65c74f65c74f65d74f65d74f65577f65577f65577f65677f65777f65777f65776f65876f65876f65976f65976f65a76f65a75f65a75f65a75f65b75f65b74f65c74f65c74f65d74f65d74f65e74f65e73f65e73f65677f65677f65776f65777f65876f65876f65976f65976f65975f65a75f75a75f65b75f75b75f65c75f75c74f65c74f65d74f65d74f65e74f65e73f65e73f65f73f65f73f66073f6"
+     },
+     "2": {
+      "px": "497df7497df64a7df74a7cf64a7bf64a7bf64b7bf64b7bf64c7bf64c7bf64d7bf64e7bf74e7bf64f7bf74f7af6507af7507af65079f65079f65078f65178f65178f65278f65278f6497cf6497cf64a7cf64b7cf64b7bf64c7bf64c7bf64c7bf64d7bf64d7bf64d7af64e7af64e7af64f7af64f79f65079f65079f65179f65179f65279f65279f65379f65378f65378f64a7cf64b7cf74b7cf64b7bf64b7bf64c7bf64c7af64c7af64d7af64d7af64f7af74f7af74f7af7507af7507af7517af75179f75178f65178f65278f65278f65378f65378f65377f64b7cf74b7cf64c7cf74c7bf64c7af64c7af64d7af64d7af64e7af64e7af64f7af6507af7507af6517af75179f75279f75279f65278f65278f65278f65378f65377f65477f65477f64b7bf64b7bf64c7bf64d7bf64d7bf64e7bf64e7af64e7af64f7af64f7af64f79f65079f65079f65179f65179f65279f65278f65378f65378f65478f65478f65578f65577f65577f64c7bf74d7bf74d7bf64d7af64d7af64e7af64e7af64e79f64f79f64f79f6517af75179f75179f75279f75279f75379f75379f75378f65377f65477f65477f65577f65577f65677f6"
+     },
+     "4": {
+      "px": "6170f66073f75c74f65a73f65974f75674f65776f75575f55577f75376f65477f55377f75277f65277f65377f65276f65377f65276f65476f65477f65575f55575f55876f75774f66271f66071f75c72f55a73f55973f65975f65674f65675f55575f55475f55576f65376f65376f65276f55276f65477f65376f65376f55376f55475f55675f55775f75975f65a75f66370f66172f65c72f75a73f65a74f65874f65875f75675f65676f65475f55576f75376f75276f65476f65375f55577f75376f65576f75476f65576f75774f65773f65a74f75b73f66471f66171f65c72f65b73f65a73f55974f65874f65775f65675f55475f55575f65376f65276f65376f55475f55577f65476f65476f65576f65576f65774f65874f65a74f65b74f66270f66172f75c72f55b72f55a74f75974f65774f65675f55676f65475f55676f65476f75375f65376f55276f65577f75375f65476f55475f55675f65675f55774f75a75f75a74f66370f66072f75d74f65b73f65973f65774f65775f75675f55576f65576f65476f55476f65477f65376f65477f65375f55477f65376f65576f65475f55574f55775f55875f75975f6"
+     },
+     "5": {
+      "px": "5975f65876f65675f55577f65476f55677f75376f65478f65276f55378f75177f65279f65278f65178f75178f65079f65179f75078f65078f64f78f65079f75079f65179f75d73f65a75f65875f75776f55675f55676f55476f55577f55476f65478f65277f65277f55277f65278f65177f65178f65078f65078f65178f65078f65178f65078f65078f65078f66073f65c74f75975f75774f65776f65576f65677f75676f65477f75477f65377f65377f65378f75278f65379f75177f65179f75178f75078f65178f75078f65078f75078f65078f76071f65b73f65974f65874f65775f55677f65676f65676f65476f65477f65376f55377f65277f65378f65378f65277f65178f65178f65178f65178f65178f65078f65078f65078f66172f65b75f65976f75875f55776f55675f55677f65576f55576f65477f65378f75277f55377f65278f65277f75177f65178f65278f75177f65278f65178f65178f75077f65178f66072f65a74f65875f55775f55676f65576f55676f65576f65477f65476f55477f65377f65378f65378f65277f65278f65178f65178f65278f65078f65178f65078f65279f65279f65f73f6"
+     }
+    }
    }
   },
   "output": {
    "findings": [
+    {
+     "rule": "RX-A11Y-01",
+     "level": "fail",
+     "selector": "div.wash > span.glow",
+     "message": "\"one\": contrast 3.39:1 (#eeeeee on #5477f5, the weakest tenth of the gradient behind it), needs 4.5:1; 1 more in the same color over the same gradient"
+    },
     {
      "rule": "RX-AS-05",
      "level": "warn",
@@ -11041,6 +11089,675 @@
      "level": "fail",
      "selector": "div.soon > p",
      "message": "\"Segera hadir\": contrast 1.83:1 (#bfbfbf on #ffffff), needs 4.5:1"
+    }
+   ],
+   "ignored": []
+  }
+ },
+ {
+  "input": {
+   "vw": 390,
+   "vh": 844,
+   "scrollWidth": 390,
+   "scrollingElement": 0,
+   "top": 2,
+   "styles": [
+    {
+     "color": "rgb(0, 0, 0)",
+     "fontFamily": "Times"
+    },
+    {
+     "backgroundColor": "rgb(255, 255, 255)",
+     "color": "rgb(17, 17, 17)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "backgroundImage": "linear-gradient(90deg, rgb(253, 224, 71), rgb(30, 58, 138))",
+     "color": "rgb(255, 255, 255)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "color": "rgb(255, 255, 255)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "backgroundImage": "linear-gradient(90deg, rgb(15, 23, 42), rgb(51, 65, 85))",
+     "color": "rgb(255, 255, 255)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "backgroundColor": "rgb(0, 0, 0)",
+     "backgroundImage": "url(\"data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='10'><rect width='10' height='10' fill='%23f5f5f4'/></svg>\")",
+     "color": "rgb(255, 255, 255)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "color": "rgb(17, 17, 17)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "mixBlendMode": "difference",
+     "color": "rgb(255, 255, 255)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "backgroundColor": "rgb(250, 245, 236)",
+     "fontSize": 40,
+     "fontWeight": 700,
+     "color": "rgb(30, 42, 32)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "display": "inline",
+     "backgroundImage": "linear-gradient(rgba(0, 0, 0, 0) 62%, rgb(246, 217, 200) 62%)",
+     "fontSize": 40,
+     "fontWeight": 700,
+     "color": "rgb(46, 107, 62)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "display": "none",
+     "color": "rgb(17, 17, 17)",
+     "fontFamily": "sans-serif"
+    }
+   ],
+   "els": [
+    {
+     "p": null,
+     "t": "HTML",
+     "s": 0,
+     "r": [
+      0,
+      0,
+      390,
+      580
+     ]
+    },
+    {
+     "p": 0,
+     "t": "BODY",
+     "s": 1,
+     "r": [
+      0,
+      0,
+      390,
+      580
+     ]
+    },
+    {
+     "p": 1,
+     "t": "DIV",
+     "s": 2,
+     "r": [
+      0,
+      0,
+      390,
+      82
+     ],
+     "c": "band",
+     "pt": "Promo akhir tahun"
+    },
+    {
+     "p": 2,
+     "t": "P",
+     "s": 3,
+     "r": [
+      16,
+      32,
+      358,
+      18
+     ]
+    },
+    {
+     "p": 1,
+     "t": "DIV",
+     "s": 4,
+     "r": [
+      0,
+      82,
+      390,
+      82
+     ],
+     "c": "band",
+     "pt": "Tetap terbaca"
+    },
+    {
+     "p": 4,
+     "t": "P",
+     "s": 3,
+     "r": [
+      16,
+      114,
+      358,
+      18
+     ]
+    },
+    {
+     "p": 1,
+     "t": "DIV",
+     "s": 5,
+     "r": [
+      0,
+      164,
+      390,
+      82
+     ],
+     "c": "band",
+     "pt": "Foto terang di belakang"
+    },
+    {
+     "p": 6,
+     "t": "P",
+     "s": 3,
+     "r": [
+      16,
+      196,
+      358,
+      18
+     ]
+    },
+    {
+     "p": 1,
+     "t": "DIV",
+     "s": 6,
+     "r": [
+      0,
+      246,
+      390,
+      82
+     ],
+     "c": "band",
+     "pt": "Teks berbaur"
+    },
+    {
+     "p": 8,
+     "t": "P",
+     "s": 7,
+     "r": [
+      16,
+      278,
+      358,
+      18
+     ],
+     "c": "mix"
+    },
+    {
+     "p": 1,
+     "t": "H1",
+     "s": 8,
+     "r": [
+      0,
+      328,
+      390,
+      170
+     ],
+     "c": "mark"
+    },
+    {
+     "p": 10,
+     "t": "EM",
+     "s": 9,
+     "r": [
+      16,
+      390,
+      333.5,
+      92
+     ]
+    },
+    {
+     "p": 1,
+     "t": "DIV",
+     "s": 2,
+     "r": [
+      0,
+      498,
+      390,
+      82
+     ],
+     "id": "redraw",
+     "c": "band"
+    },
+    {
+     "p": 12,
+     "t": "P",
+     "s": 3,
+     "r": [
+      16,
+      530,
+      358,
+      18
+     ]
+    },
+    {
+     "p": 1,
+     "t": "SCRIPT",
+     "s": 10,
+     "r": [
+      0,
+      0,
+      0,
+      0
+     ]
+    }
+   ],
+   "texts": [
+    {
+     "e": 3,
+     "x": "Promo akhir tahun",
+     "r": [
+      16,
+      32,
+      130.734375,
+      18
+     ],
+     "open": [
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3
+     ],
+     "end": {
+      "r": [
+       16,
+       32,
+       130.734375,
+       18
+      ],
+      "h": [
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3
+      ]
+     }
+    },
+    {
+     "e": 5,
+     "x": "Tetap terbaca",
+     "r": [
+      16,
+      114,
+      96.953125,
+      18
+     ],
+     "open": [
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5
+     ],
+     "end": {
+      "r": [
+       16,
+       114,
+       96.953125,
+       18
+      ],
+      "h": [
+       5,
+       5,
+       5,
+       5,
+       5,
+       5,
+       5,
+       5,
+       5,
+       5,
+       5,
+       5,
+       5,
+       5,
+       5
+      ]
+     }
+    },
+    {
+     "e": 7,
+     "x": "Foto terang di belakang",
+     "r": [
+      16,
+      196,
+      168.125,
+      18
+     ],
+     "open": [
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7
+     ],
+     "end": {
+      "r": [
+       16,
+       196,
+       168.125,
+       18
+      ],
+      "h": [
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7
+      ]
+     }
+    },
+    {
+     "e": 9,
+     "x": "Teks berbaur",
+     "r": [
+      16,
+      278,
+      92.5,
+      18
+     ],
+     "open": [
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9
+     ],
+     "end": {
+      "r": [
+       16,
+       278,
+       92.5,
+       18
+      ],
+      "h": [
+       9,
+       9,
+       9,
+       9,
+       9,
+       9,
+       9,
+       9,
+       9,
+       9,
+       9,
+       9,
+       9,
+       9,
+       9
+      ]
+     }
+    },
+    {
+     "e": 10,
+     "x": "Tahu dari ladang mana datang.",
+     "r": [
+      16,
+      344,
+      333.5,
+      138
+     ],
+     "open": [
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      11,
+      11,
+      11,
+      11,
+      10,
+      10,
+      10,
+      10
+     ],
+     "end": {
+      "r": [
+       16,
+       344,
+       333.5,
+       138
+      ],
+      "h": [
+       10,
+       10,
+       10,
+       10,
+       10,
+       10,
+       10,
+       11,
+       11,
+       11,
+       11,
+       10,
+       10,
+       10,
+       10
+      ]
+     }
+    },
+    {
+     "e": 11,
+     "x": "makanan si kecil",
+     "r": [
+      16,
+      390,
+      333.5,
+      92
+     ],
+     "open": [
+      10,
+      10,
+      11,
+      11,
+      11,
+      11,
+      10,
+      10,
+      10,
+      10,
+      11,
+      10,
+      10,
+      10,
+      10
+     ],
+     "end": {
+      "r": [
+       16,
+       390,
+       333.5,
+       92
+      ],
+      "h": [
+       10,
+       10,
+       11,
+       11,
+       11,
+       11,
+       10,
+       10,
+       10,
+       10,
+       11,
+       10,
+       10,
+       10,
+       10
+      ]
+     }
+    },
+    {
+     "e": 13,
+     "x": "Digambar ulang",
+     "r": [
+      16,
+      530,
+      112.953125,
+      18
+     ],
+     "open": [
+      13,
+      13,
+      13,
+      13,
+      13,
+      13,
+      13,
+      13,
+      13,
+      13,
+      13,
+      13,
+      13,
+      13,
+      13
+     ],
+     "end": {
+      "r": [
+       16,
+       530,
+       112.953125,
+       18
+      ],
+      "h": [
+       13,
+       13,
+       13,
+       13,
+       13,
+       13,
+       13,
+       13,
+       13,
+       13,
+       13,
+       13,
+       13,
+       13,
+       13
+      ]
+     }
+    }
+   ],
+   "chains": {
+    "open": {},
+    "end": {}
+   },
+   "answers": {
+    "under": {},
+    "grow": {},
+    "behind": {
+     "0": {
+      "px": "f3d84aefd64becd34ce9d14de6cf4ee3cc4fdfca50ddc851dac652d6c353d3c053d0bf55cdbc56caba56c6b757c4b558c0b359bdb15abaae5bb7ac5cb4aa5db0a75eaea55faaa360f2d84aefd54becd44ce9d14ee5ce4de2cc4fe0cb50dcc750d9c551d7c453d3c154d0be54ccbc55caba57c7b858c3b558c0b259beb15bbaae5bb7ac5cb5aa5db1a75eaea55faaa25ff3d84aefd64becd34ce9d14de6cf4ee2cc4fdfca50ddc851d9c552d6c352d3c154d0bf55cdbc56caba56c6b757c4b558c0b359bdb05abbaf5bb7ac5cb4aa5db1a75eaea55faba360f2d84aefd54bedd44ce9d14de5ce4ee2cc4fe0ca50dcc850d9c551d7c453d3c154d0be54ccbc55caba57c7b858c3b558c0b259beb15bbaae5bb7ab5cb4aa5db1a85eada55eaaa25ff3d84aefd64becd34ce9d14de6cf4ee3cc4fe0ca50ddc851d9c652d6c353d3c153d0bf55cdbc56caba56c6b757c4b558c0b35abdb15abaae5bb7ac5cb4aa5db0a75eaea55faaa360f2d84aeed54becd44ce9d14ee5ce4de2cc4fe0cb50dcc750d9c551d7c453d3c154d0be54ccbc55caba57c7b858c3b558c0b259beb15bbaae5bb7ac5cb5aa5db1a75eaea55eaaa25f"
+     },
+     "1": {
+      "px": "11192c111a2d121a2d121a2d121b2e131b2e131c2f131c2f141d30141d30141d31151e31151e31161f32161f3216203317203317203417213418213518223519223519233619233610192c11192c11192d111a2d121a2d121b2e131b2e131c2f131c2f141c30141d30141d30151e31151e31151f32161f32161f3317203317203417213418213418223518223519223611192c111a2d121a2d121b2e121b2e131b2e131c2f141c2f141d30141d30151d31151e31151e32161f32161f3216203317203317213418213418213518223519223619233619233610192c11192c111a2d121a2d121a2e121b2e131b2e131c2f131c2f141d30141d30141d31151e31151e31161f32161f3216203317203317203417213418213518223519223519233611192c111a2d121a2d121a2d121b2e131b2e131c2f131c2f141d30141d30151d31151e31151e31161f32161f3216203317203317203417213418213518223519223519233619233610192c11192c11192c111a2d121a2d121b2e121b2e131c2f131c2f141c30141d30141d31151e31151e31151f32161f32161f33172033172034172134182134182235182235192336"
+     },
+     "2": {
+      "px": "f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4f5f5f4"
+     },
+     "5": {
+      "px": "faf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecf6d9c8f6d9c8f6d9c8f6d9c8f6d9c8f6d9c8f6d9c8f6d9c8f6d9c8f6d9c8f6d9c8f6d9c8f6d9c8f6d9c8f6d9c8f6d9c8f6d9c8f6d9c8f6d9c8f6d9c8f6d9c8f6d9c8f6d9c8f6d9c8faf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecfaf5ecf6d9c8f6d9c8f6d9c8f6d9c8f6d9c8f6d9c8f6d9c8f6d9c8f6d9c8f6d9c8f6d9c8f6d9c8f6d9c8f6d9c8f6d9c8f6d9c8f6d9c8f6d9c8f6d9c8f6d9c8f6d9c8f6d9c8f6d9c8f6d9c8"
+     },
+     "6": {
+      "px": "f3d84aefd64bedd44cebd24de7d04de5ce4ee2cc4fdfca50ddc851dbc652d7c452d5c253d3c054cfbe54cdbc56cbba56c7b857c5b658c2b459bfb259bdb05abaae5bb7ac5cb5aa5df2d84af0d64beed54cead24ce8d04ee6cf4fe2cc4fe0ca50dcc850dac651d8c553d4c253d2c053d0bf55ccbc55caba56c8b957c4b657c2b459c0b35abcb05abaae5cb8ad5cb4aa5cf3d84af0d64bedd44cead24de7d04de5ce4ee3cc4fe0ca50ddc851dac651d7c452d5c253d3c154d0be55cdbc56caba56c7b857c5b658c2b459c0b259bdb05abaae5bb7ac5cb5aa5df2d84af0d64ceed54cead24ce8d04ee6cf4ee2cc4fe0cb50dcc750dac651d8c453d4c253d2c053d0bf55ccbc55caba56c8b957c4b658c2b459c0b35abcb05abaae5bb8ad5cb4aa5cf2d84aefd64bedd44cebd24de7d04de5ce4ee3cc4fdfca50ddc851dbc652d7c452d5c253d2c054cfbe55cdbc56cbba56c7b857c5b658c2b459bfb259bdb05abaae5bb7ac5cb5aa5df2d84af0d64beed54cead24ce8d04ee6cf4fe2cc4fe0ca50dcc850dac651d8c553d4c253d2c053d0be55ccbc55caba56c8b957c4b658c2b459c0b35abcb05abaae5cb8ad5cb4aa5c"
+     }
+    }
+   }
+  },
+  "output": {
+   "findings": [
+    {
+     "rule": "RX-A11Y-01",
+     "level": "fail",
+     "selector": "div.band > p",
+     "message": "\"Promo akhir tahun\": contrast 1.49:1 (#ffffff on #ecd44c, the weakest tenth of the gradient behind it), needs 4.5:1"
+    },
+    {
+     "rule": "RX-A11Y-01",
+     "level": "fail",
+     "selector": "div.band > p",
+     "message": "\"Foto terang di belakang\": contrast 1.09:1 (#ffffff on #f5f5f4, the weakest tenth of the image behind it), needs 4.5:1"
+    },
+    {
+     "rule": "RX-A11Y-01",
+     "level": "fail",
+     "selector": "div#redraw > p",
+     "message": "\"Digambar ulang\": contrast 1.47:1 (#ffffff on #eed54c, the weakest tenth of the gradient behind it), needs 4.5:1"
+    },
+    {
+     "rule": "RX-A11Y-01",
+     "level": "warn",
+     "selector": "div.band > p.mix",
+     "message": "1 text not measured for contrast (under a blend mode or a filter other than a colour one (blur, url), over a picture the page could not photograph (out of view, or redrawn by the page), or past the 40 measured), first \"Teks berbaur\": check them by eye over the busiest part of what is behind",
+     "once": "contrast-unmeasured"
     }
    ],
    "ignored": []

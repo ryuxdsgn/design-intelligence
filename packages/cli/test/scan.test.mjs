@@ -10,7 +10,7 @@ import { fileURLToPath } from "node:url";
 import { SOURCE_CHECKS, SYNTAX_CHECKS } from "../dist/checks.js";
 import { readDirection as directionIn, scan as scanEngine, scanShared } from "../dist/engine.js";
 import { FIXTURES, chromium, probePage, recordDirection, recordScan, recording, toSource } from "./golden.mjs";
-import { BASICS, DARK_CANVAS, FADED, PAGES, QUIET, SLOP, bar, choice, choiceSplit } from "./pages.mjs";
+import { BASICS, BEHIND, DARK_CANVAS, FADED, PAGES, QUIET, SLOP, bar, choice, choiceSplit } from "./pages.mjs";
 import { RULES } from "../dist/intelligence/content.js";
 import { VERSION } from "../dist/product.js";
 
@@ -635,6 +635,21 @@ test("scan <url> measures contrast on the dark canvas a dark color scheme gives,
   rmSync(dir, { recursive: true, force: true });
 });
 
+test("scan <url> measures text over a gradient or an image on its pixels, and names what it could not measure", (t) => {
+  const dir = mkdtempSync(join(tmpdir(), "ryux-behind-"));
+  const path = join(dir, "behind.html");
+  writeFileSync(path, BEHIND);
+  const r = run(process.env.RYUX_PLAYWRIGHT_CWD ?? join(dirname(cli), "..", "..", ".."), ["scan", `file://${path}`, "--widths", "390", "--json"]);
+  rmSync(dir, { recursive: true, force: true });
+  if (/needs Playwright|could not start Chromium/.test(r.out)) return noBrowser(t);
+  const a11y01 = JSON.parse(r.out).findings.filter((f) => f.rule === "RX-A11Y-01").map((f) => `${f.level} ${f.message}`);
+  assert.equal(a11y01.length, 4, a11y01.join("\n"));
+  assert.match(a11y01[0], /^fail "Promo akhir tahun": contrast [\d.]+:1 \(#ffffff on #[0-9a-f]{6}, the weakest tenth of the gradient behind it\), needs 4\.5:1$/);
+  assert.match(a11y01[1], /^fail "Foto terang di belakang": contrast [\d.]+:1 \(#ffffff on #f5f5f4, the weakest tenth of the image behind it\)/);
+  assert.match(a11y01[2], /^fail "Digambar ulang": contrast [\d.]+:1 \(#ffffff on #[0-9a-f]{6}, the weakest tenth of the gradient behind it\)/, "a text the page redrew is found again");
+  assert.match(a11y01[3], /^warn 1 text not measured for contrast \(under a blend mode or a filter.*first "Teks berbaur"/);
+});
+
 // Visual tells (knowledge/anti-slop.md): warn once per page, never at a single, reasoned use.
 test("scan <url> warns each visual tell once per page, and stays quiet on one reasoned use", (t) => {
   const dir = mkdtempSync(join(tmpdir(), "ryux-tells-"));
@@ -695,7 +710,16 @@ test("probe parity: the shipped extract in Chromium, judged by ryux-core, gives 
         if (recording) continue;
         const want = recorded[k++];
         assert.ok(want, `probe.json has no case for ${p.name} at ${width}px`);
-        assert.deepEqual(out, want.output, `${p.name} at ${width}px${JSON.stringify(extract) === JSON.stringify(want.input) ? "" : " (the extract differs from the recorded one: another Chromium or other fonts?)"}`);
+        // Over a picture the weakest tenth depends on where this machine's fonts put the text, so its ratio may
+        // move a little and its background colour with it; the finding, the text colour, and the need may not.
+        const ratios = [];
+        const loose = (v) => JSON.parse(JSON.stringify(v), (key, m) => key === "message" && typeof m === "string"
+          ? m.replace(/contrast ([\d.]+):1 \((#[0-9a-f]{6}) on #[0-9a-f]{6}, the weakest tenth/, (_, r, fg) => (ratios.push(Number(r)), `contrast ~:1 (${fg} on ~, the weakest tenth`))
+          : m);
+        const [got, wanted] = [loose(out), loose(want.output)];
+        const half = ratios.length / 2;
+        ratios.slice(0, half).forEach((r, n) => assert.ok(Math.abs(r - ratios[half + n]) <= 0.15, `${p.name} at ${width}px: contrast over a picture ${r}:1, recorded ${ratios[half + n]}:1`));
+        assert.deepEqual(got, wanted, `${p.name} at ${width}px${JSON.stringify(extract) === JSON.stringify(want.input) ? "" : " (the extract differs from the recorded one: another Chromium or other fonts?)"}`);
       }
     }
     if (!recording) assert.equal(k, recorded.length, "every recorded case has a test page");
