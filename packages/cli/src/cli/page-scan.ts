@@ -34,8 +34,8 @@ export async function judgePage(page: Page): Promise<{ extract: Record<string, u
       try {
         const box = await page.evaluate(probeHide, i);
         const shot = box ? await page.screenshot({ clip: box.clip, animations: "disabled", caret: "hide" }) : null;
-        await page.evaluate(probeShow, { i, last: n === list.length - 1 });
-        behind[i] = box && shot ? { px: await page.evaluate(probePixels, { png: shot.toString("base64"), lines: box.lines }) } : null;
+        const kept = await page.evaluate(probeShow, { i, last: n === list.length - 1 });
+        behind[i] = box && shot && kept ? { px: await page.evaluate(probePixels, { png: shot.toString("base64"), lines: box.lines }) } : null;
       } catch {
         behind[i] = null; // not measured; ryux-core says so
       }

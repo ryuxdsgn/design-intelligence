@@ -169,7 +169,7 @@ type Colour = [f64; 4];
 /// Why the colours behind a text cannot be read from the styles.
 #[derive(Clone, Copy)]
 enum Unknown {
-    /// A blend mode, or a filter that is not a colour function (blur, drop-shadow, url): it changes the text and
+    /// A blend mode, or a filter that is not a colour function (blur, url): it changes the text and
     /// what is behind it in ways the styles do not tell.
     Mixed,
     /// An image or a gradient ("image" or "gradient") on the element given: only the page's pixels show it.
@@ -520,30 +520,50 @@ impl<'a> Page<'a> {
         if filter.is_empty() || filter == "none" {
             return Vec::new();
         }
+        // name(argument) at the top level; an argument may hold parentheses (drop-shadow(rgba(...) 0 1px))
         let mut out = Vec::new();
-        for part in filter.split(')') {
-            let part = part.trim();
-            let Some((name, arg)) = part.split_once('(') else { continue };
-            let arg = arg.trim();
-            let value = if arg.is_empty() {
-                if name == "hue-rotate" { 0.0 } else { 1.0 }
-            } else if let Some(p) = arg.strip_suffix('%') {
-                js_number(&self.re, p) / 100.0
-            } else if let Some(d) = arg.strip_suffix("deg") {
-                js_number(&self.re, d)
-            } else if let Some(r) = arg.strip_suffix("rad") {
-                js_number(&self.re, r).to_degrees()
-            } else if let Some(t) = arg.strip_suffix("turn") {
-                js_number(&self.re, t) * 360.0
-            } else {
-                js_number(&self.re, arg)
-            };
-            out.push((name.trim(), if value.is_finite() { value } else { f64::NAN }));
+        let (mut depth, mut start, mut open) = (0usize, 0usize, 0usize);
+        for (k, ch) in filter.char_indices() {
+            match ch {
+                '(' => {
+                    if depth == 0 {
+                        open = k;
+                    }
+                    depth += 1;
+                }
+                ')' if depth > 0 => {
+                    depth -= 1;
+                    if depth == 0 {
+                        out.push((filter[start..open].trim(), filter[open + 1..k].trim()));
+                        start = k + 1;
+                    }
+                }
+                _ => {}
+            }
         }
-        out
+        out.into_iter()
+            .map(|(name, arg)| {
+                let value = if name == "drop-shadow" {
+                    0.0
+                } else if arg.is_empty() {
+                    if name == "hue-rotate" { 0.0 } else { 1.0 }
+                } else if let Some(p) = arg.strip_suffix('%') {
+                    js_number(&self.re, p) / 100.0
+                } else if let Some(d) = arg.strip_suffix("deg") {
+                    js_number(&self.re, d)
+                } else if let Some(r) = arg.strip_suffix("rad") {
+                    js_number(&self.re, r).to_degrees()
+                } else if let Some(t) = arg.strip_suffix("turn") {
+                    js_number(&self.re, t) * 360.0
+                } else {
+                    js_number(&self.re, arg)
+                };
+                (name, if value.is_finite() { value } else { f64::NAN })
+            })
+            .collect()
     }
-    /// An element's filter as colour functions, in order, or None when it has one that is not (blur, drop-shadow,
-    /// a url, or an argument that does not read).
+    /// An element's filter as colour functions, in order, or None when it has one that changes colours in a way
+    /// the styles do not tell (blur, a url, or an argument that does not read).
     fn tints(&self, x: usize) -> Option<Vec<Tint>> {
         let mut out = Vec::new();
         for (name, a) in self.filter_fns(x) {
@@ -552,7 +572,8 @@ impl<'a> Page<'a> {
             }
             let t = |v: f64| v.clamp(0.0, 1.0);
             out.push(match name {
-                "opacity" => continue,
+                // opacity fades like the property; a drop shadow falls outside what the element paints
+                "opacity" | "drop-shadow" => continue,
                 "grayscale" => {
                     let b = 1.0 - t(a);
                     Tint::Matrix([
@@ -1062,7 +1083,7 @@ impl<'a> Page<'a> {
                 "RX-A11Y-01",
                 "warn",
                 self.selector(t.e),
-                format!("{count} not measured for contrast (under a blend mode or a filter other than a colour one, over a picture the page could not photograph (out of view, or redrawn by the page), or past the {MAX_BEHIND} measured), first {}: check them by eye over the busiest part of what is behind", quote(t.x)),
+                format!("{count} not measured for contrast (under a blend mode or a filter other than a colour one (blur, url), over a picture the page could not photograph (out of view, or redrawn by the page), or past the {MAX_BEHIND} measured), first {}: check them by eye over the busiest part of what is behind", quote(t.x)),
             );
             f["once"] = Value::from("contrast-unmeasured");
             out.push(f);
@@ -1410,6 +1431,12 @@ mod tests {
         let m = faded(serde_json::json!({"filter": "grayscale(1) opacity(0.6)"}), grey);
         assert_eq!(m.len(), 1, "{m:?}");
         assert!(m[0].contains("contrast"), "{m:?}");
+        // a drop shadow on a card does not change the colours inside it, nested parentheses and all
+        let shadow = serde_json::json!({"filter": "drop-shadow(rgba(26, 23, 20, 0.08) 0px 1px 0px) drop-shadow(rgba(26, 23, 20, 0.1) 0px 8px 24px)"});
+        assert!(faded(shadow.clone(), serde_json::json!({"color": "rgb(0, 0, 0)"})).is_empty());
+        assert_eq!(faded(shadow, serde_json::json!({"color": "rgb(187, 187, 187)"})).len(), 1);
+        // a url filter is not measured
+        assert!(faded(serde_json::json!({"filter": "url(\"#duotone\")"}), serde_json::json!({"color": "rgb(0, 0, 0)"}))[0].starts_with("1 text not measured"));
     }
 
     /// A page from styles and elements after <html> and <body> (parents by index), with the texts given.

@@ -337,14 +337,18 @@ export async function probeHide(i) {
   return { clip, lines: seen.map(([x0, y0, x1, y1]) => [x0 - x, y0 - y, x1 - x0, y1 - y0]) };
 }
 
-/** Undo probeHide: the text shows again, and with `last`, the page is back at the top without the hiding style. */
+/** Undo probeHide: the text shows again, and with `last`, the page is back at the top without the hiding style.
+ *  Returns whether the hidden text was still on the page: if the page redrew it before the screenshot, the new
+ *  text was not hidden, its glyphs are in the screenshot, and the pixels must not be used. */
 export function probeShow(arg) {
   const t = window.__ryuxProbe.nodesOf[arg.i];
+  const kept = !!t && t.nodes.every((n) => n.isConnected) && t.el.hasAttribute("data-ryux-hide");
   t?.el.removeAttribute("data-ryux-hide");
   if (arg.last) {
     document.getElementById("ryux-hide")?.remove();
     window.scrollTo(0, 0);
   }
+  return kept;
 }
 
 /** The colours of a screenshot (`png`, base64) behind each of the text's `lines` ([x, y, width, height] in the
