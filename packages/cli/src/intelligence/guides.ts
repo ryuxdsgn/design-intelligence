@@ -738,11 +738,19 @@ workflow (SKILL.md); Frame, Explore, and Evaluate happen in Design.
    around the change.
    When anything animates, run the motion passes in capabilities/qa.md as well. Run the counts of
    RX-AS-10 on the render and report them in the gate.
-7. **Close with the Delivery Gate.** CODE QUALITY and VISUAL QA need real checks (typecheck,
+7. **Close with the report (report.md).** Run the checks first: CODE QUALITY and VISUAL QA need real checks (typecheck,
    tests, render), or say what was not run. Run \`npx --no-install @ryuxdsgn/design-intelligence scan <changed
    paths>\` as well (add \`--design\` when DESIGN.md has a \`direction:\` block, so code that strays from its
    colours, type, radius, or durations shows as drift): fix every fail, and fix each warn or give the reason it stays. When the build runs, also run \`npx --no-install @ryuxdsgn/design-intelligence scan <url>\` on the page you built, the same way. Both use the copy of RYUX in the project (\`ryux install --save-dev\` adds it) and nothing is downloaded. When there is no copy, or the command is not permitted, do not run it another way: say in the gate that it did not run and why, and name the command so the user can decide. For a new flow or a consequential change, add the
    usability test plan (RX-UX-12) unless the design already has one.
+   In the findings table, mark each row done (\`✓\`) or proposed (\`?\`) in its first cell (\`1 ✓\`, \`2 ?\`): done is a
+   change made this turn; proposed is one outside the request or one that needs the person's go-ahead, and
+   \`kerjakan\` or \`fix\` applies proposed rows only. Done rows use Before / After (Sebelum / Sesudah) in place of
+   Now / Change, so a finished change never reads as a proposal. On a new page the rows are the shaping decisions (direction, hierarchy,
+   primary action, the one signature detail) with Now as "new"; they carry the rationale (RX-PR-14) in the reply.
+   A weakness you find that you can fix within the request is fixed before the report and shows as a done row;
+   one outside the request is a proposed row; one that is the person's call goes under Decisions for you. A
+   weakness is never invented to fill the Read.
 
 **Polish: refining what exists.** When the ask improves a screen that works ("polish this", "make the total
 easier to find", "make it feel more premium") and gives no new design, steps 2 and 4 run this way:
@@ -805,6 +813,69 @@ export const CORE_HONESTY = `Report what was checked, how, and what was not avai
 Do not claim "pixel perfect", "fully accessible", "production ready", "senior-level", or "UX optimized" without evidence. Say
 "Keyboard and focus checked by hand; no automated accessibility test was available" instead.
 Rule IDs and gate results belong in your report, never on the design itself.`;
+
+export const CORE_REPORT = `# The report
+
+Build, Critique, and QA end with this report, in the language of the reply. It is what the person reads: what changed
+or is wrong, why, what they decide, and what to do next. The Delivery Gate still runs in full; its block goes under
+Detail, at the end.
+
+Headings and column names follow the reply's language. In Indonesian: **Penilaian** (Read), **Temuan** (Findings) with
+the columns \`# | Di mana | Sekarang | Ubah jadi | Kenapa\` for proposals and \`# | Di mana | Sebelum | Sesudah | Kenapa\`
+for changes already made (and **Bobot** for Weight), **Perlu keputusan Anda**,
+**Sengaja tidak diubah**, Gate, **Berikutnya** (Next), and **Rincian** (Detail). The English names below are the
+same sections.
+
+Write for the person who asked. Use plain words by default: most people reading this are not developers. Keep the
+exact place and value (a developer needs \`index.html:305\`), but put what it means first ("the store buttons in the
+hero, \`index.html:305\`"). Explain a technical term in a few words, or leave it under Detail. When the person writes
+like a developer (code, file paths, framework names), be as technical as they are.
+
+1. **Read**: two or three sentences. The biggest failure or open gap is the Read's first sentence (for example "nobody
+   can download yet: the store links are empty"), never after the table. Then: does the result fit the chosen
+   direction and this user, judged rather than checked? Name at least one thing that is still weak, or the evidence
+   that nothing is. Approval is earned.
+2. **Findings**: one table, at most 7 rows, ordered by impact on the user's goal.
+
+   | # | Where | Now | Change | Why |
+   |---|---|---|---|---|
+   | 1 | \`index.html:42\`, hero | Two download buttons, equal weight | One primary button for the visitor's phone; the other store as an outline button | One primary action per goal: two equal buttons split attention at the moment of choice (Hick's law). Cost: the second store is one glance further. Would change if most visitors come from desktop. |
+
+   - **Where**: \`file:line\` and the element, or a frame and node. "The script at the bottom of the page" is not a
+     Where.
+   - **Now** and **Change**: exact values (copy, colours, sizes, tokens), never "improve the spacing". On a new
+     page, **Now** is "new". A row must not do what its own Why warns against: read the Change against the Why
+     before you write it.
+   - **Why**: the rationale (RX-PR-14) in one line: a UX or UI principle named and applied to this screen (Hick's
+     law, Fitts's law, recognition over recall, progressive disclosure, Jakob's law, one primary action per goal,
+     visibility of system status), the cost when there is one, and what would change the choice (would change if).
+     No rule IDs in the Why: the principle carries it, and the IDs go under Detail. A principle's name alone or
+     "better UX" is not a why. Keep evidence labels (Observed, Inferred, Knowledge) where a claim needs one. When
+     the Why compresses it, the full rationale lines (RX-PR-14), with the alternative that lost, go under Detail.
+3. **Decisions for you**: one line each, only where more than one answer is right and the answer is the person's (a
+   business rule, copy they own, a trade-off), with your recommendation and why; name the one person who decides
+   ("you", or the owner by name, not "Ibu Ratna/you"). Assumptions, every DESIGN.md change as old → new, and a new
+   component's name go here. Omit when empty.
+4. **Left alone on purpose**: up to 5 things you considered and did not change, each with the reason; leave the
+   section out when there were none.
+5. **Gate**: one line, such as \`Gate: 9 PASS · 2 NOT VERIFIED (scan not run: no copy in the project) · detail
+   below\`. A FAIL is named in the gate line and its fix is a row; it is never only under Detail. Count the gate
+   line from the Detail block after writing it, each area once, so the numbers match; an area with a caveat is NOT
+   VERIFIED, not PASS. An area is PASS only when its module was read and the check ran. A promise the business has
+   not decided is a FAIL in CONTENT (a delivery time, a price, "free"), not NOT VERIFIED. Say how something was checked as it was: a Playwright render at 390 px is not "on an
+   iPhone".
+6. **Next**: one line with the reply that moves on, offered in the reply's language and accepted in either: \`kerjakan semua\` or \`kerjakan 1, 3\` (\`fix all\`, \`fix 1, 3\`)
+   applies those rows, re-checks, and reports again with only the rows that changed; \`cek <page>\` runs this report on
+   the next page or state, named from the project when there is one. After Critique or QA, a fix runs as Build.
+7. **Detail**: under one heading at the end of the same reply: the full Delivery Gate block, the view × state matrix
+   (RX-EC-01), the full rationale lines (RX-PR-14) when the Why compressed them, the rule IDs behind each row, the
+   user test plan (RX-UX-12), the scan output with a reason for each warn, and the alternatives not built. Nothing is
+   written into the person's project for this. Detail stays short: one line per gate area, the matrix and the test
+   plan as small tables, and nothing that repeats a row.
+
+Scale it: a small change (a copy fix, one component) gives one or two rows. For a small change: the rows, the gate line, and Next; the Read is one sentence, and
+a section with nothing in it is left out. Without table support (a plain-text agent), write the same columns as a numbered list, one item
+per row.`;
 
 export const CORE_DECISION_RECORD = `For consequential choices (RX-PR-09) and deviations, write **Decision**, **Options** compared, **Evidence**,
 **Trade-off**, **Choice**, and **Test** (the riskiest assumption behind the choice, the cheapest way to test it, the signal that it works, and the result that would change the choice). Evidence is Strong (2+ comparable screen_ids), Thin (one, or another context),
@@ -1538,12 +1609,14 @@ design itself is good is Critique's question (ryux-critique).
    ryux-analyze).
 2. Compare property by property: spacing, typography, color, size, position, components, states,
    responsive behavior.
-3. Report each deviation:
+3. Close with the report (report.md): one row per mismatch, at most 7, most severe first. Where is the area
+   and the element, Now is the build's value beside the reference's, Change is the fix, Why names what the
+   mismatch costs the person, and the severity goes in the Why or a Weight column. More mismatches than the
+   cap go under Detail.
 
-\`\`\`
-Area        | Expected (reference) | Actual (build) | Deviation       | Severity | Fix
-Card radius | 16px                 | 8px            | half the radius | minor    | use radius-lg
-\`\`\`
+| # | Where | Now | Change | Why |
+|---|---|---|---|---|
+| 1 | \`OrderCard.tsx:18\`, Card radius | 8px (reference 16px) | use radius-lg | Tokens over one-off values: one card with a tighter radius reads as a different kind of object; minor |
 
 **Without a reference**, check the build against its own intent, the rules below, and the measured
 Laws of UX checks in knowledge/ux.md.

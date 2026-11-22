@@ -20,6 +20,7 @@ import {
   CORE_DECISION_RECORD,
   CORE_EVIDENCE,
   CORE_HONESTY,
+  CORE_REPORT,
   CORE_POSITIONING,
   CORE_PRINCIPLE,
   CORE_WORKFLOW,
@@ -126,7 +127,7 @@ ${activationTable()}
 
 ## Delivery Gate
 
-End UI, UX, copy, or frontend work with this report:
+End Build, Critique, and QA with the report in \`report.md\`, with this block under its Detail heading; other work ends with this block:
 
 ${deliveryGateTemplate()}
 
@@ -229,6 +230,7 @@ export function renderBundle(): Record<string, string> {
     "capabilities/build.md": `${BUILD_BODY}\n`,
     "capabilities/critique.md": `${CRITIQUE_BODY}\n`,
     "capabilities/qa.md": `${knowledgeModule("visual-qa")}\n`,
+    "report.md": `${CORE_REPORT}\n`,
   };
   for (const s of SKILLS) if (s.id !== "visual-qa") files[`knowledge/${s.id}.md`] = `${knowledgeModule(s.id)}\n`;
   for (const k of Object.keys(files)) files[k] = toModuleRefs(files[k]);

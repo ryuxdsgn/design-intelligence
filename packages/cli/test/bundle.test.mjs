@@ -687,3 +687,97 @@ test("B3 rerun: not waiting still runs the timed pick; a revamp keeps the field 
   assert.match(r20, /the title keeps the context/i);
   assert.match(r20, /reaches the next task on the screens that exist[^\n]*adds no screen/i);
 });
+
+test("the report the person reads: Read, findings, decisions, left alone, one gate line, next, detail", () => {
+  const b = renderBundle();
+  const r = b["report.md"].replace(/\s+/g, " ");
+  const order = ["Read", "Findings", "Decisions for you", "Left alone on purpose", "Gate", "Next", "Detail"].map((h) => r.indexOf(`**${h}**`));
+  assert.ok(order.every((i, k) => i >= 0 && (k === 0 || i > order[k - 1])), String(order));
+  assert.match(r, /\| # \| Where \| Now \| Change \| Why \|/);
+  assert.match(r, /at most 7 rows/);
+  assert.match(r, /principle named and applied/);
+  assert.match(r, /kerjakan 1, 3/);
+  assert.match(r, /fix 1, 3/);
+  assert.match(r, /a FAIL is named in the gate line and its fix is a row/i);
+  assert.match(r, /numbered list/);
+  assert.match(r, /one or two rows/);
+  const router = b["SKILL.md"];
+  assert.match(router, /report\.md/);
+  assert.ok(router.split("\n").length <= 180);
+});
+
+test("Build closes with report.md: done or proposed rows, shaping decisions on a new page, weaknesses fixed first", () => {
+  const b = renderBundle()["capabilities/build.md"].replace(/\s+/g, " ");
+  assert.match(b, /Close with the report \(report\.md\)/);
+  assert.match(b, /done \(`✓`\) or proposed \(`\?`\)/);
+  assert.match(b, /`kerjakan` or `fix` applies proposed rows only/);
+  assert.match(b, /on a new page the rows are the shaping decisions/i);
+  assert.match(b, /never invented/);
+  assert.match(b, /scan <changed paths>/);
+});
+
+test("Critique reports in the shared table with Weight, at most 7, honesty labels kept", () => {
+  const c = renderBundle()["capabilities/critique.md"].replace(/\s+/g, " ");
+  assert.match(c, /\| # \| Where \| Now \| Change \| Why \| Weight \|/);
+  assert.match(c, /High · Confirmed/);
+  assert.match(c, /at most 7/);
+  assert.match(c, /Verify by[^.]*under Detail/);
+  assert.match(c, /Not verifiable from this source[^.]*under Detail/);
+  assert.match(c, /## Heuristic evaluation mode/);
+  assert.doesNotMatch(c, /at most 12/i);
+});
+
+test("QA closes with report.md: one row per mismatch, expected and actual in Now and Change", () => {
+  const q = renderBundle()["capabilities/qa.md"].replace(/\s+/g, " ");
+  assert.match(q, /Close with the report \(report\.md\): one row per mismatch/);
+  assert.match(q, /Card radius/);
+});
+
+test("review fixes: the report is for Build, Critique, QA only; Why keeps would-change-if; commands follow the reply language; small changes stay small", () => {
+  const b = renderBundle();
+  const router = b["SKILL.md"].replace(/\s+/g, " ");
+  assert.match(router, /End Build, Critique, and QA with the report in `report\.md`/);
+  assert.match(router, /other work ends with this block/);
+  const r = b["report.md"].replace(/\s+/g, " ");
+  assert.match(r, /would change if/);
+  assert.match(r, /full rationale lines \(RX-PR-14\)[^.]*under Detail/);
+  assert.match(r, /in the reply's language/);
+  assert.match(r, /After Critique or QA, a fix runs as Build/);
+  assert.match(r, /For a small change: the rows, the gate line, and Next; the Read is one sentence/);
+  assert.doesNotMatch(r, /or one line saying there were none/);
+  const build = b["capabilities/build.md"].replace(/\s+/g, " ");
+  assert.match(build, /`kerjakan` or `fix` applies proposed rows only/);
+});
+
+test("owner notes 2026-11-22: failure first, honest counts, checked-as, no rule IDs in Why, local headings, short detail, who decides", () => {
+  const b = renderBundle();
+  const r = b["report.md"].replace(/\s+/g, " ");
+  assert.match(r, /The biggest failure or open gap is the Read's first sentence/);
+  assert.match(r, /count the gate line from the Detail block/i);
+  assert.match(r, /an area with a caveat is NOT VERIFIED, not PASS/);
+  assert.match(r, /a Playwright render at 390 px is not "on an iPhone"/);
+  assert.match(r, /No rule IDs in the Why/);
+  assert.match(r, /Di mana \| Sekarang \| Ubah jadi \| Kenapa/);
+  assert.match(r, /Rincian/);
+  assert.match(r, /must not do what its own Why warns against/);
+  assert.match(r, /Detail stays short/);
+  assert.match(r, /name the one person who decides/);
+  assert.doesNotMatch(r, /\(RX-PR-03\): two equal buttons/);
+  const c = b["capabilities/critique.md"].replace(/\s+/g, " ");
+  assert.match(c, /Bobot/);
+  assert.doesNotMatch(c, /Visibility of system status \(RX-IX-02\)/);
+  assert.doesNotMatch(b["capabilities/qa.md"].replace(/\s+/g, " "), /Tokens over one-off values \(RX-DS-03\)/);
+});
+
+test("round 2 notes: Before/After for done rows, PASS needs the module read, plain words for the person who asked", () => {
+  const b = renderBundle();
+  const r = b["report.md"].replace(/\s+/g, " ");
+  assert.match(r, /Sebelum \| Sesudah/);
+  assert.match(r, /an area is PASS only when its module was read and the check ran/i);
+  assert.match(r, /a promise the business has not decided is a FAIL in CONTENT/i);
+  assert.match(r, /Write for the person who asked/);
+  assert.match(r, /plain words by default/);
+  assert.match(r, /writes like a developer/);
+  const build = b["capabilities/build.md"].replace(/\s+/g, " ");
+  assert.match(build, /done rows use Before \/ After/i);
+});
