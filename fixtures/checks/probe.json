@@ -11763,7 +11763,7 @@
      "rule": "RX-AS-10",
      "level": "warn",
      "selector": "div.band",
-     "message": "3 gradients and the page names no colour tokens (CSS custom properties) they could come from: div.band (#fde047, #1e3a8a), div.band (#0f172a), h1.mark > em (#f6d9c8); the count for gradients without a brand reason is 0: draw it from the brand's tokens and name the reason, or use a flat colour",
+     "message": "2 gradients and the page names no colour tokens (CSS custom properties) they could come from: div.band (#fde047, #1e3a8a), h1.mark > em (#f6d9c8); the count for gradients without a brand reason is 0: draw it from the brand's tokens and name the reason, or use a flat colour",
      "once": "gradient"
     }
    ],

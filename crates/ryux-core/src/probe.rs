@@ -1348,10 +1348,9 @@ impl<'a> Page<'a> {
             tell(&mut out, "RX-AS-10", "emoji", Some(first.e), format!("{count} an emoji ({}{more}): the count for emoji in the interface chrome is 0; use the icon set, or the word alone", shown.join(", ")));
         }
 
-        let saturated = |c: &Colour| {
-            let [_, sat, l] = self.hsl(*c);
-            c[3] > 0.2 && sat >= 0.25 && l > 0.08 && l < 0.95
-        };
+        // a colour, not a grey, a near-white tint, or a near-black: its channels spread by 40 or more of 255 (a
+        // skeleton shimmer in #e9e2d4 spreads 21, a pastel avatar in #c9d6ff 54)
+        let saturated = |c: &Colour| c[3] > 0.2 && c[0].max(c[1]).max(c[2]) - c[0].min(c[1]).min(c[2]) >= 40.0;
         let token = |c: &Colour| self.tokens.iter().any(|t| (0..3).all(|k| (t[k] - c[k]).abs() <= 6.0));
         let mut drawn: Vec<(usize, &str, Vec<Colour>)> = Vec::new();
         for &i in &visible {
