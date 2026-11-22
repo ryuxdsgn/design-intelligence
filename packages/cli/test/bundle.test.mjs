@@ -687,3 +687,21 @@ test("B3 rerun: not waiting still runs the timed pick; a revamp keeps the field 
   assert.match(r20, /the title keeps the context/i);
   assert.match(r20, /reaches the next task on the screens that exist[^\n]*adds no screen/i);
 });
+
+test("the report the person reads: Read, findings, decisions, left alone, one gate line, next, detail", () => {
+  const b = renderBundle();
+  const r = b["report.md"].replace(/\s+/g, " ");
+  const order = ["Read", "Findings", "Decisions for you", "Left alone on purpose", "Gate", "Next", "Detail"].map((h) => r.indexOf(`**${h}**`));
+  assert.ok(order.every((i, k) => i >= 0 && (k === 0 || i > order[k - 1])), String(order));
+  assert.match(r, /\| # \| Where \| Now \| Change \| Why \|/);
+  assert.match(r, /at most 7 rows/);
+  assert.match(r, /principle named and applied/);
+  assert.match(r, /kerjakan 1, 3/);
+  assert.match(r, /fix 1, 3/);
+  assert.match(r, /a FAIL is named in the gate line and its fix is a row/i);
+  assert.match(r, /numbered list/);
+  assert.match(r, /one or two rows/);
+  const router = b["SKILL.md"];
+  assert.match(router, /report\.md/);
+  assert.ok(router.split("\n").length <= 180);
+});

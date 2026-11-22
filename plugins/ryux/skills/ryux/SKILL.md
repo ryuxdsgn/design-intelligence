@@ -137,7 +137,7 @@ A small change (a copy fix, one component, one state) reads only the module it t
 
 ## Delivery Gate
 
-End UI, UX, copy, or frontend work with this report:
+End UI, UX, copy, or frontend work with the report in `report.md`; this block goes under its Detail heading:
 
 ```
 PRODUCT        PASS | FAIL | NOT VERIFIED | N/A  · one-line reason · evidence Strong | Thin | None · rationale <n> lines, annotations <n> | none · modules read <list>, required not read <list> | none
