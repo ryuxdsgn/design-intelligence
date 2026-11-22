@@ -121,9 +121,24 @@ above it, and give the reason next to it.
 ### Update and remove
 
 ```bash
-npx @ryuxdsgn/design-intelligence update     # update the installed skill
-npx @ryuxdsgn/design-intelligence remove     # remove it and restore your files
+npx @ryuxdsgn/design-intelligence@latest update   # update the installed skill to the newest release
+npx @ryuxdsgn/design-intelligence remove          # remove it and restore your files
 ```
+
+`@latest` matters: without it, npx can reuse an older copy it has cached.
+
+### Staying up to date
+
+RYUX never updates itself. How you learn about a new release depends on how you installed it:
+
+| Installed with | How it updates |
+|---|---|
+| `npx @ryuxdsgn/design-intelligence` | `ryux check` tells you when a newer release is on npm and gives the update command above. It asks the npm registry at most once a day and caches the answer in `~/.cache/ryux/`. Set `RYUX_NO_UPDATE_CHECK=1` to turn this off; it is off in CI. |
+| Claude Code plugin | Auto-update is off by default for this marketplace. Turn it on in `/plugin` → Marketplaces → `design-intelligence`. Claude Code then checks within about ten minutes of your first message in a session; run `/reload-plugins` to use the new release, or it loads on the next launch. |
+| skills.sh | Run `npx skills update`. |
+
+A project copy stays on the release you installed until you update it, like any other dependency. The scan hook
+names its release too, so `update` also moves the hook to the new release.
 
 ## Prompting RYUX
 

@@ -9,7 +9,7 @@ import { fileURLToPath } from "node:url";
 
 const cli = join(dirname(fileURLToPath(import.meta.url)), "..", "dist", "cli", "index.js");
 const run = (cwd, ...args) => {
-  const r = spawnSync("node", [cli, ...args], { cwd, encoding: "utf8", env: { ...process.env, NO_COLOR: "1" } });
+  const r = spawnSync("node", [cli, ...args], { cwd, encoding: "utf8", env: { ...process.env, NO_COLOR: "1", RYUX_NO_UPDATE_CHECK: "1" } });
   return { code: r.status, out: `${r.stdout}${r.stderr}` };
 };
 const project = () => {
