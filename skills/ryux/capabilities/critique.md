@@ -32,7 +32,7 @@ findings
 4. **Honest scope.** A static frame shows no hover, focus, loading, or narrow widths. Say what was
    not tested, and lower the confidence of anything inferred. Missing from the artifact is not
    missing from the product: a frame without a loading state shows the frame, not the build.
-5. **Concise and prioritized.** At most 12 findings; the ones that hurt users most come first.
+5. **Concise and prioritized.** At most 7 findings in the table (the rest under Detail); the ones that hurt users most come first.
    At equal severity, the one people meet more often and nearer their goal comes first (a problem
    in the payment step before one in settings), then the higher layer (step 5): a flow problem
    before a spacing one.

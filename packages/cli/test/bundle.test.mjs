@@ -710,7 +710,7 @@ test("Build closes with report.md: done or proposed rows, shaping decisions on a
   const b = renderBundle()["capabilities/build.md"].replace(/\s+/g, " ");
   assert.match(b, /Close with the report \(report\.md\)/);
   assert.match(b, /done \(`✓`\) or proposed \(`\?`\)/);
-  assert.match(b, /`kerjakan` applies proposed rows only/);
+  assert.match(b, /`kerjakan` or `fix` applies proposed rows only/);
   assert.match(b, /on a new page the rows are the shaping decisions/i);
   assert.match(b, /never invented/);
   assert.match(b, /scan <changed paths>/);
@@ -724,11 +724,27 @@ test("Critique reports in the shared table with Weight, at most 7, honesty label
   assert.match(c, /Verify by[^.]*under Detail/);
   assert.match(c, /Not verifiable from this source[^.]*under Detail/);
   assert.match(c, /## Heuristic evaluation mode/);
-  assert.doesNotMatch(c, /at most 12/);
+  assert.doesNotMatch(c, /at most 12/i);
 });
 
 test("QA closes with report.md: one row per mismatch, expected and actual in Now and Change", () => {
   const q = renderBundle()["capabilities/qa.md"].replace(/\s+/g, " ");
   assert.match(q, /Close with the report \(report\.md\): one row per mismatch/);
   assert.match(q, /Card radius/);
+});
+
+test("review fixes: the report is for Build, Critique, QA only; Why keeps would-change-if; commands follow the reply language; small changes stay small", () => {
+  const b = renderBundle();
+  const router = b["SKILL.md"].replace(/\s+/g, " ");
+  assert.match(router, /End Build, Critique, and QA with the report in `report\.md`/);
+  assert.match(router, /other work ends with this block/);
+  const r = b["report.md"].replace(/\s+/g, " ");
+  assert.match(r, /would change if/);
+  assert.match(r, /full rationale lines \(RX-PR-14\)[^.]*under Detail/);
+  assert.match(r, /in the reply's language/);
+  assert.match(r, /After Critique or QA, a fix runs as Build/);
+  assert.match(r, /For a small change: the rows, the gate line, and Next; the Read is one sentence/);
+  assert.doesNotMatch(r, /or one line saying there were none/);
+  const build = b["capabilities/build.md"].replace(/\s+/g, " ");
+  assert.match(build, /`kerjakan` or `fix` applies proposed rows only/);
 });
