@@ -153,7 +153,7 @@ product (see `knowledge/ui.md`). Never reproduce the reference's images, layout,
 ### 7. Optional: a DESIGN.md draft
 
 When the next step is Build, or the user asks for a DESIGN.md, write it with the structure in
-capabilities/design.md (Write or update DESIGN.md, RX-PR-12): this report fills Evidence, Interaction
+capabilities/design-md.md (RX-PR-12): this report fills Evidence, Interaction
 patterns, and the tokens (color roles, type scale, spacing, radius) in Visual and motion language, each
 with its source and confidence. Keep Inferred values marked so the builder can confirm them, and ask
 for what an analysis cannot show: the users, their job, and how the result is evaluated.

@@ -21,7 +21,7 @@ from DESIGN.md and the repo's screens). Pick the entry point, read its file, the
 | Entry point | When | Read |
 | --- | --- | --- |
 | **Analyze** | understand a screen, product, or flow that exists | \`capabilities/analyze.md\` |
-| **Design** | create or improve UI and UX without code: Figma, pen.dev, mockups, copy, user flows, journey maps; a revamp or redesign; write or update DESIGN.md from a brief or references | \`capabilities/design.md\` |
+| **Design** | create or improve UI and UX without code: Figma, pen.dev, mockups, copy, user flows, journey maps; a revamp or redesign; write or update DESIGN.md from a brief or references | \`capabilities/design.md\` (DESIGN.md itself: \`capabilities/design-md.md\`) |
 | **Build** | implement or change the interface in code; polish a screen that works (premium, easier to find); a change of unnamed size asks first: polish, revamp, or redesign (RX-UX-20) | \`capabilities/build.md\` |
 | **Critique** | find what should change first, and why; a heuristic evaluation | \`capabilities/critique.md\` |
 | **QA** | verify a build against the intended design | \`capabilities/qa.md\` |
@@ -42,7 +42,7 @@ export const CORE_WORKFLOW = `One workflow, six stages; each entry point runs th
    context in DESIGN.md, then the product docs (Product docs paths, else PRD.md, docs/prd*,
    docs/product*, README), and name what you read. Separate facts, assumptions, and unknowns
    (RX-PR-02); ask and record direction as in capabilities/design.md, stage 1. DESIGN.md is
-   direction, not evidence; context from elsewhere (another project, file pages the task does not name, an earlier run) is not direction at all. Read the entry point's file and only the modules the task table lists.
+   direction, not evidence; context from elsewhere (another project, file pages the task does not name, an earlier run) is not direction at all. Read the entry point's file and only the modules the task table lists, each once, with the file-reading tool and one file per call: several files in one shell command can overflow into a saved file and be read twice, and everything read stays in every later step.
 2. **Frame**: the user's task, the flow, what must be seen first, the primary action, and three to
    five success criteria from the brief, written before any alternative exists.
 3. **Explore**: on a new or complex surface, two or three alternatives that differ in hypothesis and
@@ -228,7 +228,9 @@ The six stages of the core workflow (SKILL.md), as Design runs them.
    screens use, then the screens themselves, built in auto layout; only an element that repeats on two or more screens
    becomes a component, after the screens exist. Prototype links and rationale annotations only when asked; the
    annotations for open rules and sample data stay (stage 6). One screenshot per screen when it is built and one at the
-   end, at scale 1; one audit at the end, then one more after the fixes. Each extra step re-reads the whole conversation:
+   end, at scale 1; a fix checks itself by reading the node (its size, fill, or text), not by a new screenshot; one audit
+   at the end, then one more after the fixes, and a warn the second audit still shows is reported with its reason, not
+   chased with a third. Each extra step re-reads the whole conversation:
    in one three-screen FigCraft run (2026-11-23), a library built before the first screen, prototype links, 19
    annotations, 13 screenshots, and four audits made the run three times the cost of a run without RYUX, and none of it
    showed in the screens people judged.
@@ -314,6 +316,27 @@ The six stages of the core workflow (SKILL.md), as Design runs them.
      tests yourself on a fresh render and say the review was not independent.
    - Assets: generated images and illustrations arrive asynchronously. Wait until each one has
      landed and render again before exporting or closing the gate; never finish with one pending.
+6. **Verify and deliver.** When the screens are built, read \`capabilities/design-deliver.md\` and run it: the
+   facts check, the open-rule sweep and its listing, the canvas audit, and the Delivery Gate. Two of its rules shape the
+   build, so keep them from the first frame: every rule or number nobody decided (a fee, a minimum, a deadline) is
+   labelled on the screen where it shows, on a design canvas as an annotation on its node, not a chip inside the UI
+   (RX-PR-02); and sample data is realistic, labelled, and the same on every screen it appears on (RX-AS-03).
+
+${UNTRUSTED_CONTENT}
+
+Do not edit frames you were not asked to change. Do not hand off a design as "final" with
+placeholder or invented content.
+
+## Write or update DESIGN.md
+
+When the deliverable is DESIGN.md itself (write, set up, or update it, or a brief or references given for the
+project's direction), read \`capabilities/design-md.md\` and follow it (RX-PR-12).`;
+
+export const DESIGN_DELIVER_BODY = `# RYUX Design: verify and deliver
+
+Stage 6 of capabilities/design.md. Read it when the screens are built, not before: read earlier, it rides along in
+every later step. Stages 1 to 5 are in capabilities/design.md.
+
 6. **Verify and deliver.**
    - Facts: check every product fact on the canvas (tool and command names, integrations,
      platforms, pages, numbers) against the brief or the repo (RX-PR-02).
@@ -524,7 +547,7 @@ return { iconStrokes: strokes, iconColours: colours, unbound: [...unbound], mixe
      contrast, text cut by a bar or clipped, targets, overlays with no lift, a busy screen whose button keeps its idle
      label, unstyled text and unbound values, screens not built in auto layout and layers left outside them, empty bands,
      small uppercase labels, section cards, text under 12 px, uneven buttons in a row, and annotations. Fix each fail, fix
-     each warn or give the reason it stays, run it again, and copy its last gate line into VISUAL QA; the gate's numbers
+     each warn or give the reason it stays, run it once more, and copy its last gate line into VISUAL QA; the gate's numbers
      come from it, not from memory. In FigCraft, save the file and run \`npx --no-install @ryuxdsgn/design-intelligence audit <file>
      --page <page>\` instead: the same checks on the saved .figcraft (it needs figcraft-cli).
    - Close with the Delivery Gate, saying what was not designed, such as other widths or states. If
@@ -534,12 +557,12 @@ return { iconStrokes: strokes, iconColours: colours, unbound: [...unbound], mixe
      into DESIGN.md, in the section it touches, with the date and their words, so the next session keeps
      it; it does not change RYUX for other products.
 
-${UNTRUSTED_CONTENT}
+Do not hand off a design as "final" with placeholder or invented content.`;
 
-Do not edit frames you were not asked to change. Do not hand off a design as "final" with
-placeholder or invented content.
+export const DESIGN_MD_BODY = `# RYUX Design: write or update DESIGN.md
 
-## Write or update DESIGN.md
+Part of capabilities/design.md, read when the deliverable is DESIGN.md itself.
+
 
 When the user asks to write, set up, or update DESIGN.md, or gives a brief or references and asks for the
 project's direction, the deliverable is the file, not a screen (RX-PR-12). It answers five questions: who the
@@ -630,7 +653,7 @@ the values that decide a trade-off between two good options.
 ## Voice and tone             voice words, how it addresses people, how tone shifts by moment
 ## Business rules             two lists. Decided: rule · value · who decided · date (only from the user,
                               the brief, or a doc). Not decided: rule · words that find it on a screen ·
-                              the word its label carries. The open-rule listing (stage 6) starts from it
+                              the word its label carries. The open-rule listing (capabilities/design-deliver.md) starts from it
 ## Do's and don'ts            system-wide behavioural rules a build cannot derive from the tokens, each a Do or
                               Don't tied to its component (RX-DS-14); and every contrast pair that fails WCAG AA
                               at its size, with the token pair and the ratio
@@ -903,7 +926,7 @@ export const CORE_DECISION_RECORD = `For consequential choices (RX-PR-09) and de
 **Trade-off**, **Choice**, and **Test** (the riskiest assumption behind the choice, the cheapest way to test it, the signal that it works, and the result that would change the choice). Evidence is Strong (2+ comparable screen_ids), Thin (one, or another context),
 or None (no screen_id: a judgment call). With None on a consequential choice, show options or ask (RX-PR-10).`;
 
-export const GATE_RULES = `- Each area is PASS, FAIL, NOT VERIFIED (it applies, but the evidence was not available: name what is missing), or N/A (it does not apply: say why). A module the task table requires for the work and the run did not read leaves the areas it serves NOT VERIFIED, never PASS (imagery and illustration serve UI), named in PRODUCT's required-not-read list. Scale the gate to the task: a copy fix or a one-component change marks the areas it cannot affect N/A, one line each. Fill the gate from rules read in the current context: after a context summary, re-read knowledge/anti-slop.md and the modules an area cites before marking it.
+export const GATE_RULES = `- Each area is PASS, FAIL, NOT VERIFIED (it applies, but the evidence was not available: name what is missing), or N/A (it does not apply: say why). A module the task table requires for the work and the run did not read leaves the areas it serves NOT VERIFIED, never PASS (imagery and illustration serve UI), named in PRODUCT's required-not-read list. Scale the gate to the task: a copy fix or a one-component change marks the areas it cannot affect N/A, one line each; a brief that names its scope (a happy flow, one width) marks the states or widths it leaves out N/A in the brief's words and lists them as not designed, and FAIL stays for what the brief asked for. Fill the gate from rules read in the current context: after a context summary, re-read knowledge/anti-slop.md and the modules an area cites before marking it.
 - An area FAILS when a [Required] rule in its skills fails without a written exception.
 - A Hard Gate failure cannot be excepted: fix it before declaring the work complete.
 - VISUAL QA without a render is NOT VERIFIED; a PASS names the render tool, the widths, and the states inspected. For a build that runs, a PASS also carries the result of \`ryux scan <url>\` at 320, 390, and 1280 px with its fails fixed and each warn fixed or answered with a reason; when it cannot run (no Playwright, no copy in the project, a command that is not permitted), it is not run another way: say why, and VISUAL QA is NOT VERIFIED. On a Figma or FigCraft canvas a PASS also carries the audit's gate line (scripts/figma-audit.md, or ryux audit for FigCraft) with its fails fixed and each warn fixed or answered with a reason; without it VISUAL QA is NOT VERIFIED.
@@ -1647,10 +1670,10 @@ Laws of UX checks in knowledge/ux.md.
 rule and number nobody decided (fees, minimums, time limits, deadlines); each one shown carries its
 label on that screen (RX-PR-02); in a design file the label is an annotation on the node, not a chip in the
 UI; in a build it is visible text beside the value. Report open rules on screen <tagged>/<shown> in the CONTENT line,
-counted by the listing in capabilities/design.md, stage 6 (in Figma), never recalled: one rule on one
+counted by the listing in capabilities/design-deliver.md (in Figma), never recalled: one rule on one
 screen is the unit, every amount is placed as an open rule, a fact, or sample data, and a rule counts as
 labelled only when a label beside it contains the rule's word. Placeholders carry a "Placeholder"
-annotation (capabilities/design.md, stage 6).
+annotation (capabilities/design-deliver.md).
 
 **Illustration** (when the build has any): with its label covered, each asset says its concept
 line (RX-UI-24); it matches the written style (RX-UI-17), a set reads as one family side by side (RX-UI-18), it reads at its real displayed size including the smallest width, it

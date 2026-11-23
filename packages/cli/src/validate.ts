@@ -13,7 +13,7 @@ export interface BundleReport {
 export function expectedFiles(): string[] {
   return [
     "SKILL.md",
-    ...["analyze", "design", "build", "critique", "qa"].map((c) => `capabilities/${c}.md`),
+    ...["analyze", "design", "design-deliver", "design-md", "build", "critique", "qa"].map((c) => `capabilities/${c}.md`),
     ...SKILLS.filter((s) => s.id !== "visual-qa").map((s) => `knowledge/${s.id}.md`),
     "report.md",
     "scripts/figma-audit.md",
