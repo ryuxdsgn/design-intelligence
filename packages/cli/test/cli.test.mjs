@@ -304,7 +304,7 @@ test("audit: a missing file, an unknown page, another format, or no file at all 
   assert.match(other.out, /audit reads a \.figcraft file or the \.json figcraft-cli converts it to, not doc\.fig/);
   const none = run(dir, "audit");
   assert.equal(none.code, 2, none.out);
-  assert.match(none.out, /^Usage: ryux audit <file\.figcraft \| file\.json>/m);
+  assert.match(none.out, /^Usage: ryux audit <file\.figcraft \| file\.json \| Figma link>/m);
   rmSync(dir, { recursive: true, force: true });
 });
 

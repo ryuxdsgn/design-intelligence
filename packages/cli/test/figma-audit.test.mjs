@@ -372,3 +372,48 @@ test("across screens: a fee the confirmation shows first is a cost met after com
   const ok = await audit([list, screen("02-profil", [...row("Tarif per sesi", "Rp185.000", 300), text("Fee", "+ transport Rp15.000", [16, 330, 200, 20])]), done]);
   assert.equal(ok.findings.filter((f) => f.rule === "RX-UX-15").length, 0);
 });
+
+test("REST: a Figma page read over the REST API is judged by the same audit, without annotations", async () => {
+  const { figmaRestCanvas, parseFigmaUrl } = await import("../dist/figma-rest.js");
+  assert.deepEqual(parseFigmaUrl("https://www.figma.com/design/AbCdEfGhIjKlMnOpQrStUv/Rawat?node-id=12-34&t=x"), { key: "AbCdEfGhIjKlMnOpQrStUv", node: "12:34" });
+  assert.equal(parseFigmaUrl("not a link"), null);
+  const bb = (x, y, width, height) => ({ absoluteBoundingBox: { x, y, width, height } });
+  const grey = { type: "SOLID", color: { r: 0.8, g: 0.8, b: 0.8, a: 1 } };
+  const page = {
+    id: "0:1", name: "Flow", type: "CANVAS", children: [{
+      id: "1:1", name: "01", type: "FRAME", ...bb(0, 0, 390, 844), fills: [{ type: "SOLID", color: { r: 1, g: 1, b: 1, a: 1 } }], layoutMode: "VERTICAL", itemSpacing: 16, boundVariables: { itemSpacing: { type: "VARIABLE_ALIAS", id: "VariableID:1" } },
+      children: [
+        { id: "1:2", name: "Hint", type: "TEXT", ...bb(16, 100, 200, 20), characters: "Pilih kursi", style: { fontSize: 14, fontFamily: "Inter", fontStyle: "Regular" }, fills: [grey], characterStyleOverrides: [], styleOverrideTable: {} },
+        { id: "1:3", name: "Mixed", type: "TEXT", ...bb(16, 140, 200, 20), characters: "Rp185.000", style: { fontSize: 14, fontFamily: "Inter", fontStyle: "Regular" }, fills: [{ type: "SOLID", color: { r: 0, g: 0, b: 0, a: 1 } }], characterStyleOverrides: [0, 0, 1], styleOverrideTable: { 1: { fontSize: 18 } } },
+        { id: "1:4", name: "Seat", type: "INSTANCE", componentId: "9:1", ...bb(16, 200, 44, 44), fills: [], children: [] },
+      ],
+    }],
+  };
+  const replies = {
+    "/files/AbCdEfGhIjKlMnOpQrStUv?depth=1": { document: { children: [{ id: "0:1", name: "Flow" }, { id: "0:2", name: "Parts" }] } },
+    "/files/AbCdEfGhIjKlMnOpQrStUv/nodes?ids=0%3A1": { nodes: { "0:1": { document: page, components: { "9:1": { name: "State=Free", componentSetId: "9:0" } }, componentSets: { "9:0": { name: "Local/Seat" } } } } },
+  };
+  const seen = [];
+  const real = globalThis.fetch;
+  globalThis.fetch = async (url, init) => {
+    const path = String(url).replace("https://api.figma.com/v1", "");
+    seen.push([path, init.headers["X-Figma-Token"]]);
+    const body = replies[path];
+    return { ok: !!body, status: body ? 200 : 404, headers: { get: () => null }, json: async () => body || {} };
+  };
+  try {
+    const { figma, page: name } = await figmaRestCanvas("https://www.figma.com/design/AbCdEfGhIjKlMnOpQrStUv/Rawat", "Flow", "test-token");
+    assert.equal(name, "Flow");
+    assert.ok(seen.every(([, t]) => t === "test-token"));
+    const frame = figma.currentPage.children[0];
+    assert.equal(typeof frame.children[1].fontSize, "symbol", "a size override on some characters is mixed");
+    assert.deepEqual(frame.children[2].mainComponent, { name: "State=Free", parent: { type: "COMPONENT_SET", name: "Local/Seat" } });
+    const r = await auditCanvas(figma, name);
+    assert.ok(r.findings.some((f) => f.rule === "RX-A11Y-01" && f.node === "Hint"), "grey text on white is measured");
+    assert.equal(r.counts.unboundSpacing, 0, "spacing bound to a variable over REST counts as bound");
+    assert.match(r.gate, /annotations unreadable 1/);
+    await assert.rejects(figmaRestCanvas("AbCdEfGhIjKlMnOpQrStUv", "", "test-token"), /name the page with --page; pages: Flow, Parts/);
+  } finally {
+    globalThis.fetch = real;
+  }
+});

@@ -897,9 +897,10 @@ Commands:
   scan        Check source files for rules a machine can see (Rupiah format, alt text, zoom, focus, ...).
               No LLM, no network. Default path: this folder. Give a URL to measure the rendered page
               (sideways scroll, contrast, target size, colliding text, text under a bar); that needs Playwright.
-  audit       Measure a FigCraft design file's screens with the Figma audit's checks (contrast, targets,
+  audit       Measure a design file's screens with the Figma audit's checks (contrast, targets,
               text cut by a bar, auto layout, empty bands, small text, ...). Takes .figcraft (needs
-              figcraft-cli) or the .json it converts to. No LLM, no network.
+              figcraft-cli) or the .json it converts to (no network), or a Figma link, read over
+              Figma's REST API with FIGMA_TOKEN (read-only; annotations are not in REST).
   report-check  Check that a RYUX report's one-line gate counts the same areas as its detail block.
               Reads a file or stdin; --hook is the Claude Code Stop hook that install --hook adds.
   pick        Open an HTML page (e.g. a directions page) in the browser and wait for a click;
@@ -950,6 +951,7 @@ Examples:
   ${CLI_CMD} scan http://localhost:3000/checkout
   ${CLI_CMD} scan --list-rules
   ${CLI_CMD} audit flow.figcraft --page Rak
+  ${CLI_CMD} audit "https://www.figma.com/design/<key>/Flow" --page Checkout
   ${CLI_CMD} install --agent claude --hook
 
 Exit codes: 0 done or healthy, 1 a problem was found (for scan: a fail) or the command failed, 2 the command was used wrongly.`);

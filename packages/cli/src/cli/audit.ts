@@ -4,6 +4,7 @@ import { tmpdir } from "node:os";
 import { basename, dirname, extname, join, resolve } from "node:path";
 import { audit } from "../engine.js";
 import { figcraftCanvas } from "../figcraft-doc.js";
+import { figmaRestCanvas, parseFigmaUrl } from "../figma-rest.js";
 
 /** Reads a FigCraft document: a .json from `figcraft-cli convert`, or a .figcraft converted here with figcraft-cli. */
 export function readFigcraft(file: string): Record<string, unknown> {
@@ -29,12 +30,31 @@ export async function runAudit(args: string[]): Promise<void> {
   const pi = args.indexOf("--page");
   const page = pi >= 0 ? args[pi + 1] || "" : "";
   if (!file) {
-    console.error("Usage: ryux audit <file.figcraft | file.json> [--page <name>] [--json]");
+    console.error("Usage: ryux audit <file.figcraft | file.json | Figma link> [--page <name>] [--json]");
     process.exitCode = 2;
     return;
   }
-  const result = await audit(figcraftCanvas(readFigcraft(file)), page);
-  if (typeof result.gate === "string") result.gate = result.gate.replace(/^figma audit/, "figcraft audit");
+  let result;
+  if (parseFigmaUrl(file) && !/\.(figcraft|json)$/i.test(file)) {
+    // a Figma link: read the page over REST with the reader's own token, judge it here; nothing is written to Figma
+    const token = process.env.FIGMA_TOKEN || "";
+    if (!token) {
+      console.error("ryux audit <Figma link> reads the file over Figma's REST API: set FIGMA_TOKEN to a personal access token with File content: Read only, or run scripts/figma-audit.md in Figma with use_figma");
+      process.exitCode = 2;
+      return;
+    }
+    try {
+      const { figma, page: name } = await figmaRestCanvas(file, page, token);
+      result = await audit(figma, name);
+    } catch (e) {
+      console.error(`ryux audit: ${(e as Error).message}`);
+      process.exitCode = 2;
+      return;
+    }
+  } else {
+    result = await audit(figcraftCanvas(readFigcraft(file)), page);
+    if (typeof result.gate === "string") result.gate = result.gate.replace(/^figma audit/, "figcraft audit");
+  }
   const findings: { level: string; rule: string; frame: string; node: string; message: string }[] = result.findings || [];
   if (args.includes("--json")) console.log(JSON.stringify(result, null, 2));
   else if (result.error) console.error(result.error);
