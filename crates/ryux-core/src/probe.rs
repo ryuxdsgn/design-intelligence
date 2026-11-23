@@ -1493,19 +1493,40 @@ impl<'a> Page<'a> {
 
         // A type scale with steps (RX-UI-03): sizes picked one element at a time leave text in sizes 1 px apart
         // (13, 14, 15, 16, 17), which read as mistakes, not levels. Counted on text of 11 to 40 px that carries at least
-        // 20 characters at its size; warned when three or more sizes have a neighbour 1 px above.
-        let mut used: std::collections::BTreeMap<i64, usize> = std::collections::BTreeMap::new();
-        for t in texts.iter().filter(|t| !self.in_svg[t.e]) {
-            let size = self.n(t.e, "fontSize").round() as i64;
-            if (11..=40).contains(&size) {
-                *used.entry(size).or_insert(0) += len16(t.x.trim());
+        // 20 characters at its size; warned when three or more sizes have a neighbour 1 px above. Text in a prototype
+        // panel or a sample or demo tag is left out, and a device mockup on the page is its own type system, counted
+        // apart (owner sheet 10, 2026-11-23: T4 fired on a "Sample content" tag, T5 mixed a document with its mockup).
+        let named = |x: usize, r: &regex::Regex| r.is_match(self.text_of(x, "c")) || r.is_match(self.text_of(x, "id"));
+        let scaffold = regex::Regex::new(r"(?i)sample|demo|scaffold|placeholder|dev-?(?:note|banner|tag)").unwrap();
+        let mut scopes: Vec<(usize, std::collections::BTreeMap<i64, usize>)> = Vec::new();
+        for t in texts.iter().filter(|t| !self.in_svg[t.e] && !self.in_proto[t.e]) {
+            let chain: Vec<usize> = std::iter::once(t.e).chain(self.ancestors(t.e)).collect();
+            if chain.iter().take(3).any(|&x| named(x, &scaffold)) {
+                continue;
             }
+            let scope = chain.iter().copied().find(|&x| x > 1 && named(x, &self.re.device)).unwrap_or(0);
+            let size = self.n(t.e, "fontSize").round() as i64;
+            if !(11..=40).contains(&size) {
+                continue;
+            }
+            let at = match scopes.iter().position(|(k, _)| *k == scope) {
+                Some(i) => i,
+                None => {
+                    scopes.push((scope, std::collections::BTreeMap::new()));
+                    scopes.len() - 1
+                }
+            };
+            *scopes[at].1.entry(size).or_insert(0) += len16(t.x.trim());
         }
-        let sizes: Vec<i64> = used.iter().filter(|(_, n)| **n >= 20).map(|(s, _)| *s).collect();
-        let close: Vec<i64> = sizes.iter().copied().filter(|s| sizes.contains(&(s + 1))).collect();
-        if close.len() >= 3 {
-            let list: Vec<String> = sizes.iter().map(|s| s.to_string()).collect();
-            tell(&mut out, "RX-UI-03", "scale", None, format!("text in {} sizes ({} px), {} of them 1 px from the next: steps that close read as mistakes, not levels; pick a scale (for example 12, 14, 16, 20, 28) and give each role one step", sizes.len(), list.join(", "), close.len()));
+        for (scope, used) in &scopes {
+            let sizes: Vec<i64> = used.iter().filter(|(_, n)| **n >= 20).map(|(s, _)| *s).collect();
+            let close: Vec<i64> = sizes.iter().copied().filter(|s| sizes.contains(&(s + 1))).collect();
+            if close.len() >= 3 {
+                let list: Vec<String> = sizes.iter().map(|s| s.to_string()).collect();
+                let place = if *scope == 0 { String::new() } else { format!(" in the mockup {}", self.selector(*scope)) };
+                tell(&mut out, "RX-UI-03", "scale", if *scope == 0 { None } else { Some(*scope) }, format!("text{place} in {} sizes ({} px), {} of them 1 px from the next: steps that close read as mistakes, not levels; pick a scale (for example 12, 14, 16, 20, 28) and give each role one step", sizes.len(), list.join(", "), close.len()));
+                break;
+            }
         }
 
         // Textarea growth (RX-FM-05): filled with 8 lines for a moment, a textarea that keeps its height and hides the
@@ -2063,6 +2084,18 @@ mod tests {
         assert!(messy[0].starts_with("text in 6 sizes (13, 14, 15, 16, 17, 24 px), 4 of them 1 px from the next"));
         assert!(run(&[12.0, 14.0, 16.0, 20.0, 28.0]).is_empty());
         assert!(run(&[14.0, 15.0, 16.0, 20.0]).is_empty());
+        // a sample tag does not count
+        let tagged = {
+            let sizes = [14.0, 15.0, 16.0, 24.0];
+            let mut styles: Vec<Value> = sizes.iter().map(|s| serde_json::json!({"fontSize": s})).collect();
+            styles.push(serde_json::json!({"fontSize": 13}));
+            let mut els: Vec<Value> = (0..sizes.len()).map(|i| serde_json::json!({"t": "P", "p": 1, "s": i + 2, "r": [16, 40 * i + 20, 300, 20]})).collect();
+            els.push(serde_json::json!({"t": "SPAN", "p": 1, "s": 6, "c": "sample-tag", "r": [16, 400, 300, 20]}));
+            let mut texts: Vec<Value> = (0..sizes.len()).map(|i| serde_json::json!({"e": i + 2, "x": "Teks contoh yang cukup panjang di sini", "r": [16, 40 * i + 20, 300, 20]})).collect();
+            texts.push(serde_json::json!({"e": 6, "x": "Sample content: set the real offer", "r": [16, 400, 300, 20]}));
+            rules_of(&page(serde_json::json!({}), Value::Array(styles), Value::Array(els), Value::Array(texts)), "RX-UI-03")
+        };
+        assert!(tagged.is_empty(), "{tagged:?}");
     }
 
     #[test]

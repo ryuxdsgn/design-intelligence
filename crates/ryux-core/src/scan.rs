@@ -734,12 +734,13 @@ fn rule_ui11_long(s: &Source, _: &Ctx) -> Vec<Hit> {
 
 /// A long wait before the interface answers (RX-UI-11): elements that wait over 500 ms before they move, or a stagger
 /// step of 100 ms or more, reported once per file with the longest wait. A tooltip or hover card may wait before it
-/// opens; a loader, a loop, and a success moment are left alone.
+/// opens; a loader, a loop, a success moment, and a decorative line drawing itself (an SVG stroke; owner sheet 10,
+/// 2026-11-23: D2) are left alone.
 fn rule_ui11_delay(s: &Source, _: &Ctx) -> Vec<Hit> {
     let ms = |v: &str, unit: &str| { let n: f64 = v.parse().unwrap_or(0.0); if unit == "s" { n * 1000.0 } else { n } };
     let quiet = |at: usize, end: usize| {
         let around = &s.text[crate::js::back16(&s.text, at, 240)..crate::js::fwd16(&s.text, end, 60)];
-        re(r"tooltip|\btip\b|popover|hover-?card|toast|hint|coach|splash|marquee|ticker|radar|ripple|success|sukses|berhasil|confirm|celebrat|confetti|done\b|complete", "i").test(around) || re(LOADER, "i").test(around) || re(r"\binfinite\b|Infinity", "").test(around)
+        re(r"tooltip|\btip\b|popover|hover-?card|toast|hint|coach|splash|marquee|ticker|radar|ripple|success|sukses|berhasil|confirm|celebrat|confetti|done\b|complete|\bsvg\b|stroke-dash", "i").test(around) || re(LOADER, "i").test(around) || re(r"\binfinite\b|Infinity", "").test(around)
     };
     let mut waits: Vec<(usize, f64)> = Vec::new();
     let mut step: Option<(usize, f64)> = None;
@@ -1226,6 +1227,7 @@ mod tests {
         assert_eq!(wait(".item { animation-delay: calc(var(--i) * 40ms); }").len(), 0);
         assert_eq!(wait(".tooltip { transition-delay: 700ms; }").len(), 0);
         assert_eq!(wait(".confirm.is-active .breeze path { animation-delay: 760ms; }").len(), 0);
+        assert_eq!(wait(".list li:nth-child(3) .tick svg{animation-delay:1.2s}").len(), 0);
         assert_eq!(found("a.html", "<div class=\"delay-700 transition\">x</div>", "RX-UI-11", "700 ms").len(), 1);
     }
 

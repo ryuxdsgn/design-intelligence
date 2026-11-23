@@ -546,7 +546,7 @@ return { iconStrokes: strokes, iconColours: colours, unbound: [...unbound], mixe
      code of one use_figma call (set PAGE to the flow's page). It reads the canvas and counts content images and their reuse,
      contrast, text cut by a bar or clipped, targets, overlays with no lift, a busy screen whose button keeps its idle
      label, unstyled text and unbound values, screens not built in auto layout and layers left outside them, empty bands,
-     small uppercase labels, section cards, text under 12 px, uneven buttons in a row, and annotations. Fix each fail, fix
+     small uppercase labels, section cards, text under 12 px, text sizes 1 px apart, uneven buttons in a row, and annotations. Fix each fail, fix
      each warn or give the reason it stays, run it once more, and copy its last gate line into VISUAL QA; the gate's numbers
      come from it, not from memory. In FigCraft, save the file and run \`npx --no-install @ryuxdsgn/design-intelligence audit <file>
      --page <page>\` instead: the same checks on the saved .figcraft (it needs figcraft-cli).

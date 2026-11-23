@@ -143,6 +143,7 @@
     "cards": 0,
     "smallText": 0,
     "texts": 2,
+    "closeSizes": 0,
     "unevenRows": 0,
     "flowBreaks": 0
    },
@@ -158,7 +159,7 @@
     }
    ],
    "more": 0,
-   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 1 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 2, unbound spacing 0 · built in auto layout 1/1 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 0, small uppercase labels 0, section cards 0, text under 12 px 0/2, uneven button rows 0 · breaks across screens 0 · annotations none · 1 fail, 0 warn"
+   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 1 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 2, unbound spacing 0 · built in auto layout 1/1 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 0, small uppercase labels 0, section cards 0, text under 12 px 0/2, screens with text sizes 1 px apart 0, uneven button rows 0 · breaks across screens 0 · annotations none · 1 fail, 0 warn"
   }
  },
  {
@@ -295,6 +296,7 @@
     "cards": 0,
     "smallText": 0,
     "texts": 1,
+    "closeSizes": 0,
     "unevenRows": 0,
     "flowBreaks": 0
    },
@@ -309,7 +311,7 @@
    "annotations": {},
    "findings": [],
    "more": 0,
-   "gate": "figma audit (Flow): screens 1 · images 1 distinct, 1 fills, 0 reused across screens · contrast fails 0 (1 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 1, unbound spacing 0 · built in auto layout 1/1 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 0, small uppercase labels 0, section cards 0, text under 12 px 0/1, uneven button rows 0 · breaks across screens 0 · annotations none · 0 fail, 0 warn"
+   "gate": "figma audit (Flow): screens 1 · images 1 distinct, 1 fills, 0 reused across screens · contrast fails 0 (1 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 1, unbound spacing 0 · built in auto layout 1/1 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 0, small uppercase labels 0, section cards 0, text under 12 px 0/1, screens with text sizes 1 px apart 0, uneven button rows 0 · breaks across screens 0 · annotations none · 0 fail, 0 warn"
   }
  },
  {
@@ -550,6 +552,7 @@
     "cards": 0,
     "smallText": 0,
     "texts": 0,
+    "closeSizes": 0,
     "unevenRows": 0,
     "flowBreaks": 0
    },
@@ -572,7 +575,7 @@
    "annotations": {},
    "findings": [],
    "more": 0,
-   "gate": "figma audit (Flow): screens 3 · images 2 distinct, 4 fills, 1 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 0, unbound spacing 0 · built in auto layout 3/3 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 0, small uppercase labels 0, section cards 0, text under 12 px 0/0, uneven button rows 0 · breaks across screens 0 · annotations none · 0 fail, 0 warn"
+   "gate": "figma audit (Flow): screens 3 · images 2 distinct, 4 fills, 1 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 0, unbound spacing 0 · built in auto layout 3/3 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 0, small uppercase labels 0, section cards 0, text under 12 px 0/0, screens with text sizes 1 px apart 0, uneven button rows 0 · breaks across screens 0 · annotations none · 0 fail, 0 warn"
   }
  },
  {
@@ -689,6 +692,7 @@
     "cards": 0,
     "smallText": 0,
     "texts": 0,
+    "closeSizes": 0,
     "unevenRows": 0,
     "flowBreaks": 0
    },
@@ -696,7 +700,7 @@
    "annotations": {},
    "findings": [],
    "more": 0,
-   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 0, unbound spacing 0 · built in auto layout 1/1 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 0, small uppercase labels 0, section cards 0, text under 12 px 0/0, uneven button rows 0 · breaks across screens 0 · annotations none · 0 fail, 0 warn"
+   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 0, unbound spacing 0 · built in auto layout 1/1 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 0, small uppercase labels 0, section cards 0, text under 12 px 0/0, screens with text sizes 1 px apart 0, uneven button rows 0 · breaks across screens 0 · annotations none · 0 fail, 0 warn"
   }
  },
  {
@@ -837,6 +841,7 @@
     "cards": 0,
     "smallText": 0,
     "texts": 1,
+    "closeSizes": 0,
     "unevenRows": 0,
     "flowBreaks": 0
    },
@@ -852,7 +857,7 @@
     }
    ],
    "more": 0,
-   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 1, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 2, unbound spacing 0 · built in auto layout 1/1 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 0, small uppercase labels 0, section cards 0, text under 12 px 0/1, uneven button rows 0 · breaks across screens 0 · annotations none · 1 fail, 0 warn"
+   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 1, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 2, unbound spacing 0 · built in auto layout 1/1 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 0, small uppercase labels 0, section cards 0, text under 12 px 0/1, screens with text sizes 1 px apart 0, uneven button rows 0 · breaks across screens 0 · annotations none · 1 fail, 0 warn"
   }
  },
  {
@@ -1028,6 +1033,7 @@
     "cards": 0,
     "smallText": 0,
     "texts": 2,
+    "closeSizes": 0,
     "unevenRows": 0,
     "flowBreaks": 0
    },
@@ -1035,7 +1041,7 @@
    "annotations": {},
    "findings": [],
    "more": 0,
-   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 3, unbound spacing 0 · built in auto layout 1/1 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 0, small uppercase labels 0, section cards 0, text under 12 px 0/2, uneven button rows 0 · breaks across screens 0 · annotations none · 0 fail, 0 warn"
+   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 3, unbound spacing 0 · built in auto layout 1/1 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 0, small uppercase labels 0, section cards 0, text under 12 px 0/2, screens with text sizes 1 px apart 0, uneven button rows 0 · breaks across screens 0 · annotations none · 0 fail, 0 warn"
   }
  },
  {
@@ -1177,6 +1183,7 @@
     "cards": 0,
     "smallText": 0,
     "texts": 1,
+    "closeSizes": 0,
     "unevenRows": 0,
     "flowBreaks": 0
    },
@@ -1192,7 +1199,7 @@
     }
    ],
    "more": 0,
-   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 1 · busy buttons with idle label 0 · unstyled text 0, unbound fills 2, unbound spacing 0 · built in auto layout 1/1 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 0, small uppercase labels 0, section cards 0, text under 12 px 0/1, uneven button rows 0 · breaks across screens 0 · annotations none · 0 fail, 1 warn"
+   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 1 · busy buttons with idle label 0 · unstyled text 0, unbound fills 2, unbound spacing 0 · built in auto layout 1/1 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 0, small uppercase labels 0, section cards 0, text under 12 px 0/1, screens with text sizes 1 px apart 0, uneven button rows 0 · breaks across screens 0 · annotations none · 0 fail, 1 warn"
   }
  },
  {
@@ -1339,6 +1346,7 @@
     "cards": 0,
     "smallText": 0,
     "texts": 1,
+    "closeSizes": 0,
     "unevenRows": 0,
     "flowBreaks": 0
    },
@@ -1346,7 +1354,7 @@
    "annotations": {},
    "findings": [],
    "more": 0,
-   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 2, unbound spacing 0 · built in auto layout 1/1 screens, loose layers 0, layers outside the screens 0, effects without a style 1 · empty bands 0, small uppercase labels 0, section cards 0, text under 12 px 0/1, uneven button rows 0 · breaks across screens 0 · annotations none · 0 fail, 0 warn"
+   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 2, unbound spacing 0 · built in auto layout 1/1 screens, loose layers 0, layers outside the screens 0, effects without a style 1 · empty bands 0, small uppercase labels 0, section cards 0, text under 12 px 0/1, screens with text sizes 1 px apart 0, uneven button rows 0 · breaks across screens 0 · annotations none · 0 fail, 0 warn"
   }
  },
  {
@@ -1523,6 +1531,7 @@
     "cards": 0,
     "smallText": 0,
     "texts": 1,
+    "closeSizes": 0,
     "unevenRows": 0,
     "flowBreaks": 0
    },
@@ -1538,7 +1547,7 @@
     }
    ],
    "more": 0,
-   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 1 · unstyled text 0, unbound fills 2, unbound spacing 0 · built in auto layout 1/1 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 0, small uppercase labels 0, section cards 0, text under 12 px 0/1, uneven button rows 0 · breaks across screens 0 · annotations none · 0 fail, 1 warn"
+   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 1 · unstyled text 0, unbound fills 2, unbound spacing 0 · built in auto layout 1/1 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 0, small uppercase labels 0, section cards 0, text under 12 px 0/1, screens with text sizes 1 px apart 0, uneven button rows 0 · breaks across screens 0 · annotations none · 0 fail, 1 warn"
   }
  },
  {
@@ -1715,6 +1724,7 @@
     "cards": 0,
     "smallText": 0,
     "texts": 1,
+    "closeSizes": 0,
     "unevenRows": 0,
     "flowBreaks": 0
    },
@@ -1722,7 +1732,7 @@
    "annotations": {},
    "findings": [],
    "more": 0,
-   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 2, unbound spacing 0 · built in auto layout 1/1 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 0, small uppercase labels 0, section cards 0, text under 12 px 0/1, uneven button rows 0 · breaks across screens 0 · annotations none · 0 fail, 0 warn"
+   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 2, unbound spacing 0 · built in auto layout 1/1 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 0, small uppercase labels 0, section cards 0, text under 12 px 0/1, screens with text sizes 1 px apart 0, uneven button rows 0 · breaks across screens 0 · annotations none · 0 fail, 0 warn"
   }
  },
  {
@@ -1899,6 +1909,7 @@
     "cards": 0,
     "smallText": 0,
     "texts": 1,
+    "closeSizes": 0,
     "unevenRows": 0,
     "flowBreaks": 0
    },
@@ -1906,7 +1917,7 @@
    "annotations": {},
    "findings": [],
    "more": 0,
-   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 2, unbound spacing 0 · built in auto layout 1/1 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 0, small uppercase labels 0, section cards 0, text under 12 px 0/1, uneven button rows 0 · breaks across screens 0 · annotations none · 0 fail, 0 warn"
+   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 2, unbound spacing 0 · built in auto layout 1/1 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 0, small uppercase labels 0, section cards 0, text under 12 px 0/1, screens with text sizes 1 px apart 0, uneven button rows 0 · breaks across screens 0 · annotations none · 0 fail, 0 warn"
   }
  },
  {
@@ -2048,6 +2059,7 @@
     "cards": 0,
     "smallText": 0,
     "texts": 0,
+    "closeSizes": 0,
     "unevenRows": 0,
     "flowBreaks": 0
    },
@@ -2055,7 +2067,7 @@
    "annotations": {},
    "findings": [],
    "more": 0,
-   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 1, unbound spacing 0 · built in auto layout 1/1 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 0, small uppercase labels 0, section cards 0, text under 12 px 0/0, uneven button rows 0 · breaks across screens 0 · annotations none · 0 fail, 0 warn"
+   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 1, unbound spacing 0 · built in auto layout 1/1 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 0, small uppercase labels 0, section cards 0, text under 12 px 0/0, screens with text sizes 1 px apart 0, uneven button rows 0 · breaks across screens 0 · annotations none · 0 fail, 0 warn"
   }
  },
  {
@@ -2161,6 +2173,7 @@
     "cards": 0,
     "smallText": 0,
     "texts": 0,
+    "closeSizes": 0,
     "unevenRows": 0,
     "flowBreaks": 0
    },
@@ -2176,7 +2189,7 @@
     }
    ],
    "more": 0,
-   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 1, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 1, unbound spacing 0 · built in auto layout 1/1 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 0, small uppercase labels 0, section cards 0, text under 12 px 0/0, uneven button rows 0 · breaks across screens 0 · annotations none · 1 fail, 0 warn"
+   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 1, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 1, unbound spacing 0 · built in auto layout 1/1 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 0, small uppercase labels 0, section cards 0, text under 12 px 0/0, screens with text sizes 1 px apart 0, uneven button rows 0 · breaks across screens 0 · annotations none · 1 fail, 0 warn"
   }
  },
  {
@@ -2282,6 +2295,7 @@
     "cards": 0,
     "smallText": 0,
     "texts": 0,
+    "closeSizes": 0,
     "unevenRows": 0,
     "flowBreaks": 0
    },
@@ -2297,7 +2311,7 @@
     }
    ],
    "more": 0,
-   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 1 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 1, unbound spacing 0 · built in auto layout 1/1 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 0, small uppercase labels 0, section cards 0, text under 12 px 0/0, uneven button rows 0 · breaks across screens 0 · annotations none · 0 fail, 1 warn"
+   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 1 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 1, unbound spacing 0 · built in auto layout 1/1 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 0, small uppercase labels 0, section cards 0, text under 12 px 0/0, screens with text sizes 1 px apart 0, uneven button rows 0 · breaks across screens 0 · annotations none · 0 fail, 1 warn"
   }
  },
  {
@@ -2403,6 +2417,7 @@
     "cards": 0,
     "smallText": 0,
     "texts": 0,
+    "closeSizes": 0,
     "unevenRows": 0,
     "flowBreaks": 0
    },
@@ -2410,7 +2425,7 @@
    "annotations": {},
    "findings": [],
    "more": 0,
-   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 1, unbound spacing 0 · built in auto layout 1/1 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 0, small uppercase labels 0, section cards 0, text under 12 px 0/0, uneven button rows 0 · breaks across screens 0 · annotations none · 0 fail, 0 warn"
+   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 1, unbound spacing 0 · built in auto layout 1/1 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 0, small uppercase labels 0, section cards 0, text under 12 px 0/0, screens with text sizes 1 px apart 0, uneven button rows 0 · breaks across screens 0 · annotations none · 0 fail, 0 warn"
   }
  },
  {
@@ -2533,6 +2548,7 @@
     "cards": 0,
     "smallText": 0,
     "texts": 1,
+    "closeSizes": 0,
     "unevenRows": 0,
     "flowBreaks": 0
    },
@@ -2542,7 +2558,7 @@
    },
    "findings": [],
    "more": 0,
-   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 1, unbound fills 1, unbound spacing 0 · built in auto layout 1/1 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 0, small uppercase labels 0, section cards 0, text under 12 px 0/1, uneven button rows 0 · breaks across screens 0 · annotations Sample data 1 · 0 fail, 0 warn"
+   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 1, unbound fills 1, unbound spacing 0 · built in auto layout 1/1 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 0, small uppercase labels 0, section cards 0, text under 12 px 0/1, screens with text sizes 1 px apart 0, uneven button rows 0 · breaks across screens 0 · annotations Sample data 1 · 0 fail, 0 warn"
   }
  },
  {
@@ -2713,6 +2729,7 @@
     "cards": 0,
     "smallText": 0,
     "texts": 1,
+    "closeSizes": 0,
     "unevenRows": 0,
     "flowBreaks": 0
    },
@@ -2728,7 +2745,7 @@
     }
    ],
    "more": 0,
-   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 1 · busy buttons with idle label 0 · unstyled text 0, unbound fills 3, unbound spacing 0 · built in auto layout 1/1 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 0, small uppercase labels 0, section cards 0, text under 12 px 0/1, uneven button rows 0 · breaks across screens 0 · annotations none · 0 fail, 1 warn"
+   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 1 · busy buttons with idle label 0 · unstyled text 0, unbound fills 3, unbound spacing 0 · built in auto layout 1/1 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 0, small uppercase labels 0, section cards 0, text under 12 px 0/1, screens with text sizes 1 px apart 0, uneven button rows 0 · breaks across screens 0 · annotations none · 0 fail, 1 warn"
   }
  },
  {
@@ -2904,6 +2921,7 @@
     "cards": 0,
     "smallText": 0,
     "texts": 1,
+    "closeSizes": 0,
     "unevenRows": 0,
     "flowBreaks": 0
    },
@@ -2911,7 +2929,7 @@
    "annotations": {},
    "findings": [],
    "more": 0,
-   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 3, unbound spacing 0 · built in auto layout 1/1 screens, loose layers 0, layers outside the screens 0, effects without a style 1 · empty bands 0, small uppercase labels 0, section cards 0, text under 12 px 0/1, uneven button rows 0 · breaks across screens 0 · annotations none · 0 fail, 0 warn"
+   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 3, unbound spacing 0 · built in auto layout 1/1 screens, loose layers 0, layers outside the screens 0, effects without a style 1 · empty bands 0, small uppercase labels 0, section cards 0, text under 12 px 0/1, screens with text sizes 1 px apart 0, uneven button rows 0 · breaks across screens 0 · annotations none · 0 fail, 0 warn"
   }
  },
  {
@@ -3079,6 +3097,7 @@
     "cards": 0,
     "smallText": 0,
     "texts": 2,
+    "closeSizes": 0,
     "unevenRows": 0,
     "flowBreaks": 0
    },
@@ -3094,7 +3113,7 @@
     }
    ],
    "more": 0,
-   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 1, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 2, unbound spacing 0 · built in auto layout 1/1 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 0, small uppercase labels 0, section cards 0, text under 12 px 0/2, uneven button rows 0 · breaks across screens 0 · annotations none · 1 fail, 0 warn"
+   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 1, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 2, unbound spacing 0 · built in auto layout 1/1 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 0, small uppercase labels 0, section cards 0, text under 12 px 0/2, screens with text sizes 1 px apart 0, uneven button rows 0 · breaks across screens 0 · annotations none · 1 fail, 0 warn"
   }
  },
  {
@@ -3283,6 +3302,7 @@
     "cards": 0,
     "smallText": 0,
     "texts": 2,
+    "closeSizes": 0,
     "unevenRows": 0,
     "flowBreaks": 0
    },
@@ -3290,7 +3310,7 @@
    "annotations": {},
    "findings": [],
    "more": 0,
-   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 2, unbound spacing 0 · built in auto layout 1/1 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 0, small uppercase labels 0, section cards 0, text under 12 px 0/2, uneven button rows 0 · breaks across screens 0 · annotations none · 0 fail, 0 warn"
+   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 2, unbound spacing 0 · built in auto layout 1/1 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 0, small uppercase labels 0, section cards 0, text under 12 px 0/2, screens with text sizes 1 px apart 0, uneven button rows 0 · breaks across screens 0 · annotations none · 0 fail, 0 warn"
   }
  },
  {
@@ -3423,6 +3443,7 @@
     "cards": 0,
     "smallText": 0,
     "texts": 1,
+    "closeSizes": 0,
     "unevenRows": 0,
     "flowBreaks": 0
    },
@@ -3430,7 +3451,7 @@
    "annotations": {},
    "findings": [],
    "more": 0,
-   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 1, unbound spacing 0 · built in auto layout 1/1 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 0, small uppercase labels 0, section cards 0, text under 12 px 0/1, uneven button rows 0 · breaks across screens 0 · annotations none · 0 fail, 0 warn"
+   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 1, unbound spacing 0 · built in auto layout 1/1 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 0, small uppercase labels 0, section cards 0, text under 12 px 0/1, screens with text sizes 1 px apart 0, uneven button rows 0 · breaks across screens 0 · annotations none · 0 fail, 0 warn"
   }
  },
  {
@@ -3557,6 +3578,7 @@
     "cards": 0,
     "smallText": 0,
     "texts": 0,
+    "closeSizes": 0,
     "unevenRows": 0,
     "flowBreaks": 0
    },
@@ -3572,7 +3594,7 @@
     }
    ],
    "more": 0,
-   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 1, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 1, unbound spacing 0 · built in auto layout 1/1 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 0, small uppercase labels 0, section cards 0, text under 12 px 0/0, uneven button rows 0 · breaks across screens 0 · annotations none · 1 fail, 0 warn"
+   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 1, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 1, unbound spacing 0 · built in auto layout 1/1 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 0, small uppercase labels 0, section cards 0, text under 12 px 0/0, screens with text sizes 1 px apart 0, uneven button rows 0 · breaks across screens 0 · annotations none · 1 fail, 0 warn"
   }
  },
  {
@@ -3755,6 +3777,7 @@
     "cards": 0,
     "smallText": 0,
     "texts": 1,
+    "closeSizes": 0,
     "unevenRows": 0,
     "flowBreaks": 0
    },
@@ -3762,7 +3785,7 @@
    "annotations": {},
    "findings": [],
    "more": 0,
-   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 2, unbound spacing 0 · built in auto layout 1/1 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 0, small uppercase labels 0, section cards 0, text under 12 px 0/1, uneven button rows 0 · breaks across screens 0 · annotations none · 0 fail, 0 warn"
+   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 2, unbound spacing 0 · built in auto layout 1/1 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 0, small uppercase labels 0, section cards 0, text under 12 px 0/1, screens with text sizes 1 px apart 0, uneven button rows 0 · breaks across screens 0 · annotations none · 0 fail, 0 warn"
   }
  },
  {
@@ -3935,6 +3958,7 @@
     "cards": 0,
     "smallText": 0,
     "texts": 1,
+    "closeSizes": 0,
     "unevenRows": 0,
     "flowBreaks": 0
    },
@@ -3942,7 +3966,7 @@
    "annotations": {},
    "findings": [],
    "more": 0,
-   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 1, unbound spacing 0 · built in auto layout 1/1 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 0, small uppercase labels 0, section cards 0, text under 12 px 0/1, uneven button rows 0 · breaks across screens 0 · annotations none · 0 fail, 0 warn"
+   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 1, unbound spacing 0 · built in auto layout 1/1 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 0, small uppercase labels 0, section cards 0, text under 12 px 0/1, screens with text sizes 1 px apart 0, uneven button rows 0 · breaks across screens 0 · annotations none · 0 fail, 0 warn"
   }
  },
  {
@@ -4080,6 +4104,7 @@
     "cards": 0,
     "smallText": 0,
     "texts": 0,
+    "closeSizes": 0,
     "unevenRows": 0,
     "flowBreaks": 0
    },
@@ -4102,7 +4127,7 @@
     }
    ],
    "more": 0,
-   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 2 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 0, unbound spacing 0 · built in auto layout 1/1 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 0, small uppercase labels 0, section cards 0, text under 12 px 0/0, uneven button rows 0 · breaks across screens 0 · annotations none · 0 fail, 2 warn"
+   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 2 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 0, unbound spacing 0 · built in auto layout 1/1 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 0, small uppercase labels 0, section cards 0, text under 12 px 0/0, screens with text sizes 1 px apart 0, uneven button rows 0 · breaks across screens 0 · annotations none · 0 fail, 2 warn"
   }
  },
  {
@@ -4254,6 +4279,7 @@
     "cards": 0,
     "smallText": 0,
     "texts": 0,
+    "closeSizes": 0,
     "unevenRows": 0,
     "flowBreaks": 0
    },
@@ -4269,7 +4295,7 @@
     }
    ],
    "more": 0,
-   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 2 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 0, unbound spacing 0 · built in auto layout 1/1 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 0, small uppercase labels 0, section cards 0, text under 12 px 0/0, uneven button rows 0 · breaks across screens 0 · annotations none · 0 fail, 1 warn"
+   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 2 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 0, unbound spacing 0 · built in auto layout 1/1 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 0, small uppercase labels 0, section cards 0, text under 12 px 0/0, screens with text sizes 1 px apart 0, uneven button rows 0 · breaks across screens 0 · annotations none · 0 fail, 1 warn"
   }
  },
  {
@@ -4557,6 +4583,7 @@
     "cards": 0,
     "smallText": 0,
     "texts": 6,
+    "closeSizes": 0,
     "unevenRows": 0,
     "flowBreaks": 0
    },
@@ -4572,7 +4599,7 @@
     }
    ],
    "more": 0,
-   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 6, unbound spacing 0 · built in auto layout 0/1 screens, loose layers 6, layers outside the screens 0, effects without a style 0 · empty bands 0, small uppercase labels 0, section cards 0, text under 12 px 0/6, uneven button rows 0 · breaks across screens 0 · annotations none · 1 fail, 0 warn"
+   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 6, unbound spacing 0 · built in auto layout 0/1 screens, loose layers 6, layers outside the screens 0, effects without a style 0 · empty bands 0, small uppercase labels 0, section cards 0, text under 12 px 0/6, screens with text sizes 1 px apart 0, uneven button rows 0 · breaks across screens 0 · annotations none · 1 fail, 0 warn"
   }
  },
  {
@@ -4961,6 +4988,7 @@
     "cards": 0,
     "smallText": 0,
     "texts": 6,
+    "closeSizes": 0,
     "unevenRows": 0,
     "flowBreaks": 0
    },
@@ -4968,7 +4996,7 @@
    "annotations": {},
    "findings": [],
    "more": 0,
-   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 8, unbound spacing 0 · built in auto layout 1/1 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 0, small uppercase labels 0, section cards 0, text under 12 px 0/6, uneven button rows 0 · breaks across screens 0 · annotations none · 0 fail, 0 warn"
+   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 8, unbound spacing 0 · built in auto layout 1/1 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 0, small uppercase labels 0, section cards 0, text under 12 px 0/6, screens with text sizes 1 px apart 0, uneven button rows 0 · breaks across screens 0 · annotations none · 0 fail, 0 warn"
   }
  },
  {
@@ -5134,6 +5162,7 @@
     "cards": 0,
     "smallText": 0,
     "texts": 0,
+    "closeSizes": 0,
     "unevenRows": 0,
     "flowBreaks": 0
    },
@@ -5149,7 +5178,7 @@
     }
    ],
    "more": 0,
-   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 0, unbound spacing 0 · built in auto layout 1/1 screens, loose layers 0, layers outside the screens 1, effects without a style 1 · empty bands 0, small uppercase labels 0, section cards 0, text under 12 px 0/0, uneven button rows 0 · breaks across screens 0 · annotations none · 0 fail, 1 warn"
+   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 0, unbound spacing 0 · built in auto layout 1/1 screens, loose layers 0, layers outside the screens 1, effects without a style 1 · empty bands 0, small uppercase labels 0, section cards 0, text under 12 px 0/0, screens with text sizes 1 px apart 0, uneven button rows 0 · breaks across screens 0 · annotations none · 0 fail, 1 warn"
   }
  },
  {
@@ -5556,6 +5585,7 @@
     "cards": 0,
     "smallText": 0,
     "texts": 8,
+    "closeSizes": 0,
     "unevenRows": 0,
     "flowBreaks": 0
    },
@@ -5578,7 +5608,7 @@
     }
    ],
    "more": 0,
-   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 8, unbound spacing 0 · built in auto layout 0/1 screens, loose layers 4, layers outside the screens 0, effects without a style 1 · empty bands 1, small uppercase labels 0, section cards 0, text under 12 px 0/8, uneven button rows 0 · breaks across screens 0 · annotations none · 0 fail, 2 warn"
+   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 8, unbound spacing 0 · built in auto layout 0/1 screens, loose layers 4, layers outside the screens 0, effects without a style 1 · empty bands 1, small uppercase labels 0, section cards 0, text under 12 px 0/8, screens with text sizes 1 px apart 0, uneven button rows 0 · breaks across screens 0 · annotations none · 0 fail, 2 warn"
   }
  },
  {
@@ -5795,6 +5825,7 @@
     "cards": 0,
     "smallText": 0,
     "texts": 4,
+    "closeSizes": 0,
     "unevenRows": 0,
     "flowBreaks": 0
    },
@@ -5810,7 +5841,7 @@
     }
    ],
    "more": 0,
-   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 4, unbound spacing 0 · built in auto layout 1/1 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 0, small uppercase labels 4, section cards 0, text under 12 px 0/4, uneven button rows 0 · breaks across screens 0 · annotations none · 0 fail, 1 warn"
+   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 4, unbound spacing 0 · built in auto layout 1/1 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 0, small uppercase labels 4, section cards 0, text under 12 px 0/4, screens with text sizes 1 px apart 0, uneven button rows 0 · breaks across screens 0 · annotations none · 0 fail, 1 warn"
   }
  },
  {
@@ -5992,6 +6023,7 @@
     "cards": 0,
     "smallText": 0,
     "texts": 3,
+    "closeSizes": 0,
     "unevenRows": 0,
     "flowBreaks": 0
    },
@@ -5999,7 +6031,7 @@
    "annotations": {},
    "findings": [],
    "more": 0,
-   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 3, unbound spacing 0 · built in auto layout 1/1 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 0, small uppercase labels 3, section cards 0, text under 12 px 0/3, uneven button rows 0 · breaks across screens 0 · annotations none · 0 fail, 0 warn"
+   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 3, unbound spacing 0 · built in auto layout 1/1 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 0, small uppercase labels 3, section cards 0, text under 12 px 0/3, screens with text sizes 1 px apart 0, uneven button rows 0 · breaks across screens 0 · annotations none · 0 fail, 0 warn"
   }
  },
  {
@@ -6112,6 +6144,7 @@
     "cards": 0,
     "smallText": 0,
     "texts": 1,
+    "closeSizes": 0,
     "unevenRows": 0,
     "flowBreaks": 0
    },
@@ -6119,7 +6152,7 @@
    "annotations": {},
    "findings": [],
    "more": 0,
-   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 1, unbound spacing 0 · built in auto layout 1/1 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 0, small uppercase labels 1, section cards 0, text under 12 px 0/1, uneven button rows 0 · breaks across screens 0 · annotations none · 0 fail, 0 warn"
+   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 1, unbound spacing 0 · built in auto layout 1/1 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 0, small uppercase labels 1, section cards 0, text under 12 px 0/1, screens with text sizes 1 px apart 0, uneven button rows 0 · breaks across screens 0 · annotations none · 0 fail, 0 warn"
   }
  },
  {
@@ -6316,6 +6349,7 @@
     "cards": 4,
     "smallText": 0,
     "texts": 0,
+    "closeSizes": 0,
     "unevenRows": 0,
     "flowBreaks": 0
    },
@@ -6331,7 +6365,7 @@
     }
    ],
    "more": 0,
-   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 0, unbound spacing 0 · built in auto layout 1/1 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 0, small uppercase labels 0, section cards 4, text under 12 px 0/0, uneven button rows 0 · breaks across screens 0 · annotations none · 0 fail, 1 warn"
+   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 0, unbound spacing 0 · built in auto layout 1/1 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 0, small uppercase labels 0, section cards 4, text under 12 px 0/0, screens with text sizes 1 px apart 0, uneven button rows 0 · breaks across screens 0 · annotations none · 0 fail, 1 warn"
   }
  },
  {
@@ -6528,6 +6562,7 @@
     "cards": 1,
     "smallText": 0,
     "texts": 0,
+    "closeSizes": 0,
     "unevenRows": 0,
     "flowBreaks": 0
    },
@@ -6535,7 +6570,7 @@
    "annotations": {},
    "findings": [],
    "more": 0,
-   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 0, unbound spacing 0 · built in auto layout 1/1 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 0, small uppercase labels 0, section cards 1, text under 12 px 0/0, uneven button rows 0 · breaks across screens 0 · annotations none · 0 fail, 0 warn"
+   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 0, unbound spacing 0 · built in auto layout 1/1 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 0, small uppercase labels 0, section cards 1, text under 12 px 0/0, screens with text sizes 1 px apart 0, uneven button rows 0 · breaks across screens 0 · annotations none · 0 fail, 0 warn"
   }
  },
  {
@@ -6717,6 +6752,7 @@
     "cards": 0,
     "smallText": 0,
     "texts": 3,
+    "closeSizes": 0,
     "unevenRows": 0,
     "flowBreaks": 0
    },
@@ -6732,7 +6768,7 @@
     }
    ],
    "more": 0,
-   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 3, unbound spacing 0 · built in auto layout 1/1 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 1, small uppercase labels 0, section cards 0, text under 12 px 0/3, uneven button rows 0 · breaks across screens 0 · annotations none · 0 fail, 1 warn"
+   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 3, unbound spacing 0 · built in auto layout 1/1 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 1, small uppercase labels 0, section cards 0, text under 12 px 0/3, screens with text sizes 1 px apart 0, uneven button rows 0 · breaks across screens 0 · annotations none · 0 fail, 1 warn"
   }
  },
  {
@@ -6914,6 +6950,7 @@
     "cards": 0,
     "smallText": 0,
     "texts": 3,
+    "closeSizes": 0,
     "unevenRows": 0,
     "flowBreaks": 0
    },
@@ -6921,7 +6958,7 @@
    "annotations": {},
    "findings": [],
    "more": 0,
-   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 3, unbound spacing 0 · built in auto layout 1/1 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 0, small uppercase labels 0, section cards 0, text under 12 px 0/3, uneven button rows 0 · breaks across screens 0 · annotations none · 0 fail, 0 warn"
+   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 3, unbound spacing 0 · built in auto layout 1/1 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 0, small uppercase labels 0, section cards 0, text under 12 px 0/3, screens with text sizes 1 px apart 0, uneven button rows 0 · breaks across screens 0 · annotations none · 0 fail, 0 warn"
   }
  },
  {
@@ -7124,6 +7161,7 @@
     "cards": 0,
     "smallText": 1,
     "texts": 2,
+    "closeSizes": 0,
     "unevenRows": 0,
     "flowBreaks": 0
    },
@@ -7139,7 +7177,7 @@
     }
    ],
    "more": 0,
-   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 2, unbound spacing 0 · built in auto layout 1/1 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 0, small uppercase labels 0, section cards 0, text under 12 px 1/2, uneven button rows 0 · breaks across screens 0 · annotations none · 0 fail, 1 warn"
+   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 2, unbound spacing 0 · built in auto layout 1/1 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 0, small uppercase labels 0, section cards 0, text under 12 px 1/2, screens with text sizes 1 px apart 0, uneven button rows 0 · breaks across screens 0 · annotations none · 0 fail, 1 warn"
   }
  },
  {
@@ -7366,6 +7404,7 @@
     "cards": 0,
     "smallText": 0,
     "texts": 2,
+    "closeSizes": 0,
     "unevenRows": 1,
     "flowBreaks": 0
    },
@@ -7381,7 +7420,7 @@
     }
    ],
    "more": 0,
-   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 2, unbound spacing 0 · built in auto layout 1/1 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 0, small uppercase labels 0, section cards 0, text under 12 px 0/2, uneven button rows 1 · breaks across screens 0 · annotations none · 0 fail, 1 warn"
+   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 2, unbound spacing 0 · built in auto layout 1/1 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 0, small uppercase labels 0, section cards 0, text under 12 px 0/2, screens with text sizes 1 px apart 0, uneven button rows 1 · breaks across screens 0 · annotations none · 0 fail, 1 warn"
   }
  },
  {
@@ -7628,6 +7667,7 @@
     "cards": 0,
     "smallText": 0,
     "texts": 2,
+    "closeSizes": 0,
     "unevenRows": 0,
     "flowBreaks": 0
    },
@@ -7635,7 +7675,7 @@
    "annotations": {},
    "findings": [],
    "more": 0,
-   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 2, unbound spacing 0 · built in auto layout 1/1 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 0, small uppercase labels 0, section cards 0, text under 12 px 0/2, uneven button rows 0 · breaks across screens 0 · annotations none · 0 fail, 0 warn"
+   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 2, unbound spacing 0 · built in auto layout 1/1 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 0, small uppercase labels 0, section cards 0, text under 12 px 0/2, screens with text sizes 1 px apart 0, uneven button rows 0 · breaks across screens 0 · annotations none · 0 fail, 0 warn"
   }
  },
  {
@@ -8045,6 +8085,7 @@
     "cards": 1,
     "smallText": 1,
     "texts": 2,
+    "closeSizes": 0,
     "unevenRows": 1,
     "flowBreaks": 0
    },
@@ -8083,7 +8124,7 @@
     }
    ],
    "more": 0,
-   "gate": "figma audit (Rak): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 1, unbound fills 3, unbound spacing 1 · built in auto layout 0/1 screens, loose layers 3, layers outside the screens 0, effects without a style 0 · empty bands 1, small uppercase labels 1, section cards 1, text under 12 px 1/2, uneven button rows 1 · breaks across screens 0 · annotations Sample data 1 · 0 fail, 4 warn"
+   "gate": "figma audit (Rak): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 1, unbound fills 3, unbound spacing 1 · built in auto layout 0/1 screens, loose layers 3, layers outside the screens 0, effects without a style 0 · empty bands 1, small uppercase labels 1, section cards 1, text under 12 px 1/2, screens with text sizes 1 px apart 0, uneven button rows 1 · breaks across screens 0 · annotations Sample data 1 · 0 fail, 4 warn"
   }
  },
  {
@@ -8203,6 +8244,7 @@
     "cards": 0,
     "smallText": 0,
     "texts": 1,
+    "closeSizes": 0,
     "unevenRows": 0,
     "flowBreaks": 0
    },
@@ -8218,7 +8260,7 @@
     }
    ],
    "more": 0,
-   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 1 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 1, unbound spacing 0 · built in auto layout 1/1 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 0, small uppercase labels 0, section cards 0, text under 12 px 0/1, uneven button rows 0 · breaks across screens 0 · annotations none · 1 fail, 0 warn"
+   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 1 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 1, unbound spacing 0 · built in auto layout 1/1 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 0, small uppercase labels 0, section cards 0, text under 12 px 0/1, screens with text sizes 1 px apart 0, uneven button rows 0 · breaks across screens 0 · annotations none · 1 fail, 0 warn"
   }
  },
  {
@@ -8338,6 +8380,7 @@
     "cards": 0,
     "smallText": 0,
     "texts": 1,
+    "closeSizes": 0,
     "unevenRows": 0,
     "flowBreaks": 0
    },
@@ -8345,7 +8388,7 @@
    "annotations": {},
    "findings": [],
    "more": 0,
-   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 1, unbound spacing 0 · built in auto layout 1/1 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 0, small uppercase labels 0, section cards 0, text under 12 px 0/1, uneven button rows 0 · breaks across screens 0 · annotations none · 0 fail, 0 warn"
+   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 1, unbound spacing 0 · built in auto layout 1/1 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 0, small uppercase labels 0, section cards 0, text under 12 px 0/1, screens with text sizes 1 px apart 0, uneven button rows 0 · breaks across screens 0 · annotations none · 0 fail, 0 warn"
   }
  },
  {
@@ -8578,6 +8621,7 @@
     "cards": 0,
     "smallText": 0,
     "texts": 1,
+    "closeSizes": 0,
     "unevenRows": 0,
     "flowBreaks": 0
    },
@@ -8593,7 +8637,7 @@
     }
    ],
    "more": 0,
-   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 1 · unstyled text 0, unbound fills 2, unbound spacing 0 · built in auto layout 1/1 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 0, small uppercase labels 0, section cards 0, text under 12 px 0/1, uneven button rows 0 · breaks across screens 0 · annotations none · 0 fail, 1 warn"
+   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 1 · unstyled text 0, unbound fills 2, unbound spacing 0 · built in auto layout 1/1 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 0, small uppercase labels 0, section cards 0, text under 12 px 0/1, screens with text sizes 1 px apart 0, uneven button rows 0 · breaks across screens 0 · annotations none · 0 fail, 1 warn"
   }
  },
  {
@@ -8841,6 +8885,7 @@
     "cards": 0,
     "smallText": 0,
     "texts": 2,
+    "closeSizes": 0,
     "unevenRows": 0,
     "flowBreaks": 0
    },
@@ -8848,7 +8893,7 @@
    "annotations": {},
    "findings": [],
    "more": 0,
-   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 2, unbound spacing 0 · built in auto layout 1/1 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 0, small uppercase labels 0, section cards 0, text under 12 px 0/2, uneven button rows 0 · breaks across screens 0 · annotations none · 0 fail, 0 warn"
+   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 2, unbound spacing 0 · built in auto layout 1/1 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 0, small uppercase labels 0, section cards 0, text under 12 px 0/2, screens with text sizes 1 px apart 0, uneven button rows 0 · breaks across screens 0 · annotations none · 0 fail, 0 warn"
   }
  },
  {
@@ -9002,6 +9047,7 @@
     "cards": 0,
     "smallText": 0,
     "texts": 1,
+    "closeSizes": 0,
     "unevenRows": 0,
     "flowBreaks": 0
    },
@@ -9017,7 +9063,7 @@
     }
    ],
    "more": 0,
-   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 1 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 1, unbound spacing 0 · built in auto layout 1/1 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 0, small uppercase labels 0, section cards 0, text under 12 px 0/1, uneven button rows 0 · breaks across screens 0 · annotations none · 1 fail, 0 warn"
+   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 1 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 1, unbound spacing 0 · built in auto layout 1/1 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 0, small uppercase labels 0, section cards 0, text under 12 px 0/1, screens with text sizes 1 px apart 0, uneven button rows 0 · breaks across screens 0 · annotations none · 1 fail, 0 warn"
   }
  },
  {
@@ -9292,6 +9338,7 @@
     "cards": 0,
     "smallText": 0,
     "texts": 3,
+    "closeSizes": 0,
     "unevenRows": 0,
     "flowBreaks": 0
    },
@@ -9321,7 +9368,7 @@
     }
    ],
    "more": 0,
-   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 1, under 44 2 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 3, unbound spacing 0 · built in auto layout 1/1 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 0, small uppercase labels 0, section cards 0, text under 12 px 0/3, uneven button rows 0 · breaks across screens 0 · annotations none · 1 fail, 2 warn"
+   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 1, under 44 2 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 3, unbound spacing 0 · built in auto layout 1/1 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 0, small uppercase labels 0, section cards 0, text under 12 px 0/3, screens with text sizes 1 px apart 0, uneven button rows 0 · breaks across screens 0 · annotations none · 1 fail, 2 warn"
   }
  },
  {
@@ -9433,6 +9480,7 @@
     "cards": 0,
     "smallText": 0,
     "texts": 1,
+    "closeSizes": 0,
     "unevenRows": 0,
     "flowBreaks": 0
    },
@@ -9448,7 +9496,7 @@
     }
    ],
    "more": 0,
-   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 1 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 1, unbound spacing 0 · built in auto layout 1/1 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 0, small uppercase labels 0, section cards 0, text under 12 px 0/1, uneven button rows 0 · breaks across screens 0 · annotations none · 1 fail, 0 warn"
+   "gate": "figma audit (Flow): screens 1 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 1 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 1, unbound spacing 0 · built in auto layout 1/1 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 0, small uppercase labels 0, section cards 0, text under 12 px 0/1, screens with text sizes 1 px apart 0, uneven button rows 0 · breaks across screens 0 · annotations none · 1 fail, 0 warn"
   }
  },
  {
@@ -10178,6 +10226,7 @@
     "cards": 0,
     "smallText": 0,
     "texts": 10,
+    "closeSizes": 0,
     "unevenRows": 0,
     "flowBreaks": 4
    },
@@ -10235,7 +10284,7 @@
     }
    ],
    "more": 0,
-   "gate": "figma audit (Flow): screens 3 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 18, unbound spacing 0 · built in auto layout 3/3 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 3, small uppercase labels 0, section cards 0, text under 12 px 0/10, uneven button rows 0 · breaks across screens 4 · annotations none · 0 fail, 7 warn"
+   "gate": "figma audit (Flow): screens 3 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 18, unbound spacing 0 · built in auto layout 3/3 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 3, small uppercase labels 0, section cards 0, text under 12 px 0/10, screens with text sizes 1 px apart 0, uneven button rows 0 · breaks across screens 4 · annotations none · 0 fail, 7 warn"
   }
  },
  {
@@ -10936,6 +10985,7 @@
     "cards": 0,
     "smallText": 0,
     "texts": 10,
+    "closeSizes": 0,
     "unevenRows": 0,
     "flowBreaks": 0
    },
@@ -10958,7 +11008,7 @@
     }
    ],
    "more": 0,
-   "gate": "figma audit (Flow): screens 3 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 17, unbound spacing 0 · built in auto layout 3/3 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 2, small uppercase labels 0, section cards 0, text under 12 px 0/10, uneven button rows 0 · breaks across screens 0 · annotations none · 0 fail, 2 warn"
+   "gate": "figma audit (Flow): screens 3 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 17, unbound spacing 0 · built in auto layout 3/3 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 2, small uppercase labels 0, section cards 0, text under 12 px 0/10, screens with text sizes 1 px apart 0, uneven button rows 0 · breaks across screens 0 · annotations none · 0 fail, 2 warn"
   }
  }
 ]

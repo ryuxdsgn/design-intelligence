@@ -209,7 +209,16 @@ test("tells: an empty band of 96 pt or more between blocks warns", async () => {
   assert.deepEqual(rules(r), ["warn RX-UI-05"]);
   assert.match(r.findings[0].message, /empty band 150 pt tall from y 160/);
   assert.deepEqual(rules(await audit([bag(40)])), []);
-  assert.match(r.gate, /empty bands 1, small uppercase labels 0, section cards 0, text under 12 px 0\/3, uneven button rows 0/);
+  assert.match(r.gate, /empty bands 1, small uppercase labels 0, section cards 0, text under 12 px 0\/3, screens with text sizes 1 px apart 0, uneven button rows 0/);
+});
+
+test("tells: text in sizes 1 px apart is a type scale with no steps; 12, 14, 16, 20 is a scale", async () => {
+  const at = (sizes) => screen("01", sizes.map((fontSize, i) => text(`T${i}`, `Teks ukuran ${fontSize}`, [16, 60 + i * 40, 300, 24], { fontSize })));
+  const r = await audit([at([13, 14, 15, 16, 24])]);
+  assert.deepEqual(rules(r), ["warn RX-UI-03"]);
+  assert.match(r.findings[0].message, /text in 5 sizes \(13, 14, 15, 16, 24 px\), 3 of them 1 px from the next/);
+  assert.match(r.gate, /screens with text sizes 1 px apart 1/);
+  assert.deepEqual(rules(await audit([at([12, 14, 16, 20, 28])])), []);
 });
 
 test("tells: text under 12 px warns with its share; the status bar's insides are not counted", async () => {
