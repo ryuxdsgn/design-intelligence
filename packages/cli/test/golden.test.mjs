@@ -57,11 +57,11 @@ test("golden through ryux-core: the rendered checks over recorded page extracts"
     assert.deepEqual(plain(probe(input)), output, `${input.vw}px`);
     // Every finding names a rule and level the catalogue lists (targets and small text warn under RX-A11Y-02's row).
     for (const f of output.findings) assert.ok(rows.some((r) => r.rule === f.rule), f.rule);
-    // Without its answers, the extract asks for exactly the hit tests, fills, and pictures recorded with it.
+    // Without its answers, the extract asks for exactly the hit tests, fills, pictures, and focus recorded with it.
     if (input.answers) {
       const { answers, ...bare } = input;
       const keys = (o) => Object.keys(o ?? {}).map(Number);
-      assert.deepEqual(probe(bare).ask, { under: keys(answers.under), grow: keys(answers.grow), behind: keys(answers.behind) });
+      assert.deepEqual(probe(bare).ask, { under: keys(answers.under), grow: keys(answers.grow), behind: keys(answers.behind), focus: keys(answers.focus) });
     }
   }
 });

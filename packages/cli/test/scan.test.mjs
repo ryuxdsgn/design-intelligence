@@ -10,7 +10,7 @@ import { fileURLToPath } from "node:url";
 import { SOURCE_CHECKS, SYNTAX_CHECKS } from "../dist/checks.js";
 import { readDirection as directionIn, scan as scanEngine, scanShared } from "../dist/engine.js";
 import { FIXTURES, chromium, probePage, recordDirection, recordScan, recording, toSource } from "./golden.mjs";
-import { BASICS, BEHIND, COUNTS, DARK_CANVAS, MARKS, FADED, PAGES, QUIET, SLOP, bar, choice, choiceSplit } from "./pages.mjs";
+import { BASICS, BEHIND, COUNTS, DARK_CANVAS, EDGES, MARKS, FADED, PAGES, QUIET, SLOP, bar, choice, choiceSplit } from "./pages.mjs";
 import { RULES } from "../dist/intelligence/content.js";
 import { VERSION } from "../dist/product.js";
 
@@ -674,6 +674,21 @@ test("scan <url> names a stand-in box and a letter in a tile used as the logo, n
   assert.equal(found.length, 2, found.join("\n"));
   assert.match(found[0], /^RX-AS-03 header > span\.logo-ph: a dashed box that says "Logo Kelasku": a stand-in/);
   assert.match(found[1], /^RX-AS-11 header > a\.logo > span\.tile: a letter in a tile \("K"\) stands in for the logo/);
+});
+
+test("scan <url> fails a faint field edge, a faint icon-only button, and a focus that shows nothing or too little (WCAG 1.4.11)", (t) => {
+  const dir = mkdtempSync(join(tmpdir(), "ryux-edges-"));
+  const path = join(dir, "edges.html");
+  writeFileSync(path, EDGES);
+  const r = run(process.env.RYUX_PLAYWRIGHT_CWD ?? join(dirname(cli), "..", "..", ".."), ["scan", `file://${path}`, "--widths", "390", "--json"]);
+  rmSync(dir, { recursive: true, force: true });
+  if (/needs Playwright|could not start Chromium/.test(r.out)) return noBrowser(t);
+  const found = JSON.parse(r.out).findings.filter((f) => /WCAG 1\.4\.11|focus indicator/.test(f.message)).map((f) => `${f.rule} ${f.selector}: ${f.message}`);
+  assert.equal(found.length, 4, found.join("\n"));
+  assert.match(found[0], /^RX-A11Y-01 input#e: "Email" field: edge 1\.2\d:1 \(#e5e7eb border on #ffffff\)/);
+  assert.match(found[1], /^RX-A11Y-01 p > button\.close: "Tutup" icon: contrast 1\.4\d:1 \(#cbd5e1 on #ffffff\)/);
+  assert.match(found[2], /^RX-A11Y-03 p > a\.ghost: "Lupa sandi": no focus indicator/);
+  assert.match(found[3], /^RX-A11Y-03 p > button\.soft: "Kirim": focus indicator 1\.\d+:1 \(#dbeafe on #ffffff\)/);
 });
 
 // Visual tells (knowledge/anti-slop.md): warn once per page, never at a single, reasoned use.

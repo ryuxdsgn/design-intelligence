@@ -13,10 +13,12 @@ use std::collections::{HashMap, HashSet};
 
 /// What the rendered checks look for, one row per line of RENDER_CHECKS in packages/cli/src/checks.ts (which also
 /// lists RX-QA-08, script errors, reported by the CLI itself). `cargo test` and the CLI tests hold them equal.
-pub const CATALOGUE: [(&str, &str); 15] = [
+pub const CATALOGUE: [(&str, &str); 17] = [
     ("RX-RD-01", "fail"),
     ("RX-A11Y-01", "fail"),
     ("RX-A11Y-01", "warn"),
+    ("RX-A11Y-01", "fail"),
+    ("RX-A11Y-03", "fail"),
     ("RX-A11Y-02", "fail"),
     ("RX-QA-03", "warn"),
     ("RX-QA-03", "fail"),
@@ -222,6 +224,8 @@ impl Tint {
 
 /// Texts over an image or a gradient whose pixels the page is asked for, per width; the rest are not measured.
 const MAX_BEHIND: usize = 40;
+/// Controls a scan has the page focus, per width.
+const MAX_FOCUS: usize = 80;
 
 /// A text under its contrast: the colours at its weakest point, and what was behind it when that was a picture.
 struct Fail {
@@ -991,6 +995,9 @@ impl<'a> Page<'a> {
             }
         }
 
+        // Non-text contrast (RX-A11Y-01, WCAG 1.4.11): the edge of a field and the icon of an icon-only control.
+        out.extend(self.edge_findings());
+
         // Text: every visible element with its own text, outside the ignored regions.
         let texts: Vec<&Text> = self.texts.iter().filter(|t| self.outside[t.e] && self.shown[t.e]).collect();
 
@@ -1028,12 +1035,14 @@ impl<'a> Page<'a> {
             failing.push(Fail { k, ratio, fg, bg, need, over: None });
         }
         let textareas: Vec<usize> = (2..n).filter(|&i| self.els[i].tag == "TEXTAREA" && self.outside[i] && self.shown[i] && !self.disabled[i] && !self.flag(i, "ro")).collect();
+        let focus = self.focus_list();
         let Some(answers) = answers else {
-            if !failing.is_empty() || !textareas.is_empty() || !behind.is_empty() {
+            if !failing.is_empty() || !textareas.is_empty() || !behind.is_empty() || !focus.is_empty() {
                 return json!({ "ask": {
                     "under": failing.iter().map(|f| texts[f.k].i).collect::<Vec<_>>(),
                     "grow": textareas,
                     "behind": behind.iter().map(|b| texts[b.0].i).collect::<Vec<_>>(),
+                    "focus": focus,
                 } });
             }
             return self.rest(out, texts, Vec::new(), &Value::Null, small, unmeasured);
@@ -1090,6 +1099,9 @@ impl<'a> Page<'a> {
             }
         }
         unmeasured.sort_unstable();
+        if let Some(shown) = answers.get("focus").filter(|v| v.is_object()) {
+            out.extend(self.focus_findings(&focus, shown));
+        }
         self.rest(out, texts, failing, &answers["grow"], small, unmeasured)
     }
 }
@@ -1502,6 +1514,286 @@ impl<'a> Page<'a> {
         let kids = &self.kids[p];
         let at = kids.iter().position(|k| *k == i)?;
         if at == 0 { None } else { Some(kids[at - 1]) }
+    }
+}
+
+/// A part that is not text and fails 3:1 against what is around it (WCAG 1.4.11): the colour it shows, the colour
+/// next to it, and what it is ("border", "ring", "fill", "icon", or "focus").
+struct Edge {
+    i: usize,
+    ratio: f64,
+    fg: Colour,
+    bg: Colour,
+    what: &'static str,
+}
+
+/// The strongest so far of the (ratio, colour shown, colour beside it) candidates.
+fn stronger(best: &mut Option<(f64, Colour, Colour)>, ratio: f64, fg: Colour, bg: Colour) {
+    if best.map_or(true, |b| ratio > b.0) {
+        *best = Some((ratio, fg, bg));
+    }
+}
+
+impl<'a> Page<'a> {
+    /// The shadows of a box-shadow: colour, inset, and x, y, blur, spread in px.
+    fn shadow_parts(&self, shadow: &str) -> Vec<(Colour, bool, [f64; 4])> {
+        if shadow.is_empty() || shadow == "none" {
+            return Vec::new();
+        }
+        split_shadows(shadow)
+            .iter()
+            .filter_map(|part| {
+                let c = self.colours(part).first().copied()?;
+                let rest = self.re.rgba_all_first_removed(part);
+                let n: Vec<f64> = self.re.px.matches(&rest).iter().map(|m| m.trim_end_matches("px").parse::<f64>().unwrap_or(0.0)).collect();
+                let at = |k: usize| n.get(k).copied().unwrap_or(0.0);
+                Some((c, rest.contains("inset"), [at(0), at(1), at(2), at(3)]))
+            })
+            .collect()
+    }
+
+    /// The strongest mark of an element's edge against `outer`, the colour around it: its fill, a border side
+    /// (`borders` as width and colour), or a ring (a shadow with no blur), as (ratio, colour shown, outer, what),
+    /// and whether anything besides the fill draws an edge.
+    fn edge(&self, i: usize, outer: Colour, borders: &[(f64, &str)]) -> Option<((f64, Colour, Colour, &'static str), bool)> {
+        let fill = self.background(i)?;
+        let mut best = (contrast(lum(fill), lum(outer)), fill, outer, "fill");
+        let mut marked = false;
+        for &(w, c) in borders {
+            let Some(c) = self.rgba(c).filter(|c| c[3] > 0.0 && w >= 1.0) else { continue };
+            let Some((_, shown)) = self.painted(i, Some(c)) else { continue };
+            marked = true;
+            let r = contrast(lum(shown), lum(outer));
+            if r > best.0 {
+                best = (r, shown, outer, "border");
+            }
+        }
+        for (c, inset, [x, y, blur, spread]) in self.shadow_parts(self.s(i, "boxShadow")) {
+            if c[3] <= 0.0 || blur > 0.0 || (spread < 1.0 && x.abs() < 1.0 && y.abs() < 1.0) {
+                continue;
+            }
+            marked = true;
+            let shown = blend(c, if inset { fill } else { outer });
+            let r = contrast(lum(shown), lum(outer));
+            if r > best.0 {
+                best = (r, shown, outer, "ring");
+            }
+        }
+        Some((best, marked))
+    }
+
+    /// Fields whose edge is under 3:1 against what is around them, and icon-only controls whose icon is under 3:1
+    /// against the control. A field with no edge of its own inside a box that draws one (a search bar) is judged by
+    /// the box. What sits on a picture, or under a blend or filter, is not judged.
+    fn edges(&self) -> Vec<Edge> {
+        let n = self.els.len();
+        let mut out = Vec::new();
+        let judged = |i: usize| self.shown[i] && self.outside[i] && !self.disabled[i];
+        for i in 2..n {
+            let Some(fb) = self.els[i].v.get("fb").and_then(Value::as_array).filter(|a| a.len() == 8) else { continue };
+            if !judged(i) {
+                continue;
+            }
+            let Some(outer) = self.parent(i).and_then(|p| self.background(p)) else { continue };
+            let borders: Vec<(f64, &str)> = (0..4).map(|k| (num(fb.get(k)), fb[k + 4].as_str().unwrap_or(""))).collect();
+            let Some((mut best, marked)) = self.edge(i, outer, &borders) else { continue };
+            if !marked && best.0 < 1.1 {
+                let h = self.els[i].r.h;
+                for a in self.ancestors(i).into_iter().take(3) {
+                    if a <= BODY || self.els[a].r.h > h * 2.0 + 24.0 {
+                        break;
+                    }
+                    let Some(around) = self.parent(a).and_then(|p| self.background(p)) else { break };
+                    let style = self.s(a, "borderTopStyle");
+                    let w = if style.is_empty() || style == "none" || style == "hidden" { 0.0 } else { self.n(a, "borderTopWidth") };
+                    if let Some((b, m)) = self.edge(a, around, &[(w, self.or_color(a, "borderTopColor"))]) {
+                        if m || b.0 >= 1.1 {
+                            best = b;
+                            break;
+                        }
+                    }
+                }
+            }
+            if best.0 < 3.0 {
+                out.push(Edge { i, ratio: best.0, fg: best.1, bg: best.2, what: best.3 });
+            }
+        }
+        for i in 2..n {
+            if !self.flag(i, "ico") || !judged(i) {
+                continue;
+            }
+            let (mut best, mut unknown) = (None, false);
+            for j in i + 1..n {
+                if !self.contains(i, j) {
+                    break;
+                }
+                let Some(ip) = self.els[j].v.get("ip").and_then(Value::as_array) else { continue };
+                if !self.shown[j] {
+                    continue;
+                }
+                for p in ip {
+                    let Some(mut c) = p.get(0).and_then(Value::as_str).and_then(|c| self.rgba(c)) else { continue };
+                    c[3] *= p.get(1).and_then(Value::as_f64).unwrap_or(1.0);
+                    if c[3] <= 0.0 {
+                        continue;
+                    }
+                    match self.painted(j, Some(c)) {
+                        Some((bg, fg)) => stronger(&mut best, contrast(lum(fg), lum(bg)), fg, bg),
+                        None => unknown = true,
+                    }
+                }
+            }
+            if let (Some((ratio, fg, bg)), false) = (best, unknown) {
+                if ratio < 3.0 {
+                    out.push(Edge { i, ratio, fg, bg, what: "icon" });
+                }
+            }
+        }
+        out
+    }
+
+    fn edge_findings(&self) -> Vec<Value> {
+        let mut groups: Vec<(String, Edge, usize)> = Vec::new();
+        for e in self.edges() {
+            let key = format!("{}|{}|{}", e.what == "icon", hex(e.fg), hex(e.bg));
+            match groups.iter_mut().find(|g| g.0 == key) {
+                Some(g) => g.2 += 1,
+                None => groups.push((key, e, 1)),
+            }
+        }
+        groups
+            .into_iter()
+            .map(|(_, e, count)| {
+                let more = if count > 1 { format!("; {} more with the same colors", count - 1) } else { String::new() };
+                let message = match e.what {
+                    "icon" => format!("{} icon: contrast {}:1 ({} on {}), needs 3:1 against the control (WCAG 1.4.11){more}", quote(self.text_of(e.i, "nm")), crate::audit::ratio_text(e.ratio, 3.0), hex(e.fg), hex(e.bg)),
+                    "fill" if e.ratio < 1.1 => format!("{} field: no visible edge (no border, ring, or fill apart from {} around it), needs one at 3:1 (WCAG 1.4.11){more}", quote(self.text_of(e.i, "fl")), hex(e.bg)),
+                    what => format!("{} field: edge {}:1 ({} {what} on {}), needs 3:1 against what is around it (WCAG 1.4.11){more}", quote(self.text_of(e.i, "fl")), crate::audit::ratio_text(e.ratio, 3.0), hex(e.fg), hex(e.bg)),
+                };
+                finding("RX-A11Y-01", "fail", self.selector(e.i), message)
+            })
+            .collect()
+    }
+
+    /// The controls whose focus the page is asked to show.
+    fn focus_list(&self) -> Vec<usize> {
+        (2..self.els.len()).filter(|&i| self.flag(i, "ctl") && self.shown[i] && self.outside[i] && !self.disabled[i]).take(MAX_FOCUS).collect()
+    }
+
+    /// What focus changed on one element, from `b` (before) to `f` (focused), with `fill` its own colour and `adj`
+    /// the colour around it: whether anything shows, and the strongest change as (ratio, colour, beside).
+    fn focus_change(&self, b: &Value, f: &Value, fill: Colour, adj: Colour, seen: &mut bool, best: &mut Option<(f64, Colour, Colour)>) {
+        if !b.is_object() || !f.is_object() {
+            return;
+        }
+        let colour = |v: &Value| v.as_str().and_then(|c| self.rgba(c));
+        let o = &f["o"];
+        if o[0].as_str().is_some_and(|s| s != "none") && num(o.get(1)) >= 1.0 && *o != b["o"] {
+            *seen = true;
+            if o[0] == "auto" {
+                // the browser's own ring, drawn in two tones so it shows on any colour
+                stronger(best, 21.0, adj, adj);
+            } else if let Some(c) = colour(&o[2]) {
+                let against = if num(o.get(3)) < 0.0 { fill } else { adj };
+                let shown = blend(c, against);
+                stronger(best, contrast(lum(shown), lum(against)), shown, against);
+            }
+        }
+        if f["bs"] != b["bs"] {
+            let before: Vec<String> = split_shadows(b["bs"].as_str().unwrap_or("")).iter().map(|p| p.trim().to_string()).collect();
+            for part in split_shadows(f["bs"].as_str().unwrap_or("none")) {
+                if before.contains(&part.trim().to_string()) {
+                    continue;
+                }
+                for (c, inset, [x, y, blur, spread]) in self.shadow_parts(&part) {
+                    if c[3] <= 0.0 || (blur <= 0.0 && spread <= 0.0 && x == 0.0 && y == 0.0) {
+                        continue;
+                    }
+                    *seen = true;
+                    let against = if inset { fill } else { adj };
+                    let shown = blend(c, against);
+                    stronger(best, contrast(lum(shown), lum(against)), shown, against);
+                }
+            }
+        }
+        for k in 0..4 {
+            let (fw, bw) = (num(f["bw"].get(k)), num(b["bw"].get(k)));
+            if fw < 1.0 || (f["bc"][k] == b["bc"][k] && fw == bw) {
+                continue;
+            }
+            let Some(c) = colour(&f["bc"][k]).filter(|c| c[3] > 0.0) else { continue };
+            *seen = true;
+            let shown = blend(c, fill);
+            let old = colour(&b["bc"][k]).filter(|_| bw >= 1.0).map_or(adj, |o| blend(o, fill));
+            let (a, o) = (contrast(lum(shown), lum(adj)), contrast(lum(shown), lum(old)));
+            if a >= o { stronger(best, a, shown, adj) } else { stronger(best, o, shown, old) }
+        }
+        if f["bg"] != b["bg"] {
+            if let Some(c) = colour(&f["bg"]).filter(|c| c[3] > 0.0) {
+                *seen = true;
+                let shown = blend(c, adj);
+                let (a, o) = (contrast(lum(shown), lum(adj)), contrast(lum(shown), lum(fill)));
+                if a >= o { stronger(best, a, shown, adj) } else { stronger(best, o, shown, fill) }
+            }
+        }
+        // an underline, a picture, or a ::before or ::after that changes: shown, but not measured here
+        if f["td"] != b["td"] || f["bi"] != b["bi"] || f["ps"] != b["ps"] {
+            *seen = true;
+            stronger(best, 21.0, adj, adj);
+        }
+    }
+
+    /// Focus (RX-A11Y-03): a control that shows nothing when focused, and a focus indicator under 3:1 against what
+    /// is around it (WCAG 1.4.11), from what the page showed (`shown`, by element index). A change on the control's
+    /// parent counts (a ring a search bar draws around its field).
+    fn focus_findings(&self, list: &[usize], shown: &Value) -> Vec<Value> {
+        let mut none: Vec<usize> = Vec::new();
+        let mut weak: Vec<(String, Edge, usize)> = Vec::new();
+        for &i in list {
+            let a = &shown[i.to_string()];
+            if a["a"].as_f64() != Some(1.0) {
+                continue;
+            }
+            let Some(p) = self.parent(i) else { continue };
+            let Some(adj) = self.background(p) else { continue };
+            let fill = self.background(i).unwrap_or(adj);
+            let (mut seen, mut best) = (false, None);
+            self.focus_change(&a["b"], &a["f"], fill, adj, &mut seen, &mut best);
+            if let Some(around) = self.parent(p).filter(|&g| g >= BODY).and_then(|g| self.background(g)) {
+                self.focus_change(&a["pb"], &a["pf"], adj, around, &mut seen, &mut best);
+            }
+            match best {
+                None if !seen => none.push(i),
+                Some((ratio, fg, bg)) if ratio < 3.0 => {
+                    let key = format!("{}|{}", hex(fg), hex(bg));
+                    match weak.iter_mut().find(|g| g.0 == key) {
+                        Some(g) => g.2 += 1,
+                        None => weak.push((key, Edge { i, ratio, fg, bg, what: "focus" }, 1)),
+                    }
+                }
+                _ => {}
+            }
+        }
+        let mut out = Vec::new();
+        if let Some(&first) = none.first() {
+            let more = if none.len() > 1 { format!(" and {} more controls", none.len() - 1) } else { String::new() };
+            out.push(finding(
+                "RX-A11Y-03",
+                "fail",
+                self.selector(first),
+                format!("{}{more}: no focus indicator when reached from the keyboard (no outline, ring, border, fill, or underline appears); give :focus-visible an outline at 3:1 against what is around it", quote(self.text_of(first, "nm"))),
+            ));
+        }
+        for (_, e, count) in weak {
+            let more = if count > 1 { format!("; {} more with the same colors", count - 1) } else { String::new() };
+            out.push(finding(
+                "RX-A11Y-03",
+                "fail",
+                self.selector(e.i),
+                format!("{}: focus indicator {}:1 ({} on {}), needs 3:1 against what is around it (WCAG 1.4.11){more}", quote(self.text_of(e.i, "nm")), crate::audit::ratio_text(e.ratio, 3.0), hex(e.fg), hex(e.bg)),
+            ));
+        }
+        out
     }
 }
 

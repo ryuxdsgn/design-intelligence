@@ -7,7 +7,7 @@ import { join } from "node:path";
 import { pathToFileURL } from "node:url";
 import type { ScanFinding } from "../checks.js";
 import { probe } from "../engine.js";
-import { probeAnswer, probeExtract, probeHide, probePixels, probeShow, type ProbeAsk, type ProbeFinding, type ProbeResult } from "./page-probe.js";
+import { probeAnswer, probeExtract, probeFocus, probeHide, probePixels, probeShow, type ProbeAsk, type ProbeFinding, type ProbeResult } from "./page-probe.js";
 
 interface Page {
   on(event: "pageerror", cb: (err: Error) => void): void;
@@ -41,6 +41,8 @@ export async function judgePage(page: Page): Promise<{ extract: Record<string, u
       }
     }
     if (list.length) answers.behind = behind;
+    // last, so a page that reacts to focus has done so after everything else was read
+    if (ask.focus?.length) answers.focus = await page.evaluate(probeFocus, ask.focus);
     extract.answers = answers;
     out = probe(extract);
   }
