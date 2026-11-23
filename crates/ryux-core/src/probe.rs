@@ -1499,7 +1499,7 @@ impl<'a> Page<'a> {
         let painted = |i: usize| {
             let shadow = self.s(i, "boxShadow");
             self.rgba(self.s(i, "backgroundColor")).is_some_and(|c| c[3] > 0.05)
-                || self.s(i, "backgroundImage") != ""
+                || !matches!(self.s(i, "backgroundImage"), "" | "none")
                 || (self.n(i, "borderTopWidth") >= 1.0 && self.rgba(self.or_color(i, "borderTopColor")).is_some_and(|c| c[3] > 0.1))
                 || (!shadow.is_empty() && shadow != "none")
         };
@@ -1531,24 +1531,40 @@ impl<'a> Page<'a> {
             above.sort_by(|a, b| b.1.bottom().total_cmp(&a.1.bottom()));
             let mut edge = top;
             let mut k = 0;
-            // an eyebrow: a short, smaller line within 16 px right above
-            while let Some(&&(e, r, fs)) = above.get(k) {
-                let words = texts.iter().filter(|u| u.e == e).map(|u| u.x).collect::<Vec<_>>().join(" ");
-                if fs > 0.0 && fs < size && edge - r.bottom() <= 16.0 && len16(words.trim()) <= 40 {
+            // an eyebrow: one short line, smaller than the heading, within 16 px right above
+            while let Some(&&(e, r, _)) = above.get(k) {
+                // a pill behind the eyebrow is ink too: read the text inside it
+                let inside: Vec<&&Text> = texts.iter().filter(|u| u.e == e || self.contains(e, u.e)).collect();
+                let words = inside.iter().map(|u| u.x).collect::<Vec<_>>().join(" ");
+                let fs = inside.iter().map(|u| self.n(u.e, "fontSize")).fold(0.0, f64::max);
+                // a step number or marker ("1", "i.") right above, in the heading's own parent, belongs to it at any size
+                let sibling = self.parent(e).is_some() && self.parent(e) == self.parent(h);
+                // a badge ("Dulu", "Recommended"): a short painted label in the heading's own parent
+                let marker = sibling && (len16(words.trim()) <= 4 || (painted(e) && len16(words.trim()) <= 24 && edge - r.bottom() <= 16.0));
+                if fs > 0.0 && (marker || (fs < size && r.h <= fs * 1.8 && len16(words.trim()) <= 40 && edge - r.bottom() <= 16.0)) {
                     edge = r.y;
                     k += 1;
                     continue;
                 }
                 break;
             }
-            let Some(&&(up, ur, _)) = above.get(k) else { continue };
+            let Some(&&(up, ur, ufs)) = above.get(k) else { continue };
+            // text larger than the heading right above: the heading is its subtitle, part of that group
+            if ufs > size {
+                continue;
+            }
+            // the heading's own content sits beside it (a row label in a table or a step list)
+            if ink.iter().any(|(e, r, _)| other(*e) && r.x >= right + 8.0 && r.y < bottom && r.bottom() > top) {
+                continue;
+            }
             let below = ink.iter().filter(|(e, r, _)| other(*e) && beside(r) && r.y >= bottom - 1.0).min_by(|a, b| a.1.y.total_cmp(&b.1.y));
             let Some(&(_, dr, _)) = below else { continue };
             let (gap_up, gap_down) = (edge - ur.bottom(), dr.y - bottom);
-            if region_of(h) != region_of(up) || region_of(up).contains(&up) {
+            // a painted box right above (a band, a card) is a boundary of its own: the heading starts after it
+            if region_of(h) != region_of(up) || regions.contains(&up) {
                 continue;
             }
-            if gap_down >= 12.0 && gap_up <= gap_down + 2.0 && gap_up < 200.0 {
+            if gap_up >= 0.0 && gap_down >= 12.0 && gap_up <= gap_down + 2.0 && gap_up < 200.0 {
                 loose.push((h, gap_up, gap_down));
             }
         }
@@ -2104,10 +2120,10 @@ mod tests {
     fn a_heading_as_close_to_the_content_above_as_to_its_own_reads_as_neither() {
         // a paragraph, then an h2 with the same 24 px above and below it, then its paragraph
         let at = |above: f64, below: f64, card: bool| {
-            let h = 100.0 + 20.0 + above;
+            let h = 100.0 + 44.0 + above;
             let p2 = h + 28.0 + below;
             let mut els = vec![
-                serde_json::json!({"t": "P", "p": 1, "s": 2, "r": [16, 100, 288, 20]}),
+                serde_json::json!({"t": "P", "p": 1, "s": 2, "r": [16, 100, 288, 44]}),
                 serde_json::json!({"t": "H2", "p": 1, "s": 3, "r": [16, h, 288, 28]}),
                 serde_json::json!({"t": "P", "p": 1, "s": 2, "r": [16, p2, 288, 20]}),
             ];
@@ -2122,7 +2138,7 @@ mod tests {
                 (3, 4)
             };
             let texts = serde_json::json!([
-                {"e": 2, "x": "Paragraf sebelumnya", "r": [16, 100, 200, 20]},
+                {"e": 2, "x": "Paragraf sebelumnya yang cukup panjang untuk dua baris.", "r": [16, 100, 288, 44]},
                 {"e": hi, "x": "Jadwal kunjungan", "r": [16, h, 180, 28]},
                 {"e": pi, "x": "Pilih tanggal dan jam", "r": [16, p2, 200, 20]}
             ]);
