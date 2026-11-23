@@ -12467,6 +12467,1384 @@
      "children": [
       {
        "type": "FRAME",
+       "name": "02-profil",
+       "x": 0,
+       "y": 0,
+       "width": 390,
+       "height": 844,
+       "absoluteBoundingBox": {
+        "x": 0,
+        "y": 0,
+        "width": 390,
+        "height": 844
+       },
+       "visible": true,
+       "opacity": 1,
+       "fills": [
+        {
+         "type": "SOLID",
+         "color": {
+          "r": 1,
+          "g": 1,
+          "b": 1
+         }
+        }
+       ],
+       "strokes": [],
+       "effects": [],
+       "clipsContent": true,
+       "children": [
+        {
+         "type": "TEXT",
+         "name": "Name",
+         "x": 16,
+         "y": 80,
+         "width": 300,
+         "height": 28,
+         "absoluteBoundingBox": {
+          "x": 16,
+          "y": 80,
+          "width": 300,
+          "height": 28
+         },
+         "visible": true,
+         "opacity": 1,
+         "fills": [
+          {
+           "type": "SOLID",
+           "color": {
+            "r": 0.08,
+            "g": 0.07,
+            "b": 0.06
+           }
+          }
+         ],
+         "strokes": [],
+         "effects": [],
+         "characters": "Ftr. Rina Kusuma",
+         "fontSize": 15,
+         "fontName": {
+          "family": "Inter",
+          "style": "Regular"
+         },
+         "textStyleId": "S:1"
+        },
+        {
+         "type": "TEXT",
+         "name": "Hari",
+         "x": 16,
+         "y": 240,
+         "width": 200,
+         "height": 20,
+         "absoluteBoundingBox": {
+          "x": 16,
+          "y": 240,
+          "width": 200,
+          "height": 20
+         },
+         "visible": true,
+         "opacity": 1,
+         "fills": [
+          {
+           "type": "SOLID",
+           "color": {
+            "r": 0.08,
+            "g": 0.07,
+            "b": 0.06
+           }
+          }
+         ],
+         "strokes": [],
+         "effects": [],
+         "characters": "Sen 23 · Penuh",
+         "fontSize": 15,
+         "fontName": {
+          "family": "Inter",
+          "style": "Regular"
+         },
+         "textStyleId": "S:1"
+        },
+        {
+         "type": "FRAME",
+         "name": "Jam/09.00",
+         "x": 16,
+         "y": 300,
+         "width": 100,
+         "height": 44,
+         "absoluteBoundingBox": {
+          "x": 16,
+          "y": 300,
+          "width": 100,
+          "height": 44
+         },
+         "visible": true,
+         "opacity": 1,
+         "fills": [
+          {
+           "type": "SOLID",
+           "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+           }
+          }
+         ],
+         "strokes": [],
+         "effects": [],
+         "children": [
+          {
+           "type": "TEXT",
+           "name": "Time",
+           "x": 36,
+           "y": 312,
+           "width": 60,
+           "height": 20,
+           "absoluteBoundingBox": {
+            "x": 36,
+            "y": 312,
+            "width": 60,
+            "height": 20
+           },
+           "visible": true,
+           "opacity": 1,
+           "fills": [
+            {
+             "type": "SOLID",
+             "color": {
+              "r": 0.08,
+              "g": 0.07,
+              "b": 0.06
+             }
+            }
+           ],
+           "strokes": [],
+           "effects": [],
+           "characters": "09.00",
+           "fontSize": 15,
+           "fontName": {
+            "family": "Inter",
+            "style": "Regular"
+           },
+           "textStyleId": "S:1"
+          }
+         ]
+        },
+        {
+         "type": "FRAME",
+         "name": "Jam/10.30 (dipilih)",
+         "x": 140,
+         "y": 300,
+         "width": 100,
+         "height": 44,
+         "absoluteBoundingBox": {
+          "x": 140,
+          "y": 300,
+          "width": 100,
+          "height": 44
+         },
+         "visible": true,
+         "opacity": 1,
+         "fills": [
+          {
+           "type": "SOLID",
+           "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+           }
+          }
+         ],
+         "strokes": [],
+         "effects": [],
+         "children": [
+          {
+           "type": "TEXT",
+           "name": "Time",
+           "x": 160,
+           "y": 312,
+           "width": 60,
+           "height": 20,
+           "absoluteBoundingBox": {
+            "x": 160,
+            "y": 312,
+            "width": 60,
+            "height": 20
+           },
+           "visible": true,
+           "opacity": 1,
+           "fills": [
+            {
+             "type": "SOLID",
+             "color": {
+              "r": 0.08,
+              "g": 0.07,
+              "b": 0.06
+             }
+            }
+           ],
+           "strokes": [],
+           "effects": [],
+           "characters": "10.30",
+           "fontSize": 15,
+           "fontName": {
+            "family": "Inter",
+            "style": "Regular"
+           },
+           "textStyleId": "S:1"
+          }
+         ]
+        },
+        {
+         "type": "FRAME",
+         "name": "Jam/13.00",
+         "x": 264,
+         "y": 300,
+         "width": 100,
+         "height": 44,
+         "absoluteBoundingBox": {
+          "x": 264,
+          "y": 300,
+          "width": 100,
+          "height": 44
+         },
+         "visible": true,
+         "opacity": 1,
+         "fills": [
+          {
+           "type": "SOLID",
+           "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+           }
+          }
+         ],
+         "strokes": [],
+         "effects": [],
+         "children": [
+          {
+           "type": "TEXT",
+           "name": "Time",
+           "x": 284,
+           "y": 312,
+           "width": 60,
+           "height": 20,
+           "absoluteBoundingBox": {
+            "x": 284,
+            "y": 312,
+            "width": 60,
+            "height": 20
+           },
+           "visible": true,
+           "opacity": 1,
+           "fills": [
+            {
+             "type": "SOLID",
+             "color": {
+              "r": 0.08,
+              "g": 0.07,
+              "b": 0.06
+             }
+            }
+           ],
+           "strokes": [],
+           "effects": [],
+           "characters": "13.00 · Terisi",
+           "fontSize": 15,
+           "fontName": {
+            "family": "Inter",
+            "style": "Regular"
+           },
+           "textStyleId": "S:1"
+          }
+         ]
+        },
+        {
+         "type": "FRAME",
+         "name": "Bottom bar",
+         "x": 0,
+         "y": 724,
+         "width": 390,
+         "height": 120,
+         "absoluteBoundingBox": {
+          "x": 0,
+          "y": 724,
+          "width": 390,
+          "height": 120
+         },
+         "visible": true,
+         "opacity": 1,
+         "fills": [
+          {
+           "type": "SOLID",
+           "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+           }
+          }
+         ],
+         "strokes": [],
+         "effects": [],
+         "children": [
+          {
+           "type": "TEXT",
+           "name": "Line",
+           "x": 16,
+           "y": 740,
+           "width": 200,
+           "height": 20,
+           "absoluteBoundingBox": {
+            "x": 16,
+            "y": 740,
+            "width": 200,
+            "height": 20
+           },
+           "visible": true,
+           "opacity": 1,
+           "fills": [
+            {
+             "type": "SOLID",
+             "color": {
+              "r": 0.08,
+              "g": 0.07,
+              "b": 0.06
+             }
+            }
+           ],
+           "strokes": [],
+           "effects": [],
+           "characters": "Rp250.000",
+           "fontSize": 15,
+           "fontName": {
+            "family": "Inter",
+            "style": "Regular"
+           },
+           "textStyleId": "S:1"
+          },
+          {
+           "type": "TEXT",
+           "name": "Line",
+           "x": 16,
+           "y": 762,
+           "width": 200,
+           "height": 20,
+           "absoluteBoundingBox": {
+            "x": 16,
+            "y": 762,
+            "width": 200,
+            "height": 20
+           },
+           "visible": true,
+           "opacity": 1,
+           "fills": [
+            {
+             "type": "SOLID",
+             "color": {
+              "r": 0.08,
+              "g": 0.07,
+              "b": 0.06
+             }
+            }
+           ],
+           "strokes": [],
+           "effects": [],
+           "characters": "per sesi",
+           "fontSize": 15,
+           "fontName": {
+            "family": "Inter",
+            "style": "Regular"
+           },
+           "textStyleId": "S:1"
+          },
+          {
+           "type": "FRAME",
+           "name": "Button",
+           "x": 220,
+           "y": 744,
+           "width": 154,
+           "height": 52,
+           "absoluteBoundingBox": {
+            "x": 220,
+            "y": 744,
+            "width": 154,
+            "height": 52
+           },
+           "visible": true,
+           "opacity": 1,
+           "fills": [
+            {
+             "type": "SOLID",
+             "color": {
+              "r": 1,
+              "g": 1,
+              "b": 1
+             }
+            }
+           ],
+           "strokes": [],
+           "effects": [],
+           "children": [
+            {
+             "type": "TEXT",
+             "name": "Label",
+             "x": 240,
+             "y": 760,
+             "width": 120,
+             "height": 20,
+             "absoluteBoundingBox": {
+              "x": 240,
+              "y": 760,
+              "width": 120,
+              "height": 20
+             },
+             "visible": true,
+             "opacity": 1,
+             "fills": [
+              {
+               "type": "SOLID",
+               "color": {
+                "r": 0.08,
+                "g": 0.07,
+                "b": 0.06
+               }
+              }
+             ],
+             "strokes": [],
+             "effects": [],
+             "characters": "Pesan kunjungan",
+             "fontSize": 15,
+             "fontName": {
+              "family": "Inter",
+              "style": "Regular"
+             },
+             "textStyleId": "S:1"
+            }
+           ]
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "type": "FRAME",
+       "name": "03-terkonfirmasi",
+       "x": 0,
+       "y": 0,
+       "width": 390,
+       "height": 844,
+       "absoluteBoundingBox": {
+        "x": 0,
+        "y": 0,
+        "width": 390,
+        "height": 844
+       },
+       "visible": true,
+       "opacity": 1,
+       "fills": [
+        {
+         "type": "SOLID",
+         "color": {
+          "r": 1,
+          "g": 1,
+          "b": 1
+         }
+        }
+       ],
+       "strokes": [],
+       "effects": [],
+       "clipsContent": true,
+       "children": [
+        {
+         "type": "TEXT",
+         "name": "Head",
+         "x": 16,
+         "y": 80,
+         "width": 300,
+         "height": 28,
+         "absoluteBoundingBox": {
+          "x": 16,
+          "y": 80,
+          "width": 300,
+          "height": 28
+         },
+         "visible": true,
+         "opacity": 1,
+         "fills": [
+          {
+           "type": "SOLID",
+           "color": {
+            "r": 0.08,
+            "g": 0.07,
+            "b": 0.06
+           }
+          }
+         ],
+         "strokes": [],
+         "effects": [],
+         "characters": "Kunjungan terkonfirmasi",
+         "fontSize": 15,
+         "fontName": {
+          "family": "Inter",
+          "style": "Regular"
+         },
+         "textStyleId": "S:1"
+        },
+        {
+         "type": "TEXT",
+         "name": "Line",
+         "x": 16,
+         "y": 140,
+         "width": 300,
+         "height": 20,
+         "absoluteBoundingBox": {
+          "x": 16,
+          "y": 140,
+          "width": 300,
+          "height": 20
+         },
+         "visible": true,
+         "opacity": 1,
+         "fills": [
+          {
+           "type": "SOLID",
+           "color": {
+            "r": 0.08,
+            "g": 0.07,
+            "b": 0.06
+           }
+          }
+         ],
+         "strokes": [],
+         "effects": [],
+         "characters": "Total bayar",
+         "fontSize": 15,
+         "fontName": {
+          "family": "Inter",
+          "style": "Regular"
+         },
+         "textStyleId": "S:1"
+        },
+        {
+         "type": "TEXT",
+         "name": "Line",
+         "x": 16,
+         "y": 170,
+         "width": 300,
+         "height": 20,
+         "absoluteBoundingBox": {
+          "x": 16,
+          "y": 170,
+          "width": 300,
+          "height": 20
+         },
+         "visible": true,
+         "opacity": 1,
+         "fills": [
+          {
+           "type": "SOLID",
+           "color": {
+            "r": 0.08,
+            "g": 0.07,
+            "b": 0.06
+           }
+          }
+         ],
+         "strokes": [],
+         "effects": [],
+         "characters": "Rp250.000",
+         "fontSize": 15,
+         "fontName": {
+          "family": "Inter",
+          "style": "Regular"
+         },
+         "textStyleId": "S:1"
+        }
+       ]
+      }
+     ]
+    }
+   ],
+   "current": "Flow",
+   "page": "Flow",
+   "annotationCategories": []
+  },
+  "output": {
+   "page": "Flow",
+   "screens": [
+    "02-profil",
+    "03-terkonfirmasi"
+   ],
+   "counts": {
+    "screens": 2,
+    "imageFills": 0,
+    "distinctImages": 0,
+    "reusedImages": 0,
+    "contrastFails": 0,
+    "contrastUnknown": 0,
+    "targetsUnder24": 0,
+    "targetsUnder44": 0,
+    "cutText": 0,
+    "clippedText": 0,
+    "flatOverlays": 0,
+    "idleBusyButtons": 0,
+    "unstyledText": 0,
+    "unboundFills": 16,
+    "unboundSpacing": 0,
+    "layoutScreens": 2,
+    "looseLayers": 0,
+    "strayLayers": 0,
+    "rawEffects": 0,
+    "emptyBands": 1,
+    "capsLabels": 0,
+    "cards": 0,
+    "smallText": 0,
+    "texts": 11,
+    "closeSizes": 0,
+    "unevenRows": 0,
+    "flowBreaks": 3,
+    "listCounts": 0
+   },
+   "images": [],
+   "annotations": {},
+   "findings": [
+    {
+     "rule": "RX-UI-05",
+     "level": "warn",
+     "frame": "02-profil",
+     "node": "",
+     "message": "an empty band 380 pt tall from y 344; move the blocks together, give the space a job, or let the content fill it"
+    },
+    {
+     "rule": "RX-IX-17",
+     "level": "warn",
+     "frame": "02-profil",
+     "node": "Bottom bar",
+     "message": "\"Bottom bar\" holds the action but not the chosen hour 10.30: put the date and hour with the price and the button, so the person sees what they book as they commit"
+    },
+    {
+     "rule": "RX-IX-05",
+     "level": "warn",
+     "frame": "03-terkonfirmasi",
+     "node": "03-terkonfirmasi",
+     "message": "\"03-terkonfirmasi\" confirms the order but never says how it is paid: name the method with the total (\"Lunas via GoPay\", \"Bayar ke terapis setelah sesi\"); if the business has not chosen one, show a sample method and mark it as sample data"
+    },
+    {
+     "rule": "RX-CD-05",
+     "level": "warn",
+     "frame": "02-profil",
+     "node": "Time",
+     "message": "\"penuh\" and \"terisi\" name the same state: pick one word for a taken slot and use it on every screen"
+    }
+   ],
+   "more": 0,
+   "gate": "figma audit (Flow): screens 2 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 16, unbound spacing 0 · built in auto layout 2/2 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 1, small uppercase labels 0, section cards 0, text under 12 px 0/11, screens with text sizes 1 px apart 0, uneven button rows 0, list counts that disagree 0 · breaks across screens 3 · annotations none · 0 fail, 4 warn"
+  }
+ },
+ {
+  "input": {
+   "pages": [
+    {
+     "name": "Flow",
+     "children": [
+      {
+       "type": "FRAME",
+       "name": "02-profil",
+       "x": 0,
+       "y": 0,
+       "width": 390,
+       "height": 844,
+       "absoluteBoundingBox": {
+        "x": 0,
+        "y": 0,
+        "width": 390,
+        "height": 844
+       },
+       "visible": true,
+       "opacity": 1,
+       "fills": [
+        {
+         "type": "SOLID",
+         "color": {
+          "r": 1,
+          "g": 1,
+          "b": 1
+         }
+        }
+       ],
+       "strokes": [],
+       "effects": [],
+       "clipsContent": true,
+       "children": [
+        {
+         "type": "TEXT",
+         "name": "Name",
+         "x": 16,
+         "y": 80,
+         "width": 300,
+         "height": 28,
+         "absoluteBoundingBox": {
+          "x": 16,
+          "y": 80,
+          "width": 300,
+          "height": 28
+         },
+         "visible": true,
+         "opacity": 1,
+         "fills": [
+          {
+           "type": "SOLID",
+           "color": {
+            "r": 0.08,
+            "g": 0.07,
+            "b": 0.06
+           }
+          }
+         ],
+         "strokes": [],
+         "effects": [],
+         "characters": "Ftr. Rina Kusuma",
+         "fontSize": 15,
+         "fontName": {
+          "family": "Inter",
+          "style": "Regular"
+         },
+         "textStyleId": "S:1"
+        },
+        {
+         "type": "TEXT",
+         "name": "Hari",
+         "x": 16,
+         "y": 240,
+         "width": 200,
+         "height": 20,
+         "absoluteBoundingBox": {
+          "x": 16,
+          "y": 240,
+          "width": 200,
+          "height": 20
+         },
+         "visible": true,
+         "opacity": 1,
+         "fills": [
+          {
+           "type": "SOLID",
+           "color": {
+            "r": 0.08,
+            "g": 0.07,
+            "b": 0.06
+           }
+          }
+         ],
+         "strokes": [],
+         "effects": [],
+         "characters": "Sen 23 · Penuh",
+         "fontSize": 15,
+         "fontName": {
+          "family": "Inter",
+          "style": "Regular"
+         },
+         "textStyleId": "S:1"
+        },
+        {
+         "type": "FRAME",
+         "name": "Jam/09.00",
+         "x": 16,
+         "y": 300,
+         "width": 100,
+         "height": 44,
+         "absoluteBoundingBox": {
+          "x": 16,
+          "y": 300,
+          "width": 100,
+          "height": 44
+         },
+         "visible": true,
+         "opacity": 1,
+         "fills": [
+          {
+           "type": "SOLID",
+           "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+           }
+          }
+         ],
+         "strokes": [],
+         "effects": [],
+         "children": [
+          {
+           "type": "TEXT",
+           "name": "Time",
+           "x": 36,
+           "y": 312,
+           "width": 60,
+           "height": 20,
+           "absoluteBoundingBox": {
+            "x": 36,
+            "y": 312,
+            "width": 60,
+            "height": 20
+           },
+           "visible": true,
+           "opacity": 1,
+           "fills": [
+            {
+             "type": "SOLID",
+             "color": {
+              "r": 0.08,
+              "g": 0.07,
+              "b": 0.06
+             }
+            }
+           ],
+           "strokes": [],
+           "effects": [],
+           "characters": "09.00",
+           "fontSize": 15,
+           "fontName": {
+            "family": "Inter",
+            "style": "Regular"
+           },
+           "textStyleId": "S:1"
+          }
+         ]
+        },
+        {
+         "type": "FRAME",
+         "name": "Jam/10.30 (dipilih)",
+         "x": 140,
+         "y": 300,
+         "width": 100,
+         "height": 44,
+         "absoluteBoundingBox": {
+          "x": 140,
+          "y": 300,
+          "width": 100,
+          "height": 44
+         },
+         "visible": true,
+         "opacity": 1,
+         "fills": [
+          {
+           "type": "SOLID",
+           "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+           }
+          }
+         ],
+         "strokes": [],
+         "effects": [],
+         "children": [
+          {
+           "type": "TEXT",
+           "name": "Time",
+           "x": 160,
+           "y": 312,
+           "width": 60,
+           "height": 20,
+           "absoluteBoundingBox": {
+            "x": 160,
+            "y": 312,
+            "width": 60,
+            "height": 20
+           },
+           "visible": true,
+           "opacity": 1,
+           "fills": [
+            {
+             "type": "SOLID",
+             "color": {
+              "r": 0.08,
+              "g": 0.07,
+              "b": 0.06
+             }
+            }
+           ],
+           "strokes": [],
+           "effects": [],
+           "characters": "10.30",
+           "fontSize": 15,
+           "fontName": {
+            "family": "Inter",
+            "style": "Regular"
+           },
+           "textStyleId": "S:1"
+          }
+         ]
+        },
+        {
+         "type": "FRAME",
+         "name": "Jam/13.00",
+         "x": 264,
+         "y": 300,
+         "width": 100,
+         "height": 44,
+         "absoluteBoundingBox": {
+          "x": 264,
+          "y": 300,
+          "width": 100,
+          "height": 44
+         },
+         "visible": true,
+         "opacity": 1,
+         "fills": [
+          {
+           "type": "SOLID",
+           "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+           }
+          }
+         ],
+         "strokes": [],
+         "effects": [],
+         "children": [
+          {
+           "type": "TEXT",
+           "name": "Time",
+           "x": 284,
+           "y": 312,
+           "width": 60,
+           "height": 20,
+           "absoluteBoundingBox": {
+            "x": 284,
+            "y": 312,
+            "width": 60,
+            "height": 20
+           },
+           "visible": true,
+           "opacity": 1,
+           "fills": [
+            {
+             "type": "SOLID",
+             "color": {
+              "r": 0.08,
+              "g": 0.07,
+              "b": 0.06
+             }
+            }
+           ],
+           "strokes": [],
+           "effects": [],
+           "characters": "13.00 · Penuh",
+           "fontSize": 15,
+           "fontName": {
+            "family": "Inter",
+            "style": "Regular"
+           },
+           "textStyleId": "S:1"
+          }
+         ]
+        },
+        {
+         "type": "FRAME",
+         "name": "Bottom bar",
+         "x": 0,
+         "y": 724,
+         "width": 390,
+         "height": 120,
+         "absoluteBoundingBox": {
+          "x": 0,
+          "y": 724,
+          "width": 390,
+          "height": 120
+         },
+         "visible": true,
+         "opacity": 1,
+         "fills": [
+          {
+           "type": "SOLID",
+           "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+           }
+          }
+         ],
+         "strokes": [],
+         "effects": [],
+         "children": [
+          {
+           "type": "TEXT",
+           "name": "Line",
+           "x": 16,
+           "y": 740,
+           "width": 200,
+           "height": 20,
+           "absoluteBoundingBox": {
+            "x": 16,
+            "y": 740,
+            "width": 200,
+            "height": 20
+           },
+           "visible": true,
+           "opacity": 1,
+           "fills": [
+            {
+             "type": "SOLID",
+             "color": {
+              "r": 0.08,
+              "g": 0.07,
+              "b": 0.06
+             }
+            }
+           ],
+           "strokes": [],
+           "effects": [],
+           "characters": "Rp250.000",
+           "fontSize": 15,
+           "fontName": {
+            "family": "Inter",
+            "style": "Regular"
+           },
+           "textStyleId": "S:1"
+          },
+          {
+           "type": "TEXT",
+           "name": "Line",
+           "x": 16,
+           "y": 762,
+           "width": 200,
+           "height": 20,
+           "absoluteBoundingBox": {
+            "x": 16,
+            "y": 762,
+            "width": 200,
+            "height": 20
+           },
+           "visible": true,
+           "opacity": 1,
+           "fills": [
+            {
+             "type": "SOLID",
+             "color": {
+              "r": 0.08,
+              "g": 0.07,
+              "b": 0.06
+             }
+            }
+           ],
+           "strokes": [],
+           "effects": [],
+           "characters": "Sel, 24 Nov · 10.30",
+           "fontSize": 15,
+           "fontName": {
+            "family": "Inter",
+            "style": "Regular"
+           },
+           "textStyleId": "S:1"
+          },
+          {
+           "type": "FRAME",
+           "name": "Button",
+           "x": 220,
+           "y": 744,
+           "width": 154,
+           "height": 52,
+           "absoluteBoundingBox": {
+            "x": 220,
+            "y": 744,
+            "width": 154,
+            "height": 52
+           },
+           "visible": true,
+           "opacity": 1,
+           "fills": [
+            {
+             "type": "SOLID",
+             "color": {
+              "r": 1,
+              "g": 1,
+              "b": 1
+             }
+            }
+           ],
+           "strokes": [],
+           "effects": [],
+           "children": [
+            {
+             "type": "TEXT",
+             "name": "Label",
+             "x": 240,
+             "y": 760,
+             "width": 120,
+             "height": 20,
+             "absoluteBoundingBox": {
+              "x": 240,
+              "y": 760,
+              "width": 120,
+              "height": 20
+             },
+             "visible": true,
+             "opacity": 1,
+             "fills": [
+              {
+               "type": "SOLID",
+               "color": {
+                "r": 0.08,
+                "g": 0.07,
+                "b": 0.06
+               }
+              }
+             ],
+             "strokes": [],
+             "effects": [],
+             "characters": "Pesan kunjungan",
+             "fontSize": 15,
+             "fontName": {
+              "family": "Inter",
+              "style": "Regular"
+             },
+             "textStyleId": "S:1"
+            }
+           ]
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "type": "FRAME",
+       "name": "03-terkonfirmasi",
+       "x": 0,
+       "y": 0,
+       "width": 390,
+       "height": 844,
+       "absoluteBoundingBox": {
+        "x": 0,
+        "y": 0,
+        "width": 390,
+        "height": 844
+       },
+       "visible": true,
+       "opacity": 1,
+       "fills": [
+        {
+         "type": "SOLID",
+         "color": {
+          "r": 1,
+          "g": 1,
+          "b": 1
+         }
+        }
+       ],
+       "strokes": [],
+       "effects": [],
+       "clipsContent": true,
+       "children": [
+        {
+         "type": "TEXT",
+         "name": "Head",
+         "x": 16,
+         "y": 80,
+         "width": 300,
+         "height": 28,
+         "absoluteBoundingBox": {
+          "x": 16,
+          "y": 80,
+          "width": 300,
+          "height": 28
+         },
+         "visible": true,
+         "opacity": 1,
+         "fills": [
+          {
+           "type": "SOLID",
+           "color": {
+            "r": 0.08,
+            "g": 0.07,
+            "b": 0.06
+           }
+          }
+         ],
+         "strokes": [],
+         "effects": [],
+         "characters": "Kunjungan terkonfirmasi",
+         "fontSize": 15,
+         "fontName": {
+          "family": "Inter",
+          "style": "Regular"
+         },
+         "textStyleId": "S:1"
+        },
+        {
+         "type": "TEXT",
+         "name": "Line",
+         "x": 16,
+         "y": 140,
+         "width": 300,
+         "height": 20,
+         "absoluteBoundingBox": {
+          "x": 16,
+          "y": 140,
+          "width": 300,
+          "height": 20
+         },
+         "visible": true,
+         "opacity": 1,
+         "fills": [
+          {
+           "type": "SOLID",
+           "color": {
+            "r": 0.08,
+            "g": 0.07,
+            "b": 0.06
+           }
+          }
+         ],
+         "strokes": [],
+         "effects": [],
+         "characters": "Total bayar",
+         "fontSize": 15,
+         "fontName": {
+          "family": "Inter",
+          "style": "Regular"
+         },
+         "textStyleId": "S:1"
+        },
+        {
+         "type": "TEXT",
+         "name": "Line",
+         "x": 16,
+         "y": 170,
+         "width": 300,
+         "height": 20,
+         "absoluteBoundingBox": {
+          "x": 16,
+          "y": 170,
+          "width": 300,
+          "height": 20
+         },
+         "visible": true,
+         "opacity": 1,
+         "fills": [
+          {
+           "type": "SOLID",
+           "color": {
+            "r": 0.08,
+            "g": 0.07,
+            "b": 0.06
+           }
+          }
+         ],
+         "strokes": [],
+         "effects": [],
+         "characters": "Rp250.000",
+         "fontSize": 15,
+         "fontName": {
+          "family": "Inter",
+          "style": "Regular"
+         },
+         "textStyleId": "S:1"
+        },
+        {
+         "type": "TEXT",
+         "name": "Line",
+         "x": 16,
+         "y": 200,
+         "width": 300,
+         "height": 20,
+         "absoluteBoundingBox": {
+          "x": 16,
+          "y": 200,
+          "width": 300,
+          "height": 20
+         },
+         "visible": true,
+         "opacity": 1,
+         "fills": [
+          {
+           "type": "SOLID",
+           "color": {
+            "r": 0.08,
+            "g": 0.07,
+            "b": 0.06
+           }
+          }
+         ],
+         "strokes": [],
+         "effects": [],
+         "characters": "Bayar ke terapis setelah sesi",
+         "fontSize": 15,
+         "fontName": {
+          "family": "Inter",
+          "style": "Regular"
+         },
+         "textStyleId": "S:1"
+        }
+       ]
+      }
+     ]
+    }
+   ],
+   "current": "Flow",
+   "page": "Flow",
+   "annotationCategories": []
+  },
+  "output": {
+   "page": "Flow",
+   "screens": [
+    "02-profil",
+    "03-terkonfirmasi"
+   ],
+   "counts": {
+    "screens": 2,
+    "imageFills": 0,
+    "distinctImages": 0,
+    "reusedImages": 0,
+    "contrastFails": 0,
+    "contrastUnknown": 0,
+    "targetsUnder24": 0,
+    "targetsUnder44": 0,
+    "cutText": 0,
+    "clippedText": 0,
+    "flatOverlays": 0,
+    "idleBusyButtons": 0,
+    "unstyledText": 0,
+    "unboundFills": 17,
+    "unboundSpacing": 0,
+    "layoutScreens": 2,
+    "looseLayers": 0,
+    "strayLayers": 0,
+    "rawEffects": 0,
+    "emptyBands": 1,
+    "capsLabels": 0,
+    "cards": 0,
+    "smallText": 0,
+    "texts": 12,
+    "closeSizes": 0,
+    "unevenRows": 0,
+    "flowBreaks": 0,
+    "listCounts": 0
+   },
+   "images": [],
+   "annotations": {},
+   "findings": [
+    {
+     "rule": "RX-UI-05",
+     "level": "warn",
+     "frame": "02-profil",
+     "node": "",
+     "message": "an empty band 380 pt tall from y 344; move the blocks together, give the space a job, or let the content fill it"
+    }
+   ],
+   "more": 0,
+   "gate": "figma audit (Flow): screens 2 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 17, unbound spacing 0 · built in auto layout 2/2 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 1, small uppercase labels 0, section cards 0, text under 12 px 0/12, screens with text sizes 1 px apart 0, uneven button rows 0, list counts that disagree 0 · breaks across screens 0 · annotations none · 0 fail, 1 warn"
+  }
+ },
+ {
+  "input": {
+   "pages": [
+    {
+     "name": "Flow",
+     "children": [
+      {
+       "type": "FRAME",
        "name": "01-cari",
        "x": 0,
        "y": 0,
@@ -16847,7 +18225,7 @@
     "texts": 9,
     "closeSizes": 0,
     "unevenRows": 0,
-    "flowBreaks": 1,
+    "flowBreaks": 2,
     "listCounts": 0
    },
    "images": [],
@@ -16859,10 +18237,17 @@
      "frame": "03-terkonfirmasi",
      "node": "Amount",
      "message": "\"Biaya kunjungan (1,2 km)\" Rp15.000 first shows on \"03-terkonfirmasi\": no earlier screen shows it, so the person meets the cost after committing; show every cost with the price before the action"
+    },
+    {
+     "rule": "RX-IX-05",
+     "level": "warn",
+     "frame": "03-terkonfirmasi",
+     "node": "03-terkonfirmasi",
+     "message": "\"03-terkonfirmasi\" confirms the order but never says how it is paid: name the method with the total (\"Lunas via GoPay\", \"Bayar ke terapis setelah sesi\"); if the business has not chosen one, show a sample method and mark it as sample data"
     }
    ],
    "more": 0,
-   "gate": "figma audit (Flow): screens 3 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 9, unbound spacing 0 · built in auto layout 3/3 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 0, small uppercase labels 0, section cards 0, text under 12 px 0/9, screens with text sizes 1 px apart 0, uneven button rows 0, list counts that disagree 0 · breaks across screens 1 · annotations none · 0 fail, 1 warn"
+   "gate": "figma audit (Flow): screens 3 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 9, unbound spacing 0 · built in auto layout 3/3 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 0, small uppercase labels 0, section cards 0, text under 12 px 0/9, screens with text sizes 1 px apart 0, uneven button rows 0, list counts that disagree 0 · breaks across screens 2 · annotations none · 0 fail, 2 warn"
   }
  },
  {
@@ -17355,14 +18740,22 @@
     "texts": 10,
     "closeSizes": 0,
     "unevenRows": 0,
-    "flowBreaks": 0,
+    "flowBreaks": 1,
     "listCounts": 0
    },
    "images": [],
    "annotations": {},
-   "findings": [],
+   "findings": [
+    {
+     "rule": "RX-IX-05",
+     "level": "warn",
+     "frame": "03-terkonfirmasi",
+     "node": "03-terkonfirmasi",
+     "message": "\"03-terkonfirmasi\" confirms the order but never says how it is paid: name the method with the total (\"Lunas via GoPay\", \"Bayar ke terapis setelah sesi\"); if the business has not chosen one, show a sample method and mark it as sample data"
+    }
+   ],
    "more": 0,
-   "gate": "figma audit (Flow): screens 3 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 10, unbound spacing 0 · built in auto layout 3/3 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 0, small uppercase labels 0, section cards 0, text under 12 px 0/10, screens with text sizes 1 px apart 0, uneven button rows 0, list counts that disagree 0 · breaks across screens 0 · annotations none · 0 fail, 0 warn"
+   "gate": "figma audit (Flow): screens 3 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 10, unbound spacing 0 · built in auto layout 3/3 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 0, small uppercase labels 0, section cards 0, text under 12 px 0/10, screens with text sizes 1 px apart 0, uneven button rows 0, list counts that disagree 0 · breaks across screens 1 · annotations none · 0 fail, 1 warn"
   }
  }
 ]

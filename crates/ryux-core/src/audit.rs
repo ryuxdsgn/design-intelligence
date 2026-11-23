@@ -533,6 +533,74 @@ fn flow_checks(t: &Tree, screens: &[usize], r: &Res, o: &mut Out) {
         }
     }
 
+    // The chosen hour missing from the bar that commits (RX-IX-17): a screen with three or more hour chips, one named as
+    // picked, and a full-width bar pinned to the bottom that holds the price or the button but not that hour. Owner blind
+    // rating 2026-11-24 (Rawat r4): "footer tidak menampilkan jam terpilih" on three of nine runs, praised where it did.
+    let starts_time = Regex::new(r"^\s*(?:[01]?\d|2[0-3])[.:][0-5]\d\b").unwrap();
+    for (i, a) in info.iter().enumerate() {
+        let fa = t.bx(screens[i]);
+        let shown_text = |k: usize| t.find_shown(k, &mut |x| t.ty(x) == "TEXT").iter().map(|&x| t.chars(x).trim().to_string()).filter(|x| !x.is_empty()).collect::<Vec<_>>();
+        let chips: Vec<usize> = a.layers.iter().map(|(n, _)| *n).filter(|&n| {
+            let b = t.bx(n);
+            let words = shown_text(n);
+            t.ty(n) != "TEXT" && b.w <= fa.w * 0.5 && !words.is_empty() && words.len() <= 3 && starts_time.is_match(&words[0]) && !r.chrome.is_match(&t.name(n))
+        }).collect();
+        let picked: Vec<usize> = chips.iter().copied().filter(|&k| picked_re.is_match(&t.name(k))).collect();
+        if chips.len() < 3 || picked.len() != 1 {
+            continue;
+        }
+        let Some(hour) = time.captures(&format!(" {}", shown_text(picked[0])[0])).map(|m| m[1].replace(':', ".")) else { continue };
+        let bar = a.layers.iter().map(|(n, _)| *n).find(|&n| {
+            let b = t.bx(n);
+            t.ty(n) != "TEXT" && n != screens[i] && b.w >= fa.w * 0.9 && (b.y + b.h - (fa.y + fa.h)).abs() <= 40.0 && b.h <= 220.0 && !navbar.is_match(&t.name(n))
+                && (shown_text(n).iter().any(|x| money.is_match(x)) || !t.find_shown(n, &mut |x| button.is_match(&t.name(x))).is_empty())
+        });
+        let Some(bar) = bar else { continue };
+        let pad = |h: &str| if h.len() == 4 { format!("0{h}") } else { h.to_string() };
+        let held = shown_text(bar).iter().any(|x| time.captures_iter(&format!(" {x} ")).any(|m| pad(&m[1].replace(':', ".")) == pad(&hour)));
+        if !held {
+            o.inc("flowBreaks", 1);
+            o.add("RX-IX-17", "warn", &a.name, &t.name(bar), format!("\"{}\" holds the action but not the chosen hour {}: put the date and hour with the price and the button, so the person sees what they book as they commit", short(&t.name(bar), 30), pad(&hour)));
+        }
+    }
+
+    // A confirmation that never says how the person pays (RX-IX-05): the flow shows a price, and its last screen confirms
+    // the order but names no payment method. Owner blind rating 2026-11-24 (Rawat r4): "konfirmasi tanpa metode bayar"
+    // on two runs; "Lunas via GoPay" and "Bayar setelah sesi" praised.
+    let pay = Regex::new(r"(?i)gopay|\bovo\b|\bdana\b|shopeepay|qris|virtual account|\bva\b|transfer|kartu (?:kredit|debit)|tunai|\bcash\b|paylater|metode (?:bayar|pembayaran)|payment method|bayar\b.{0,40}\b(?:setelah|di tempat|saat|nanti|langsung|via|ke terapis)|pay (?:after|on|at|later)").unwrap();
+    let confirmed = Regex::new(r"(?i)terkonfirmasi|dikonfirmasi|berhasil|sukses|lunas|terjadwal|dipesan|confirmed|success|booked|order placed").unwrap();
+    let texts = |s: &Screen| s.layers.iter().filter(|(n, _)| t.ty(*n) == "TEXT").map(|(n, _)| t.chars(*n)).collect::<Vec<_>>();
+    let priced = info.iter().any(|s| texts(s).iter().any(|x| money.is_match(x)));
+    let last_texts = texts(last);
+    if priced && (confirmed.is_match(&last.name) || last_texts.iter().any(|x| confirmed.is_match(x))) && !last_texts.iter().any(|x| pay.is_match(x)) {
+        o.inc("flowBreaks", 1);
+        o.add("RX-IX-05", "warn", &last.name, &last.name, format!("\"{}\" confirms the order but never says how it is paid: name the method with the total (\"Lunas via GoPay\", \"Bayar ke terapis setelah sesi\"); if the business has not chosen one, show a sample method and mark it as sample data", last.name));
+    }
+
+    // Two words for one state across the flow (RX-CD-05): a taken slot called "Penuh" on one chip and "Terisi" on
+    // another. Owner blind rating 2026-11-24 (Rawat r4): "istilah campur Terisi vs Penuh".
+    let taken = Regex::new(r"(?i)\b(penuh|terisi|habis|sold out|full|booked)\b").unwrap();
+    let mut words: Vec<(String, String, usize)> = Vec::new();
+    for &k in &order {
+        for (n, anc) in &info[k].layers {
+            let x = t.chars(*n);
+            if t.ty(*n) != "TEXT" || x.trim().chars().count() > 25 || anc.iter().any(|&c| r.chrome.is_match(&t.name(c))) {
+                continue;
+            }
+            if let Some(m) = taken.captures(&x) {
+                let w = m[1].to_lowercase();
+                if !words.iter().any(|(v, _, _)| *v == w) {
+                    words.push((w, info[k].name.clone(), *n));
+                }
+            }
+        }
+    }
+    if words.len() >= 2 {
+        let (w2, s2, n2) = &words[1];
+        o.inc("flowBreaks", 1);
+        o.add("RX-CD-05", "warn", s2, &t.name(*n2), format!("\"{}\" and \"{}\" name the same state: pick one word for a taken slot and use it on every screen", words[0].0, w2));
+    }
+
 }
 
 /// Audit one page of a recorded canvas: `{ pages: [{ name, children }], current, page, annotationCategories }`.
