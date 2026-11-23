@@ -1978,7 +1978,8 @@ Gate area ANTI-SLOP. Covers hard gates, purpose gates, quality locks, honest cla
 - Do not: Put [REAL DATA], XXX, or lorem text on the canvas where sample data would do, or ship sample data or placeholder copy as final. A sample-data label does not turn a fee, policy, or claim into a fact (RX-PR-02). On a marketing surface, set "Sample data", "Example amount", or "OJK logo" as visible text. In a code prototype, leave a sample account or token number unlabelled on screen because a comment says it is sample. Put street names on an illustrative map: they read as a real map; show the route, the pins, and an "Illustrative map" label. On a design canvas, leave an empty dashed box where a logo goes: it reads as forgotten; place the real mark, or ask, and say what is missing in an annotation outside the screen.
 - Why: Bracketed values read as unfinished and hide the layout's real behavior; unlabeled sample data ships by accident. (ryux anti-slop principle; ryux visual benchmark 2.5, 2026-10-09: [Brand] and XXX read as unfinished; wallet-detail benchmark, 2.19.2: 3 of 3 runs showed Visa on a sample card; owner decision 2026-11-06 after the Pasarku payment run (made-up banks and QRIS as plain text, a "sample QR" note inside the screen): use the real brand's logo or ask, and mark placeholders with annotations; owner blind review 2026-11-08 of the Raja Emas landing rerun (RYUX 2.22.5, docs/benchmarks/landing-gold): "Sample data" and "Example entry" labels and dashed "OJK logo" boxes on the page read as not ready for production (production 3 against 4 for no skill); ryux decision eval D02, 2026-11-14: a code prototype showed a sample virtual account number, labelled sample only in a code comment; owner blind review 2026-11-18 of three Rak flows (secondhand books, Yogyakarta): an empty dashed logo slot inside the QRIS card read as forgotten; owner blind rating 2026-11-19 of the UX flow benchmark B2, round 4: street names on an illustrative map read as a real map)
 - Check: audit_copy C-01; in a code prototype, each sample number the user would copy, pay to, or enter has a visible sample label beside it
-- Machine check: `ryux scan` flags lorem ipsum filler (fail); placeholder content: John Doe, Jane Doe, [DATA], [TBD], XXXX (warn)
+- Machine check: `ryux scan` flags lorem ipsum filler (fail); placeholder content: John Doe, Jane Doe, [DATA], [TBD], XXXX; a stand-in asset set as text ([QR], [FOTO], [icon]); a logo slot ([LOGO]), kept only while the file does not exist (warn)
+- Measured: `ryux scan <url>` flags a stand-in box, once per page: a dashed or dotted box whose words name what belongs in it ("Logo Kelasku", "QR", "Foto") (warn)
 
 #### RX-AS-04 [Required] [Hard Gate] No fake urgency
 
@@ -1986,7 +1987,7 @@ Gate area ANTI-SLOP. Covers hard gates, purpose gates, quality locks, honest cla
 - Do not: Write "only 2 left", "offer ends tonight", or fake countdowns with nothing behind them.
 - Why: Manufactured pressure erodes trust once users notice. (NNGroup credibility research; ryux run 2026-10-02: WhatsApp promo; cognitive bias research (Tversky and Kahneman 1974): scarcity and anchoring act before reflection, which is why they are never faked)
 - Check: find every timer, deadline, stock count, and 'only N left'; each comes from the brief or real data; fails on any without a source
-- Machine check: `ryux scan` flags urgency copy (only 2 left, hurry, offer ends tonight, hanya tersisa 2, buruan, stok terbatas) (warn)
+- Machine check: `ryux scan` flags urgency copy (only 2 left, hurry, offer ends tonight, hanya tersisa 2, buruan, stok terbatas); a low stock count (stok tinggal 3, sisa 2 pcs, 5 seats left); other shoppers as pressure (12 orang sedang melihat); a promotion counting down (flash sale berakhir dalam, sale ends in) (warn)
 
 #### RX-AS-05 [Required] Decoration passes a purpose gate
 
@@ -2058,6 +2059,7 @@ Gate area ANTI-SLOP. Covers hard gates, purpose gates, quality locks, honest cla
 - Do not: Stand in for the mark with initials in a circle, an emoji, a generic shape, an invented SVG, a letter cut into a tile, or the name typeset to look like a logo; generate a favicon or app icon the user did not ask for; or redraw the brand's mark instead of using its file. Designing a mark is its own task, done only when the user asks for it (RX-UI-23).
 - Why: An invented mark looks finished and is the first thing a team has to throw away; it also passes for a decision nobody made. (pattern also in superdesign-skill (MIT), logo invariant; RX-UI-13 asset provenance; ryux owner review 2026-10-18 (the logo and favicon are the owner's to make); written for RYUX)
 - Check: list every mark slot and the file it uses, or the placeholder; fails on a slot filled by an invented mark
+- Measured: `ryux scan <url>` flags a letter in a tile as the logo, once per page: one or two letters in a filled or bordered box of 16 to 72 px inside an element whose class names a logo or brand (warn)
 <!-- rules:end -->
 
 ## Installation via CLI

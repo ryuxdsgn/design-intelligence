@@ -13,7 +13,7 @@ use std::collections::{HashMap, HashSet};
 
 /// What the rendered checks look for, one row per line of RENDER_CHECKS in packages/cli/src/checks.ts (which also
 /// lists RX-QA-08, script errors, reported by the CLI itself). `cargo test` and the CLI tests hold them equal.
-pub const CATALOGUE: [(&str, &str); 13] = [
+pub const CATALOGUE: [(&str, &str); 15] = [
     ("RX-RD-01", "fail"),
     ("RX-A11Y-01", "fail"),
     ("RX-A11Y-01", "warn"),
@@ -23,6 +23,8 @@ pub const CATALOGUE: [(&str, &str); 13] = [
     ("RX-AS-05", "warn"),
     ("RX-UI-10", "warn"),
     ("RX-AS-10", "warn"),
+    ("RX-AS-03", "warn"),
+    ("RX-AS-11", "warn"),
     ("RX-UI-26", "warn"),
     ("RX-UI-01", "warn"),
     ("RX-UX-15", "warn"),
@@ -123,6 +125,9 @@ struct Res {
     amount: regex::Regex,
     emoji: regex::Regex,
     drawing: regex::Regex,
+    stand_in: regex::Regex,
+    logo: regex::Regex,
+    initial: regex::Regex,
     device: regex::Regex,
 }
 
@@ -147,6 +152,10 @@ impl Res {
             // an emoji shown as a picture: one that is by default, or a symbol asked to be one (U+FE0F)
             emoji: regex::Regex::new(r"\p{Emoji_Presentation}|\p{Extended_Pictographic}\x{FE0F}").unwrap(),
             // a class that names a drawing, or a device a page pictures
+            // a box that names what should be in it
+            stand_in: regex::Regex::new(r"(?i)^\[?\s*(?:logo|qr|qris|kode qr|qr code|foto|photo|gambar|image|ilustrasi|illustration|ikon|icon|peta|map|video|banner)\b").unwrap(),
+            logo: regex::Regex::new(r"(?i)logo|brand|wordmark").unwrap(),
+            initial: regex::Regex::new(r"^\p{L}{1,2}$").unwrap(),
             drawing: regex::Regex::new(r"(?i)illus|artwork|drawing|(^|[-_])art($|[-_])").unwrap(),
             device: regex::Regex::new(r"(?i)phone|device|mockup|handset").unwrap(),
             number: regex::Regex::new(r"^[+-]?(?:[0-9]+\.?[0-9]*|\.[0-9]+)(?:[eE][+-]?[0-9]+)?$").unwrap(),
@@ -1409,6 +1418,33 @@ impl<'a> Page<'a> {
             let count = if drawn.len() == 1 { "1 gradient".to_string() } else { format!("{} gradients", drawn.len()) };
             let source = if self.tokens.is_empty() { "and the page names no colour tokens (CSS custom properties) they could come from" } else { "with colours that are not among the page's colour tokens" };
             tell(&mut out, "RX-AS-10", "gradient", Some(first), format!("{count} {source}: {}{more}; the count for gradients without a brand reason is 0: draw it from the brand's tokens and name the reason, or use a flat colour", named.join(", ")));
+        }
+
+        // A stand-in box (RX-AS-03): a dashed or dotted box whose words name what belongs in it ("Logo Kelasku", "QR").
+        let boxed = visible.iter().copied().find_map(|i| {
+            let r = self.els[i].r;
+            if !matches!(self.s(i, "borderTopStyle"), "dashed" | "dotted") || self.n(i, "borderTopWidth") < 1.0 || r.w < 24.0 || r.h < 16.0 {
+                return None;
+            }
+            let words: Vec<&str> = texts.iter().filter(|t| self.contains(i, t.e)).map(|t| t.x).collect();
+            let said = words.join(" ");
+            (len16(&said) <= 30 && self.re.stand_in.is_match(&said)).then_some((i, said))
+        });
+        if let Some((i, said)) = boxed {
+            tell(&mut out, "RX-AS-03", "stand-in", Some(i), format!("a dashed box that says {}: a stand-in set in the interface reads as unfinished; use the real file or a labeled sample asset, and for the product's own mark with no file, its name in plain text in the brand's type, listed as missing (RX-AS-11)", quote(&said)));
+        }
+
+        // A letter in a tile as the logo (RX-AS-11): one or two letters in a filled or bordered box of 16 to 72 px,
+        // in an element whose class names a logo or brand (itself or two levels up). An avatar's initials are not in
+        // one. The scan cannot know there is no file, so it warns.
+        let tile = texts.iter().copied().find(|t| {
+            let r = self.els[t.e].r;
+            let filled = self.rgba(self.s(t.e, "backgroundColor")).is_some_and(|c| c[3] > 0.0) || self.s(t.e, "backgroundImage").contains("gradient(") || self.n(t.e, "borderTopWidth") >= 1.0;
+            self.outside[t.e] && self.shown[t.e] && self.re.initial.is_match(t.x.trim()) && filled && (16.0..=72.0).contains(&r.w) && (16.0..=72.0).contains(&r.h)
+                && std::iter::once(t.e).chain(self.ancestors(t.e)).take(3).any(|x| self.re.logo.is_match(self.text_of(x, "c")))
+        });
+        if let Some(t) = tile {
+            tell(&mut out, "RX-AS-11", "mark", Some(t.e), format!("a letter in a tile ({}) stands in for the logo: an invented mark; use the brand's own file, or with none, the name in plain text in the brand's type and the mark listed as missing", quote(t.x.trim())));
         }
 
         // Cards inside cards: a bordered or shadowed, rounded, filled box holding another one.

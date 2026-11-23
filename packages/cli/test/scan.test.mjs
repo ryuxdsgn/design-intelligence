@@ -10,7 +10,7 @@ import { fileURLToPath } from "node:url";
 import { SOURCE_CHECKS, SYNTAX_CHECKS } from "../dist/checks.js";
 import { readDirection as directionIn, scan as scanEngine, scanShared } from "../dist/engine.js";
 import { FIXTURES, chromium, probePage, recordDirection, recordScan, recording, toSource } from "./golden.mjs";
-import { BASICS, BEHIND, COUNTS, DARK_CANVAS, FADED, PAGES, QUIET, SLOP, bar, choice, choiceSplit } from "./pages.mjs";
+import { BASICS, BEHIND, COUNTS, DARK_CANVAS, MARKS, FADED, PAGES, QUIET, SLOP, bar, choice, choiceSplit } from "./pages.mjs";
 import { RULES } from "../dist/intelligence/content.js";
 import { VERSION } from "../dist/product.js";
 
@@ -661,6 +661,19 @@ test("scan <url> counts emoji in the chrome and gradients that are no token, not
   assert.equal(counts.length, 2, counts.join("\n"));
   assert.match(counts[0], /^3 control or navigation labels carry an emoji \("🏠 Beranda", "🚀 Mulai", "💬"\).*; a control that is only an emoji is read by the emoji's name/);
   assert.match(counts[1], /^1 gradient with colours that are not among the page's colour tokens: div\.typed \(#f97316, #db2777\);/);
+});
+
+test("scan <url> names a stand-in box and a letter in a tile used as the logo, not an upload area or an avatar", (t) => {
+  const dir = mkdtempSync(join(tmpdir(), "ryux-marks-"));
+  const path = join(dir, "marks.html");
+  writeFileSync(path, MARKS);
+  const r = run(process.env.RYUX_PLAYWRIGHT_CWD ?? join(dirname(cli), "..", "..", ".."), ["scan", `file://${path}`, "--widths", "390", "--json"]);
+  rmSync(dir, { recursive: true, force: true });
+  if (/needs Playwright|could not start Chromium/.test(r.out)) return noBrowser(t);
+  const found = JSON.parse(r.out).findings.filter((f) => f.rule === "RX-AS-03" || f.rule === "RX-AS-11").map((f) => `${f.rule} ${f.selector}: ${f.message}`);
+  assert.equal(found.length, 2, found.join("\n"));
+  assert.match(found[0], /^RX-AS-03 header > span\.logo-ph: a dashed box that says "Logo Kelasku": a stand-in/);
+  assert.match(found[1], /^RX-AS-11 header > a\.logo > span\.tile: a letter in a tile \("K"\) stands in for the logo/);
 });
 
 // Visual tells (knowledge/anti-slop.md): warn once per page, never at a single, reasoned use.
