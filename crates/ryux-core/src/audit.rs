@@ -435,6 +435,46 @@ fn flow_checks(t: &Tree, screens: &[usize], r: &Res, o: &mut Out) {
             }
         }
     }
+
+    // A cost first shown after the commitment (RX-UX-15): on the flow's last screen, an amount labelled as a fee (its
+    // own words, or the text beside it on its row) that no earlier screen shows. Owner blind rating 2026-11-23: a visit
+    // fee of Rp15.000 that appeared only on the confirmation, in two of three runs without RYUX.
+    let money = Regex::new(r"(?i)Rp\s?(\d{1,3}(?:\.\d{3})+|\d{4,})").unwrap();
+    let fee = Regex::new(r"(?i)biaya|ongkos|ongkir|transport|admin|\bfee|layanan|kunjungan|pajak|ppn|asuransi|service|delivery|\btax|surcharge|penanganan|platform").unwrap();
+    let total = Regex::new(r"(?i)total|jumlah|subtotal|tagihan|grand").unwrap();
+    let mut order: Vec<usize> = (0..info.len()).collect();
+    order.sort_by(|&a, &b| { let (p, q) = (t.bx(screens[a]), t.bx(screens[b])); p.x.total_cmp(&q.x).then(p.y.total_cmp(&q.y)) });
+    let amounts = |s: &Screen| -> Vec<(usize, i64, String)> {
+        s.layers.iter().filter(|(n, _)| t.ty(*n) == "TEXT").flat_map(|(n, _)| {
+            let text = t.chars(*n);
+            money.captures_iter(&text).map(|m| (*n, m[1].replace('.', "").parse::<i64>().unwrap_or(0), m[0].to_string())).collect::<Vec<_>>()
+        }).collect()
+    };
+    let last = &info[*order.last().unwrap()];
+    let earlier: Vec<i64> = order[..order.len() - 1].iter().flat_map(|&k| amounts(&info[k]).into_iter().map(|a| a.1)).collect();
+    let mut flagged: Vec<i64> = Vec::new();
+    for (n, value, shown) in amounts(last) {
+        if earlier.contains(&value) || flagged.contains(&value) {
+            continue;
+        }
+        let own = money.replace_all(&t.chars(n), "").trim().to_string();
+        let label = if own.chars().filter(|c| c.is_alphabetic()).count() >= 3 {
+            own
+        } else {
+            let b = t.bx(n);
+            let cy = b.y + b.h / 2.0;
+            last.layers.iter().map(|(m, _)| *m).filter(|&m| m != n && t.ty(m) == "TEXT" && money.find(&t.chars(m)).is_none()).filter(|&m| {
+                let c = t.bx(m);
+                (c.y + c.h / 2.0 - cy).abs() <= c.h.max(b.h) / 2.0 && c.x + c.w <= b.x + 2.0
+            }).max_by(|&a, &b2| (t.bx(a).x + t.bx(a).w).total_cmp(&(t.bx(b2).x + t.bx(b2).w))).map(|m| t.chars(m).trim().to_string()).unwrap_or_default()
+        };
+        if fee.is_match(&label) && !total.is_match(&label) {
+            flagged.push(value);
+            o.inc("flowBreaks", 1);
+            o.add("RX-UX-15", "warn", &last.name, &t.name(n), format!("\"{}\" {} first shows on \"{}\": no earlier screen shows it, so the person meets the cost after committing; show every cost with the price before the action", short(&label, 30), shown, last.name));
+        }
+    }
+
 }
 
 /// Audit one page of a recorded canvas: `{ pages: [{ name, children }], current, page, annotationCategories }`.

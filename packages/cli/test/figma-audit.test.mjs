@@ -331,3 +331,16 @@ test("across screens: a band on one screen, the main button in another colour, a
   ]);
   assert.equal(ok.counts.flowBreaks, 0);
 });
+
+test("across screens: a fee the confirmation shows first is a cost met after committing", async () => {
+  const row = (label, amount, y) => [text("Label", label, [16, y, 200, 20]), text("Amount", amount, [290, y, 84, 20])];
+  const list = screen("01-cari", [text("Price", "Rp185.000/sesi", [16, 160, 200, 20])]);
+  const profile = screen("02-profil", [...row("Tarif per sesi", "Rp185.000", 300)]);
+  const done = screen("03-terkonfirmasi", [...row("Biaya sesi", "Rp185.000", 300), ...row("Biaya kunjungan (1,2 km)", "Rp15.000", 330), ...row("Total bayar", "Rp200.000", 360)]);
+  const r = await audit([list, profile, done]);
+  const fee = r.findings.filter((f) => f.rule === "RX-UX-15").map((f) => `${f.frame}: ${f.message}`);
+  assert.deepEqual(fee, ['03-terkonfirmasi: "Biaya kunjungan (1,2 km)" Rp15.000 first shows on "03-terkonfirmasi": no earlier screen shows it, so the person meets the cost after committing; show every cost with the price before the action']);
+  // the fee shown with the price on the profile: no finding, and a new total is never one
+  const ok = await audit([list, screen("02-profil", [...row("Tarif per sesi", "Rp185.000", 300), text("Fee", "+ transport Rp15.000", [16, 330, 200, 20])]), done]);
+  assert.equal(ok.findings.filter((f) => f.rule === "RX-UX-15").length, 0);
+});

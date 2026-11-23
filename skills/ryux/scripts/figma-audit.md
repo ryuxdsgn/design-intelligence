@@ -452,6 +452,42 @@ const figmaAudit = async function figmaAudit(figma, pageName) {
                 });
             }
         });
+        // A cost first shown after the commitment (RX-UX-15): on the flow's last screen, an amount labelled as a fee (its
+        // own words, or the text beside it on its row) that no earlier screen shows.
+        const MONEY = /Rp\s?(\d{1,3}(?:\.\d{3})+|\d{4,})/gi;
+        const FEE = /biaya|ongkos|ongkir|transport|admin|\bfee|layanan|kunjungan|pajak|ppn|asuransi|service|delivery|\btax|surcharge|penanganan|platform/i;
+        const TOTAL = /total|jumlah|subtotal|tagihan|grand/i;
+        const order = info.map((_, k) => k).sort((a, b) => { const p = box(screens[a]), q = box(screens[b]); return p.x - q.x || p.y - q.y; });
+        const amounts = (s) => s.layers.filter((e) => e.n.type === "TEXT").flatMap((e) => [...e.n.characters.matchAll(MONEY)].map((m) => ({ n: e.n, value: Number(m[1].replace(/\./g, "")), shown: m[0] })));
+        const last = info[order[order.length - 1]];
+        const earlier = order.slice(0, -1).flatMap((k) => amounts(info[k]).map((a) => a.value));
+        const flagged = [];
+        for (const { n, value, shown } of amounts(last)) {
+            if (earlier.includes(value) || flagged.includes(value))
+                continue;
+            const own = n.characters.replace(MONEY, "").trim();
+            let label = "";
+            if ([...own].filter((ch) => /\p{L}/u.test(ch)).length >= 3)
+                label = own;
+            else {
+                const b = box(n), cy = b.y + b.height / 2;
+                let best = null;
+                for (const e of last.layers) {
+                    const m = e.n;
+                    if (m === n || m.type !== "TEXT" || new RegExp(MONEY.source, "i").test(m.characters))
+                        continue;
+                    const k = box(m);
+                    if (Math.abs(k.y + k.height / 2 - cy) <= Math.max(k.height, b.height) / 2 && k.x + k.width <= b.x + 2 && (!best || k.x + k.width >= box(best).x + box(best).width))
+                        best = m;
+                }
+                label = best ? best.characters.trim() : "";
+            }
+            if (FEE.test(label) && !TOTAL.test(label)) {
+                flagged.push(value);
+                c.flowBreaks++;
+                add("RX-UX-15", "warn", last.f, n, `"${short(label, 30)}" ${shown} first shows on "${last.f.name}": no earlier screen shows it, so the person meets the cost after committing; show every cost with the price before the action`);
+            }
+        }
     }
     // Nothing on the page outside the screens but components and the frames or sections that hold them.
     for (const n of opened(page.children)) {
