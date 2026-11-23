@@ -330,6 +330,13 @@ test("across screens: a band on one screen, the main button in another colour, a
     screen("03-terkonfirmasi", [cta("Kembali ke pencarian", green, 700)]),
   ]);
   assert.equal(ok.counts.flowBreaks, 0);
+  // an address under "Ke", and a badge every card repeats, are neither a way back nor a person (Rawat r4 D3)
+  const badgeCard = (y, who, when) => node("FRAME", "Card", [16, y, 358, 120], { fills: [white] }, [text("Name", who, [32, y + 16, 200, 20]), text("Badge", "STR terverifikasi KKI", [32, y + 46, 200, 20]), text("When", when, [32, y + 76, 200, 20])]);
+  const quiet = await audit([
+    screen("01-cari", [text("Lokasi", "Ke Jl. Dipatiukur No. 35, Coblong", [16, 60, 340, 20]), badgeCard(120, "Ftr. Rina Kusuma", "Paling cepat 09.30"), badgeCard(260, "Ftr. Dimas Putra", "Paling cepat 08.00"), tabbar]),
+    screen("02-profil", [text("Name", "Ftr. Rina Kusuma", [16, 80, 300, 28]), text("Badge", "STR terverifikasi KKI", [16, 112, 300, 20]), slot("08.30", 16, 300), slot("09.30", 140, 300), slot("11.00", 264, 300), cta("Pesan kunjungan", green, 700)]),
+  ]);
+  assert.deepEqual(quiet.findings.filter((f) => ["RX-CD-12", "RX-AS-03"].includes(f.rule)).map((f) => f.message), []);
 });
 
 test("lists: a count the list under it does not bear out", async () => {

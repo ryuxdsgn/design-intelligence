@@ -365,6 +365,8 @@ export async function figmaAudit(figma, pageName) {
       const m = BACK.exec(n.characters);
       if (!m) continue;
       const to = m[1].toLowerCase();
+      // a place is a short name; "Ke Jl. Dipatiukur No. 35" is an address, not a way back (Rawat r4 D3)
+      if (/\d/.test(to) || to.split(/\s+/).filter(Boolean).length > 3) continue;
       const known = (x) => !!x && (x.includes(to) || to.includes(x));
       if (!tabs.some(known) && !frames.some(known)) {
         c.flowBreaks++;
@@ -377,6 +379,8 @@ export async function figmaAudit(figma, pageName) {
       for (const { n, anc } of a.layers) {
         const name = n.type === "TEXT" ? n.characters.trim() : "";
         if (n.type !== "TEXT" || [...name].length < 6 || !name.includes(" ") || !/^\p{Lu}/u.test(name) || new RegExp(TIME.source).test(name)) continue;
+        // a name is said once on its screen: "STR terverifikasi KKI" on every card is a badge, not a person (Rawat r4 D3)
+        if (a.layers.filter((e) => e.n.type === "TEXT" && e.n.characters.trim() === name).length > 1) continue;
         const card = [...anc].reverse().find((k) => k !== a.f && box(k).height <= a.fb.height * 0.4 && box(k).width >= a.fb.width * 0.6 && !FCHROME.test(k.name));
         if (!card) continue;
         const promised = findShown(card, (k) => k.type === "TEXT").flatMap((k) => [...k.characters.matchAll(TIME)].map((m) => m[1].replace(":", ".")));
@@ -405,6 +409,8 @@ export async function figmaAudit(figma, pageName) {
       for (const { n, anc } of a.layers) {
         const name = n.type === "TEXT" ? n.characters.trim() : "";
         if (n.type !== "TEXT" || [...name].length < 6 || !name.includes(" ") || !/^\p{Lu}/u.test(name) || seen.has(name)) continue;
+        // a name is said once on its screen: "STR terverifikasi KKI" on every card is a badge, not a person (Rawat r4 D3)
+        if (a.layers.filter((e) => e.n.type === "TEXT" && e.n.characters.trim() === name).length > 1) continue;
         const card = [...anc].reverse().find((k) => k !== a.f && box(k).height <= a.fb.height * 0.4 && box(k).width >= a.fb.width * 0.6 && !FCHROME.test(k.name));
         if (!card) continue;
         const words = findShown(card, (k) => k.type === "TEXT").map((k) => k.characters).join(" · ");
