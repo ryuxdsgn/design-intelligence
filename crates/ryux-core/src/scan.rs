@@ -322,18 +322,27 @@ fn rule_as03_lorem(s: &Source, _: &Ctx) -> Vec<Hit> {
 }
 
 fn rule_as03_placeholder(s: &Source, _: &Ctx) -> Vec<Hit> {
-    matches(&s.text, &[
+    let mut hits = matches(&s.text, &[
         (r"\b(?:John|Jane) Doe\b", "", |m| Some(format!("\"{}\": a placeholder person; use realistic sample data and label it, or the real name", m.g(0)))),
         (r"\[(?:REAL DATA|DATA|TBD|TODO|PLACEHOLDER)\]", "i", |m| Some(format!("\"{}\": a placeholder where sample data would do; keep a visible placeholder only for an asset that does not exist yet", m.g(0)))),
         (r"(?<![A-Za-z])X{4,}(?![A-Za-z])", "", |m| Some(format!("\"{}\": placeholder characters; use realistic sample data, labeled", m.g(0)))),
         // a stand-in asset set as text in the interface: the screen shows a word where a picture belongs
         (r"\[(?:QR(?: ?CODE)?|QRIS|IMAGE|IMG|FOTO|PHOTO|GAMBAR|ICON|IKON|MAP|PETA|AVATAR|CHART|VIDEO)\]", "i", |m| Some(format!("\"{}\": a stand-in asset set as text; use a sample asset (a sample QR or photo, labeled Sample where the user would act on it) or the icon set", m.g(0)))),
-        (r"\[(?:LOGO|YOUR LOGO|LOGO HERE)\]|\b(?:your logo|logo here|logo di ?sini)\b", "i", |m| Some(format!("\"{}\": a logo slot; use the brand's own file, and keep the slot only while the file does not exist, listed as missing in the handoff (RX-AS-11)", m.g(0)))),
-    ])
+    ]);
+    // A logo slot standing alone. One with the brand's name in plain text right after it (`[LOGO]</span> RideApp`)
+    // is what RX-AS-11 allows while the file does not exist (owner review 2026-11-23, sheet 8: S2 false, S1 real).
+    for m in re(r"\[(?:LOGO|YOUR LOGO|LOGO HERE)\]|\b(?:your logo|logo here|logo di ?sini)\b", "gi").match_all(&s.text) {
+        let rest = s.text[m.end..].split('\n').next().unwrap_or("");
+        if !re(r"^[^<]*(?:</[\w-]+>\s*)+[\p{L}\d]{2,}", "u").test(rest) {
+            hits.push(hit(m.index, format!("\"{}\": a logo slot standing alone; use the brand's own file, or with none, the name in plain text in the brand's type beside the slot, listed as missing in the handoff (RX-AS-11)", m.g(0))));
+        }
+    }
+    hits.sort_by_key(|h| h.index);
+    hits
 }
 
 fn rule_as04(s: &Source, _: &Ctx) -> Vec<Hit> {
-    matches(&s.text, &[
+    let mut hits = matches(&s.text, &[
         (
             r"\bonly \d+ (?:left|remaining)\b|\b(?:offer|sale|deal|promo) ends (?:tonight|today|soon)\b|\bhurry\b|\blimited time only\b|\bdon'?t miss out\b|\bhanya tersisa \d+|\btinggal \d+ lagi\b|\bburuan\b|\b(?:promo|diskon|penawaran) berakhir (?:malam ini|hari ini|segera)\b|\bjangan sampai kehabisan\b|\bstok terbatas\b",
             "i",
@@ -351,13 +360,19 @@ fn rule_as04(s: &Source, _: &Ctx) -> Vec<Hit> {
             "i",
             |m| Some(format!("\"{}\": other shoppers used as pressure; show it only from live data", m.g(0))),
         ),
-        // a promotion counting down: "Flash sale berakhir dalam", "Sale ends in"
-        (
+    ]);
+    // A promotion counting down: "Flash sale berakhir dalam", "Sale ends in". Not in a file that labels its data as
+    // sample ("Sample data"): a countdown the brief asked for, with its end time marked as a stand-in (owner review
+    // 2026-11-23, sheet 8: U3, U4 false).
+    if !re(r">\s*(?:sample(?: data)?|data contoh|contoh(?: data)?)\s*<", "i").test(&s.text) {
+        hits.extend(matches(&s.text, &[(
             r#"(?:promo|flash\s*sale|diskon|sale|deal|offer|penawaran)[^\n<"'`]{0,40}(?:berakhir|habis|ends?)\s*(?:dalam|in)\b"#,
             "i",
-            |m| Some(format!("\"{}\": a promotion counting down; keep it only when the end time is real (from the brief or data), stated as a plain fact", m.g(0))),
-        ),
-    ])
+            |m| Some(format!("\"{}\": a promotion counting down; keep it only when the end time is real (from the brief or data), stated as a plain fact, or label it as sample", m.g(0))),
+        )]));
+    }
+    hits.sort_by_key(|h| h.index);
+    hits
 }
 
 fn rule_a11y02_zoom(s: &Source, _: &Ctx) -> Vec<Hit> {
@@ -1149,6 +1164,8 @@ mod tests {
         ] {
             assert!(urgency(quiet).is_empty(), "{quiet}");
         }
+        // a countdown in a file that labels its data as sample is the deliverable the brief asked for
+        assert!(urgency("<span class=\"tag\">Sample data</span><div>Sale ends in</div>").is_empty());
         // the quote stops at the string's end
         assert!(found("a.js", r#"t = s ? "Sale starts in " : "Sale ends in";"#, "RX-AS-04", "\"Sale ends in\": a promotion").len() == 1);
     }
@@ -1158,7 +1175,9 @@ mod tests {
         let placeholder = |raw: &str| found("a.html", raw, "RX-AS-03", "");
         assert_eq!(placeholder("<div class=\"qr\">[QR]</div>"), vec!["1:17"]);
         assert_eq!(placeholder("<span>[icon]</span><div>[FOTO]</div>").len(), 2);
-        assert!(found("a.html", "<div>[LOGO]</div>", "RX-AS-03", "a logo slot").len() == 1);
+        assert!(found("a.html", "<div>[LOGO]</div>", "RX-AS-03", "a logo slot standing alone").len() == 1);
+        // the brand's name in plain text beside the slot is what RX-AS-11 allows
+        assert!(found("a.html", "<div class=\"mark\"><span class=\"slot\" title=\"Logo file missing\">[LOGO]</span> RideApp</div>", "RX-AS-03", "logo").is_empty());
         assert!(placeholder("<p>Scan QR untuk bayar</p><p>[1]</p>").is_empty());
     }
 

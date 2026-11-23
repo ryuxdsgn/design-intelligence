@@ -1428,7 +1428,11 @@ impl<'a> Page<'a> {
             }
             let words: Vec<&str> = texts.iter().filter(|t| self.contains(i, t.e)).map(|t| t.x).collect();
             let said = words.join(" ");
-            (len16(&said) <= 30 && self.re.stand_in.is_match(&said)).then_some((i, said))
+            // a logo slot with the brand's name in plain text beside it (its parent's own text) is what RX-AS-11
+            // allows while the file does not exist (owner review 2026-11-23, sheet 8: S2 false, S1 real)
+            let named = said.to_ascii_lowercase().trim_start_matches(['[', ' ']).starts_with("logo")
+                && self.parent(i).is_some_and(|p| texts.iter().any(|t| t.e == p && self.re.letters.test(t.x)));
+            (len16(&said) <= 30 && self.re.stand_in.is_match(&said) && !named).then_some((i, said))
         });
         if let Some((i, said)) = boxed {
             tell(&mut out, "RX-AS-03", "stand-in", Some(i), format!("a dashed box that says {}: a stand-in set in the interface reads as unfinished; use the real file or a labeled sample asset, and for the product's own mark with no file, its name in plain text in the brand's type, listed as missing (RX-AS-11)", quote(&said)));
