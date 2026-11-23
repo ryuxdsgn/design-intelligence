@@ -129,6 +129,17 @@ button{min-height:44px;min-width:44px;padding:0 16px}</style>
 <div class="typed"></div><div class="drawn"></div><div class="hero"></div><div class="scrim"></div>
 <div class="phone"><div class="screen"><p>7:25</p></div></div><div class="hero-art"><div class="sun"></div><p>Panen pagi</p></div><div class="thumb"></div>`;
 
+/** Stand-ins (RX-AS-03) and a letter in a tile as the logo (RX-AS-11), once per page each. Counted: a dashed box
+ *  that says "Logo Kelasku", and "K" in a filled tile inside a.logo. Quiet: a dashed upload area ("Unggah foto"), an
+ *  avatar's initials in a tile, a wordmark in plain text, and a [LOGO] slot with the name in plain text beside it. */
+export const MARKS = `${head}<style>
+body{margin:0;font:16px sans-serif;background:#fff;color:#111}
+.logo-ph{display:inline-flex;width:120px;height:36px;border:1.5px dashed #b6bcc7;align-items:center;justify-content:center;font-size:12px}
+.drop{border:2px dashed #999;padding:24px}.tile{width:36px;height:36px;border-radius:50%;background:#14532d;color:#fde68a;display:inline-grid;place-items:center}
+.avatar{width:40px;height:40px;border-radius:50%;background:#e0e7ff;display:inline-grid;place-items:center}</style>
+<header><div class="mark"><span class="logo-ph">[LOGO]</span> RideApp</div><span class="logo-ph">Logo Kelasku</span> <a class="logo" href="#"><span class="tile">K</span> KAINARA</a> <a class="brand" href="#">Langkah</a></header>
+<div class="drop">Unggah foto KTP</div><p><span class="avatar">MA</span> Maya Andini</p>`;
+
 /** Every page with the widths the tests render it at. */
 export const PAGES = [
   { name: "basics", html: BASICS, widths: [320] },
@@ -145,4 +156,5 @@ export const PAGES = [
   { name: "faded", html: FADED, widths: [390] },
   { name: "behind", html: BEHIND, widths: [390] },
   { name: "counts", html: COUNTS, widths: [390] },
+  { name: "marks", html: MARKS, widths: [390] },
 ];

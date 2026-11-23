@@ -55,7 +55,7 @@ export async function probeExtract() {
     display: "block", visibility: "visible", opacity: "1", clip: "auto", clipPath: "none", overflow: "visible", overflowY: "visible",
     position: "static", backgroundColor: "rgba(0, 0, 0, 0)", backgroundImage: "none", mixBlendMode: "normal", filter: "none",
     fontSize: 16, fontWeight: 400, fontStyle: "normal", boxShadow: "none", textShadow: "none", backdropFilter: "none",
-    borderTopLeftRadius: 0, borderTopWidth: 0,
+    borderTopLeftRadius: 0, borderTopWidth: 0, borderTopStyle: "none",
   };
   const styles = [];
   const styleIndex = new Map();
@@ -79,7 +79,7 @@ export async function probeExtract() {
   const styleOf = (el) => {
     const cs = getComputedStyle(el);
     const s = {};
-    for (const k of ["display", "visibility", "opacity", "clip", "clipPath", "overflow", "overflowY", "position", "backgroundColor", "backgroundImage", "mixBlendMode", "filter", "fontStyle", "boxShadow", "textShadow"]) {
+    for (const k of ["display", "visibility", "opacity", "clip", "clipPath", "overflow", "overflowY", "position", "backgroundColor", "backgroundImage", "mixBlendMode", "filter", "fontStyle", "boxShadow", "textShadow", "borderTopStyle"]) {
       const v = k === "backgroundColor" || k === "backgroundImage" || k === "boxShadow" || k === "textShadow" ? plain(cs[k]) : cs[k];
       if (v !== DEFAULTS[k]) s[k] = v;
     }

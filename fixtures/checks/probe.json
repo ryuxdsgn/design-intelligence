@@ -80,6 +80,7 @@
     {
      "display": "inline-block",
      "backgroundColor": "rgba(239, 239, 239, 0.3)",
+     "borderTopStyle": "outset",
      "fontSize": 13.3333,
      "borderTopWidth": 2,
      "color": "rgb(204, 204, 204)",
@@ -1010,6 +1011,7 @@
     {
      "position": "absolute",
      "backgroundColor": "rgb(255, 255, 255)",
+     "borderTopStyle": "solid",
      "borderTopWidth": 1,
      "color": "rgb(17, 17, 17)",
      "borderTopColor": "rgb(204, 204, 204)",
@@ -1023,6 +1025,7 @@
     {
      "display": "inline-block",
      "backgroundColor": "rgb(239, 239, 239)",
+     "borderTopStyle": "outset",
      "fontSize": 13.3333,
      "borderTopWidth": 2,
      "color": "rgb(0, 0, 0)",
@@ -1456,6 +1459,7 @@
     {
      "position": "absolute",
      "backgroundColor": "rgb(255, 255, 255)",
+     "borderTopStyle": "solid",
      "borderTopWidth": 1,
      "color": "rgb(17, 17, 17)",
      "borderTopColor": "rgb(204, 204, 204)",
@@ -1469,6 +1473,7 @@
     {
      "display": "inline-block",
      "backgroundColor": "rgb(239, 239, 239)",
+     "borderTopStyle": "outset",
      "fontSize": 13.3333,
      "borderTopWidth": 2,
      "color": "rgb(0, 0, 0)",
@@ -1900,6 +1905,7 @@
      "fontFamily": "Menlo, monospace"
     },
     {
+     "borderTopStyle": "solid",
      "borderTopLeftRadius": 12,
      "borderTopWidth": 1,
      "color": "rgb(238, 238, 238)",
@@ -3012,6 +3018,7 @@
      "fontFamily": "Menlo, monospace"
     },
     {
+     "borderTopStyle": "solid",
      "borderTopLeftRadius": 12,
      "borderTopWidth": 1,
      "color": "rgb(238, 238, 238)",
@@ -4110,6 +4117,7 @@
      "fontFamily": "Menlo, monospace"
     },
     {
+     "borderTopStyle": "solid",
      "borderTopLeftRadius": 12,
      "borderTopWidth": 1,
      "color": "rgb(17, 17, 17)",
@@ -4679,6 +4687,7 @@
      "fontFamily": "Menlo, monospace"
     },
     {
+     "borderTopStyle": "solid",
      "borderTopLeftRadius": 12,
      "borderTopWidth": 1,
      "color": "rgb(17, 17, 17)",
@@ -5267,6 +5276,7 @@
      "overflow": "auto",
      "overflowY": "auto",
      "backgroundColor": "rgb(255, 255, 255)",
+     "borderTopStyle": "solid",
      "fontSize": 14,
      "borderTopWidth": 1,
      "color": "rgb(0, 0, 0)",
@@ -5297,6 +5307,7 @@
     {
      "display": "inline-block",
      "backgroundColor": "rgb(239, 239, 239)",
+     "borderTopStyle": "outset",
      "fontSize": 13.3333,
      "borderTopWidth": 2,
      "color": "rgb(0, 0, 0)",
@@ -6325,6 +6336,7 @@
      "overflow": "auto",
      "overflowY": "auto",
      "backgroundColor": "rgb(255, 255, 255)",
+     "borderTopStyle": "solid",
      "fontSize": 14,
      "borderTopWidth": 1,
      "color": "rgb(0, 0, 0)",
@@ -6355,6 +6367,7 @@
     {
      "display": "inline-block",
      "backgroundColor": "rgb(239, 239, 239)",
+     "borderTopStyle": "outset",
      "fontSize": 13.3333,
      "borderTopWidth": 2,
      "color": "rgb(0, 0, 0)",
@@ -7345,12 +7358,14 @@
      "fontFamily": "sans-serif"
     },
     {
+     "borderTopStyle": "solid",
      "borderTopWidth": 1,
      "color": "rgb(17, 17, 17)",
      "borderTopColor": "rgb(221, 221, 221)",
      "fontFamily": "sans-serif"
     },
     {
+     "borderTopStyle": "groove",
      "borderTopWidth": 2,
      "color": "rgb(17, 17, 17)",
      "borderTopColor": "rgb(239, 239, 239)",
@@ -7371,6 +7386,7 @@
     {
      "display": "inline-block",
      "backgroundColor": "rgb(239, 239, 239)",
+     "borderTopStyle": "outset",
      "borderTopWidth": 2,
      "color": "rgb(0, 0, 0)",
      "fontFamily": "sans-serif"
@@ -7949,12 +7965,14 @@
      "fontFamily": "sans-serif"
     },
     {
+     "borderTopStyle": "solid",
      "borderTopWidth": 1,
      "color": "rgb(17, 17, 17)",
      "borderTopColor": "rgb(221, 221, 221)",
      "fontFamily": "sans-serif"
     },
     {
+     "borderTopStyle": "groove",
      "borderTopWidth": 2,
      "color": "rgb(17, 17, 17)",
      "borderTopColor": "rgb(239, 239, 239)",
@@ -7975,6 +7993,7 @@
     {
      "display": "inline-block",
      "backgroundColor": "rgb(239, 239, 239)",
+     "borderTopStyle": "outset",
      "borderTopWidth": 2,
      "color": "rgb(0, 0, 0)",
      "fontFamily": "sans-serif"
@@ -8559,12 +8578,14 @@
      "fontFamily": "sans-serif"
     },
     {
+     "borderTopStyle": "solid",
      "borderTopWidth": 1,
      "color": "rgb(17, 17, 17)",
      "borderTopColor": "rgb(221, 221, 221)",
      "fontFamily": "sans-serif"
     },
     {
+     "borderTopStyle": "groove",
      "borderTopWidth": 2,
      "color": "rgb(17, 17, 17)",
      "borderTopColor": "rgb(239, 239, 239)",
@@ -8585,6 +8606,7 @@
     {
      "display": "inline-block",
      "backgroundColor": "rgb(239, 239, 239)",
+     "borderTopStyle": "outset",
      "borderTopWidth": 2,
      "color": "rgb(0, 0, 0)",
      "fontFamily": "sans-serif"
@@ -9279,6 +9301,7 @@
      "fontFamily": "sans-serif"
     },
     {
+     "borderTopStyle": "solid",
      "borderTopWidth": 1,
      "color": "rgb(17, 17, 17)",
      "borderTopColor": "rgb(221, 221, 221)",
@@ -9291,6 +9314,7 @@
      "fontFamily": "sans-serif"
     },
     {
+     "borderTopStyle": "groove",
      "borderTopWidth": 2,
      "color": "rgb(17, 17, 17)",
      "borderTopColor": "rgb(239, 239, 239)",
@@ -9311,6 +9335,7 @@
     {
      "display": "inline-block",
      "backgroundColor": "rgb(239, 239, 239)",
+     "borderTopStyle": "outset",
      "borderTopWidth": 2,
      "color": "rgb(0, 0, 0)",
      "fontFamily": "sans-serif"
@@ -10043,6 +10068,7 @@
      "fontFamily": "sans-serif"
     },
     {
+     "borderTopStyle": "solid",
      "borderTopWidth": 1,
      "color": "rgb(17, 17, 17)",
      "borderTopColor": "rgb(221, 221, 221)",
@@ -10055,6 +10081,7 @@
      "fontFamily": "sans-serif"
     },
     {
+     "borderTopStyle": "groove",
      "borderTopWidth": 2,
      "color": "rgb(17, 17, 17)",
      "borderTopColor": "rgb(239, 239, 239)",
@@ -10075,6 +10102,7 @@
     {
      "display": "inline-block",
      "backgroundColor": "rgb(239, 239, 239)",
+     "borderTopStyle": "outset",
      "borderTopWidth": 2,
      "color": "rgb(0, 0, 0)",
      "fontFamily": "sans-serif"
@@ -11808,6 +11836,7 @@
     {
      "display": "inline-block",
      "backgroundColor": "rgb(239, 239, 239)",
+     "borderTopStyle": "outset",
      "fontSize": 13.3333,
      "borderTopWidth": 2,
      "color": "rgb(0, 0, 0)",
@@ -12408,6 +12437,706 @@
      "selector": "div.typed",
      "message": "1 gradient with colours that are not among the page's colour tokens: div.typed (#f97316, #db2777); the count for gradients without a brand reason is 0: draw it from the brand's tokens and name the reason, or use a flat colour",
      "once": "gradient"
+    }
+   ],
+   "ignored": []
+  }
+ },
+ {
+  "input": {
+   "vw": 390,
+   "vh": 844,
+   "scrollWidth": 390,
+   "scrollingElement": 0,
+   "top": 3,
+   "styles": [
+    {
+     "color": "rgb(0, 0, 0)",
+     "fontFamily": "Times"
+    },
+    {
+     "backgroundColor": "rgb(255, 255, 255)",
+     "color": "rgb(17, 17, 17)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "color": "rgb(17, 17, 17)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "display": "inline-flex",
+     "borderTopStyle": "dashed",
+     "fontSize": 12,
+     "borderTopWidth": 1,
+     "color": "rgb(17, 17, 17)",
+     "borderTopColor": "rgb(182, 188, 199)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "display": "inline",
+     "color": "rgb(0, 0, 238)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "display": "inline-grid",
+     "backgroundColor": "rgb(20, 83, 45)",
+     "borderTopLeftRadius": 50,
+     "color": "rgb(253, 230, 138)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "borderTopStyle": "dashed",
+     "borderTopWidth": 2,
+     "color": "rgb(17, 17, 17)",
+     "borderTopColor": "rgb(153, 153, 153)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "display": "inline-grid",
+     "backgroundColor": "rgb(224, 231, 255)",
+     "borderTopLeftRadius": 50,
+     "color": "rgb(17, 17, 17)",
+     "fontFamily": "sans-serif"
+    }
+   ],
+   "els": [
+    {
+     "p": null,
+     "t": "HTML",
+     "s": 0,
+     "r": [
+      0,
+      0,
+      390,
+      218
+     ]
+    },
+    {
+     "p": 0,
+     "t": "BODY",
+     "s": 1,
+     "r": [
+      0,
+      0,
+      390,
+      202
+     ]
+    },
+    {
+     "p": 1,
+     "t": "HEADER",
+     "s": 2,
+     "r": [
+      0,
+      0,
+      390,
+      76
+     ]
+    },
+    {
+     "p": 2,
+     "t": "DIV",
+     "s": 2,
+     "r": [
+      0,
+      0,
+      390,
+      38
+     ],
+     "c": "mark"
+    },
+    {
+     "p": 3,
+     "t": "SPAN",
+     "s": 3,
+     "r": [
+      0,
+      0,
+      122,
+      38
+     ],
+     "c": "logo-ph"
+    },
+    {
+     "p": 2,
+     "t": "SPAN",
+     "s": 3,
+     "r": [
+      0,
+      38,
+      122,
+      38
+     ],
+     "c": "logo-ph"
+    },
+    {
+     "p": 2,
+     "t": "A",
+     "s": 4,
+     "r": [
+      126.453125,
+      47,
+      110.25,
+      18
+     ],
+     "c": "logo",
+     "ctl": 1,
+     "nm": "K KAINARA",
+     "sib": 1
+    },
+    {
+     "p": 6,
+     "t": "SPAN",
+     "s": 5,
+     "r": [
+      126.453125,
+      38,
+      36,
+      36
+     ],
+     "c": "tile"
+    },
+    {
+     "p": 2,
+     "t": "A",
+     "s": 4,
+     "r": [
+      240.71875,
+      47,
+      61.390625,
+      18
+     ],
+     "c": "brand",
+     "ctl": 1,
+     "nm": "Langkah",
+     "sib": 1
+    },
+    {
+     "p": 1,
+     "t": "DIV",
+     "s": 6,
+     "r": [
+      0,
+      76,
+      390,
+      70
+     ],
+     "c": "drop"
+    },
+    {
+     "p": 1,
+     "t": "P",
+     "s": 2,
+     "r": [
+      0,
+      162,
+      390,
+      40
+     ]
+    },
+    {
+     "p": 10,
+     "t": "SPAN",
+     "s": 7,
+     "r": [
+      0,
+      162,
+      40,
+      40
+     ],
+     "c": "avatar"
+    }
+   ],
+   "texts": [
+    {
+     "e": 3,
+     "x": "RideApp",
+     "r": [
+      122,
+      9,
+      65.828125,
+      18
+     ],
+     "open": [
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3
+     ],
+     "end": {
+      "r": [
+       122,
+       9,
+       65.828125,
+       18
+      ],
+      "h": [
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3
+      ]
+     }
+    },
+    {
+     "e": 4,
+     "x": "[LOGO]",
+     "r": [
+      40.328125,
+      12,
+      41.34375,
+      14
+     ],
+     "open": [
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4
+     ],
+     "end": {
+      "r": [
+       40.328125,
+       12,
+       41.34375,
+       14
+      ],
+      "h": [
+       4,
+       4,
+       4,
+       4,
+       4,
+       4,
+       4,
+       4,
+       4,
+       4,
+       4,
+       4,
+       4,
+       4,
+       4
+      ]
+     }
+    },
+    {
+     "e": 5,
+     "x": "Logo Kelasku",
+     "r": [
+      24.625,
+      50,
+      72.734375,
+      14
+     ],
+     "open": [
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5
+     ],
+     "end": {
+      "r": [
+       24.625,
+       50,
+       72.734375,
+       14
+      ],
+      "h": [
+       5,
+       5,
+       5,
+       5,
+       5,
+       5,
+       5,
+       5,
+       5,
+       5,
+       5,
+       5,
+       5,
+       5,
+       5
+      ]
+     }
+    },
+    {
+     "e": 6,
+     "x": "KAINARA",
+     "r": [
+      162.453125,
+      47,
+      74.25,
+      18
+     ],
+     "open": [
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6
+     ],
+     "end": {
+      "r": [
+       162.453125,
+       47,
+       74.25,
+       18
+      ],
+      "h": [
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6
+      ]
+     }
+    },
+    {
+     "e": 7,
+     "x": "K",
+     "r": [
+      139.109375,
+      47,
+      10.671875,
+      18
+     ],
+     "open": [
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7
+     ],
+     "end": {
+      "r": [
+       139.109375,
+       47,
+       10.671875,
+       18
+      ],
+      "h": [
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7
+      ]
+     }
+    },
+    {
+     "e": 8,
+     "x": "Langkah",
+     "r": [
+      240.71875,
+      47,
+      61.390625,
+      18
+     ],
+     "open": [
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8
+     ],
+     "end": {
+      "r": [
+       240.71875,
+       47,
+       61.390625,
+       18
+      ],
+      "h": [
+       8,
+       8,
+       8,
+       8,
+       8,
+       8,
+       8,
+       8,
+       8,
+       8,
+       8,
+       8,
+       8,
+       8,
+       8
+      ]
+     }
+    },
+    {
+     "e": 9,
+     "x": "Unggah foto KTP",
+     "r": [
+      26,
+      102,
+      122.75,
+      18
+     ],
+     "open": [
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9
+     ],
+     "end": {
+      "r": [
+       26,
+       102,
+       122.75,
+       18
+      ],
+      "h": [
+       9,
+       9,
+       9,
+       9,
+       9,
+       9,
+       9,
+       9,
+       9,
+       9,
+       9,
+       9,
+       9,
+       9,
+       9
+      ]
+     }
+    },
+    {
+     "e": 10,
+     "x": "Maya Andini",
+     "r": [
+      40,
+      173,
+      91.625,
+      18
+     ],
+     "open": [
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10
+     ],
+     "end": {
+      "r": [
+       40,
+       173,
+       91.625,
+       18
+      ],
+      "h": [
+       10,
+       10,
+       10,
+       10,
+       10,
+       10,
+       10,
+       10,
+       10,
+       10,
+       10,
+       10,
+       10,
+       10,
+       10
+      ]
+     }
+    },
+    {
+     "e": 11,
+     "x": "MA",
+     "r": [
+      8,
+      173,
+      24,
+      18
+     ],
+     "open": [
+      11,
+      11,
+      11,
+      11,
+      11,
+      11,
+      11,
+      11,
+      11,
+      11,
+      11,
+      11,
+      11,
+      11,
+      11
+     ],
+     "end": {
+      "r": [
+       8,
+       173,
+       24,
+       18
+      ],
+      "h": [
+       11,
+       11,
+       11,
+       11,
+       11,
+       11,
+       11,
+       11,
+       11,
+       11,
+       11,
+       11,
+       11,
+       11,
+       11
+      ]
+     }
+    }
+   ],
+   "chains": {
+    "open": {},
+    "end": {}
+   }
+  },
+  "output": {
+   "findings": [
+    {
+     "rule": "RX-AS-03",
+     "level": "warn",
+     "selector": "header > span.logo-ph",
+     "message": "a dashed box that says \"Logo Kelasku\": a stand-in set in the interface reads as unfinished; use the real file or a labeled sample asset, and for the product's own mark with no file, its name in plain text in the brand's type, listed as missing (RX-AS-11)",
+     "once": "stand-in"
+    },
+    {
+     "rule": "RX-AS-11",
+     "level": "warn",
+     "selector": "header > a.logo > span.tile",
+     "message": "a letter in a tile (\"K\") stands in for the logo: an invented mark; use the brand's own file, or with none, the name in plain text in the brand's type and the mark listed as missing",
+     "once": "mark"
     }
    ],
    "ignored": []
