@@ -544,8 +544,12 @@ return { iconStrokes: strokes, iconColours: colours, unbound: [...unbound], mixe
      the code the payment provider returns for this order"). The note lives in the annotation, not as
      text inside the UI; the screen shows the asset as it will look. In another tool, use its annotation
      or comment feature. List the placeholders in the final message.
-   - In Figma, audit the page before the gate: send the code block in scripts/figma-audit.md from this skill's folder, unchanged, as the
-     code of one use_figma call (set PAGE to the flow's page). It reads the canvas and counts content images and their reuse,
+   - In Figma, audit the page before the gate. When the shell has FIGMA_TOKEN (test it with \`[ -n "$FIGMA_TOKEN" ]\`; never
+     print it), run \`npx --no-install @ryuxdsgn/design-intelligence audit "<the file's link>" --page <page>\`: it reads the
+     page over Figma's REST API and returns only the findings and the gate line. REST has no annotations, so the gate says
+     "annotations unreadable"; give the count from the annotations you made. Otherwise send the code block in
+     scripts/figma-audit.md from this skill's folder, unchanged, as the code of one use_figma call (set PAGE to the flow's
+     page). Both read the canvas and count content images and their reuse,
      contrast, text cut by a bar or clipped, targets, overlays with no lift, a busy screen whose button keeps its idle
      label, unstyled text and unbound values, screens not built in auto layout and layers left outside them, empty bands,
      small uppercase labels, section cards, text under 12 px, text sizes 1 px apart, uneven buttons in a row, and annotations. Fix each fail, fix
