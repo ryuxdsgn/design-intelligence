@@ -101,7 +101,10 @@ The six stages of the core workflow (SKILL.md), as Design runs them.
    the page in the user's browser (\`open\` on macOS, \`xdg-open\` on Linux, \`start\` on Windows; when no command can open it, give
    the path) and ask the user to reply with their pick in text. The same text answer stands whenever the user prefers words to a
    click. One round of choice, and revisions after the choice belong to the build. No DESIGN.md, no product docs, and no question
-   tool are never reasons to skip it: write numbered options and end the turn. Structural alternatives (stage 3) come after, inside the
+   tool are never reasons to skip it: write numbered options and end the turn. Only when the user said to finish without
+   asking (a scripted or unattended run): still write the three directions, one line each (palette, type, signature, and the
+   default it avoids), pick the one least like the category's template that still fits the task, say why in one sentence,
+   record it as a design assumption, and build it; never a direction chosen without the three written down. Structural alternatives (stage 3) come after, inside the
    chosen direction. Complete context means no questions.
    **Voice and tone** is not asked by default: when the field is blank, infer it from the product's
    existing copy or brand docs, label it inferred, and continue (RX-CD-11). Ask only when there is
@@ -220,6 +223,18 @@ The six stages of the core workflow (SKILL.md), as Design runs them.
    page's components and variables are this product's library only when DESIGN.md or the user says so, but a library added to the file always counts. Create only what is missing: variables for color
    roles, spacing, radius, and type sizes and families before the first frame, and components for
    repeated elements (RX-DS-03).
+   **Scale to the task.** A small job (about three screens, no design system or component library asked for, nothing
+   handed to a team) spends its effort on what the screens show: variables for the colours, sizes, and families the
+   screens use, then the screens themselves, built in auto layout; only an element that repeats on two or more screens
+   becomes a component, after the screens exist. Prototype links and rationale annotations only when asked; the
+   annotations for open rules and sample data stay (stage 6). One screenshot per screen when it is built and one at the
+   end, at scale 1; one audit at the end, then one more after the fixes. Each extra step re-reads the whole conversation:
+   in one three-screen FigCraft run (2026-11-23), a library built before the first screen, prototype links, 19
+   annotations, 13 screenshots, and four audits made the run three times the cost of a run without RYUX, and none of it
+   showed in the screens people judged.
+   **A typeface the canvas draws as itself.** Use a family the tool renders: in FigCraft, \`file.fontReport\` lists what
+   it has; on the first render compare one heading with the same text in the system font, and when the family comes out
+   in another shape or with spacing its letter-spacing does not set, change the family, not the spacing.
    **Libraries first.** In Figma, before the first frame, call \`get_libraries\` with the file key: every library in
    \`libraries_added_to_file\` is this product's design system, unless the prompt or DESIGN.md says not to use the library
    (an exploration, a new brand); read \`libraries_available_to_add\` only when the user names one. Inventory what those
@@ -277,6 +292,11 @@ The six stages of the core workflow (SKILL.md), as Design runs them.
      widths) and fix or record each one, and check the result against the Liveliness you set.
    - Purpose: put each prominent or decorative element through the purpose gate (RX-AS-05); on
      calm task UI, deliberate restraint is a valid answer.
+   - Across screens: a band, hero, or motif that opens one screen of a flow opens every screen, or none; the main
+     action has one colour on every screen (RX-DS-02); a label that leads somewhere ("Kembali ke beranda") names a tab
+     or screen the flow has (RX-CD-12); every name, hour, price, and total that appears on two screens agrees, and a
+     time a list card promises is one the detail screen offers (RX-AS-03). The canvas audit counts these as breaks
+     across screens; read the rest by eye.
    - Reviewer's read: rate Clarity, Hierarchy, and Specificity from the Design Read
      (capabilities/critique.md), plus Craft (type steps, spacing rhythm, alignment, detail), Strong,
      Adequate, or Weak with one reason each; fix anything Weak before the gate.

@@ -222,10 +222,10 @@ struct Entry {
     anc: Vec<usize>,
 }
 
-const COUNTS: [&str; 25] = [
+const COUNTS: [&str; 26] = [
     "screens", "imageFills", "distinctImages", "reusedImages", "contrastFails", "contrastUnknown", "targetsUnder24", "targetsUnder44", "cutText", "clippedText",
     "flatOverlays", "idleBusyButtons", "unstyledText", "unboundFills", "unboundSpacing", "layoutScreens", "looseLayers", "strayLayers", "rawEffects", "emptyBands",
-    "capsLabels", "cards", "smallText", "texts", "unevenRows",
+    "capsLabels", "cards", "smallText", "texts", "unevenRows", "flowBreaks",
 ];
 
 struct Out {
@@ -239,6 +239,201 @@ impl Out {
     }
     fn inc(&mut self, k: &'static str, by: i64) {
         *self.c.get_mut(k).unwrap() += by;
+    }
+}
+
+/// The first visible solid fill that is nearly opaque, with the layer's own opacity.
+fn solid(t: &Tree, n: usize) -> Option<Rgb> {
+    let ps = visible_paints(t.get(n, "fills"));
+    let p = ps.iter().find(|p| p.get("type").and_then(Value::as_str) == Some("SOLID"))?;
+    let a = num_or(p.get("opacity"), 1.0) * num_or(t.get(n, "opacity"), 1.0);
+    if a < 0.9 || ps.iter().any(|q| q.get("type").and_then(Value::as_str) != Some("SOLID")) {
+        return None;
+    }
+    Some(rgb(p.get("color")))
+}
+
+fn hex(c: Rgb) -> String {
+    let b = |v: f64| (v.clamp(0.0, 1.0) * 255.0).round() as u8;
+    format!("#{:02x}{:02x}{:02x}", b(c.r), b(c.g), b(c.b))
+}
+
+/// Every shown layer of a screen with the layers above it (the screen first).
+fn shown_with_ancestors(t: &Tree, frame: usize) -> Vec<(usize, Vec<usize>)> {
+    fn go(t: &Tree, n: usize, anc: &mut Vec<usize>, out: &mut Vec<(usize, Vec<usize>)>) {
+        if !t.visible(n) {
+            return;
+        }
+        out.push((n, anc.clone()));
+        if let Some(ks) = &t.kids[n] {
+            anc.push(n);
+            for &k in ks {
+                go(t, k, anc, out);
+            }
+            anc.pop();
+        }
+    }
+    let mut out = Vec::new();
+    let mut anc = vec![frame];
+    for &k in t.kids[frame].iter().flatten() {
+        go(t, k, &mut anc, &mut out);
+    }
+    out
+}
+
+/// What one screen says that the next screen must agree with: checks across the screens of a flow (owner request
+/// 2026-11-23, after a three-screen FigCraft benchmark where a dark band opened only the last screen, the main
+/// button changed colour between screens, "Kembali ke beranda" led to a tab the bar did not have, and a list card
+/// promised a visit hour the therapist's own hours did not have).
+fn flow_checks(t: &Tree, screens: &[usize], r: &Res, o: &mut Out) {
+    if screens.len() < 2 {
+        return;
+    }
+    let white = Rgb { r: 1.0, g: 1.0, b: 1.0 };
+    let time = Regex::new(r"(?:^|[^\d.:])((?:[01]?\d|2[0-3])[.:][0-5]\d)(?:$|[^\d])").unwrap();
+    let only_time = Regex::new(r"^\s*(?:[01]?\d|2[0-3])[.:][0-5]\d\s*$").unwrap();
+    let back = re(r"^\s*(?:kembali ke|back to|ke)\s+(.{2,30}?)\s*$");
+    let navbar = re(r"tab ?bar|bottom ?nav|nav ?bar|navigation|navigasi");
+    let button = re(r"\b(button|btn|cta)\b");
+    struct Screen {
+        name: String,
+        band: Option<(String, Rgb)>,
+        primary: Option<(String, Rgb)>,
+        layers: Vec<(usize, Vec<usize>)>,
+    }
+    let mut info: Vec<Screen> = Vec::new();
+    for &f in screens {
+        let fb = t.bx(f);
+        let bg = solid(t, f).unwrap_or(white);
+        let layers = shown_with_ancestors(t, f);
+        // a full-width band of its own colour that opens the screen (a header or hero), not an image
+        let band = layers.iter().map(|(n, _)| *n).find(|&n| {
+            let b = t.bx(n);
+            t.ty(n) != "TEXT" && b.x <= fb.x + 2.0 && b.w >= fb.w * 0.9 && b.y <= fb.y + 60.0 && b.h >= 140.0 && b.h <= fb.h * 0.8
+                && solid(t, n).is_some_and(|c| ratio(c, bg) >= 2.0)
+        }).map(|n| (t.name(n), solid(t, n).unwrap()));
+        // the main button: the widest filled control 40 to 64 tall with a label, set apart from the page
+        let mut primary: Option<(usize, f64)> = None;
+        for (n, anc) in &layers {
+            let b = t.bx(*n);
+            if t.ty(*n) == "TEXT" || b.h < 40.0 || b.h > 64.0 || b.w < fb.w * 0.35 || b.y < fb.y + 60.0 {
+                continue;
+            }
+            // not the status bar, a toast or a sheet, or a button in its busy state
+            if std::iter::once(n).chain(anc.iter()).any(|&a| a != f && (r.chrome.is_match(&t.name(a)) || r.overlay.is_match(&t.name(a)))) {
+                continue;
+            }
+            let label = t.find_shown(*n, &mut |k| t.ty(k) == "TEXT" && !t.chars(k).trim().is_empty()).first().map(|&k| t.chars(k)).unwrap_or_default();
+            if r.busy.is_match(&label) || r.ellipsis.is_match(label.trim()) {
+                continue;
+            }
+            let Some(c) = solid(t, *n) else { continue };
+            let labelled = t.kids[*n].is_some() && !t.find_shown(*n, &mut |k| t.ty(k) == "TEXT" && !t.chars(k).trim().is_empty()).is_empty();
+            if !labelled || ratio(c, bg) < 3.0 || !(button.is_match(&t.name(*n)) || b.w >= fb.w * 0.4) {
+                continue;
+            }
+            if primary.map_or(true, |(_, w)| b.w > w + 0.5) {
+                primary = Some((*n, b.w));
+            }
+        }
+        let primary = primary.map(|(n, _)| {
+            let label = t.find_shown(n, &mut |k| t.ty(k) == "TEXT" && !t.chars(k).trim().is_empty()).first().map(|&k| t.chars(k)).unwrap_or_default();
+            (label, solid(t, n).unwrap())
+        });
+        info.push(Screen { name: t.name(f), band, primary, layers });
+    }
+
+    // a band on one screen only, when three or more screens make the pattern clear
+    let banded: Vec<&Screen> = info.iter().filter(|s| s.band.is_some()).collect();
+    if info.len() >= 3 && banded.len() == 1 {
+        let s = banded[0];
+        let (name, c) = s.band.as_ref().unwrap();
+        o.inc("flowBreaks", 1);
+        o.add("RX-DS-02", "warn", &s.name, name, format!("only \"{}\" opens with a full-width {} band (\"{}\"); the other {} screens start on the page colour: carry the treatment to every screen of the flow, or drop it", s.name, hex(*c), short(name, 30), info.len() - 1));
+    }
+
+    // the main button in another colour on another screen
+    let filled: Vec<&Screen> = info.iter().filter(|s| s.primary.is_some()).collect();
+    let differs = |a: Rgb, b: Rgb| (a.r - b.r).abs().max((a.g - b.g).abs()).max((a.b - b.b).abs()) > 0.08;
+    if filled.len() >= 2 && filled.iter().any(|s| differs(s.primary.as_ref().unwrap().1, filled[0].primary.as_ref().unwrap().1)) {
+        let list: Vec<String> = filled.iter().map(|s| { let (l, c) = s.primary.as_ref().unwrap(); format!("{} \"{}\" {}", s.name, short(l.trim(), 24), hex(*c)) }).collect();
+        let first = filled.iter().find(|s| differs(s.primary.as_ref().unwrap().1, filled[0].primary.as_ref().unwrap().1)).unwrap();
+        o.inc("flowBreaks", 1);
+        o.add("RX-DS-02", "warn", &first.name, &first.primary.as_ref().unwrap().0, format!("the main button changes colour between screens ({}): one action colour for the main action on every screen", list.join("; ")));
+    }
+
+    // "Kembali ke beranda" when no tab and no screen is called that
+    let mut tabs: Vec<String> = Vec::new();
+    let mut have_bar = false;
+    for s in &info {
+        for (n, anc) in &s.layers {
+            if t.ty(*n) == "TEXT" && anc.iter().any(|&a| navbar.is_match(&t.name(a))) {
+                have_bar = true;
+                tabs.push(t.chars(*n).trim().to_lowercase());
+            }
+        }
+    }
+    tabs.sort();
+    tabs.dedup();
+    let frames: Vec<String> = info.iter().map(|s| Regex::new(r"^[\d\s._-]+").unwrap().replace(&s.name.to_lowercase(), "").to_string()).collect();
+    if have_bar {
+        for s in &info {
+            for (n, _) in &s.layers {
+                if t.ty(*n) != "TEXT" {
+                    continue;
+                }
+                let text = t.chars(*n);
+                let Some(m) = back.captures(&text) else { continue };
+                let to = m[1].to_lowercase();
+                let known = |x: &String| !x.is_empty() && (x.contains(&to) || to.contains(x.as_str()));
+                if !tabs.iter().any(known) && !frames.iter().any(known) {
+                    o.inc("flowBreaks", 1);
+                    let shown: Vec<&str> = tabs.iter().map(|s| s.as_str()).filter(|s| !s.is_empty()).collect();
+                    o.add("RX-CD-12", "warn", &s.name, &t.name(*n), format!("\"{}\" leads to a place the flow does not have: the tab bar holds {}; name the tab or screen it opens", short(text.trim(), 40), shown.join(", ")));
+                }
+            }
+        }
+    }
+
+    // a list card that promises an hour the same person's own screen does not offer
+    for (i, a) in info.iter().enumerate() {
+        let fa = t.bx(screens[i]);
+        for (n, anc) in &a.layers {
+            let name = t.chars(*n).trim().to_string();
+            if t.ty(*n) != "TEXT" || name.chars().count() < 6 || !name.contains(' ') || !name.chars().next().is_some_and(char::is_uppercase) || time.is_match(&name) {
+                continue;
+            }
+            // the card: the nearest container well under the screen's height
+            let Some(&card) = anc.iter().rev().find(|&&c| c != screens[i] && t.bx(c).h <= fa.h * 0.4 && t.bx(c).w >= fa.w * 0.6 && !r.chrome.is_match(&t.name(c))) else { continue };
+            let promised: Vec<String> = t.find_shown(card, &mut |k| t.ty(k) == "TEXT").iter()
+                .flat_map(|&k| time.captures_iter(&t.chars(k)).map(|m| m[1].replace(':', ".")).collect::<Vec<_>>()).collect();
+            if promised.is_empty() {
+                continue;
+            }
+            for (j, b) in info.iter().enumerate() {
+                if j == i {
+                    continue;
+                }
+                // the person's own screen: the same name, on a screen that lists visit hours
+                let own = b.layers.iter().any(|(m, _)| t.ty(*m) == "TEXT" && t.chars(*m).trim() == name);
+                if !own {
+                    continue;
+                }
+                let mut hours: Vec<String> = b.layers.iter().filter(|(m, anc2)| t.ty(*m) == "TEXT" && only_time.is_match(&t.chars(*m)) && !anc2.iter().any(|&a| r.chrome.is_match(&t.name(a)))).map(|(m, _)| t.chars(*m).trim().replace(':', ".")).collect();
+                hours.dedup();
+                let pad = |h: &str| if h.len() == 4 { format!("0{h}") } else { h.to_string() };
+                let hours: Vec<String> = hours.iter().map(|h| pad(h)).collect();
+                if hours.len() < 3 {
+                    continue;
+                }
+                for p in &promised {
+                    if !hours.contains(&pad(p)) {
+                        o.inc("flowBreaks", 1);
+                        o.add("RX-AS-03", "warn", &a.name, &t.name(card), format!("\"{}\": {} promises {}, but {} offers {}: sample data must agree across screens", short(&name, 30), a.name, pad(p), b.name, hours.iter().take(6).cloned().collect::<Vec<_>>().join(", ")));
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -699,6 +894,8 @@ pub fn audit(input: &Value) -> Value {
         }
     }
 
+    flow_checks(&t, &screens, r, &mut o);
+
     // Layers on the page outside the screens.
     for &n in &flat {
         if screens.contains(&n) || matches!(t.ty(n), "COMPONENT" | "COMPONENT_SET") || t.has_components(n) || !t.visible(n) {
@@ -740,10 +937,10 @@ pub fn audit(input: &Value) -> Value {
     let c = &o.c;
     let ann = if annotations.is_empty() { "none".to_string() } else { annotations.iter().map(|(k, v)| format!("{k} {v}")).collect::<Vec<_>>().join(", ") };
     let gate = format!(
-        "figma audit ({}): screens {} · images {} distinct, {} fills, {} reused across screens · contrast fails {} ({} over images, not measured) · text cut {}, clipped {} · targets under 24 {}, under 44 {} · overlays with no lift {} · busy buttons with idle label {} · unstyled text {}, unbound fills {}, unbound spacing {} · built in auto layout {}/{} screens, loose layers {}, layers outside the screens {}, effects without a style {} · empty bands {}, small uppercase labels {}, section cards {}, text under 12 px {}/{}, uneven button rows {} · annotations {} · {} fail, {} warn",
+        "figma audit ({}): screens {} · images {} distinct, {} fills, {} reused across screens · contrast fails {} ({} over images, not measured) · text cut {}, clipped {} · targets under 24 {}, under 44 {} · overlays with no lift {} · busy buttons with idle label {} · unstyled text {}, unbound fills {}, unbound spacing {} · built in auto layout {}/{} screens, loose layers {}, layers outside the screens {}, effects without a style {} · empty bands {}, small uppercase labels {}, section cards {}, text under 12 px {}/{}, uneven button rows {} · breaks across screens {} · annotations {} · {} fail, {} warn",
         pname, c["screens"], c["distinctImages"], c["imageFills"], c["reusedImages"], c["contrastFails"], c["contrastUnknown"], c["cutText"], c["clippedText"],
         c["targetsUnder24"], c["targetsUnder44"], c["flatOverlays"], c["idleBusyButtons"], c["unstyledText"], c["unboundFills"], c["unboundSpacing"],
-        c["layoutScreens"], c["screens"], c["looseLayers"], c["strayLayers"], c["rawEffects"], c["emptyBands"], c["capsLabels"], c["cards"], c["smallText"], c["texts"], c["unevenRows"],
+        c["layoutScreens"], c["screens"], c["looseLayers"], c["strayLayers"], c["rawEffects"], c["emptyBands"], c["capsLabels"], c["cards"], c["smallText"], c["texts"], c["unevenRows"], c["flowBreaks"],
         ann, fails, o.findings.len() - fails
     );
     let mut counts = Map::new();
