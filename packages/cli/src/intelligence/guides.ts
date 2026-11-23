@@ -790,7 +790,11 @@ workflow (SKILL.md); Frame, Explore, and Evaluate happen in Design.
 7. **Close with the report (report.md).** Run the checks first: CODE QUALITY and VISUAL QA need real checks (typecheck,
    tests, render), or say what was not run. Run \`npx --no-install @ryuxdsgn/design-intelligence scan <changed
    paths>\` as well (add \`--design\` when DESIGN.md has a \`direction:\` block, so code that strays from its
-   colours, type, radius, or durations shows as drift): fix every fail, and fix each warn or give the reason it stays. When the build runs, also run \`npx --no-install @ryuxdsgn/design-intelligence scan <url>\` on the page you built, the same way. Both use the copy of RYUX in the project (\`ryux install --save-dev\` adds it) and nothing is downloaded. When there is no copy, or the command is not permitted, do not run it another way: say in the gate that it did not run and why, and name the command so the user can decide. For a new flow or a consequential change, add the
+   colours, type, radius, or durations shows as drift): fix every fail, and fix each warn or give the reason it stays. A
+   \`Motion:\` block at the end lists notes, not faults (places that change with a cut where a short transition would
+   help): do not build them unasked. Put them in the final message, one line each, and ask once, in the person's
+   language, whether to build them; on yes, read RX-UI-11 and RX-A11Y-08 then, build only what was listed (an enter and
+   exit when the flag changes, not on first render) with a reduced-motion fallback, and scan again. With no one to ask, list them only. When the build runs, also run \`npx --no-install @ryuxdsgn/design-intelligence scan <url>\` on the page you built, the same way. Both use the copy of RYUX in the project (\`ryux install --save-dev\` adds it) and nothing is downloaded. When there is no copy, or the command is not permitted, do not run it another way: say in the gate that it did not run and why, and name the command so the user can decide. For a new flow or a consequential change, add the
    usability test plan (RX-UX-12) unless the design already has one.
    In the findings table, mark each row done (\`✓\`) or proposed (\`?\`) in its first cell (\`1 ✓\`, \`2 ?\`): done is a
    change made this turn; proposed is one outside the request or one that needs the person's go-ahead, and

@@ -62,7 +62,7 @@ function listRules(json: boolean): void {
     return;
   }
   const row = (d: { rule: string; level: string; looksFor: string; folder?: boolean }): void => {
-    console.log(`${d.level === "fail" ? pc.red("fail") : pc.yellow("warn")}  ${d.rule.padEnd(11)} ${title(d.rule)}`);
+    console.log(`${d.level === "fail" ? pc.red("fail") : d.level === "note" ? pc.cyan("note") : pc.yellow("warn")}  ${d.rule.padEnd(11)} ${title(d.rule)}`);
     console.log(`      ${d.looksFor}${d.folder ? " (folder scans only)" : ""}`);
   };
   console.log(`ryux scan v${VERSION}: checks for rules a machine can see. No LLM.\n\nSource files (${SOURCE_CHECKS.length}):`);
@@ -95,8 +95,22 @@ async function hookFiles(): Promise<string[]> {
   }
 }
 
+/** Motion notes: places that change with a cut where a short transition would help. Not faults; the agent lists
+ *  them at the end and asks whether to build them. At most five shown, the rest counted. */
+function motionReport(notes: ScanFinding[]): string {
+  if (!notes.length) return "";
+  const level = (n: ScanFinding) => (/^motion (L\d)/.exec(n.message)?.[1] ?? "L?");
+  const by = new Map<string, number>();
+  for (const n of notes) by.set(level(n), (by.get(level(n)) ?? 0) + 1);
+  const kinds = [...by.entries()].sort().map(([k, v]) => `${v} ${k}`).join(", ");
+  const lines = [`\nMotion: ${notes.length} place${notes.length === 1 ? "" : "s"} could move (${kinds}). Not a fault: list them for the person and ask whether to build them.`];
+  for (const n of notes.slice(0, 5)) lines.push(`${pc.cyan("~")} ${n.file}:${n.line}:${n.column} ${n.rule} ${n.message}`);
+  if (notes.length > 5) lines.push(`  and ${notes.length - 5} more (--json lists all).`);
+  return lines.join("\n");
+}
+
 function report(findings: ScanFinding[], files: number, pages = 0): string {
-  const mark = { fail: pc.red("✗"), warn: pc.yellow("!") };
+  const mark = { fail: pc.red("✗"), warn: pc.yellow("!"), note: pc.cyan("~") };
   const lines = findings.map((f) =>
     f.width ? `${mark[f.level]} ${f.file} @${f.width}px ${f.rule} ${f.message} [${f.selector}]` : `${mark[f.level]} ${f.file}:${f.line}:${f.column} ${f.rule} ${f.message}`,
   );
@@ -157,7 +171,7 @@ export async function runScan(argv: string[]): Promise<void> {
     // A hook must never block an edit by crashing: anything unexpected ends quietly with exit 0.
     const files = (await hookFiles()).filter((f) => existsSync(f) && scannable(f));
     if (!files.length) return;
-    const { findings } = await scanPaths(files, skip, design);
+    const findings = (await scanPaths(files, skip, design)).findings.filter((f) => f.level !== "note");
     if (!findings.length) return;
     const message = `RYUX scan found ${findings.length} issue${findings.length === 1 ? "" : "s"} in the file${files.length === 1 ? "" : "s"} you just edited. Fix each fail; for each warn, fix it or add a ryux-ignore comment with the reason.\n${report(findings, files.length)}`;
     // Claude Code shows stderr to the agent on exit 2. Codex and Cursor read context from JSON on stdout
@@ -182,7 +196,10 @@ export async function runScan(argv: string[]): Promise<void> {
     process.exitCode = 2;
     return;
   }
-  const { files, findings, sources } = targets.length ? await scanPaths(targets, skip, design) : { files: 0, findings: [], sources: [] as RawSource[] };
+  const scanned = targets.length ? await scanPaths(targets, skip, design) : { files: 0, findings: [] as ScanFinding[], sources: [] as RawSource[] };
+  const { files, sources } = scanned;
+  const findings = scanned.findings.filter((f) => f.level !== "note");
+  const motion = scanned.findings.filter((f) => f.level === "note");
   const drift = design && designFile ? { file: designFile, read: { colours: design.colours.length, fonts: design.fonts, radius: design.radius, durations: design.durations }, notRead: design.unread, unused: unused(sources, design) } : undefined;
   let ignored: { url: string; regions: string[] }[] = [];
   if (urls.length) {
@@ -199,10 +216,12 @@ export async function runScan(argv: string[]): Promise<void> {
   const ok = !findings.some((f) => f.level === "fail");
   if (!ok) process.exitCode = 1;
   if (opts.json) {
-    console.log(JSON.stringify({ ok, cli: VERSION, files, pages: urls.length, widths: urls.length ? widths : [], ...(drift ? { design: drift } : {}), ...(ignored.length ? { ignored } : {}), findings }, null, 2));
+    console.log(JSON.stringify({ ok, cli: VERSION, files, pages: urls.length, widths: urls.length ? widths : [], ...(drift ? { design: drift } : {}), ...(ignored.length ? { ignored } : {}), findings, motion }, null, 2));
     return;
   }
   console.log(report(findings, files, urls.length));
+  const moves = motionReport(motion);
+  if (moves) console.log(moves);
   for (const i of ignored) {
     console.log(`Not measured in ${i.url}: ${i.regions.join(", ")} (marked data-ryux-ignore as prototype controls).`);
   }

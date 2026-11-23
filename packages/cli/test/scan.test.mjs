@@ -284,6 +284,21 @@ test("motion: endless loops, transition properties and length, and translucency"
   assert.deepEqual(scan("a.html", "<textarea aria-label=\"Note\"></textarea>"), [], "single files skip the textarea check");
 });
 
+test("motion notes: listed apart from faults, never fail the scan, and kept out of the edit hook; hover alone is not a note", () => {
+  const dir = mkdtempSync(join(tmpdir(), "ryux-motion-"));
+  writeFileSync(join(dir, "Order.tsx"), 'export function Order({ open }) { return <div>{open && <ul><li>Item</li></ul>}<button className="px-4 hover:bg-zinc-50">Pesan</button></div> }\n');
+  const text = run(dir, ["scan"]);
+  assert.equal(text.code, 0);
+  assert.match(text.out, /0 fail, 0 warn\./);
+  assert.match(text.out, /Motion: 1 place could move \(1 L2\)\. Not a fault: list them for the person and ask whether to build them\./);
+  const json = JSON.parse(run(dir, ["scan", "--json"]).out);
+  assert.deepEqual(json.findings, []);
+  assert.deepEqual(json.motion.map((n) => `${n.level} ${n.rule} ${n.message.slice(0, 9)}`), ["note RX-UI-11 motion L2"]);
+  const hook = run(dir, ["scan", "--hook"], JSON.stringify({ tool_input: { file_path: join(dir, "Order.tsx") } }));
+  assert.equal(hook.code, 0);
+  assert.equal(hook.out, "");
+});
+
 test("comments are not scanned, and ryux-ignore switches a rule off", () => {
   assert.deepEqual(scan("a.tsx", "{/* Rp 99 */}\n// Rp 99\n<p>x</p>"), []);
   assert.deepEqual(scan("a.tsx", "<p>Rp 99</p> {/* ryux-ignore RX-CD-02 */}"), []);
