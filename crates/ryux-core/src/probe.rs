@@ -13,7 +13,7 @@ use std::collections::{HashMap, HashSet};
 
 /// What the rendered checks look for, one row per line of RENDER_CHECKS in packages/cli/src/checks.ts (which also
 /// lists RX-QA-08, script errors, reported by the CLI itself). `cargo test` and the CLI tests hold them equal.
-pub const CATALOGUE: [(&str, &str); 17] = [
+pub const CATALOGUE: [(&str, &str); 18] = [
     ("RX-RD-01", "fail"),
     ("RX-A11Y-01", "fail"),
     ("RX-A11Y-01", "warn"),
@@ -29,6 +29,7 @@ pub const CATALOGUE: [(&str, &str); 17] = [
     ("RX-AS-11", "warn"),
     ("RX-UI-26", "warn"),
     ("RX-UI-01", "warn"),
+    ("RX-UI-02", "warn"),
     ("RX-UX-15", "warn"),
     ("RX-FM-05", "warn"),
 ];
@@ -1490,6 +1491,73 @@ impl<'a> Page<'a> {
             tell(&mut out, "RX-UI-01", "cards", Some(first), format!("cards sit inside a card ({boxes}, the first holds {}): one container per real group; separate inside it with spacing or a divider", holds(first).len()));
         }
 
+        // Proximity (RX-UI-02, Gestalt proximity and common region): a heading that sits as close to the content
+        // above it as to its own content reads as belonging to neither. Measured between what is drawn (text, replaced
+        // elements, painted boxes), and only where no painted region separates the heading from what is above it,
+        // since a region boundary groups more strongly than distance. A short smaller line right above the heading
+        // (an eyebrow) belongs to the heading and is stepped over.
+        let painted = |i: usize| {
+            let shadow = self.s(i, "boxShadow");
+            self.rgba(self.s(i, "backgroundColor")).is_some_and(|c| c[3] > 0.05)
+                || self.s(i, "backgroundImage") != ""
+                || (self.n(i, "borderTopWidth") >= 1.0 && self.rgba(self.or_color(i, "borderTopColor")).is_some_and(|c| c[3] > 0.1))
+                || (!shadow.is_empty() && shadow != "none")
+        };
+        let replaced = |i: usize| matches!(self.els[i].tag, "IMG" | "SVG" | "svg" | "VIDEO" | "CANVAS" | "INPUT" | "SELECT" | "TEXTAREA" | "BUTTON" | "PICTURE");
+        let moving = |i: usize| self.pinned[i] || std::iter::once(i).chain(self.ancestors(i)).any(|x| matches!(self.s(x, "position"), "fixed" | "sticky" | "absolute"));
+        let regions: Vec<usize> = visible.iter().copied().filter(|&i| painted(i) && self.els[i].r.w >= 120.0 && self.els[i].r.h >= 40.0).collect();
+        let region_of = |i: usize| -> Vec<usize> { regions.iter().copied().filter(|&g| g != i && self.contains(g, i)).collect() };
+        // ink: (element, rect, font size when it is text)
+        let mut ink: Vec<(usize, Rect, f64)> = texts.iter().filter(|t| t.r.w > 0.0 && t.r.h > 0.0 && !moving(t.e)).map(|t| (t.e, t.r, self.n(t.e, "fontSize"))).collect();
+        ink.extend(visible.iter().copied().filter(|&i| (replaced(i) || painted(i)) && self.els[i].r.w > 4.0 && self.els[i].r.h > 4.0 && !moving(i)).map(|i| (i, self.els[i].r, 0.0)));
+        let heading = |e: usize| std::iter::once(e).chain(self.ancestors(e)).take(2).find(|&x| matches!(self.els[x].tag, "H1" | "H2" | "H3" | "H4"));
+        let mut loose: Vec<(usize, f64, f64)> = Vec::new();
+        let mut seen: Vec<usize> = Vec::new();
+        for t in texts.iter().filter(|t| !moving(t.e)) {
+            let Some(h) = heading(t.e) else { continue };
+            if seen.contains(&h) || self.els[h].tag == "H1" {
+                continue;
+            }
+            seen.push(h);
+            // the heading's own lines
+            let lines: Vec<Rect> = texts.iter().filter(|u| u.e == h || self.contains(h, u.e)).map(|u| u.r).collect();
+            let top = lines.iter().map(|r| r.y).fold(f64::INFINITY, f64::min);
+            let bottom = lines.iter().map(|r| r.bottom()).fold(f64::NEG_INFINITY, f64::max);
+            let (left, right) = (lines.iter().map(|r| r.x).fold(f64::INFINITY, f64::min), lines.iter().map(|r| r.right()).fold(f64::NEG_INFINITY, f64::max));
+            let size = self.n(h, "fontSize");
+            let beside = |r: &Rect| r.x < right - 1.0 && r.right() > left + 1.0;
+            let other = |e: usize| e != h && !self.contains(h, e) && !self.contains(e, h);
+            let mut above: Vec<&(usize, Rect, f64)> = ink.iter().filter(|(e, r, _)| other(*e) && beside(r) && r.bottom() <= top + 1.0).collect();
+            above.sort_by(|a, b| b.1.bottom().total_cmp(&a.1.bottom()));
+            let mut edge = top;
+            let mut k = 0;
+            // an eyebrow: a short, smaller line within 16 px right above
+            while let Some(&&(e, r, fs)) = above.get(k) {
+                let words = texts.iter().filter(|u| u.e == e).map(|u| u.x).collect::<Vec<_>>().join(" ");
+                if fs > 0.0 && fs < size && edge - r.bottom() <= 16.0 && len16(words.trim()) <= 40 {
+                    edge = r.y;
+                    k += 1;
+                    continue;
+                }
+                break;
+            }
+            let Some(&&(up, ur, _)) = above.get(k) else { continue };
+            let below = ink.iter().filter(|(e, r, _)| other(*e) && beside(r) && r.y >= bottom - 1.0).min_by(|a, b| a.1.y.total_cmp(&b.1.y));
+            let Some(&(_, dr, _)) = below else { continue };
+            let (gap_up, gap_down) = (edge - ur.bottom(), dr.y - bottom);
+            if region_of(h) != region_of(up) || region_of(up).contains(&up) {
+                continue;
+            }
+            if gap_down >= 12.0 && gap_up <= gap_down + 2.0 && gap_up < 200.0 {
+                loose.push((h, gap_up, gap_down));
+            }
+        }
+        if let Some(&(first, up, down)) = loose.first() {
+            let more = if loose.len() > 1 { format!(", and {} more heading{}", loose.len() - 1, if loose.len() > 2 { "s" } else { "" }) } else { String::new() };
+            let words = texts.iter().filter(|u| u.e == first || self.contains(first, u.e)).map(|u| u.x).collect::<Vec<_>>().join(" ");
+            tell(&mut out, "RX-UI-02", "proximity", Some(first), format!("{} sits {} px below the content above it and {} px above its own{more}: a heading belongs to what follows, so give it more space above than below (about twice as much)", quote(words.trim()), num_str(round(up)), num_str(round(down))));
+        }
+
         // Textarea growth (RX-FM-05): filled with 8 lines for a moment, a textarea that keeps its height and hides the
         // text past its edge.
         for i in (2..n).filter(|&i| self.els[i].tag == "TEXTAREA") {
@@ -2030,6 +2098,44 @@ mod tests {
         assert_eq!(wide(serde_json::json!({"t": "BUTTON", "p": 1, "s": 2, "ctl": 1, "nm": "Bayar Rp1.250.000", "r": [900, 700, 200, 48]})), 1);
         assert_eq!(wide(serde_json::json!({"t": "A", "p": 1, "s": 2, "ctl": 1, "nm": "Bayar Rp1.250.000", "r": [900, 700, 200, 48]})), 1);
         assert_eq!(wide(serde_json::json!({"t": "INPUT", "p": 1, "s": 2, "ctl": 1, "ty": "submit", "nm": "Bayar Rp1.250.000", "r": [900, 700, 200, 48]})), 1);
+    }
+
+    #[test]
+    fn a_heading_as_close_to_the_content_above_as_to_its_own_reads_as_neither() {
+        // a paragraph, then an h2 with the same 24 px above and below it, then its paragraph
+        let at = |above: f64, below: f64, card: bool| {
+            let h = 100.0 + 20.0 + above;
+            let p2 = h + 28.0 + below;
+            let mut els = vec![
+                serde_json::json!({"t": "P", "p": 1, "s": 2, "r": [16, 100, 288, 20]}),
+                serde_json::json!({"t": "H2", "p": 1, "s": 3, "r": [16, h, 288, 28]}),
+                serde_json::json!({"t": "P", "p": 1, "s": 2, "r": [16, p2, 288, 20]}),
+            ];
+            let (hi, pi) = if card {
+                // the heading and its paragraph sit in a filled box (before them in DOM order): the region separates
+                // the heading from the text above
+                els.insert(1, serde_json::json!({"t": "DIV", "p": 1, "s": 4, "r": [8, h - 12.0, 304, p2 + 32.0 - h]}));
+                els[2]["p"] = serde_json::json!(3);
+                els[3]["p"] = serde_json::json!(3);
+                (4, 5)
+            } else {
+                (3, 4)
+            };
+            let texts = serde_json::json!([
+                {"e": 2, "x": "Paragraf sebelumnya", "r": [16, 100, 200, 20]},
+                {"e": hi, "x": "Jadwal kunjungan", "r": [16, h, 180, 28]},
+                {"e": pi, "x": "Pilih tanggal dan jam", "r": [16, p2, 200, 20]}
+            ]);
+            let out = page(serde_json::json!({}), serde_json::json!([{"fontSize": 16}, {"fontSize": 22, "fontWeight": 700}, {"backgroundColor": "rgb(240, 240, 240)"}]), serde_json::Value::Array(els), texts);
+            rules_of(&out, "RX-UI-02")
+        };
+        let even = at(24.0, 24.0, false);
+        assert_eq!(even.len(), 1, "{even:?}");
+        assert!(even[0].contains("24 px below the content above it and 24 px above its own"));
+        assert!(at(16.0, 24.0, false).len() == 1);
+        assert!(at(40.0, 12.0, false).is_empty());
+        assert!(at(24.0, 8.0, false).is_empty());
+        assert!(at(24.0, 24.0, true).is_empty());
     }
 
     #[test]
