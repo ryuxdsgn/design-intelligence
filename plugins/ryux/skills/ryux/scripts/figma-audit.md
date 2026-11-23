@@ -577,6 +577,65 @@ const figmaAudit = async function figmaAudit(figma, pageName) {
                 add("RX-UX-15", "warn", last.f, n, `"${short(label, 30)}" ${shown} first shows on "${last.f.name}": no earlier screen shows it, so the person meets the cost after committing; show every cost with the price before the action`);
             }
         }
+        // The chosen hour missing from the bar that commits (RX-IX-17): three or more hour chips, one named as picked, and a
+        // full-width bar pinned to the bottom that holds the price or the button but not that hour (owner rating 2026-11-24).
+        const STARTS_TIME = /^\s*(?:[01]?\d|2[0-3])[.:][0-5]\d\b/;
+        const HAS_MONEY = new RegExp(MONEY.source, "i");
+        const shownText = (k) => findShown(k, (x) => x.type === "TEXT").map((x) => x.characters.trim()).filter((x) => x);
+        const padH = (h) => (h.length === 4 ? `0${h}` : h);
+        info.forEach((a) => {
+            const chips = a.layers.map((e) => e.n).filter((n) => {
+                if (n.type === "TEXT" || box(n).width > a.fb.width * 0.5 || FCHROME.test(n.name))
+                    return false;
+                const words = shownText(n);
+                return words.length >= 1 && words.length <= 3 && STARTS_TIME.test(words[0]);
+            });
+            const picked = chips.filter((k) => PICKED.test(k.name));
+            if (chips.length < 3 || picked.length !== 1)
+                return;
+            const hm = [...` ${shownText(picked[0])[0]}`.matchAll(TIME)][0];
+            if (!hm)
+                return;
+            const hour = hm[1].replace(":", ".");
+            const bar = a.layers.map((e) => e.n).find((n) => {
+                const b = box(n);
+                return n.type !== "TEXT" && n !== a.f && b.width >= a.fb.width * 0.9 && Math.abs(b.y + b.height - (a.fb.y + a.fb.height)) <= 40 && b.height <= 220 && !NAVBAR.test(n.name)
+                    && (shownText(n).some((x) => HAS_MONEY.test(x)) || findShown(n, (x) => BUTTON.test(x.name)).length > 0);
+            });
+            if (!bar)
+                return;
+            const held = shownText(bar).some((x) => [...` ${x} `.matchAll(TIME)].some((m) => padH(m[1].replace(":", ".")) === padH(hour)));
+            if (!held) {
+                c.flowBreaks++;
+                add("RX-IX-17", "warn", a.f, bar, `"${short(bar.name, 30)}" holds the action but not the chosen hour ${padH(hour)}: put the date and hour with the price and the button, so the person sees what they book as they commit`);
+            }
+        });
+        // A confirmation that never says how the person pays (RX-IX-05): the flow shows a price, and its last screen confirms
+        // the order but names no payment method (owner rating 2026-11-24).
+        const PAY = /gopay|\bovo\b|\bdana\b|shopeepay|qris|virtual account|\bva\b|transfer|kartu (?:kredit|debit)|tunai|\bcash\b|paylater|metode (?:bayar|pembayaran)|payment method|bayar\b.{0,40}\b(?:setelah|di tempat|saat|nanti|langsung|via|ke terapis)|pay (?:after|on|at|later)/i;
+        const CONFIRMED = /terkonfirmasi|dikonfirmasi|berhasil|sukses|lunas|terjadwal|dipesan|confirmed|success|booked|order placed/i;
+        const texts = (s) => s.layers.filter((e) => e.n.type === "TEXT").map((e) => e.n.characters);
+        const priced = info.some((s) => texts(s).some((x) => HAS_MONEY.test(x)));
+        const lastTexts = texts(last);
+        if (priced && (CONFIRMED.test(last.f.name) || lastTexts.some((x) => CONFIRMED.test(x))) && !lastTexts.some((x) => PAY.test(x))) {
+            c.flowBreaks++;
+            add("RX-IX-05", "warn", last.f, last.f, `"${last.f.name}" confirms the order but never says how it is paid: name the method with the total ("Bayar ke terapis setelah sesi"); if the business has not chosen one, show a neutral sample method with the file's sample-data marker`);
+        }
+        // Two words for one state across the flow (RX-CD-05): a taken slot called "Penuh" on one chip and "Terisi" on another.
+        const TAKEN = /\b(penuh|terisi|habis|sold out|full|booked)\b/i;
+        const words = [];
+        for (const k of order)
+            for (const { n, anc } of info[k].layers) {
+                if (n.type !== "TEXT" || [...n.characters.trim()].length > 25 || anc.some((x) => FCHROME.test(x.name)))
+                    continue;
+                const m = TAKEN.exec(n.characters);
+                if (m && !words.some((w) => w.w === m[1].toLowerCase()))
+                    words.push({ w: m[1].toLowerCase(), s: info[k], n });
+            }
+        if (words.length >= 2) {
+            c.flowBreaks++;
+            add("RX-CD-05", "warn", words[1].s.f, words[1].n, `"${words[0].w}" and "${words[1].w}" name the same state: pick one word for a taken slot and use it on every screen`);
+        }
     }
     // Nothing on the page outside the screens but components and the frames or sections that hold them.
     for (const n of opened(page.children)) {

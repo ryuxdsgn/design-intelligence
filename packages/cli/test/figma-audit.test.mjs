@@ -339,6 +339,28 @@ test("across screens: a band on one screen, the main button in another colour, a
   assert.deepEqual(quiet.findings.filter((f) => ["RX-CD-12", "RX-AS-03"].includes(f.rule)).map((f) => f.message), []);
 });
 
+test("booking: the chosen hour away from the bar that commits, a confirmation with no way to pay, two words for a taken slot", async () => {
+  const chip = (h, x, y, extra = "", sub) => node("FRAME", `Jam/${h}${extra}`, [x, y, 100, 44], { fills: [white] }, [text("Time", sub ? `${h} · ${sub}` : h, [x + 20, y + 12, 60, 20])]);
+  const bar = (lines) => node("FRAME", "Bottom bar", [0, 724, 390, 120], { fills: [white] }, [...lines.map((l, i) => text("Line", l, [16, 740 + i * 22, 200, 20])), node("FRAME", "Button", [220, 744, 154, 52], { fills: [white] }, [text("Label", "Pesan kunjungan", [240, 760, 120, 20])])]);
+  const slots = [chip("09.00", 16, 300), chip("10.30", 140, 300, " (dipilih)"), chip("13.00", 264, 300, "", "Terisi")];
+  const profile = (lines) => screen("02-profil", [text("Name", "Ftr. Rina Kusuma", [16, 80, 300, 28]), text("Hari", "Sen 23 · Penuh", [16, 240, 200, 20]), ...slots, bar(lines)]);
+  const done = (lines) => screen("03-terkonfirmasi", [text("Head", "Kunjungan terkonfirmasi", [16, 80, 300, 28]), ...lines.map((l, i) => text("Line", l, [16, 140 + i * 30, 300, 20]))]);
+  const r = await audit([profile(["Rp250.000", "per sesi"]), done(["Total bayar", "Rp250.000"])]);
+  const got = r.findings.filter((f) => ["RX-IX-17", "RX-IX-05", "RX-CD-05"].includes(f.rule)).map((f) => `${f.rule} ${f.frame}: ${f.message}`);
+  assert.deepEqual(got, [
+    'RX-IX-17 02-profil: "Bottom bar" holds the action but not the chosen hour 10.30: put the date and hour with the price and the button, so the person sees what they book as they commit',
+    'RX-IX-05 03-terkonfirmasi: "03-terkonfirmasi" confirms the order but never says how it is paid: name the method with the total ("Bayar ke terapis setelah sesi"); if the business has not chosen one, show a neutral sample method with the file\'s sample-data marker',
+    'RX-CD-05 02-profil: "penuh" and "terisi" name the same state: pick one word for a taken slot and use it on every screen',
+  ]);
+  // the hour in the bar, a method on the confirmation, and one word: quiet
+  const slotsOk = [chip("09.00", 16, 300), chip("10.30", 140, 300, " (dipilih)"), chip("13.00", 264, 300, "", "Penuh")];
+  const ok = await audit([
+    screen("02-profil", [text("Name", "Ftr. Rina Kusuma", [16, 80, 300, 28]), text("Hari", "Sen 23 · Penuh", [16, 240, 200, 20]), ...slotsOk, bar(["Rp250.000", "Sel, 24 Nov · 10.30"])]),
+    done(["Total bayar", "Rp250.000", "Bayar ke terapis setelah sesi"]),
+  ]);
+  assert.deepEqual(ok.findings.filter((f) => ["RX-IX-17", "RX-IX-05", "RX-CD-05"].includes(f.rule)).map((f) => f.message), []);
+});
+
 test("lists: a count the list under it does not bear out", async () => {
   const card = (y) => node("FRAME", "Kartu terapis", [20, y, 350, 166], { fills: [white] }, [text("Name", "Ftr. Dewi", [36, y + 16, 200, 20])]);
   const bar = node("FRAME", "Tab bar", [0, 761, 390, 83], { fills: [white] }, [text("Tab", "Cari", [40, 790, 40, 16])]);
