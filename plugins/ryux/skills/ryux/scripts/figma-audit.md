@@ -36,7 +36,7 @@ const figmaAudit = async function figmaAudit(figma, pageName) {
     const screens = opened(page.children).filter((n) => n.type === "FRAME" && n.visible !== false && !hasComponents(n));
     const findings = [];
     const add = (rule, level, frame, node, message) => findings.push({ rule, level, frame: frame.name, node: node ? node.name : "", message });
-    const c = { screens: screens.length, imageFills: 0, distinctImages: 0, reusedImages: 0, contrastFails: 0, contrastUnknown: 0, targetsUnder24: 0, targetsUnder44: 0, cutText: 0, clippedText: 0, flatOverlays: 0, idleBusyButtons: 0, unstyledText: 0, unboundFills: 0, unboundSpacing: 0, layoutScreens: 0, looseLayers: 0, strayLayers: 0, rawEffects: 0, emptyBands: 0, capsLabels: 0, cards: 0, smallText: 0, texts: 0, closeSizes: 0, unevenRows: 0, flowBreaks: 0 };
+    const c = { screens: screens.length, imageFills: 0, distinctImages: 0, reusedImages: 0, contrastFails: 0, contrastUnknown: 0, targetsUnder24: 0, targetsUnder44: 0, cutText: 0, clippedText: 0, flatOverlays: 0, idleBusyButtons: 0, unstyledText: 0, unboundFills: 0, unboundSpacing: 0, layoutScreens: 0, looseLayers: 0, strayLayers: 0, rawEffects: 0, emptyBands: 0, capsLabels: 0, cards: 0, smallText: 0, texts: 0, closeSizes: 0, unevenRows: 0, flowBreaks: 0, listCounts: 0 };
     const images = new Map();
     // WCAG relative luminance and contrast, on 0-1 channels.
     const lin = (v) => (v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4);
@@ -279,6 +279,45 @@ const figmaAudit = async function figmaAudit(figma, pageName) {
             c.closeSizes += 1;
             add("RX-UI-03", "warn", frame, frame, `text in ${sizes.length} sizes (${sizes.join(", ")} px), ${close} of them 1 px from the next: steps that close read as mistakes, not levels; give each role one step of a scale and one text style`);
         }
+        // A count over a list that the list does not bear out (RX-AS-03): "8 terapis" over a list of 2 cards that ends
+        // with room for the next, or over more cards than it says.
+        {
+            const COUNT = /^\s*(\d{1,3})\s+(\p{L}+)/iu;
+            const UNIT = /^(menit|jam|hari|minggu|bulan|tahun|detik|km|m|kg|gr?|langkah|step|steps|min|mins|hours?|days?|weeks?|months?|years?|x|kali|persen|bintang|ulasan|reviews?)$/i;
+            const PARTIAL = /\d+\s*(?:dari|of|\/)\s*\d+|\d\+|(?:lebih dari|more than|over|hingga|up to)\s*\d|menampilkan|showing/i;
+            for (const { n } of texts) {
+                const m = n.characters.match(COUNT);
+                if (!m)
+                    continue;
+                const said = Number(m[1]);
+                if (said < 2 || UNIT.test(m[2]) || PARTIAL.test(n.characters))
+                    continue;
+                const tb = box(n);
+                let best = null;
+                for (const e of nodes) {
+                    if (!("children" in e.n))
+                        continue;
+                    const rows = e.n.children.filter((k) => { const b = box(k); return k.visible !== false && k.type !== "TEXT" && b.width >= fbox.width * 0.6 && b.height >= 48 && b.height <= fbox.height * 0.4 && b.y >= tb.y + tb.height - 2; });
+                    const same = rows.filter((k) => Math.abs(box(k).width - box(rows[0]).width) <= 2);
+                    if (same.length < 2 || box(same[0]).y - (tb.y + tb.height) > 80)
+                        continue;
+                    if (!best || box(same[0]).y < box(best[0]).y)
+                        best = same;
+                }
+                if (!best)
+                    continue;
+                const shown = best.length;
+                const last = best.map(box).reduce((a, b) => (b.y + b.height > a.y + a.height ? b : a));
+                const gap = shown >= 2 ? Math.max(0, box(best[1]).y - (box(best[0]).y + box(best[0]).height)) : 12;
+                const bottom = nodes.map((e) => box(e.n)).filter((b) => b.width >= fbox.width * 0.9 && b.y + b.height >= fbox.y + fbox.height - 4 && b.y > last.y && b.y < fbox.y + fbox.height).reduce((v, b) => Math.min(v, b.y), fbox.y + fbox.height);
+                const room = last.y + last.height + gap + Math.min(last.height * 0.3, 40) < bottom;
+                if (shown > said || (shown < said && room)) {
+                    c.listCounts++;
+                    const why = shown > said ? `the list under it shows ${shown}` : `the list under it shows ${shown} and ends with room for the next`;
+                    add("RX-AS-03", "warn", frame, n, `"${short(n.characters.trim(), 30)}" counts ${said}, but ${why}: show what the count says, or count what is shown`);
+                }
+            }
+        }
         // An empty band (RX-UI-05): the tallest vertical gap between painted blocks, from the first block to the last.
         const painted = nodes.filter((e) => {
             const n = e.n, b = box(n);
@@ -452,6 +491,83 @@ const figmaAudit = async function figmaAudit(figma, pageName) {
                 });
             }
         });
+        // A list card that says "today" (or "tomorrow") while the person's own screen opens its date row on a later day
+        // (RX-AS-03): today is the earliest date a row can offer, tomorrow the first or second. Owner blind rating
+        // 2026-11-23: the list said "Tersedia hari ini" and the profile opened on the next day in three no-skill runs.
+        const DAY = /\b(sen|sel|rab|kam|jum|sab|min|mon|tue|wed|thu|fri|sat|sun)[a-z]*\b|hari ini|besok|today|tomorrow/i;
+        const PICKED = /dipilih|terpilih|selected|aktif|active|current/i;
+        info.forEach((a, i) => {
+            const seen = new Set();
+            for (const { n, anc } of a.layers) {
+                const name = n.type === "TEXT" ? n.characters.trim() : "";
+                if (n.type !== "TEXT" || [...name].length < 6 || !name.includes(" ") || !/^\p{Lu}/u.test(name) || seen.has(name))
+                    continue;
+                const card = [...anc].reverse().find((k) => k !== a.f && box(k).height <= a.fb.height * 0.4 && box(k).width >= a.fb.width * 0.6 && !FCHROME.test(k.name));
+                if (!card)
+                    continue;
+                const words = findShown(card, (k) => k.type === "TEXT").map((k) => k.characters).join(" · ");
+                const today = /hari ini|today/i.test(words), tomorrow = /besok|tomorrow/i.test(words);
+                if (today === tomorrow)
+                    continue;
+                const said = words.split(" · ").find((w) => (today ? /hari ini|today/i : /besok|tomorrow/i).test(w)).trim();
+                info.forEach((b, j) => {
+                    if (j === i || !b.layers.some((e) => e.n.type === "TEXT" && e.n.characters.trim() === name))
+                        return;
+                    for (const { n: row } of b.layers) {
+                        const chips = "children" in row ? row.children.filter((k) => k.visible !== false && k.type !== "TEXT") : [];
+                        const label = (k) => findShown(k, (x) => x.type === "TEXT").map((x) => x.characters.trim()).join(" ");
+                        if (chips.length < 4 || !chips.every((k) => DAY.test(label(k)) && /\d/.test(label(k))))
+                            continue;
+                        const picked = chips.filter((k) => PICKED.test(k.name));
+                        if (picked.length !== 1)
+                            continue;
+                        const at = chips.indexOf(picked[0]);
+                        if (at > (today ? 0 : 1)) {
+                            seen.add(name);
+                            c.flowBreaks++;
+                            add("RX-AS-03", "warn", a.f, card, `"${short(name, 30)}": ${a.f.name} says "${short(said, 30)}", but ${b.f.name} opens on ${label(picked[0])}, date ${at + 1} of the row: open on the day the list promised, or say that day in the list`);
+                        }
+                        break;
+                    }
+                });
+            }
+        });
+        // A cost first shown after the commitment (RX-UX-15): on the flow's last screen, an amount labelled as a fee (its
+        // own words, or the text beside it on its row) that no earlier screen shows.
+        const MONEY = /Rp\s?(\d{1,3}(?:\.\d{3})+|\d{4,})/gi;
+        const FEE = /biaya|ongkos|ongkir|transport|admin|\bfee|layanan|kunjungan|pajak|ppn|asuransi|service|delivery|\btax|surcharge|penanganan|platform/i;
+        const TOTAL = /total|jumlah|subtotal|tagihan|grand/i;
+        const order = info.map((_, k) => k).sort((a, b) => { const p = box(screens[a]), q = box(screens[b]); return p.x - q.x || p.y - q.y; });
+        const amounts = (s) => s.layers.filter((e) => e.n.type === "TEXT").flatMap((e) => [...e.n.characters.matchAll(MONEY)].map((m) => ({ n: e.n, value: Number(m[1].replace(/\./g, "")), shown: m[0] })));
+        const last = info[order[order.length - 1]];
+        const earlier = order.slice(0, -1).flatMap((k) => amounts(info[k]).map((a) => a.value));
+        const flagged = [];
+        for (const { n, value, shown } of amounts(last)) {
+            if (earlier.includes(value) || flagged.includes(value))
+                continue;
+            const own = n.characters.replace(MONEY, "").trim();
+            let label = "";
+            if ([...own].filter((ch) => /\p{L}/u.test(ch)).length >= 3)
+                label = own;
+            else {
+                const b = box(n), cy = b.y + b.height / 2;
+                let best = null;
+                for (const e of last.layers) {
+                    const m = e.n;
+                    if (m === n || m.type !== "TEXT" || new RegExp(MONEY.source, "i").test(m.characters))
+                        continue;
+                    const k = box(m);
+                    if (Math.abs(k.y + k.height / 2 - cy) <= Math.max(k.height, b.height) / 2 && k.x + k.width <= b.x + 2 && (!best || k.x + k.width >= box(best).x + box(best).width))
+                        best = m;
+                }
+                label = best ? best.characters.trim() : "";
+            }
+            if (FEE.test(label) && !TOTAL.test(label)) {
+                flagged.push(value);
+                c.flowBreaks++;
+                add("RX-UX-15", "warn", last.f, n, `"${short(label, 30)}" ${shown} first shows on "${last.f.name}": no earlier screen shows it, so the person meets the cost after committing; show every cost with the price before the action`);
+            }
+        }
     }
     // Nothing on the page outside the screens but components and the frames or sections that hold them.
     for (const n of opened(page.children)) {
@@ -477,7 +593,7 @@ const figmaAudit = async function figmaAudit(figma, pageName) {
         annotations.unreadable = 1;
     }
     const fails = findings.filter((f) => f.level === "fail").length;
-    const gate = `figma audit (${page.name}): screens ${c.screens} · images ${c.distinctImages} distinct, ${c.imageFills} fills, ${c.reusedImages} reused across screens · contrast fails ${c.contrastFails} (${c.contrastUnknown} over images, not measured) · text cut ${c.cutText}, clipped ${c.clippedText} · targets under 24 ${c.targetsUnder24}, under 44 ${c.targetsUnder44} · overlays with no lift ${c.flatOverlays} · busy buttons with idle label ${c.idleBusyButtons} · unstyled text ${c.unstyledText}, unbound fills ${c.unboundFills}, unbound spacing ${c.unboundSpacing} · built in auto layout ${c.layoutScreens}/${c.screens} screens, loose layers ${c.looseLayers}, layers outside the screens ${c.strayLayers}, effects without a style ${c.rawEffects} · empty bands ${c.emptyBands}, small uppercase labels ${c.capsLabels}, section cards ${c.cards}, text under 12 px ${c.smallText}/${c.texts}, screens with text sizes 1 px apart ${c.closeSizes}, uneven button rows ${c.unevenRows} · breaks across screens ${c.flowBreaks} · annotations ${Object.entries(annotations).map(([k, v]) => `${k} ${v}`).join(", ") || "none"} · ${fails} fail, ${findings.length - fails} warn`;
+    const gate = `figma audit (${page.name}): screens ${c.screens} · images ${c.distinctImages} distinct, ${c.imageFills} fills, ${c.reusedImages} reused across screens · contrast fails ${c.contrastFails} (${c.contrastUnknown} over images, not measured) · text cut ${c.cutText}, clipped ${c.clippedText} · targets under 24 ${c.targetsUnder24}, under 44 ${c.targetsUnder44} · overlays with no lift ${c.flatOverlays} · busy buttons with idle label ${c.idleBusyButtons} · unstyled text ${c.unstyledText}, unbound fills ${c.unboundFills}, unbound spacing ${c.unboundSpacing} · built in auto layout ${c.layoutScreens}/${c.screens} screens, loose layers ${c.looseLayers}, layers outside the screens ${c.strayLayers}, effects without a style ${c.rawEffects} · empty bands ${c.emptyBands}, small uppercase labels ${c.capsLabels}, section cards ${c.cards}, text under 12 px ${c.smallText}/${c.texts}, screens with text sizes 1 px apart ${c.closeSizes}, uneven button rows ${c.unevenRows}, list counts that disagree ${c.listCounts} · breaks across screens ${c.flowBreaks} · annotations ${Object.entries(annotations).map(([k, v]) => `${k} ${v}`).join(", ") || "none"} · ${fails} fail, ${findings.length - fails} warn`;
     return { page: page.name, screens: screens.map((s) => s.name), counts: c, images: [...images.entries()].map(([h, s]) => ({ image: h.slice(0, 8), screens: [...s] })), annotations, findings: findings.slice(0, 80), more: Math.max(0, findings.length - 80), gate };
 };
 return await figmaAudit(figma, PAGE);

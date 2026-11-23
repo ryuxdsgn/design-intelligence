@@ -222,10 +222,10 @@ struct Entry {
     anc: Vec<usize>,
 }
 
-const COUNTS: [&str; 27] = [
+const COUNTS: [&str; 28] = [
     "screens", "imageFills", "distinctImages", "reusedImages", "contrastFails", "contrastUnknown", "targetsUnder24", "targetsUnder44", "cutText", "clippedText",
     "flatOverlays", "idleBusyButtons", "unstyledText", "unboundFills", "unboundSpacing", "layoutScreens", "looseLayers", "strayLayers", "rawEffects", "emptyBands",
-    "capsLabels", "cards", "smallText", "texts", "closeSizes", "unevenRows", "flowBreaks",
+    "capsLabels", "cards", "smallText", "texts", "closeSizes", "unevenRows", "flowBreaks", "listCounts",
 ];
 
 struct Out {
@@ -435,6 +435,96 @@ fn flow_checks(t: &Tree, screens: &[usize], r: &Res, o: &mut Out) {
             }
         }
     }
+
+    // A list card that says "today" (or "tomorrow") while the person's own screen opens its date row on a later day
+    // (RX-AS-03): today is the earliest date a row can offer, tomorrow the first or second. Owner blind rating
+    // 2026-11-23: the list said "Tersedia hari ini" and the profile opened on the next day in three no-skill runs.
+    let day = re(r"\b(sen|sel|rab|kam|jum|sab|min|mon|tue|wed|thu|fri|sat|sun)[a-z]*\b|hari ini|besok|today|tomorrow");
+    let picked_re = re(r"dipilih|terpilih|selected|aktif|active|current");
+    let today_re = re(r"hari ini|today");
+    let tomorrow_re = re(r"besok|tomorrow");
+    let digit = Regex::new(r"\d").unwrap();
+    for (i, a) in info.iter().enumerate() {
+        let fa = t.bx(screens[i]);
+        let mut seen: Vec<String> = Vec::new();
+        for (n, anc) in &a.layers {
+            let name = t.chars(*n).trim().to_string();
+            if t.ty(*n) != "TEXT" || name.chars().count() < 6 || !name.contains(' ') || !name.chars().next().is_some_and(char::is_uppercase) || seen.contains(&name) {
+                continue;
+            }
+            let Some(&card) = anc.iter().rev().find(|&&c| c != screens[i] && t.bx(c).h <= fa.h * 0.4 && t.bx(c).w >= fa.w * 0.6 && !r.chrome.is_match(&t.name(c))) else { continue };
+            let words: Vec<String> = t.find_shown(card, &mut |k| t.ty(k) == "TEXT").iter().map(|&k| t.chars(k)).collect();
+            let joined = words.join(" · ");
+            let (today, tomorrow) = (today_re.is_match(&joined), tomorrow_re.is_match(&joined));
+            if today == tomorrow {
+                continue;
+            }
+            let which = if today { &today_re } else { &tomorrow_re };
+            let said = joined.split(" · ").find(|w| which.is_match(w)).unwrap_or("").trim().to_string();
+            for (j, b) in info.iter().enumerate() {
+                if j == i || !b.layers.iter().any(|(m, _)| t.ty(*m) == "TEXT" && t.chars(*m).trim() == name) {
+                    continue;
+                }
+                let label = |k: usize| t.find_shown(k, &mut |x| t.ty(x) == "TEXT").iter().map(|&x| t.chars(x).trim().to_string()).collect::<Vec<_>>().join(" ");
+                for (row, _) in &b.layers {
+                    let chips: Vec<usize> = t.kids[*row].iter().flatten().copied().filter(|&k| t.visible(k) && t.ty(k) != "TEXT").collect();
+                    if chips.len() < 4 || !chips.iter().all(|&k| { let l = label(k); day.is_match(&l) && digit.is_match(&l) }) {
+                        continue;
+                    }
+                    let picked: Vec<usize> = chips.iter().copied().filter(|&k| picked_re.is_match(&t.name(k))).collect();
+                    if picked.len() == 1 {
+                        let at = chips.iter().position(|&k| k == picked[0]).unwrap();
+                        if at > if today { 0 } else { 1 } {
+                            seen.push(name.clone());
+                            o.inc("flowBreaks", 1);
+                            o.add("RX-AS-03", "warn", &a.name, &t.name(card), format!("\"{}\": {} says \"{}\", but {} opens on {}, date {} of the row: open on the day the list promised, or say that day in the list", short(&name, 30), a.name, short(&said, 30), b.name, label(picked[0]), at + 1));
+                        }
+                    }
+                    break;
+                }
+            }
+        }
+    }
+
+    // A cost first shown after the commitment (RX-UX-15): on the flow's last screen, an amount labelled as a fee (its
+    // own words, or the text beside it on its row) that no earlier screen shows. Owner blind rating 2026-11-23: a visit
+    // fee of Rp15.000 that appeared only on the confirmation, in two of three runs without RYUX.
+    let money = Regex::new(r"(?i)Rp\s?(\d{1,3}(?:\.\d{3})+|\d{4,})").unwrap();
+    let fee = Regex::new(r"(?i)biaya|ongkos|ongkir|transport|admin|\bfee|layanan|kunjungan|pajak|ppn|asuransi|service|delivery|\btax|surcharge|penanganan|platform").unwrap();
+    let total = Regex::new(r"(?i)total|jumlah|subtotal|tagihan|grand").unwrap();
+    let mut order: Vec<usize> = (0..info.len()).collect();
+    order.sort_by(|&a, &b| { let (p, q) = (t.bx(screens[a]), t.bx(screens[b])); p.x.total_cmp(&q.x).then(p.y.total_cmp(&q.y)) });
+    let amounts = |s: &Screen| -> Vec<(usize, i64, String)> {
+        s.layers.iter().filter(|(n, _)| t.ty(*n) == "TEXT").flat_map(|(n, _)| {
+            let text = t.chars(*n);
+            money.captures_iter(&text).map(|m| (*n, m[1].replace('.', "").parse::<i64>().unwrap_or(0), m[0].to_string())).collect::<Vec<_>>()
+        }).collect()
+    };
+    let last = &info[*order.last().unwrap()];
+    let earlier: Vec<i64> = order[..order.len() - 1].iter().flat_map(|&k| amounts(&info[k]).into_iter().map(|a| a.1)).collect();
+    let mut flagged: Vec<i64> = Vec::new();
+    for (n, value, shown) in amounts(last) {
+        if earlier.contains(&value) || flagged.contains(&value) {
+            continue;
+        }
+        let own = money.replace_all(&t.chars(n), "").trim().to_string();
+        let label = if own.chars().filter(|c| c.is_alphabetic()).count() >= 3 {
+            own
+        } else {
+            let b = t.bx(n);
+            let cy = b.y + b.h / 2.0;
+            last.layers.iter().map(|(m, _)| *m).filter(|&m| m != n && t.ty(m) == "TEXT" && money.find(&t.chars(m)).is_none()).filter(|&m| {
+                let c = t.bx(m);
+                (c.y + c.h / 2.0 - cy).abs() <= c.h.max(b.h) / 2.0 && c.x + c.w <= b.x + 2.0
+            }).max_by(|&a, &b2| (t.bx(a).x + t.bx(a).w).total_cmp(&(t.bx(b2).x + t.bx(b2).w))).map(|m| t.chars(m).trim().to_string()).unwrap_or_default()
+        };
+        if fee.is_match(&label) && !total.is_match(&label) {
+            flagged.push(value);
+            o.inc("flowBreaks", 1);
+            o.add("RX-UX-15", "warn", &last.name, &t.name(n), format!("\"{}\" {} first shows on \"{}\": no earlier screen shows it, so the person meets the cost after committing; show every cost with the price before the action", short(&label, 30), shown, last.name));
+        }
+    }
+
 }
 
 /// Audit one page of a recorded canvas: `{ pages: [{ name, children }], current, page, annotationCategories }`.
@@ -828,6 +918,51 @@ pub fn audit(input: &Value) -> Value {
             let list: Vec<String> = sizes.iter().map(|s| s.to_string()).collect();
             o.add("RX-UI-03", "warn", &fname, &fname, format!("text in {} sizes ({} px), {} of them 1 px from the next: steps that close read as mistakes, not levels; give each role one step of a scale and one text style", sizes.len(), list.join(", "), close));
         }
+        // A count over a list that the list does not bear out (RX-AS-03): "8 terapis" over a list of 2 cards that ends
+        // with room for the next, or over more cards than it says. Owner blind rating 2026-11-23 (FigCraft r3 C3).
+        {
+            let count = re(r"^\s*(\d{1,3})\s+(\p{L}+)");
+            let unit = re(r"^(menit|jam|hari|minggu|bulan|tahun|detik|km|m|kg|gr?|langkah|step|steps|min|mins|hours?|days?|weeks?|months?|years?|x|kali|persen|bintang|ulasan|reviews?)$");
+            let partial = re(r"\d+\s*(?:dari|of|/)\s*\d+|\d\+|(?:lebih dari|more than|over|hingga|up to)\s*\d|menampilkan|showing");
+            for &n in &texts {
+                let text = t.chars(n);
+                let Some(m) = count.captures(&text) else { continue };
+                let said: usize = m[1].parse().unwrap_or(0);
+                if said < 2 || unit.is_match(&m[2]) || partial.is_match(&text) {
+                    continue;
+                }
+                let tb = t.bx(n);
+                // the list: two or more siblings of one width that start under the count, the nearest set
+                let mut best: Option<Vec<usize>> = None;
+                for e in &nodes {
+                    let Some(kids) = &t.kids[e.n] else { continue };
+                    let rows: Vec<usize> = kids.iter().copied().filter(|&k| {
+                        let b = t.bx(k);
+                        t.visible(k) && t.ty(k) != "TEXT" && b.w >= fbox.w * 0.6 && b.h >= 48.0 && b.h <= fbox.h * 0.4 && b.y >= tb.y + tb.h - 2.0
+                    }).collect();
+                    let same: Vec<usize> = rows.iter().copied().filter(|&k| rows.first().is_some_and(|&f| (t.bx(k).w - t.bx(f).w).abs() <= 2.0)).collect();
+                    if same.len() < 2 || t.bx(same[0]).y - (tb.y + tb.h) > 80.0 {
+                        continue;
+                    }
+                    if best.as_ref().map_or(true, |b| t.bx(same[0]).y < t.bx(b[0]).y) {
+                        best = Some(same);
+                    }
+                }
+                let Some(rows) = best else { continue };
+                let shown = rows.len();
+                let last = rows.iter().map(|&k| t.bx(k)).max_by(|a, b| (a.y + a.h).total_cmp(&(b.y + b.h))).unwrap();
+                let gap = if shown >= 2 { (t.bx(rows[1]).y - (t.bx(rows[0]).y + t.bx(rows[0]).h)).max(0.0) } else { 12.0 };
+                // where the list stops being seen: the frame's bottom, or a full-width bar pinned there
+                let bottom = nodes.iter().map(|e| t.bx(e.n)).filter(|b| b.w >= fbox.w * 0.9 && b.y + b.h >= fbox.y + fbox.h - 4.0 && b.y > last.y && b.y < fbox.y + fbox.h)
+                    .map(|b| b.y).fold(fbox.y + fbox.h, f64::min);
+                let room = last.y + last.h + gap + (last.h * 0.3).min(40.0) < bottom;
+                if shown > said || (shown < said && room) {
+                    o.inc("listCounts", 1);
+                    let why = if shown > said { format!("the list under it shows {}", shown) } else { format!("the list under it shows {} and ends with room for the next", shown) };
+                    o.add("RX-AS-03", "warn", &fname, &t.name(n), format!("\"{}\" counts {}, but {}: show what the count says, or count what is shown", short(trim(&text), 30), said, why));
+                }
+            }
+        }
         // Empty band (RX-UI-05).
         let mut painted: Vec<(f64, f64)> = nodes.iter().filter(|e| {
             let n = e.n;
@@ -947,10 +1082,10 @@ pub fn audit(input: &Value) -> Value {
     let c = &o.c;
     let ann = if annotations.is_empty() { "none".to_string() } else { annotations.iter().map(|(k, v)| format!("{k} {v}")).collect::<Vec<_>>().join(", ") };
     let gate = format!(
-        "figma audit ({}): screens {} · images {} distinct, {} fills, {} reused across screens · contrast fails {} ({} over images, not measured) · text cut {}, clipped {} · targets under 24 {}, under 44 {} · overlays with no lift {} · busy buttons with idle label {} · unstyled text {}, unbound fills {}, unbound spacing {} · built in auto layout {}/{} screens, loose layers {}, layers outside the screens {}, effects without a style {} · empty bands {}, small uppercase labels {}, section cards {}, text under 12 px {}/{}, screens with text sizes 1 px apart {}, uneven button rows {} · breaks across screens {} · annotations {} · {} fail, {} warn",
+        "figma audit ({}): screens {} · images {} distinct, {} fills, {} reused across screens · contrast fails {} ({} over images, not measured) · text cut {}, clipped {} · targets under 24 {}, under 44 {} · overlays with no lift {} · busy buttons with idle label {} · unstyled text {}, unbound fills {}, unbound spacing {} · built in auto layout {}/{} screens, loose layers {}, layers outside the screens {}, effects without a style {} · empty bands {}, small uppercase labels {}, section cards {}, text under 12 px {}/{}, screens with text sizes 1 px apart {}, uneven button rows {}, list counts that disagree {} · breaks across screens {} · annotations {} · {} fail, {} warn",
         pname, c["screens"], c["distinctImages"], c["imageFills"], c["reusedImages"], c["contrastFails"], c["contrastUnknown"], c["cutText"], c["clippedText"],
         c["targetsUnder24"], c["targetsUnder44"], c["flatOverlays"], c["idleBusyButtons"], c["unstyledText"], c["unboundFills"], c["unboundSpacing"],
-        c["layoutScreens"], c["screens"], c["looseLayers"], c["strayLayers"], c["rawEffects"], c["emptyBands"], c["capsLabels"], c["cards"], c["smallText"], c["texts"], c["closeSizes"], c["unevenRows"], c["flowBreaks"],
+        c["layoutScreens"], c["screens"], c["looseLayers"], c["strayLayers"], c["rawEffects"], c["emptyBands"], c["capsLabels"], c["cards"], c["smallText"], c["texts"], c["closeSizes"], c["unevenRows"], c["listCounts"], c["flowBreaks"],
         ann, fails, o.findings.len() - fails
     );
     let mut counts = Map::new();

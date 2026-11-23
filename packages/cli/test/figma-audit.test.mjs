@@ -331,3 +331,89 @@ test("across screens: a band on one screen, the main button in another colour, a
   ]);
   assert.equal(ok.counts.flowBreaks, 0);
 });
+
+test("lists: a count the list under it does not bear out", async () => {
+  const card = (y) => node("FRAME", "Kartu terapis", [20, y, 350, 166], { fills: [white] }, [text("Name", "Ftr. Dewi", [36, y + 16, 200, 20])]);
+  const bar = node("FRAME", "Tab bar", [0, 761, 390, 83], { fills: [white] }, [text("Tab", "Cari", [40, 790, 40, 16])]);
+  const list = (count, n) => node("FRAME", "Daftar terapis", [0, 306, 390, 506], {}, [text("Jumlah hasil", count, [20, 318, 200, 18]), ...[...Array(n)].map((_, i) => card(348 + i * 178))]);
+  const r = await audit([screen("01-cari", [list("8 terapis · urut dari yang terdekat", 2), bar])]);
+  assert.deepEqual(r.findings.filter((f) => f.rule === "RX-AS-03").map((f) => f.message), ['"8 terapis · urut dari yang te…" counts 8, but the list under it shows 2 and ends with room for the next: show what the count says, or count what is shown']);
+  assert.equal(r.counts.listCounts, 1);
+  assert.match(r.gate, /list counts that disagree 1/);
+  // a list that runs under the tab bar scrolls; "3 dari 12" and "2 langkah" are not counts of the list
+  for (const [count, n] of [["12 terapis", 3], ["Menampilkan 2 dari 12", 2], ["2 langkah lagi", 2], ["2 terapis", 2]]) {
+    const ok = await audit([screen("01-cari", [list(count, n), bar])]);
+    assert.equal(ok.counts.listCounts, 0, count);
+  }
+});
+
+test("across screens: a list card that says today while the profile opens on a later day", async () => {
+  const card = (when) => node("FRAME", "Kartu terapis", [16, 120, 358, 120], { fills: [white] }, [text("Name", "Ftr. Rina Kartika", [32, 136, 200, 20]), text("When", when, [32, 166, 200, 20])]);
+  const chip = (d, x, picked) => node("FRAME", `Tanggal ${d}${picked ? " (dipilih)" : ""}`, [x, 300, 62, 68], { fills: [white] }, [text("Day", d, [x + 10, 320, 40, 20])]);
+  const profile = (at) => screen("02-profil", [text("Name", "Ftr. Rina Kartika", [16, 80, 300, 28]), node("FRAME", "Pilihan tanggal", [16, 300, 342, 68], {}, ["Sel 24", "Rab 25", "Kam 26", "Jum 27"].map((d, i) => chip(d, 16 + i * 70, i === at)))]);
+  const r = await audit([screen("01-cari", [card("Tersedia hari ini")]), profile(1)]);
+  assert.deepEqual(r.findings.filter((f) => f.rule === "RX-AS-03").map((f) => f.message), ['"Ftr. Rina Kartika": 01-cari says "Tersedia hari ini", but 02-profil opens on Rab 25, date 2 of the row: open on the day the list promised, or say that day in the list']);
+  // today on the first date, and tomorrow on the first or second, agree
+  for (const [when, at] of [["Tersedia hari ini", 0], ["Besok, 09.00", 0], ["Besok, 09.00", 1]]) {
+    const ok = await audit([screen("01-cari", [card(when)]), profile(at)]);
+    assert.equal(ok.counts.flowBreaks, 0, `${when} ${at}`);
+  }
+});
+
+test("across screens: a fee the confirmation shows first is a cost met after committing", async () => {
+  const row = (label, amount, y) => [text("Label", label, [16, y, 200, 20]), text("Amount", amount, [290, y, 84, 20])];
+  const list = screen("01-cari", [text("Price", "Rp185.000/sesi", [16, 160, 200, 20])]);
+  const profile = screen("02-profil", [...row("Tarif per sesi", "Rp185.000", 300)]);
+  const done = screen("03-terkonfirmasi", [...row("Biaya sesi", "Rp185.000", 300), ...row("Biaya kunjungan (1,2 km)", "Rp15.000", 330), ...row("Total bayar", "Rp200.000", 360)]);
+  const r = await audit([list, profile, done]);
+  const fee = r.findings.filter((f) => f.rule === "RX-UX-15").map((f) => `${f.frame}: ${f.message}`);
+  assert.deepEqual(fee, ['03-terkonfirmasi: "Biaya kunjungan (1,2 km)" Rp15.000 first shows on "03-terkonfirmasi": no earlier screen shows it, so the person meets the cost after committing; show every cost with the price before the action']);
+  // the fee shown with the price on the profile: no finding, and a new total is never one
+  const ok = await audit([list, screen("02-profil", [...row("Tarif per sesi", "Rp185.000", 300), text("Fee", "+ transport Rp15.000", [16, 330, 200, 20])]), done]);
+  assert.equal(ok.findings.filter((f) => f.rule === "RX-UX-15").length, 0);
+});
+
+test("REST: a Figma page read over the REST API is judged by the same audit, without annotations", async () => {
+  const { figmaRestCanvas, parseFigmaUrl } = await import("../dist/figma-rest.js");
+  assert.deepEqual(parseFigmaUrl("https://www.figma.com/design/AbCdEfGhIjKlMnOpQrStUv/Rawat?node-id=12-34&t=x"), { key: "AbCdEfGhIjKlMnOpQrStUv", node: "12:34" });
+  assert.equal(parseFigmaUrl("not a link"), null);
+  const bb = (x, y, width, height) => ({ absoluteBoundingBox: { x, y, width, height } });
+  const grey = { type: "SOLID", color: { r: 0.8, g: 0.8, b: 0.8, a: 1 } };
+  const page = {
+    id: "0:1", name: "Flow", type: "CANVAS", children: [{
+      id: "1:1", name: "01", type: "FRAME", ...bb(0, 0, 390, 844), fills: [{ type: "SOLID", color: { r: 1, g: 1, b: 1, a: 1 } }], layoutMode: "VERTICAL", itemSpacing: 16, boundVariables: { itemSpacing: { type: "VARIABLE_ALIAS", id: "VariableID:1" } },
+      children: [
+        { id: "1:2", name: "Hint", type: "TEXT", ...bb(16, 100, 200, 20), characters: "Pilih kursi", style: { fontSize: 14, fontFamily: "Inter", fontStyle: "Regular" }, fills: [grey], characterStyleOverrides: [], styleOverrideTable: {} },
+        { id: "1:3", name: "Mixed", type: "TEXT", ...bb(16, 140, 200, 20), characters: "Rp185.000", style: { fontSize: 14, fontFamily: "Inter", fontStyle: "Regular" }, fills: [{ type: "SOLID", color: { r: 0, g: 0, b: 0, a: 1 } }], characterStyleOverrides: [0, 0, 1], styleOverrideTable: { 1: { fontSize: 18 } } },
+        { id: "1:4", name: "Seat", type: "INSTANCE", componentId: "9:1", ...bb(16, 200, 44, 44), fills: [], children: [] },
+      ],
+    }],
+  };
+  const replies = {
+    "/files/AbCdEfGhIjKlMnOpQrStUv?depth=1": { document: { children: [{ id: "0:1", name: "Flow" }, { id: "0:2", name: "Parts" }] } },
+    "/files/AbCdEfGhIjKlMnOpQrStUv/nodes?ids=0%3A1": { nodes: { "0:1": { document: page, components: { "9:1": { name: "State=Free", componentSetId: "9:0" } }, componentSets: { "9:0": { name: "Local/Seat" } } } } },
+  };
+  const seen = [];
+  const real = globalThis.fetch;
+  globalThis.fetch = async (url, init) => {
+    const path = String(url).replace("https://api.figma.com/v1", "");
+    seen.push([path, init.headers["X-Figma-Token"]]);
+    const body = replies[path];
+    return { ok: !!body, status: body ? 200 : 404, headers: { get: () => null }, json: async () => body || {} };
+  };
+  try {
+    const { figma, page: name } = await figmaRestCanvas("https://www.figma.com/design/AbCdEfGhIjKlMnOpQrStUv/Rawat", "Flow", "test-token");
+    assert.equal(name, "Flow");
+    assert.ok(seen.every(([, t]) => t === "test-token"));
+    const frame = figma.currentPage.children[0];
+    assert.equal(typeof frame.children[1].fontSize, "symbol", "a size override on some characters is mixed");
+    assert.deepEqual(frame.children[2].mainComponent, { name: "State=Free", parent: { type: "COMPONENT_SET", name: "Local/Seat" } });
+    const r = await auditCanvas(figma, name);
+    assert.ok(r.findings.some((f) => f.rule === "RX-A11Y-01" && f.node === "Hint"), "grey text on white is measured");
+    assert.equal(r.counts.unboundSpacing, 0, "spacing bound to a variable over REST counts as bound");
+    assert.match(r.gate, /annotations unreadable 1/);
+    await assert.rejects(figmaRestCanvas("AbCdEfGhIjKlMnOpQrStUv", "", "test-token"), /name the page with --page; pages: Flow, Parts/);
+  } finally {
+    globalThis.fetch = real;
+  }
+});
