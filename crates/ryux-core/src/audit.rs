@@ -222,10 +222,10 @@ struct Entry {
     anc: Vec<usize>,
 }
 
-const COUNTS: [&str; 26] = [
+const COUNTS: [&str; 27] = [
     "screens", "imageFills", "distinctImages", "reusedImages", "contrastFails", "contrastUnknown", "targetsUnder24", "targetsUnder44", "cutText", "clippedText",
     "flatOverlays", "idleBusyButtons", "unstyledText", "unboundFills", "unboundSpacing", "layoutScreens", "looseLayers", "strayLayers", "rawEffects", "emptyBands",
-    "capsLabels", "cards", "smallText", "texts", "unevenRows", "flowBreaks",
+    "capsLabels", "cards", "smallText", "texts", "closeSizes", "unevenRows", "flowBreaks",
 ];
 
 struct Out {
@@ -818,6 +818,16 @@ pub fn audit(input: &Value) -> Value {
         if let Some(&n0) = tiny.first() {
             o.add("RX-A11Y-02", "warn", &fname, &t.name(n0), format!("{} of {} text layers under 12 px (e.g. \"{}\" {} px)", tiny.len(), texts.len(), short(trim(&t.chars(n0)), 24), num_str(num(t.get(n0, "fontSize")))));
         }
+        // A type scale with steps (RX-UI-03): three or more sizes, 11 to 40 px, each with another 1 px above it.
+        let mut sizes: Vec<i64> = texts.iter().map(|&n| num(t.get(n, "fontSize")).round() as i64).filter(|s| (11..=40).contains(s)).collect();
+        sizes.sort_unstable();
+        sizes.dedup();
+        let close = sizes.iter().filter(|s| sizes.contains(&(**s + 1))).count();
+        if close >= 3 {
+            o.inc("closeSizes", 1);
+            let list: Vec<String> = sizes.iter().map(|s| s.to_string()).collect();
+            o.add("RX-UI-03", "warn", &fname, &fname, format!("text in {} sizes ({} px), {} of them 1 px from the next: steps that close read as mistakes, not levels; give each role one step of a scale and one text style", sizes.len(), list.join(", "), close));
+        }
         // Empty band (RX-UI-05).
         let mut painted: Vec<(f64, f64)> = nodes.iter().filter(|e| {
             let n = e.n;
@@ -937,10 +947,10 @@ pub fn audit(input: &Value) -> Value {
     let c = &o.c;
     let ann = if annotations.is_empty() { "none".to_string() } else { annotations.iter().map(|(k, v)| format!("{k} {v}")).collect::<Vec<_>>().join(", ") };
     let gate = format!(
-        "figma audit ({}): screens {} · images {} distinct, {} fills, {} reused across screens · contrast fails {} ({} over images, not measured) · text cut {}, clipped {} · targets under 24 {}, under 44 {} · overlays with no lift {} · busy buttons with idle label {} · unstyled text {}, unbound fills {}, unbound spacing {} · built in auto layout {}/{} screens, loose layers {}, layers outside the screens {}, effects without a style {} · empty bands {}, small uppercase labels {}, section cards {}, text under 12 px {}/{}, uneven button rows {} · breaks across screens {} · annotations {} · {} fail, {} warn",
+        "figma audit ({}): screens {} · images {} distinct, {} fills, {} reused across screens · contrast fails {} ({} over images, not measured) · text cut {}, clipped {} · targets under 24 {}, under 44 {} · overlays with no lift {} · busy buttons with idle label {} · unstyled text {}, unbound fills {}, unbound spacing {} · built in auto layout {}/{} screens, loose layers {}, layers outside the screens {}, effects without a style {} · empty bands {}, small uppercase labels {}, section cards {}, text under 12 px {}/{}, screens with text sizes 1 px apart {}, uneven button rows {} · breaks across screens {} · annotations {} · {} fail, {} warn",
         pname, c["screens"], c["distinctImages"], c["imageFills"], c["reusedImages"], c["contrastFails"], c["contrastUnknown"], c["cutText"], c["clippedText"],
         c["targetsUnder24"], c["targetsUnder44"], c["flatOverlays"], c["idleBusyButtons"], c["unstyledText"], c["unboundFills"], c["unboundSpacing"],
-        c["layoutScreens"], c["screens"], c["looseLayers"], c["strayLayers"], c["rawEffects"], c["emptyBands"], c["capsLabels"], c["cards"], c["smallText"], c["texts"], c["unevenRows"], c["flowBreaks"],
+        c["layoutScreens"], c["screens"], c["looseLayers"], c["strayLayers"], c["rawEffects"], c["emptyBands"], c["capsLabels"], c["cards"], c["smallText"], c["texts"], c["closeSizes"], c["unevenRows"], c["flowBreaks"],
         ann, fails, o.findings.len() - fails
     );
     let mut counts = Map::new();

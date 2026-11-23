@@ -36,7 +36,7 @@ export async function figmaAudit(figma, pageName) {
 
   const findings = [];
   const add = (rule, level, frame, node, message) => findings.push({ rule, level, frame: frame.name, node: node ? node.name : "", message });
-  const c = { screens: screens.length, imageFills: 0, distinctImages: 0, reusedImages: 0, contrastFails: 0, contrastUnknown: 0, targetsUnder24: 0, targetsUnder44: 0, cutText: 0, clippedText: 0, flatOverlays: 0, idleBusyButtons: 0, unstyledText: 0, unboundFills: 0, unboundSpacing: 0, layoutScreens: 0, looseLayers: 0, strayLayers: 0, rawEffects: 0, emptyBands: 0, capsLabels: 0, cards: 0, smallText: 0, texts: 0, unevenRows: 0, flowBreaks: 0 };
+  const c = { screens: screens.length, imageFills: 0, distinctImages: 0, reusedImages: 0, contrastFails: 0, contrastUnknown: 0, targetsUnder24: 0, targetsUnder44: 0, cutText: 0, clippedText: 0, flatOverlays: 0, idleBusyButtons: 0, unstyledText: 0, unboundFills: 0, unboundSpacing: 0, layoutScreens: 0, looseLayers: 0, strayLayers: 0, rawEffects: 0, emptyBands: 0, capsLabels: 0, cards: 0, smallText: 0, texts: 0, closeSizes: 0, unevenRows: 0, flowBreaks: 0 };
   const images = new Map();
 
   // WCAG relative luminance and contrast, on 0-1 channels.
@@ -227,6 +227,10 @@ export async function figmaAudit(figma, pageName) {
     const tiny = texts.filter((e) => e.n.fontSize < 12);
     c.smallText += tiny.length; c.texts += texts.length;
     if (tiny.length) add("RX-A11Y-02", "warn", frame, tiny[0].n, `${tiny.length} of ${texts.length} text layers under 12 px (e.g. "${short(tiny[0].n.characters.trim(), 24)}" ${tiny[0].n.fontSize} px)`);
+    // A type scale with steps (RX-UI-03): three or more sizes, 11 to 40 px, each with another 1 px above it.
+    const sizes = [...new Set(texts.map((e) => Math.round(e.n.fontSize)).filter((v) => v >= 11 && v <= 40))].sort((a, b) => a - b);
+    const close = sizes.filter((v) => sizes.includes(v + 1)).length;
+    if (close >= 3) { c.closeSizes += 1; add("RX-UI-03", "warn", frame, frame, `text in ${sizes.length} sizes (${sizes.join(", ")} px), ${close} of them 1 px from the next: steps that close read as mistakes, not levels; give each role one step of a scale and one text style`); }
     // An empty band (RX-UI-05): the tallest vertical gap between painted blocks, from the first block to the last.
     const painted = nodes.filter((e) => {
       const n = e.n, b = box(n);
@@ -377,7 +381,7 @@ export async function figmaAudit(figma, pageName) {
   } catch (err) { annotations.unreadable = 1; }
 
   const fails = findings.filter((f) => f.level === "fail").length;
-  const gate = `figma audit (${page.name}): screens ${c.screens} · images ${c.distinctImages} distinct, ${c.imageFills} fills, ${c.reusedImages} reused across screens · contrast fails ${c.contrastFails} (${c.contrastUnknown} over images, not measured) · text cut ${c.cutText}, clipped ${c.clippedText} · targets under 24 ${c.targetsUnder24}, under 44 ${c.targetsUnder44} · overlays with no lift ${c.flatOverlays} · busy buttons with idle label ${c.idleBusyButtons} · unstyled text ${c.unstyledText}, unbound fills ${c.unboundFills}, unbound spacing ${c.unboundSpacing} · built in auto layout ${c.layoutScreens}/${c.screens} screens, loose layers ${c.looseLayers}, layers outside the screens ${c.strayLayers}, effects without a style ${c.rawEffects} · empty bands ${c.emptyBands}, small uppercase labels ${c.capsLabels}, section cards ${c.cards}, text under 12 px ${c.smallText}/${c.texts}, uneven button rows ${c.unevenRows} · breaks across screens ${c.flowBreaks} · annotations ${Object.entries(annotations).map(([k, v]) => `${k} ${v}`).join(", ") || "none"} · ${fails} fail, ${findings.length - fails} warn`;
+  const gate = `figma audit (${page.name}): screens ${c.screens} · images ${c.distinctImages} distinct, ${c.imageFills} fills, ${c.reusedImages} reused across screens · contrast fails ${c.contrastFails} (${c.contrastUnknown} over images, not measured) · text cut ${c.cutText}, clipped ${c.clippedText} · targets under 24 ${c.targetsUnder24}, under 44 ${c.targetsUnder44} · overlays with no lift ${c.flatOverlays} · busy buttons with idle label ${c.idleBusyButtons} · unstyled text ${c.unstyledText}, unbound fills ${c.unboundFills}, unbound spacing ${c.unboundSpacing} · built in auto layout ${c.layoutScreens}/${c.screens} screens, loose layers ${c.looseLayers}, layers outside the screens ${c.strayLayers}, effects without a style ${c.rawEffects} · empty bands ${c.emptyBands}, small uppercase labels ${c.capsLabels}, section cards ${c.cards}, text under 12 px ${c.smallText}/${c.texts}, screens with text sizes 1 px apart ${c.closeSizes}, uneven button rows ${c.unevenRows} · breaks across screens ${c.flowBreaks} · annotations ${Object.entries(annotations).map(([k, v]) => `${k} ${v}`).join(", ") || "none"} · ${fails} fail, ${findings.length - fails} warn`;
   return { page: page.name, screens: screens.map((s) => s.name), counts: c, images: [...images.entries()].map(([h, s]) => ({ image: h.slice(0, 8), screens: [...s] })), annotations, findings: findings.slice(0, 80), more: Math.max(0, findings.length - 80), gate };
 }
 

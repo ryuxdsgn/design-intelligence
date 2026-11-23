@@ -732,6 +732,50 @@ fn rule_ui11_long(s: &Source, _: &Ctx) -> Vec<Hit> {
     hits
 }
 
+/// A long wait before the interface answers (RX-UI-11): elements that wait over 500 ms before they move, or a stagger
+/// step of 100 ms or more, reported once per file with the longest wait. A tooltip or hover card may wait before it
+/// opens; a loader, a loop, a success moment, and a decorative line drawing itself (an SVG stroke; owner sheet 10,
+/// 2026-11-23: D2) are left alone.
+fn rule_ui11_delay(s: &Source, _: &Ctx) -> Vec<Hit> {
+    let ms = |v: &str, unit: &str| { let n: f64 = v.parse().unwrap_or(0.0); if unit == "s" { n * 1000.0 } else { n } };
+    let quiet = |at: usize, end: usize| {
+        let around = &s.text[crate::js::back16(&s.text, at, 240)..crate::js::fwd16(&s.text, end, 60)];
+        re(r"tooltip|\btip\b|popover|hover-?card|toast|hint|coach|splash|marquee|ticker|radar|ripple|success|sukses|berhasil|confirm|celebrat|confetti|done\b|complete|\bsvg\b|stroke-dash", "i").test(around) || re(LOADER, "i").test(around) || re(r"\binfinite\b|Infinity", "").test(around)
+    };
+    let mut waits: Vec<(usize, f64)> = Vec::new();
+    let mut step: Option<(usize, f64)> = None;
+    for m in re(r#"\b(?:transition|animation)-delay\s*:\s*([^;}"'`\n]+)|\banimationDelay\s*:\s*["'`]([^"'`]+)"#, "g").match_all(&s.text) {
+        let v = if m.g(1).is_empty() { m.g(2) } else { m.g(1) };
+        if quiet(m.start, m.end) {
+            continue;
+        }
+        if let Some(t) = re(r"\*\s*(\d*\.?\d+)(ms|s)\b|(\d*\.?\d+)(ms|s)\s*\*", "").exec(v) {
+            let n = if t.g(1).is_empty() { ms(t.g(3), t.g(4)) } else { ms(t.g(1), t.g(2)) };
+            if n >= 100.0 && step.is_none_or(|(_, b)| n > b) {
+                step = Some((m.index, n));
+            }
+            continue;
+        }
+        let longest = v.split(',').filter_map(|part| re(r"(?<![\w.-])(\d*\.?\d+)(ms|s)\b", "").exec(part).map(|t| ms(t.g(1), t.g(2)))).fold(0.0, f64::max);
+        if longest > 500.0 {
+            waits.push((m.index, longest));
+        }
+    }
+    for m in re(r"\bdelay-(\d{3,4})\b", "g").match_all(&s.text) {
+        let n = m.g(1).parse::<f64>().unwrap_or(0.0);
+        if n > 500.0 && !quiet(m.start, m.end) {
+            waits.push((m.index, n));
+        }
+    }
+    if let Some((at, n)) = step {
+        return vec![hit(at, format!("a stagger of {} ms per item: by the tenth item the list waits a second; about 30 to 60 ms a step, and the whole sequence under about 500 ms", num_str(round(n))))];
+    }
+    let Some(&(at, _)) = waits.first() else { return Vec::new() };
+    let longest = waits.iter().map(|w| w.1).fold(0.0, f64::max);
+    let many = if waits.len() > 1 { format!("{} elements wait before they move, the last {} ms", waits.len(), num_str(round(longest))) } else { format!("an element waits {} ms before it moves", num_str(round(longest))) };
+    vec![hit(at, format!("{many}: content that arrives late reads as a slow page; start at once and keep the whole sequence under about 500 ms"))]
+}
+
 fn rule_ui35(s: &Source, c: &Ctx) -> Vec<Hit> {
     if c.reduced_transparency != Some(false) {
         return Vec::new();
@@ -895,6 +939,7 @@ fn detectors() -> &'static [Detector] {
         Detector { rule: "RX-A11Y-08", level: "warn", exts: visual, folder: false, find: rule_a11y08_loop },
         Detector { rule: "RX-UI-11", level: "warn", exts: visual, folder: false, find: rule_ui11_props },
         Detector { rule: "RX-UI-11", level: "warn", exts: visual, folder: false, find: rule_ui11_long },
+        Detector { rule: "RX-UI-11", level: "warn", exts: visual, folder: false, find: rule_ui11_delay },
         Detector { rule: "RX-UI-35", level: "warn", exts: visual, folder: true, find: rule_ui35 },
         Detector { rule: "RX-DS-03", level: "warn", exts: visual, folder: false, find: rule_ds03_oneoff },
         Detector { rule: "RX-UI-19", level: "fail", exts: svg, folder: false, find: rule_ui19_viewbox },
@@ -1168,6 +1213,22 @@ mod tests {
         assert!(urgency("<span class=\"tag\">Sample data</span><div>Sale ends in</div>").is_empty());
         // the quote stops at the string's end
         assert!(found("a.js", r#"t = s ? "Sale starts in " : "Sale ends in";"#, "RX-AS-04", "\"Sale ends in\": a promotion").len() == 1);
+    }
+
+    #[test]
+    fn a_long_wait_before_motion_is_one_finding_per_file() {
+        let wait = |raw: &str| found("a.css", raw, "RX-UI-11", "");
+        assert_eq!(wait(".card { transition-delay: 800ms; }").len(), 1);
+        assert_eq!(wait(".card { transition-delay: 300ms; }").len(), 0);
+        let rows = ".tx li:nth-child(1) { animation-delay: .3s; }\n.tx li:nth-child(3) { animation-delay: .6s; }\n.tx li:nth-child(4) { animation-delay: .75s; }";
+        let one = found("a.css", rows, "RX-UI-11", "2 elements wait before they move, the last 750 ms");
+        assert_eq!(one, vec!["2:23"]);
+        assert_eq!(wait(".item { animation-delay: calc(var(--i) * 120ms); }").len(), 1);
+        assert_eq!(wait(".item { animation-delay: calc(var(--i) * 40ms); }").len(), 0);
+        assert_eq!(wait(".tooltip { transition-delay: 700ms; }").len(), 0);
+        assert_eq!(wait(".confirm.is-active .breeze path { animation-delay: 760ms; }").len(), 0);
+        assert_eq!(wait(".list li:nth-child(3) .tick svg{animation-delay:1.2s}").len(), 0);
+        assert_eq!(found("a.html", "<div class=\"delay-700 transition\">x</div>", "RX-UI-11", "700 ms").len(), 1);
     }
 
     #[test]

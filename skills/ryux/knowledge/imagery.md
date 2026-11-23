@@ -229,7 +229,7 @@ How comparable products use imagery and motion: `search_screens` by pattern, `ex
 - Not when: L1 feedback on standard controls that follows the platform defaults
 - Trade-off: fewer flourishes on marketing pages
 - Check: review; reduced-motion test; for a handoff, the motion spec per element
-- Machine check: `ryux scan` flags a transition on all properties or on layout properties (width, height, top, left, margin, padding) (warn); a UI transition longer than 500 ms (warn)
+- Machine check: `ryux scan` flags a transition on all properties or on layout properties (width, height, top, left, margin, padding) (warn); a UI transition longer than 500 ms (warn); elements that wait over 500 ms before they move, or a stagger step of 100 ms or more, once per file (tooltips, loaders, loops, and success moments aside) (warn)
 
 ### RX-UI-12 [Contextual] A point of view on expressive surfaces
 
