@@ -132,8 +132,9 @@ Real screens show what real products do instead of invented numbers and urgency:
 ### RX-AS-01 [Required] [Hard Gate] Only real numbers
 
 - Do: Show counts, ratings, growth, and statistics only with a real source; otherwise leave them out or mark [REAL DATA].
+  - Where trust decides the choice (a clinician, a stranger at the door, money), leaving the rating out is not enough: show what a person can check (a licence or registration number, years of practice, the clinic or body behind them), as sample data labelled Sample when the brief gives none.
 - Do not: Invent "48.000+ users", "4,8★", or "+12%".
-- Why: Invented numbers are false claims, however polished the page. (ryux run 2026-10-02: pen.dev landing without ryux)
+- Why: Invented numbers are false claims, however polished the page. (ryux run 2026-10-02: pen.dev landing without ryux; owner blind rating 2026-11-23 (FigCraft home-physio booking bench): the RYUX screens left out the invented rating and showed no trust signal in its place)
 - Check: list every number on the screen with its source (brief, docs, data, or a sample label); fails on any number without one
 
 ### RX-AS-02 [Required] [Hard Gate] No invented people

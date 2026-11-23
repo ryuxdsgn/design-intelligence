@@ -170,7 +170,9 @@ The six stages of the core workflow (SKILL.md), as Design runs them.
    screens use, then the screens themselves, built in auto layout; only an element that repeats on two or more screens
    becomes a component, after the screens exist. Prototype links and rationale annotations only when asked; the
    annotations for open rules and sample data stay (stage 6). One screenshot per screen when it is built and one at the
-   end, at scale 1; one audit at the end, then one more after the fixes. Each extra step re-reads the whole conversation:
+   end, at scale 1; a fix checks itself by reading the node (its size, fill, or text), not by a new screenshot; one audit
+   at the end, then one more after the fixes, and a warn the second audit still shows is reported with its reason, not
+   chased with a third. Each extra step re-reads the whole conversation:
    in one three-screen FigCraft run (2026-11-23), a library built before the first screen, prototype links, 19
    annotations, 13 screenshots, and four audits made the run three times the cost of a run without RYUX, and none of it
    showed in the screens people judged.

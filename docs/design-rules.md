@@ -1659,8 +1659,9 @@ Gate area ACCESSIBILITY. Covers semantics, keyboard, focus, contrast, targets, n
 
 - Do: Keep text contrast at least 4.5:1, and at least 3:1 for large text and component boundaries.
   - Over a photo, illustration, or gradient (a status bar on a full-bleed hero, a caption on an image), measure against the worst pixel behind the text or icon, not the average; fix it with a scrim or the bar's light or dark appearance.
+  - Every state keeps it, not only the default: a selected chip or slot is told from its neighbours at 3:1 against them (fill, border, or both) and not by a tint alone, and an unavailable option stays readable at 4.5:1 and says why it is unavailable (taken, closed) instead of fading out.
 - Do not: Put light grey text on white or white text on a pale accent.
-- Why: Low contrast fails outdoors, on cheap screens, and for low vision. (WCAG 2.2 SC 1.4.3 and 1.4.11; ryux Figma pilot critique 2026-10-28: a dark status bar over a dark food photo (1.3:1), then a white one over a light grocery photo (2.7:1) until the scrim was darkened)
+- Why: Low contrast fails outdoors, on cheap screens, and for low vision. (WCAG 2.2 SC 1.4.3 and 1.4.11; ryux Figma pilot critique 2026-10-28: a dark status bar over a dark food photo (1.3:1), then a white one over a light grocery photo (2.7:1) until the scrim was darkened; owner blind rating 2026-11-23 (FigCraft three-screen booking bench): selected and unavailable time slots too faint to read)
 - Check: audit_ui
 - Measured: `ryux scan <url>` flags text under 4.5:1 contrast (3:1 when large); over an image or a gradient, measured on the pixels behind it (its weakest tenth), up to 40 texts per width; a text greyed by a filter is told how to leave out a logotype (data-ryux-ignore) (fail); texts whose contrast was not measured, once per page: under a blend mode or a filter other than a colour one (blur, url), over a picture the page could not photograph (out of view, or redrawn by the page), or past the 40 measured (warn); parts that are not text under 3:1 (WCAG 1.4.11): a field's edge (its border, ring, or fill) against what is around it, judged by the box around a field with no edge of its own, and the icon of an icon-only control against the control; a native checkbox or radio, and what sits on a picture, are left out (fail)
 
@@ -1964,8 +1965,9 @@ Gate area ANTI-SLOP. Covers hard gates, purpose gates, quality locks, honest cla
 #### RX-AS-01 [Required] [Hard Gate] Only real numbers
 
 - Do: Show counts, ratings, growth, and statistics only with a real source; otherwise leave them out or mark [REAL DATA].
+  - Where trust decides the choice (a clinician, a stranger at the door, money), leaving the rating out is not enough: show what a person can check (a licence or registration number, years of practice, the clinic or body behind them), as sample data labelled Sample when the brief gives none.
 - Do not: Invent "48.000+ users", "4,8★", or "+12%".
-- Why: Invented numbers are false claims, however polished the page. (ryux run 2026-10-02: pen.dev landing without ryux)
+- Why: Invented numbers are false claims, however polished the page. (ryux run 2026-10-02: pen.dev landing without ryux; owner blind rating 2026-11-23 (FigCraft home-physio booking bench): the RYUX screens left out the invented rating and showed no trust signal in its place)
 - Check: list every number on the screen with its source (brief, docs, data, or a sample label); fails on any number without one
 
 #### RX-AS-02 [Required] [Hard Gate] No invented people
