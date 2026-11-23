@@ -1071,6 +1071,7 @@ Gate area UI. Covers the visual system of a product: hierarchy, type, layout, de
 - Not when: a one-off marketing piece outside the product
 - Trade-off: a scale limits choices; occasional exceptions need a written reason
 - Check: count radii and type faces (RX-AS-10); review
+- Measured: `ryux scan <url>` flags text in sizes 1 px apart (three or more sizes with a neighbour 1 px above, 11 to 40 px): no type scale (warn)
 
 #### RX-UI-04 [Preferred] [Quality Lock] A palette with roles
 

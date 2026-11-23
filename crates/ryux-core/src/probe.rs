@@ -13,7 +13,7 @@ use std::collections::{HashMap, HashSet};
 
 /// What the rendered checks look for, one row per line of RENDER_CHECKS in packages/cli/src/checks.ts (which also
 /// lists RX-QA-08, script errors, reported by the CLI itself). `cargo test` and the CLI tests hold them equal.
-pub const CATALOGUE: [(&str, &str); 17] = [
+pub const CATALOGUE: [(&str, &str); 18] = [
     ("RX-RD-01", "fail"),
     ("RX-A11Y-01", "fail"),
     ("RX-A11Y-01", "warn"),
@@ -29,6 +29,7 @@ pub const CATALOGUE: [(&str, &str); 17] = [
     ("RX-AS-11", "warn"),
     ("RX-UI-26", "warn"),
     ("RX-UI-01", "warn"),
+    ("RX-UI-03", "warn"),
     ("RX-UX-15", "warn"),
     ("RX-FM-05", "warn"),
 ];
@@ -1490,6 +1491,23 @@ impl<'a> Page<'a> {
             tell(&mut out, "RX-UI-01", "cards", Some(first), format!("cards sit inside a card ({boxes}, the first holds {}): one container per real group; separate inside it with spacing or a divider", holds(first).len()));
         }
 
+        // A type scale with steps (RX-UI-03): sizes picked one element at a time leave text in sizes 1 px apart
+        // (13, 14, 15, 16, 17), which read as mistakes, not levels. Counted on text of 11 to 40 px that carries at least
+        // 20 characters at its size; warned when three or more sizes have a neighbour 1 px above.
+        let mut used: std::collections::BTreeMap<i64, usize> = std::collections::BTreeMap::new();
+        for t in texts.iter().filter(|t| !self.in_svg[t.e]) {
+            let size = self.n(t.e, "fontSize").round() as i64;
+            if (11..=40).contains(&size) {
+                *used.entry(size).or_insert(0) += len16(t.x.trim());
+            }
+        }
+        let sizes: Vec<i64> = used.iter().filter(|(_, n)| **n >= 20).map(|(s, _)| *s).collect();
+        let close: Vec<i64> = sizes.iter().copied().filter(|s| sizes.contains(&(s + 1))).collect();
+        if close.len() >= 3 {
+            let list: Vec<String> = sizes.iter().map(|s| s.to_string()).collect();
+            tell(&mut out, "RX-UI-03", "scale", None, format!("text in {} sizes ({} px), {} of them 1 px from the next: steps that close read as mistakes, not levels; pick a scale (for example 12, 14, 16, 20, 28) and give each role one step", sizes.len(), list.join(", "), close.len()));
+        }
+
         // Textarea growth (RX-FM-05): filled with 8 lines for a moment, a textarea that keeps its height and hides the
         // text past its edge.
         for i in (2..n).filter(|&i| self.els[i].tag == "TEXTAREA") {
@@ -2030,6 +2048,21 @@ mod tests {
         assert_eq!(wide(serde_json::json!({"t": "BUTTON", "p": 1, "s": 2, "ctl": 1, "nm": "Bayar Rp1.250.000", "r": [900, 700, 200, 48]})), 1);
         assert_eq!(wide(serde_json::json!({"t": "A", "p": 1, "s": 2, "ctl": 1, "nm": "Bayar Rp1.250.000", "r": [900, 700, 200, 48]})), 1);
         assert_eq!(wide(serde_json::json!({"t": "INPUT", "p": 1, "s": 2, "ctl": 1, "ty": "submit", "nm": "Bayar Rp1.250.000", "r": [900, 700, 200, 48]})), 1);
+    }
+
+    #[test]
+    fn text_in_sizes_one_pixel_apart_has_no_scale() {
+        let run = |sizes: &[f64]| {
+            let styles: Vec<Value> = sizes.iter().map(|s| serde_json::json!({"fontSize": s})).collect();
+            let els: Vec<Value> = (0..sizes.len()).map(|i| serde_json::json!({"t": "P", "p": 1, "s": i + 2, "r": [16, 40 * i + 20, 300, 20]})).collect();
+            let texts: Vec<Value> = (0..sizes.len()).map(|i| serde_json::json!({"e": i + 2, "x": "Teks contoh yang cukup panjang di sini", "r": [16, 40 * i + 20, 300, 20]})).collect();
+            rules_of(&page(serde_json::json!({}), Value::Array(styles), Value::Array(els), Value::Array(texts)), "RX-UI-03")
+        };
+        let messy = run(&[13.0, 14.0, 15.0, 16.0, 17.0, 24.0]);
+        assert_eq!(messy.len(), 1);
+        assert!(messy[0].starts_with("text in 6 sizes (13, 14, 15, 16, 17, 24 px), 4 of them 1 px from the next"));
+        assert!(run(&[12.0, 14.0, 16.0, 20.0, 28.0]).is_empty());
+        assert!(run(&[14.0, 15.0, 16.0, 20.0]).is_empty());
     }
 
     #[test]
