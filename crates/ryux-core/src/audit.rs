@@ -385,6 +385,10 @@ fn flow_checks(t: &Tree, screens: &[usize], r: &Res, o: &mut Out) {
                 let text = t.chars(*n);
                 let Some(m) = back.captures(&text) else { continue };
                 let to = m[1].to_lowercase();
+                // a place is a short name; "Ke Jl. Dipatiukur No. 35" is an address, not a way back (Rawat r4 D3)
+                if to.chars().any(|c| c.is_ascii_digit()) || to.split_whitespace().count() > 3 {
+                    continue;
+                }
                 let known = |x: &String| !x.is_empty() && (x.contains(&to) || to.contains(x.as_str()));
                 if !tabs.iter().any(known) && !frames.iter().any(known) {
                     o.inc("flowBreaks", 1);
@@ -401,6 +405,10 @@ fn flow_checks(t: &Tree, screens: &[usize], r: &Res, o: &mut Out) {
         for (n, anc) in &a.layers {
             let name = t.chars(*n).trim().to_string();
             if t.ty(*n) != "TEXT" || name.chars().count() < 6 || !name.contains(' ') || !name.chars().next().is_some_and(char::is_uppercase) || time.is_match(&name) {
+                continue;
+            }
+            // a name is said once on its screen: "STR terverifikasi KKI" on every card is a badge, not a person (Rawat r4 D3)
+            if a.layers.iter().filter(|(m, _)| t.ty(*m) == "TEXT" && t.chars(*m).trim() == name).count() > 1 {
                 continue;
             }
             // the card: the nearest container well under the screen's height
