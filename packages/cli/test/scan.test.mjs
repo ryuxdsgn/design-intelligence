@@ -650,7 +650,7 @@ test("scan <url> measures text over a gradient or an image on its pixels, and na
   assert.match(a11y01[3], /^warn 1 text not measured for contrast \(under a blend mode or a filter.*first "Teks berbaur"/);
 });
 
-test("scan <url> counts emoji in the chrome, gradients that are no token, and blurred blobs (RX-AS-10)", (t) => {
+test("scan <url> counts emoji in the chrome and gradients that are no token, not gradients that draw a thing (RX-AS-10)", (t) => {
   const dir = mkdtempSync(join(tmpdir(), "ryux-counts-"));
   const path = join(dir, "counts.html");
   writeFileSync(path, COUNTS);
@@ -658,10 +658,9 @@ test("scan <url> counts emoji in the chrome, gradients that are no token, and bl
   rmSync(dir, { recursive: true, force: true });
   if (/needs Playwright|could not start Chromium/.test(r.out)) return noBrowser(t);
   const counts = JSON.parse(r.out).findings.filter((f) => f.rule === "RX-AS-10").map((f) => f.message);
-  assert.equal(counts.length, 3, counts.join("\n"));
-  assert.match(counts[0], /^2 control or navigation labels carry an emoji \("🏠 Beranda", "🚀 Mulai"\)/);
+  assert.equal(counts.length, 2, counts.join("\n"));
+  assert.match(counts[0], /^3 control or navigation labels carry an emoji \("🏠 Beranda", "🚀 Mulai", "💬"\).*; a control that is only an emoji is read by the emoji's name/);
   assert.match(counts[1], /^1 gradient with colours that are not among the page's colour tokens: div\.typed \(#f97316, #db2777\);/);
-  assert.match(counts[2], /^2 blurred colour blobs behind the content: div\.blob, div\.blob;/);
 });
 
 // Visual tells (knowledge/anti-slop.md): warn once per page, never at a single, reasoned use.

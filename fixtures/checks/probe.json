@@ -11785,7 +11785,7 @@
    "vh": 844,
    "scrollWidth": 390,
    "scrollingElement": 0,
-   "top": 4,
+   "top": 2,
    "styles": [
     {
      "color": "rgb(0, 0, 0)",
@@ -11793,22 +11793,6 @@
     },
     {
      "backgroundColor": "rgb(255, 255, 255)",
-     "color": "rgb(17, 17, 17)",
-     "fontFamily": "sans-serif"
-    },
-    {
-     "position": "absolute",
-     "backgroundColor": "rgb(168, 85, 247)",
-     "filter": "blur(60px)",
-     "borderTopLeftRadius": 50,
-     "color": "rgb(17, 17, 17)",
-     "fontFamily": "sans-serif"
-    },
-    {
-     "position": "absolute",
-     "backgroundColor": "rgb(34, 211, 238)",
-     "filter": "blur(60px)",
-     "borderTopLeftRadius": 50,
      "color": "rgb(17, 17, 17)",
      "fontFamily": "sans-serif"
     },
@@ -11849,6 +11833,37 @@
      "backgroundImage": "linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.6)), none",
      "color": "rgb(17, 17, 17)",
      "fontFamily": "sans-serif"
+    },
+    {
+     "backgroundColor": "rgb(17, 17, 17)",
+     "color": "rgb(17, 17, 17)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "backgroundImage": "linear-gradient(rgb(45, 58, 85), rgb(164, 103, 122))",
+     "color": "rgb(255, 255, 255)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "color": "rgb(255, 255, 255)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "position": "relative",
+     "color": "rgb(17, 17, 17)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "position": "absolute",
+     "backgroundImage": "radial-gradient(rgb(246, 200, 92), rgb(231, 169, 46))",
+     "borderTopLeftRadius": 50,
+     "color": "rgb(17, 17, 17)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "backgroundImage": "linear-gradient(135deg, rgb(127, 182, 232), rgb(185, 218, 245))",
+     "color": "rgb(17, 17, 17)",
+     "fontFamily": "sans-serif"
     }
    ],
    "els": [
@@ -11860,8 +11875,10 @@
       0,
       0,
       390,
-      609
-     ]
+      1037
+     ],
+     "sh": 1037,
+     "ch": 844
     },
     {
      "p": 0,
@@ -11871,37 +11888,13 @@
       0,
       0,
       390,
-      609
+      1037
      ]
     },
     {
      "p": 1,
-     "t": "DIV",
-     "s": 2,
-     "r": [
-      0,
-      0,
-      240,
-      240
-     ],
-     "c": "blob"
-    },
-    {
-     "p": 1,
-     "t": "DIV",
-     "s": 3,
-     "r": [
-      150,
-      300,
-      240,
-      240
-     ],
-     "c": "blob"
-    },
-    {
-     "p": 1,
      "t": "NAV",
-     "s": 4,
+     "s": 2,
      "r": [
       0,
       0,
@@ -11910,9 +11903,9 @@
      ]
     },
     {
-     "p": 4,
+     "p": 2,
      "t": "A",
-     "s": 5,
+     "s": 3,
      "r": [
       8,
       6,
@@ -11924,9 +11917,9 @@
      "sib": 1
     },
     {
-     "p": 4,
+     "p": 2,
      "t": "A",
-     "s": 5,
+     "s": 3,
      "r": [
       108.9375,
       6,
@@ -11940,7 +11933,7 @@
     {
      "p": 1,
      "t": "P",
-     "s": 4,
+     "s": 2,
      "r": [
       0,
       42,
@@ -11951,7 +11944,7 @@
     {
      "p": 1,
      "t": "BUTTON",
-     "s": 6,
+     "s": 4,
      "r": [
       0,
       84,
@@ -11964,7 +11957,7 @@
     {
      "p": 1,
      "t": "BUTTON",
-     "s": 6,
+     "s": 4,
      "r": [
       88.5625,
       85,
@@ -11976,8 +11969,21 @@
     },
     {
      "p": 1,
+     "t": "BUTTON",
+     "s": 4,
+     "r": [
+      183.65625,
+      84,
+      53,
+      44
+     ],
+     "ctl": 1,
+     "nm": "💬"
+    },
+    {
+     "p": 1,
      "t": "DIV",
-     "s": 7,
+     "s": 5,
      "r": [
       0,
       129,
@@ -11989,7 +11995,7 @@
     {
      "p": 1,
      "t": "DIV",
-     "s": 8,
+     "s": 6,
      "r": [
       0,
       249,
@@ -12001,7 +12007,7 @@
     {
      "p": 1,
      "t": "DIV",
-     "s": 9,
+     "s": 7,
      "r": [
       0,
       369,
@@ -12013,7 +12019,7 @@
     {
      "p": 1,
      "t": "DIV",
-     "s": 10,
+     "s": 8,
      "r": [
       0,
       489,
@@ -12021,16 +12027,152 @@
       120
      ],
      "c": "scrim"
+    },
+    {
+     "p": 1,
+     "t": "DIV",
+     "s": 9,
+     "r": [
+      0,
+      609,
+      216,
+      200
+     ],
+     "c": "phone"
+    },
+    {
+     "p": 13,
+     "t": "DIV",
+     "s": 10,
+     "r": [
+      8,
+      617,
+      200,
+      184
+     ],
+     "c": "screen"
+    },
+    {
+     "p": 14,
+     "t": "P",
+     "s": 11,
+     "r": [
+      20,
+      645,
+      176,
+      18
+     ]
+    },
+    {
+     "p": 1,
+     "t": "DIV",
+     "s": 12,
+     "r": [
+      0,
+      825,
+      390,
+      160
+     ],
+     "c": "hero-art"
+    },
+    {
+     "p": 16,
+     "t": "DIV",
+     "s": 13,
+     "r": [
+      240,
+      825,
+      150,
+      150
+     ],
+     "c": "sun"
+    },
+    {
+     "p": 16,
+     "t": "P",
+     "s": 2,
+     "r": [
+      0,
+      825,
+      390,
+      18
+     ]
+    },
+    {
+     "p": 1,
+     "t": "DIV",
+     "s": 14,
+     "r": [
+      0,
+      985,
+      84,
+      52
+     ],
+     "c": "thumb"
     }
    ],
    "texts": [
     {
-     "e": 5,
+     "e": 3,
      "x": "🏠 Beranda",
      "r": [
       8,
       6,
       84.9375,
+      18
+     ],
+     "open": [
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3
+     ]
+    },
+    {
+     "e": 4,
+     "x": "Pesanan",
+     "r": [
+      108.9375,
+      6,
+      63.171875,
+      18
+     ],
+     "open": [
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4
+     ]
+    },
+    {
+     "e": 5,
+     "x": "Terima kasih sudah belanja 🙏",
+     "r": [
+      0,
+      48,
+      218.34375,
       18
      ],
      "open": [
@@ -12049,41 +12191,16 @@
       5,
       5,
       5
-     ],
-     "end": {
-      "r": [
-       8,
-       6,
-       84.9375,
-       18
-      ],
-      "h": [
-       5,
-       5,
-       5,
-       5,
-       5,
-       5,
-       5,
-       5,
-       5,
-       5,
-       5,
-       5,
-       5,
-       5,
-       5
-      ]
-     }
+     ]
     },
     {
      "e": 6,
-     "x": "Pesanan",
+     "x": "🚀 Mulai",
      "r": [
-      108.9375,
-      6,
-      63.171875,
-      18
+      18,
+      100,
+      52.5625,
+      15
      ],
      "open": [
       6,
@@ -12101,41 +12218,16 @@
       6,
       6,
       6
-     ],
-     "end": {
-      "r": [
-       108.9375,
-       6,
-       63.171875,
-       18
-      ],
-      "h": [
-       6,
-       6,
-       6,
-       6,
-       6,
-       6,
-       6,
-       6,
-       6,
-       6,
-       6,
-       6,
-       6,
-       6,
-       6
-      ]
-     }
+     ]
     },
     {
      "e": 7,
-     "x": "Terima kasih sudah belanja 🙏",
+     "x": "✓ Simpan",
      "r": [
-      0,
-      48,
-      218.34375,
-      18
+      106.5625,
+      100,
+      59.09375,
+      15
      ],
      "open": [
       7,
@@ -12153,40 +12245,15 @@
       7,
       7,
       7
-     ],
-     "end": {
-      "r": [
-       0,
-       48,
-       218.34375,
-       18
-      ],
-      "h": [
-       7,
-       7,
-       7,
-       7,
-       7,
-       7,
-       7,
-       7,
-       7,
-       7,
-       7,
-       7,
-       7,
-       7,
-       7
-      ]
-     }
+     ]
     },
     {
      "e": 8,
-     "x": "🚀 Mulai",
+     "x": "💬",
      "r": [
-      18,
+      201.65625,
       100,
-      52.5625,
+      17,
       15
      ],
      "open": [
@@ -12205,82 +12272,109 @@
       8,
       8,
       8
+     ]
+    },
+    {
+     "e": 15,
+     "x": "7:25",
+     "r": [
+      20,
+      645,
+      31.140625,
+      18
+     ],
+     "open": [
+      15,
+      15,
+      15,
+      15,
+      15,
+      15,
+      15,
+      15,
+      15,
+      15,
+      15,
+      15,
+      15,
+      15,
+      15
      ],
      "end": {
       "r": [
-       18,
-       100,
-       52.5625,
-       15
+       20,
+       452,
+       31.140625,
+       18
       ],
       "h": [
-       8,
-       8,
-       8,
-       8,
-       8,
-       8,
-       8,
-       8,
-       8,
-       8,
-       8,
-       8,
-       8,
-       8,
-       8
+       15,
+       15,
+       15,
+       15,
+       15,
+       15,
+       15,
+       15,
+       15,
+       15,
+       15,
+       15,
+       15,
+       15,
+       15
       ]
      }
     },
     {
-     "e": 9,
-     "x": "✓ Simpan",
+     "e": 18,
+     "x": "Panen pagi",
      "r": [
-      106.5625,
-      100,
-      59.09375,
-      15
+      0,
+      825,
+      80.96875,
+      18
      ],
      "open": [
-      9,
-      9,
-      9,
-      9,
-      9,
-      9,
-      9,
-      9,
-      9,
-      9,
-      9,
-      9,
-      9,
-      9,
-      9
+      18,
+      18,
+      18,
+      18,
+      18,
+      18,
+      18,
+      18,
+      18,
+      18,
+      18,
+      18,
+      18,
+      18,
+      18
      ],
      "end": {
       "r": [
-       106.5625,
-       100,
-       59.09375,
-       15
+       0,
+       632,
+       80.96875,
+       18
       ],
       "h": [
-       9,
-       9,
-       9,
-       9,
-       9,
-       9,
-       9,
-       9,
-       9,
-       9,
-       9,
-       9,
-       9,
-       9,
-       9
+       18,
+       18,
+       18,
+       18,
+       18,
+       18,
+       18,
+       18,
+       18,
+       18,
+       18,
+       18,
+       18,
+       18,
+       18
       ]
      }
     }
@@ -12288,6 +12382,15 @@
    "chains": {
     "open": {},
     "end": {}
+   },
+   "answers": {
+    "under": {},
+    "grow": {},
+    "behind": {
+     "6": {
+      "px": "40415b41425b40425b40415b40415b40425b40415b40415b40425b40415b40425b40425b40415b40415b40425b40415b40415b40425b40415b41425b40425b40415b40425b40425b42425c42425b42425b42425c42425c42425c42425c42425c42425b42425c42425b42425c42425c42425c42425b42425c42425c42425c42425c42425b42425b42425c42425b42425c44425c44435c44435d43425c44425c44435d44425c44425c44435d43425c44435c44435d44425c44425c44435d43425c44425c44435d44425c44435c44435d43425c44435c44435d46445d46435d46435d46445d46435d46435d46445d46445d46435d46445d46435d46435d46445d46445d46435d46445d46435d46435d46445d46435d46435d46445d46435d46435d47445d48455e48445e48445d47445d48455e47445d47445d48445e48445d48455e48455e47445d47445d48445e48445d47445d48455e47445d48455e48445e48445d48455e48455e4a455e4a455e4a455e4a455e4a455e4a455e4a455e4a455e4a455e4a455e4a455e4a455e4a455e4a455e4a455e4a455e4a455e4a455e4a455e4a455e4a455e4a455e4a455e4a455e"
+     }
+    }
    }
   },
   "output": {
@@ -12296,7 +12399,7 @@
      "rule": "RX-AS-10",
      "level": "warn",
      "selector": "nav > a",
-     "message": "2 control or navigation labels carry an emoji (\"🏠 Beranda\", \"🚀 Mulai\"): the count for emoji in the interface chrome is 0; use the icon set, or the word alone",
+     "message": "3 control or navigation labels carry an emoji (\"🏠 Beranda\", \"🚀 Mulai\", \"💬\"): the count for emoji in the interface chrome is 0; use the icon set, or the word alone; a control that is only an emoji is read by the emoji's name (\"telephone receiver\") and cannot take a token colour: use an icon with an aria-label",
      "once": "emoji"
     },
     {
@@ -12305,13 +12408,6 @@
      "selector": "div.typed",
      "message": "1 gradient with colours that are not among the page's colour tokens: div.typed (#f97316, #db2777); the count for gradients without a brand reason is 0: draw it from the brand's tokens and name the reason, or use a flat colour",
      "once": "gradient"
-    },
-    {
-     "rule": "RX-AS-10",
-     "level": "warn",
-     "selector": "div.blob",
-     "message": "2 blurred colour blobs behind the content: div.blob, div.blob; decoration with no job, the look a generated page gets by default; keep one only when the direction chose it",
-     "once": "blobs"
     }
    ],
    "ignored": []

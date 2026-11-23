@@ -111,20 +111,23 @@ body{margin:0;font:16px sans-serif;background:#fff;color:#111}.band{padding:16px
 <div class="band sunset" id="redraw"><p>Digambar ulang</p></div>
 <script>let n=0;new MutationObserver(()=>{if(n++)return;document.getElementById("redraw").innerHTML="<p>Digambar ulang</p>"}).observe(document.head,{childList:true})</script>`;
 
-/** The counts before handoff (RX-AS-10). Counted: emoji in a nav link and in a button, a gradient typed in with
- *  colours that are no token, and two blurred colour blobs. Quiet: an emoji in body copy, a text-style check mark in a
- *  button, a gradient drawn from the tokens, one declared as a token, and a grey scrim over a photo. */
+/** The counts before handoff (RX-AS-10). Counted: emoji in a nav link and in buttons (one is only an emoji), and a
+ *  gradient typed in with colours that are no token. Quiet: an emoji in body copy, a text-style check mark in a button,
+ *  a gradient drawn from the tokens, one declared as a token, a grey scrim over a photo, and gradients that draw a
+ *  thing: a phone mock's wallpaper, a sun in an illustration, and a small thumbnail with no text. */
 export const COUNTS = `${head}<style>
 :root{--brand:#0f766e;--brand-2:#14b8a6;--hero:linear-gradient(90deg,#0f766e,#22d3ee)}
 body{margin:0;font:16px sans-serif;background:#fff;color:#111}nav a{margin:8px;color:#111}
 .typed{height:120px;background:linear-gradient(135deg,#f97316,#db2777)}.drawn{height:120px;background:linear-gradient(90deg,var(--brand),var(--brand-2))}
 .hero{height:120px;background:var(--hero)}.scrim{height:120px;background:linear-gradient(transparent,rgba(0,0,0,.6)),#d6d3d1}
-.blob{position:absolute;width:240px;height:240px;border-radius:50%;filter:blur(60px);z-index:-1}.b1{background:#a855f7;top:0}.b2{background:#22d3ee;top:300px;right:0}
-button{min-height:44px;padding:0 16px}</style>
-<div class="blob b1"></div><div class="blob b2"></div>
+.phone{width:200px;padding:8px;background:#111}.screen{height:160px;padding:12px;background:linear-gradient(#2d3a55,#a4677a);color:#fff}
+.hero-art{position:relative;height:160px}.sun{position:absolute;right:0;width:150px;height:150px;border-radius:50%;background:radial-gradient(#f6c85c,#e7a92e)}
+.thumb{width:84px;height:52px;background:linear-gradient(135deg,#7fb6e8,#b9daf5)}
+button{min-height:44px;min-width:44px;padding:0 16px}</style>
 <nav><a href="#">🏠 Beranda</a><a href="#">Pesanan</a></nav>
-<p>Terima kasih sudah belanja 🙏</p><button>🚀 Mulai</button><button>✓ Simpan</button>
-<div class="typed"></div><div class="drawn"></div><div class="hero"></div><div class="scrim"></div>`;
+<p>Terima kasih sudah belanja 🙏</p><button>🚀 Mulai</button><button>✓ Simpan</button><button>💬</button>
+<div class="typed"></div><div class="drawn"></div><div class="hero"></div><div class="scrim"></div>
+<div class="phone"><div class="screen"><p>7:25</p></div></div><div class="hero-art"><div class="sun"></div><p>Panen pagi</p></div><div class="thumb"></div>`;
 
 /** Every page with the widths the tests render it at. */
 export const PAGES = [

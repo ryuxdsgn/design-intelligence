@@ -218,7 +218,7 @@ Real screens show what real products do instead of invented numbers and urgency:
 - Do not: Judge consistency by eye only, or hand off a screen with five accent hues, mixed icon sets, or two labels for one action because it looks fine.
 - Why: Counts are harder to talk past than impressions; a design that passed a by-eye review still shipped five hues and the wrong tab icons. (isolation effect (von Restorff 1933): several accents cancel each other out; pattern also in appllama-app-design-skill (MIT), anti-slop counts; written for RYUX; owner review 2026-10-17: withryux.pen passed RYUX with 5+ hues and wrong tab icons)
 - Check: count on the render or the design file's variables; report in the Delivery Gate
-- Measured: `ryux scan <url>` flags the counts before handoff, once per page: emoji in a control, a tab, a menu, or navigation; gradients with colour that is not among the page's colour tokens (CSS custom properties); two or more blurred colour blobs with no text (warn)
+- Measured: `ryux scan <url>` flags the counts before handoff, once per page: emoji in a control, a tab, a menu, or navigation; gradients with colour that is not among the page's colour tokens (CSS custom properties), leaving out gradients that draw a thing (an illustration, a device mock, a small shape with no text) (warn)
 
 ### RX-AS-11 [Required] [Hard Gate] The product's own mark
 
