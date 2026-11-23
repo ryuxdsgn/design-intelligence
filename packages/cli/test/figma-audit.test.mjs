@@ -332,6 +332,21 @@ test("across screens: a band on one screen, the main button in another colour, a
   assert.equal(ok.counts.flowBreaks, 0);
 });
 
+test("lists: a count the list under it does not bear out", async () => {
+  const card = (y) => node("FRAME", "Kartu terapis", [20, y, 350, 166], { fills: [white] }, [text("Name", "Ftr. Dewi", [36, y + 16, 200, 20])]);
+  const bar = node("FRAME", "Tab bar", [0, 761, 390, 83], { fills: [white] }, [text("Tab", "Cari", [40, 790, 40, 16])]);
+  const list = (count, n) => node("FRAME", "Daftar terapis", [0, 306, 390, 506], {}, [text("Jumlah hasil", count, [20, 318, 200, 18]), ...[...Array(n)].map((_, i) => card(348 + i * 178))]);
+  const r = await audit([screen("01-cari", [list("8 terapis · urut dari yang terdekat", 2), bar])]);
+  assert.deepEqual(r.findings.filter((f) => f.rule === "RX-AS-03").map((f) => f.message), ['"8 terapis · urut dari yang te…" counts 8, but the list under it shows 2 and ends with room for the next: show what the count says, or count what is shown']);
+  assert.equal(r.counts.listCounts, 1);
+  assert.match(r.gate, /list counts that disagree 1/);
+  // a list that runs under the tab bar scrolls; "3 dari 12" and "2 langkah" are not counts of the list
+  for (const [count, n] of [["12 terapis", 3], ["Menampilkan 2 dari 12", 2], ["2 langkah lagi", 2], ["2 terapis", 2]]) {
+    const ok = await audit([screen("01-cari", [list(count, n), bar])]);
+    assert.equal(ok.counts.listCounts, 0, count);
+  }
+});
+
 test("across screens: a fee the confirmation shows first is a cost met after committing", async () => {
   const row = (label, amount, y) => [text("Label", label, [16, y, 200, 20]), text("Amount", amount, [290, y, 84, 20])];
   const list = screen("01-cari", [text("Price", "Rp185.000/sesi", [16, 160, 200, 20])]);

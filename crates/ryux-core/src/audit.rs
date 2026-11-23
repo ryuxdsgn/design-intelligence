@@ -222,10 +222,10 @@ struct Entry {
     anc: Vec<usize>,
 }
 
-const COUNTS: [&str; 27] = [
+const COUNTS: [&str; 28] = [
     "screens", "imageFills", "distinctImages", "reusedImages", "contrastFails", "contrastUnknown", "targetsUnder24", "targetsUnder44", "cutText", "clippedText",
     "flatOverlays", "idleBusyButtons", "unstyledText", "unboundFills", "unboundSpacing", "layoutScreens", "looseLayers", "strayLayers", "rawEffects", "emptyBands",
-    "capsLabels", "cards", "smallText", "texts", "closeSizes", "unevenRows", "flowBreaks",
+    "capsLabels", "cards", "smallText", "texts", "closeSizes", "unevenRows", "flowBreaks", "listCounts",
 ];
 
 struct Out {
@@ -868,6 +868,51 @@ pub fn audit(input: &Value) -> Value {
             let list: Vec<String> = sizes.iter().map(|s| s.to_string()).collect();
             o.add("RX-UI-03", "warn", &fname, &fname, format!("text in {} sizes ({} px), {} of them 1 px from the next: steps that close read as mistakes, not levels; give each role one step of a scale and one text style", sizes.len(), list.join(", "), close));
         }
+        // A count over a list that the list does not bear out (RX-AS-03): "8 terapis" over a list of 2 cards that ends
+        // with room for the next, or over more cards than it says. Owner blind rating 2026-11-23 (FigCraft r3 C3).
+        {
+            let count = re(r"^\s*(\d{1,3})\s+(\p{L}+)");
+            let unit = re(r"^(menit|jam|hari|minggu|bulan|tahun|detik|km|m|kg|gr?|langkah|step|steps|min|mins|hours?|days?|weeks?|months?|years?|x|kali|persen|bintang|ulasan|reviews?)$");
+            let partial = re(r"\d+\s*(?:dari|of|/)\s*\d+|\d\+|(?:lebih dari|more than|over|hingga|up to)\s*\d|menampilkan|showing");
+            for &n in &texts {
+                let text = t.chars(n);
+                let Some(m) = count.captures(&text) else { continue };
+                let said: usize = m[1].parse().unwrap_or(0);
+                if said < 2 || unit.is_match(&m[2]) || partial.is_match(&text) {
+                    continue;
+                }
+                let tb = t.bx(n);
+                // the list: two or more siblings of one width that start under the count, the nearest set
+                let mut best: Option<Vec<usize>> = None;
+                for e in &nodes {
+                    let Some(kids) = &t.kids[e.n] else { continue };
+                    let rows: Vec<usize> = kids.iter().copied().filter(|&k| {
+                        let b = t.bx(k);
+                        t.visible(k) && t.ty(k) != "TEXT" && b.w >= fbox.w * 0.6 && b.h >= 48.0 && b.h <= fbox.h * 0.4 && b.y >= tb.y + tb.h - 2.0
+                    }).collect();
+                    let same: Vec<usize> = rows.iter().copied().filter(|&k| rows.first().is_some_and(|&f| (t.bx(k).w - t.bx(f).w).abs() <= 2.0)).collect();
+                    if same.len() < 2 || t.bx(same[0]).y - (tb.y + tb.h) > 80.0 {
+                        continue;
+                    }
+                    if best.as_ref().map_or(true, |b| t.bx(same[0]).y < t.bx(b[0]).y) {
+                        best = Some(same);
+                    }
+                }
+                let Some(rows) = best else { continue };
+                let shown = rows.len();
+                let last = rows.iter().map(|&k| t.bx(k)).max_by(|a, b| (a.y + a.h).total_cmp(&(b.y + b.h))).unwrap();
+                let gap = if shown >= 2 { (t.bx(rows[1]).y - (t.bx(rows[0]).y + t.bx(rows[0]).h)).max(0.0) } else { 12.0 };
+                // where the list stops being seen: the frame's bottom, or a full-width bar pinned there
+                let bottom = nodes.iter().map(|e| t.bx(e.n)).filter(|b| b.w >= fbox.w * 0.9 && b.y + b.h >= fbox.y + fbox.h - 4.0 && b.y > last.y && b.y < fbox.y + fbox.h)
+                    .map(|b| b.y).fold(fbox.y + fbox.h, f64::min);
+                let room = last.y + last.h + gap + (last.h * 0.3).min(40.0) < bottom;
+                if shown > said || (shown < said && room) {
+                    o.inc("listCounts", 1);
+                    let why = if shown > said { format!("the list under it shows {}", shown) } else { format!("the list under it shows {} and ends with room for the next", shown) };
+                    o.add("RX-AS-03", "warn", &fname, &t.name(n), format!("\"{}\" counts {}, but {}: show what the count says, or count what is shown", short(trim(&text), 30), said, why));
+                }
+            }
+        }
         // Empty band (RX-UI-05).
         let mut painted: Vec<(f64, f64)> = nodes.iter().filter(|e| {
             let n = e.n;
@@ -987,10 +1032,10 @@ pub fn audit(input: &Value) -> Value {
     let c = &o.c;
     let ann = if annotations.is_empty() { "none".to_string() } else { annotations.iter().map(|(k, v)| format!("{k} {v}")).collect::<Vec<_>>().join(", ") };
     let gate = format!(
-        "figma audit ({}): screens {} · images {} distinct, {} fills, {} reused across screens · contrast fails {} ({} over images, not measured) · text cut {}, clipped {} · targets under 24 {}, under 44 {} · overlays with no lift {} · busy buttons with idle label {} · unstyled text {}, unbound fills {}, unbound spacing {} · built in auto layout {}/{} screens, loose layers {}, layers outside the screens {}, effects without a style {} · empty bands {}, small uppercase labels {}, section cards {}, text under 12 px {}/{}, screens with text sizes 1 px apart {}, uneven button rows {} · breaks across screens {} · annotations {} · {} fail, {} warn",
+        "figma audit ({}): screens {} · images {} distinct, {} fills, {} reused across screens · contrast fails {} ({} over images, not measured) · text cut {}, clipped {} · targets under 24 {}, under 44 {} · overlays with no lift {} · busy buttons with idle label {} · unstyled text {}, unbound fills {}, unbound spacing {} · built in auto layout {}/{} screens, loose layers {}, layers outside the screens {}, effects without a style {} · empty bands {}, small uppercase labels {}, section cards {}, text under 12 px {}/{}, screens with text sizes 1 px apart {}, uneven button rows {}, list counts that disagree {} · breaks across screens {} · annotations {} · {} fail, {} warn",
         pname, c["screens"], c["distinctImages"], c["imageFills"], c["reusedImages"], c["contrastFails"], c["contrastUnknown"], c["cutText"], c["clippedText"],
         c["targetsUnder24"], c["targetsUnder44"], c["flatOverlays"], c["idleBusyButtons"], c["unstyledText"], c["unboundFills"], c["unboundSpacing"],
-        c["layoutScreens"], c["screens"], c["looseLayers"], c["strayLayers"], c["rawEffects"], c["emptyBands"], c["capsLabels"], c["cards"], c["smallText"], c["texts"], c["closeSizes"], c["unevenRows"], c["flowBreaks"],
+        c["layoutScreens"], c["screens"], c["looseLayers"], c["strayLayers"], c["rawEffects"], c["emptyBands"], c["capsLabels"], c["cards"], c["smallText"], c["texts"], c["closeSizes"], c["unevenRows"], c["listCounts"], c["flowBreaks"],
         ann, fails, o.findings.len() - fails
     );
     let mut counts = Map::new();
