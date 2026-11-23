@@ -1275,7 +1275,7 @@ Gate area UI. Covers art direction, composition, expressive surfaces, motion, as
 - Not when: L1 feedback on standard controls that follows the platform defaults
 - Trade-off: fewer flourishes on marketing pages
 - Check: review; reduced-motion test; for a handoff, the motion spec per element
-- Machine check: `ryux scan` flags a transition on all properties or on layout properties (width, height, top, left, margin, padding) (warn); a UI transition longer than 500 ms (warn); elements that wait over 500 ms before they move, or a stagger step of 100 ms or more, once per file (tooltips, loaders, loops, and success moments aside) (warn)
+- Machine check: `ryux scan` flags a transition on all properties or on layout properties (width, height, top, left, margin, padding) (warn); a UI transition longer than 500 ms (warn); elements that wait over 500 ms before they move, or a stagger step of 100 ms or more, once per file (tooltips, loaders, loops, and success moments aside) (warn); motion note, L1: controls that change colour, shadow, or size on hover or press with no transition (Tailwind hover:/active: classes without a transition class; a CSS :hover rule in a file with no transition) (note); motion note, L2: a part shown and hidden by a flag (open, show, visible, expanded) or by display or hidden, in a file with no motion; a component counts only when its own file is scanned and has no motion (note)
 
 #### RX-UI-12 [Contextual] A point of view on expressive surfaces
 

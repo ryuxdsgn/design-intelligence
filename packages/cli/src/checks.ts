@@ -3,7 +3,8 @@
 // prints and what the rule text says a machine checks. SOURCE_CHECKS and SYNTAX_CHECKS list ryux-core's
 // detectors in its order, with its levels: test/golden.test.mjs holds the lists equal.
 
-export type ScanLevel = "fail" | "warn";
+/** "note" is not a fault: a motion opportunity the agent reports at the end and offers to build (RX-UI-11). */
+export type ScanLevel = "fail" | "warn" | "note";
 
 export interface Check {
   rule: string;
@@ -86,6 +87,8 @@ export const SOURCE_CHECKS: Check[] = [
   { rule: "RX-DS-03", level: "warn", looksFor: "three or more one-off hex colors in a file that is not a token or theme file" },
   { rule: "RX-UI-19", level: "fail", looksFor: "an .svg file whose root has no viewBox, so it cannot scale" },
   { rule: "RX-UI-19", level: "warn", looksFor: "an .svg file with a fixed width or height on the root, an embedded raster, <text> inside the art, or editor metadata" },
+  { rule: "RX-UI-11", level: "note", looksFor: "motion note, L1: controls that change colour, shadow, or size on hover or press with no transition (Tailwind hover:/active: classes without a transition class; a CSS :hover rule in a file with no transition)" },
+  { rule: "RX-UI-11", level: "note", looksFor: "motion note, L2: a part shown and hidden by a flag (open, show, visible, expanded) or by display or hidden, in a file with no motion; a component counts only when its own file is scanned and has no motion" },
 ];
 
 /** What `ryux scan <url>` measures on the rendered page, for --list-rules and the rule text: ryux-core judges what

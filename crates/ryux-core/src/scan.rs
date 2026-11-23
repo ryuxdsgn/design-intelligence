@@ -776,6 +776,74 @@ fn rule_ui11_delay(s: &Source, _: &Ctx) -> Vec<Hit> {
     vec![hit(at, format!("{many}: content that arrives late reads as a slow page; start at once and keep the whole sequence under about 500 ms"))]
 }
 
+/// Motion already in a file: any transition, animation, or motion library. A file that has some is left alone by the
+/// motion notes below: it may animate the part in a way a pattern cannot see.
+const HAS_MOTION: &str = r"\btransition\b|\btransition-|\banimation\b|@keyframes|\banimate-|\bduration-\d|framer-motion|motion/react|AnimatePresence|useSpring|useTransition\b|\.animate\(|data-\[state=|\bmotion\.\w|<Transition\b|<CSSTransition\b|svelte/transition|\btransition:";
+
+/// Motion note, L1 (RX-UI-11): controls that change colour, shadow, or size on hover or press with no transition, once
+/// per file with the count. Not a fault: a note the agent reports at the end and offers to build.
+fn note_ui11_feedback(s: &Source, _: &Ctx) -> Vec<Hit> {
+    let mut first: Option<(usize, String)> = None;
+    let mut n = 0;
+    // Tailwind: a class list with hover: or active: on colour, shadow, opacity, or scale, and no transition class in it
+    for m in re(r#"(?:className|class)\s*=\s*(?:\{\s*)?(?:["'`]|cn\(\s*["'`]|clsx\(\s*["'`])([^"'`]*\b(?:hover|active):(?:bg|text|border|shadow|opacity|scale|ring|from|to)-[^"'`]*)"#, "g").match_all(&s.text) {
+        let cls = m.g(1);
+        if re(r"\btransition\b|\btransition-|\bduration-\d|\banimate-", "").test(cls) {
+            continue;
+        }
+        n += 1;
+        if first.is_none() {
+            let tok = re(r"\b(?:hover|active):[\w\[\]#/.-]+", "").exec(cls).map(|t| t.g(0).to_string()).unwrap_or_default();
+            first = Some((m.index, tok));
+        }
+    }
+    // CSS: a :hover or :active rule on a selector whose own rule has no transition, in a file with none at all
+    if !re(r"\btransition\b", "").test(&s.text) {
+        for m in re(r"([.#]?[A-Za-z][\w-]*):(?:hover|active)\s*\{([^}]*)\}", "g").match_all(&s.text) {
+            if !re(r"\b(?:background|color|border-color|box-shadow|transform|opacity|filter)\s*:", "").test(m.g(2)) {
+                continue;
+            }
+            n += 1;
+            if first.is_none() {
+                first = Some((m.index, format!("{}:hover", m.g(1))));
+            }
+        }
+    }
+    let Some((at, tok)) = first else { return Vec::new() };
+    let what = if n == 1 { format!("a control changes on hover or press with no transition (\"{tok}\")") } else { format!("{n} controls change on hover or press with no transition (first \"{tok}\")") };
+    vec![hit(at, format!("motion L1: {what}; offer a 150 to 200 ms ease-out on colour, background, and shadow (transform under 100 ms for a press), a cut under reduced motion"))]
+}
+
+/// Motion note, L2 (RX-UI-11): a part shown and hidden by a flag (open, show, visible, expanded) with a cut, in a file
+/// with no motion; a component from elsewhere counts only when its own file is in the scan and has no motion either
+/// (a library dialog or sheet usually animates itself). Once per file with the count.
+fn note_ui11_reveal(s: &Source, c: &Ctx) -> Vec<Hit> {
+    if re(HAS_MOTION, "").test(&s.text) {
+        return Vec::new();
+    }
+    let mut hits: Vec<(usize, String, String)> = Vec::new();
+    for m in re(r"\{\s*!?\s*([\w.]*?(?:[oO]pen|[sS]how|[vV]isible|[eE]xpanded)\w*)\s*(?:&&|\?)\s*\(?\s*<([A-Za-z][\w.]*)", "g").match_all(&s.text) {
+        let (flag, tag) = (m.g(1).to_string(), m.g(2).to_string());
+        if tag.chars().next().is_some_and(char::is_uppercase) {
+            let name = tag.rsplit('.').next().unwrap_or(&tag);
+            let def = re(&format!(r"(?:function|const|class)\s+{name}\b"), "");
+            let Some(home) = c.files.values().find(|f| def.test(&f.text)) else { continue };
+            if re(HAS_MOTION, "").test(&home.text) {
+                continue;
+            }
+        }
+        hits.push((m.index, flag, tag));
+    }
+    // plain pages: a part hidden or shown by display or the hidden attribute
+    for m in re(r#"\.style\.display\s*=\s*["'`](?:none|block|flex|grid)["'`]|\.hidden\s*=\s*(?:true|false|!)|toggleAttribute\(\s*["']hidden["']"#, "g").match_all(&s.text) {
+        hits.push((m.index, m.g(0).trim().to_string(), String::new()));
+    }
+    let Some((at, flag, tag)) = hits.first().cloned() else { return Vec::new() };
+    let one = if tag.is_empty() { format!("\"{flag}\"") } else { format!("\"{flag}\" shows <{tag}>") };
+    let what = if hits.len() == 1 { format!("{one} with a cut") } else { format!("{} parts appear and disappear with a cut (first {one})", hits.len()) };
+    vec![hit(at, format!("motion L2: {what}; offer a 150 to 250 ms enter and exit (a fade with a few pixels of movement from what opened it; exit a little faster), a fade or a cut under reduced motion"))]
+}
+
 fn rule_ui35(s: &Source, c: &Ctx) -> Vec<Hit> {
     if c.reduced_transparency != Some(false) {
         return Vec::new();
@@ -944,6 +1012,8 @@ fn detectors() -> &'static [Detector] {
         Detector { rule: "RX-DS-03", level: "warn", exts: visual, folder: false, find: rule_ds03_oneoff },
         Detector { rule: "RX-UI-19", level: "fail", exts: svg, folder: false, find: rule_ui19_viewbox },
         Detector { rule: "RX-UI-19", level: "warn", exts: svg, folder: false, find: rule_ui19_art },
+        Detector { rule: "RX-UI-11", level: "note", exts: markup_style, folder: false, find: note_ui11_feedback },
+        Detector { rule: "RX-UI-11", level: "note", exts: markup_script, folder: false, find: note_ui11_reveal },
     ];
     D
 }
@@ -1229,6 +1299,32 @@ mod tests {
         assert_eq!(wait(".confirm.is-active .breeze path { animation-delay: 760ms; }").len(), 0);
         assert_eq!(wait(".list li:nth-child(3) .tick svg{animation-delay:1.2s}").len(), 0);
         assert_eq!(found("a.html", "<div class=\"delay-700 transition\">x</div>", "RX-UI-11", "700 ms").len(), 1);
+    }
+
+    #[test]
+    fn motion_notes_name_a_cut_where_a_short_transition_would_help() {
+        let l1 = |path: &str, raw: &str| found(path, raw, "RX-UI-11", "motion L1");
+        let l2 = |raw: &str, ctx: &[(&str, &str)]| found_with("src/Order.tsx", raw, ctx, "RX-UI-11", "motion L2");
+        // L1: hover with no transition, in Tailwind and in CSS; once per file with the count
+        assert_eq!(l1("a.tsx", r#"<button className="px-4 hover:bg-zinc-50">A</button><a className="hover:text-ink">B</a>"#), vec!["1:9"]);
+        assert!(found("a.tsx", r#"<button className="hover:bg-zinc-50">A</button><a className="hover:text-ink">B</a>"#, "RX-UI-11", "2 controls").len() == 1);
+        assert!(l1("a.tsx", r#"<button className="transition-colors hover:bg-zinc-50">A</button>"#).is_empty());
+        assert_eq!(l1("a.css", ".btn { background: #fff; }\n.btn:hover { background: #eee; }").len(), 1);
+        assert!(l1("a.css", ".btn { transition: background 150ms; }\n.btn:hover { background: #eee; }").is_empty());
+        assert!(l1("a.css", "a:hover { text-decoration: underline; }").is_empty());
+        // L2: a flag that shows a part with a cut, in a file with no motion
+        assert_eq!(l2("export function Order() { return <div>{open && <ul>...</ul>}</div> }", &[]).len(), 1);
+        assert!(l2("export function Order() { return <div className=\"transition-all\">{open && <ul>...</ul>}</div> }", &[]).is_empty());
+        // a component counts only when its own file is scanned and has no motion
+        assert!(l2("import { Sheet } from 'ui'; export function Order() { return <>{isOpen && <Sheet/>}</> }", &[]).is_empty());
+        assert_eq!(l2("export function Order() { return <>{showMap && <MapCard/>}</> }", &[("src/MapCard.tsx", "export function MapCard() { return <div/> }")]).len(), 1);
+        assert!(l2("export function Order() { return <>{showMap && <MapCard/>}</> }", &[("src/MapCard.tsx", "export function MapCard() { return <div className=\"animate-in\"/> }")]).is_empty());
+        // plain pages: display and hidden
+        assert_eq!(found("a.html", "<script>panel.hidden = !panel.hidden</script>", "RX-UI-11", "motion L2").len(), 1);
+        // notes carry level note, never warn or fail
+        let opts = ScanOptions { folder: false, skip: HashSet::new(), design: None, context: Vec::new() };
+        let all = scan_sources(&[to_source("a.tsx", r#"<button className="hover:bg-zinc-50">A</button>"#)], opts);
+        assert!(all.iter().filter(|f| f["rule"] == "RX-UI-11").all(|f| f["level"] == "note"));
     }
 
     #[test]
