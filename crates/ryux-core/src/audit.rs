@@ -436,6 +436,56 @@ fn flow_checks(t: &Tree, screens: &[usize], r: &Res, o: &mut Out) {
         }
     }
 
+    // A list card that says "today" (or "tomorrow") while the person's own screen opens its date row on a later day
+    // (RX-AS-03): today is the earliest date a row can offer, tomorrow the first or second. Owner blind rating
+    // 2026-11-23: the list said "Tersedia hari ini" and the profile opened on the next day in three no-skill runs.
+    let day = re(r"\b(sen|sel|rab|kam|jum|sab|min|mon|tue|wed|thu|fri|sat|sun)[a-z]*\b|hari ini|besok|today|tomorrow");
+    let picked_re = re(r"dipilih|terpilih|selected|aktif|active|current");
+    let today_re = re(r"hari ini|today");
+    let tomorrow_re = re(r"besok|tomorrow");
+    let digit = Regex::new(r"\d").unwrap();
+    for (i, a) in info.iter().enumerate() {
+        let fa = t.bx(screens[i]);
+        let mut seen: Vec<String> = Vec::new();
+        for (n, anc) in &a.layers {
+            let name = t.chars(*n).trim().to_string();
+            if t.ty(*n) != "TEXT" || name.chars().count() < 6 || !name.contains(' ') || !name.chars().next().is_some_and(char::is_uppercase) || seen.contains(&name) {
+                continue;
+            }
+            let Some(&card) = anc.iter().rev().find(|&&c| c != screens[i] && t.bx(c).h <= fa.h * 0.4 && t.bx(c).w >= fa.w * 0.6 && !r.chrome.is_match(&t.name(c))) else { continue };
+            let words: Vec<String> = t.find_shown(card, &mut |k| t.ty(k) == "TEXT").iter().map(|&k| t.chars(k)).collect();
+            let joined = words.join(" · ");
+            let (today, tomorrow) = (today_re.is_match(&joined), tomorrow_re.is_match(&joined));
+            if today == tomorrow {
+                continue;
+            }
+            let which = if today { &today_re } else { &tomorrow_re };
+            let said = joined.split(" · ").find(|w| which.is_match(w)).unwrap_or("").trim().to_string();
+            for (j, b) in info.iter().enumerate() {
+                if j == i || !b.layers.iter().any(|(m, _)| t.ty(*m) == "TEXT" && t.chars(*m).trim() == name) {
+                    continue;
+                }
+                let label = |k: usize| t.find_shown(k, &mut |x| t.ty(x) == "TEXT").iter().map(|&x| t.chars(x).trim().to_string()).collect::<Vec<_>>().join(" ");
+                for (row, _) in &b.layers {
+                    let chips: Vec<usize> = t.kids[*row].iter().flatten().copied().filter(|&k| t.visible(k) && t.ty(k) != "TEXT").collect();
+                    if chips.len() < 4 || !chips.iter().all(|&k| { let l = label(k); day.is_match(&l) && digit.is_match(&l) }) {
+                        continue;
+                    }
+                    let picked: Vec<usize> = chips.iter().copied().filter(|&k| picked_re.is_match(&t.name(k))).collect();
+                    if picked.len() == 1 {
+                        let at = chips.iter().position(|&k| k == picked[0]).unwrap();
+                        if at > if today { 0 } else { 1 } {
+                            seen.push(name.clone());
+                            o.inc("flowBreaks", 1);
+                            o.add("RX-AS-03", "warn", &a.name, &t.name(card), format!("\"{}\": {} says \"{}\", but {} opens on {}, date {} of the row: open on the day the list promised, or say that day in the list", short(&name, 30), a.name, short(&said, 30), b.name, label(picked[0]), at + 1));
+                        }
+                    }
+                    break;
+                }
+            }
+        }
+    }
+
     // A cost first shown after the commitment (RX-UX-15): on the flow's last screen, an amount labelled as a fee (its
     // own words, or the text beside it on its row) that no earlier screen shows. Owner blind rating 2026-11-23: a visit
     // fee of Rp15.000 that appeared only on the confirmation, in two of three runs without RYUX.

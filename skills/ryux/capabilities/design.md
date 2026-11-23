@@ -239,7 +239,7 @@ The six stages of the core workflow (SKILL.md), as Design runs them.
    - Across screens: a band, hero, or motif that opens one screen of a flow opens every screen, or none; the main
      action has one colour on every screen (RX-DS-02); a label that leads somewhere ("Kembali ke beranda") names a tab
      or screen the flow has (RX-CD-12); every name, hour, price, and total that appears on two screens agrees, and a
-     time a list card promises is one the detail screen offers (RX-AS-03); a fee the last screen lists (a visit,
+     time a list card promises is one the detail screen offers, and a card that says "hari ini" opens the detail screen on today (RX-AS-03); a fee the last screen lists (a visit,
      delivery, or service fee) shows before the action that commits to it (RX-UX-15); a count over a list ("8 terapis") matches
      the list under it (RX-AS-03). The canvas audit counts these as breaks
      across screens; read the rest by eye.

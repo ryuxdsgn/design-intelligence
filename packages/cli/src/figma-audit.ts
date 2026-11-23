@@ -395,6 +395,42 @@ export async function figmaAudit(figma, pageName) {
       }
     });
 
+    // A list card that says "today" (or "tomorrow") while the person's own screen opens its date row on a later day
+    // (RX-AS-03): today is the earliest date a row can offer, tomorrow the first or second. Owner blind rating
+    // 2026-11-23: the list said "Tersedia hari ini" and the profile opened on the next day in three no-skill runs.
+    const DAY = /\b(sen|sel|rab|kam|jum|sab|min|mon|tue|wed|thu|fri|sat|sun)[a-z]*\b|hari ini|besok|today|tomorrow/i;
+    const PICKED = /dipilih|terpilih|selected|aktif|active|current/i;
+    info.forEach((a, i) => {
+      const seen = new Set();
+      for (const { n, anc } of a.layers) {
+        const name = n.type === "TEXT" ? n.characters.trim() : "";
+        if (n.type !== "TEXT" || [...name].length < 6 || !name.includes(" ") || !/^\p{Lu}/u.test(name) || seen.has(name)) continue;
+        const card = [...anc].reverse().find((k) => k !== a.f && box(k).height <= a.fb.height * 0.4 && box(k).width >= a.fb.width * 0.6 && !FCHROME.test(k.name));
+        if (!card) continue;
+        const words = findShown(card, (k) => k.type === "TEXT").map((k) => k.characters).join(" · ");
+        const today = /hari ini|today/i.test(words), tomorrow = /besok|tomorrow/i.test(words);
+        if (today === tomorrow) continue;
+        const said = words.split(" · ").find((w) => (today ? /hari ini|today/i : /besok|tomorrow/i).test(w)).trim();
+        info.forEach((b, j) => {
+          if (j === i || !b.layers.some((e) => e.n.type === "TEXT" && e.n.characters.trim() === name)) return;
+          for (const { n: row } of b.layers) {
+            const chips = "children" in row ? row.children.filter((k) => k.visible !== false && k.type !== "TEXT") : [];
+            const label = (k) => findShown(k, (x) => x.type === "TEXT").map((x) => x.characters.trim()).join(" ");
+            if (chips.length < 4 || !chips.every((k) => DAY.test(label(k)) && /\d/.test(label(k)))) continue;
+            const picked = chips.filter((k) => PICKED.test(k.name));
+            if (picked.length !== 1) continue;
+            const at = chips.indexOf(picked[0]);
+            if (at > (today ? 0 : 1)) {
+              seen.add(name);
+              c.flowBreaks++;
+              add("RX-AS-03", "warn", a.f, card, `"${short(name, 30)}": ${a.f.name} says "${short(said, 30)}", but ${b.f.name} opens on ${label(picked[0])}, date ${at + 1} of the row: open on the day the list promised, or say that day in the list`);
+            }
+            break;
+          }
+        });
+      }
+    });
+
     // A cost first shown after the commitment (RX-UX-15): on the flow's last screen, an amount labelled as a fee (its
     // own words, or the text beside it on its row) that no earlier screen shows.
     const MONEY = /Rp\s?(\d{1,3}(?:\.\d{3})+|\d{4,})/gi;

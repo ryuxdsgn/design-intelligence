@@ -347,6 +347,19 @@ test("lists: a count the list under it does not bear out", async () => {
   }
 });
 
+test("across screens: a list card that says today while the profile opens on a later day", async () => {
+  const card = (when) => node("FRAME", "Kartu terapis", [16, 120, 358, 120], { fills: [white] }, [text("Name", "Ftr. Rina Kartika", [32, 136, 200, 20]), text("When", when, [32, 166, 200, 20])]);
+  const chip = (d, x, picked) => node("FRAME", `Tanggal ${d}${picked ? " (dipilih)" : ""}`, [x, 300, 62, 68], { fills: [white] }, [text("Day", d, [x + 10, 320, 40, 20])]);
+  const profile = (at) => screen("02-profil", [text("Name", "Ftr. Rina Kartika", [16, 80, 300, 28]), node("FRAME", "Pilihan tanggal", [16, 300, 342, 68], {}, ["Sel 24", "Rab 25", "Kam 26", "Jum 27"].map((d, i) => chip(d, 16 + i * 70, i === at)))]);
+  const r = await audit([screen("01-cari", [card("Tersedia hari ini")]), profile(1)]);
+  assert.deepEqual(r.findings.filter((f) => f.rule === "RX-AS-03").map((f) => f.message), ['"Ftr. Rina Kartika": 01-cari says "Tersedia hari ini", but 02-profil opens on Rab 25, date 2 of the row: open on the day the list promised, or say that day in the list']);
+  // today on the first date, and tomorrow on the first or second, agree
+  for (const [when, at] of [["Tersedia hari ini", 0], ["Besok, 09.00", 0], ["Besok, 09.00", 1]]) {
+    const ok = await audit([screen("01-cari", [card(when)]), profile(at)]);
+    assert.equal(ok.counts.flowBreaks, 0, `${when} ${at}`);
+  }
+});
+
 test("across screens: a fee the confirmation shows first is a cost met after committing", async () => {
   const row = (label, amount, y) => [text("Label", label, [16, y, 200, 20]), text("Amount", amount, [290, y, 84, 20])];
   const list = screen("01-cari", [text("Price", "Rp185.000/sesi", [16, 160, 200, 20])]);

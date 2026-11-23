@@ -13385,6 +13385,2181 @@
        "clipsContent": true,
        "children": [
         {
+         "type": "FRAME",
+         "name": "Kartu terapis",
+         "x": 16,
+         "y": 120,
+         "width": 358,
+         "height": 120,
+         "absoluteBoundingBox": {
+          "x": 16,
+          "y": 120,
+          "width": 358,
+          "height": 120
+         },
+         "visible": true,
+         "opacity": 1,
+         "fills": [
+          {
+           "type": "SOLID",
+           "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+           }
+          }
+         ],
+         "strokes": [],
+         "effects": [],
+         "children": [
+          {
+           "type": "TEXT",
+           "name": "Name",
+           "x": 32,
+           "y": 136,
+           "width": 200,
+           "height": 20,
+           "absoluteBoundingBox": {
+            "x": 32,
+            "y": 136,
+            "width": 200,
+            "height": 20
+           },
+           "visible": true,
+           "opacity": 1,
+           "fills": [
+            {
+             "type": "SOLID",
+             "color": {
+              "r": 0.08,
+              "g": 0.07,
+              "b": 0.06
+             }
+            }
+           ],
+           "strokes": [],
+           "effects": [],
+           "characters": "Ftr. Rina Kartika",
+           "fontSize": 15,
+           "fontName": {
+            "family": "Inter",
+            "style": "Regular"
+           },
+           "textStyleId": "S:1"
+          },
+          {
+           "type": "TEXT",
+           "name": "When",
+           "x": 32,
+           "y": 166,
+           "width": 200,
+           "height": 20,
+           "absoluteBoundingBox": {
+            "x": 32,
+            "y": 166,
+            "width": 200,
+            "height": 20
+           },
+           "visible": true,
+           "opacity": 1,
+           "fills": [
+            {
+             "type": "SOLID",
+             "color": {
+              "r": 0.08,
+              "g": 0.07,
+              "b": 0.06
+             }
+            }
+           ],
+           "strokes": [],
+           "effects": [],
+           "characters": "Tersedia hari ini",
+           "fontSize": 15,
+           "fontName": {
+            "family": "Inter",
+            "style": "Regular"
+           },
+           "textStyleId": "S:1"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "type": "FRAME",
+       "name": "02-profil",
+       "x": 0,
+       "y": 0,
+       "width": 390,
+       "height": 844,
+       "absoluteBoundingBox": {
+        "x": 0,
+        "y": 0,
+        "width": 390,
+        "height": 844
+       },
+       "visible": true,
+       "opacity": 1,
+       "fills": [
+        {
+         "type": "SOLID",
+         "color": {
+          "r": 1,
+          "g": 1,
+          "b": 1
+         }
+        }
+       ],
+       "strokes": [],
+       "effects": [],
+       "clipsContent": true,
+       "children": [
+        {
+         "type": "TEXT",
+         "name": "Name",
+         "x": 16,
+         "y": 80,
+         "width": 300,
+         "height": 28,
+         "absoluteBoundingBox": {
+          "x": 16,
+          "y": 80,
+          "width": 300,
+          "height": 28
+         },
+         "visible": true,
+         "opacity": 1,
+         "fills": [
+          {
+           "type": "SOLID",
+           "color": {
+            "r": 0.08,
+            "g": 0.07,
+            "b": 0.06
+           }
+          }
+         ],
+         "strokes": [],
+         "effects": [],
+         "characters": "Ftr. Rina Kartika",
+         "fontSize": 15,
+         "fontName": {
+          "family": "Inter",
+          "style": "Regular"
+         },
+         "textStyleId": "S:1"
+        },
+        {
+         "type": "FRAME",
+         "name": "Pilihan tanggal",
+         "x": 16,
+         "y": 300,
+         "width": 342,
+         "height": 68,
+         "absoluteBoundingBox": {
+          "x": 16,
+          "y": 300,
+          "width": 342,
+          "height": 68
+         },
+         "visible": true,
+         "opacity": 1,
+         "fills": [],
+         "strokes": [],
+         "effects": [],
+         "children": [
+          {
+           "type": "FRAME",
+           "name": "Tanggal Sel 24",
+           "x": 16,
+           "y": 300,
+           "width": 62,
+           "height": 68,
+           "absoluteBoundingBox": {
+            "x": 16,
+            "y": 300,
+            "width": 62,
+            "height": 68
+           },
+           "visible": true,
+           "opacity": 1,
+           "fills": [
+            {
+             "type": "SOLID",
+             "color": {
+              "r": 1,
+              "g": 1,
+              "b": 1
+             }
+            }
+           ],
+           "strokes": [],
+           "effects": [],
+           "children": [
+            {
+             "type": "TEXT",
+             "name": "Day",
+             "x": 26,
+             "y": 320,
+             "width": 40,
+             "height": 20,
+             "absoluteBoundingBox": {
+              "x": 26,
+              "y": 320,
+              "width": 40,
+              "height": 20
+             },
+             "visible": true,
+             "opacity": 1,
+             "fills": [
+              {
+               "type": "SOLID",
+               "color": {
+                "r": 0.08,
+                "g": 0.07,
+                "b": 0.06
+               }
+              }
+             ],
+             "strokes": [],
+             "effects": [],
+             "characters": "Sel 24",
+             "fontSize": 15,
+             "fontName": {
+              "family": "Inter",
+              "style": "Regular"
+             },
+             "textStyleId": "S:1"
+            }
+           ]
+          },
+          {
+           "type": "FRAME",
+           "name": "Tanggal Rab 25 (dipilih)",
+           "x": 86,
+           "y": 300,
+           "width": 62,
+           "height": 68,
+           "absoluteBoundingBox": {
+            "x": 86,
+            "y": 300,
+            "width": 62,
+            "height": 68
+           },
+           "visible": true,
+           "opacity": 1,
+           "fills": [
+            {
+             "type": "SOLID",
+             "color": {
+              "r": 1,
+              "g": 1,
+              "b": 1
+             }
+            }
+           ],
+           "strokes": [],
+           "effects": [],
+           "children": [
+            {
+             "type": "TEXT",
+             "name": "Day",
+             "x": 96,
+             "y": 320,
+             "width": 40,
+             "height": 20,
+             "absoluteBoundingBox": {
+              "x": 96,
+              "y": 320,
+              "width": 40,
+              "height": 20
+             },
+             "visible": true,
+             "opacity": 1,
+             "fills": [
+              {
+               "type": "SOLID",
+               "color": {
+                "r": 0.08,
+                "g": 0.07,
+                "b": 0.06
+               }
+              }
+             ],
+             "strokes": [],
+             "effects": [],
+             "characters": "Rab 25",
+             "fontSize": 15,
+             "fontName": {
+              "family": "Inter",
+              "style": "Regular"
+             },
+             "textStyleId": "S:1"
+            }
+           ]
+          },
+          {
+           "type": "FRAME",
+           "name": "Tanggal Kam 26",
+           "x": 156,
+           "y": 300,
+           "width": 62,
+           "height": 68,
+           "absoluteBoundingBox": {
+            "x": 156,
+            "y": 300,
+            "width": 62,
+            "height": 68
+           },
+           "visible": true,
+           "opacity": 1,
+           "fills": [
+            {
+             "type": "SOLID",
+             "color": {
+              "r": 1,
+              "g": 1,
+              "b": 1
+             }
+            }
+           ],
+           "strokes": [],
+           "effects": [],
+           "children": [
+            {
+             "type": "TEXT",
+             "name": "Day",
+             "x": 166,
+             "y": 320,
+             "width": 40,
+             "height": 20,
+             "absoluteBoundingBox": {
+              "x": 166,
+              "y": 320,
+              "width": 40,
+              "height": 20
+             },
+             "visible": true,
+             "opacity": 1,
+             "fills": [
+              {
+               "type": "SOLID",
+               "color": {
+                "r": 0.08,
+                "g": 0.07,
+                "b": 0.06
+               }
+              }
+             ],
+             "strokes": [],
+             "effects": [],
+             "characters": "Kam 26",
+             "fontSize": 15,
+             "fontName": {
+              "family": "Inter",
+              "style": "Regular"
+             },
+             "textStyleId": "S:1"
+            }
+           ]
+          },
+          {
+           "type": "FRAME",
+           "name": "Tanggal Jum 27",
+           "x": 226,
+           "y": 300,
+           "width": 62,
+           "height": 68,
+           "absoluteBoundingBox": {
+            "x": 226,
+            "y": 300,
+            "width": 62,
+            "height": 68
+           },
+           "visible": true,
+           "opacity": 1,
+           "fills": [
+            {
+             "type": "SOLID",
+             "color": {
+              "r": 1,
+              "g": 1,
+              "b": 1
+             }
+            }
+           ],
+           "strokes": [],
+           "effects": [],
+           "children": [
+            {
+             "type": "TEXT",
+             "name": "Day",
+             "x": 236,
+             "y": 320,
+             "width": 40,
+             "height": 20,
+             "absoluteBoundingBox": {
+              "x": 236,
+              "y": 320,
+              "width": 40,
+              "height": 20
+             },
+             "visible": true,
+             "opacity": 1,
+             "fills": [
+              {
+               "type": "SOLID",
+               "color": {
+                "r": 0.08,
+                "g": 0.07,
+                "b": 0.06
+               }
+              }
+             ],
+             "strokes": [],
+             "effects": [],
+             "characters": "Jum 27",
+             "fontSize": 15,
+             "fontName": {
+              "family": "Inter",
+              "style": "Regular"
+             },
+             "textStyleId": "S:1"
+            }
+           ]
+          }
+         ]
+        }
+       ]
+      }
+     ]
+    }
+   ],
+   "current": "Flow",
+   "page": "Flow",
+   "annotationCategories": []
+  },
+  "output": {
+   "page": "Flow",
+   "screens": [
+    "01-cari",
+    "02-profil"
+   ],
+   "counts": {
+    "screens": 2,
+    "imageFills": 0,
+    "distinctImages": 0,
+    "reusedImages": 0,
+    "contrastFails": 0,
+    "contrastUnknown": 0,
+    "targetsUnder24": 0,
+    "targetsUnder44": 0,
+    "cutText": 0,
+    "clippedText": 0,
+    "flatOverlays": 0,
+    "idleBusyButtons": 0,
+    "unstyledText": 0,
+    "unboundFills": 12,
+    "unboundSpacing": 0,
+    "layoutScreens": 2,
+    "looseLayers": 0,
+    "strayLayers": 0,
+    "rawEffects": 0,
+    "emptyBands": 1,
+    "capsLabels": 0,
+    "cards": 0,
+    "smallText": 0,
+    "texts": 7,
+    "closeSizes": 0,
+    "unevenRows": 0,
+    "flowBreaks": 1,
+    "listCounts": 0
+   },
+   "images": [],
+   "annotations": {},
+   "findings": [
+    {
+     "rule": "RX-UI-05",
+     "level": "warn",
+     "frame": "02-profil",
+     "node": "",
+     "message": "an empty band 192 pt tall from y 108; move the blocks together, give the space a job, or let the content fill it"
+    },
+    {
+     "rule": "RX-AS-03",
+     "level": "warn",
+     "frame": "01-cari",
+     "node": "Kartu terapis",
+     "message": "\"Ftr. Rina Kartika\": 01-cari says \"Tersedia hari ini\", but 02-profil opens on Rab 25, date 2 of the row: open on the day the list promised, or say that day in the list"
+    }
+   ],
+   "more": 0,
+   "gate": "figma audit (Flow): screens 2 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 12, unbound spacing 0 · built in auto layout 2/2 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 1, small uppercase labels 0, section cards 0, text under 12 px 0/7, screens with text sizes 1 px apart 0, uneven button rows 0, list counts that disagree 0 · breaks across screens 1 · annotations none · 0 fail, 2 warn"
+  }
+ },
+ {
+  "input": {
+   "pages": [
+    {
+     "name": "Flow",
+     "children": [
+      {
+       "type": "FRAME",
+       "name": "01-cari",
+       "x": 0,
+       "y": 0,
+       "width": 390,
+       "height": 844,
+       "absoluteBoundingBox": {
+        "x": 0,
+        "y": 0,
+        "width": 390,
+        "height": 844
+       },
+       "visible": true,
+       "opacity": 1,
+       "fills": [
+        {
+         "type": "SOLID",
+         "color": {
+          "r": 1,
+          "g": 1,
+          "b": 1
+         }
+        }
+       ],
+       "strokes": [],
+       "effects": [],
+       "clipsContent": true,
+       "children": [
+        {
+         "type": "FRAME",
+         "name": "Kartu terapis",
+         "x": 16,
+         "y": 120,
+         "width": 358,
+         "height": 120,
+         "absoluteBoundingBox": {
+          "x": 16,
+          "y": 120,
+          "width": 358,
+          "height": 120
+         },
+         "visible": true,
+         "opacity": 1,
+         "fills": [
+          {
+           "type": "SOLID",
+           "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+           }
+          }
+         ],
+         "strokes": [],
+         "effects": [],
+         "children": [
+          {
+           "type": "TEXT",
+           "name": "Name",
+           "x": 32,
+           "y": 136,
+           "width": 200,
+           "height": 20,
+           "absoluteBoundingBox": {
+            "x": 32,
+            "y": 136,
+            "width": 200,
+            "height": 20
+           },
+           "visible": true,
+           "opacity": 1,
+           "fills": [
+            {
+             "type": "SOLID",
+             "color": {
+              "r": 0.08,
+              "g": 0.07,
+              "b": 0.06
+             }
+            }
+           ],
+           "strokes": [],
+           "effects": [],
+           "characters": "Ftr. Rina Kartika",
+           "fontSize": 15,
+           "fontName": {
+            "family": "Inter",
+            "style": "Regular"
+           },
+           "textStyleId": "S:1"
+          },
+          {
+           "type": "TEXT",
+           "name": "When",
+           "x": 32,
+           "y": 166,
+           "width": 200,
+           "height": 20,
+           "absoluteBoundingBox": {
+            "x": 32,
+            "y": 166,
+            "width": 200,
+            "height": 20
+           },
+           "visible": true,
+           "opacity": 1,
+           "fills": [
+            {
+             "type": "SOLID",
+             "color": {
+              "r": 0.08,
+              "g": 0.07,
+              "b": 0.06
+             }
+            }
+           ],
+           "strokes": [],
+           "effects": [],
+           "characters": "Tersedia hari ini",
+           "fontSize": 15,
+           "fontName": {
+            "family": "Inter",
+            "style": "Regular"
+           },
+           "textStyleId": "S:1"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "type": "FRAME",
+       "name": "02-profil",
+       "x": 0,
+       "y": 0,
+       "width": 390,
+       "height": 844,
+       "absoluteBoundingBox": {
+        "x": 0,
+        "y": 0,
+        "width": 390,
+        "height": 844
+       },
+       "visible": true,
+       "opacity": 1,
+       "fills": [
+        {
+         "type": "SOLID",
+         "color": {
+          "r": 1,
+          "g": 1,
+          "b": 1
+         }
+        }
+       ],
+       "strokes": [],
+       "effects": [],
+       "clipsContent": true,
+       "children": [
+        {
+         "type": "TEXT",
+         "name": "Name",
+         "x": 16,
+         "y": 80,
+         "width": 300,
+         "height": 28,
+         "absoluteBoundingBox": {
+          "x": 16,
+          "y": 80,
+          "width": 300,
+          "height": 28
+         },
+         "visible": true,
+         "opacity": 1,
+         "fills": [
+          {
+           "type": "SOLID",
+           "color": {
+            "r": 0.08,
+            "g": 0.07,
+            "b": 0.06
+           }
+          }
+         ],
+         "strokes": [],
+         "effects": [],
+         "characters": "Ftr. Rina Kartika",
+         "fontSize": 15,
+         "fontName": {
+          "family": "Inter",
+          "style": "Regular"
+         },
+         "textStyleId": "S:1"
+        },
+        {
+         "type": "FRAME",
+         "name": "Pilihan tanggal",
+         "x": 16,
+         "y": 300,
+         "width": 342,
+         "height": 68,
+         "absoluteBoundingBox": {
+          "x": 16,
+          "y": 300,
+          "width": 342,
+          "height": 68
+         },
+         "visible": true,
+         "opacity": 1,
+         "fills": [],
+         "strokes": [],
+         "effects": [],
+         "children": [
+          {
+           "type": "FRAME",
+           "name": "Tanggal Sel 24 (dipilih)",
+           "x": 16,
+           "y": 300,
+           "width": 62,
+           "height": 68,
+           "absoluteBoundingBox": {
+            "x": 16,
+            "y": 300,
+            "width": 62,
+            "height": 68
+           },
+           "visible": true,
+           "opacity": 1,
+           "fills": [
+            {
+             "type": "SOLID",
+             "color": {
+              "r": 1,
+              "g": 1,
+              "b": 1
+             }
+            }
+           ],
+           "strokes": [],
+           "effects": [],
+           "children": [
+            {
+             "type": "TEXT",
+             "name": "Day",
+             "x": 26,
+             "y": 320,
+             "width": 40,
+             "height": 20,
+             "absoluteBoundingBox": {
+              "x": 26,
+              "y": 320,
+              "width": 40,
+              "height": 20
+             },
+             "visible": true,
+             "opacity": 1,
+             "fills": [
+              {
+               "type": "SOLID",
+               "color": {
+                "r": 0.08,
+                "g": 0.07,
+                "b": 0.06
+               }
+              }
+             ],
+             "strokes": [],
+             "effects": [],
+             "characters": "Sel 24",
+             "fontSize": 15,
+             "fontName": {
+              "family": "Inter",
+              "style": "Regular"
+             },
+             "textStyleId": "S:1"
+            }
+           ]
+          },
+          {
+           "type": "FRAME",
+           "name": "Tanggal Rab 25",
+           "x": 86,
+           "y": 300,
+           "width": 62,
+           "height": 68,
+           "absoluteBoundingBox": {
+            "x": 86,
+            "y": 300,
+            "width": 62,
+            "height": 68
+           },
+           "visible": true,
+           "opacity": 1,
+           "fills": [
+            {
+             "type": "SOLID",
+             "color": {
+              "r": 1,
+              "g": 1,
+              "b": 1
+             }
+            }
+           ],
+           "strokes": [],
+           "effects": [],
+           "children": [
+            {
+             "type": "TEXT",
+             "name": "Day",
+             "x": 96,
+             "y": 320,
+             "width": 40,
+             "height": 20,
+             "absoluteBoundingBox": {
+              "x": 96,
+              "y": 320,
+              "width": 40,
+              "height": 20
+             },
+             "visible": true,
+             "opacity": 1,
+             "fills": [
+              {
+               "type": "SOLID",
+               "color": {
+                "r": 0.08,
+                "g": 0.07,
+                "b": 0.06
+               }
+              }
+             ],
+             "strokes": [],
+             "effects": [],
+             "characters": "Rab 25",
+             "fontSize": 15,
+             "fontName": {
+              "family": "Inter",
+              "style": "Regular"
+             },
+             "textStyleId": "S:1"
+            }
+           ]
+          },
+          {
+           "type": "FRAME",
+           "name": "Tanggal Kam 26",
+           "x": 156,
+           "y": 300,
+           "width": 62,
+           "height": 68,
+           "absoluteBoundingBox": {
+            "x": 156,
+            "y": 300,
+            "width": 62,
+            "height": 68
+           },
+           "visible": true,
+           "opacity": 1,
+           "fills": [
+            {
+             "type": "SOLID",
+             "color": {
+              "r": 1,
+              "g": 1,
+              "b": 1
+             }
+            }
+           ],
+           "strokes": [],
+           "effects": [],
+           "children": [
+            {
+             "type": "TEXT",
+             "name": "Day",
+             "x": 166,
+             "y": 320,
+             "width": 40,
+             "height": 20,
+             "absoluteBoundingBox": {
+              "x": 166,
+              "y": 320,
+              "width": 40,
+              "height": 20
+             },
+             "visible": true,
+             "opacity": 1,
+             "fills": [
+              {
+               "type": "SOLID",
+               "color": {
+                "r": 0.08,
+                "g": 0.07,
+                "b": 0.06
+               }
+              }
+             ],
+             "strokes": [],
+             "effects": [],
+             "characters": "Kam 26",
+             "fontSize": 15,
+             "fontName": {
+              "family": "Inter",
+              "style": "Regular"
+             },
+             "textStyleId": "S:1"
+            }
+           ]
+          },
+          {
+           "type": "FRAME",
+           "name": "Tanggal Jum 27",
+           "x": 226,
+           "y": 300,
+           "width": 62,
+           "height": 68,
+           "absoluteBoundingBox": {
+            "x": 226,
+            "y": 300,
+            "width": 62,
+            "height": 68
+           },
+           "visible": true,
+           "opacity": 1,
+           "fills": [
+            {
+             "type": "SOLID",
+             "color": {
+              "r": 1,
+              "g": 1,
+              "b": 1
+             }
+            }
+           ],
+           "strokes": [],
+           "effects": [],
+           "children": [
+            {
+             "type": "TEXT",
+             "name": "Day",
+             "x": 236,
+             "y": 320,
+             "width": 40,
+             "height": 20,
+             "absoluteBoundingBox": {
+              "x": 236,
+              "y": 320,
+              "width": 40,
+              "height": 20
+             },
+             "visible": true,
+             "opacity": 1,
+             "fills": [
+              {
+               "type": "SOLID",
+               "color": {
+                "r": 0.08,
+                "g": 0.07,
+                "b": 0.06
+               }
+              }
+             ],
+             "strokes": [],
+             "effects": [],
+             "characters": "Jum 27",
+             "fontSize": 15,
+             "fontName": {
+              "family": "Inter",
+              "style": "Regular"
+             },
+             "textStyleId": "S:1"
+            }
+           ]
+          }
+         ]
+        }
+       ]
+      }
+     ]
+    }
+   ],
+   "current": "Flow",
+   "page": "Flow",
+   "annotationCategories": []
+  },
+  "output": {
+   "page": "Flow",
+   "screens": [
+    "01-cari",
+    "02-profil"
+   ],
+   "counts": {
+    "screens": 2,
+    "imageFills": 0,
+    "distinctImages": 0,
+    "reusedImages": 0,
+    "contrastFails": 0,
+    "contrastUnknown": 0,
+    "targetsUnder24": 0,
+    "targetsUnder44": 0,
+    "cutText": 0,
+    "clippedText": 0,
+    "flatOverlays": 0,
+    "idleBusyButtons": 0,
+    "unstyledText": 0,
+    "unboundFills": 12,
+    "unboundSpacing": 0,
+    "layoutScreens": 2,
+    "looseLayers": 0,
+    "strayLayers": 0,
+    "rawEffects": 0,
+    "emptyBands": 1,
+    "capsLabels": 0,
+    "cards": 0,
+    "smallText": 0,
+    "texts": 7,
+    "closeSizes": 0,
+    "unevenRows": 0,
+    "flowBreaks": 0,
+    "listCounts": 0
+   },
+   "images": [],
+   "annotations": {},
+   "findings": [
+    {
+     "rule": "RX-UI-05",
+     "level": "warn",
+     "frame": "02-profil",
+     "node": "",
+     "message": "an empty band 192 pt tall from y 108; move the blocks together, give the space a job, or let the content fill it"
+    }
+   ],
+   "more": 0,
+   "gate": "figma audit (Flow): screens 2 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 12, unbound spacing 0 · built in auto layout 2/2 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 1, small uppercase labels 0, section cards 0, text under 12 px 0/7, screens with text sizes 1 px apart 0, uneven button rows 0, list counts that disagree 0 · breaks across screens 0 · annotations none · 0 fail, 1 warn"
+  }
+ },
+ {
+  "input": {
+   "pages": [
+    {
+     "name": "Flow",
+     "children": [
+      {
+       "type": "FRAME",
+       "name": "01-cari",
+       "x": 0,
+       "y": 0,
+       "width": 390,
+       "height": 844,
+       "absoluteBoundingBox": {
+        "x": 0,
+        "y": 0,
+        "width": 390,
+        "height": 844
+       },
+       "visible": true,
+       "opacity": 1,
+       "fills": [
+        {
+         "type": "SOLID",
+         "color": {
+          "r": 1,
+          "g": 1,
+          "b": 1
+         }
+        }
+       ],
+       "strokes": [],
+       "effects": [],
+       "clipsContent": true,
+       "children": [
+        {
+         "type": "FRAME",
+         "name": "Kartu terapis",
+         "x": 16,
+         "y": 120,
+         "width": 358,
+         "height": 120,
+         "absoluteBoundingBox": {
+          "x": 16,
+          "y": 120,
+          "width": 358,
+          "height": 120
+         },
+         "visible": true,
+         "opacity": 1,
+         "fills": [
+          {
+           "type": "SOLID",
+           "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+           }
+          }
+         ],
+         "strokes": [],
+         "effects": [],
+         "children": [
+          {
+           "type": "TEXT",
+           "name": "Name",
+           "x": 32,
+           "y": 136,
+           "width": 200,
+           "height": 20,
+           "absoluteBoundingBox": {
+            "x": 32,
+            "y": 136,
+            "width": 200,
+            "height": 20
+           },
+           "visible": true,
+           "opacity": 1,
+           "fills": [
+            {
+             "type": "SOLID",
+             "color": {
+              "r": 0.08,
+              "g": 0.07,
+              "b": 0.06
+             }
+            }
+           ],
+           "strokes": [],
+           "effects": [],
+           "characters": "Ftr. Rina Kartika",
+           "fontSize": 15,
+           "fontName": {
+            "family": "Inter",
+            "style": "Regular"
+           },
+           "textStyleId": "S:1"
+          },
+          {
+           "type": "TEXT",
+           "name": "When",
+           "x": 32,
+           "y": 166,
+           "width": 200,
+           "height": 20,
+           "absoluteBoundingBox": {
+            "x": 32,
+            "y": 166,
+            "width": 200,
+            "height": 20
+           },
+           "visible": true,
+           "opacity": 1,
+           "fills": [
+            {
+             "type": "SOLID",
+             "color": {
+              "r": 0.08,
+              "g": 0.07,
+              "b": 0.06
+             }
+            }
+           ],
+           "strokes": [],
+           "effects": [],
+           "characters": "Besok, 09.00",
+           "fontSize": 15,
+           "fontName": {
+            "family": "Inter",
+            "style": "Regular"
+           },
+           "textStyleId": "S:1"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "type": "FRAME",
+       "name": "02-profil",
+       "x": 0,
+       "y": 0,
+       "width": 390,
+       "height": 844,
+       "absoluteBoundingBox": {
+        "x": 0,
+        "y": 0,
+        "width": 390,
+        "height": 844
+       },
+       "visible": true,
+       "opacity": 1,
+       "fills": [
+        {
+         "type": "SOLID",
+         "color": {
+          "r": 1,
+          "g": 1,
+          "b": 1
+         }
+        }
+       ],
+       "strokes": [],
+       "effects": [],
+       "clipsContent": true,
+       "children": [
+        {
+         "type": "TEXT",
+         "name": "Name",
+         "x": 16,
+         "y": 80,
+         "width": 300,
+         "height": 28,
+         "absoluteBoundingBox": {
+          "x": 16,
+          "y": 80,
+          "width": 300,
+          "height": 28
+         },
+         "visible": true,
+         "opacity": 1,
+         "fills": [
+          {
+           "type": "SOLID",
+           "color": {
+            "r": 0.08,
+            "g": 0.07,
+            "b": 0.06
+           }
+          }
+         ],
+         "strokes": [],
+         "effects": [],
+         "characters": "Ftr. Rina Kartika",
+         "fontSize": 15,
+         "fontName": {
+          "family": "Inter",
+          "style": "Regular"
+         },
+         "textStyleId": "S:1"
+        },
+        {
+         "type": "FRAME",
+         "name": "Pilihan tanggal",
+         "x": 16,
+         "y": 300,
+         "width": 342,
+         "height": 68,
+         "absoluteBoundingBox": {
+          "x": 16,
+          "y": 300,
+          "width": 342,
+          "height": 68
+         },
+         "visible": true,
+         "opacity": 1,
+         "fills": [],
+         "strokes": [],
+         "effects": [],
+         "children": [
+          {
+           "type": "FRAME",
+           "name": "Tanggal Sel 24 (dipilih)",
+           "x": 16,
+           "y": 300,
+           "width": 62,
+           "height": 68,
+           "absoluteBoundingBox": {
+            "x": 16,
+            "y": 300,
+            "width": 62,
+            "height": 68
+           },
+           "visible": true,
+           "opacity": 1,
+           "fills": [
+            {
+             "type": "SOLID",
+             "color": {
+              "r": 1,
+              "g": 1,
+              "b": 1
+             }
+            }
+           ],
+           "strokes": [],
+           "effects": [],
+           "children": [
+            {
+             "type": "TEXT",
+             "name": "Day",
+             "x": 26,
+             "y": 320,
+             "width": 40,
+             "height": 20,
+             "absoluteBoundingBox": {
+              "x": 26,
+              "y": 320,
+              "width": 40,
+              "height": 20
+             },
+             "visible": true,
+             "opacity": 1,
+             "fills": [
+              {
+               "type": "SOLID",
+               "color": {
+                "r": 0.08,
+                "g": 0.07,
+                "b": 0.06
+               }
+              }
+             ],
+             "strokes": [],
+             "effects": [],
+             "characters": "Sel 24",
+             "fontSize": 15,
+             "fontName": {
+              "family": "Inter",
+              "style": "Regular"
+             },
+             "textStyleId": "S:1"
+            }
+           ]
+          },
+          {
+           "type": "FRAME",
+           "name": "Tanggal Rab 25",
+           "x": 86,
+           "y": 300,
+           "width": 62,
+           "height": 68,
+           "absoluteBoundingBox": {
+            "x": 86,
+            "y": 300,
+            "width": 62,
+            "height": 68
+           },
+           "visible": true,
+           "opacity": 1,
+           "fills": [
+            {
+             "type": "SOLID",
+             "color": {
+              "r": 1,
+              "g": 1,
+              "b": 1
+             }
+            }
+           ],
+           "strokes": [],
+           "effects": [],
+           "children": [
+            {
+             "type": "TEXT",
+             "name": "Day",
+             "x": 96,
+             "y": 320,
+             "width": 40,
+             "height": 20,
+             "absoluteBoundingBox": {
+              "x": 96,
+              "y": 320,
+              "width": 40,
+              "height": 20
+             },
+             "visible": true,
+             "opacity": 1,
+             "fills": [
+              {
+               "type": "SOLID",
+               "color": {
+                "r": 0.08,
+                "g": 0.07,
+                "b": 0.06
+               }
+              }
+             ],
+             "strokes": [],
+             "effects": [],
+             "characters": "Rab 25",
+             "fontSize": 15,
+             "fontName": {
+              "family": "Inter",
+              "style": "Regular"
+             },
+             "textStyleId": "S:1"
+            }
+           ]
+          },
+          {
+           "type": "FRAME",
+           "name": "Tanggal Kam 26",
+           "x": 156,
+           "y": 300,
+           "width": 62,
+           "height": 68,
+           "absoluteBoundingBox": {
+            "x": 156,
+            "y": 300,
+            "width": 62,
+            "height": 68
+           },
+           "visible": true,
+           "opacity": 1,
+           "fills": [
+            {
+             "type": "SOLID",
+             "color": {
+              "r": 1,
+              "g": 1,
+              "b": 1
+             }
+            }
+           ],
+           "strokes": [],
+           "effects": [],
+           "children": [
+            {
+             "type": "TEXT",
+             "name": "Day",
+             "x": 166,
+             "y": 320,
+             "width": 40,
+             "height": 20,
+             "absoluteBoundingBox": {
+              "x": 166,
+              "y": 320,
+              "width": 40,
+              "height": 20
+             },
+             "visible": true,
+             "opacity": 1,
+             "fills": [
+              {
+               "type": "SOLID",
+               "color": {
+                "r": 0.08,
+                "g": 0.07,
+                "b": 0.06
+               }
+              }
+             ],
+             "strokes": [],
+             "effects": [],
+             "characters": "Kam 26",
+             "fontSize": 15,
+             "fontName": {
+              "family": "Inter",
+              "style": "Regular"
+             },
+             "textStyleId": "S:1"
+            }
+           ]
+          },
+          {
+           "type": "FRAME",
+           "name": "Tanggal Jum 27",
+           "x": 226,
+           "y": 300,
+           "width": 62,
+           "height": 68,
+           "absoluteBoundingBox": {
+            "x": 226,
+            "y": 300,
+            "width": 62,
+            "height": 68
+           },
+           "visible": true,
+           "opacity": 1,
+           "fills": [
+            {
+             "type": "SOLID",
+             "color": {
+              "r": 1,
+              "g": 1,
+              "b": 1
+             }
+            }
+           ],
+           "strokes": [],
+           "effects": [],
+           "children": [
+            {
+             "type": "TEXT",
+             "name": "Day",
+             "x": 236,
+             "y": 320,
+             "width": 40,
+             "height": 20,
+             "absoluteBoundingBox": {
+              "x": 236,
+              "y": 320,
+              "width": 40,
+              "height": 20
+             },
+             "visible": true,
+             "opacity": 1,
+             "fills": [
+              {
+               "type": "SOLID",
+               "color": {
+                "r": 0.08,
+                "g": 0.07,
+                "b": 0.06
+               }
+              }
+             ],
+             "strokes": [],
+             "effects": [],
+             "characters": "Jum 27",
+             "fontSize": 15,
+             "fontName": {
+              "family": "Inter",
+              "style": "Regular"
+             },
+             "textStyleId": "S:1"
+            }
+           ]
+          }
+         ]
+        }
+       ]
+      }
+     ]
+    }
+   ],
+   "current": "Flow",
+   "page": "Flow",
+   "annotationCategories": []
+  },
+  "output": {
+   "page": "Flow",
+   "screens": [
+    "01-cari",
+    "02-profil"
+   ],
+   "counts": {
+    "screens": 2,
+    "imageFills": 0,
+    "distinctImages": 0,
+    "reusedImages": 0,
+    "contrastFails": 0,
+    "contrastUnknown": 0,
+    "targetsUnder24": 0,
+    "targetsUnder44": 0,
+    "cutText": 0,
+    "clippedText": 0,
+    "flatOverlays": 0,
+    "idleBusyButtons": 0,
+    "unstyledText": 0,
+    "unboundFills": 12,
+    "unboundSpacing": 0,
+    "layoutScreens": 2,
+    "looseLayers": 0,
+    "strayLayers": 0,
+    "rawEffects": 0,
+    "emptyBands": 1,
+    "capsLabels": 0,
+    "cards": 0,
+    "smallText": 0,
+    "texts": 7,
+    "closeSizes": 0,
+    "unevenRows": 0,
+    "flowBreaks": 0,
+    "listCounts": 0
+   },
+   "images": [],
+   "annotations": {},
+   "findings": [
+    {
+     "rule": "RX-UI-05",
+     "level": "warn",
+     "frame": "02-profil",
+     "node": "",
+     "message": "an empty band 192 pt tall from y 108; move the blocks together, give the space a job, or let the content fill it"
+    }
+   ],
+   "more": 0,
+   "gate": "figma audit (Flow): screens 2 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 12, unbound spacing 0 · built in auto layout 2/2 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 1, small uppercase labels 0, section cards 0, text under 12 px 0/7, screens with text sizes 1 px apart 0, uneven button rows 0, list counts that disagree 0 · breaks across screens 0 · annotations none · 0 fail, 1 warn"
+  }
+ },
+ {
+  "input": {
+   "pages": [
+    {
+     "name": "Flow",
+     "children": [
+      {
+       "type": "FRAME",
+       "name": "01-cari",
+       "x": 0,
+       "y": 0,
+       "width": 390,
+       "height": 844,
+       "absoluteBoundingBox": {
+        "x": 0,
+        "y": 0,
+        "width": 390,
+        "height": 844
+       },
+       "visible": true,
+       "opacity": 1,
+       "fills": [
+        {
+         "type": "SOLID",
+         "color": {
+          "r": 1,
+          "g": 1,
+          "b": 1
+         }
+        }
+       ],
+       "strokes": [],
+       "effects": [],
+       "clipsContent": true,
+       "children": [
+        {
+         "type": "FRAME",
+         "name": "Kartu terapis",
+         "x": 16,
+         "y": 120,
+         "width": 358,
+         "height": 120,
+         "absoluteBoundingBox": {
+          "x": 16,
+          "y": 120,
+          "width": 358,
+          "height": 120
+         },
+         "visible": true,
+         "opacity": 1,
+         "fills": [
+          {
+           "type": "SOLID",
+           "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+           }
+          }
+         ],
+         "strokes": [],
+         "effects": [],
+         "children": [
+          {
+           "type": "TEXT",
+           "name": "Name",
+           "x": 32,
+           "y": 136,
+           "width": 200,
+           "height": 20,
+           "absoluteBoundingBox": {
+            "x": 32,
+            "y": 136,
+            "width": 200,
+            "height": 20
+           },
+           "visible": true,
+           "opacity": 1,
+           "fills": [
+            {
+             "type": "SOLID",
+             "color": {
+              "r": 0.08,
+              "g": 0.07,
+              "b": 0.06
+             }
+            }
+           ],
+           "strokes": [],
+           "effects": [],
+           "characters": "Ftr. Rina Kartika",
+           "fontSize": 15,
+           "fontName": {
+            "family": "Inter",
+            "style": "Regular"
+           },
+           "textStyleId": "S:1"
+          },
+          {
+           "type": "TEXT",
+           "name": "When",
+           "x": 32,
+           "y": 166,
+           "width": 200,
+           "height": 20,
+           "absoluteBoundingBox": {
+            "x": 32,
+            "y": 166,
+            "width": 200,
+            "height": 20
+           },
+           "visible": true,
+           "opacity": 1,
+           "fills": [
+            {
+             "type": "SOLID",
+             "color": {
+              "r": 0.08,
+              "g": 0.07,
+              "b": 0.06
+             }
+            }
+           ],
+           "strokes": [],
+           "effects": [],
+           "characters": "Besok, 09.00",
+           "fontSize": 15,
+           "fontName": {
+            "family": "Inter",
+            "style": "Regular"
+           },
+           "textStyleId": "S:1"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "type": "FRAME",
+       "name": "02-profil",
+       "x": 0,
+       "y": 0,
+       "width": 390,
+       "height": 844,
+       "absoluteBoundingBox": {
+        "x": 0,
+        "y": 0,
+        "width": 390,
+        "height": 844
+       },
+       "visible": true,
+       "opacity": 1,
+       "fills": [
+        {
+         "type": "SOLID",
+         "color": {
+          "r": 1,
+          "g": 1,
+          "b": 1
+         }
+        }
+       ],
+       "strokes": [],
+       "effects": [],
+       "clipsContent": true,
+       "children": [
+        {
+         "type": "TEXT",
+         "name": "Name",
+         "x": 16,
+         "y": 80,
+         "width": 300,
+         "height": 28,
+         "absoluteBoundingBox": {
+          "x": 16,
+          "y": 80,
+          "width": 300,
+          "height": 28
+         },
+         "visible": true,
+         "opacity": 1,
+         "fills": [
+          {
+           "type": "SOLID",
+           "color": {
+            "r": 0.08,
+            "g": 0.07,
+            "b": 0.06
+           }
+          }
+         ],
+         "strokes": [],
+         "effects": [],
+         "characters": "Ftr. Rina Kartika",
+         "fontSize": 15,
+         "fontName": {
+          "family": "Inter",
+          "style": "Regular"
+         },
+         "textStyleId": "S:1"
+        },
+        {
+         "type": "FRAME",
+         "name": "Pilihan tanggal",
+         "x": 16,
+         "y": 300,
+         "width": 342,
+         "height": 68,
+         "absoluteBoundingBox": {
+          "x": 16,
+          "y": 300,
+          "width": 342,
+          "height": 68
+         },
+         "visible": true,
+         "opacity": 1,
+         "fills": [],
+         "strokes": [],
+         "effects": [],
+         "children": [
+          {
+           "type": "FRAME",
+           "name": "Tanggal Sel 24",
+           "x": 16,
+           "y": 300,
+           "width": 62,
+           "height": 68,
+           "absoluteBoundingBox": {
+            "x": 16,
+            "y": 300,
+            "width": 62,
+            "height": 68
+           },
+           "visible": true,
+           "opacity": 1,
+           "fills": [
+            {
+             "type": "SOLID",
+             "color": {
+              "r": 1,
+              "g": 1,
+              "b": 1
+             }
+            }
+           ],
+           "strokes": [],
+           "effects": [],
+           "children": [
+            {
+             "type": "TEXT",
+             "name": "Day",
+             "x": 26,
+             "y": 320,
+             "width": 40,
+             "height": 20,
+             "absoluteBoundingBox": {
+              "x": 26,
+              "y": 320,
+              "width": 40,
+              "height": 20
+             },
+             "visible": true,
+             "opacity": 1,
+             "fills": [
+              {
+               "type": "SOLID",
+               "color": {
+                "r": 0.08,
+                "g": 0.07,
+                "b": 0.06
+               }
+              }
+             ],
+             "strokes": [],
+             "effects": [],
+             "characters": "Sel 24",
+             "fontSize": 15,
+             "fontName": {
+              "family": "Inter",
+              "style": "Regular"
+             },
+             "textStyleId": "S:1"
+            }
+           ]
+          },
+          {
+           "type": "FRAME",
+           "name": "Tanggal Rab 25 (dipilih)",
+           "x": 86,
+           "y": 300,
+           "width": 62,
+           "height": 68,
+           "absoluteBoundingBox": {
+            "x": 86,
+            "y": 300,
+            "width": 62,
+            "height": 68
+           },
+           "visible": true,
+           "opacity": 1,
+           "fills": [
+            {
+             "type": "SOLID",
+             "color": {
+              "r": 1,
+              "g": 1,
+              "b": 1
+             }
+            }
+           ],
+           "strokes": [],
+           "effects": [],
+           "children": [
+            {
+             "type": "TEXT",
+             "name": "Day",
+             "x": 96,
+             "y": 320,
+             "width": 40,
+             "height": 20,
+             "absoluteBoundingBox": {
+              "x": 96,
+              "y": 320,
+              "width": 40,
+              "height": 20
+             },
+             "visible": true,
+             "opacity": 1,
+             "fills": [
+              {
+               "type": "SOLID",
+               "color": {
+                "r": 0.08,
+                "g": 0.07,
+                "b": 0.06
+               }
+              }
+             ],
+             "strokes": [],
+             "effects": [],
+             "characters": "Rab 25",
+             "fontSize": 15,
+             "fontName": {
+              "family": "Inter",
+              "style": "Regular"
+             },
+             "textStyleId": "S:1"
+            }
+           ]
+          },
+          {
+           "type": "FRAME",
+           "name": "Tanggal Kam 26",
+           "x": 156,
+           "y": 300,
+           "width": 62,
+           "height": 68,
+           "absoluteBoundingBox": {
+            "x": 156,
+            "y": 300,
+            "width": 62,
+            "height": 68
+           },
+           "visible": true,
+           "opacity": 1,
+           "fills": [
+            {
+             "type": "SOLID",
+             "color": {
+              "r": 1,
+              "g": 1,
+              "b": 1
+             }
+            }
+           ],
+           "strokes": [],
+           "effects": [],
+           "children": [
+            {
+             "type": "TEXT",
+             "name": "Day",
+             "x": 166,
+             "y": 320,
+             "width": 40,
+             "height": 20,
+             "absoluteBoundingBox": {
+              "x": 166,
+              "y": 320,
+              "width": 40,
+              "height": 20
+             },
+             "visible": true,
+             "opacity": 1,
+             "fills": [
+              {
+               "type": "SOLID",
+               "color": {
+                "r": 0.08,
+                "g": 0.07,
+                "b": 0.06
+               }
+              }
+             ],
+             "strokes": [],
+             "effects": [],
+             "characters": "Kam 26",
+             "fontSize": 15,
+             "fontName": {
+              "family": "Inter",
+              "style": "Regular"
+             },
+             "textStyleId": "S:1"
+            }
+           ]
+          },
+          {
+           "type": "FRAME",
+           "name": "Tanggal Jum 27",
+           "x": 226,
+           "y": 300,
+           "width": 62,
+           "height": 68,
+           "absoluteBoundingBox": {
+            "x": 226,
+            "y": 300,
+            "width": 62,
+            "height": 68
+           },
+           "visible": true,
+           "opacity": 1,
+           "fills": [
+            {
+             "type": "SOLID",
+             "color": {
+              "r": 1,
+              "g": 1,
+              "b": 1
+             }
+            }
+           ],
+           "strokes": [],
+           "effects": [],
+           "children": [
+            {
+             "type": "TEXT",
+             "name": "Day",
+             "x": 236,
+             "y": 320,
+             "width": 40,
+             "height": 20,
+             "absoluteBoundingBox": {
+              "x": 236,
+              "y": 320,
+              "width": 40,
+              "height": 20
+             },
+             "visible": true,
+             "opacity": 1,
+             "fills": [
+              {
+               "type": "SOLID",
+               "color": {
+                "r": 0.08,
+                "g": 0.07,
+                "b": 0.06
+               }
+              }
+             ],
+             "strokes": [],
+             "effects": [],
+             "characters": "Jum 27",
+             "fontSize": 15,
+             "fontName": {
+              "family": "Inter",
+              "style": "Regular"
+             },
+             "textStyleId": "S:1"
+            }
+           ]
+          }
+         ]
+        }
+       ]
+      }
+     ]
+    }
+   ],
+   "current": "Flow",
+   "page": "Flow",
+   "annotationCategories": []
+  },
+  "output": {
+   "page": "Flow",
+   "screens": [
+    "01-cari",
+    "02-profil"
+   ],
+   "counts": {
+    "screens": 2,
+    "imageFills": 0,
+    "distinctImages": 0,
+    "reusedImages": 0,
+    "contrastFails": 0,
+    "contrastUnknown": 0,
+    "targetsUnder24": 0,
+    "targetsUnder44": 0,
+    "cutText": 0,
+    "clippedText": 0,
+    "flatOverlays": 0,
+    "idleBusyButtons": 0,
+    "unstyledText": 0,
+    "unboundFills": 12,
+    "unboundSpacing": 0,
+    "layoutScreens": 2,
+    "looseLayers": 0,
+    "strayLayers": 0,
+    "rawEffects": 0,
+    "emptyBands": 1,
+    "capsLabels": 0,
+    "cards": 0,
+    "smallText": 0,
+    "texts": 7,
+    "closeSizes": 0,
+    "unevenRows": 0,
+    "flowBreaks": 0,
+    "listCounts": 0
+   },
+   "images": [],
+   "annotations": {},
+   "findings": [
+    {
+     "rule": "RX-UI-05",
+     "level": "warn",
+     "frame": "02-profil",
+     "node": "",
+     "message": "an empty band 192 pt tall from y 108; move the blocks together, give the space a job, or let the content fill it"
+    }
+   ],
+   "more": 0,
+   "gate": "figma audit (Flow): screens 2 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 12, unbound spacing 0 · built in auto layout 2/2 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 1, small uppercase labels 0, section cards 0, text under 12 px 0/7, screens with text sizes 1 px apart 0, uneven button rows 0, list counts that disagree 0 · breaks across screens 0 · annotations none · 0 fail, 1 warn"
+  }
+ },
+ {
+  "input": {
+   "pages": [
+    {
+     "name": "Flow",
+     "children": [
+      {
+       "type": "FRAME",
+       "name": "01-cari",
+       "x": 0,
+       "y": 0,
+       "width": 390,
+       "height": 844,
+       "absoluteBoundingBox": {
+        "x": 0,
+        "y": 0,
+        "width": 390,
+        "height": 844
+       },
+       "visible": true,
+       "opacity": 1,
+       "fills": [
+        {
+         "type": "SOLID",
+         "color": {
+          "r": 1,
+          "g": 1,
+          "b": 1
+         }
+        }
+       ],
+       "strokes": [],
+       "effects": [],
+       "clipsContent": true,
+       "children": [
+        {
          "type": "TEXT",
          "name": "Price",
          "x": 16,
