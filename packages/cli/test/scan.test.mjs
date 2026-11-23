@@ -685,7 +685,7 @@ test("scan <url> fails a faint field edge, a faint icon-only button, and a focus
   if (/needs Playwright|could not start Chromium/.test(r.out)) return noBrowser(t);
   const found = JSON.parse(r.out).findings.filter((f) => /WCAG 1\.4\.11|focus indicator/.test(f.message)).map((f) => `${f.rule} ${f.selector}: ${f.message}`);
   assert.equal(found.length, 4, found.join("\n"));
-  assert.match(found[0], /^RX-A11Y-01 input#e: "Email" field: edge 1\.2\d:1 \(#e5e7eb border on #ffffff\)/);
+  assert.match(found[0], /^RX-A11Y-01 input#e: "Email" field: edge 1\.2\d:1 \(#e5e7eb border on #ffffff\).*; 1 more with the same colors$/);
   assert.match(found[1], /^RX-A11Y-01 p > button\.close: "Tutup" icon: contrast 1\.4\d:1 \(#cbd5e1 on #ffffff\)/);
   assert.match(found[2], /^RX-A11Y-03 p > a\.ghost: "Lupa sandi": no focus indicator/);
   assert.match(found[3], /^RX-A11Y-03 p > button\.soft: "Kirim": focus indicator 1\.\d+:1 \(#dbeafe on #ffffff\)/);

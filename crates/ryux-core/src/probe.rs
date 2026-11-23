@@ -293,6 +293,8 @@ struct Page<'a> {
     in_svg: Vec<bool>,
     in_code: Vec<bool>,
     pinned: Vec<bool>,
+    /// Inside a region named as a prototype panel.
+    in_proto: Vec<bool>,
 }
 
 fn idx(v: Option<&Value>) -> Option<usize> {
@@ -403,12 +405,13 @@ impl<'a> Page<'a> {
             in_svg: Vec::new(),
             in_code: Vec::new(),
             pinned: Vec::new(),
+            in_proto: Vec::new(),
             els,
         };
         // What holds for an element and every ancestor, worked out once in document order (parents come first).
         let n = page.els.len();
         let (mut hidden, mut ignored) = (vec![false; n], vec![false; n]);
-        let (mut dis, mut svg, mut code, mut pin) = (vec![false; n], vec![false; n], vec![false; n], vec![false; n]);
+        let (mut dis, mut svg, mut code, mut pin, mut proto) = (vec![false; n], vec![false; n], vec![false; n], vec![false; n], vec![false; n]);
         for i in 0..n {
             let p = page.els[i].p.filter(|p| *p < i);
             let up = |v: &Vec<bool>| p.map_or(false, |p| v[p]);
@@ -419,6 +422,7 @@ impl<'a> Page<'a> {
             svg[i] = tag == "svg" || up(&svg);
             code[i] = matches!(tag.as_str(), "code" | "pre" | "kbd" | "samp" | "var" | "time") || page.flag(i, "cc") || up(&code);
             pin[i] = page.re.pinned.test(page.s(i, "position")) || up(&pin);
+            proto[i] = page.flag(i, "pr") || up(&proto);
         }
         page.shown = (0..n).map(|i| !hidden[i] && page.els[i].r.w > 1.0 && page.els[i].r.h > 1.0).collect();
         page.outside = ignored.iter().map(|x| !x).collect();
@@ -426,6 +430,7 @@ impl<'a> Page<'a> {
         page.in_svg = svg;
         page.in_code = code;
         page.pinned = pin;
+        page.in_proto = proto;
         Ok(page)
     }
 
@@ -1588,7 +1593,7 @@ impl<'a> Page<'a> {
     fn edges(&self) -> Vec<Edge> {
         let n = self.els.len();
         let mut out = Vec::new();
-        let judged = |i: usize| self.shown[i] && self.outside[i] && !self.disabled[i] && !self.overlay(i);
+        let judged = |i: usize| self.shown[i] && self.outside[i] && !self.disabled[i] && !self.overlay(i) && !self.in_proto[i];
         for i in 2..n {
             let Some(fb) = self.els[i].v.get("fb").and_then(Value::as_array).filter(|a| a.len() == 8) else { continue };
             if !judged(i) {
@@ -1680,9 +1685,19 @@ impl<'a> Page<'a> {
     fn overlay(&self, i: usize) -> bool {
         self.els[i].v.get("fb").is_some() && self.rgba(self.color(i)).is_some_and(|c| c[3] == 0.0)
     }
-    /// The controls whose focus the page is asked to show: the ones in the tab order.
+    /// The colour at an element's outer edge: its top border when it has one, else its fill.
+    fn outer_edge(&self, i: usize, fill: Colour) -> Colour {
+        let style = self.s(i, "borderTopStyle");
+        let w = if style.is_empty() || style == "none" || style == "hidden" { 0.0 } else { self.n(i, "borderTopWidth") };
+        match self.rgba(self.or_color(i, "borderTopColor")).filter(|c| w >= 1.0 && c[3] > 0.0) {
+            Some(c) => blend(c, fill),
+            None => fill,
+        }
+    }
+    /// The controls whose focus the page is asked to show: the ones in the tab order, outside a prototype panel
+    /// (owner, sheet 9 Q2).
     fn focus_list(&self) -> Vec<usize> {
-        (2..self.els.len()).filter(|&i| self.flag(i, "ctl") && !self.flag(i, "nt") && self.shown[i] && self.outside[i] && !self.disabled[i] && !self.overlay(i)).take(MAX_FOCUS).collect()
+        (2..self.els.len()).filter(|&i| self.flag(i, "ctl") && !self.flag(i, "nt") && self.shown[i] && self.outside[i] && !self.disabled[i] && !self.overlay(i) && !self.in_proto[i]).take(MAX_FOCUS).collect()
     }
     /// How a control is named in a message: a field by its label, anything else by its name.
     fn control_name(&self, i: usize) -> &'a str {
@@ -1694,7 +1709,16 @@ impl<'a> Page<'a> {
 
     /// What focus changed on one element, from `b` (before) to `f` (focused), with `fill` its own colour and `adj`
     /// the colour around it: whether anything shows, and the strongest change as (ratio, colour, beside).
-    fn focus_change(&self, b: &Value, f: &Value, fill: Colour, adj: Colour, seen: &mut bool, best: &mut Option<(f64, Colour, Colour)>) {
+    ///
+    /// A ring that touches the element's edge (an outline with no gap, a shadow with no offset) shows when it reaches
+    /// 3:1 against that edge (`edge`: its border, else its fill) or against `adj`; a ring with a gap is measured
+    /// against `adj`, which fills the gap (owner, sheet 9 Q1).
+    fn focus_change(&self, b: &Value, f: &Value, fill: Colour, edge: Colour, adj: Colour, seen: &mut bool, best: &mut Option<(f64, Colour, Colour)>) {
+        let touching = |best: &mut Option<(f64, Colour, Colour)>, c: Colour| {
+            let shown = blend(c, adj);
+            let (a, e) = (contrast(lum(shown), lum(adj)), contrast(lum(blend(c, edge)), lum(edge)));
+            if a >= e { stronger(best, a, shown, adj) } else { stronger(best, e, blend(c, edge), edge) }
+        };
         if !b.is_object() || !f.is_object() {
             return;
         }
@@ -1706,9 +1730,14 @@ impl<'a> Page<'a> {
                 // the browser's own ring, drawn in two tones so it shows on any colour
                 stronger(best, 21.0, adj, adj);
             } else if let Some(c) = colour(&o[2]) {
-                let against = if num(o.get(3)) < 0.0 { fill } else { adj };
-                let shown = blend(c, against);
-                stronger(best, contrast(lum(shown), lum(against)), shown, against);
+                let offset = num(o.get(3));
+                if offset == 0.0 {
+                    touching(best, c);
+                } else {
+                    let against = if offset < 0.0 { fill } else { adj };
+                    let shown = blend(c, against);
+                    stronger(best, contrast(lum(shown), lum(against)), shown, against);
+                }
             }
         }
         if f["bs"] != b["bs"] {
@@ -1722,9 +1751,15 @@ impl<'a> Page<'a> {
                         continue;
                     }
                     *seen = true;
-                    let against = if inset { fill } else { adj };
-                    let shown = blend(c, against);
-                    stronger(best, contrast(lum(shown), lum(against)), shown, against);
+                    if inset {
+                        let shown = blend(c, fill);
+                        stronger(best, contrast(lum(shown), lum(fill)), shown, fill);
+                    } else if x == 0.0 && y == 0.0 {
+                        touching(best, c);
+                    } else {
+                        let shown = blend(c, adj);
+                        stronger(best, contrast(lum(shown), lum(adj)), shown, adj);
+                    }
                 }
             }
         }
@@ -1775,9 +1810,9 @@ impl<'a> Page<'a> {
             let Some(adj) = self.background(p) else { continue };
             let fill = self.background(i).unwrap_or(adj);
             let (mut seen, mut best) = (false, None);
-            self.focus_change(&a["b"], &a["f"], fill, adj, &mut seen, &mut best);
+            self.focus_change(&a["b"], &a["f"], fill, self.outer_edge(i, fill), adj, &mut seen, &mut best);
             if let Some(around) = self.parent(p).filter(|&g| g >= BODY).and_then(|g| self.background(g)) {
-                self.focus_change(&a["pb"], &a["pf"], adj, around, &mut seen, &mut best);
+                self.focus_change(&a["pb"], &a["pf"], adj, self.outer_edge(p, adj), around, &mut seen, &mut best);
             }
             match best {
                 None if !seen => none.push(i),

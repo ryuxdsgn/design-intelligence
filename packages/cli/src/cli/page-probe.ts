@@ -103,6 +103,7 @@ export async function probeExtract() {
 
   const FIELD = "input:not([type=hidden],[type=submit],[type=button],[type=reset],[type=image],[type=range],[type=color],[type=file]),select,textarea,[role=textbox],[role=searchbox]";
   const SIDES = ["Top", "Right", "Bottom", "Left"];
+  const PROTO = /(?:^|[^a-zA-Z])(?:[Pp]roto(?:type|tipe)?|PROTO(?:TYPE)?)(?![a-z])/;
   const CONTROL = "a[href],button,input:not([type=hidden]),select,textarea,summary,[role=button],[role=link],[role=checkbox],[role=radio],[role=switch],[role=tab],[role=menuitem]";
   const els = all.map((e, i) => {
     const o = { p: i ? at(e.parentElement) : null, t: e.tagName, s: styleOf(e), r: box(e.getBoundingClientRect()) };
@@ -141,6 +142,11 @@ export async function probeExtract() {
     if (i > 1 && /^(INPUT|SELECT|TEXTAREA)$/.test(e.tagName)) {
       o.fl = cap((e.labels?.[0]?.innerText || e.getAttribute("aria-label") || e.getAttribute("placeholder") || e.getAttribute("name") || e.tagName.toLowerCase()).trim().replace(/\s+/g, " "));
     }
+    // A region named as a prototype panel (class, id, aria-label, the text it is labelled by, or a data attribute):
+    // reviewer controls the page adds around the product, not the product. "Demo" alone is not enough: a "book a
+    // demo" section is product.
+    const named = () => [e.id, e.getAttribute("class"), e.getAttribute("aria-label"), ...(e.getAttribute("aria-labelledby")?.split(/\s+/) ?? []).map((id) => document.getElementById(id)?.textContent ?? ""), ...e.getAttributeNames().filter((a) => a.startsWith("data-"))];
+    if (i > 1 && !o.ctl && named().some((v) => v && PROTO.test(v))) o.pr = 1;
     // A control with no text that shows an SVG: an icon-only button or link, whose icon carries its meaning.
     if (o.ctl && !e.textContent.trim() && e.querySelector("svg")) o.ico = 1;
     // A radio button: its group (the name, or the group element around it) and the group's label.
