@@ -79,7 +79,7 @@ How reference apps keep components consistent for this pattern: `search_screens`
 - Why: Developers build from the component sheet; a variant they cannot find or read gets rebuilt or guessed. (ryux run: blind review of a delivery flow 2026-10-20; owner review 2026-11-06 (Figma, Sejuk rerun): variants 78/80 and 68/70/72 px by state, a button kind with one state of three, the gate passed it unmeasured; design-system practice; written for RYUX)
 - Not when: a single screen with no shared components
 - Trade-off: takes time to lay out; pays back at handoff
-- Check: render the sheet; every variant visible and labeled; in Figma, the design system listing (capabilities/design.md, stage 6): no uneven set, no missing variant
+- Check: render the sheet; every variant visible and labeled; in Figma, the design system listing (capabilities/design-deliver.md): no uneven set, no missing variant
 
 ### RX-DS-07 [Contextual] [Quality Lock] Property names are the code's props
 

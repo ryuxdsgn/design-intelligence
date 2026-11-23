@@ -4,7 +4,12 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { renderBundle, toModuleRefs, modulePath } from "../dist/render.js";
+import { renderBundle as renderFiles, toModuleRefs, modulePath } from "../dist/render.js";
+
+// The Design capability is three files read at different times (design.md, then design-deliver.md when the screens are
+// built, design-md.md when DESIGN.md is the deliverable); the content tests read them as one.
+const DESIGN_PARTS = ["capabilities/design.md", "capabilities/design-deliver.md", "capabilities/design-md.md"];
+const renderBundle = () => { const b = renderFiles(); return { ...b, "capabilities/design.md": DESIGN_PARTS.map((k) => b[k] ?? "").join("\n") }; };
 import { expectedFiles, validateBundle, validateRules } from "../dist/validate.js";
 import { VERSION } from "../dist/product.js";
 
@@ -20,7 +25,7 @@ function ruleSection(md, id) {
 }
 
 test("the bundle has every expected file and passes validation", () => {
-  const files = renderBundle();
+  const files = renderFiles();
   assert.deepEqual(Object.keys(files).sort(), expectedFiles().sort());
   const report = validateBundle(files);
   assert.deepEqual(report.errors, []);
@@ -163,7 +168,7 @@ test("Design can write or update a full DESIGN.md that answers five questions", 
   assert.match(flat("capabilities/design.md"), /At most three questions per message/);
   assert.match(flat("capabilities/design.md"), /keep every line the user wrote/);
   assert.match(flat("SKILL.md"), /write or update DESIGN\.md from a brief or references/);
-  assert.match(flat("capabilities/analyze.md"), /Write or update DESIGN\.md, RX-PR-12/);
+  assert.match(flat("capabilities/analyze.md"), /capabilities\/design-md\.md \(RX-PR-12\)/);
   assert.match(flat("knowledge/product.md"), /RX-PR-12/);
   assert.match(flat("knowledge/product.md"), /A DESIGN\.md answers five questions or names what is unknown/);
   // illustration direction A, passed 2026-11-07 (Sejuk, one run): RYUX directs, an image model draws, RYUX reads

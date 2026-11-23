@@ -25,7 +25,7 @@ from DESIGN.md and the repo's screens). Pick the entry point, read its file, the
 | Entry point | When | Read |
 | --- | --- | --- |
 | **Analyze** | understand a screen, product, or flow that exists | `capabilities/analyze.md` |
-| **Design** | create or improve UI and UX without code: Figma, pen.dev, mockups, copy, user flows, journey maps; a revamp or redesign; write or update DESIGN.md from a brief or references | `capabilities/design.md` |
+| **Design** | create or improve UI and UX without code: Figma, pen.dev, mockups, copy, user flows, journey maps; a revamp or redesign; write or update DESIGN.md from a brief or references | `capabilities/design.md` (DESIGN.md itself: `capabilities/design-md.md`) |
 | **Build** | implement or change the interface in code; polish a screen that works (premium, easier to find); a change of unnamed size asks first: polish, revamp, or redesign (RX-UX-20) | `capabilities/build.md` |
 | **Critique** | find what should change first, and why; a heuristic evaluation | `capabilities/critique.md` |
 | **QA** | verify a build against the intended design | `capabilities/qa.md` |
@@ -43,7 +43,7 @@ One workflow, six stages; each entry point runs the stages it needs.
    context in DESIGN.md, then the product docs (Product docs paths, else PRD.md, docs/prd*,
    docs/product*, README), and name what you read. Separate facts, assumptions, and unknowns
    (RX-PR-02); ask and record direction as in capabilities/design.md, stage 1. DESIGN.md is
-   direction, not evidence; context from elsewhere (another project, file pages the task does not name, an earlier run) is not direction at all. Read the entry point's file and only the modules the task table lists.
+   direction, not evidence; context from elsewhere (another project, file pages the task does not name, an earlier run) is not direction at all. Read the entry point's file and only the modules the task table lists, each once, with the file-reading tool and one file per call: several files in one shell command can overflow into a saved file and be read twice, and everything read stays in every later step.
 2. **Frame**: the user's task, the flow, what must be seen first, the primary action, and three to
    five success criteria from the brief, written before any alternative exists.
 3. **Explore**: on a new or complex surface, two or three alternatives that differ in hypothesis and
