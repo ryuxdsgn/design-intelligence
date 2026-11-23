@@ -13,7 +13,7 @@ use std::collections::{HashMap, HashSet};
 
 /// What the rendered checks look for, one row per line of RENDER_CHECKS in packages/cli/src/checks.ts (which also
 /// lists RX-QA-08, script errors, reported by the CLI itself). `cargo test` and the CLI tests hold them equal.
-pub const CATALOGUE: [(&str, &str); 12] = [
+pub const CATALOGUE: [(&str, &str); 13] = [
     ("RX-RD-01", "fail"),
     ("RX-A11Y-01", "fail"),
     ("RX-A11Y-01", "warn"),
@@ -22,6 +22,7 @@ pub const CATALOGUE: [(&str, &str); 12] = [
     ("RX-QA-03", "fail"),
     ("RX-AS-05", "warn"),
     ("RX-UI-10", "warn"),
+    ("RX-AS-10", "warn"),
     ("RX-UI-26", "warn"),
     ("RX-UI-01", "warn"),
     ("RX-UX-15", "warn"),
@@ -120,6 +121,9 @@ struct Res {
     sans: JsRe,
     number: regex::Regex,
     amount: regex::Regex,
+    emoji: regex::Regex,
+    drawing: regex::Regex,
+    device: regex::Regex,
 }
 
 impl Res {
@@ -140,6 +144,11 @@ impl Res {
             az3: js(r"[a-z]{3}", "i"),
             serif: js(r"serif", "i"),
             sans: js(r"sans", "i"),
+            // an emoji shown as a picture: one that is by default, or a symbol asked to be one (U+FE0F)
+            emoji: regex::Regex::new(r"\p{Emoji_Presentation}|\p{Extended_Pictographic}\x{FE0F}").unwrap(),
+            // a class that names a drawing, or a device a page pictures
+            drawing: regex::Regex::new(r"(?i)illus|artwork|drawing|(^|[-_])art($|[-_])").unwrap(),
+            device: regex::Regex::new(r"(?i)phone|device|mockup|handset").unwrap(),
             number: regex::Regex::new(r"^[+-]?(?:[0-9]+\.?[0-9]*|\.[0-9]+)(?:[eE][+-]?[0-9]+)?$").unwrap(),
         }
     }
@@ -251,6 +260,9 @@ fn hypot(a: f64, b: f64) -> f64 {
 struct Page<'a> {
     /// The colour behind a page with no background of its own: white, or the dark canvas of `color-scheme: dark`.
     canvas: Colour,
+    /// The page's colour tokens (CSS custom properties that hold a colour) and the gradients declared as tokens.
+    tokens: Vec<Colour>,
+    token_gradients: Vec<&'a str>,
     re: Res,
     vw: f64,
     vh: f64,
@@ -352,8 +364,16 @@ impl<'a> Page<'a> {
             let parts: Vec<f64> = re.split.split(m.g(1)).into_iter().filter(|p| !p.is_empty()).map(|p| js_number(&re, &p)).collect();
             [parts.first().copied().unwrap_or(255.0), parts.get(1).copied().unwrap_or(255.0), parts.get(2).copied().unwrap_or(255.0), 1.0]
         });
+        let tokens: Vec<Colour> = input["tokens"]["colours"].as_array().map_or(Vec::new(), |a| a.iter().filter_map(Value::as_str).filter_map(|c| {
+            let m = re.rgba.exec(c)?;
+            let parts: Vec<f64> = re.split.split(m.g(1)).into_iter().filter(|p| !p.is_empty()).map(|p| js_number(&re, &p)).collect();
+            (parts.len() >= 3).then(|| [parts[0], parts[1], parts[2], parts.get(3).copied().unwrap_or(1.0)])
+        }).collect());
+        let token_gradients: Vec<&str> = input["tokens"]["gradients"].as_array().map_or(Vec::new(), |a| a.iter().filter_map(Value::as_str).collect());
         let mut page = Page {
             canvas: canvas.unwrap_or([255.0, 255.0, 255.0, 1.0]),
+            tokens,
+            token_gradients,
             re,
             vw: num(input.get("vw")),
             vh: num(input.get("vh")),
@@ -441,6 +461,16 @@ impl<'a> Page<'a> {
         self.s(i, "overflow") != "visible" && (r.w <= 1.0 || r.h <= 1.0)
     }
     /// `a.contains(b)`: a is b or one of its ancestors.
+    /// The ancestors of an element, nearest first.
+    fn ancestors(&self, i: usize) -> Vec<usize> {
+        let mut out = Vec::new();
+        let mut e = self.parent(i);
+        while let Some(x) = e {
+            out.push(x);
+            e = self.parent(x);
+        }
+        out
+    }
     fn contains(&self, a: usize, b: usize) -> bool {
         let mut e = Some(b);
         while let Some(x) = e {
@@ -1307,6 +1337,78 @@ impl<'a> Page<'a> {
                 tell(&mut out, "RX-UI-10", "serif", Some(a), format!("an italic serif word inside the heading ({}): a common generated accent; choose type for the product's voice, and keep it only when the direction names it", quote(self.text_of(a, "it"))));
                 break;
             }
+        }
+
+        // The counts before handoff (RX-AS-10) that the render can make: emoji in the chrome, and gradients that do not
+        // come from the page's colour tokens. Each is a count over a limit of 0, so a warn that names what was
+        // counted; the reason, when there is one, is the brief's or DESIGN.md's.
+        let chrome = |i: usize| {
+            let mut e = Some(i);
+            while let Some(x) = e {
+                let role = self.text_of(x, "role");
+                if self.flag(x, "ctl") || matches!(self.els[x].tag, "NAV" | "LABEL" | "LEGEND" | "TH" | "SUMMARY") || matches!(role, "navigation" | "tablist" | "tab" | "menu" | "menubar" | "menuitem" | "toolbar") {
+                    return true;
+                }
+                e = self.parent(x);
+            }
+            false
+        };
+        let emoji: Vec<&Text> = texts.iter().copied().filter(|t| self.outside[t.e] && self.shown[t.e] && !self.in_svg[t.e] && self.re.emoji.is_match(t.x) && chrome(t.e)).collect();
+        if let Some(first) = emoji.first() {
+            let shown: Vec<String> = emoji.iter().take(3).map(|t| quote(t.x)).collect();
+            let more = if emoji.len() > 3 { format!(", and {} more", emoji.len() - 3) } else { String::new() };
+            let count = if emoji.len() == 1 { "1 control or navigation label carries".to_string() } else { format!("{} control or navigation labels carry", emoji.len()) };
+            // a control that is only an emoji, with no aria-label: a screen reader reads the emoji's name
+            let bare = emoji.iter().any(|t| self.re.emoji.replace_all(t.x, "").trim_matches(|c: char| c.is_whitespace() || c == '\u{FE0F}' || c == '\u{200D}').is_empty() && std::iter::once(t.e).chain(self.ancestors(t.e)).any(|x| self.flag(x, "ctl") && self.text_of(x, "nm") == t.x));
+            let read = if bare { "; a control that is only an emoji is read by the emoji's name (\"telephone receiver\") and cannot take a token colour: use an icon with an aria-label" } else { "" };
+            tell(&mut out, "RX-AS-10", "emoji", Some(first.e), format!("{count} an emoji ({}{more}): the count for emoji in the interface chrome is 0; use the icon set, or the word alone{read}", shown.join(", ")));
+        }
+
+        // a colour, not a grey, a near-white tint, or a near-black: its channels spread by 40 or more of 255 (a
+        // skeleton shimmer in #e9e2d4 spreads 21, a pastel avatar in #c9d6ff 54)
+        let saturated = |c: &Colour| c[3] > 0.2 && c[0].max(c[1]).max(c[2]) - c[0].min(c[1]).min(c[2]) >= 40.0;
+        let token = |c: &Colour| self.tokens.iter().any(|t| (0..3).all(|k| (t[k] - c[k]).abs() <= 6.0));
+        // A gradient that draws a thing is not a colour choice of the interface: one inside an element whose class
+        // names a drawing; the wallpaper of a device the page pictures (it fills 80% of the device, and the device
+        // holds less than half the page's text: one that holds more is the frame of the product itself, and a
+        // control inside a pictured device is still the product's); or a small shape holding no text (a pictured
+        // card's thumbnail). Owner review 2026-11-23, sheet 7: G2 (a KTP card), G3, G6 were false.
+        let pictured = |i: usize| {
+            let r = self.els[i].r;
+            let named = std::iter::once(i).chain(self.ancestors(i)).any(|x| {
+                let c = self.text_of(x, "c");
+                let d = self.els[x].r;
+                self.re.drawing.is_match(c) || (self.re.device.is_match(c) && r.w * r.h >= 0.8 * d.w * d.h && texts.iter().filter(|t| self.contains(x, t.e)).count() * 2 < texts.len())
+            });
+            named || (r.w < 120.0 && r.h < 120.0 && !texts.iter().any(|t| self.contains(i, t.e)))
+        };
+        let mut drawn: Vec<(usize, &str, Vec<Colour>)> = Vec::new();
+        for &i in &visible {
+            let bg = self.s(i, "backgroundImage");
+            let r = self.els[i].r;
+            if !bg.contains("gradient(") || r.w < 16.0 || r.h < 16.0 || Some(i) == wash || self.token_gradients.contains(&bg) || drawn.iter().any(|d| d.1 == bg) || pictured(i) {
+                continue;
+            }
+            // a scrim or a shimmer of greys is not a colour choice; a stop not among the tokens is
+            let off: Vec<Colour> = self.colours(bg).into_iter().filter(|c| saturated(c) && !token(c)).collect();
+            if !off.is_empty() {
+                drawn.push((i, bg, off));
+            }
+        }
+        if let Some(&(first, _, _)) = drawn.first() {
+            let named: Vec<String> = drawn
+                .iter()
+                .take(3)
+                .map(|(i, _, off)| {
+                    let mut hexes: Vec<String> = off.iter().map(|c| hex(*c)).collect();
+                    hexes.dedup();
+                    format!("{} ({})", self.selector(*i), hexes.join(", "))
+                })
+                .collect();
+            let more = if drawn.len() > 3 { format!(", and {} more", drawn.len() - 3) } else { String::new() };
+            let count = if drawn.len() == 1 { "1 gradient".to_string() } else { format!("{} gradients", drawn.len()) };
+            let source = if self.tokens.is_empty() { "and the page names no colour tokens (CSS custom properties) they could come from" } else { "with colours that are not among the page's colour tokens" };
+            tell(&mut out, "RX-AS-10", "gradient", Some(first), format!("{count} {source}: {}{more}; the count for gradients without a brand reason is 0: draw it from the brand's tokens and name the reason, or use a flat colour", named.join(", ")));
         }
 
         // Cards inside cards: a bordered or shadowed, rounded, filled box holding another one.

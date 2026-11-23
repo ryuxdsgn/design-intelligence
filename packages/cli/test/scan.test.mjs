@@ -10,7 +10,7 @@ import { fileURLToPath } from "node:url";
 import { SOURCE_CHECKS, SYNTAX_CHECKS } from "../dist/checks.js";
 import { readDirection as directionIn, scan as scanEngine, scanShared } from "../dist/engine.js";
 import { FIXTURES, chromium, probePage, recordDirection, recordScan, recording, toSource } from "./golden.mjs";
-import { BASICS, BEHIND, DARK_CANVAS, FADED, PAGES, QUIET, SLOP, bar, choice, choiceSplit } from "./pages.mjs";
+import { BASICS, BEHIND, COUNTS, DARK_CANVAS, FADED, PAGES, QUIET, SLOP, bar, choice, choiceSplit } from "./pages.mjs";
 import { RULES } from "../dist/intelligence/content.js";
 import { VERSION } from "../dist/product.js";
 
@@ -648,6 +648,19 @@ test("scan <url> measures text over a gradient or an image on its pixels, and na
   assert.match(a11y01[1], /^fail "Foto terang di belakang": contrast [\d.]+:1 \(#ffffff on #f5f5f4, the weakest tenth of the image behind it\)/);
   assert.match(a11y01[2], /^fail "Digambar ulang": contrast [\d.]+:1 \(#ffffff on #[0-9a-f]{6}, the weakest tenth of the gradient behind it\)/, "a text the page redrew is found again");
   assert.match(a11y01[3], /^warn 1 text not measured for contrast \(under a blend mode or a filter.*first "Teks berbaur"/);
+});
+
+test("scan <url> counts emoji in the chrome and gradients that are no token, not gradients that draw a thing (RX-AS-10)", (t) => {
+  const dir = mkdtempSync(join(tmpdir(), "ryux-counts-"));
+  const path = join(dir, "counts.html");
+  writeFileSync(path, COUNTS);
+  const r = run(process.env.RYUX_PLAYWRIGHT_CWD ?? join(dirname(cli), "..", "..", ".."), ["scan", `file://${path}`, "--widths", "390", "--json"]);
+  rmSync(dir, { recursive: true, force: true });
+  if (/needs Playwright|could not start Chromium/.test(r.out)) return noBrowser(t);
+  const counts = JSON.parse(r.out).findings.filter((f) => f.rule === "RX-AS-10").map((f) => f.message);
+  assert.equal(counts.length, 2, counts.join("\n"));
+  assert.match(counts[0], /^3 control or navigation labels carry an emoji \("🏠 Beranda", "🚀 Mulai", "💬"\).*; a control that is only an emoji is read by the emoji's name/);
+  assert.match(counts[1], /^1 gradient with colours that are not among the page's colour tokens: div\.typed \(#f97316, #db2777\);/);
 });
 
 // Visual tells (knowledge/anti-slop.md): warn once per page, never at a single, reasoned use.
