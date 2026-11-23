@@ -574,7 +574,7 @@ fn flow_checks(t: &Tree, screens: &[usize], r: &Res, o: &mut Out) {
     let last_texts = texts(last);
     if priced && (confirmed.is_match(&last.name) || last_texts.iter().any(|x| confirmed.is_match(x))) && !last_texts.iter().any(|x| pay.is_match(x)) {
         o.inc("flowBreaks", 1);
-        o.add("RX-IX-05", "warn", &last.name, &last.name, format!("\"{}\" confirms the order but never says how it is paid: name the method with the total (\"Lunas via GoPay\", \"Bayar ke terapis setelah sesi\"); if the business has not chosen one, show a sample method and mark it as sample data", last.name));
+        o.add("RX-IX-05", "warn", &last.name, &last.name, format!("\"{}\" confirms the order but never says how it is paid: name the method with the total (\"Bayar ke terapis setelah sesi\"); if the business has not chosen one, show a neutral sample method with the file\'s sample-data marker", last.name));
     }
 
     // Two words for one state across the flow (RX-CD-05): a taken slot called "Penuh" on one chip and "Terisi" on

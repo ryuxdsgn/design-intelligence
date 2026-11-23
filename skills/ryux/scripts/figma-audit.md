@@ -619,7 +619,7 @@ const figmaAudit = async function figmaAudit(figma, pageName) {
         const lastTexts = texts(last);
         if (priced && (CONFIRMED.test(last.f.name) || lastTexts.some((x) => CONFIRMED.test(x))) && !lastTexts.some((x) => PAY.test(x))) {
             c.flowBreaks++;
-            add("RX-IX-05", "warn", last.f, last.f, `"${last.f.name}" confirms the order but never says how it is paid: name the method with the total ("Lunas via GoPay", "Bayar ke terapis setelah sesi"); if the business has not chosen one, show a sample method and mark it as sample data`);
+            add("RX-IX-05", "warn", last.f, last.f, `"${last.f.name}" confirms the order but never says how it is paid: name the method with the total ("Bayar ke terapis setelah sesi"); if the business has not chosen one, show a neutral sample method with the file's sample-data marker`);
         }
         // Two words for one state across the flow (RX-CD-05): a taken slot called "Penuh" on one chip and "Terisi" on another.
         const TAKEN = /\b(penuh|terisi|habis|sold out|full|booked)\b/i;

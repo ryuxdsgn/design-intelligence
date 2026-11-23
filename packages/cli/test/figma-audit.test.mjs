@@ -349,7 +349,7 @@ test("booking: the chosen hour away from the bar that commits, a confirmation wi
   const got = r.findings.filter((f) => ["RX-IX-17", "RX-IX-05", "RX-CD-05"].includes(f.rule)).map((f) => `${f.rule} ${f.frame}: ${f.message}`);
   assert.deepEqual(got, [
     'RX-IX-17 02-profil: "Bottom bar" holds the action but not the chosen hour 10.30: put the date and hour with the price and the button, so the person sees what they book as they commit',
-    'RX-IX-05 03-terkonfirmasi: "03-terkonfirmasi" confirms the order but never says how it is paid: name the method with the total ("Lunas via GoPay", "Bayar ke terapis setelah sesi"); if the business has not chosen one, show a sample method and mark it as sample data',
+    'RX-IX-05 03-terkonfirmasi: "03-terkonfirmasi" confirms the order but never says how it is paid: name the method with the total ("Bayar ke terapis setelah sesi"); if the business has not chosen one, show a neutral sample method with the file\'s sample-data marker',
     'RX-CD-05 02-profil: "penuh" and "terisi" name the same state: pick one word for a taken slot and use it on every screen',
   ]);
   // the hour in the bar, a method on the confirmation, and one word: quiet
