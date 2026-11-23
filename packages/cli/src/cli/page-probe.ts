@@ -117,6 +117,8 @@ export async function probeExtract() {
     if (e.scrollHeight > e.clientHeight) Object.assign(o, { sh: e.scrollHeight, ch: e.clientHeight });
     if (i > 1 && e.matches(CONTROL)) {
       o.ctl = 1;
+      // out of the tab order (a tab in a roving group that is not selected): the keyboard never lands on it
+      if (e.tabIndex < 0) o.nt = 1;
       const pushes = e.tagName === "INPUT" && (e.type === "submit" || e.type === "button");
       if (pushes) o.ty = e.type;
       o.nm = cap((e.getAttribute("aria-label") || (pushes ? e.value : "") || e.textContent || e.tagName.toLowerCase()).trim().replace(/\s+/g, " "));
@@ -124,8 +126,8 @@ export async function probeExtract() {
     // A link set inline: whether its block has text besides the link (a link in a sentence).
     if (e.tagName === "A" && e.parentElement && getComputedStyle(e).display === "inline") o.sib = e.parentElement.textContent.replace(e.textContent, "").trim().length > 0 ? 1 : 0;
     if (e.tagName === "TEXTAREA" && e.readOnly) o.ro = 1;
-    // A field: the width (0 when the style is none or hidden) and colour of each border, top, right, bottom, left, and
-    // its name, so ryux-core can judge its edge against what is around it. A native checkbox or radio is drawn by
+    // A field: the width (0 when the style is none or hidden) and colour of each border, top, right, bottom, left, so
+    // ryux-core can judge its edge against what is around it. A native checkbox or radio is drawn by
     // the browser and left out.
     if (i > 1 && e.matches(FIELD)) {
       const cs = getComputedStyle(e);
@@ -133,8 +135,11 @@ export async function probeExtract() {
       if (!tick || cs.appearance === "none") {
         const shown = (k) => (/^(none|hidden)$/.test(cs[`border${k}Style`]) ? 0 : Number.parseFloat(cs[`border${k}Width`]));
         o.fb = [...SIDES.map(shown), ...SIDES.map((k) => plain(cs[`border${k}Color`]))];
-        o.fl = cap((e.labels?.[0]?.innerText || e.getAttribute("aria-label") || e.getAttribute("placeholder") || e.getAttribute("name") || e.tagName.toLowerCase()).trim().replace(/\s+/g, " "));
       }
+    }
+    // A form control's name as people read it: its label, else its aria-label, placeholder, or name.
+    if (i > 1 && /^(INPUT|SELECT|TEXTAREA)$/.test(e.tagName)) {
+      o.fl = cap((e.labels?.[0]?.innerText || e.getAttribute("aria-label") || e.getAttribute("placeholder") || e.getAttribute("name") || e.tagName.toLowerCase()).trim().replace(/\s+/g, " "));
     }
     // A control with no text that shows an SVG: an icon-only button or link, whose icon carries its meaning.
     if (o.ctl && !e.textContent.trim() && e.querySelector("svg")) o.ico = 1;
@@ -334,7 +339,7 @@ export async function probeAnswer(ask) {
 
 /** What focus shows on each control ryux-core asked for (by element index): the control and its parent, before and
  *  with focus from a script (which matches :focus-visible when the page has had no pointer input, as in a scan):
- *  outline, box shadow, borders, background, underline, and whether a ::before or ::after changed. Transitions are
+ *  outline, box shadow, borders, background, underline, its box, and whether a ::before or ::after changed. Transitions are
  *  finished first, so the focused state is read as it ends. Only what changed is sent. Focus is taken away after,
  *  and the scroll put back. */
 export async function probeFocus(list) {
@@ -347,6 +352,7 @@ export async function probeFocus(list) {
       try { a.finish(); } catch { /* an infinite animation cannot finish */ }
     }
     const cs = getComputedStyle(e);
+    const box = e.getBoundingClientRect();
     const pseudo = ["::before", "::after"].map((p) => {
       const ps = getComputedStyle(e, p);
       return ps.content === "none" ? "" : [ps.outline, ps.boxShadow, ps.borderColor, ps.backgroundColor, ps.opacity, ps.transform].join("|");
@@ -360,6 +366,7 @@ export async function probeFocus(list) {
       bi: cs.backgroundImage,
       td: cs.textDecorationLine,
       ps: pseudo,
+      r: [box.x, box.y, box.width, box.height].map(Math.round),
     };
   };
   const x0 = window.scrollX;

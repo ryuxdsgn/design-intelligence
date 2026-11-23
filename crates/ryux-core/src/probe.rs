@@ -1588,7 +1588,7 @@ impl<'a> Page<'a> {
     fn edges(&self) -> Vec<Edge> {
         let n = self.els.len();
         let mut out = Vec::new();
-        let judged = |i: usize| self.shown[i] && self.outside[i] && !self.disabled[i];
+        let judged = |i: usize| self.shown[i] && self.outside[i] && !self.disabled[i] && !self.overlay(i);
         for i in 2..n {
             let Some(fb) = self.els[i].v.get("fb").and_then(Value::as_array).filter(|a| a.len() == 8) else { continue };
             if !judged(i) {
@@ -1675,9 +1675,21 @@ impl<'a> Page<'a> {
             .collect()
     }
 
-    /// The controls whose focus the page is asked to show.
+    /// A field whose text is transparent: an input laid over boxes the page draws itself (a one-time code split in
+    /// cells), whose edge and focus those boxes show.
+    fn overlay(&self, i: usize) -> bool {
+        self.els[i].v.get("fb").is_some() && self.rgba(self.color(i)).is_some_and(|c| c[3] == 0.0)
+    }
+    /// The controls whose focus the page is asked to show: the ones in the tab order.
     fn focus_list(&self) -> Vec<usize> {
-        (2..self.els.len()).filter(|&i| self.flag(i, "ctl") && self.shown[i] && self.outside[i] && !self.disabled[i]).take(MAX_FOCUS).collect()
+        (2..self.els.len()).filter(|&i| self.flag(i, "ctl") && !self.flag(i, "nt") && self.shown[i] && self.outside[i] && !self.disabled[i] && !self.overlay(i)).take(MAX_FOCUS).collect()
+    }
+    /// How a control is named in a message: a field by its label, anything else by its name.
+    fn control_name(&self, i: usize) -> &'a str {
+        match self.text_of(i, "fl") {
+            "" => self.text_of(i, "nm"),
+            label => label,
+        }
     }
 
     /// What focus changed on one element, from `b` (before) to `f` (focused), with `fill` its own colour and `adj`
@@ -1736,8 +1748,13 @@ impl<'a> Page<'a> {
                 if a >= o { stronger(best, a, shown, adj) } else { stronger(best, o, shown, fill) }
             }
         }
-        // an underline, a picture, or a ::before or ::after that changes: shown, but not measured here
-        if f["td"] != b["td"] || f["bi"] != b["bi"] || f["ps"] != b["ps"] {
+        // a control that comes into view or moves when focused (a skip link): the move is what shows
+        let (rb, rf) = (&b["r"], &f["r"]);
+        let at = |r: &Value, k: usize| num(r.get(k));
+        let off = |r: &Value| at(r, 0) + at(r, 2) <= 0.0 || at(r, 1) + at(r, 3) <= 0.0 || at(r, 0) >= self.vw;
+        let moved = rb.is_array() && rf.is_array() && ((off(rb) && !off(rf)) || (at(rb, 0) - at(rf, 0)).abs() >= 8.0 || (at(rb, 1) - at(rf, 1)).abs() >= 8.0);
+        // a move, an underline, a picture, or a ::before or ::after that changes: shown, but not measured here
+        if moved || f["td"] != b["td"] || f["bi"] != b["bi"] || f["ps"] != b["ps"] {
             *seen = true;
             stronger(best, 21.0, adj, adj);
         }
@@ -1781,7 +1798,7 @@ impl<'a> Page<'a> {
                 "RX-A11Y-03",
                 "fail",
                 self.selector(first),
-                format!("{}{more}: no focus indicator when reached from the keyboard (no outline, ring, border, fill, or underline appears); give :focus-visible an outline at 3:1 against what is around it", quote(self.text_of(first, "nm"))),
+                format!("{}{more}: no focus indicator when reached from the keyboard (no outline, ring, border, fill, or underline appears); give :focus-visible an outline at 3:1 against what is around it", quote(self.control_name(first))),
             ));
         }
         for (_, e, count) in weak {
@@ -1790,7 +1807,7 @@ impl<'a> Page<'a> {
                 "RX-A11Y-03",
                 "fail",
                 self.selector(e.i),
-                format!("{}: focus indicator {}:1 ({} on {}), needs 3:1 against what is around it (WCAG 1.4.11){more}", quote(self.text_of(e.i, "nm")), crate::audit::ratio_text(e.ratio, 3.0), hex(e.fg), hex(e.bg)),
+                format!("{}: focus indicator {}:1 ({} on {}), needs 3:1 against what is around it (WCAG 1.4.11){more}", quote(self.control_name(e.i)), crate::audit::ratio_text(e.ratio, 3.0), hex(e.fg), hex(e.bg)),
             ));
         }
         out

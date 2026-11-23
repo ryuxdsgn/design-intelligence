@@ -142,8 +142,9 @@ body{margin:0;font:16px sans-serif;background:#fff;color:#111}
 
 /** Non-text contrast (WCAG 1.4.11): a faint field edge, a faint icon on an icon-only button, a link that shows no
  *  focus, and a pale focus ring are counted. A dark border, an underline field, a bare field inside a bordered search
- *  bar, a filled field, a native checkbox, a dark icon, an icon beside a label, a disabled field, and the browser's
- *  own focus ring are not. */
+ *  bar, a filled field, a native checkbox, a dark icon, an icon beside a label, a disabled field, the browser's own
+ *  focus ring, a code input laid transparent over cells, a tab out of the tab order, and a skip link that comes into
+ *  view are not. */
 const ICON = (stroke) => `<svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="${stroke}" stroke-width="2"><path d="M4 4l12 12M16 4L4 16"/></svg>`;
 export const EDGES = `${head}<style>
 body{margin:0;padding:16px;font:16px sans-serif;background:#fff;color:#111}
@@ -153,8 +154,11 @@ label{display:block;margin:8px 0 4px}input{font:inherit;padding:8px;width:240px}
 .search input{border:0;background:transparent;outline-offset:2px}.filled{border:0;background:#1f2937;color:#fff}
 button{font:inherit;margin:8px 4px 0 0;padding:8px;border:1px solid #111;background:#fff;color:#111}
 .close,.plain{border:0;background:transparent;padding:4px}.dark{background:#14532d;border:0}
-.ghost:focus{outline:none}.soft:focus-visible{outline:none;box-shadow:0 0 0 3px #dbeafe}.blue:focus-visible{outline:2px solid #2563eb;outline-offset:2px}</style>
-<label for="e">Email</label><input id="e" class="faint">
+.otp{position:relative;display:flex;gap:6px;width:200px}.otp span{flex:1;height:40px;border:1px solid #6b7280}
+.otp input{position:absolute;inset:0;width:100%;padding:0;border:0;background:transparent;color:transparent;outline:none}
+[role=tab][tabindex="-1"]:focus{outline:none}.skip{position:absolute;left:8px;top:-60px;background:#111;color:#fff;padding:8px}
+.skip:focus{top:8px;outline:2px solid #fde68a;outline-offset:2px}.ghost:focus{outline:none}.soft:focus-visible{outline:none;box-shadow:0 0 0 3px #dbeafe}.blue:focus-visible{outline:2px solid #2563eb;outline-offset:2px}</style>
+<a class="skip" href="#e">Lewati ke isi</a><label for="e">Email</label><input id="e" class="faint">
 <label for="n">Nama</label><input id="n" class="ok">
 <label for="k">Kota</label><input id="k" class="under">
 <div class="search">${ICON("#111")}<input aria-label="Cari"></div>
@@ -162,6 +166,8 @@ button{font:inherit;margin:8px 4px 0 0;padding:8px;border:1px solid #111;backgro
 <label><input type="checkbox"> Ingat saya</label>
 <label for="d">Kode lama</label><input id="d" class="faint" disabled>
 <p><button class="close" aria-label="Tutup">${ICON("#cbd5e1")}</button><button class="plain" aria-label="Hapus">${ICON("#111")}</button><button class="dark" aria-label="Simpan">${ICON("#fff")}</button><button>${ICON("#cbd5e1")} Unduh</button></p>
+<div class="otp"><span></span><span></span><span></span><input aria-label="Kode verifikasi" inputmode="numeric"></div>
+<div role="tablist"><button role="tab" aria-selected="true">Pulsa</button><button role="tab" tabindex="-1">Data</button></div>
 <p><a class="ghost" href="#">Lupa sandi</a> <button class="soft">Kirim</button> <button class="blue">Masuk</button></p>`;
 
 /** Every page with the widths the tests render it at. */
