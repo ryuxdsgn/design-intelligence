@@ -140,6 +140,41 @@ body{margin:0;font:16px sans-serif;background:#fff;color:#111}
 <header><div class="mark"><span class="logo-ph">[LOGO]</span> RideApp</div><span class="logo-ph">Logo Kelasku</span> <a class="logo" href="#"><span class="tile">K</span> KAINARA</a> <a class="brand" href="#">Langkah</a></header>
 <div class="drop">Unggah foto KTP</div><p><span class="avatar">MA</span> Maya Andini</p>`;
 
+/** Non-text contrast (WCAG 1.4.11): a faint field edge, a faint icon on an icon-only button, a link that shows no
+ *  focus, and a pale focus ring are counted. A dark border, an underline field, a bare field inside a bordered search
+ *  bar, a filled field, a native checkbox, a dark icon, an icon beside a label, a disabled field, the browser's own
+ *  focus ring, a code input laid transparent over cells, a tab out of the tab order, a skip link that comes into
+ *  view, a ring that touches a white badge on dark green, and a faint field in a prototype panel are not; a faint
+ *  field in a "book a demo" section is counted. */
+const ICON = (stroke) => `<svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="${stroke}" stroke-width="2"><path d="M4 4l12 12M16 4L4 16"/></svg>`;
+export const EDGES = `${head}<style>
+body{margin:0;padding:16px;font:16px sans-serif;background:#fff;color:#111}
+label{display:block;margin:8px 0 4px}input{font:inherit;padding:8px;width:240px}input[type=checkbox]{width:auto}
+.faint{border:1px solid #e5e7eb}.ok{border:1px solid #6b7280}.under{border:0;border-bottom:2px solid #111;background:transparent}
+.search{display:flex;align-items:center;gap:8px;border:1px solid #767676;border-radius:8px;padding:0 8px;width:280px}
+.search input{border:0;background:transparent;outline-offset:2px}.filled{border:0;background:#1f2937;color:#fff}
+button{font:inherit;margin:8px 4px 0 0;padding:8px;border:1px solid #111;background:#fff;color:#111}
+.close,.plain{border:0;background:transparent;padding:4px}.dark{background:#14532d;border:0}
+.otp{position:relative;display:flex;gap:6px;width:200px}.otp span{flex:1;height:40px;border:1px solid #6b7280}
+.otp input{position:absolute;inset:0;width:100%;padding:0;border:0;background:transparent;color:transparent;outline:none}
+[role=tab][tabindex="-1"]:focus{outline:none}.skip{position:absolute;left:8px;top:-60px;background:#111;color:#fff;padding:8px}
+.skip:focus{top:8px;outline:2px solid #fde68a;outline-offset:2px}
+.stores{background:#2f5d3a;padding:12px}.badge{display:inline-block;background:#fff;color:#2f5d3a;padding:8px;border-radius:6px}.badge:focus-visible{outline:3px solid #c9572e;outline-offset:0}.ghost:focus{outline:none}.soft{border:0}.soft:focus-visible{outline:none;box-shadow:0 0 0 3px #dbeafe}.blue:focus-visible{outline:2px solid #2563eb;outline-offset:2px}</style>
+<a class="skip" href="#e">Lewati ke isi</a><label for="e">Email</label><input id="e" class="faint">
+<label for="n">Nama</label><input id="n" class="ok">
+<label for="k">Kota</label><input id="k" class="under">
+<div class="search">${ICON("#111")}<input aria-label="Cari"></div>
+<label for="t">Catatan</label><input id="t" class="filled">
+<label><input type="checkbox"> Ingat saya</label>
+<label for="d">Kode lama</label><input id="d" class="faint" disabled>
+<p><button class="close" aria-label="Tutup">${ICON("#cbd5e1")}</button><button class="plain" aria-label="Hapus">${ICON("#111")}</button><button class="dark" aria-label="Simpan">${ICON("#fff")}</button><button>${ICON("#cbd5e1")} Unduh</button></p>
+<div class="otp"><span></span><span></span><span></span><input aria-label="Kode verifikasi" inputmode="numeric"></div>
+<div role="tablist"><button role="tab" aria-selected="true">Pulsa</button><button role="tab" tabindex="-1">Data</button></div>
+<div class="stores"><a class="badge" href="#">App Store</a></div>
+<div class="demo" aria-label="Kontrol prototipe"><label for="st">Status</label><input id="st" class="faint"></div>
+<section id="demo"><label for="wa">Nomor WhatsApp</label><input id="wa" class="faint"></section>
+<p><a class="ghost" href="#">Lupa sandi</a> <button class="soft">Kirim</button> <button class="blue">Masuk</button></p>`;
+
 /** Every page with the widths the tests render it at. */
 export const PAGES = [
   { name: "basics", html: BASICS, widths: [320] },
@@ -157,4 +192,5 @@ export const PAGES = [
   { name: "behind", html: BEHIND, widths: [390] },
   { name: "counts", html: COUNTS, widths: [390] },
   { name: "marks", html: MARKS, widths: [390] },
+  { name: "edges", html: EDGES, widths: [390] },
 ];

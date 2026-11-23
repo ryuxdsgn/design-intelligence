@@ -29,6 +29,8 @@ export interface ProbeAsk {
   under: number[];
   grow: number[];
   behind?: number[];
+  /** Controls (by element index) whose focus indicator ryux-core judges; answered by probeFocus after the pixels. */
+  focus?: number[];
 }
 
 /** The page as JSON, at the current viewport. Elements are in document order: 0 is <html>, 1 is <body>, then every
@@ -99,6 +101,9 @@ export async function probeExtract() {
     return styleIndex.get(key);
   };
 
+  const FIELD = "input:not([type=hidden],[type=submit],[type=button],[type=reset],[type=image],[type=range],[type=color],[type=file]),select,textarea,[role=textbox],[role=searchbox]";
+  const SIDES = ["Top", "Right", "Bottom", "Left"];
+  const PROTO = /(?:^|[^a-zA-Z])(?:[Pp]roto(?:type|tipe)?|PROTO(?:TYPE)?)(?![a-z])/;
   const CONTROL = "a[href],button,input:not([type=hidden]),select,textarea,summary,[role=button],[role=link],[role=checkbox],[role=radio],[role=switch],[role=tab],[role=menuitem]";
   const els = all.map((e, i) => {
     const o = { p: i ? at(e.parentElement) : null, t: e.tagName, s: styleOf(e), r: box(e.getBoundingClientRect()) };
@@ -113,6 +118,8 @@ export async function probeExtract() {
     if (e.scrollHeight > e.clientHeight) Object.assign(o, { sh: e.scrollHeight, ch: e.clientHeight });
     if (i > 1 && e.matches(CONTROL)) {
       o.ctl = 1;
+      // out of the tab order (a tab in a roving group that is not selected): the keyboard never lands on it
+      if (e.tabIndex < 0) o.nt = 1;
       const pushes = e.tagName === "INPUT" && (e.type === "submit" || e.type === "button");
       if (pushes) o.ty = e.type;
       o.nm = cap((e.getAttribute("aria-label") || (pushes ? e.value : "") || e.textContent || e.tagName.toLowerCase()).trim().replace(/\s+/g, " "));
@@ -120,6 +127,28 @@ export async function probeExtract() {
     // A link set inline: whether its block has text besides the link (a link in a sentence).
     if (e.tagName === "A" && e.parentElement && getComputedStyle(e).display === "inline") o.sib = e.parentElement.textContent.replace(e.textContent, "").trim().length > 0 ? 1 : 0;
     if (e.tagName === "TEXTAREA" && e.readOnly) o.ro = 1;
+    // A field: the width (0 when the style is none or hidden) and colour of each border, top, right, bottom, left, so
+    // ryux-core can judge its edge against what is around it. A native checkbox or radio is drawn by
+    // the browser and left out.
+    if (i > 1 && e.matches(FIELD)) {
+      const cs = getComputedStyle(e);
+      const tick = e.tagName === "INPUT" && (e.type === "checkbox" || e.type === "radio");
+      if (!tick || cs.appearance === "none") {
+        const shown = (k) => (/^(none|hidden)$/.test(cs[`border${k}Style`]) ? 0 : Number.parseFloat(cs[`border${k}Width`]));
+        o.fb = [...SIDES.map(shown), ...SIDES.map((k) => plain(cs[`border${k}Color`]))];
+      }
+    }
+    // A form control's name as people read it: its label, else its aria-label, placeholder, or name.
+    if (i > 1 && /^(INPUT|SELECT|TEXTAREA)$/.test(e.tagName)) {
+      o.fl = cap((e.labels?.[0]?.innerText || e.getAttribute("aria-label") || e.getAttribute("placeholder") || e.getAttribute("name") || e.tagName.toLowerCase()).trim().replace(/\s+/g, " "));
+    }
+    // A region named as a prototype panel (class, id, aria-label, the text it is labelled by, or a data attribute):
+    // reviewer controls the page adds around the product, not the product. "Demo" alone is not enough: a "book a
+    // demo" section is product.
+    const named = () => [e.id, e.getAttribute("class"), e.getAttribute("aria-label"), ...(e.getAttribute("aria-labelledby")?.split(/\s+/) ?? []).map((id) => document.getElementById(id)?.textContent ?? ""), ...e.getAttributeNames().filter((a) => a.startsWith("data-"))];
+    if (i > 1 && !o.ctl && named().some((v) => v && PROTO.test(v))) o.pr = 1;
+    // A control with no text that shows an SVG: an icon-only button or link, whose icon carries its meaning.
+    if (o.ctl && !e.textContent.trim() && e.querySelector("svg")) o.ico = 1;
     // A radio button: its group (the name, or the group element around it) and the group's label.
     if ((e.tagName === "INPUT" && e.type === "radio") || role === "radio") {
       // The group element that holds every radio of the name (a group split into sub-fieldsets is named by the outer one).
@@ -147,6 +176,19 @@ export async function probeExtract() {
     }
     return o;
   });
+  // The paint of each shape in an icon-only control: [colour, opacity] for its fill and its stroke (a gradient or
+  // pattern paint is left out), so ryux-core can judge the icon against the control it sits on.
+  for (const [k, e] of all.entries()) {
+    if (!els[k].ico) continue;
+    for (const shape of [...e.querySelectorAll("path,circle,rect,line,polyline,polygon,ellipse,use,text")].slice(0, 12)) {
+      const cs = getComputedStyle(shape);
+      const ip = [];
+      for (const [paint, op] of [[cs.fill, Number(cs.fillOpacity)], [cs.stroke, Number.parseFloat(cs.strokeWidth) > 0 ? Number(cs.strokeOpacity) : 0]]) {
+        if (paint && paint !== "none" && !paint.includes("url(") && op > 0) ip.push([plain(paint), op]);
+      }
+      if (ip.length) els[at(shape)].ip = ip;
+    }
+  }
   // Text the visual tells quote: what sits before each H1 and H2, and italic words inside them.
   for (const h of document.body.querySelectorAll("h1, h2")) {
     for (let prev = h.previousElementSibling; prev; prev = prev.previousElementSibling) els[at(prev)].pt = prev.textContent.trim().replace(/\s+/g, " ");
@@ -211,7 +253,7 @@ export async function probeExtract() {
   });
 
   // probeAnswer reads the same elements.
-  window.__ryuxProbe = { all, nodesOf };
+  window.__ryuxProbe = { all, nodesOf, plain };
   // The colour behind a page with no background: white, or the dark canvas under color-scheme: dark.
   const probe = document.createElement("div");
   probe.style.cssText = "position:absolute;width:0;height:0;background-color:Canvas";
@@ -299,6 +341,69 @@ export async function probeAnswer(ask) {
   }
   await frame();
   return { under, grow };
+}
+
+/** What focus shows on each control ryux-core asked for (by element index): the control and its parent, before and
+ *  with focus from a script (which matches :focus-visible when the page has had no pointer input, as in a scan):
+ *  outline, box shadow, borders, background, underline, its box, and whether a ::before or ::after changed. Transitions are
+ *  finished first, so the focused state is read as it ends. Only what changed is sent. Focus is taken away after,
+ *  and the scroll put back. */
+export async function probeFocus(list) {
+  const frame = () => new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
+  const { all, plain } = window.__ryuxProbe;
+  const SIDES = ["Top", "Right", "Bottom", "Left"];
+  const look = (e) => {
+    if (!e || e === document.body || e === document.documentElement) return null;
+    for (const a of e.getAnimations?.() ?? []) {
+      try { a.finish(); } catch { /* an infinite animation cannot finish */ }
+    }
+    const cs = getComputedStyle(e);
+    const box = e.getBoundingClientRect();
+    const pseudo = ["::before", "::after"].map((p) => {
+      const ps = getComputedStyle(e, p);
+      return ps.content === "none" ? "" : [ps.outline, ps.boxShadow, ps.borderColor, ps.backgroundColor, ps.opacity, ps.transform].join("|");
+    }).join("/");
+    return {
+      o: [cs.outlineStyle, Number.parseFloat(cs.outlineWidth), plain(cs.outlineColor), Number.parseFloat(cs.outlineOffset)],
+      bs: plain(cs.boxShadow),
+      bw: SIDES.map((k) => (/^(none|hidden)$/.test(cs[`border${k}Style`]) ? 0 : Number.parseFloat(cs[`border${k}Width`]))),
+      bc: SIDES.map((k) => plain(cs[`border${k}Color`])),
+      bg: plain(cs.backgroundColor),
+      bi: cs.backgroundImage,
+      td: cs.textDecorationLine,
+      ps: pseudo,
+      r: [box.x, box.y, box.width, box.height].map(Math.round),
+    };
+  };
+  const x0 = window.scrollX;
+  const y0 = window.scrollY;
+  const out = {};
+  for (const i of list) {
+    const e = all[i];
+    if (!e?.isConnected || typeof e.focus !== "function") continue;
+    const b = look(e);
+    const pb = look(e.parentElement);
+    e.focus({ preventScroll: true });
+    if (document.activeElement !== e) {
+      out[i] = { a: 0 };
+      continue;
+    }
+    const f = look(e);
+    const pf = look(e.parentElement);
+    e.blur();
+    // only what focus changed, so a page of many controls stays small
+    const diff = (x, y) => {
+      if (!x || !y) return null;
+      const keys = Object.keys(y).filter((k) => JSON.stringify(x[k]) !== JSON.stringify(y[k]));
+      return keys.length ? [Object.fromEntries(keys.map((k) => [k, x[k]])), Object.fromEntries(keys.map((k) => [k, y[k]]))] : null;
+    };
+    const own = diff(b, f);
+    const up = diff(pb, pf);
+    out[i] = { a: 1, ...(own ? { b: own[0], f: own[1] } : { b: {}, f: {} }), ...(up ? { pb: up[0], pf: up[1] } : {}) };
+  }
+  window.scrollTo(x0, y0);
+  await frame();
+  return out;
 }
 
 /** A text over an image or a gradient, made ready for a screenshot of what is behind it: scrolled into view, its
