@@ -36,7 +36,7 @@ export async function figmaAudit(figma, pageName) {
 
   const findings = [];
   const add = (rule, level, frame, node, message) => findings.push({ rule, level, frame: frame.name, node: node ? node.name : "", message });
-  const c = { screens: screens.length, imageFills: 0, distinctImages: 0, reusedImages: 0, contrastFails: 0, contrastUnknown: 0, targetsUnder24: 0, targetsUnder44: 0, cutText: 0, clippedText: 0, flatOverlays: 0, idleBusyButtons: 0, unstyledText: 0, unboundFills: 0, unboundSpacing: 0, layoutScreens: 0, looseLayers: 0, strayLayers: 0, rawEffects: 0, emptyBands: 0, capsLabels: 0, cards: 0, smallText: 0, texts: 0, unevenRows: 0 };
+  const c = { screens: screens.length, imageFills: 0, distinctImages: 0, reusedImages: 0, contrastFails: 0, contrastUnknown: 0, targetsUnder24: 0, targetsUnder44: 0, cutText: 0, clippedText: 0, flatOverlays: 0, idleBusyButtons: 0, unstyledText: 0, unboundFills: 0, unboundSpacing: 0, layoutScreens: 0, looseLayers: 0, strayLayers: 0, rawEffects: 0, emptyBands: 0, capsLabels: 0, cards: 0, smallText: 0, texts: 0, unevenRows: 0, flowBreaks: 0 };
   const images = new Map();
 
   // WCAG relative luminance and contrast, on 0-1 channels.
@@ -260,6 +260,105 @@ export async function figmaAudit(figma, pageName) {
     }
   }
 
+  // Across the screens of a flow: what one screen says, the next must agree with (owner request 2026-11-23, after
+  // a three-screen FigCraft benchmark where a dark band opened only the last screen, the main button changed colour,
+  // "Kembali ke beranda" led to a tab the bar did not have, and a list card promised an hour the profile did not offer).
+  if (screens.length >= 2) {
+    const FCHROME = /\b(keyboard|status ?bar|home ?indicator)\b/i;
+    const NAVBAR = /tab ?bar|bottom ?nav|nav ?bar|navigation|navigasi/i;
+    const BUTTON = /\b(button|btn|cta)\b/i;
+    const BACK = /^\s*(?:kembali ke|back to|ke)\s+(.{2,30}?)\s*$/i;
+    const TIME = /(?:^|[^\d.:])((?:[01]?\d|2[0-3])[.:][0-5]\d)(?:$|[^\d])/g;
+    const ONLY_TIME = /^\s*(?:[01]?\d|2[0-3])[.:][0-5]\d\s*$/;
+    const white = { r: 1, g: 1, b: 1 };
+    const solid = (n) => {
+      const ps = visiblePaints(n.fills);
+      const p = ps.find((q) => q.type === "SOLID");
+      if (!p) return null;
+      const a = (typeof p.opacity === "number" ? p.opacity : 1) * (typeof n.opacity === "number" ? n.opacity : 1);
+      if (a < 0.9 || ps.some((q) => q.type !== "SOLID")) return null;
+      return { r: p.color.r, g: p.color.g, b: p.color.b };
+    };
+    const hex = (k) => "#" + [k.r, k.g, k.b].map((v) => Math.round(Math.min(1, Math.max(0, v)) * 255).toString(16).padStart(2, "0")).join("");
+    const labels = (n) => ("children" in n ? findShown(n, (k) => k.type === "TEXT" && k.characters.trim()) : []);
+    const info = screens.map((f) => {
+      const fb = box(f);
+      const bg = solid(f) || white;
+      const layers = [];
+      const go = (n, anc) => { if (n.visible === false) return; layers.push({ n, anc }); if ("children" in n) for (const k of n.children) go(k, [...anc, n]); };
+      for (const k of f.children || []) go(k, [f]);
+      const bandNode = layers.map((e) => e.n).find((n) => { const b = box(n); const k = solid(n); return n.type !== "TEXT" && b.x <= fb.x + 2 && b.width >= fb.width * 0.9 && b.y <= fb.y + 60 && b.height >= 140 && b.height <= fb.height * 0.8 && !!k && ratio(k, bg) >= 2; });
+      let best = null;
+      for (const { n, anc } of layers) {
+        const b = box(n);
+        if (n.type === "TEXT" || b.height < 40 || b.height > 64 || b.width < fb.width * 0.35 || b.y < fb.y + 60) continue;
+        if ([n, ...anc].some((a) => a !== f && (FCHROME.test(a.name) || OVERLAY.test(a.name)))) continue;
+        const l = labels(n)[0];
+        const label = l ? l.characters : "";
+        if (BUSY.test(label) || /(…|\.\.\.)$/.test(label.trim())) continue;
+        const k = solid(n);
+        if (!k || !l || ratio(k, bg) < 3 || !(BUTTON.test(n.name) || b.width >= fb.width * 0.4)) continue;
+        if (!best || b.width > best.w + 0.5) best = { n, w: b.width, label, k };
+      }
+      return { f, fb, layers, band: bandNode ? { name: bandNode.name, k: solid(bandNode) } : null, primary: best ? { label: best.label, k: best.k } : null };
+    });
+
+    const banded = info.filter((s) => s.band);
+    if (info.length >= 3 && banded.length === 1) {
+      const s = banded[0];
+      c.flowBreaks++;
+      add("RX-DS-02", "warn", s.f, { name: s.band.name }, `only "${s.f.name}" opens with a full-width ${hex(s.band.k)} band ("${short(s.band.name, 30)}"); the other ${info.length - 1} screens start on the page colour: carry the treatment to every screen of the flow, or drop it`);
+    }
+
+    const filled = info.filter((s) => s.primary);
+    const differs = (a, b) => Math.max(Math.abs(a.r - b.r), Math.abs(a.g - b.g), Math.abs(a.b - b.b)) > 0.08;
+    const odd = filled.find((s) => differs(s.primary.k, filled[0].primary.k));
+    if (filled.length >= 2 && odd) {
+      c.flowBreaks++;
+      add("RX-DS-02", "warn", odd.f, { name: odd.primary.label }, `the main button changes colour between screens (${filled.map((s) => `${s.f.name} "${short(s.primary.label.trim(), 24)}" ${hex(s.primary.k)}`).join("; ")}): one action colour for the main action on every screen`);
+    }
+
+    let tabs = [];
+    let haveBar = false;
+    for (const s of info) for (const { n, anc } of s.layers) if (n.type === "TEXT" && anc.some((a) => NAVBAR.test(a.name))) { haveBar = true; tabs.push(n.characters.trim().toLowerCase()); }
+    tabs = [...new Set(tabs.sort())];
+    const frames = info.map((s) => s.f.name.toLowerCase().replace(/^[\d\s._-]+/, ""));
+    if (haveBar) for (const s of info) for (const { n } of s.layers) {
+      if (n.type !== "TEXT") continue;
+      const m = BACK.exec(n.characters);
+      if (!m) continue;
+      const to = m[1].toLowerCase();
+      const known = (x) => !!x && (x.includes(to) || to.includes(x));
+      if (!tabs.some(known) && !frames.some(known)) {
+        c.flowBreaks++;
+        add("RX-CD-12", "warn", s.f, n, `"${short(n.characters.trim(), 40)}" leads to a place the flow does not have: the tab bar holds ${tabs.filter((x) => x).join(", ")}; name the tab or screen it opens`);
+      }
+    }
+
+    const pad = (h) => (h.length === 4 ? `0${h}` : h);
+    info.forEach((a, i) => {
+      for (const { n, anc } of a.layers) {
+        const name = n.type === "TEXT" ? n.characters.trim() : "";
+        if (n.type !== "TEXT" || [...name].length < 6 || !name.includes(" ") || !/^\p{Lu}/u.test(name) || new RegExp(TIME.source).test(name)) continue;
+        const card = [...anc].reverse().find((k) => k !== a.f && box(k).height <= a.fb.height * 0.4 && box(k).width >= a.fb.width * 0.6 && !FCHROME.test(k.name));
+        if (!card) continue;
+        const promised = findShown(card, (k) => k.type === "TEXT").flatMap((k) => [...k.characters.matchAll(TIME)].map((m) => m[1].replace(":", ".")));
+        if (!promised.length) continue;
+        info.forEach((b, j) => {
+          if (j === i) return;
+          if (!b.layers.some((e) => e.n.type === "TEXT" && e.n.characters.trim() === name)) return;
+          const raw = b.layers.filter((e) => e.n.type === "TEXT" && ONLY_TIME.test(e.n.characters) && !e.anc.some((x) => FCHROME.test(x.name))).map((e) => e.n.characters.trim().replace(":", "."));
+          const hours = raw.filter((h, k) => k === 0 || raw[k - 1] !== h).map(pad);
+          if (hours.length < 3) return;
+          for (const p of promised) if (!hours.includes(pad(p))) {
+            c.flowBreaks++;
+            add("RX-AS-03", "warn", a.f, card, `"${short(name, 30)}": ${a.f.name} promises ${pad(p)}, but ${b.f.name} offers ${hours.slice(0, 6).join(", ")}: sample data must agree across screens`);
+          }
+        });
+      }
+    });
+  }
+
   // Nothing on the page outside the screens but components and the frames or sections that hold them.
   for (const n of opened(page.children)) {
     if (screens.includes(n) || n.type === "COMPONENT" || n.type === "COMPONENT_SET" || hasComponents(n) || n.visible === false) continue;
@@ -278,7 +377,7 @@ export async function figmaAudit(figma, pageName) {
   } catch (err) { annotations.unreadable = 1; }
 
   const fails = findings.filter((f) => f.level === "fail").length;
-  const gate = `figma audit (${page.name}): screens ${c.screens} · images ${c.distinctImages} distinct, ${c.imageFills} fills, ${c.reusedImages} reused across screens · contrast fails ${c.contrastFails} (${c.contrastUnknown} over images, not measured) · text cut ${c.cutText}, clipped ${c.clippedText} · targets under 24 ${c.targetsUnder24}, under 44 ${c.targetsUnder44} · overlays with no lift ${c.flatOverlays} · busy buttons with idle label ${c.idleBusyButtons} · unstyled text ${c.unstyledText}, unbound fills ${c.unboundFills}, unbound spacing ${c.unboundSpacing} · built in auto layout ${c.layoutScreens}/${c.screens} screens, loose layers ${c.looseLayers}, layers outside the screens ${c.strayLayers}, effects without a style ${c.rawEffects} · empty bands ${c.emptyBands}, small uppercase labels ${c.capsLabels}, section cards ${c.cards}, text under 12 px ${c.smallText}/${c.texts}, uneven button rows ${c.unevenRows} · annotations ${Object.entries(annotations).map(([k, v]) => `${k} ${v}`).join(", ") || "none"} · ${fails} fail, ${findings.length - fails} warn`;
+  const gate = `figma audit (${page.name}): screens ${c.screens} · images ${c.distinctImages} distinct, ${c.imageFills} fills, ${c.reusedImages} reused across screens · contrast fails ${c.contrastFails} (${c.contrastUnknown} over images, not measured) · text cut ${c.cutText}, clipped ${c.clippedText} · targets under 24 ${c.targetsUnder24}, under 44 ${c.targetsUnder44} · overlays with no lift ${c.flatOverlays} · busy buttons with idle label ${c.idleBusyButtons} · unstyled text ${c.unstyledText}, unbound fills ${c.unboundFills}, unbound spacing ${c.unboundSpacing} · built in auto layout ${c.layoutScreens}/${c.screens} screens, loose layers ${c.looseLayers}, layers outside the screens ${c.strayLayers}, effects without a style ${c.rawEffects} · empty bands ${c.emptyBands}, small uppercase labels ${c.capsLabels}, section cards ${c.cards}, text under 12 px ${c.smallText}/${c.texts}, uneven button rows ${c.unevenRows} · breaks across screens ${c.flowBreaks} · annotations ${Object.entries(annotations).map(([k, v]) => `${k} ${v}`).join(", ") || "none"} · ${fails} fail, ${findings.length - fails} warn`;
   return { page: page.name, screens: screens.map((s) => s.name), counts: c, images: [...images.entries()].map(([h, s]) => ({ image: h.slice(0, 8), screens: [...s] })), annotations, findings: findings.slice(0, 80), more: Math.max(0, findings.length - 80), gate };
 }
 

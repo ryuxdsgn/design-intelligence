@@ -293,3 +293,32 @@ test("contrast: a ratio just under the need is never written as the need", async
   const r = await audit([screen("01", [text("Hint", "Pilih kursi", [16, 100, 200, 20], { fills: [{ type: "SOLID", color: { r: g, g, b: g } }] })])]);
   assert.match(r.findings[0].message, /" 4\.49:1, needs 4\.5:1$/);
 });
+
+test("across screens: a band on one screen, the main button in another colour, a tab that is not there, an hour the profile does not offer", async () => {
+  const green = { type: "SOLID", color: { r: 0.04, g: 0.29, b: 0.28 } };
+  const rust = { type: "SOLID", color: { r: 0.73, g: 0.32, b: 0.17 } };
+  const cta = (label, fill, y = 760) => node("FRAME", "Button", [16, y, 358, 52], { fills: [fill] }, [text("Label", label, [140, y + 16, 120, 20], { fills: [white] })]);
+  const tabbar = node("FRAME", "Tab bar", [0, 780, 390, 64], { fills: [white] }, [text("Tab", "Cari", [40, 800, 40, 16]), text("Tab", "Akun", [300, 800, 40, 16])]);
+  const card = node("FRAME", "Card", [16, 120, 358, 120], { fills: [white] }, [text("Name", "Ftr. Rina Kusuma", [32, 136, 200, 20]), text("When", "Bisa datang besok, 09.00", [32, 166, 200, 20])]);
+  const slot = (h, x, y) => node("FRAME", "Slot", [x, y, 100, 44], { fills: [white] }, [text("Time", h, [x + 30, y + 12, 40, 20])]);
+  const list = screen("01-cari", [card, tabbar]);
+  const profile = screen("02-profil", [text("Name", "Ftr. Rina Kusuma", [16, 80, 300, 28]), slot("08.00", 16, 300), slot("09.30", 140, 300), slot("11.00", 264, 300), cta("Pesan kunjungan", green, 700)]);
+  const done = screen("03-terkonfirmasi", [node("FRAME", "Hero", [0, 0, 390, 260], { fills: [green] }), cta("Kembali ke beranda", rust, 700)]);
+  const r = await audit([list, profile, done]);
+  const flow = r.findings.filter((f) => ["RX-DS-02", "RX-CD-12", "RX-AS-03"].includes(f.rule)).map((f) => `${f.rule} ${f.frame}: ${f.message}`);
+  assert.deepEqual(flow, [
+    'RX-DS-02 03-terkonfirmasi: only "03-terkonfirmasi" opens with a full-width #0a4a47 band ("Hero"); the other 2 screens start on the page colour: carry the treatment to every screen of the flow, or drop it',
+    'RX-DS-02 03-terkonfirmasi: the main button changes colour between screens (02-profil "Pesan kunjungan" #0a4a47; 03-terkonfirmasi "Kembali ke beranda" #ba522b): one action colour for the main action on every screen',
+    'RX-CD-12 03-terkonfirmasi: "Kembali ke beranda" leads to a place the flow does not have: the tab bar holds akun, cari; name the tab or screen it opens',
+    'RX-AS-03 01-cari: "Ftr. Rina Kusuma": 01-cari promises 09.00, but 02-profil offers 08.00, 09.30, 11.00: sample data must agree across screens',
+  ]);
+  assert.equal(r.counts.flowBreaks, 4);
+  assert.match(r.gate, /breaks across screens 4/);
+  // the same flow made consistent: no finding
+  const ok = await audit([
+    screen("01-cari", [node("FRAME", "Card", [16, 120, 358, 120], { fills: [white] }, [text("Name", "Ftr. Rina Kusuma", [32, 136, 200, 20]), text("When", "Bisa datang besok, 09.30", [32, 166, 200, 20])]), tabbar]),
+    profile,
+    screen("03-terkonfirmasi", [cta("Kembali ke pencarian", green, 700)]),
+  ]);
+  assert.equal(ok.counts.flowBreaks, 0);
+});
