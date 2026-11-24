@@ -90,7 +90,14 @@ The six stages of the core workflow (SKILL.md), as Design runs them.
    \`--recommend\`), and its visual change stays inside the brand (RX-UX-20).
    **Direction is the user's call** (RX-UI-26): when neither the prompt, DESIGN.md, nor a product that
    exists sets the UI direction, the next message offers three directions as style tiles and waits; the motion direction
-   rides with it. Show the tiles as one static HTML page (\`directions.html\` in the project folder; no server,
+   rides with it. **Draw them first, in one call:** \`node <this skill's folder>/bin/dist/cli/index.js directions --project <name> --tags <product>,<audience>,<glance|session>\`
+   (nothing downloaded; it lists the tags it knows) gives each direction a surface, an accent hue range, a type category with fonts,
+   a layout, a weight carrier, a material, and an idea source, drawn for this project and apart from the category's and RYUX's own
+   defaults. Build each tile on its draw with an idea of your own; replace one draw only with a reason from this product, said in
+   the tile; "None of these" draws again with \`--redraw 1\`. **A named reference** ("a web like X", "an app like Y") locks what it
+   fixes, \`--lock layout=…,type=…,surface=…\` from how X works, and the rest is drawn: take its structure, density, and
+   interaction, never its logo, name, exact colours, illustrations, or copy, and say where you know X from (the user's screenshot,
+   ryux MCP screens, or memory, marked unverified). Without the command, follow RX-UI-26 by hand. Show the tiles as one static HTML page (\`directions.html\` in the project folder; no server,
    and no scripts of its own, Google Fonts allowed): per direction its palette swatches, type pairing, one card, one primary
    button, and its signature, numbered as in the message. Give each direction's choice control a \`data-ryux-pick="<n>"\` attribute (its
    number; the page shows its heading as the name, or \`data-ryux-pick-name\`), and add a regenerate control \`data-ryux-pick="regenerate"\` labelled "None of these — make three new". Render it once to check it.

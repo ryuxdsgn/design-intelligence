@@ -1,0 +1,636 @@
+{
+ "version": 1,
+ "tags": {
+  "product": [
+   "finance",
+   "health",
+   "commerce",
+   "booking",
+   "creative-tool",
+   "productivity",
+   "education",
+   "food",
+   "social",
+   "travel",
+   "public",
+   "ai"
+  ],
+  "audience": [
+   "umkm",
+   "pro",
+   "consumer",
+   "youth",
+   "senior",
+   "family"
+  ],
+  "use": [
+   "glance",
+   "session"
+  ]
+ },
+ "dimensions": {
+  "surface": [
+   {
+    "id": "light-cool",
+    "name": "Terang dingin",
+    "note": "putih kebiruan atau abu dingin; tenang, teknis",
+    "fit": [],
+    "avoid": []
+   },
+   {
+    "id": "light-neutral",
+    "name": "Terang netral",
+    "note": "putih atau abu tanpa suhu; isi yang bicara",
+    "fit": [],
+    "avoid": []
+   },
+   {
+    "id": "warm-paper",
+    "name": "Hangat atau kertas",
+    "note": "krem, gading, kertas; paling sering jadi default, maksimal satu arah",
+    "fit": [],
+    "avoid": [
+     "creative-tool",
+     "ai"
+    ]
+   },
+   {
+    "id": "dark-neutral",
+    "name": "Gelap netral",
+    "note": "arang atau abu gelap; kerja lama, media di tengah",
+    "fit": [
+     "creative-tool",
+     "productivity",
+     "pro",
+     "session"
+    ],
+    "avoid": [
+     "senior",
+     "glance"
+    ]
+   },
+   {
+    "id": "dark-tinted",
+    "name": "Gelap berwarna",
+    "note": "biru malam, hijau hutan, merah anggur; suasana kuat",
+    "fit": [],
+    "avoid": [
+     "senior"
+    ]
+   },
+   {
+    "id": "colour-field",
+    "name": "Bidang warna jenuh",
+    "note": "satu warna kuat sebagai latar bagian utama; identitas lewat warna",
+    "fit": [],
+    "avoid": [
+     "session",
+     "pro"
+    ]
+   }
+  ],
+  "accent": [
+   {
+    "id": "red",
+    "name": "Merah",
+    "note": "~0°; mendesak, berani; bersaing dengan warna error",
+    "fit": [],
+    "avoid": [
+     "health",
+     "finance",
+     "booking"
+    ],
+    "hue": 0
+   },
+   {
+    "id": "vermilion",
+    "name": "Jingga",
+    "note": "~30°; hangat, ramah, makanan dan pasar",
+    "fit": [],
+    "avoid": [],
+    "hue": 30
+   },
+   {
+    "id": "yellow",
+    "name": "Kuning",
+    "note": "~50°; ceria, perhatian; teks di atasnya gelap",
+    "fit": [],
+    "avoid": [
+     "senior"
+    ],
+    "hue": 50
+   },
+   {
+    "id": "lime",
+    "name": "Limau",
+    "note": "~80°; segar, muda, energik",
+    "fit": [],
+    "avoid": [
+     "finance",
+     "senior"
+    ],
+    "hue": 80
+   },
+   {
+    "id": "green",
+    "name": "Hijau",
+    "note": "~130°; tumbuh, aman, uang masuk",
+    "fit": [],
+    "avoid": [],
+    "hue": 130
+   },
+   {
+    "id": "sea",
+    "name": "Hijau laut",
+    "note": "~160°; tenang, kesehatan, alam",
+    "fit": [],
+    "avoid": [],
+    "hue": 160
+   },
+   {
+    "id": "cyan",
+    "name": "Sian",
+    "note": "~185°; bersih, teknis, air",
+    "fit": [],
+    "avoid": [],
+    "hue": 185
+   },
+   {
+    "id": "sky",
+    "name": "Biru langit",
+    "note": "~205°; ringan, terbuka, perjalanan",
+    "fit": [],
+    "avoid": [],
+    "hue": 205
+   },
+   {
+    "id": "blue",
+    "name": "Biru",
+    "note": "~225°; dipercaya, institusi; sangat umum di keuangan",
+    "fit": [],
+    "avoid": [],
+    "hue": 225
+   },
+   {
+    "id": "indigo",
+    "name": "Nila",
+    "note": "~245°; dalam, fokus, alat kerja",
+    "fit": [],
+    "avoid": [],
+    "hue": 245
+   },
+   {
+    "id": "violet",
+    "name": "Ungu",
+    "note": "~270°; default AI; hanya dengan alasan dari brief",
+    "fit": [],
+    "avoid": [
+     "ai"
+    ],
+    "hue": 270
+   },
+   {
+    "id": "magenta",
+    "name": "Magenta",
+    "note": "~320°; ekspresif, kreatif, hiburan",
+    "fit": [],
+    "avoid": [
+     "public",
+     "senior"
+    ],
+    "hue": 320
+   }
+  ],
+  "type": [
+   {
+    "id": "grotesk",
+    "name": "Grotesk netral",
+    "note": "tegas, informasi padat",
+    "fit": [],
+    "avoid": [],
+    "fonts": [
+     "Schibsted Grotesk",
+     "Hanken Grotesk",
+     "Archivo",
+     "Public Sans"
+    ]
+   },
+   {
+    "id": "humanist",
+    "name": "Humanis",
+    "note": "ramah dan mudah dibaca lama",
+    "fit": [],
+    "avoid": [],
+    "fonts": [
+     "Source Sans 3",
+     "Fira Sans",
+     "Noto Sans",
+     "Lato"
+    ]
+   },
+   {
+    "id": "geometric",
+    "name": "Geometris",
+    "note": "modern, rapi; Plus Jakarta Sans dibuat di Indonesia",
+    "fit": [],
+    "avoid": [],
+    "fonts": [
+     "Plus Jakarta Sans",
+     "Outfit",
+     "Urbanist",
+     "Manrope"
+    ]
+   },
+   {
+    "id": "rounded",
+    "name": "Rounded",
+    "note": "lembut, keluarga, anak",
+    "fit": [
+     "family",
+     "consumer",
+     "education",
+     "food"
+    ],
+    "avoid": [
+     "pro",
+     "finance",
+     "creative-tool",
+     "public"
+    ],
+    "fonts": [
+     "Nunito",
+     "Quicksand",
+     "M PLUS Rounded 1c",
+     "Varela Round"
+    ]
+   },
+   {
+    "id": "serif-display",
+    "name": "Serif display dengan badan sans",
+    "note": "editorial, premium, cerita",
+    "fit": [],
+    "avoid": [
+     "glance"
+    ],
+    "fonts": [
+     "Fraunces",
+     "Young Serif",
+     "DM Serif Display",
+     "Playfair Display"
+    ]
+   },
+   {
+    "id": "serif-text",
+    "name": "Serif teks",
+    "note": "bacaan panjang, kepercayaan, arsip",
+    "fit": [
+     "education",
+     "public",
+     "session"
+    ],
+    "avoid": [
+     "glance",
+     "creative-tool"
+    ],
+    "fonts": [
+     "Source Serif 4",
+     "Literata",
+     "Newsreader"
+    ]
+   },
+   {
+    "id": "slab",
+    "name": "Slab",
+    "note": "kokoh, papan nama, pasar",
+    "fit": [],
+    "avoid": [],
+    "fonts": [
+     "Zilla Slab",
+     "Roboto Slab",
+     "Arvo"
+    ]
+   },
+   {
+    "id": "condensed",
+    "name": "Condensed",
+    "note": "angka besar, papan skor, tiket",
+    "fit": [
+     "finance",
+     "travel",
+     "booking",
+     "productivity"
+    ],
+    "avoid": [
+     "health",
+     "senior",
+     "family"
+    ],
+    "fonts": [
+     "Barlow Condensed",
+     "Archivo Narrow",
+     "Oswald",
+     "Big Shoulders Display"
+    ]
+   },
+   {
+    "id": "mono-accent",
+    "name": "Aksen mono",
+    "note": "angka, kode, waktu; hanya untuk aksen",
+    "fit": [
+     "creative-tool",
+     "productivity",
+     "pro",
+     "ai"
+    ],
+    "avoid": [
+     "senior",
+     "umkm"
+    ],
+    "fonts": [
+     "JetBrains Mono",
+     "IBM Plex Mono",
+     "Space Mono"
+    ]
+   }
+  ],
+  "layout": [
+   {
+    "id": "list-first",
+    "name": "Daftar dulu",
+    "note": "baris yang bisa dipindai, aksi di baris",
+    "fit": [
+     "glance"
+    ],
+    "avoid": []
+   },
+   {
+    "id": "card-grid",
+    "name": "Grid kartu",
+    "note": "pilihan visual berdampingan",
+    "fit": [
+     "commerce",
+     "food",
+     "creative-tool",
+     "travel"
+    ],
+    "avoid": []
+   },
+   {
+    "id": "split-pane",
+    "name": "Split pane",
+    "note": "daftar dan detail berdampingan; layar lebar",
+    "fit": [
+     "session",
+     "pro",
+     "productivity",
+     "creative-tool"
+    ],
+    "avoid": [
+     "glance"
+    ]
+   },
+   {
+    "id": "timeline",
+    "name": "Timeline atau feed",
+    "note": "urutan waktu, riwayat, kabar",
+    "fit": [
+     "social",
+     "finance",
+     "health"
+    ],
+    "avoid": []
+   },
+   {
+    "id": "canvas",
+    "name": "Kanvas atau papan",
+    "note": "ruang kerja bebas, objek dipindah",
+    "fit": [
+     "creative-tool",
+     "productivity"
+    ],
+    "avoid": [
+     "senior",
+     "glance"
+    ]
+   },
+   {
+    "id": "tiles",
+    "name": "Dasbor ubin",
+    "note": "angka dan status sekilas",
+    "fit": [
+     "finance",
+     "productivity",
+     "umkm"
+    ],
+    "avoid": []
+   },
+   {
+    "id": "steps",
+    "name": "Alur langkah",
+    "note": "satu keputusan per layar",
+    "fit": [
+     "booking",
+     "finance",
+     "public",
+     "senior"
+    ],
+    "avoid": []
+   },
+   {
+    "id": "map-first",
+    "name": "Peta dulu",
+    "note": "tempat sebagai pintu masuk",
+    "fit": [
+     "travel",
+     "booking",
+     "food"
+    ],
+    "avoid": []
+   },
+   {
+    "id": "conversation",
+    "name": "Percakapan",
+    "note": "tanya jawab sebagai antarmuka",
+    "fit": [
+     "ai",
+     "social",
+     "health"
+    ],
+    "avoid": []
+   }
+  ],
+  "carrier": [
+   {
+    "id": "type",
+    "name": "Huruf",
+    "note": "ukuran dan bobot membawa hierarki",
+    "fit": [],
+    "avoid": []
+   },
+   {
+    "id": "colour",
+    "name": "Warna",
+    "note": "bidang warna membawa hierarki",
+    "fit": [],
+    "avoid": []
+   },
+   {
+    "id": "image",
+    "name": "Gambar",
+    "note": "foto atau ilustrasi membawa suasana",
+    "fit": [],
+    "avoid": [
+     "session"
+    ]
+   },
+   {
+    "id": "shape",
+    "name": "Bentuk",
+    "note": "bentuk khas (sudut, potongan, kontainer) jadi tanda",
+    "fit": [],
+    "avoid": []
+   },
+   {
+    "id": "space",
+    "name": "Ruang",
+    "note": "ruang kosong dan ritme membawa fokus",
+    "fit": [],
+    "avoid": []
+   }
+  ],
+  "material": [
+   {
+    "id": "flat-vector",
+    "name": "Vektor datar",
+    "note": "ilustrasi datar; maksimal satu arah",
+    "fit": [],
+    "avoid": []
+   },
+   {
+    "id": "photo",
+    "name": "Foto",
+    "note": "foto dengan perlakuan warna sendiri",
+    "fit": [
+     "food",
+     "travel",
+     "commerce",
+     "health"
+    ],
+    "avoid": []
+   },
+   {
+    "id": "render",
+    "name": "Render 3D",
+    "note": "objek produk atau benda sehari-hari dirender",
+    "fit": [],
+    "avoid": []
+   },
+   {
+    "id": "ui-composite",
+    "name": "Komposit UI",
+    "note": "potongan UI produk sendiri sebagai citra",
+    "fit": [
+     "productivity",
+     "creative-tool",
+     "finance",
+     "ai"
+    ],
+    "avoid": []
+   },
+   {
+    "id": "motif",
+    "name": "Motif atau tekstil",
+    "note": "pola dari budaya atau tempat; sebut maknanya",
+    "fit": [],
+    "avoid": []
+   },
+   {
+    "id": "none",
+    "name": "Tanpa citra",
+    "note": "huruf dan warna saja",
+    "fit": [
+     "pro",
+     "session"
+    ],
+    "avoid": []
+   }
+  ],
+  "idea": [
+   {
+    "id": "mechanic",
+    "name": "Mekanik produk",
+    "note": "apa yang diukur, dipindah, atau dicatat produk",
+    "fit": [],
+    "avoid": []
+   },
+   {
+    "id": "ritual",
+    "name": "Benda dan ritual",
+    "note": "benda dan kebiasaan sehari-hari pengguna",
+    "fit": [],
+    "avoid": []
+   },
+   {
+    "id": "place",
+    "name": "Budaya dan tempat",
+    "note": "kerajinan, arsitektur, bahasa jalanan; sebut motif dan maknanya",
+    "fit": [],
+    "avoid": []
+   }
+  ]
+ },
+ "defaults": [
+  {
+   "id": "inter-violet-teal",
+   "note": "default tanpa skill: Inter dengan aksen ungu atau teal",
+   "type_fonts": [
+    "Inter"
+   ],
+   "hues": [
+    [
+     160,
+     185
+    ],
+    [
+     255,
+     285
+    ]
+   ]
+  },
+  {
+   "id": "opensauce-rust",
+   "note": "default RYUX sendiri: Open Sauce Sans dengan aksen oranye karat 10–20°",
+   "type_fonts": [
+    "Open Sauce Sans"
+   ],
+   "hues": [
+    [
+     10,
+     20
+    ]
+   ]
+  },
+  {
+   "id": "dark-neon",
+   "note": "default produk AI: permukaan gelap dengan satu aksen neon menyala",
+   "surface": "dark-neutral",
+   "hues": [
+    [
+     270,
+     320
+    ]
+   ]
+  },
+  {
+   "id": "white-saas-phone",
+   "note": "default landing: putih dengan mockup ponsel di kanan",
+   "surface": "light-neutral",
+   "layout": "card-grid"
+  },
+  {
+   "id": "origin-route",
+   "note": "cerita rute asal-usul (5 dari 5 run bench diversity)",
+   "idea": "place"
+  }
+ ]
+}
