@@ -20807,7 +20807,7 @@
     }
    ],
    "more": 0,
-   "gate": "figma audit (Flow): screens 2 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 5, unbound spacing 0 · built in auto layout 2/2 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 1, small uppercase labels 0, section cards 0, text under 12 px 0/3, screens with text sizes 1 px apart 0, uneven button rows 0, list counts that disagree 0 · breaks across screens 0 · annotations none · 0 fail, 2 warn"
+   "gate": "figma audit (Flow): screens 2 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 5, unbound spacing 0 · built in auto layout 2/2 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 1, small uppercase labels 0, section cards 0, text under 12 px 0/3, screens with text sizes off a scale 0, uneven button rows 0, list counts that disagree 0 · breaks across screens 0 · annotations none · 0 fail, 2 warn"
   }
  },
  {
@@ -21098,7 +21098,7 @@
     }
    ],
    "more": 0,
-   "gate": "figma audit (Flow): screens 2 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 5, unbound spacing 0 · built in auto layout 2/2 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 1, small uppercase labels 0, section cards 0, text under 12 px 0/3, screens with text sizes 1 px apart 0, uneven button rows 0, list counts that disagree 0 · breaks across screens 0 · annotations none · 0 fail, 1 warn"
+   "gate": "figma audit (Flow): screens 2 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 5, unbound spacing 0 · built in auto layout 2/2 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 1, small uppercase labels 0, section cards 0, text under 12 px 0/3, screens with text sizes off a scale 0, uneven button rows 0, list counts that disagree 0 · breaks across screens 0 · annotations none · 0 fail, 1 warn"
   }
  },
  {
@@ -21389,7 +21389,7 @@
     }
    ],
    "more": 0,
-   "gate": "figma audit (Flow): screens 2 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 5, unbound spacing 0 · built in auto layout 2/2 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 1, small uppercase labels 0, section cards 0, text under 12 px 0/3, screens with text sizes 1 px apart 0, uneven button rows 0, list counts that disagree 0 · breaks across screens 0 · annotations none · 0 fail, 1 warn"
+   "gate": "figma audit (Flow): screens 2 · images 0 distinct, 0 fills, 0 reused across screens · contrast fails 0 (0 over images, not measured) · text cut 0, clipped 0 · targets under 24 0, under 44 0 · overlays with no lift 0 · busy buttons with idle label 0 · unstyled text 0, unbound fills 5, unbound spacing 0 · built in auto layout 2/2 screens, loose layers 0, layers outside the screens 0, effects without a style 0 · empty bands 1, small uppercase labels 0, section cards 0, text under 12 px 0/3, screens with text sizes off a scale 0, uneven button rows 0, list counts that disagree 0 · breaks across screens 0 · annotations none · 0 fail, 1 warn"
   }
  }
 ]
