@@ -139,8 +139,13 @@ impl<'a> Tree<'a> {
         }
         out
     }
+    /// A component sheet: more than half of its direct children are components. A screen that holds one main component
+    /// (the title bar it was drawn first in) is still a screen: in a FigCraft run (Klipin, 2026-11-24) the agent built its
+    /// title bar and card components inside screens 01, 04, and 06, and the audit skipped those three screens.
     fn has_components(&self, i: usize) -> bool {
-        self.kids[i].is_some() && !self.find_all(i, &mut |n| matches!(self.ty(n), "COMPONENT" | "COMPONENT_SET")).is_empty()
+        let Some(kids) = &self.kids[i] else { return false };
+        let comps = kids.iter().filter(|&&n| matches!(self.ty(n), "COMPONENT" | "COMPONENT_SET")).count();
+        comps > 0 && comps * 2 > kids.len()
     }
 }
 

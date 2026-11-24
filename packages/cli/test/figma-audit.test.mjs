@@ -61,6 +61,9 @@ test("a component sheet is not a screen", async () => {
   const sheet = node("FRAME", "Components", [0, 1000, 800, 400], {}, [node("COMPONENT", "Button", [0, 1000, 100, 44])]);
   const r = await audit([screen("01", []), sheet]);
   assert.equal(r.counts.screens, 1);
+  // a screen that holds the one main component it was drawn first in stays a screen
+  const titled = screen("02", [node("COMPONENT", "Titlebar", [0, 0, 390, 40]), node("FRAME", "Isi jendela", [0, 40, 390, 804])]);
+  assert.equal((await audit([screen("01", []), titled, sheet])).counts.screens, 2);
 });
 
 test("text cut by a bar fails; text fully under it (scroll content) and text above it pass", async () => {
