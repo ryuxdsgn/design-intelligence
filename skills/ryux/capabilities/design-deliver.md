@@ -219,7 +219,12 @@ return { iconStrokes: strokes, iconColours: colours, unbound: [...unbound], mixe
      small uppercase labels, section cards, text under 12 px, text sizes 1 px apart, uneven buttons in a row, and annotations. Fix each fail, fix
      each warn or give the reason it stays, run it once more, and copy its last gate line into VISUAL QA; the gate's numbers
      come from it, not from memory. In FigCraft, save the file and run `npx --no-install @ryuxdsgn/design-intelligence audit <file>
-     --page <page>` instead: the same checks on the saved .figcraft (it needs figcraft-cli).
+     --page <page>` instead: the same checks on the saved .figcraft (it needs figcraft-cli). When the project has no
+     copy of RYUX or the command is not permitted, do not run it another way; check by hand with inspect_document before
+     the gate instead: each text whose absoluteBounds reach past a clipping frame above it or past its screen, each text
+     under 12 px, and each text colour against the fill behind it (4.5:1, or 3:1 from 24 px or 18.66 px bold); fix what
+     fails. VISUAL QA then says it was checked by hand, that the other audit checks did not run and why, and names
+     `ryux install --save-dev` so the user can add the audit.
    - Close with the Delivery Gate, saying what was not designed, such as other widths or states. If
      you wrote DESIGN.md, say so in the final message: which file, and each change as old → new ("(none) → …" for
      an added line).

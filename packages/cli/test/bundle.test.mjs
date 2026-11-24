@@ -154,6 +154,8 @@ test("the skill runs the RYUX CLI from the project, not as a download, and never
   assert.doesNotMatch(flat, /run it in their terminal|permission check/);
   assert.match(flat, /When there is no copy, or the command is not permitted, do not run it another way: say in the gate that it did not run and why/);
   assert.match(flat, /it is not run another way: say why, and VISUAL QA is NOT VERIFIED/);
+  // FigCraft with no copy: clipped text, small text, and contrast checked by hand (clipper R1 shipped both unseen, 2026-11-24)
+  assert.match(flat, /check by hand with inspect_document before the gate instead/);
 });
 
 test("Design can write or update a full DESIGN.md that answers five questions", () => {
