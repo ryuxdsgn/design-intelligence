@@ -530,6 +530,58 @@ export async function figmaAudit(figma, pageName) {
     }
   }
 
+  // The error colour on the action accent's hue (RX-UI-04): main buttons share one chromatic fill, and a layer named or
+  // labelled as an error, a failure, or a destructive action is drawn in another colour of nearly the same hue
+  // (owner blind ratings 2026-11-24 and 2026-11-25, Klipin R3 and R5).
+  {
+    const op = (x) => (typeof x === "number" ? x : 1);
+    const fillOf = (n) => {
+      const ps = visiblePaints(n.fills);
+      const p = ps.find((q) => q.type === "SOLID");
+      if (!p || op(p.opacity) * op(n.opacity) < 0.9 || ps.some((q) => q.type !== "SOLID")) return null;
+      return { r: p.color.r, g: p.color.g, b: p.color.b };
+    };
+    const strokeOf = (n) => {
+      const p = visiblePaints(n.strokes).find((q) => q.type === "SOLID");
+      return p && op(p.opacity) >= 0.9 ? { r: p.color.r, g: p.color.g, b: p.color.b } : null;
+    };
+    const chroma = (k) => Math.max(k.r, k.g, k.b) - Math.min(k.r, k.g, k.b);
+    const hue = (k) => {
+      const mx = Math.max(k.r, k.g, k.b), mn = Math.min(k.r, k.g, k.b), d = mx - mn;
+      if (d === 0) return 0;
+      const h = mx === k.r ? (((k.g - k.b) / d) % 6 + 6) % 6 : mx === k.g ? (k.b - k.r) / d + 2 : (k.r - k.g) / d + 4;
+      return h * 60;
+    };
+    const hx = (k) => "#" + [k.r, k.g, k.b].map((v) => Math.round(Math.min(1, Math.max(0, v)) * 255).toString(16).padStart(2, "0")).join("");
+    const ERR = /\b(error|gagal|galat|danger|destructive|hapus|batal|buang|cancel|delete|kesalahan|tidak berhasil|ditolak)\b/i;
+    const accents = [], errors = [];
+    for (const f of screens) {
+      const layers = [];
+      const go = (n) => { if (n.visible === false) return; layers.push(n); if ("children" in n) for (const k of n.children) go(k); };
+      for (const k of f.children || []) go(k);
+      for (const n of layers) {
+        const b = box(n);
+        if ((n.type === "FRAME" || n.type === "INSTANCE" || n.type === "COMPONENT") && b.height >= 28 && b.height <= 60 && b.width >= 72) {
+          const k = fillOf(n);
+          if (k && chroma(k) >= 0.25) {
+            const l = findShown(n, (x) => x.type === "TEXT").length;
+            if (l >= 1 && l <= 2) { const h = hx(k); const a = accents.find((x) => x.h === h); if (a) a.c++; else accents.push({ h, k, c: 1 }); }
+          }
+        }
+        if (ERR.test(n.name) || (n.type === "TEXT" && ERR.test(n.characters))) {
+          const own = [n, ...("children" in n ? findShown(n, (x) => x.type === "TEXT").slice(0, 3) : [])];
+          for (const k of own) for (const col of [fillOf(k), strokeOf(k)]) if (col && chroma(col) >= 0.25) errors.push({ h: hx(col), k: col, n, f });
+        }
+      }
+    }
+    const top = accents.reduce((m, a) => (!m || a.c > m.c ? a : m), null);
+    if (top) {
+      const d = (x, y) => { const z = (((x - y) % 360) + 360) % 360; return Math.min(z, 360 - z); };
+      const e = errors.find((x) => x.h !== top.h && d(hue(x.k), hue(top.k)) <= 15);
+      if (e) add("RX-UI-04", "warn", e.f, e.n, `the error colour ${e.h} is the hue of the action accent ${top.h}: give errors and destructive actions their own colour role, apart from the primary action`);
+    }
+  }
+
   // Nothing on the page outside the screens but components and the frames or sections that hold them.
   for (const n of opened(page.children)) {
     if (screens.includes(n) || n.type === "COMPONENT" || n.type === "COMPONENT_SET" || hasComponents(n) || n.visible === false) continue;
