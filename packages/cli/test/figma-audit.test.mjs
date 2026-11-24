@@ -465,3 +465,18 @@ test("text behind a modal's scrim is covered on purpose, not cut; text in the di
   assert.match(JSON.stringify(modal.findings), /Teks di dialog/);
   assert.doesNotMatch(JSON.stringify(modal.findings), /Kartu di belakang/);
 });
+
+test("an error colour on the action accent's hue is a warn; its own hue, or the accent itself, is not (RX-UI-04)", async () => {
+  const fill = (hex) => ({ type: "SOLID", color: { r: parseInt(hex.slice(1, 3), 16) / 255, g: parseInt(hex.slice(3, 5), 16) / 255, b: parseInt(hex.slice(5, 7), 16) / 255 } });
+  const button = (y, hex) => node("FRAME", "Tombol utama", [16, y, 200, 44], { fills: [fill(hex)] }, [text("Label", "Lanjut", [32, y + 12, 100, 20], { fills: [white] })]);
+  const flow = (accent, error) => [
+    screen("01", [button(700, accent)]),
+    screen("02", [button(700, accent), text("Status", "Gagal diunggah", [16, 100, 200, 20], { fills: [fill(error)] })]),
+  ];
+  const hits = async (accent, error) => (await audit(flow(accent, error))).findings.filter((f) => f.rule === "RX-UI-04");
+  const same = await hits("#c2410c", "#b42318");
+  assert.equal(same.length, 1);
+  assert.match(same[0].message, /the error colour #b42318 is the hue of the action accent #c2410c/);
+  assert.equal((await hits("#1d4ed8", "#b42318")).length, 0, "a blue accent beside a red error");
+  assert.equal((await hits("#c2410c", "#c2410c")).length, 0, "the accent itself on a failure is not two colours");
+});

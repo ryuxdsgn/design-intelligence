@@ -608,6 +608,59 @@ fn flow_checks(t: &Tree, screens: &[usize], r: &Res, o: &mut Out) {
 
 }
 
+/// The error colour on the action accent's hue (RX-UI-04): the main buttons share one chromatic fill, and a layer named or
+/// labelled as an error, a failure, or a destructive action is drawn in another colour of nearly the same hue, so the
+/// colour that says "go" also says "failed". Owner blind ratings 2026-11-24 and 2026-11-25 (Klipin R3 and R5): a
+/// red-orange accent on the CTA, the selected state, and the active step, beside a red for errors and cancel.
+fn accent_error_check(t: &Tree, screens: &[usize], o: &mut Out) {
+    let chroma = |c: Rgb| c.r.max(c.g).max(c.b) - c.r.min(c.g).min(c.b);
+    let hue = |c: Rgb| {
+        let (mx, mn) = (c.r.max(c.g).max(c.b), c.r.min(c.g).min(c.b));
+        let d = mx - mn;
+        if d == 0.0 { return 0.0; }
+        let h = if mx == c.r { ((c.g - c.b) / d).rem_euclid(6.0) } else if mx == c.g { (c.b - c.r) / d + 2.0 } else { (c.r - c.g) / d + 4.0 };
+        h * 60.0
+    };
+    let stroke = |n: usize| -> Option<Rgb> {
+        let ps = visible_paints(t.get(n, "strokes"));
+        let p = ps.iter().find(|p| p.get("type").and_then(Value::as_str) == Some("SOLID"))?;
+        if num_or(p.get("opacity"), 1.0) < 0.9 { return None; }
+        Some(rgb(p.get("color")))
+    };
+    let err = re(r"\b(error|gagal|galat|danger|destructive|hapus|batal|buang|cancel|delete|kesalahan|tidak berhasil|ditolak)\b");
+    // the accent: the most common chromatic fill on button-shaped layers (28 to 60 tall, 72 wide or more, one or two labels)
+    let mut accents: Vec<(String, Rgb, usize)> = Vec::new();
+    let mut errors: Vec<(String, Rgb, usize, usize)> = Vec::new();
+    for &f in screens {
+        for (n, _) in shown_with_ancestors(t, f) {
+            let b = t.bx(n);
+            if matches!(t.ty(n), "FRAME" | "INSTANCE" | "COMPONENT") && (28.0..=60.0).contains(&b.h) && b.w >= 72.0 {
+                if let Some(c) = solid(t, n).filter(|&c| chroma(c) >= 0.25) {
+                    let labels = t.find_shown(n, &mut |k| t.ty(k) == "TEXT").len();
+                    if (1..=2).contains(&labels) {
+                        let h = hex(c);
+                        match accents.iter_mut().find(|a| a.0 == h) { Some(a) => a.2 += 1, None => accents.push((h, c, 1)) }
+                    }
+                }
+            }
+            if err.is_match(&t.name(n)) || (t.ty(n) == "TEXT" && err.is_match(&t.chars(n))) {
+                let mut own = vec![n];
+                own.extend(t.find_shown(n, &mut |k| t.ty(k) == "TEXT").into_iter().take(3));
+                for k in own {
+                    for c in [solid(t, k), stroke(k)].into_iter().flatten() {
+                        if chroma(c) >= 0.25 { errors.push((hex(c), c, n, f)); }
+                    }
+                }
+            }
+        }
+    }
+    let Some((ah, ac, _)) = accents.iter().fold(None::<&(String, Rgb, usize)>, |m, a| if m.is_none_or(|m| a.2 > m.2) { Some(a) } else { m }).cloned() else { return };
+    let d = |x: f64, y: f64| { let z = (x - y).rem_euclid(360.0); z.min(360.0 - z) };
+    if let Some((eh, _, n, f)) = errors.iter().find(|(eh, ec, _, _)| *eh != ah && d(hue(*ec), hue(ac)) <= 15.0) {
+        o.add("RX-UI-04", "warn", &t.name(*f), &t.name(*n), format!("the error colour {} is the hue of the action accent {}: give errors and destructive actions their own colour role, apart from the primary action", eh, ah));
+    }
+}
+
 /// Audit one page of a recorded canvas: `{ pages: [{ name, children }], current, page, annotationCategories }`.
 pub fn audit(input: &Value) -> Value {
     let mut t = Tree { v: Vec::new(), kids: Vec::new() };
@@ -1126,6 +1179,7 @@ pub fn audit(input: &Value) -> Value {
     }
 
     flow_checks(&t, &screens, r, &mut o);
+    accent_error_check(&t, &screens, &mut o);
 
     // Layers on the page outside the screens.
     for &n in &flat {
