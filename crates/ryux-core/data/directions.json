@@ -13,7 +13,12 @@
    "social",
    "travel",
    "public",
-   "ai"
+   "ai",
+   "home-service",
+   "logistics",
+   "media",
+   "beauty",
+   "property"
   ],
   "audience": [
    "umkm",
@@ -21,7 +26,8 @@
    "consumer",
    "youth",
    "senior",
-   "family"
+   "family",
+   "kids"
   ],
   "use": [
    "glance",
@@ -98,7 +104,8 @@
     "avoid": [
      "health",
      "finance",
-     "booking"
+     "booking",
+     "kids"
     ],
     "hue": 0
    },
@@ -106,7 +113,11 @@
     "id": "vermilion",
     "name": "Jingga",
     "note": "~30°; hangat, ramah, makanan dan pasar",
-    "fit": [],
+    "fit": [
+     "food",
+     "commerce",
+     "home-service"
+    ],
     "avoid": [],
     "hue": 30
    },
@@ -114,7 +125,11 @@
     "id": "yellow",
     "name": "Kuning",
     "note": "~50°; ceria, perhatian; teks di atasnya gelap",
-    "fit": [],
+    "fit": [
+     "food",
+     "logistics",
+     "kids"
+    ],
     "avoid": [
      "senior"
     ],
@@ -124,7 +139,10 @@
     "id": "lime",
     "name": "Limau",
     "note": "~80°; segar, muda, energik",
-    "fit": [],
+    "fit": [
+     "youth",
+     "social"
+    ],
     "avoid": [
      "finance",
      "senior"
@@ -135,7 +153,10 @@
     "id": "green",
     "name": "Hijau",
     "note": "~130°; tumbuh, aman, uang masuk",
-    "fit": [],
+    "fit": [
+     "finance",
+     "food"
+    ],
     "avoid": [],
     "hue": 130
    },
@@ -143,7 +164,10 @@
     "id": "sea",
     "name": "Hijau laut",
     "note": "~160°; tenang, kesehatan, alam",
-    "fit": [],
+    "fit": [
+     "health",
+     "beauty"
+    ],
     "avoid": [],
     "hue": 160
    },
@@ -151,7 +175,10 @@
     "id": "cyan",
     "name": "Sian",
     "note": "~185°; bersih, teknis, air",
-    "fit": [],
+    "fit": [
+     "home-service",
+     "logistics"
+    ],
     "avoid": [],
     "hue": 185
    },
@@ -159,7 +186,10 @@
     "id": "sky",
     "name": "Biru langit",
     "note": "~205°; ringan, terbuka, perjalanan",
-    "fit": [],
+    "fit": [
+     "travel",
+     "logistics"
+    ],
     "avoid": [],
     "hue": 205
    },
@@ -167,7 +197,11 @@
     "id": "blue",
     "name": "Biru",
     "note": "~225°; dipercaya, institusi; sangat umum di keuangan",
-    "fit": [],
+    "fit": [
+     "finance",
+     "public",
+     "property"
+    ],
     "avoid": [],
     "hue": 225
    },
@@ -175,7 +209,11 @@
     "id": "indigo",
     "name": "Nila",
     "note": "~245°; dalam, fokus, alat kerja",
-    "fit": [],
+    "fit": [
+     "productivity",
+     "creative-tool",
+     "pro"
+    ],
     "avoid": [],
     "hue": 245
    },
@@ -193,7 +231,11 @@
     "id": "magenta",
     "name": "Magenta",
     "note": "~320°; ekspresif, kreatif, hiburan",
-    "fit": [],
+    "fit": [
+     "media",
+     "beauty",
+     "social"
+    ],
     "avoid": [
      "public",
      "senior"
@@ -212,20 +254,26 @@
      "Schibsted Grotesk",
      "Hanken Grotesk",
      "Archivo",
-     "Public Sans"
+     "Public Sans",
+     "Instrument Sans"
     ]
    },
    {
     "id": "humanist",
     "name": "Humanis",
     "note": "ramah dan mudah dibaca lama",
-    "fit": [],
+    "fit": [
+     "senior",
+     "public",
+     "health",
+     "education"
+    ],
     "avoid": [],
     "fonts": [
      "Source Sans 3",
      "Fira Sans",
      "Noto Sans",
-     "Lato"
+     "Atkinson Hyperlegible"
     ]
    },
    {
@@ -238,7 +286,7 @@
      "Plus Jakarta Sans",
      "Outfit",
      "Urbanist",
-     "Manrope"
+     "Lexend"
     ]
    },
    {
@@ -249,13 +297,15 @@
      "family",
      "consumer",
      "education",
-     "food"
+     "food",
+     "kids"
     ],
     "avoid": [
      "pro",
      "finance",
      "creative-tool",
-     "public"
+     "public",
+     "property"
     ],
     "fonts": [
      "Nunito",
@@ -276,7 +326,7 @@
      "Fraunces",
      "Young Serif",
      "DM Serif Display",
-     "Playfair Display"
+     "Gloock"
     ]
    },
    {
@@ -333,6 +383,26 @@
     ]
    },
    {
+    "id": "expressive-grotesk",
+    "name": "Grotesk ekspresif",
+    "note": "karakter kuat di judul, badan tetap tenang",
+    "fit": [
+     "media",
+     "youth",
+     "social",
+     "creative-tool"
+    ],
+    "avoid": [
+     "senior",
+     "public"
+    ],
+    "fonts": [
+     "Bricolage Grotesque",
+     "Familjen Grotesk",
+     "Darker Grotesque"
+    ]
+   },
+   {
     "id": "mono-accent",
     "name": "Aksen mono",
     "note": "angka, kode, waktu; hanya untuk aksen",
@@ -359,7 +429,11 @@
     "name": "Daftar dulu",
     "note": "baris yang bisa dipindai, aksi di baris",
     "fit": [
-     "glance"
+     "glance",
+     "home-service",
+     "logistics",
+     "finance",
+     "commerce"
     ],
     "avoid": []
    },
@@ -371,7 +445,10 @@
      "commerce",
      "food",
      "creative-tool",
-     "travel"
+     "travel",
+     "media",
+     "property",
+     "beauty"
     ],
     "avoid": []
    },
@@ -396,7 +473,9 @@
     "fit": [
      "social",
      "finance",
-     "health"
+     "health",
+     "logistics",
+     "media"
     ],
     "avoid": []
    },
@@ -432,7 +511,9 @@
      "booking",
      "finance",
      "public",
-     "senior"
+     "senior",
+     "home-service",
+     "kids"
     ],
     "avoid": []
    },
@@ -443,7 +524,10 @@
     "fit": [
      "travel",
      "booking",
-     "food"
+     "food",
+     "logistics",
+     "property",
+     "home-service"
     ],
     "avoid": []
    },
@@ -453,10 +537,36 @@
     "note": "tanya jawab sebagai antarmuka",
     "fit": [
      "ai",
-     "social",
-     "health"
+     "social"
     ],
     "avoid": []
+   },
+   {
+    "id": "table-first",
+    "name": "Tabel dulu",
+    "note": "baris dan kolom padat untuk membandingkan dan mengubah banyak data",
+    "fit": [
+     "pro",
+     "productivity",
+     "umkm",
+     "finance"
+    ],
+    "avoid": [
+     "senior",
+     "kids",
+     "glance"
+    ]
+   },
+   {
+    "id": "calendar-first",
+    "name": "Kalender dulu",
+    "note": "waktu sebagai pintu masuk: slot, jadwal, tenggat",
+    "fit": [
+     "booking",
+     "health",
+     "education",
+     "home-service"
+    ]
    }
   ],
   "carrier": [
@@ -553,6 +663,21 @@
      "session"
     ],
     "avoid": []
+   },
+   {
+    "id": "hand-drawn",
+    "name": "Gambar tangan",
+    "note": "goresan tangan, coretan, cap; hangat dan personal",
+    "fit": [
+     "food",
+     "kids",
+     "education",
+     "beauty"
+    ],
+    "avoid": [
+     "finance",
+     "public"
+    ]
    }
   ],
   "idea": [

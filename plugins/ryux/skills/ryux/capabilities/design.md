@@ -36,7 +36,8 @@ The six stages of the core workflow (SKILL.md), as Design runs them.
    (nothing downloaded; it lists the tags it knows) gives each direction a surface, an accent hue range, a type category with fonts,
    a layout, a weight carrier, a material, and an idea source, drawn for this project and apart from the category's and RYUX's own
    defaults. Build each tile on its draw with an idea of your own; replace one draw only with a reason from this product, said in
-   the tile; "None of these" draws again with `--redraw 1`. **A named reference** ("a web like X", "an app like Y") locks what it
+   the tile; "None of these" draws again with `--redraw 1`. The user's own choice always wins: a font, colour, or layout they
+   name is locked (`--lock`, or their own entry in a JSON file with `--catalog`), with their reason in DESIGN.md. **A named reference** ("a web like X", "an app like Y") locks what it
    fixes, `--lock layout=…,type=…,surface=…` from how X works, and the rest is drawn: take its structure, density, and
    interaction, never its logo, name, exact colours, illustrations, or copy, and say where you know X from (the user's screenshot,
    ryux MCP screens, or memory, marked unverified). Without the command, follow RX-UI-26 by hand. Show the tiles as one static HTML page (`directions.html` in the project folder; no server,

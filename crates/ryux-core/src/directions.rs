@@ -71,7 +71,23 @@ fn hue_range(centre: f64, cut: &[(f64, f64)]) -> Option<(f64, f64)> {
 }
 
 pub fn directions(input: &Value) -> Value {
-    let cat = catalog();
+    let mut cat = catalog();
+    // the user's own entries (`extra: { dimension: [entry] }`): added, or replacing a catalog entry with the same id
+    let mut added: Vec<String> = Vec::new();
+    if let Some(extra) = input.get("extra").and_then(Value::as_object) {
+        for (d, es) in extra {
+            let Some(list) = cat["dimensions"].get_mut(d.as_str()).and_then(Value::as_array_mut) else { continue };
+            for e in es.as_array().into_iter().flatten() {
+                let Some(id) = e.get("id").and_then(Value::as_str) else { continue };
+                if e.get("name").and_then(Value::as_str).is_none() {
+                    continue;
+                }
+                list.retain(|x| x["id"] != id);
+                list.push(e.clone());
+                added.push(format!("{d}={id}"));
+            }
+        }
+    }
     let project = input.get("project").and_then(Value::as_str).unwrap_or("").trim().to_lowercase();
     let tags = strs(input.get("tags"));
     let allow = strs(input.get("allow"));
@@ -98,6 +114,8 @@ pub fn directions(input: &Value) -> Value {
             }
         }
         let mut pool = Vec::new();
+        // layout follows the user's task: drawn only from patterns whose fit names a tag of this product
+        let layout_fits = d == "layout" && all.iter().any(|e| strs(e.get("fit")).iter().any(|t| tags.contains(t)));
         for mut e in all {
             let fit = strs(e.get("fit"));
             let avoid = strs(e.get("avoid"));
@@ -108,8 +126,22 @@ pub fn directions(input: &Value) -> Value {
                 let Some((lo, hi)) = e["hue"].as_f64().and_then(|c| hue_range(c, &cut)) else { continue };
                 e["hues"] = json!([lo.round(), hi.round()]);
             }
-            let w = if fit.iter().any(|t| tags.contains(t)) { 4.0 } else if fit.is_empty() { 1.5 } else { 0.5 };
+            let hit = fit.iter().any(|t| tags.contains(t));
+            if d == "layout" && !hit {
+                continue;
+            }
+            // an accent leans on its fit lightly, so fitting hues do not become the new default
+            let w = match (d, hit, fit.is_empty()) {
+                ("accent", true, _) => 2.5,
+                ("accent", false, _) => 1.5,
+                (_, true, _) => 4.0,
+                (_, false, true) => 1.5,
+                _ => 0.5,
+            };
             pool.push((e, w));
+        }
+        if d == "layout" && !layout_fits {
+            pool.push((json!({ "id": "from-task", "name": "Dari tugas pengguna", "note": "no layout pattern fits these tags: choose it from the user's main task" }), 1.0));
         }
         pools.push(pool);
     }
@@ -144,7 +176,9 @@ pub fn directions(input: &Value) -> Value {
     let mut chosen: Vec<Vec<Value>> = Vec::new();
     for slot in 0..3 {
         let mut best: Option<Vec<Value>> = None;
-        for _ in 0..400 {
+        // strict first; when the tags leave too few entries, the accent spacing and material rule give way, then repeats
+        for attempt in 0..1200 {
+            let level = attempt / 400;
             let dir: Vec<Value> = pools.iter().map(|p| pick(&mut rng, p)).collect();
             if dir.iter().any(Value::is_null) || combo_default(&dir) {
                 continue;
@@ -155,13 +189,21 @@ pub fn directions(input: &Value) -> Value {
                 let free_same = (0..7).filter(|&i| !locked(i) && id(&o[i]) == id(&dir[i])).count();
                 let free = (0..7).filter(|&i| !locked(i)).count();
                 // at least three free dimensions differ (or all of them when fewer are free), and never the same surface unless locked
-                (free - free_same) < 3.min(free) || (!locked(0) && id(&o[0]) == id(&dir[0])) || same == 7
+                (free - free_same) < 3.min(free) || (!locked(0) && pools[0].len() >= 3 && id(&o[0]) == id(&dir[0])) || same == 7
             });
             let once = |dim: usize, v: &str| id(&dir[dim]) == v && chosen.iter().any(|o| id(&o[dim]) == v);
             // surface, accent, type, and layout differ in every direction unless a reference locks them; an idea source twice at most
-            let repeats = [0, 1, 2, 3].iter().any(|&i| !locked(i) && chosen.iter().any(|o| id(&o[i]) == id(&dir[i])))
+            // a dimension repeats only when its pool has fewer than three entries (a layout fitting few patterns)
+            let repeats = level < 2 && [0, 1, 2, 3].iter().any(|&i| !locked(i) && pools[i].len() >= 3 && chosen.iter().any(|o| id(&o[i]) == id(&dir[i])))
                 || chosen.iter().filter(|o| id(&o[6]) == id(&dir[6])).count() >= 2;
-            if clash || repeats || once(5, "flat-vector") || once(6, "mechanic") {
+            // accents at least 60° apart (sky, blue, and indigo are three ids and one colour), and three materials
+            let near = level == 0 && !locked(1) && chosen.iter().any(|o| {
+                let (a, b) = (o[1]["hue"].as_f64().unwrap_or(-999.0), dir[1]["hue"].as_f64().unwrap_or(999.0));
+                let d = (a - b).abs() % 360.0;
+                d.min(360.0 - d) < 60.0
+            });
+            let same_material = level == 0 && !locked(5) && pools[5].len() >= 3 && chosen.iter().any(|o| id(&o[5]) == id(&dir[5]));
+            if (clash && level < 2) || repeats || near || same_material || once(5, "flat-vector") || once(6, "mechanic") {
                 continue;
             }
             best = Some(dir);
@@ -199,6 +241,7 @@ pub fn directions(input: &Value) -> Value {
         "tags": tags,
         "locked": lock,
         "unknownLocks": unknown_lock,
+        "userEntries": added,
         "unknownTags": unknown_tags,
         "knownTags": cat["tags"],
         "notDefault": defaults.iter().map(|d| json!({ "id": d["id"], "note": d["note"] })).collect::<Vec<_>>(),
@@ -238,7 +281,13 @@ mod tests {
             assert!(s[0] != s[1] && s[1] != s[2] && s[0] != s[2], "{p}: surfaces {s:?}");
             assert!(ids(&r, "idea").contains(&"place".to_string()), "{p}: no culture and place");
             assert!(ids(&r, "idea").iter().filter(|x| *x == "mechanic").count() <= 1, "{p}");
-            assert!(ids(&r, "material").iter().filter(|x| *x == "flat-vector").count() <= 1, "{p}");
+            let m = ids(&r, "material");
+            assert!(m[0] != m[1] && m[1] != m[2] && m[0] != m[2], "{p}: materials {m:?}");
+            let h: Vec<f64> = d.iter().map(|x| x["accent"]["hue"].as_f64().unwrap()).collect();
+            for (a, b) in [(0, 1), (1, 2), (0, 2)] {
+                let x = (h[a] - h[b]).abs() % 360.0;
+                assert!(x.min(360.0 - x) >= 60.0, "{p}: accents {h:?}");
+            }
             for i in 0..3 {
                 for j in i + 1..3 {
                     let diff = DIMS.iter().filter(|k| d[i][**k]["id"] != d[j][**k]["id"]).count();
@@ -274,6 +323,28 @@ mod tests {
             assert!(!ids(&r, "accent").contains(&"violet".to_string()));
         }
         assert!(seen, "an allowed default can be drawn again");
+    }
+
+    #[test]
+    fn layout_comes_only_from_patterns_that_fit_the_task() {
+        for p in 0..30 {
+            let r = draw(json!({ "project": format!("laundry{p}"), "tags": ["home-service", "umkm"] }));
+            for l in ids(&r, "layout") {
+                assert!(["list-first", "steps", "map-first", "tiles", "table-first", "calendar-first"].contains(&l.as_str()), "{l}");
+            }
+        }
+        let r = draw(json!({ "project": "x", "tags": [] }));
+        assert_eq!(ids(&r, "layout"), vec!["from-task"; 3]);
+    }
+
+    #[test]
+    fn the_users_own_entry_replaces_or_joins_the_catalog() {
+        let extra = json!({ "type": [{ "id": "brand", "name": "Huruf merek", "note": "the font the brand owns", "fonts": ["Acme Sans"] }] });
+        let r = draw(json!({ "project": "Acme", "extra": extra, "lock": { "type": "brand" } }));
+        assert_eq!(ids(&r, "type"), vec!["brand"; 3]);
+        assert_eq!(r["userEntries"], json!(["type=brand"]));
+        let bad = draw(json!({ "project": "Acme", "extra": { "type": [{ "id": "noname" }] } }));
+        assert_eq!(bad["userEntries"], json!([]));
     }
 
     #[test]

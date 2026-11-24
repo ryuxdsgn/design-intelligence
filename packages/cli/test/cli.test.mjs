@@ -357,6 +357,10 @@ test("directions draws three for a project, the same each time, and a reference 
   assert.deepEqual(l.unknownTags, ["nope"]);
   const text = run(dir, "directions", "--project", "Kasir", "--tags", "nope").out;
   assert.match(text, /unknown tags ignored: nope\. Tags it knows: product finance\|/);
+  writeFileSync(join(dir, "own.json"), JSON.stringify({ type: [{ id: "brand", name: "Huruf merek", note: "the brand's own", fonts: ["Acme Sans"] }] }));
+  const own = draw("--project", "Kasir", "--catalog", join(dir, "own.json"), "--lock", "type=brand");
+  assert.deepEqual(own.directions.map((d) => d.type.fonts[0]), ["Acme Sans", "Acme Sans", "Acme Sans"]);
+  assert.equal(run(dir, "directions", "--project", "x", "--catalog", join(dir, "missing.json")).code, 2);
   assert.equal(run(dir, "directions").code, 2);
   rmSync(dir, { recursive: true, force: true });
 });
