@@ -1067,11 +1067,14 @@ Gate area UI. Covers the visual system of a product: hierarchy, type, layout, de
   - State the shape lock in one sentence, a radius per component role ("action buttons pill, cards 16, inputs 12, sheets 28").
   - Keep emphasis inside the type family (weight or size), not a second face dropped into one word.
   - One body size across blocks: an address or a summary stands out by weight or position, not by its own larger size.
-- Do not: Pick spacing and sizes one element at a time.
-- Why: A scale produces rhythm and makes hierarchy legible. (Material Design 8dp grid; NNGroup principles of visual design (scale: two or three sizes, each matching its importance); owner blind rating 2026-11-21: an address block set larger than the body around it; shape lock and in-family emphasis: pattern also in appllama-app-design-skill (MIT); written for RYUX)
+  - Name the ramp before the first screen, one size per role (caption, body, heading, title, display), each 1.2x to 1.25x the one below (1.333 for a display face), and make each a text style; a drawn direction carries its ramp. A label takes the body or caption size with weight, never a size of its own. Write the ramp in DESIGN.md.
+  - On a dense working screen, add a level with weight or a muted colour, not one more size: 13, 14, and 15 px read as one level and the screen reads as flat.
+  - Main content on one screen uses two or three of those sizes; the most important element is 30 to 50% larger than the body, and at most two elements are large. On the web, body 14 to 16 px, subheadings 18 to 22, headings up to 32. One family; space between groups wider than space inside a group. Check with a squint: blur the render and the intended elements still stand out.
+- Do not: Pick spacing and sizes one element at a time, or step sizes by one pixel to tell rows apart.
+- Why: A scale produces rhythm and makes hierarchy legible. (Material Design 8dp grid; NNGroup principles of visual design (scale: two or three sizes, each matching its importance); NNGroup visual hierarchy (no more than 3 sizes, at most 2 large elements, web body 14–16, subheader 18–22, header up to 32 px, squint test) and anatomy of a good design (key element 30–50% larger, one family, few type styles); in the FigCraft corpus (2026-11-25) a count of large elements and the key-to-body ratio did not tell rated-strong runs from weak ones, so they stay guidance, not audit checks; owner blind rating 2026-11-21: an address block set larger than the body around it; FigCraft corpus 2026-11-25 (27 files): every no-skill screen and 28 of 36 screens in RYUX desktop runs (four of five runs) held more than six sizes or neighbours under 12% apart, while recent RYUX mobile runs held none, and the owner noted the desktop runs as dense with weak hierarchy; shape lock and in-family emphasis: pattern also in appllama-app-design-skill (MIT); written for RYUX)
 - Not when: a one-off marketing piece outside the product
 - Trade-off: a scale limits choices; occasional exceptions need a written reason
-- Check: count radii and type faces (RX-AS-10); review
+- Check: count radii and type faces (RX-AS-10); on a canvas, ryux audit warns when a screen holds more than six sizes or two pairs under 12% apart; review
 - Measured: `ryux scan <url>` flags text in sizes 1 px apart (three or more sizes with a neighbour 1 px above, 11 to 40 px): no type scale (warn)
 
 #### RX-UI-04 [Preferred] [Quality Lock] A palette with roles

@@ -92,7 +92,7 @@ The six stages of the core workflow (SKILL.md), as Design runs them.
    exists sets the UI direction, the next message offers three directions as style tiles and waits; the motion direction
    rides with it. **Draw them first, in one call:** \`node <this skill's folder>/bin/dist/cli/index.js directions --project <name> --tags <product>,<audience>,<glance|session>\`
    (nothing downloaded; it lists the tags it knows) gives each direction a surface, an accent hue range, a type category with fonts,
-   a layout, a weight carrier, a material, and an idea source, drawn for this project and apart from the category's and RYUX's own
+   a layout, a weight carrier, a material, an idea source, and a type ramp, drawn for this project and apart from the category's and RYUX's own
    defaults. Build each tile on its draw with an idea of your own; replace one draw only with a reason from this product, said in
    the tile; "None of these" draws again with \`--redraw 1\`. The user's own choice always wins: a font, colour, or layout they
    name is locked (\`--lock\`, or their own entry in a JSON file with \`--catalog\`), with their reason in DESIGN.md. **A named reference** ("a web like X", "an app like Y") locks what it
@@ -561,7 +561,7 @@ return { iconStrokes: strokes, iconColours: colours, unbound: [...unbound], mixe
      page). Both read the canvas and count content images and their reuse,
      contrast, text cut by a bar or clipped, targets, overlays with no lift, a busy screen whose button keeps its idle
      label, unstyled text and unbound values, screens not built in auto layout and layers left outside them, empty bands,
-     small uppercase labels, section cards, text under 12 px, text sizes 1 px apart, uneven buttons in a row, and annotations. Fix each fail, fix
+     small uppercase labels, section cards, text under 12 px, text sizes off a scale (more than six, or 1 px or under 12% apart), uneven buttons in a row, and annotations. Fix each fail, fix
      each warn or give the reason it stays, run it once more, and copy its last gate line into VISUAL QA; the gate's numbers
      come from it, not from memory. In FigCraft, save the file and run \`npx --no-install @ryuxdsgn/design-intelligence audit <file>
      --page <page>\` instead: the same checks on the saved .figcraft (it needs figcraft-cli). When neither this skill's bin/ nor

@@ -34,7 +34,7 @@ The six stages of the core workflow (SKILL.md), as Design runs them.
    exists sets the UI direction, the next message offers three directions as style tiles and waits; the motion direction
    rides with it. **Draw them first, in one call:** `node <this skill's folder>/bin/dist/cli/index.js directions --project <name> --tags <product>,<audience>,<glance|session>`
    (nothing downloaded; it lists the tags it knows) gives each direction a surface, an accent hue range, a type category with fonts,
-   a layout, a weight carrier, a material, and an idea source, drawn for this project and apart from the category's and RYUX's own
+   a layout, a weight carrier, a material, an idea source, and a type ramp, drawn for this project and apart from the category's and RYUX's own
    defaults. Build each tile on its draw with an idea of your own; replace one draw only with a reason from this product, said in
    the tile; "None of these" draws again with `--redraw 1`. The user's own choice always wins: a font, colour, or layout they
    name is locked (`--lock`, or their own entry in a JSON file with `--catalog`), with their reason in DESIGN.md. **A named reference** ("a web like X", "an app like Y") locks what it

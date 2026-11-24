@@ -70,6 +70,27 @@ fn hue_range(centre: f64, cut: &[(f64, f64)]) -> Option<(f64, f64)> {
     (hi - lo >= 8.0).then_some((lo.rem_euclid(360.0), hi.rem_euclid(360.0)))
 }
 
+/// A type ramp for a direction (RX-UI-03): five sizes, one per role, each about one ratio above the one below, so no
+/// two read as one level. A dense working screen starts at 14 px, a glance screen at 16, both stepping by 1.25; a
+/// display face (serif display, expressive grotesk) by 1.333. A label takes the body or caption size with weight.
+pub fn ramp(type_id: &str, session: bool) -> Value {
+    let display = type_id == "serif-display" || type_id == "expressive-grotesk";
+    // 1.25 keeps a dense screen's subheading in NN/g's 18–22 px web band (14 x 1.2 gives 17)
+    // the body follows how the product is used; a display face only widens the steps above it
+    let base: f64 = if session { 14.0 } else { 16.0 };
+    let ratio: f64 = if display { 1.333 } else { 1.25 };
+    let step = |k: i32| (base * ratio.powi(k)).round();
+    json!({
+        "ratio": ratio,
+        "caption": step(-1).max(12.0),
+        "body": base,
+        "heading": step(1),
+        "title": step(2),
+        "display": step(3),
+        "label": "the body or caption size, one weight up (or caps with tracking): not a size of its own",
+    })
+}
+
 pub fn directions(input: &Value) -> Value {
     let mut cat = catalog();
     // the user's own entries (`extra: { dimension: [entry] }`): added, or replacing a catalog entry with the same id
@@ -221,9 +242,11 @@ pub fn directions(input: &Value) -> Value {
         }
     }
 
+    let session = tags.iter().any(|t| t == "session" || t == "pro");
     let out: Vec<Value> = chosen.iter().enumerate().map(|(i, d)| {
         let mut m = serde_json::Map::new();
         m.insert("n".into(), json!(i + 1));
+        m.insert("ramp".into(), ramp(&id(&d[2]), session));
         for (k, v) in DIMS.iter().zip(d) {
             let mut e = v.clone();
             if let Some(o) = e.as_object_mut() {
@@ -323,6 +346,22 @@ mod tests {
             assert!(!ids(&r, "accent").contains(&"violet".to_string()));
         }
         assert!(seen, "an allowed default can be drawn again");
+    }
+
+    #[test]
+    fn every_ramp_passes_the_scale_check() {
+        for ty in ["grotesk", "serif-display", "humanist"] {
+            for session in [true, false] {
+                let r = ramp(ty, session);
+                let s: Vec<f64> = ["caption", "body", "heading", "title", "display"].iter().map(|k| r[*k].as_f64().unwrap()).collect();
+                for w in s.windows(2) {
+                    assert!(w[1] / w[0] >= 1.12, "{ty} {session}: {s:?}");
+                }
+                assert!(s[0] >= 12.0);
+            }
+        }
+        assert_eq!(ramp("grotesk", true)["body"], json!(14.0));
+        assert_eq!(ramp("grotesk", true)["heading"], json!(18.0));
     }
 
     #[test]

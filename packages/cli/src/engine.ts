@@ -150,5 +150,5 @@ export interface DirectionDraw {
   userEntries: string[];
   knownTags: Record<string, string[]>;
   notDefault: { id: string; note: string }[];
-  directions: ({ n: number } & Record<"surface" | "accent" | "type" | "layout" | "carrier" | "material" | "idea", DirectionEntry>)[];
+  directions: ({ n: number; ramp: { ratio: number; caption: number; body: number; heading: number; title: number; display: number; label: string } } & Record<"surface" | "accent" | "type" | "layout" | "carrier" | "material" | "idea", DirectionEntry>)[];
 }
