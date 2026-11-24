@@ -146,7 +146,8 @@ The six stages of the core workflow (SKILL.md), as Design runs them.
    **Modules.** Read the modules the task needs from the task table before deciding anything, for example ux,
    interaction, forms, and content for a form, or ui and responsive for a layout; for any surface
    with a visual direction, ui and anti-slop as well. The rules shape the first idea, not only the
-   review of it.
+   review of it. capabilities/design-deliver.md is not one of them: open it at stage 6, once the screens are
+   built (read now, it rides along in every later call and is gone from mind by the gate).
 2. **Frame.** Name the primary task, the flow, the one thing that must be seen first, and the
    primary action. On a page read top to bottom (a landing page, onboarding), write the visitor's
    questions in order first: they are the sections and their order (RX-UX-13). When the answer that
@@ -555,7 +556,12 @@ return { iconStrokes: strokes, iconColours: colours, unbound: [...unbound], mixe
      small uppercase labels, section cards, text under 12 px, text sizes 1 px apart, uneven buttons in a row, and annotations. Fix each fail, fix
      each warn or give the reason it stays, run it once more, and copy its last gate line into VISUAL QA; the gate's numbers
      come from it, not from memory. In FigCraft, save the file and run \`npx --no-install @ryuxdsgn/design-intelligence audit <file>
-     --page <page>\` instead: the same checks on the saved .figcraft (it needs figcraft-cli).
+     --page <page>\` instead: the same checks on the saved .figcraft (it needs figcraft-cli). When neither this skill's bin/ nor
+     the project has a copy of RYUX, or the command is not permitted, do not run it another way; check by hand with inspect_document before
+     the gate instead: each text whose absoluteBounds reach past a clipping frame above it or past its screen, each text
+     under 12 px, and each text colour against the fill behind it (4.5:1, or 3:1 from 24 px or 18.66 px bold); fix what
+     fails. VISUAL QA then says it was checked by hand, that the other audit checks did not run and why, and names
+     \`ryux install --save-dev\` so the user can add the audit.
    - Close with the Delivery Gate, saying what was not designed, such as other widths or states. If
      you wrote DESIGN.md, say so in the final message: which file, and each change as old → new ("(none) → …" for
      an added line).
@@ -794,7 +800,7 @@ workflow (SKILL.md); Frame, Explore, and Evaluate happen in Design.
    \`Motion:\` block at the end lists notes, not faults (places that change with a cut where a short transition would
    help): do not build them unasked. Put them in the final message, one line each, and ask once, in the person's
    language, whether to build them; on yes, read RX-UI-11 and RX-A11Y-08 then, build only what was listed (an enter and
-   exit when the flag changes, not on first render) with a reduced-motion fallback, and scan again. With no one to ask, list them only. When the build runs, also run \`npx --no-install @ryuxdsgn/design-intelligence scan <url>\` on the page you built, the same way. Both use the copy of RYUX in the project (\`ryux install --save-dev\` adds it) and nothing is downloaded. When there is no copy, or the command is not permitted, do not run it another way: say in the gate that it did not run and why, and name the command so the user can decide. For a new flow or a consequential change, add the
+   exit when the flag changes, not on first render) with a reduced-motion fallback, and scan again. With no one to ask, list them only. When the build runs, also run \`npx --no-install @ryuxdsgn/design-intelligence scan <url>\` on the page you built, the same way. Both use the copy of RYUX in this skill's bin/ (the installer writes it) or in the project (\`ryux install --save-dev\` adds it) and nothing is downloaded. When there is no copy, or the command is not permitted, do not run it another way: say in the gate that it did not run and why, and name the command so the user can decide. For a new flow or a consequential change, add the
    usability test plan (RX-UX-12) unless the design already has one.
    In the findings table, mark each row done (\`✓\`) or proposed (\`?\`) in its first cell (\`1 ✓\`, \`2 ?\`): done is a
    change made this turn; proposed is one outside the request or one that needs the person's go-ahead, and
@@ -939,7 +945,7 @@ or None (no screen_id: a judgment call). With None on a consequential choice, sh
 export const GATE_RULES = `- Each area is PASS, FAIL, NOT VERIFIED (it applies, but the evidence was not available: name what is missing), or N/A (it does not apply: say why). A module the task table requires for the work and the run did not read leaves the areas it serves NOT VERIFIED, never PASS (imagery and illustration serve UI), named in PRODUCT's required-not-read list. Scale the gate to the task: a copy fix or a one-component change marks the areas it cannot affect N/A, one line each; a brief that names its scope (a happy flow, one width) marks the states or widths it leaves out N/A in the brief's words and lists them as not designed, and FAIL stays for what the brief asked for. Fill the gate from rules read in the current context: after a context summary, re-read knowledge/anti-slop.md and the modules an area cites before marking it.
 - An area FAILS when a [Required] rule in its skills fails without a written exception.
 - A Hard Gate failure cannot be excepted: fix it before declaring the work complete.
-- VISUAL QA without a render is NOT VERIFIED; a PASS names the render tool, the widths, and the states inspected. For a build that runs, a PASS also carries the result of \`ryux scan <url>\` at 320, 390, and 1280 px with its fails fixed and each warn fixed or answered with a reason; when it cannot run (no Playwright, no copy in the project, a command that is not permitted), it is not run another way: say why, and VISUAL QA is NOT VERIFIED. On a Figma or FigCraft canvas a PASS also carries the audit's gate line (scripts/figma-audit.md, or ryux audit for FigCraft) with its fails fixed and each warn fixed or answered with a reason; without it VISUAL QA is NOT VERIFIED.
+- RYUX commands run from this skill's folder when it holds bin/dist/cli/index.js (the installer puts the same version there): \`node <this skill's folder>/bin/dist/cli/index.js scan|audit|pick ...\` in place of \`npx --no-install @ryuxdsgn/design-intelligence ...\`, nothing downloaded; only without it is there "no copy". VISUAL QA without a render is NOT VERIFIED; a PASS names the render tool, the widths, and the states inspected. For a build that runs, a PASS also carries the result of \`ryux scan <url>\` at 320, 390, and 1280 px with its fails fixed and each warn fixed or answered with a reason; when it cannot run (no Playwright, no copy in the project, a command that is not permitted), it is not run another way: say why, and VISUAL QA is NOT VERIFIED. On a Figma or FigCraft canvas a PASS also carries the audit's gate line (scripts/figma-audit.md, or ryux audit for FigCraft) with its fails fixed and each warn fixed or answered with a reason; without it VISUAL QA is NOT VERIFIED. In FigCraft without the audit, before writing that, read each screen with inspect_document and count the texts that reach past a clipping frame above them or past the screen, the texts under 12 px, and the texts under 4.5:1 against the fill behind them (3:1 from 24 px or 18.66 px bold); fix them, and write the counts found and fixed in VISUAL QA (a screenshot review is not this check).
 - CODE QUALITY is NOT VERIFIED while changed logic has no test run; say which checks ran (typecheck, tests).
 - FINAL is FAIL if any area fails, NOT VERIFIED if none fails but one is not verified, else PASS. PASS means the checked criteria were met, not that the design is good or was validated with users ("not tested with users" unless it was).`;
 

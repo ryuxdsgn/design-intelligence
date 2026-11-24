@@ -825,9 +825,14 @@ pub fn audit(input: &Value) -> Value {
 
         // Text cut by a bar, or clipped (RX-QA-03).
         let bars: Vec<&Entry> = nodes.iter().filter(|e| e.n != frame && t.ty(e.n) != "TEXT" && r.bar.is_match(&nm(e.n)) && opaque(e)).collect();
+        // A screen-wide scrim painted above a text puts it behind a modal: covered on purpose, not cut (Klipin R4 and R5, 2026-11-24).
+        let backdrop: Vec<usize> = nodes.iter().filter(|e| {
+            let b = t.bx(e.n);
+            e.n != frame && r.scrim.is_match(&nm(e.n)) && b.w >= fbox.w * 0.9 && b.h >= fbox.h * 0.9
+        }).map(|e| order[&e.n]).collect();
         for e in &nodes {
             let n = e.n;
-            if t.ty(n) != "TEXT" || trim(&t.chars(n)).is_empty() {
+            if t.ty(n) != "TEXT" || trim(&t.chars(n)).is_empty() || backdrop.iter().any(|&s| s > order[&n]) {
                 continue;
             }
             let b = t.bx(n);

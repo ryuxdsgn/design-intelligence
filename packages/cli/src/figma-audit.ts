@@ -139,9 +139,12 @@ export async function figmaAudit(figma, pageName) {
 
     // Text cut by an opaque bar painted above it, and text partly outside a clipping container.
     const bars = nodes.filter((e) => e.n !== frame && e.n.type !== "TEXT" && BAR.test(nm(e.n)) && opaque(e));
+    // A screen-wide scrim painted above a text puts it behind a modal: covered on purpose, not cut.
+    const fbx = box(frame);
+    const backdrop = nodes.filter((e) => e.n !== frame && /\b(scrim|backdrop|dim)\b/i.test(nm(e.n)) && box(e.n).width >= fbx.width * 0.9 && box(e.n).height >= fbx.height * 0.9).map((e) => order.get(e.n));
     for (const e of nodes) {
       const t = e.n;
-      if (t.type !== "TEXT" || !t.characters.trim()) continue;
+      if (t.type !== "TEXT" || !t.characters.trim() || backdrop.some((s) => s > order.get(t))) continue;
       const b = box(t), area = b.width * b.height || 1;
       for (const bar of bars) {
         if (order.get(bar.n) <= order.get(t) || e.ancestors.includes(bar.n)) continue;
