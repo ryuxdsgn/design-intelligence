@@ -14,6 +14,7 @@ interface Core {
   audit(input: string): string;
   probe(input: string): string;
   reportCheck(input: string): string;
+  directions(input: string): string;
 }
 
 let core: Core | undefined;
@@ -131,4 +132,23 @@ export interface ReportCheck {
 /** Does a RYUX report's one-line gate count the same areas as its detail block (report.md)? */
 export function reportCheck(text: string): ReportCheck {
   return answer(rust().reportCheck(JSON.stringify({ text, areas: GATE_AREAS })));
+}
+
+/** Three direction draws for a project from the curated catalog (RX-UI-26), seeded by the project name. */
+export function drawDirections(input: { project: string; tags?: string[]; lock?: Record<string, string>; allow?: string[]; redraw?: number; extra?: Record<string, unknown[]> }): DirectionDraw {
+  return answer<DirectionDraw>(rust().directions(JSON.stringify(input)));
+}
+export interface DirectionEntry { id: string; name: string; note: string; hue?: number; hues?: [number, number]; fonts?: string[] }
+export interface DirectionDraw {
+  seed: string;
+  project: string;
+  redraw: number;
+  tags: string[];
+  locked: Record<string, string>;
+  unknownLocks: string[];
+  unknownTags: string[];
+  userEntries: string[];
+  knownTags: Record<string, string[]>;
+  notDefault: { id: string; note: string }[];
+  directions: ({ n: number; ramp: { ratio: number; caption: number; body: number; heading: number; title: number; display: number; label: string } } & Record<"surface" | "accent" | "type" | "layout" | "carrier" | "material" | "idea", DirectionEntry>)[];
 }

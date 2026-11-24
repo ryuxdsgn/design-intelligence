@@ -11,6 +11,15 @@ pub fn audit(input: &str) -> String {
     }
 }
 
+/// Three direction draws for a project (crates/ryux-core/src/directions.rs): `{ project, tags, lock, allow, redraw }`.
+#[wasm_bindgen]
+pub fn directions(input: &str) -> String {
+    match serde_json_parse(input) {
+        Ok(v) => ryux_core::directions::directions(&v).to_string(),
+        Err(e) => format!("{{\"error\":{}}}", ryux_core::js::quote(&format!("invalid input: {e}"))),
+    }
+}
+
 /// The rendered checks over the in-page extract (packages/cli/src/cli/page-probe.ts): `{ findings, ignored }`, or
 /// `{ ask }` when the page must act first (fixtures/checks/probe.json).
 #[wasm_bindgen]

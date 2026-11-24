@@ -1056,6 +1056,16 @@ pub fn audit(input: &Value) -> Value {
             o.inc("closeSizes", 1);
             let list: Vec<String> = sizes.iter().map(|s| s.to_string()).collect();
             o.add("RX-UI-03", "warn", &fname, &fname, format!("text in {} sizes ({} px), {} of them 1 px from the next: steps that close read as mistakes, not levels; give each role one step of a scale and one text style", sizes.len(), list.join(", "), close));
+        } else {
+            // More steps than roles, or neighbours too close to read as two levels (13, 14, 15): no-skill runs and RYUX's
+            // desktop runs did this on most screens of a 27-file FigCraft corpus (2026-11-25); 1 px apart was not enough to catch it.
+            let near: Vec<String> = sizes.windows(2).filter(|w| (w[1] as f64) / (w[0] as f64) < 1.12).map(|w| format!("{}/{}", w[0], w[1])).collect();
+            if sizes.len() > 6 || near.len() >= 2 {
+                o.inc("closeSizes", 1);
+                let list: Vec<String> = sizes.iter().map(|s| s.to_string()).collect();
+                let pairs = if near.is_empty() { String::new() } else { format!(", {} read as one level (under 12% apart)", near.join(", ")) };
+                o.add("RX-UI-03", "warn", &fname, &fname, format!("text in {} sizes ({} px){}: a screen holds at most six steps of one scale, one per role (caption, label, body, heading, title, display), each 1.2x or more above the one below; merge the close ones and let weight or a muted colour add a level", sizes.len(), list.join(", "), pairs));
+            }
         }
         // A count over a list that the list does not bear out (RX-AS-03): "8 terapis" over a list of 2 cards that ends
         // with room for the next, or over more cards than it says. Owner blind rating 2026-11-23 (FigCraft r3 C3).
@@ -1222,7 +1232,7 @@ pub fn audit(input: &Value) -> Value {
     let c = &o.c;
     let ann = if annotations.is_empty() { "none".to_string() } else { annotations.iter().map(|(k, v)| format!("{k} {v}")).collect::<Vec<_>>().join(", ") };
     let gate = format!(
-        "figma audit ({}): screens {} · images {} distinct, {} fills, {} reused across screens · contrast fails {} ({} over images, not measured) · text cut {}, clipped {} · targets under 24 {}, under 44 {} · overlays with no lift {} · busy buttons with idle label {} · unstyled text {}, unbound fills {}, unbound spacing {} · built in auto layout {}/{} screens, loose layers {}, layers outside the screens {}, effects without a style {} · empty bands {}, small uppercase labels {}, section cards {}, text under 12 px {}/{}, screens with text sizes 1 px apart {}, uneven button rows {}, list counts that disagree {} · breaks across screens {} · annotations {} · {} fail, {} warn",
+        "figma audit ({}): screens {} · images {} distinct, {} fills, {} reused across screens · contrast fails {} ({} over images, not measured) · text cut {}, clipped {} · targets under 24 {}, under 44 {} · overlays with no lift {} · busy buttons with idle label {} · unstyled text {}, unbound fills {}, unbound spacing {} · built in auto layout {}/{} screens, loose layers {}, layers outside the screens {}, effects without a style {} · empty bands {}, small uppercase labels {}, section cards {}, text under 12 px {}/{}, screens with text sizes off a scale {}, uneven button rows {}, list counts that disagree {} · breaks across screens {} · annotations {} · {} fail, {} warn",
         pname, c["screens"], c["distinctImages"], c["imageFills"], c["reusedImages"], c["contrastFails"], c["contrastUnknown"], c["cutText"], c["clippedText"],
         c["targetsUnder24"], c["targetsUnder44"], c["flatOverlays"], c["idleBusyButtons"], c["unstyledText"], c["unboundFills"], c["unboundSpacing"],
         c["layoutScreens"], c["screens"], c["looseLayers"], c["strayLayers"], c["rawEffects"], c["emptyBands"], c["capsLabels"], c["cards"], c["smallText"], c["texts"], c["closeSizes"], c["unevenRows"], c["listCounts"], c["flowBreaks"],

@@ -16,6 +16,7 @@ import {
 import { ALL_INSTALLABLE_IDS } from "../intelligence/content.js";
 import { CLI_CMD, CONTEXT_END, CONTEXT_FILE, CONTEXT_START, MARK_START, MCP_STATUS, VERSION } from "../product.js";
 import { validateBundle } from "../validate.js";
+import { drawDirections, type DirectionEntry } from "../engine.js";
 import { renderAgentsBlock, renderBundle, renderPointerBlock, SKILL_NAME } from "../render.js";
 import { hasBlock, readIfExists, rel, removeBlock, removePath, upsertBlock, writeFileEnsured } from "./fsutil.js";
 import { HOOK_AGENTS, hookAgents, hookFile, installHook, removeHook, type HookAgent } from "./hook.js";
@@ -399,6 +400,47 @@ async function runRemove(flags: Flags): Promise<void> {
   for (const f of pointerFiles) if (await removeBlock(join(scope.root, f))) removed.push(`${f} (block)`);
   for (const a of HOOK_AGENTS) if (await removeHook(scope.root, a, scope.global)) removed.push(`${hookFile(a, scope.global)} (scan hook)`);
   console.log(removed.length ? removed.map((r) => pc.red("− ") + r).join("\n") : "No files removed.");
+}
+
+/** `ryux directions --project <name> [--tags a,b] [--lock layout=split-pane,type=grotesk] [--allow id] [--redraw n] [--catalog file] [--json]` */
+function runDirections(args: string[]): void {
+  const opt = (k: string): string | undefined => { const i = args.indexOf(`--${k}`); return i >= 0 ? args[i + 1] : undefined; };
+  const list = (k: string): string[] => (opt(k) || "").split(",").map((x) => x.trim()).filter(Boolean);
+  const project = opt("project");
+  if (!project) {
+    console.error("Usage: ryux directions --project <name> [--tags finance,umkm,glance] [--lock layout=split-pane,type=grotesk] [--allow <default id>] [--redraw <n>] [--catalog <own entries.json>] [--json]");
+    process.exitCode = 2;
+    return;
+  }
+  const lock = Object.fromEntries(list("lock").map((kv) => kv.split("=").map((x) => x.trim())).filter((kv) => kv.length === 2 && kv[0] && kv[1]));
+  let extra: Record<string, unknown[]> | undefined;
+  const file = opt("catalog");
+  if (file) {
+    try {
+      extra = JSON.parse(readFileSync(file, "utf8"));
+    } catch (e) {
+      console.error(`ryux directions: --catalog ${file}: ${(e as Error).message}`);
+      process.exitCode = 2;
+      return;
+    }
+  }
+  const r = drawDirections({ project, tags: list("tags"), lock, allow: list("allow"), redraw: Number(opt("redraw") || 0), extra });
+  if (args.includes("--json")) { console.log(JSON.stringify(r, null, 2)); return; }
+  const line = (e: DirectionEntry): string => e.name;
+  console.log(`Direction draws for "${r.project}" (seed ${r.seed}${r.redraw ? `, redraw ${r.redraw}` : ""}${r.tags.length ? `, tags ${r.tags.join(", ")}` : ""})`);
+  for (const k of Object.keys(r.locked)) console.log(`locked by the reference: ${k} = ${r.locked[k]}`);
+  for (const u of r.userEntries) console.log(`the user's own entry: ${u}`);
+  for (const u of r.unknownLocks) console.log(`unknown lock ignored: ${u}`);
+  if (r.unknownTags.length || !r.tags.length) console.log(`${r.unknownTags.length ? `unknown tags ignored: ${r.unknownTags.join(", ")}. ` : ""}Tags it knows: ${Object.entries(r.knownTags).map(([k, v]) => `${k} ${v.join("|")}`).join("; ")}`);
+  for (const d of r.directions) {
+    const hues = d.accent.hues ? ` ${d.accent.hues[0]}–${d.accent.hues[1]}°` : "";
+    console.log(`\n${d.n}. surface ${line(d.surface)} · accent ${line(d.accent)}${hues} · type ${line(d.type)} (${(d.type.fonts || []).join(", ")})`);
+    console.log(`   layout ${line(d.layout)} · weight carried by ${line(d.carrier)} · material ${line(d.material)} · idea from ${line(d.idea)}`);
+    const t = d.ramp;
+    console.log(`   type ramp ×${t.ratio}: caption ${t.caption} · body ${t.body} · heading ${t.heading} · title ${t.title} · display ${t.display} px; a label takes the body or caption size, one weight up`);
+  }
+  console.log(`\nNot as a default (only when the user asks or the brief gives a reason): ${r.notDefault.map((d) => d.note).join("; ")}.`);
+  console.log("Build each direction on its draw with its own idea; use the first font in its list that the canvas or project has, and say which. Replace a draw only with a reason from this product, and say it; the user's own choice always wins (--lock, or their entry with --catalog). Ask for others with --redraw 1.");
 }
 
 /** Read every file of an installed skill folder, keyed by its path inside the folder. */
@@ -1013,6 +1055,8 @@ async function main(): Promise<void> {
       return runPick(argv.slice(1));
     case "audit":
       return runAudit(argv.slice(1));
+    case "directions":
+      return runDirections(argv.slice(1));
     case "init":
       return runInit(flags);
     case "setup":
