@@ -449,3 +449,19 @@ test("REST: a Figma page read over the REST API is judged by the same audit, wit
     globalThis.fetch = real;
   }
 });
+
+test("text behind a modal's scrim is covered on purpose, not cut; text in the dialog still is", async () => {
+  const dark = { type: "SOLID", color: { r: 0, g: 0, b: 0 }, opacity: 0.5 };
+  const list = (n) => node("FRAME", "Konten", [0, 0, 390, 844], {}, [text("Judul kartu", "Kartu di belakang", [16, 700, 200, 20])]);
+  const footer = node("FRAME", "Footer", [0, 704, 390, 140], { fills: [white] });
+  const cutAlone = await audit([screen("01", [list(), footer])]);
+  assert.equal(cutAlone.counts.cutText, 1);
+  const dialog = node("FRAME", "Dialog ekspor", [16, 200, 358, 400], { fills: [white] }, [
+    text("Ringkasan", "Teks di dialog", [32, 560, 200, 20]),
+    node("FRAME", "Footer dialog", [16, 568, 358, 32], { fills: [white] }),
+  ]);
+  const modal = await audit([screen("01", [list(), footer, node("RECTANGLE", "Scrim", [0, 0, 390, 844], { fills: [dark] }), dialog])]);
+  assert.equal(modal.counts.cutText, 1, JSON.stringify(modal.findings.filter((f) => f.rule === "RX-QA-03")));
+  assert.match(JSON.stringify(modal.findings), /Teks di dialog/);
+  assert.doesNotMatch(JSON.stringify(modal.findings), /Kartu di belakang/);
+});
