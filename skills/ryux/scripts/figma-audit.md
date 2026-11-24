@@ -22,7 +22,8 @@ const figmaAudit = async function figmaAudit(figma, pageName) {
     const contains = (b, x, y) => x >= b.x && x <= b.x + b.width && y >= b.y && y <= b.y + b.height;
     const overlap = (a, b) => Math.max(0, Math.min(a.x + a.width, b.x + b.width) - Math.max(a.x, b.x)) * Math.max(0, Math.min(a.y + a.height, b.y + b.height) - Math.max(a.y, b.y));
     const short = (s, n = 40) => (s.length > n ? `${s.slice(0, n - 1)}…` : s);
-    const hasComponents = (f) => "findOne" in f && !!f.findOne((n) => n.type === "COMPONENT" || n.type === "COMPONENT_SET");
+    // A component sheet: more than half of its direct children are components; a screen holding one main component stays a screen.
+    const hasComponents = (f) => { const k = Array.isArray(f.children) ? f.children : []; const c = k.filter((n) => n.type === "COMPONENT" || n.type === "COMPONENT_SET").length; return c > 0 && c * 2 > k.length; };
     // the page's layers, with sections (and sections in sections) opened
     const opened = (ns) => ns.flatMap((n) => (n.type === "SECTION" ? opened(n.children) : [n]));
     // the descendants on screen: a hidden layer and all it holds are left out
