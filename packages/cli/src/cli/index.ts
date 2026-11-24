@@ -2,7 +2,7 @@
 import { spawnSync } from "node:child_process";
 import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { homedir } from "node:os";
-import { join, relative, sep } from "node:path";
+import { dirname, join, relative, sep } from "node:path";
 import * as p from "@clack/prompts";
 import pc from "picocolors";
 import {
@@ -24,7 +24,9 @@ import { runPick } from "./pick.js";
 import { runAudit } from "./audit.js";
 import { runReportCheck } from "./report-check.js";
 import { DEFAULT_CACHE, fetchLatestFromNpm, updateNotice } from "./update-notice.js";
-import { readFile, readdir } from "node:fs/promises";
+import { cp, readFile, readdir, writeFile } from "node:fs/promises";
+import { createRequire } from "node:module";
+import { fileURLToPath } from "node:url";
 
 type Flags = Record<string, string | boolean>;
 
@@ -67,6 +69,30 @@ async function removeLegacy(dir: string, root: string): Promise<string[]> {
 /** Former per-skill folders (RYUX 1.x), removed when the single `ryux` skill is written. */
 const OLD_SKILL_DIRS = ["core", ...ALL_INSTALLABLE_IDS].map((id) => `ryux-${id}`);
 
+/** The CLI copy inside the skill folder (bin/), so an agent runs scan, audit, and pick with node: no download, no package.json. */
+const BIN_DIR = "bin";
+const inBin = (path: string): boolean => path === BIN_DIR || path.startsWith(`${BIN_DIR}/`);
+const RUNTIME_DEPS: [string, string][] = [["picocolors", ""], ["@clack/prompts", ""], ["@clack/core", "@clack/prompts"], ["sisteransi", "@clack/prompts"]];
+
+/** Copy this CLI (package.json, dist, wasm) and its runtime dependencies into <skill>/bin; git ignores the folder. */
+async function copyRuntime(skillDir: string): Promise<string> {
+  const pkgRoot = join(dirname(fileURLToPath(import.meta.url)), "..", "..");
+  const bin = join(skillDir, BIN_DIR);
+  try {
+    for (const part of ["package.json", "dist", "wasm"]) await cp(join(pkgRoot, part), join(bin, part), { recursive: true });
+    const from = (name: string, via: string): string => {
+      const base = via ? dirname(createRequire(join(pkgRoot, "package.json")).resolve(`${via}/package.json`)) : pkgRoot;
+      return dirname(createRequire(join(base, "package.json")).resolve(`${name}/package.json`));
+    };
+    for (const [name, via] of RUNTIME_DEPS) await cp(from(name, via), join(bin, "node_modules", name), { recursive: true, dereference: true });
+    await writeFile(join(bin, ".gitignore"), "*\n");
+    return `${rel(bin)}/ (the RYUX CLI: scan, audit, pick run with node, nothing downloaded)`;
+  } catch (e) {
+    await removePath(bin);
+    return `${rel(bin)}/ skipped: ${(e as Error).message}`;
+  }
+}
+
 /** Files in an installed skill folder that the bundle does not write; rewriting the folder removes them. */
 function foreignFiles(skillDir: string, bundle: Record<string, string>): string[] {
   if (!existsSync(skillDir)) return [];
@@ -74,7 +100,7 @@ function foreignFiles(skillDir: string, bundle: Record<string, string>): string[
   return readdirSync(skillDir, { recursive: true, withFileTypes: true })
     .filter((e) => e.isFile())
     .map((e) => join(e.parentPath, e.name))
-    .filter((f) => !known.has(relative(skillDir, f).split(sep).join("/")))
+    .filter((f) => { const r = relative(skillDir, f).split(sep).join("/"); return !known.has(r) && !inBin(r); })
     .sort();
 }
 const foreignLine = (verb: string, files: string[]): string =>
@@ -90,6 +116,7 @@ async function writeSkills(dir: string, root: string): Promise<string[]> {
   if (foreign.length) done.push(foreignLine("removed", foreign));
   for (const [path, content] of Object.entries(files)) await writeFileEnsured(join(skillDir, path), content);
   done.push(`${rel(skillDir)}/ (${Object.keys(files).length} files)`);
+  done.push(await copyRuntime(skillDir));
   return done;
 }
 
@@ -120,6 +147,7 @@ async function planInstall(agentIds: string[], scope: Scope): Promise<string[]> 
     plan.push(`${existsSync(skillDir) ? "update" : "create"} ${rel(skillDir)}/ (${Object.keys(renderBundle()).length} files)`);
     const foreign = foreignFiles(skillDir, renderBundle());
     if (foreign.length) plan.push(foreignLine("remove", foreign));
+    plan.push(`copy the RYUX CLI to ${rel(join(skillDir, BIN_DIR))}/ (scan, audit, pick run with node, nothing downloaded)`);
     if (old) plan.push(`replace ${old} RYUX 1.x folder${old === 1 ? "" : "s"} in ${rel(dir)}`);
   }
   if (scope.global) return plan;
@@ -379,6 +407,7 @@ async function readBundle(skillDir: string): Promise<Record<string, string>> {
   for (const entry of await readdir(skillDir, { recursive: true, withFileTypes: true })) {
     if (!entry.isFile()) continue;
     const full = join(entry.parentPath, entry.name);
+    if (inBin(full.slice(skillDir.length + 1).split(sep).join("/"))) continue;
     files[full.slice(skillDir.length + 1)] = await readFile(full, "utf8");
   }
   return files;

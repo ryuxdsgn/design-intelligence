@@ -156,6 +156,8 @@ test("the skill runs the RYUX CLI from the project, not as a download, and never
   assert.match(flat, /it is not run another way: say why, and VISUAL QA is NOT VERIFIED/);
   // FigCraft with no copy: clipped text, small text, and contrast checked by hand (clipper R1 shipped both unseen, 2026-11-24)
   assert.match(flat, /check by hand with inspect_document before the gate instead/);
+  // the installer copies the CLI into the skill folder; the skill runs it with node (2026-11-24)
+  assert.match(flat, /node <this skill's folder>\/bin\/dist\/cli\/index\.js scan\|audit\|pick/);
   // three of four clipper runs opened stage 6 before building (2026-11-24)
   assert.match(flat, /capabilities\/design-deliver\.md is not one of them: open it at stage 6/);
   // R3 (2026-11-24) read that text early, then reviewed screenshots only: the gate row asks for the counts

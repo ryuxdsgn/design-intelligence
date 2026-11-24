@@ -28,6 +28,19 @@ test("install, then check passes", () => {
   rmSync(dir, { recursive: true, force: true });
 });
 
+test("install copies the CLI into the skill folder, so it runs with node in a folder with no package.json", () => {
+  const dir = mkdtempSync(join(tmpdir(), "ryux-test-"));
+  const i = run(dir, "install", "--agent", "claude");
+  assert.match(i.out, /bin\/ \(the RYUX CLI: scan, audit, pick run with node, nothing downloaded\)/);
+  const bin = join(dir, ".claude/skills/ryux/bin");
+  assert.equal(readFileSync(join(bin, ".gitignore"), "utf8"), "*\n");
+  writeFileSync(join(dir, "a.html"), "<p>Halo</p>");
+  const r = spawnSync("node", [join(bin, "dist/cli/index.js"), "scan", dir, "--json"], { cwd: tmpdir(), encoding: "utf8", env: { ...process.env, RYUX_NO_UPDATE_CHECK: "1" } });
+  assert.equal(r.status, 0, r.stderr);
+  assert.equal(JSON.parse(r.stdout).files, 1);
+  rmSync(dir, { recursive: true, force: true });
+});
+
 test("install over an existing skill folder names the files it removes that RYUX does not write", () => {
   const dir = project();
   run(dir, "install", "--agent", "claude");
