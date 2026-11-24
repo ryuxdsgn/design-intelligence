@@ -13,6 +13,7 @@ The happy path is not enough. Walk this list for the screen you built:
 | Network | slow, timeout, offline, server failure, retry |
 | Permissions | read-only, restricted, different roles (only roles that exist) |
 | System | session expired, unauthorized, unexpected error |
+| Misuse | the person who would abuse it (RX-EC-09): fake accounts for promos, a stolen phone, a scam payment, a shared account |
 
 For first use and zero data, explain what will appear and give one action to start. For each case
 that can happen, decide what the user sees and what they can do next. Cases that
@@ -78,4 +79,15 @@ How reference apps show empty, error, offline, and loading states for this flow:
 - Do: Design read-only and restricted states (say why an action is unavailable and who can do it, using roles that exist), and on session expiry keep the user's work and return them to the same place after signing in.
 - Do not: Invent roles, show actions that fail only after the user tries them, or dump users on a login screen and lose their progress.
 - Why: Users need to know whether to ask someone, and re-authentication should cost seconds, not the task. (ryux review practice)
+- Check: review
+
+### RX-EC-09 [Contextual] Design for the person who would misuse it
+
+- When: money moves, an account holds value (balance, points, promos, credit), identity is checked, or one person's action reaches another
+- Do: Name the antipersona before the flow: the one person most likely to abuse it here (a promo hunter with many fake accounts, a thief with an unlocked phone, a scammer asking for a QRIS payment or an OTP, a family sharing one account) and what they would try.
+  - Design the step that stops them where the honest user barely notices it: a confirmation that shows the recipient's name before paying, a PIN or biometric before a transfer or a paylater limit change, a cooling-off period for a new device, one promo per verified identity.
+  - Say plainly what never happens: the app never asks for the OTP or PIN by chat or phone, and a refund never needs the user to pay first.
+  - Give the victim a way back: report, freeze, or sign out every device, reachable from the transaction itself.
+- Do not: Add friction to every step for everyone, show a recipient's full name or number to anyone who types a guess, or leave the scam path (pay first to receive) looking like a normal flow.
+- Why: Fraud on payments, promos, and accounts is a daily cost of local money flows; a control the honest user barely sees is cheap, and a missing one is paid by the victim. (NNGroup UX deliverables glossary (antipersona: a user group that could misuse the product and harm target users or the business); written for RYUX)
 - Check: review

@@ -83,7 +83,7 @@ then findings with evidence, impact, recommendation, and confidence, structured 
 | AI feature (generated answers, summaries, drafts) | `knowledge/product.md`, `knowledge/ux.md`, `knowledge/content.md`, `knowledge/edge-cases.md`, `knowledge/anti-slop.md` |
 | Copy only (UI text, chat, announcements) | `knowledge/content.md`, `knowledge/anti-slop.md` |
 | Visual refinement | `knowledge/ui.md`, `knowledge/design-system.md`, `capabilities/qa.md`, `knowledge/anti-slop.md` |
-| User flow or journey map | `knowledge/product.md`, `knowledge/ux.md`, `knowledge/edge-cases.md`, `knowledge/content.md` |
+| User flow, journey map, or another UX map | `knowledge/product.md`, `knowledge/ux.md`, `knowledge/edge-cases.md`, `knowledge/content.md` |
 | Review or critique | `capabilities/critique.md` (Design Read + heuristic_eval), plus `capabilities/qa.md` |
 <!-- activation:end -->
 
@@ -210,13 +210,13 @@ line below for its exact source.
 <!-- provenance:start -->
 | Source cited | Rules citing it | Rules citing only this |
 | --- | --- | --- |
-| Public standard or research | 101 | 60 |
+| Public standard or research | 102 | 61 |
 | Industry practice | 28 | 6 |
 | Observed in a RYUX run | 18 | 7 |
 | Pattern also in another MIT ruleset (text written for RYUX) | 4 | 2 |
 | RYUX principle, taxonomy, or review | 75 | 22 |
 
-All 158 rules cite a source; 61 cite more than one kind, so the "Rules citing it" column adds up to more than 158.
+All 159 rules cite a source; 61 cite more than one kind, so the "Rules citing it" column adds up to more than 159.
 <!-- provenance:end -->
 
 ## Rules
@@ -224,7 +224,7 @@ All 158 rules cite a source; 61 cite more than one kind, so the "Rules citing it
 Generated from `packages/cli/src/content.ts` by `pnpm sync:skills`. Edit the rules there, not here.
 
 <!-- rules:start -->
-158 rules across 15 modules: 68 Required, 39 Preferred, 51 Contextual; 18 Hard Gates and 14 Quality Locks.
+159 rules across 15 modules: 68 Required, 39 Preferred, 52 Contextual; 18 Hard Gates and 14 Quality Locks.
 
 ### Product thinking (RX-PR) · `knowledge/product.md`
 
@@ -853,6 +853,17 @@ Gate area EDGE CASES. Covers data, form, network, permission, and system states 
 - Do: Design read-only and restricted states (say why an action is unavailable and who can do it, using roles that exist), and on session expiry keep the user's work and return them to the same place after signing in.
 - Do not: Invent roles, show actions that fail only after the user tries them, or dump users on a login screen and lose their progress.
 - Why: Users need to know whether to ask someone, and re-authentication should cost seconds, not the task. (ryux review practice)
+- Check: review
+
+#### RX-EC-09 [Contextual] Design for the person who would misuse it
+
+- When: money moves, an account holds value (balance, points, promos, credit), identity is checked, or one person's action reaches another
+- Do: Name the antipersona before the flow: the one person most likely to abuse it here (a promo hunter with many fake accounts, a thief with an unlocked phone, a scammer asking for a QRIS payment or an OTP, a family sharing one account) and what they would try.
+  - Design the step that stops them where the honest user barely notices it: a confirmation that shows the recipient's name before paying, a PIN or biometric before a transfer or a paylater limit change, a cooling-off period for a new device, one promo per verified identity.
+  - Say plainly what never happens: the app never asks for the OTP or PIN by chat or phone, and a refund never needs the user to pay first.
+  - Give the victim a way back: report, freeze, or sign out every device, reachable from the transaction itself.
+- Do not: Add friction to every step for everyone, show a recipient's full name or number to anyone who types a guess, or leave the scam path (pay first to receive) looking like a normal flow.
+- Why: Fraud on payments, promos, and accounts is a daily cost of local money flows; a control the honest user barely sees is cheap, and a missing one is paid by the victim. (NNGroup UX deliverables glossary (antipersona: a user group that could misuse the product and harm target users or the business); written for RYUX)
 - Check: review
 
 ---

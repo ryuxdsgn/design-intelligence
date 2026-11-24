@@ -822,6 +822,17 @@ export const RULES: Rule[] = [
       basis: "ryux review practice",
       check: "review",
     },
+    {
+      num: 9,
+      title: "Design for the person who would misuse it",
+      level: "contextual",
+      when: "money moves, an account holds value (balance, points, promos, credit), identity is checked, or one person's action reaches another",
+      do: "Name the antipersona before the flow: the one person most likely to abuse it here (a promo hunter with many fake accounts, a thief with an unlocked phone, a scammer asking for a QRIS payment or an OTP, a family sharing one account) and what they would try.\n  - Design the step that stops them where the honest user barely notices it: a confirmation that shows the recipient's name before paying, a PIN or biometric before a transfer or a paylater limit change, a cooling-off period for a new device, one promo per verified identity.\n  - Say plainly what never happens: the app never asks for the OTP or PIN by chat or phone, and a refund never needs the user to pay first.\n  - Give the victim a way back: report, freeze, or sign out every device, reachable from the transaction itself.",
+      dont: "Add friction to every step for everyone, show a recipient's full name or number to anyone who types a guess, or leave the scam path (pay first to receive) looking like a normal flow.",
+      why: "Fraud on payments, promos, and accounts is a daily cost of local money flows; a control the honest user barely sees is cheap, and a missing one is paid by the victim.",
+      basis: "NNGroup UX deliverables glossary (antipersona: a user group that could misuse the product and harm target users or the business); written for RYUX",
+      check: "review",
+    },
   ]),
 
   ...skill("content", [
@@ -2205,7 +2216,7 @@ export const ACTIVATION: { task: string; skills: SkillId[] }[] = [
   { task: "AI feature (generated answers, summaries, drafts)", skills: ["product", "ux", "content", "edge-cases", "anti-slop"] },
   { task: "Copy only (UI text, chat, announcements)", skills: ["content", "anti-slop"] },
   { task: "Visual refinement", skills: ["ui", "design-system", "visual-qa", "anti-slop"] },
-  { task: "User flow or journey map", skills: ["product", "ux", "edge-cases", "content"] },
+  { task: "User flow, journey map, or another UX map", skills: ["product", "ux", "edge-cases", "content"] },
 ];
 
 export const ALL_SKILL_IDS: SkillId[] = SKILLS.map((s) => s.id);
