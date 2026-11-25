@@ -51,9 +51,9 @@ test("a brief with no market gets no default market, and a real brand is asked a
   const design = files["capabilities/design.md"].replace(/\s+/g, " ");
   assert.match(design, /name no market, ask with no market as the recommended default/);
   assert.match(files["capabilities/build.md"].replace(/\s+/g, " "), /no default market when nothing names one/);
-  const antiSlop = files["knowledge/anti-slop.md"].replace(/\s+/g, " ");
-  assert.match(antiSlop, /ask once, with the fact questions, whether to show the real brands with their official logos or made-up names/);
-  assert.match(antiSlop, /Never a made-up brand with a drawn logo, or a real brand set as plain text where its logo belongs/);
+  const unslop = files["knowledge/unslop.md"].replace(/\s+/g, " ");
+  assert.match(unslop, /ask once, with the fact questions, whether to show the real brands with their official logos or made-up names/);
+  assert.match(unslop, /Never a made-up brand with a drawn logo, or a real brand set as plain text where its logo belongs/);
 });
 
 test("validation catches a missing module, a broken reference, and 1.x names", () => {
@@ -422,7 +422,7 @@ test("marketing surfaces: annotations instead of sample labels, the deciding num
   const files = renderBundle();
   const f = (p) => files[p].replace(/\s+/g, " ");
   assert.match(f("knowledge/product.md"), /for task UI and marketing surfaces alike/);
-  assert.match(f("knowledge/anti-slop.md"), /nothing on the design says sample, example, or placeholder/);
+  assert.match(f("knowledge/unslop.md"), /nothing on the design says sample, example, or placeholder/);
   assert.match(f("knowledge/imagery.md"), /the owner's name as plain text in the page's type instead of an empty slot/);
   assert.match(f("knowledge/ux.md"), /put that number first in the handoff's open questions/);
   assert.match(f("knowledge/content.md"), /An unfamiliar unit comes with its everyday value/);
@@ -440,7 +440,7 @@ test("design-tool canvases label open rules with annotations; buttons keep their
   assert.match(f("capabilities/design.md"), /On the canvas the label is a Figma annotation on that node or its row/);
   assert.doesNotMatch(f("capabilities/design.md"), /const MARKETING/);
   assert.match(f("capabilities/qa.md"), /in a design file the label is an annotation on the node, not a chip in the UI/);
-  assert.match(f("knowledge/anti-slop.md"), /sample values carry a "Sample data" annotation, never a chip in the UI/);
+  assert.match(f("knowledge/unslop.md"), /sample values carry a "Sample data" annotation, never a chip in the UI/);
   assert.match(f("knowledge/interaction.md"), /The in-progress label .* stays on the button until the result replaces the screen/);
   assert.match(f("knowledge/accessibility.md"), /:focus-visible/);
 });
@@ -451,7 +451,7 @@ test("design runs carry the deciding number and the unit rule without loading co
   assert.match(f("capabilities/design.md"), /the page answers without a number and the handoff asks for it first/);
   assert.match(f("capabilities/design.md"), /shows its Rupiah value beside it, at a beginner's precision \(RX-CD-20\)/);
   assert.match(f("knowledge/content.md"), /no decimals for whole Rupiah, in English copy too/);
-  assert.match(f("knowledge/anti-slop.md"), /an empty logo slot reads as a bug/);
+  assert.match(f("knowledge/unslop.md"), /an empty logo slot reads as a bug/);
 });
 
 test("Design in Figma reads the libraries added to the file before the first frame, and marks what it had to create", () => {
@@ -650,7 +650,7 @@ test("revamp round 4: known controls keep their place, new surfaces, each state 
   assert.match(r20, /same surfaces[^\n]*restructure/i);
   assert.match(r20, /each state leads with the items it is about/i);
   assert.match(r20, /error state is composed for the screen/i);
-  const slop = files["knowledge/anti-slop.md"];
+  const slop = files["knowledge/unslop.md"];
   assert.match(slop, /street names on an illustrative map/i);
 });
 

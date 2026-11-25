@@ -18,7 +18,7 @@ export type GateArea =
   | "EDGE CASES"
   | "CODE QUALITY"
   | "VISUAL QA"
-  | "ANTI-SLOP";
+  | "UNSLOP";
 
 export type SkillId =
   | "product"
@@ -35,7 +35,7 @@ export type SkillId =
   | "responsive"
   | "frontend"
   | "visual-qa"
-  | "anti-slop";
+  | "unslop";
 
 export type SkillRole = "knowledge" | "gate";
 
@@ -43,7 +43,7 @@ export interface Skill {
   /** One capability-first sentence: what the skill does for a design (shown on skills.sh). */
   pitch?: string;
   id: SkillId;
-  /** knowledge: how to reason about one area. gate: rules plus a verifying workflow (QA, anti-slop). */
+  /** knowledge: how to reason about one area. gate: rules plus a verifying workflow (QA, unslop). */
   role: SkillRole;
   /** What to look up in RYUX Knowledge (via the ryux MCP) as evidence for this skill. */
   evidence: string;
@@ -93,7 +93,7 @@ export const GATE_AREAS: GateArea[] = [
   "EDGE CASES",
   "CODE QUALITY",
   "VISUAL QA",
-  "ANTI-SLOP",
+  "UNSLOP",
 ];
 
 export const GROUPS: Group[] = [
@@ -122,7 +122,7 @@ export const SKILLS: Skill[] = [
   { id: "responsive", pitch: "Makes layouts hold up at every width: what to prioritize, simplify, reorganize, and stack.", role: "knowledge", evidence: "How reference flows adapt across widths when captured: `get_flow`, `search_screens` for the mobile pattern.", abbr: "RD", label: "Responsive design", group: "ui", gateArea: "RESPONSIVE", summary: "prioritize, simplify, reorganize; tables, overlays, overflow, safe areas", loadWhen: "building a layout that ships to more than one width" },
   { id: "frontend", pitch: "Implements designs faithfully in the repo's own stack: semantic elements, existing components, and no invented logic.", role: "knowledge", evidence: "The repo itself is the main evidence (stack, components, tokens); reference screens inform behavior, not code.", abbr: "FE", label: "Frontend implementation", group: "engineering", gateArea: "CODE QUALITY", summary: "the repo's own stack, semantic elements, one home for each piece of logic, tests, no invented logic", loadWhen: "writing or changing frontend code, including formatting, state, data logic that users see, and its tests" },
   { id: "visual-qa", pitch: "Verifies the build against the intended design: render it, list every deviation, fix, and render again.", role: "gate", evidence: "The intended design (Figma, pen.dev, DESIGN.md) is the reference; RYUX screens are a secondary comparison: `search_screens`.", abbr: "QA", label: "Visual QA", group: "quality", gateArea: "VISUAL QA", summary: "did the build match the intended design: compare, list deviations, fix, render again", loadWhen: "something visual has been implemented and is about to be called done, or a build must match a design" },
-  { id: "anti-slop", pitch: "Stops generic AI output before it ships: no invented numbers or people, decoration with a purpose, and honest claims.", role: "gate", evidence: "Real screens show what real products do instead of invented numbers and urgency: `search_screens`; heuristic findings via `heuristic_eval`.", abbr: "AS", label: "Anti-slop", group: "quality", gateArea: "ANTI-SLOP", summary: "hard gates, purpose gates, quality locks, honest claims", loadWhen: "work is about to be delivered, or during visual refinement" },
+  { id: "unslop", pitch: "Stops generic AI output before it ships: no invented numbers or people, decoration with a purpose, and honest claims.", role: "gate", evidence: "Real screens show what real products do instead of invented numbers and urgency: `search_screens`; heuristic findings via `heuristic_eval`.", abbr: "AS", label: "Unslop", group: "quality", gateArea: "UNSLOP", summary: "hard gates, purpose gates, quality locks, honest claims", loadWhen: "work is about to be delivered, or during visual refinement" },
 ];
 
 // Rule numbers are explicit and stable: a retired rule leaves a gap instead of renumbering the rest.
@@ -1085,7 +1085,7 @@ export const RULES: Rule[] = [
       do: "Choose the layout from the content, the task, and the reference screens. Set the balance on purpose: symmetric for calm, focused screens, asymmetric for dynamic ones. On the render, check that visual weight is distributed, counting element size and not only the number of elements, with no side left empty or heavy without a reason. A tall empty band between two blocks of one screen is weight left on one side: move the blocks together, give the space a job, or let the content fill it.",
       dont: "Default to hero, three feature cards, and a logo wall, or leave a tall empty band in the middle of a screen (a bag whose summary floats far below its items).",
       why: "Template layouts look interchangeable and hide what is specific to the product.",
-      basis: "ryux anti-slop principle; NNGroup principles of visual design (balance); owner review 2026-11-16 (Figma, Rak New-6): empty gaps in several screens; owner review 2026-11-18 (Figma, Rak-8, \"agak slop\" after the audit said 0 fail): about 150 pt between the bag's delivery card and its summary, and the lower 40% of the confirmation empty",
+      basis: "ryux unslop principle; NNGroup principles of visual design (balance); owner review 2026-11-16 (Figma, Rak New-6): empty gaps in several screens; owner review 2026-11-18 (Figma, Rak-8, \"agak slop\" after the audit said 0 fail): about 150 pt between the bag's delivery card and its summary, and the lower 40% of the confirmation empty",
       check: "review; in Figma, the audit flags an empty band of 96 pt or more between blocks",
       formerly: ["RX-C-02"],
     },
@@ -1387,7 +1387,7 @@ export const RULES: Rule[] = [
       do: "Before the first drawing, write the style in five lines (six with characters) in DESIGN.md or the Assumptions:\n  - line: stroke weight and cap, or no stroke\n  - shape: geometric or hand-drawn, and the corner radius\n  - colour: 2 to 4 tokens from the palette, one accent\n  - depth and detail: flat, one shadow tone, or 3D; how much detail\n  - subject: objects from the product, people, or abstract\n  - texture, when the style has any: one family, its source, and its strength (RX-UI-22)\n  - characters, when the style has people or a mascot: proportions, face detail, the range of people shown, and a short set of poses and expressions; one character system across the product\n  - Derive each line from the visual language (RX-UI-10): the stroke from the icon set, the radius from the components, the colour from the tokens. Functional icons stay in the icon set (RX-UI-13), not in the illustration style.\n  - Record the style as a Decision Receipt: evidence from a brand guide, references, or the brief; Evidence None when it is derived from the visual language alone.",
       dont: "Draw in the generator's default style (flat people with oversized limbs, gradient blobs, isometric 3D), or mix line and filled illustration in one product.",
       why: "Without a written style, illustration drifts toward the generator's default and away from the UI around it.",
-      basis: "Art direction practice (a written illustration style); RX-UI-10 chosen visual language; anti-slop tell (generic illustration); owner review 2026-10-22: request for illustration guidance",
+      basis: "Art direction practice (a written illustration style); RX-UI-10 chosen visual language; unslop tell (generic illustration); owner review 2026-10-22: request for illustration guidance",
       notWhen: "the brand already has an illustration system; follow it (RX-UI-13)",
       tradeoff: "one more step before the first drawing, and less variety",
       check: "review",
@@ -1974,7 +1974,7 @@ export const RULES: Rule[] = [
     },
   ]),
 
-  ...skill("anti-slop", [
+  ...skill("unslop", [
     {
       num: 1,
       title: "Only real numbers",
@@ -1995,7 +1995,7 @@ export const RULES: Rule[] = [
       do: "Use testimonials, names, and faces only when they are real and consented.",
       dont: "Make up testimonials, reviewers, or customer photos.",
       why: "Fake people are fake endorsements.",
-      basis: "ryux anti-slop principle",
+      basis: "ryux unslop principle",
       check: "list every person, quote, review, and customer logo on the screen with its source or its sample label; fails on any shown as real without a source",
       formerly: ["RX-C-04"],
     },
@@ -2007,7 +2007,7 @@ export const RULES: Rule[] = [
       do: "Fill mockups with realistic sample content consistent with the brief (names, merchants, amounts in the brief's currency, dates). Names of people, merchants, and orders are made up, and listed as sample data in the output. A real brand the design needs (a bank, an e-wallet, a card network, a payment or store mark): ask once, with the fact questions, whether to show the real brands with their official logos or made-up names; when you cannot ask, use the real brand with its official logo (RX-UI-28), with an open-rule label when which brands is not decided (\"Bank list: sample, not decided\"). Never a made-up brand with a drawn logo, or a real brand set as plain text where its logo belongs. A stand-in asset (a sample QR code, a map, a photo, the product's own logo before it exists) carries a Placeholder annotation in the design tool, not a note inside the UI (capabilities/design-deliver.md). On any design-tool canvas, sample values carry a \"Sample data\" annotation, never a chip in the UI. On a marketing surface (a landing page, a store listing, an ad), nothing on the design says sample, example, or placeholder: sample values in a device mockup carry a \"Sample data\" annotation, a partner's or regulator's mark still missing is its name set as plain text in the page's type (not drawn like a logo), annotated with the file it needs, and both are listed in the handoff; an empty logo slot reads as a bug. In a code prototype of product UI, which has no annotation layer, a sample value the user would act on (a virtual account or bank account number, a token, a phone number, a code to enter) carries a small visible \"Sample\" label where it shows; a code comment or the report alone does not reach the person testing the screen.",
       dont: "Name places that contradict each other or the map: an origin is one real place at one level (a regency, or a town in it, never both as two origins: Berastagi is in Karo, owner notes H3 and H4); unsure of the geography, use the larger area. Put [REAL DATA], XXX, or lorem text on the canvas where sample data would do, or ship sample data or placeholder copy as final. A sample-data label does not turn a fee, policy, or claim into a fact (RX-PR-02). On a marketing surface, set \"Sample data\", \"Example amount\", or \"OJK logo\" as visible text. In a code prototype, leave a sample account or token number unlabelled on screen because a comment says it is sample. Put street names on an illustrative map: they read as a real map; show the route, the pins, and an \"Illustrative map\" label. On a design canvas, leave an empty dashed box where a logo goes: it reads as forgotten; place the real mark, or ask, and say what is missing in an annotation outside the screen.",
       why: "Bracketed values read as unfinished and hide the layout's real behavior; unlabeled sample data ships by accident.",
-      basis: "ryux anti-slop principle; ryux visual benchmark 2.5, 2026-10-09: [Brand] and XXX read as unfinished; wallet-detail benchmark, 2.19.2: 3 of 3 runs showed Visa on a sample card; owner decision 2026-11-06 after the Pasarku payment run (made-up banks and QRIS as plain text, a \"sample QR\" note inside the screen): use the real brand's logo or ask, and mark placeholders with annotations; owner blind review 2026-11-08 of the Raja Emas landing rerun (RYUX 2.22.5, docs/benchmarks/landing-gold): \"Sample data\" and \"Example entry\" labels and dashed \"OJK logo\" boxes on the page read as not ready for production (production 3 against 4 for no skill); ryux decision eval D02, 2026-11-14: a code prototype showed a sample virtual account number, labelled sample only in a code comment; owner blind review 2026-11-18 of three Rak flows (secondhand books, Yogyakarta): an empty dashed logo slot inside the QRIS card read as forgotten; owner blind rating 2026-11-19 of the UX flow benchmark B2, round 4: street names on an illustrative map read as a real map",
+      basis: "ryux unslop principle; ryux visual benchmark 2.5, 2026-10-09: [Brand] and XXX read as unfinished; wallet-detail benchmark, 2.19.2: 3 of 3 runs showed Visa on a sample card; owner decision 2026-11-06 after the Pasarku payment run (made-up banks and QRIS as plain text, a \"sample QR\" note inside the screen): use the real brand's logo or ask, and mark placeholders with annotations; owner blind review 2026-11-08 of the Raja Emas landing rerun (RYUX 2.22.5, docs/benchmarks/landing-gold): \"Sample data\" and \"Example entry\" labels and dashed \"OJK logo\" boxes on the page read as not ready for production (production 3 against 4 for no skill); ryux decision eval D02, 2026-11-14: a code prototype showed a sample virtual account number, labelled sample only in a code comment; owner blind review 2026-11-18 of three Rak flows (secondhand books, Yogyakarta): an empty dashed logo slot inside the QRIS card read as forgotten; owner blind rating 2026-11-19 of the UX flow benchmark B2, round 4: street names on an illustrative map read as a real map",
       check: "audit_copy C-01; in a code prototype, each sample number the user would copy, pay to, or enter has a visible sample label beside it",
       formerly: ["RX-C-05"],
     },
@@ -2030,7 +2030,7 @@ export const RULES: Rule[] = [
       do: "For each potentially decorative pattern, answer three questions, and keep it only when all three have a real answer:\n  - purpose: what does it do?\n  - contribution: what does it add to understanding, interaction, or the product's character?\n  - necessity: would something simpler do the same?\n  - Three feature cards pass when the features are equal and compared; when one matters more, give it more weight instead.",
       dont: "Keep cards, gradients, badges, shadows, or animation that have no reason, or accept \"it looks more interesting\" as one.",
       why: "Unjustified decoration is what makes AI-generated UI look the same.",
-      basis: "ryux anti-slop principle; selective attention and banner blindness (Benway and Lane 1998; NNGroup eyetracking): people skip what looks like an ad or decoration, so a key message never wears that look",
+      basis: "ryux unslop principle; selective attention and banner blindness (Benway and Lane 1998; NNGroup eyetracking): people skip what looks like an ad or decoration, so a key message never wears that look",
       check: "review",
       formerly: ["RX-H-08"],
     },
@@ -2087,7 +2087,7 @@ export const RULES: Rule[] = [
       do: "Before handing off, count on the render or in the design file's variables, and report the counts against these limits:\n  - accent hues 1 (status colors, and secondary colors the brand defines, are named and excluded)\n  - grey families 1\n  - corner radii only from the scale, matching the shape lock\n  - display sizes per screen 1; text sizes in a screen's main content 3 at most\n  - icon sets 1, in the chosen icon style\n  - emoji in interface chrome 0; invented logos or app icons 0 (RX-AS-11); gradients without a brand reason 0\n  - labels for the same intent 1\n  - A count over its limit fails unless the brief or DESIGN.md gives the reason.",
       dont: "Judge consistency by eye only, or hand off a screen with five accent hues, mixed icon sets, or two labels for one action because it looks fine.",
       why: "Counts are harder to talk past than impressions; a design that passed a by-eye review still shipped five hues and the wrong tab icons.",
-      basis: `isolation effect (von Restorff 1933): several accents cancel each other out; pattern also in ${AP}, anti-slop counts; written for RYUX; owner review 2026-10-17: withryux.pen passed RYUX with 5+ hues and wrong tab icons`,
+      basis: `isolation effect (von Restorff 1933): several accents cancel each other out; pattern also in ${AP}, unslop counts; written for RYUX; owner review 2026-10-17: withryux.pen passed RYUX with 5+ hues and wrong tab icons`,
       check: "count on the render or the design file's variables; report in the Delivery Gate",
     },
     {
@@ -2208,15 +2208,15 @@ export const QUALITY_LOCKS: { item: string; rules: string[] }[] = [
 
 // Contextual activation: load only what the task needs (core is always loaded).
 export const ACTIVATION: { task: string; skills: SkillId[] }[] = [
-  { task: "UI implementation", skills: ["product", "ux", "ui", "design-system", "frontend", "visual-qa", "anti-slop"] },
-  { task: "Form implementation", skills: ["product", "ux", "forms", "interaction", "accessibility", "edge-cases", "content", "ui", "anti-slop"] },
-  { task: "Mobile UI", skills: ["ux", "ui", "content", "responsive", "accessibility", "anti-slop"] },
-  { task: "Checkout or payment", skills: ["product", "interaction", "forms", "content", "edge-cases", "ui", "anti-slop"] },
-  { task: "Data-heavy view (list, table, dashboard)", skills: ["ux", "edge-cases", "responsive", "design-system", "frontend", "ui", "anti-slop"] },
+  { task: "UI implementation", skills: ["product", "ux", "ui", "design-system", "frontend", "visual-qa", "unslop"] },
+  { task: "Form implementation", skills: ["product", "ux", "forms", "interaction", "accessibility", "edge-cases", "content", "ui", "unslop"] },
+  { task: "Mobile UI", skills: ["ux", "ui", "content", "responsive", "accessibility", "unslop"] },
+  { task: "Checkout or payment", skills: ["product", "interaction", "forms", "content", "edge-cases", "ui", "unslop"] },
+  { task: "Data-heavy view (list, table, dashboard)", skills: ["ux", "edge-cases", "responsive", "design-system", "frontend", "ui", "unslop"] },
   { task: "Frontend logic or utilities (formatting, state, data shown to users)", skills: ["frontend", "content", "edge-cases"] },
-  { task: "AI feature (generated answers, summaries, drafts)", skills: ["product", "ux", "content", "edge-cases", "anti-slop"] },
-  { task: "Copy only (UI text, chat, announcements)", skills: ["content", "anti-slop"] },
-  { task: "Visual refinement", skills: ["ui", "design-system", "visual-qa", "anti-slop"] },
+  { task: "AI feature (generated answers, summaries, drafts)", skills: ["product", "ux", "content", "edge-cases", "unslop"] },
+  { task: "Copy only (UI text, chat, announcements)", skills: ["content", "unslop"] },
+  { task: "Visual refinement", skills: ["ui", "design-system", "visual-qa", "unslop"] },
   { task: "User flow, journey map, or another UX map", skills: ["product", "ux", "edge-cases", "content"] },
 ];
 

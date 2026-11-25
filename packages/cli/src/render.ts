@@ -123,7 +123,7 @@ ${hardGatesBrief()}
 
 ## Task table: which knowledge to read
 
-A small change (a copy fix, one component, one state) reads only the module it touches, plus anti-slop for visual work; any other task reads its row, plus \`knowledge/content.md\` whenever it writes interface copy (a screen with words counts), \`knowledge/imagery.md\` when it has photos, illustration, 3D, motion, an expressive surface, or items that carry their own art (events, books, music, dishes, places), and \`knowledge/illustration.md\` when it draws illustration, a mascot, or custom icons:
+A small change (a copy fix, one component, one state) reads only the module it touches, plus unslop for visual work; any other task reads its row, plus \`knowledge/content.md\` whenever it writes interface copy (a screen with words counts), \`knowledge/imagery.md\` when it has photos, illustration, 3D, motion, an expressive surface, or items that carry their own art (events, books, music, dishes, places), and \`knowledge/illustration.md\` when it draws illustration, a mascot, or custom icons:
 
 ${activationTable()}
 
@@ -173,7 +173,7 @@ function skillBody(id: string): string {
   const s = skillById(id);
   if (!s) return "";
   const extra =
-    s.id === "anti-slop"
+    s.id === "unslop"
       ? `\n\n## Hard Gates\n\n${hardGatesTable()}\n\n## Purpose Gates\n\n${purposeGatesTable()}\n\n## Quality Locks\n\n${qualityLocksTable()}`
       : "";
   return `# ryux-${s.id}: ${s.label}
@@ -198,7 +198,7 @@ ${rulesOf(s.id).map(ruleBlock).join("\n\n")}`;
 export const SKILL_NAME = "ryux";
 
 const RYUX_DESCRIPTION =
-  "RYUX - design intelligence for AI agents and designers. Tell it what you are doing and it routes to Analyze (understand an existing interface), Design (create or improve UI and UX in Figma, pen.dev, or mockups), Build (implement in code), Critique (find what to change first, with evidence, or run a heuristic evaluation), or QA (verify a build against the design), reads only the knowledge the task needs (product, UX, UI, interaction, forms, content, accessibility, responsive, design system, frontend, anti-slop), and closes with quality gates. Use for any UI, UX, copy, frontend, design review, or design analysis task, and for product visuals: illustration, 3D, imagery, icons, logos, and motion, even when the request does not name RYUX.";
+  "RYUX - design intelligence for AI agents and designers. Tell it what you are doing and it routes to Analyze (understand an existing interface), Design (create or improve UI and UX in Figma, pen.dev, or mockups), Build (implement in code), Critique (find what to change first, with evidence, or run a heuristic evaluation), or QA (verify a build against the design), reads only the knowledge the task needs (product, UX, UI, interaction, forms, content, accessibility, responsive, design system, frontend, unslop), and closes with quality gates. Use for any UI, UX, copy, frontend, design review, or design analysis task, and for product visuals: illustration, 3D, imagery, icons, logos, and motion, even when the request does not name RYUX.";
 
 /** Where a former skill id lives inside the single `ryux` skill folder. */
 export function modulePath(id: string): string | null {

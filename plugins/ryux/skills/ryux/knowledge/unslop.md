@@ -1,13 +1,13 @@
-# Anti-slop
+# Unslop
 
 Stops generic AI output before it ships: no invented numbers or people, decoration with a purpose, and honest claims.
 
-> Group Quality · Delivery Gate area ANTI-SLOP · RYUX 2.24.1. Levels are defined in `SKILL.md`.
+> Group Quality · Delivery Gate area UNSLOP · RYUX 2.24.1. Levels are defined in `SKILL.md`.
 
-Anti-slop runs in Verify and deliver, after design, build, critique, and QA; it is the final
+Unslop runs in Verify and deliver, after design, build, critique, and QA; it is the final
 quality gate, never the
-starting point. Anti-slop is the floor, not the ceiling: a tidy, generic surface still fails on expressive
-surfaces (RX-AS-09), and the point of view comes from RX-UI-12. Anti-slop is not a list of banned
+starting point. Unslop is the floor, not the ceiling: a tidy, generic surface still fails on expressive
+surfaces (RX-AS-09), and the point of view comes from RX-UI-12. Unslop is not a list of banned
 styles. It has three parts.
 
 **Hard Gates**: reject or fix before delivery; no written exception. The list is generated below
@@ -141,14 +141,14 @@ Real screens show what real products do instead of invented numbers and urgency:
 
 - Do: Use testimonials, names, and faces only when they are real and consented.
 - Do not: Make up testimonials, reviewers, or customer photos.
-- Why: Fake people are fake endorsements. (ryux anti-slop principle)
+- Why: Fake people are fake endorsements. (ryux unslop principle)
 - Check: list every person, quote, review, and customer logo on the screen with its source or its sample label; fails on any shown as real without a source
 
 ### RX-AS-03 [Required] [Hard Gate] Sample data is realistic and labeled; placeholders only for what is missing
 
 - Do: Fill mockups with realistic sample content consistent with the brief (names, merchants, amounts in the brief's currency, dates). Names of people, merchants, and orders are made up, and listed as sample data in the output. A real brand the design needs (a bank, an e-wallet, a card network, a payment or store mark): ask once, with the fact questions, whether to show the real brands with their official logos or made-up names; when you cannot ask, use the real brand with its official logo (RX-UI-28), with an open-rule label when which brands is not decided ("Bank list: sample, not decided"). Never a made-up brand with a drawn logo, or a real brand set as plain text where its logo belongs. A stand-in asset (a sample QR code, a map, a photo, the product's own logo before it exists) carries a Placeholder annotation in the design tool, not a note inside the UI (capabilities/design-deliver.md). On any design-tool canvas, sample values carry a "Sample data" annotation, never a chip in the UI. On a marketing surface (a landing page, a store listing, an ad), nothing on the design says sample, example, or placeholder: sample values in a device mockup carry a "Sample data" annotation, a partner's or regulator's mark still missing is its name set as plain text in the page's type (not drawn like a logo), annotated with the file it needs, and both are listed in the handoff; an empty logo slot reads as a bug. In a code prototype of product UI, which has no annotation layer, a sample value the user would act on (a virtual account or bank account number, a token, a phone number, a code to enter) carries a small visible "Sample" label where it shows; a code comment or the report alone does not reach the person testing the screen.
 - Do not: Name places that contradict each other or the map: an origin is one real place at one level (a regency, or a town in it, never both as two origins: Berastagi is in Karo, owner notes H3 and H4); unsure of the geography, use the larger area. Put [REAL DATA], XXX, or lorem text on the canvas where sample data would do, or ship sample data or placeholder copy as final. A sample-data label does not turn a fee, policy, or claim into a fact (RX-PR-02). On a marketing surface, set "Sample data", "Example amount", or "OJK logo" as visible text. In a code prototype, leave a sample account or token number unlabelled on screen because a comment says it is sample. Put street names on an illustrative map: they read as a real map; show the route, the pins, and an "Illustrative map" label. On a design canvas, leave an empty dashed box where a logo goes: it reads as forgotten; place the real mark, or ask, and say what is missing in an annotation outside the screen.
-- Why: Bracketed values read as unfinished and hide the layout's real behavior; unlabeled sample data ships by accident. (ryux anti-slop principle; ryux visual benchmark 2.5, 2026-10-09: [Brand] and XXX read as unfinished; wallet-detail benchmark, 2.19.2: 3 of 3 runs showed Visa on a sample card; owner decision 2026-11-06 after the Pasarku payment run (made-up banks and QRIS as plain text, a "sample QR" note inside the screen): use the real brand's logo or ask, and mark placeholders with annotations; owner blind review 2026-11-08 of the Raja Emas landing rerun (RYUX 2.22.5, docs/benchmarks/landing-gold): "Sample data" and "Example entry" labels and dashed "OJK logo" boxes on the page read as not ready for production (production 3 against 4 for no skill); ryux decision eval D02, 2026-11-14: a code prototype showed a sample virtual account number, labelled sample only in a code comment; owner blind review 2026-11-18 of three Rak flows (secondhand books, Yogyakarta): an empty dashed logo slot inside the QRIS card read as forgotten; owner blind rating 2026-11-19 of the UX flow benchmark B2, round 4: street names on an illustrative map read as a real map)
+- Why: Bracketed values read as unfinished and hide the layout's real behavior; unlabeled sample data ships by accident. (ryux unslop principle; ryux visual benchmark 2.5, 2026-10-09: [Brand] and XXX read as unfinished; wallet-detail benchmark, 2.19.2: 3 of 3 runs showed Visa on a sample card; owner decision 2026-11-06 after the Pasarku payment run (made-up banks and QRIS as plain text, a "sample QR" note inside the screen): use the real brand's logo or ask, and mark placeholders with annotations; owner blind review 2026-11-08 of the Raja Emas landing rerun (RYUX 2.22.5, docs/benchmarks/landing-gold): "Sample data" and "Example entry" labels and dashed "OJK logo" boxes on the page read as not ready for production (production 3 against 4 for no skill); ryux decision eval D02, 2026-11-14: a code prototype showed a sample virtual account number, labelled sample only in a code comment; owner blind review 2026-11-18 of three Rak flows (secondhand books, Yogyakarta): an empty dashed logo slot inside the QRIS card read as forgotten; owner blind rating 2026-11-19 of the UX flow benchmark B2, round 4: street names on an illustrative map read as a real map)
 - Check: audit_copy C-01; in a code prototype, each sample number the user would copy, pay to, or enter has a visible sample label beside it
 - Machine check: `ryux scan` flags lorem ipsum filler (fail); placeholder content: John Doe, Jane Doe, [DATA], [TBD], XXXX; a stand-in asset set as text ([QR], [FOTO], [icon]); a logo slot ([LOGO]) standing alone, with no brand name in plain text beside it (warn)
 - Measured: `ryux scan <url>` flags a stand-in box, once per page: a dashed or dotted box whose words name what belongs in it ("Logo Kelasku", "QR", "Foto"); a logo slot with the brand name in plain text beside it is left alone (warn)
@@ -169,7 +169,7 @@ Real screens show what real products do instead of invented numbers and urgency:
   - necessity: would something simpler do the same?
   - Three feature cards pass when the features are equal and compared; when one matters more, give it more weight instead.
 - Do not: Keep cards, gradients, badges, shadows, or animation that have no reason, or accept "it looks more interesting" as one.
-- Why: Unjustified decoration is what makes AI-generated UI look the same. (ryux anti-slop principle; selective attention and banner blindness (Benway and Lane 1998; NNGroup eyetracking): people skip what looks like an ad or decoration, so a key message never wears that look)
+- Why: Unjustified decoration is what makes AI-generated UI look the same. (ryux unslop principle; selective attention and banner blindness (Benway and Lane 1998; NNGroup eyetracking): people skip what looks like an ad or decoration, so a key message never wears that look)
 - Check: review
 - Measured: `ryux scan <url>` flags visual tells, once per page: three or more glowing elements (a coloured shadow around them), three or more blurred glass layers, or a pill above the main heading with no status in it (warn)
 
@@ -218,7 +218,7 @@ Real screens show what real products do instead of invented numbers and urgency:
   - labels for the same intent 1
   - A count over its limit fails unless the brief or DESIGN.md gives the reason.
 - Do not: Judge consistency by eye only, or hand off a screen with five accent hues, mixed icon sets, or two labels for one action because it looks fine.
-- Why: Counts are harder to talk past than impressions; a design that passed a by-eye review still shipped five hues and the wrong tab icons. (isolation effect (von Restorff 1933): several accents cancel each other out; pattern also in appllama-app-design-skill (MIT), anti-slop counts; written for RYUX; owner review 2026-10-17: withryux.pen passed RYUX with 5+ hues and wrong tab icons)
+- Why: Counts are harder to talk past than impressions; a design that passed a by-eye review still shipped five hues and the wrong tab icons. (isolation effect (von Restorff 1933): several accents cancel each other out; pattern also in appllama-app-design-skill (MIT), unslop counts; written for RYUX; owner review 2026-10-17: withryux.pen passed RYUX with 5+ hues and wrong tab icons)
 - Check: count on the render or the design file's variables; report in the Delivery Gate
 - Measured: `ryux scan <url>` flags the counts before handoff, once per page: emoji in a control, a tab, a menu, or navigation; gradients with colour that is not among the page's colour tokens (CSS custom properties), leaving out gradients that draw a thing (an illustration, a device mock, a small shape with no text) (warn)
 

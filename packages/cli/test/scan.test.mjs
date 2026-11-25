@@ -706,7 +706,7 @@ test("scan <url> fails a faint field edge, a faint icon-only button, and a focus
   assert.match(found[3], /^RX-A11Y-03 p > button\.soft: "Kirim": focus indicator 1\.\d+:1 \(#dbeafe on #ffffff\)/);
 });
 
-// Visual tells (knowledge/anti-slop.md): warn once per page, never at a single, reasoned use.
+// Visual tells (knowledge/unslop.md): warn once per page, never at a single, reasoned use.
 test("scan <url> warns each visual tell once per page, and stays quiet on one reasoned use", (t) => {
   const dir = mkdtempSync(join(tmpdir(), "ryux-tells-"));
   const page = (name, html) => {
