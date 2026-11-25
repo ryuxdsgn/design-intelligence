@@ -92,9 +92,9 @@ The six stages of the core workflow (SKILL.md), as Design runs them.
    exists sets the UI direction, the next message offers three directions as style tiles and waits; the motion direction
    rides with it. **Draw them first, in one call:** \`node <this skill's folder>/bin/dist/cli/index.js directions --project <name> --context "<owner, city, audience>" --tags <product>,<audience>,<glance|session>\`
    (nothing downloaded; it lists the tags it knows; the context is who this is for, in the brief's words, so two products of one name draw apart) gives each direction a surface, an accent hue range, a type category with fonts,
-   a layout, a weight carrier, a material, an idea source, a page skeleton (for a landing or marketing page: story, flow spine, product
-   in the middle, the visitor's questions, a timeline, without and with, editorial, a poster; three directions, three skeletons, and
-   none of them the default hero beside a card, three steps, a two-column FAQ, and a dark call to action), a surface treatment (flat, neobrutal, glass, clay, tactile, minimal) with its
+   a layout, a weight carrier, a material, an idea source, a conceptual model (what the product is understood as, and so the
+   structure of the page: a report, a companion, a schedule, a shelf, a conversation, a tool, a place, a journey, a community;
+   three directions, three models, and none of them the default hero beside a card, three steps, a two-column FAQ, and a dark call to action), a surface treatment (flat, neobrutal, glass, clay, tactile, minimal) with its
    check, a signature for a light, flat direction (one large carrier: a band of the accent, a made image, or display type), a type ramp (body 18 for seniors), and base colours (page, section, ink, muted, accent, and for a colour field the field; muted at 7:1 on the section colour for every audience; a glance caption at 14 px or more), drawn for this project and apart from the category's and RYUX's own
    defaults. The page and section colours are the base: never swap them for cream, ivory, or another light default (\`ryux scan\` and
    \`ryux audit\` warn on a cream page). Tags in your own words are mapped to the catalog's, and it says which it ignored. Build each tile on its draw with an idea of your own; replace one draw only with a reason from this product, said in
@@ -779,7 +779,7 @@ workflow (SKILL.md); Frame, Explore, and Evaluate happen in Design.
    \`node <this skill's folder>/bin/dist/cli/index.js directions --project <name> --context "<owner, city, audience>" --tags <product>,<audience>,<glance|session>\`
    (capabilities/design.md, "Draw them first"). With the user there, offer the three as Design does; in a run with
    no questions, build direction 1 on its draw (surface, accent hue range, type category and ramp, layout, material,
-   idea source, treatment, page skeleton for a landing page, and base colours; the hero takes the form its skeleton gives the product's proof: centred with a wide visual below, a split with the visual at half the width or more, or the proof itself as the hero, all fine; not the proof in a small card beside the heading, which \`ryux scan\` warns on (RX-UI-29), answered with a reason from the product when it is right), mark it provisional in Assumptions with why it fits and its pros and cons for
+   idea source, treatment, conceptual model, and base colours; direction 1 is any of the three, drawn in a shuffled order; the hero takes the form its model gives the product's proof: centred with a wide visual below, a split with the visual at half the width or more, or the proof itself as the hero, all fine; not the proof in a small card beside the heading, which \`ryux scan\` warns on (RX-UI-29), answered with a reason from the product when it is right), mark it provisional in Assumptions with why it fits and its pros and cons for
    this product (from the draw's why, pros, and cons lines), and name the other two in a line each with their main pro and con. The UI gate row writes
    the draw seed and whether the surface was kept; "a one-file build" or "budget" is not a reason to skip the draw. If there is none, run Design's stages 1-4 first
    (capabilities/design.md) instead of inventing one in code. Stage 1's questions come first even

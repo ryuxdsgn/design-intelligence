@@ -974,118 +974,132 @@
     "con": "bisa terasa kosong tanpa satu ciri yang kuat"
    }
   ],
-  "page": [
+  "model": [
    {
-    "id": "story",
-    "name": "Satu cerita bersambung",
-    "note": "halaman mengikuti satu orang dari masalah sampai selesai; setiap section satu adegan dengan waktu atau tempatnya",
+    "id": "report",
+    "name": "Rapor atau catatan",
+    "note": "produk dipahami sebagai catatan kemajuan: halaman berbentuk lembar laporan, entri bertanggal, dan perubahan dari dulu ke sekarang",
     "fit": [
-     "consumer",
-     "family",
-     "senior",
-     "home-service"
+     "education",
+     "health",
+     "finance",
+     "productivity"
     ],
-    "pro": "mudah diikuti dan terasa manusiawi",
-    "con": "panjang; fakta penting bisa tenggelam di dalam cerita"
+    "pro": "menunjukkan hasil yang bisa diperiksa, bukan janji",
+    "con": "datar dan kosong kalau tidak ada contoh catatan yang nyata"
    },
    {
-    "id": "flow-spine",
-    "name": "Alur sebagai tulang punggung",
-    "note": "langkah tugas turun sebagai satu garis di tengah halaman; setiap langkah punya layarnya sendiri di sampingnya, bergantian kiri dan kanan",
+    "id": "coach",
+    "name": "Pendamping",
+    "note": "produk dipahami sebagai seseorang yang mendampingi: halaman berpusat pada orang (guru, perawat, mitra), wajah, kredensial yang bisa dicek, dan kata-katanya sendiri",
+    "fit": [
+     "education",
+     "health",
+     "home-service",
+     "beauty",
+     "senior"
+    ],
+    "pro": "kepercayaan dibangun lewat orang yang bisa dikenali",
+    "con": "butuh orang dan foto yang nyata; contoh harus ditandai sampel"
+   },
+   {
+    "id": "schedule",
+    "name": "Jadwal",
+    "note": "produk dipahami sebagai waktu yang dipesan: halaman adalah kalender atau garis waktu, jam atau hari turun ke bawah",
     "fit": [
      "booking",
-     "health",
      "logistics",
-     "home-service"
+     "health"
     ],
-    "pro": "cara kerja langsung terlihat sebagai urutan",
-    "con": "terasa seperti panduan kalau langkahnya sedikit"
+    "pro": "waktu dan slot yang penting bagi pengguna jadi tulang punggung",
+    "con": "berlebihan kalau waktu bukan keputusan utama pengguna"
    },
    {
-    "id": "demo-led",
-    "name": "Produk di tengah",
-    "note": "satu tampilan produk besar di tengah halaman sejak layar pertama; teks mengelilinginya dan menunjuk bagiannya",
+    "id": "shelf",
+    "name": "Rak atau katalog",
+    "note": "produk dipahami sebagai pilihan yang banyak: halaman adalah rak yang bisa dijelajahi, dengan penyaring di depan dan barang nyata sebagai isinya",
+    "fit": [
+     "commerce",
+     "food",
+     "travel",
+     "property",
+     "media",
+     "education"
+    ],
+    "pro": "orang langsung melihat apa saja yang bisa dipilih",
+    "con": "terasa seperti toko kalau produknya sebenarnya layanan satu orang"
+   },
+   {
+    "id": "conversation",
+    "name": "Percakapan",
+    "note": "produk dipahami sebagai obrolan: halaman adalah utas tanya-jawab, pertanyaan pengguna dalam kata-katanya sendiri dijawab berurutan",
+    "fit": [
+     "health",
+     "finance",
+     "public",
+     "senior",
+     "ai",
+     "home-service"
+    ],
+    "pro": "menjawab kekhawatiran secara langsung, dalam bahasa pengguna",
+    "con": "bisa terasa seperti FAQ panjang kalau jawabannya datar"
+   },
+   {
+    "id": "tool",
+    "name": "Alat kerja",
+    "note": "produk dipahami sebagai alat yang dipakai: satu tampilan produk besar di tengah sejak layar pertama, teks menunjuk bagian-bagiannya",
     "fit": [
      "productivity",
-     "booking",
+     "creative-tool",
      "pro",
-     "youth",
-     "finance"
+     "ai",
+     "umkm"
     ],
     "pro": "orang melihat apa yang mereka dapat sebelum membaca",
     "con": "butuh layar produk yang bagus; tanpa itu halamannya kosong"
    },
    {
-    "id": "question-led",
-    "name": "Pertanyaan pengunjung",
-    "note": "section adalah pertanyaan pengunjung sebagai judul besar, dijawab berurutan; tidak ada hero standar, pertanyaan pertama adalah pembukanya",
+    "id": "place",
+    "name": "Tempat yang dikunjungi",
+    "note": "produk dipahami sebagai ruang yang dimasuki: halaman adalah denah atau peta, setiap section satu ruangan atau titik yang dilewati",
     "fit": [
-     "senior",
-     "health",
-     "finance",
+     "travel",
+     "property",
      "public",
-     "family"
-    ],
-    "pro": "menjawab kekhawatiran secara langsung dan jujur",
-    "con": "bisa terasa seperti FAQ panjang kalau jawabannya datar"
-   },
-   {
-    "id": "timeline",
-    "name": "Satu hari atau satu minggu",
-    "note": "halaman adalah garis waktu: jam, hari, atau minggu turun ke bawah, dan produk muncul di saat yang tepat",
-    "fit": [
-     "booking",
-     "health",
-     "education",
-     "logistics",
+     "family",
      "food"
     ],
-    "pro": "waktu dan jadwal yang penting bagi pengguna jadi tulang punggung",
-    "con": "berlebihan kalau waktunya tidak penting bagi pengguna"
+    "pro": "terasa nyata dan mudah diingat sebagai tempat",
+    "con": "bisa membingungkan kalau produknya tidak punya tempat"
    },
    {
-    "id": "before-after",
-    "name": "Tanpa dan dengan",
-    "note": "halaman dibelah: hidup tanpa produk di satu sisi, dengan produk di sisi lain, per masalah",
+    "id": "journey",
+    "name": "Perjalanan",
+    "note": "produk dipahami sebagai perubahan: halaman mengikuti satu orang dari masalah sampai selesai, setiap section satu adegan",
     "fit": [
+     "consumer",
+     "family",
      "home-service",
-     "food",
-     "beauty",
-     "commerce"
+     "beauty"
     ],
-    "pro": "manfaat terasa konkret dan cepat dibandingkan",
-    "con": "mudah jadi klaim berlebihan; sisi 'tanpa' tidak boleh mengejek pengguna"
+    "pro": "mudah diikuti dan terasa manusiawi",
+    "con": "panjang; fakta penting bisa tenggelam di dalam cerita"
    },
    {
-    "id": "editorial",
-    "name": "Majalah",
-    "note": "tipografi besar, kolom, dan satu tulisan panjang dengan gambar buatan; terasa seperti artikel, bukan iklan",
+    "id": "community",
+    "name": "Komunitas",
+    "note": "produk dipahami sebagai kelompok yang diikuti: halaman menampilkan anggota, karya atau hasil mereka, dan cara bergabung",
     "fit": [
-     "media",
-     "creative-tool",
-     "travel",
-     "education"
-    ],
-    "pro": "berkarakter dan dipercaya seperti tulisan",
-    "con": "lambat untuk orang yang hanya ingin tombol unduh"
-   },
-   {
-    "id": "poster",
-    "name": "Satu poster",
-    "note": "halaman pendek: satu pernyataan besar dengan tombol di layar pertama, lalu satu strip fakta; tidak ada section berlapis",
-    "fit": [
+     "social",
      "youth",
-     "glance",
-     "food",
-     "social"
+     "education",
+     "creative-tool"
     ],
     "avoid": [
-     "senior",
-     "health",
      "finance"
     ],
-    "pro": "cepat, berani, dan mudah diingat",
-    "con": "tidak cukup untuk produk yang butuh penjelasan atau kepercayaan"
+    "pro": "rasa ikut serta, bukan sekadar membeli",
+    "con": "komunitas yang sepi terasa mati; anggota contoh harus ditandai sampel"
    }
   ]
  },

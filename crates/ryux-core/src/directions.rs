@@ -12,7 +12,7 @@
 use serde_json::{json, Value};
 
 const CATALOG: &str = include_str!("../data/directions.json");
-const DIMS: [&str; 9] = ["surface", "accent", "type", "layout", "carrier", "material", "idea", "treatment", "page"];
+const DIMS: [&str; 9] = ["surface", "accent", "type", "layout", "carrier", "material", "idea", "treatment", "model"];
 
 fn catalog() -> Value {
     serde_json::from_str(CATALOG).expect("directions catalog")
@@ -286,6 +286,9 @@ pub fn directions(input: &Value) -> Value {
             let w = match (d, hit, fit.is_empty()) {
                 ("accent", true, _) => 2.5,
                 ("accent", false, _) => 1.5,
+                // a fitting conceptual model leans lightly too: at 2.5 one fitting skeleton (a timeline for education) was in all
+                // five draws and built on 4 of 5 pages (owner H8, 2026-11-25)
+                ("model", true, _) => 1.8,
                 // fit helps without taking over: at 4.0 the one fitting type (rounded) was 36% of first directions for food (H3)
                 (_, true, _) => 2.5,
                 (_, false, true) => 1.5,
@@ -361,7 +364,8 @@ pub fn directions(input: &Value) -> Value {
             });
             let same_material = level == 0 && !locked(5) && pools[5].len() >= 3 && chosen.iter().any(|o| id(&o[5]) == id(&dir[5]))
                 || level == 0 && !locked(7) && pools[7].len() >= 3 && chosen.iter().any(|o| id(&o[7]) == id(&dir[7]))
-                // three page skeletons: three directions on one hero-and-card skeleton read as one idea (owner H6, 2026-11-25)
+                // three conceptual models: three directions on one hero-and-card skeleton read as one idea (owner H6, 2026-11-25),
+                // and the model is what shapes the page, so three models give three structures (H8, 2026-11-25)
                 || level < 2 && !locked(8) && pools[8].len() >= 3 && chosen.iter().any(|o| id(&o[8]) == id(&dir[8]));
             // a light page, a flat treatment, and space as the carrier is the generic template (H3, 2026-11-25: the three light,
             // flat pages formed one group); a light flat direction carries its weight with colour, type, image, or shape
@@ -385,6 +389,13 @@ pub fn directions(input: &Value) -> Value {
         }
     }
 
+    // the first direction is drawn with the freest choice, so it holds the strongest fits; a run that builds direction 1
+    // without asking then builds the same fits for every product of a kind (H8: one timeline on 4 of 5 pages). The order is
+    // shuffled from the seed, so direction 1 is any of the three, and one project still draws the same every time.
+    for i in (1..chosen.len()).rev() {
+        let j = (rng.next() % (i as u64 + 1)) as usize;
+        chosen.swap(i, j);
+    }
     let session = tags.iter().any(|t| t == "session" || t == "pro");
     let out: Vec<Value> = chosen.iter().enumerate().map(|(i, d)| {
         let mut m = serde_json::Map::new();
@@ -515,12 +526,12 @@ mod tests {
     }
 
     #[test]
-    fn three_directions_take_three_page_skeletons_and_strong_text_for_seniors_and_health() {
+    fn three_directions_take_three_conceptual_models_and_strong_text_for_seniors_and_health() {
         // owner H6 2026-11-25: three pages on one hero-and-card skeleton; small grey helper text for seniors and health
         for p in ["Senyum", "a", "b", "c", "d", "e", "f", "g", "h", "i"] {
             for tags in [json!(["dental", "senior", "glance"]), json!(["laundry", "students", "glance"]), json!(["food", "family"])] {
                 let r = draw(json!({ "project": p, "tags": tags }));
-                let pg = ids(&r, "page");
+                let pg = ids(&r, "model");
                 assert!(pg[0] != pg[1] && pg[1] != pg[2] && pg[0] != pg[2], "{p} {tags}: {pg:?}");
                 assert!(!ids(&r, "surface").iter().any(|s| s.starts_with("dark")) || tags[0] == "laundry", "{p} {tags}");
                 for d in r["directions"].as_array().unwrap() {
@@ -724,5 +735,23 @@ mod tests {
             assert_eq!(d["cons"].as_array().unwrap().len(), 7);
         }
     }
-}
 
+    #[test]
+    fn direction_one_is_not_always_the_strongest_fit() {
+        // owner H8 2026-11-25: five tutoring briefs, one timeline built on 4 of 5 pages; direction 1 is now any of the three
+        use std::collections::HashMap;
+        let mut first: HashMap<String, usize> = HashMap::new();
+        let mut seen: Vec<String> = Vec::new();
+        let n = 40;
+        for i in 0..n {
+            let r = draw(json!({ "project": format!("Les{i}"), "context": format!("les privat {i}"), "tags": ["education", "family", "session"] }));
+            let m = ids(&r, "model");
+            assert!(m[0] != m[1] && m[1] != m[2] && m[0] != m[2], "{i}: {m:?}");
+            *first.entry(m[0].clone()).or_default() += 1;
+            for x in m { if !seen.contains(&x) { seen.push(x) } }
+        }
+        let top = first.values().max().copied().unwrap_or(0);
+        assert!(top * 3 <= n, "one model leads direction 1 in {top} of {n}: {first:?}");
+        assert!(seen.len() >= 6, "models seen: {seen:?}");
+    }
+}

@@ -439,7 +439,7 @@ function runDirections(args: string[]): void {
     console.log(`   layout ${line(d.layout)} · weight carried by ${line(d.carrier)} · material ${line(d.material)} · idea from ${line(d.idea)}`);
     const t = d.ramp;
     console.log(`   type ramp ×${t.ratio}: caption ${t.caption} · body ${t.body} · heading ${t.heading} · title ${t.title} · display ${t.display} px; a label takes the body or caption size, one weight up`);
-    if (d.page) console.log(`   page skeleton ${line(d.page)} (for a landing or marketing page: the order and shape of its sections)`);
+    if (d.model) console.log(`   conceptual model ${line(d.model)}: what the product is understood as, which shapes the page and its sections${d.model.note ? `; ${d.model.note}` : ""}`);
     if (d.treatment) console.log(`   treatment ${line(d.treatment)}${d.treatment.check ? ` (check: ${d.treatment.check})` : ""}`);
     if (d.why?.length) console.log(`   why ${d.why.join("; ")}`);
     if (d.pros?.length) console.log(`   pros ${d.pros.join("; ")}`);
