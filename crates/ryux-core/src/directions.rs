@@ -12,7 +12,7 @@
 use serde_json::{json, Value};
 
 const CATALOG: &str = include_str!("../data/directions.json");
-const DIMS: [&str; 8] = ["surface", "accent", "type", "layout", "carrier", "material", "idea", "treatment"];
+const DIMS: [&str; 9] = ["surface", "accent", "type", "layout", "carrier", "material", "idea", "treatment", "page"];
 
 fn catalog() -> Value {
     serde_json::from_str(CATALOG).expect("directions catalog")
@@ -131,7 +131,7 @@ fn readable(l: f64, c: f64, h: f64, against: &str, min: f64, up: bool) -> String
     }
 }
 
-pub fn colours(surface: &str, accent: &Value) -> Value {
+pub fn colours(surface: &str, accent: &Value, strong: bool) -> Value {
     let hsl_h = match (accent["hues"][0].as_f64(), accent["hues"][1].as_f64()) {
         (Some(a), Some(b)) => { let w = if b < a { b + 360.0 } else { b }; ((a + w) / 2.0).rem_euclid(360.0) }
         _ => accent["hue"].as_f64().unwrap_or(250.0),
@@ -169,17 +169,24 @@ pub fn colours(surface: &str, accent: &Value) -> Value {
         out["accent"] = json!(readable(0.30, 0.09, h, "#ffffff", 4.5, false));
         out["onAccent"] = json!("#ffffff");
     }
+    // seniors, families, and health: helper text reads at 7:1, not only 4.5 (owner H5 and H6: small grey read weak
+    // on four of five pages that passed contrast)
+    if strong {
+        let page = out["page"].as_str().unwrap_or("#ffffff").to_string();
+        out["muted"] = json!(readable(if dark { 0.84 } else { 0.50 }, 0.02, h, &page, 7.0, dark));
+    }
     out
 }
 
 /// A type ramp for a direction (RX-UI-03): five sizes, one per role, each about one ratio above the one below, so no
 /// two read as one level. A dense working screen starts at 14 px, a glance screen at 16, both stepping by 1.25; a
 /// display face (serif display, expressive grotesk) by 1.333. A label takes the body or caption size with weight.
-pub fn ramp(type_id: &str, session: bool) -> Value {
+pub fn ramp(type_id: &str, session: bool, senior: bool) -> Value {
     let display = type_id == "serif-display" || type_id == "expressive-grotesk";
     // 1.25 keeps a dense screen's subheading in NN/g's 18–22 px web band (14 x 1.2 gives 17)
     // the body follows how the product is used; a display face only widens the steps above it
-    let base: f64 = if session { 14.0 } else { 16.0 };
+    // a senior audience reads body text at 18 (owner H6: body copy too small and grey for seniors)
+    let base: f64 = if senior { 18.0 } else if session { 14.0 } else { 16.0 };
     let ratio: f64 = if display { 1.333 } else { 1.25 };
     let step = |k: i32| (base * ratio.powi(k)).round();
     json!({
@@ -347,7 +354,9 @@ pub fn directions(input: &Value) -> Value {
                 d.min(360.0 - d) < 60.0
             });
             let same_material = level == 0 && !locked(5) && pools[5].len() >= 3 && chosen.iter().any(|o| id(&o[5]) == id(&dir[5]))
-                || level == 0 && !locked(7) && pools[7].len() >= 3 && chosen.iter().any(|o| id(&o[7]) == id(&dir[7]));
+                || level == 0 && !locked(7) && pools[7].len() >= 3 && chosen.iter().any(|o| id(&o[7]) == id(&dir[7]))
+                // three page skeletons: three directions on one hero-and-card skeleton read as one idea (owner H6, 2026-11-25)
+                || level < 2 && !locked(8) && pools[8].len() >= 3 && chosen.iter().any(|o| id(&o[8]) == id(&dir[8]));
             // a light page, a flat treatment, and space as the carrier is the generic template (H3, 2026-11-25: the three light,
             // flat pages formed one group); a light flat direction carries its weight with colour, type, image, or shape
             let plain = level < 2 && !locked(0) && !locked(4) && id(&dir[0]).starts_with("light")
@@ -371,17 +380,18 @@ pub fn directions(input: &Value) -> Value {
     }
 
     let session = tags.iter().any(|t| t == "session" || t == "pro");
+    let strong = tags.iter().any(|t| matches!(t.as_str(), "senior" | "family" | "kids" | "health"));
     let out: Vec<Value> = chosen.iter().enumerate().map(|(i, d)| {
         let mut m = serde_json::Map::new();
         m.insert("n".into(), json!(i + 1));
-        m.insert("ramp".into(), ramp(&id(&d[2]), session));
-        m.insert("colours".into(), colours(&id(&d[0]), &d[1]));
+        m.insert("ramp".into(), ramp(&id(&d[2]), session, tags.iter().any(|t| t == "senior")));
+        m.insert("colours".into(), colours(&id(&d[0]), &d[1], strong));
         // why this direction, and what it costs: the owner wants the choice explained, pros and cons (2026-11-25).
         // "why" names the product tags an entry fits; an entry drawn with no fit says so, so it is never dressed up.
         let mut why = Vec::new();
         let mut pros = Vec::new();
         let mut cons = Vec::new();
-        for k in [0usize, 1, 2, 3, 7, 5] {
+        for k in [0usize, 1, 2, 3, 8, 7, 5] {
             let e = &d[k];
             let name = e["name"].as_str().unwrap_or("");
             let hit: Vec<String> = strs(e.get("fit")).into_iter().filter(|t| tags.contains(t)).collect();
@@ -500,6 +510,29 @@ mod tests {
     }
 
     #[test]
+    fn three_directions_take_three_page_skeletons_and_strong_text_for_seniors_and_health() {
+        // owner H6 2026-11-25: three pages on one hero-and-card skeleton; small grey helper text for seniors and health
+        for p in ["Senyum", "a", "b", "c", "d", "e", "f", "g", "h", "i"] {
+            for tags in [json!(["dental", "senior", "glance"]), json!(["laundry", "students", "glance"]), json!(["food", "family"])] {
+                let r = draw(json!({ "project": p, "tags": tags }));
+                let pg = ids(&r, "page");
+                assert!(pg[0] != pg[1] && pg[1] != pg[2] && pg[0] != pg[2], "{p} {tags}: {pg:?}");
+                assert!(!ids(&r, "surface").iter().any(|s| s.starts_with("dark")) || tags[0] == "laundry", "{p} {tags}");
+                for d in r["directions"].as_array().unwrap() {
+                    let c = &d["colours"];
+                    let strong = tags[1] != "students";
+                    let need = if strong { 7.0 } else { 4.5 };
+                    let got = ratio(c["muted"].as_str().unwrap(), c["page"].as_str().unwrap());
+                    assert!(got >= need, "{p} {tags}: muted {got}");
+                    if tags[1] == "senior" {
+                        assert_eq!(d["ramp"]["body"], json!(18.0));
+                    }
+                }
+            }
+        }
+    }
+
+    #[test]
     fn a_family_or_baby_brief_never_draws_a_dark_surface() {
         // owner H5 notes 2026-11-25: navy for a family with a baby read technical and night, against clean and soft
         for p in ["Bilas", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k"] {
@@ -542,7 +575,7 @@ mod tests {
     fn every_ramp_passes_the_scale_check() {
         for ty in ["grotesk", "serif-display", "humanist"] {
             for session in [true, false] {
-                let r = ramp(ty, session);
+                let r = ramp(ty, session, false);
                 let s: Vec<f64> = ["caption", "body", "heading", "title", "display"].iter().map(|k| r[*k].as_f64().unwrap()).collect();
                 for w in s.windows(2) {
                     assert!(w[1] / w[0] >= 1.12, "{ty} {session}: {s:?}");
@@ -550,8 +583,8 @@ mod tests {
                 assert!(s[0] >= 12.0);
             }
         }
-        assert_eq!(ramp("grotesk", true)["body"], json!(14.0));
-        assert_eq!(ramp("grotesk", true)["heading"], json!(18.0));
+        assert_eq!(ramp("grotesk", true, false)["body"], json!(14.0));
+        assert_eq!(ramp("grotesk", true, false)["heading"], json!(18.0));
     }
 
     #[test]
@@ -674,8 +707,8 @@ mod tests {
         let r = draw(json!({ "project": "Bilas", "tags": ["laundry", "students", "glance"] }));
         for d in r["directions"].as_array().unwrap() {
             assert!(!d["why"].as_array().unwrap().is_empty());
-            assert_eq!(d["pros"].as_array().unwrap().len(), 6);
-            assert_eq!(d["cons"].as_array().unwrap().len(), 6);
+            assert_eq!(d["pros"].as_array().unwrap().len(), 7);
+            assert_eq!(d["cons"].as_array().unwrap().len(), 7);
         }
     }
 }

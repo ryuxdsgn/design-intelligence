@@ -973,6 +973,120 @@
     "pro": "fokus pada tugas",
     "con": "bisa terasa kosong tanpa satu ciri yang kuat"
    }
+  ],
+  "page": [
+   {
+    "id": "story",
+    "name": "Satu cerita bersambung",
+    "note": "halaman mengikuti satu orang dari masalah sampai selesai; setiap section satu adegan dengan waktu atau tempatnya",
+    "fit": [
+     "consumer",
+     "family",
+     "senior",
+     "home-service"
+    ],
+    "pro": "mudah diikuti dan terasa manusiawi",
+    "con": "panjang; fakta penting bisa tenggelam di dalam cerita"
+   },
+   {
+    "id": "flow-spine",
+    "name": "Alur sebagai tulang punggung",
+    "note": "langkah tugas turun sebagai satu garis di tengah halaman; setiap langkah punya layarnya sendiri di sampingnya, bergantian kiri dan kanan",
+    "fit": [
+     "booking",
+     "health",
+     "logistics",
+     "home-service"
+    ],
+    "pro": "cara kerja langsung terlihat sebagai urutan",
+    "con": "terasa seperti panduan kalau langkahnya sedikit"
+   },
+   {
+    "id": "demo-led",
+    "name": "Produk di tengah",
+    "note": "satu tampilan produk besar di tengah halaman sejak layar pertama; teks mengelilinginya dan menunjuk bagiannya",
+    "fit": [
+     "productivity",
+     "booking",
+     "pro",
+     "youth",
+     "finance"
+    ],
+    "pro": "orang melihat apa yang mereka dapat sebelum membaca",
+    "con": "butuh layar produk yang bagus; tanpa itu halamannya kosong"
+   },
+   {
+    "id": "question-led",
+    "name": "Pertanyaan pengunjung",
+    "note": "section adalah pertanyaan pengunjung sebagai judul besar, dijawab berurutan; tidak ada hero standar, pertanyaan pertama adalah pembukanya",
+    "fit": [
+     "senior",
+     "health",
+     "finance",
+     "public",
+     "family"
+    ],
+    "pro": "menjawab kekhawatiran secara langsung dan jujur",
+    "con": "bisa terasa seperti FAQ panjang kalau jawabannya datar"
+   },
+   {
+    "id": "timeline",
+    "name": "Satu hari atau satu minggu",
+    "note": "halaman adalah garis waktu: jam, hari, atau minggu turun ke bawah, dan produk muncul di saat yang tepat",
+    "fit": [
+     "booking",
+     "health",
+     "education",
+     "logistics",
+     "food"
+    ],
+    "pro": "waktu dan jadwal yang penting bagi pengguna jadi tulang punggung",
+    "con": "berlebihan kalau waktunya tidak penting bagi pengguna"
+   },
+   {
+    "id": "before-after",
+    "name": "Tanpa dan dengan",
+    "note": "halaman dibelah: hidup tanpa produk di satu sisi, dengan produk di sisi lain, per masalah",
+    "fit": [
+     "home-service",
+     "food",
+     "beauty",
+     "commerce"
+    ],
+    "pro": "manfaat terasa konkret dan cepat dibandingkan",
+    "con": "mudah jadi klaim berlebihan; sisi 'tanpa' tidak boleh mengejek pengguna"
+   },
+   {
+    "id": "editorial",
+    "name": "Majalah",
+    "note": "tipografi besar, kolom, dan satu tulisan panjang dengan gambar buatan; terasa seperti artikel, bukan iklan",
+    "fit": [
+     "media",
+     "creative-tool",
+     "travel",
+     "education"
+    ],
+    "pro": "berkarakter dan dipercaya seperti tulisan",
+    "con": "lambat untuk orang yang hanya ingin tombol unduh"
+   },
+   {
+    "id": "poster",
+    "name": "Satu poster",
+    "note": "halaman pendek: satu pernyataan besar dengan tombol di layar pertama, lalu satu strip fakta; tidak ada section berlapis",
+    "fit": [
+     "youth",
+     "glance",
+     "food",
+     "social"
+    ],
+    "avoid": [
+     "senior",
+     "health",
+     "finance"
+    ],
+    "pro": "cepat, berani, dan mudah diingat",
+    "con": "tidak cukup untuk produk yang butuh penjelasan atau kepercayaan"
+   }
   ]
  },
  "defaults": [
@@ -1282,6 +1396,36 @@
    "family",
    "kids",
    "consumer"
+  ],
+  "dental": [
+   "health", "booking"
+  ],
+  "dentist": [
+   "health", "booking"
+  ],
+  "gigi": [
+   "health", "booking"
+  ],
+  "clinic-booking": [
+   "health", "booking"
+  ],
+  "doctor": [
+   "health"
+  ],
+  "dokter": [
+   "health"
+  ],
+  "klinik": [
+   "health"
+  ],
+  "appointments": [
+   "booking"
+  ],
+  "janji": [
+   "booking"
+  ],
+  "shift-workers": [
+   "pro", "consumer"
   ],
   "families": [
    "family",
