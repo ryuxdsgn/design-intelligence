@@ -122,7 +122,7 @@ export async function probeExtract() {
       if (e.tabIndex < 0) o.nt = 1;
       const pushes = e.tagName === "INPUT" && (e.type === "submit" || e.type === "button");
       if (pushes) o.ty = e.type;
-      o.nm = cap((e.getAttribute("aria-label") || (pushes ? e.value : "") || e.textContent || e.tagName.toLowerCase()).trim().replace(/\s+/g, " "));
+      o.nm = cap((e.getAttribute("aria-label") || (pushes ? e.value : "") || e.textContent.trim() || e.querySelector("img[alt]")?.getAttribute("alt") || e.tagName.toLowerCase()).trim().replace(/\s+/g, " "));
     }
     // A link set inline: whether its block has text besides the link (a link in a sentence).
     if (e.tagName === "A" && e.parentElement && getComputedStyle(e).display === "inline") o.sib = e.parentElement.textContent.replace(e.textContent, "").trim().length > 0 ? 1 : 0;

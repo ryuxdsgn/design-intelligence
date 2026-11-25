@@ -500,6 +500,17 @@ mod tests {
     }
 
     #[test]
+    fn a_family_or_baby_brief_never_draws_a_dark_surface() {
+        // owner H5 notes 2026-11-25: navy for a family with a baby read technical and night, against clean and soft
+        for p in ["Bilas", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k"] {
+            for tags in [json!(["home-service", "family"]), json!(["laundry", "bayi", "glance"]), json!(["health", "consumer"])] {
+                let r = draw(json!({ "project": p, "tags": tags }));
+                assert!(!ids(&r, "surface").iter().any(|s| s.starts_with("dark")), "{p} {tags}: {:?}", ids(&r, "surface"));
+            }
+        }
+    }
+
+    #[test]
     fn avoided_tags_and_defaults_stay_out() {
         for p in ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j"] {
             let r = draw(json!({ "project": p, "tags": ["health", "senior"] }));

@@ -1556,6 +1556,17 @@ impl<'a> Page<'a> {
             let i = *stores.iter().find(|&&i| !has_img(i)).unwrap();
             tell(&mut out, "RX-DS-02", "store-forms", Some(i), format!("the store links come in two forms, a badge image and {}: show both stores the same way, each store's own badge at one height", quote(self.text_of(i, "nm"))));
         }
+        // the two stores at two heights, side by side or stacked (owner H5 note, CU): a pair reads as one control when
+        // its badges match; the height is the badge image's when there is one
+        let tall = |i: usize| (i + 1..self.els.len()).take_while(|&k| self.contains(i, k)).find(|&k| self.els[k].tag == "IMG").map_or(self.els[i].r.h, |k| self.els[k].r.h);
+        let pair = stores.iter().flat_map(|&a| stores.iter().map(move |&b| (a, b))).find(|&(a, b)| {
+            let (ra, rb) = (self.els[a].r, self.els[b].r);
+            a < b && tall(a) > 0.0 && tall(b) > 0.0 && ((ra.y - rb.y).abs() < 4.0 || (rb.y - (ra.y + ra.h)).abs() < 24.0)
+                && (tall(a) - tall(b)).abs() > 3.0
+        });
+        if let Some((a, b)) = pair {
+            tell(&mut out, "RX-DS-02", "store-heights", Some(b), format!("the store badges stand at two heights ({} and {} px): give both stores' badges one height", tall(a).round(), tall(b).round()));
+        }
         // one fill in two corner shapes: the same action colour on a pill and on a rounded box reads as two components
         let mut by_fill: Vec<(&str, Vec<usize>)> = Vec::new();
         for &i in buttons.iter().filter(|&&i| !has_img(i)) {

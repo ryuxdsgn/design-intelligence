@@ -83,7 +83,10 @@
     ],
     "avoid": [
      "senior",
-     "glance"
+     "glance",
+     "family",
+     "kids",
+     "health"
     ],
     "pro": "media dan angka menonjol, nyaman untuk sesi lama",
     "con": "terasa berat untuk produk sehari-hari; teks redup harus tetap terang"
@@ -94,10 +97,13 @@
     "note": "biru malam, hijau hutan, merah anggur; suasana kuat",
     "fit": [],
     "avoid": [
-     "senior"
+     "senior",
+     "family",
+     "kids",
+     "health"
     ],
     "pro": "suasana kuat dan mudah diingat",
-    "con": "foto produk dan makanan bisa terlihat kurang segar; kontras teks kecil harus dijaga"
+    "con": "foto produk dan makanan bisa terlihat kurang segar; terasa malam dan teknis untuk keluarga, anak, dan kesehatan; kontras teks kecil harus dijaga"
    },
    {
     "id": "colour-field",
@@ -1236,6 +1242,46 @@
   ],
   "teens": [
    "youth"
+  ],
+  "baby": [
+   "family",
+   "kids",
+   "consumer"
+  ],
+  "babies": [
+   "family",
+   "kids",
+   "consumer"
+  ],
+  "bayi": [
+   "family",
+   "kids",
+   "consumer"
+  ],
+  "balita": [
+   "family",
+   "kids",
+   "consumer"
+  ],
+  "toddlers": [
+   "family",
+   "kids",
+   "consumer"
+  ],
+  "newborn": [
+   "family",
+   "kids",
+   "consumer"
+  ],
+  "mothers": [
+   "family",
+   "kids",
+   "consumer"
+  ],
+  "moms": [
+   "family",
+   "kids",
+   "consumer"
   ],
   "families": [
    "family",

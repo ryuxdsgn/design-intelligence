@@ -169,6 +169,12 @@ test("the skill runs the RYUX CLI from the project, not as a download, and never
   assert.match(flat, /never swap them for cream, ivory, or another light default/);
   // owner 2026-11-25: the choice of direction is part of the experience; each one says why, its pros, and its cons
   assert.match(flat, /Kenapa, Kelebihan, Kekurangan/);
+  // owner H5 notes 2026-11-25: the price question gets an answer, each question once, one download action
+  const ux = renderBundle()["knowledge/ux.md"].replace(/\s+/g, " ");
+  assert.match(ux, /A product people pay for answers "how much\?" on the page/);
+  assert.match(ux, /Each question is answered once/);
+  assert.match(ux, /Contoh harga, belum final/);
+  assert.match(renderBundle()["knowledge/design-system.md"].replace(/\s+/g, " "), /The badges are the download action wherever it appears/);
   assert.match(flat, /a con is never left out to make a direction look better/);
   assert.match(flat, /provisional in Assumptions with why it fits and its pros and cons/);
   assert.match(flat, /The user's own choice always wins: a font, colour, or layout they\s+name is locked/);
