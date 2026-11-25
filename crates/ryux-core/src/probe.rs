@@ -13,7 +13,7 @@ use std::collections::{HashMap, HashSet};
 
 /// What the rendered checks look for, one row per line of RENDER_CHECKS in packages/cli/src/checks.ts (which also
 /// lists RX-QA-08, script errors, reported by the CLI itself). `cargo test` and the CLI tests hold them equal.
-pub const CATALOGUE: [(&str, &str); 18] = [
+pub const CATALOGUE: [(&str, &str); 20] = [
     ("RX-RD-01", "fail"),
     ("RX-A11Y-01", "fail"),
     ("RX-A11Y-01", "warn"),
@@ -28,6 +28,8 @@ pub const CATALOGUE: [(&str, &str); 18] = [
     ("RX-AS-03", "warn"),
     ("RX-AS-11", "warn"),
     ("RX-UI-26", "warn"),
+    ("RX-UI-36", "warn"),
+    ("RX-DS-02", "warn"),
     ("RX-UI-01", "warn"),
     ("RX-UI-03", "warn"),
     ("RX-UX-15", "warn"),
@@ -887,6 +889,19 @@ fn blend(top: Colour, bottom: Colour) -> Colour {
     let c = over(Rgb { r: top[0], g: top[1], b: top[2] }, top[3], Rgb { r: bottom[0], g: bottom[1], b: bottom[2] });
     [c.r, c.g, c.b, 1.0]
 }
+/// Cream, ivory, or warm off-white: light, warm (hue 25–70°), and only a little coloured (an RGB spread of 3% to 15%).
+/// Pure white and a light yellow are not cream.
+pub(crate) fn cream(c: Colour) -> bool {
+    let (r, g, b) = (c[0] / 255.0, c[1] / 255.0, c[2] / 255.0);
+    let (mx, mn) = (r.max(g).max(b), r.min(g).min(b));
+    let d = mx - mn;
+    if (mx + mn) / 2.0 < 0.88 || !(0.03..=0.15).contains(&d) {
+        return false;
+    }
+    let h = if mx == r { ((g - b) / d).rem_euclid(6.0) } else if mx == g { (b - r) / d + 2.0 } else { (r - g) / d + 4.0 } * 60.0;
+    (25.0..=70.0).contains(&h)
+}
+
 fn lum(c: Colour) -> f64 {
     luminance(Rgb { r: c[0] / 255.0, g: c[1] / 255.0, b: c[2] / 255.0 }, 0.04045)
 }
@@ -1331,6 +1346,19 @@ impl<'a> Page<'a> {
             }
         }
 
+        // A cream page: the paper default of generated pages. Five of five H2 diversity runs (2026-11-25) put the page
+        // on cream, two of them against a draw that said a saturated colour field; the owner noted it on every page.
+        // the body too: a coloured hero on top of a cream page still leaves the rest of the page on cream (H2-U1, U2)
+        if let Some(bg) = page_bg.filter(|c| cream(*c)).or_else(|| self.background(BODY).filter(|c| cream(*c))) {
+            tell(
+                &mut out,
+                "RX-UI-26",
+                "cream",
+                None,
+                format!("the page is cream ({}): the paper look generated pages fall back to; use the surface the direction drew, and keep cream only when the direction chose paper for a reason", hex(bg)),
+            );
+        }
+
         // A pill above the main heading that does not carry status.
         let heading = |i: usize| matches!(self.els[i].tag, "H1" | "H2");
         for &h in visible.iter().filter(|&&i| heading(i)).take(4) {
@@ -1454,6 +1482,102 @@ impl<'a> Page<'a> {
         });
         if let Some((i, said)) = boxed {
             tell(&mut out, "RX-AS-03", "stand-in", Some(i), format!("a dashed box that says {}: a stand-in set in the interface reads as unfinished; use the real file or a labeled sample asset, and for the product's own mark with no file, its name in plain text in the brand's type, listed as missing (RX-AS-11)", quote(&said)));
+        }
+
+        // A row that looks like a picker and is not one (RX-UI-36): three to fourteen boxes side by side, one height,
+        // each bordered or filled with short text, one filled apart from the rest as if chosen, and no control in or
+        // around any of them. People tap it and nothing happens. The owner flagged the day rows on two of five H3 pages
+        // (2026-11-25); across 45 diversity pages it fires on 12, each a non-interactive day, slot, or category row.
+        let ctl_near = |k: usize| self.flag(k, "ctl") || self.ancestors(k).into_iter().any(|a| self.flag(a, "ctl")) || (k + 1..self.els.len()).take_while(|&x| self.contains(k, x)).any(|x| self.flag(x, "ctl"));
+        let mut kids: HashMap<usize, Vec<usize>> = HashMap::new();
+        for i in BODY + 1..self.els.len() {
+            if let Some(p) = self.parent(i).filter(|_| self.shown[i] && self.els[i].r.w > 0.0 && self.els[i].r.h > 0.0) {
+                kids.entry(p).or_default().push(i);
+            }
+        }
+        let mut parents: Vec<_> = kids.iter().filter(|(_, k)| (3..=14).contains(&k.len())).collect();
+        parents.sort_by_key(|(p, _)| **p);
+        let picker = parents.into_iter().find_map(|(_, ks)| {
+            let said: Vec<String> = ks.iter().map(|&k| self.texts.iter().filter(|t| self.contains(k, t.e)).map(|t| t.x.trim()).collect::<Vec<_>>().join(" ")).collect();
+            let boxy = ks.iter().zip(&said).all(|(&k, t)| {
+                let r = self.els[k].r;
+                !t.is_empty() && len16(t) <= 24 && (24.0..=72.0).contains(&r.h) && r.w <= 160.0 && self.n(k, "borderTopLeftRadius") >= 4.0
+                    && (self.n(k, "borderTopWidth") >= 1.0 || self.rgba(self.s(k, "backgroundColor")).is_some_and(|c| c[3] > 0.0))
+            });
+            if !boxy {
+                return None;
+            }
+            let (t0, h0) = (self.els[ks[0]].r.y, self.els[ks[0]].r.h);
+            if ks.iter().any(|&k| (self.els[k].r.y - t0).abs() >= 4.0 || (self.els[k].r.h - h0).abs() > 4.0) {
+                return None;
+            }
+            let mut fills: Vec<(&str, usize)> = Vec::new();
+            for &k in ks {
+                let f = self.s(k, "backgroundColor");
+                match fills.iter_mut().find(|x| x.0 == f) { Some(x) => x.1 += 1, None => fills.push((f, 1)) }
+            }
+            (fills.len() == 2 && fills.iter().filter(|x| x.1 == 1).count() == 1 && !ks.iter().any(|&k| ctl_near(k))).then(|| (ks[0], said.join(" | ")))
+        });
+        if let Some((i, row)) = picker {
+            tell(&mut out, "RX-UI-36", "fake-picker", Some(i), format!("a row that looks like a picker with one option chosen ({}) and no control in it: people tap it and nothing happens; make it a real choice (buttons or radios), or show it as plain text or a table", quote(&row)));
+        }
+
+        // A store badge drawn by hand (RX-AS-11): a control that names App Store or Google Play with an inline SVG icon and
+        // no image. The stores' own badge images are the only allowed badges (Apple and Google badge guidelines); the owner
+        // flagged the drawn ones on two of five H3 pages (a phone icon, a triangle), 2026-11-25. A plain text link is fine.
+        let store = (BODY + 1..self.els.len()).find(|&i| {
+            self.shown[i] && self.flag(i, "ctl") && {
+                let nm = self.text_of(i, "nm").to_lowercase();
+                nm.contains("app store") || nm.contains("google play")
+            } && (i + 1..self.els.len()).take_while(|&k| self.contains(i, k)).any(|k| self.els[k].tag.eq_ignore_ascii_case("svg"))
+                && !(i + 1..self.els.len()).take_while(|&k| self.contains(i, k)).any(|k| self.els[k].tag == "IMG")
+        });
+        if let Some(i) = store {
+            tell(&mut out, "RX-AS-11", "store-badge", Some(i), format!("a store badge drawn with an icon of its own ({}): Apple and Google allow only their own badge images; use the official badge, in one language for both stores, or a plain text link", quote(self.text_of(i, "nm"))));
+        }
+
+        // Buttons in one shape (RX-DS-02). The button-shaped controls on screen: filled, 60 px wide or more, 30 to 72 tall,
+        // not a segment of a row of three or more (a segmented control squares its inner corners).
+        let segment = |i: usize| self.parent(i).is_some_and(|p| {
+            let row: Vec<usize> = kids.get(&p).map(|k| k.iter().copied().filter(|&k| self.flag(k, "ctl")).collect()).unwrap_or_default();
+            row.len() >= 3 && row.iter().all(|&k| (self.els[k].r.y - self.els[i].r.y).abs() < 4.0)
+        });
+        let buttons: Vec<usize> = (BODY + 1..self.els.len()).filter(|&i| {
+            let r = self.els[i].r;
+            self.shown[i] && self.flag(i, "ctl") && r.w >= 60.0 && (30.0..=72.0).contains(&r.h) && r.x + r.w > 0.0
+                && self.rgba(self.s(i, "backgroundColor")).is_some_and(|c| c[3] > 0.5) && !segment(i)
+        }).collect();
+        let corner = |i: usize| { let (r, h) = (self.n(i, "borderTopLeftRadius"), self.els[i].r.h); if r >= h / 2.0 - 1.0 { -1.0 } else { r.round() } };
+        let store_name = |i: usize| { let nm = self.text_of(i, "nm").to_lowercase(); nm.contains("app store") || nm.contains("google play") };
+        let has_img = |i: usize| (i + 1..self.els.len()).take_while(|&k| self.contains(i, k)).any(|k| self.els[k].tag == "IMG");
+        // the two store links in two forms: one store's badge image beside a text button for the other (owner H4 note, JO)
+        let stores: Vec<usize> = (BODY + 1..self.els.len()).filter(|&i| self.shown[i] && self.flag(i, "ctl") && store_name(i)).collect();
+        if stores.iter().any(|&i| has_img(i)) && stores.iter().any(|&i| !has_img(i)) {
+            let i = *stores.iter().find(|&&i| !has_img(i)).unwrap();
+            tell(&mut out, "RX-DS-02", "store-forms", Some(i), format!("the store links come in two forms, a badge image and {}: show both stores the same way, each store's own badge at one height", quote(self.text_of(i, "nm"))));
+        }
+        // the two stores at two heights, side by side or stacked (owner H5 note, CU): a pair reads as one control when
+        // its badges match; the height is the badge image's when there is one
+        let tall = |i: usize| (i + 1..self.els.len()).take_while(|&k| self.contains(i, k)).find(|&k| self.els[k].tag == "IMG").map_or(self.els[i].r.h, |k| self.els[k].r.h);
+        let pair = stores.iter().flat_map(|&a| stores.iter().map(move |&b| (a, b))).find(|&(a, b)| {
+            let (ra, rb) = (self.els[a].r, self.els[b].r);
+            a < b && tall(a) > 0.0 && tall(b) > 0.0 && ((ra.y - rb.y).abs() < 4.0 || (rb.y - (ra.y + ra.h)).abs() < 24.0)
+                && (tall(a) - tall(b)).abs() > 3.0
+        });
+        if let Some((a, b)) = pair {
+            tell(&mut out, "RX-DS-02", "store-heights", Some(b), format!("the store badges stand at two heights ({} and {} px): give both stores' badges one height", tall(a).round(), tall(b).round()));
+        }
+        // one fill in two corner shapes: the same action colour on a pill and on a rounded box reads as two components
+        let mut by_fill: Vec<(&str, Vec<usize>)> = Vec::new();
+        for &i in buttons.iter().filter(|&&i| !has_img(i)) {
+            let f = self.s(i, "backgroundColor");
+            match by_fill.iter_mut().find(|x| x.0 == f) { Some(x) => x.1.push(i), None => by_fill.push((f, vec![i])) }
+        }
+        let mixed = by_fill.iter().find(|(_, is)| is.iter().any(|&i| corner(i) != corner(is[0])));
+        if let Some((_, is)) = mixed {
+            let other = *is.iter().find(|&&i| corner(i) != corner(is[0])).unwrap();
+            let shape = |i: usize| if corner(i) < 0.0 { "a pill".to_string() } else { format!("{} px corners", num_str(corner(i))) };
+            tell(&mut out, "RX-DS-02", "button-shapes", Some(other), format!("buttons of one colour in two shapes ({} with {}, {} with {}): one button component, one corner radius, size variants only", quote(self.text_of(is[0], "nm")), shape(is[0]), quote(self.text_of(other, "nm")), shape(other)));
         }
 
         // A letter in a tile as the logo (RX-AS-11): one or two letters in a filled or bordered box of 16 to 72 px,
@@ -2108,5 +2232,16 @@ mod tests {
         assert_eq!(split_shadows("rgba(1, 2, 3, 0.5) 0px 0px 24px 0px, rgb(0, 0, 0) 0px 2px 4px 0px"), vec!["rgba(1, 2, 3, 0.5) 0px 0px 24px 0px", " rgb(0, 0, 0) 0px 2px 4px 0px"]);
         assert_eq!(hypot(3.0, 4.0), 5.0);
         assert_eq!(hex([187.0, 187.0, 187.0, 1.0]), "#bbbbbb");
+    }
+
+    #[test]
+    fn cream_is_warm_light_and_a_little_coloured() {
+        for c in ["fff7e8", "fff8ec", "f6eedf", "f7f1e6", "f6f0e6"] {
+            let v: Vec<f64> = (0..3).map(|i| u8::from_str_radix(&c[i * 2..i * 2 + 2], 16).unwrap() as f64).collect();
+            assert!(super::cream([v[0], v[1], v[2], 1.0]), "{c}");
+        }
+        for c in [[255.0, 255.0, 255.0, 1.0], [255.0, 249.0, 196.0, 1.0], [240.0, 244.0, 250.0, 1.0], [30.0, 30.0, 30.0, 1.0]] {
+            assert!(!super::cream(c), "{c:?}");
+        }
     }
 }

@@ -32,17 +32,23 @@ The six stages of the core workflow (SKILL.md), as Design runs them.
    `--recommend`), and its visual change stays inside the brand (RX-UX-20).
    **Direction is the user's call** (RX-UI-26): when neither the prompt, DESIGN.md, nor a product that
    exists sets the UI direction, the next message offers three directions as style tiles and waits; the motion direction
-   rides with it. **Draw them first, in one call:** `node <this skill's folder>/bin/dist/cli/index.js directions --project <name> --tags <product>,<audience>,<glance|session>`
-   (nothing downloaded; it lists the tags it knows) gives each direction a surface, an accent hue range, a type category with fonts,
-   a layout, a weight carrier, a material, an idea source, and a type ramp, drawn for this project and apart from the category's and RYUX's own
-   defaults. Build each tile on its draw with an idea of your own; replace one draw only with a reason from this product, said in
+   rides with it. **Draw them first, in one call:** `node <this skill's folder>/bin/dist/cli/index.js directions --project <name> --context "<owner, city, audience>" --tags <product>,<audience>,<glance|session>`
+   (nothing downloaded; it lists the tags it knows; the context is who this is for, in the brief's words, so two products of one name draw apart) gives each direction a surface, an accent hue range, a type category with fonts,
+   a layout, a weight carrier, a material, an idea source, a page skeleton (for a landing or marketing page: story, flow spine, product
+   in the middle, the visitor's questions, a timeline, without and with, editorial, a poster; three directions, three skeletons, and
+   none of them the default hero beside a card, three steps, a two-column FAQ, and a dark call to action), a surface treatment (flat, neobrutal, glass, clay, tactile, minimal) with its
+   check, a signature for a light, flat direction (one large carrier: a band of the accent, a made image, or display type), a type ramp (body 18 for seniors), and base colours (page, section, ink, muted, accent, and for a colour field the field; muted at 7:1 for seniors, families, and health), drawn for this project and apart from the category's and RYUX's own
+   defaults. The page and section colours are the base: never swap them for cream, ivory, or another light default (`ryux scan` and
+   `ryux audit` warn on a cream page). Tags in your own words are mapped to the catalog's, and it says which it ignored. Build each tile on its draw with an idea of your own; replace one draw only with a reason from this product, said in
    the tile; "None of these" draws again with `--redraw 1`. The user's own choice always wins: a font, colour, or layout they
    name is locked (`--lock`, or their own entry in a JSON file with `--catalog`), with their reason in DESIGN.md. **A named reference** ("a web like X", "an app like Y") locks what it
    fixes, `--lock layout=…,type=…,surface=…` from how X works, and the rest is drawn: take its structure, density, and
    interaction, never its logo, name, exact colours, illustrations, or copy, and say where you know X from (the user's screenshot,
    ryux MCP screens, or memory, marked unverified). Without the command, follow RX-UI-26 by hand. Show the tiles as one static HTML page (`directions.html` in the project folder; no server,
    and no scripts of its own, Google Fonts allowed): per direction its palette swatches, type pairing, one card, one primary
-   button, and its signature, numbered as in the message. Give each direction's choice control a `data-ryux-pick="<n>"` attribute (its
+   button, and its signature, numbered as in the message, and under it **Kenapa, Kelebihan, Kekurangan** (why it fits this
+   product, its pros, its cons) in the user's language: start from the draw's why, pros, and cons lines and say each for this
+   product and these users; a con is never left out to make a direction look better. Give each direction's choice control a `data-ryux-pick="<n>"` attribute (its
    number; the page shows its heading as the name, or `data-ryux-pick-name`), and add a regenerate control `data-ryux-pick="regenerate"` labelled "None of these — make three new". Render it once to check it.
    **Close the loop with `ryux pick`:** run `npx --no-install @ryuxdsgn/design-intelligence pick directions.html`, the copy of RYUX in the project (it waits for the click and times out by itself, so no `timeout` or other wrapper, which macOS does not have) and read its one line of
    output. A clean `pick: <n>` line is the user's choice, straight from a click, with no copy-paste; build that direction. A

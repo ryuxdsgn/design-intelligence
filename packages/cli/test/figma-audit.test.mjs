@@ -215,6 +215,14 @@ test("tells: an empty band of 96 pt or more between blocks warns", async () => {
   assert.match(r.gate, /empty bands 1, small uppercase labels 0, section cards 0, text under 12 px 0\/3, screens with text sizes off a scale 0, uneven button rows 0/);
 });
 
+test("tells: screens on cream warn (RX-UI-26); white, a cool tint, and a light yellow do not", async () => {
+  const on = (rgb) => [0, 1].map((i) => screen(`0${i + 1}`, [text("T", "Pesan sayur besok pagi", [16, 60, 300, 24])], { fills: [{ type: "SOLID", color: rgb }] }));
+  const r = await audit(on({ r: 1, g: 0.969, b: 0.91 }));
+  assert.deepEqual(rules(r), ["warn RX-UI-26"]);
+  assert.match(r.findings[0].message, /2 of 2 screens sit on cream \(#fff7e8\)/);
+  for (const c of [{ r: 1, g: 1, b: 1 }, { r: 0.94, g: 0.957, b: 0.98 }, { r: 1, g: 0.976, b: 0.769 }]) assert.deepEqual(rules(await audit(on(c))), []);
+});
+
 test("tells: text in sizes 1 px apart is a type scale with no steps; 12, 14, 16, 20 is a scale", async () => {
   const at = (sizes) => screen("01", sizes.map((fontSize, i) => text(`T${i}`, `Teks ukuran ${fontSize}`, [16, 60 + i * 40, 300, 24], { fontSize })));
   const r = await audit([at([13, 14, 15, 16, 24])]);

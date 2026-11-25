@@ -402,13 +402,13 @@ async function runRemove(flags: Flags): Promise<void> {
   console.log(removed.length ? removed.map((r) => pc.red("− ") + r).join("\n") : "No files removed.");
 }
 
-/** `ryux directions --project <name> [--tags a,b] [--lock layout=split-pane,type=grotesk] [--allow id] [--redraw n] [--catalog file] [--json]` */
+/** `ryux directions --project <name> [--context "owner, city, audience"] [--tags a,b] [--lock layout=split-pane,type=grotesk] [--allow id] [--redraw n] [--catalog file] [--json]` */
 function runDirections(args: string[]): void {
   const opt = (k: string): string | undefined => { const i = args.indexOf(`--${k}`); return i >= 0 ? args[i + 1] : undefined; };
   const list = (k: string): string[] => (opt(k) || "").split(",").map((x) => x.trim()).filter(Boolean);
   const project = opt("project");
   if (!project) {
-    console.error("Usage: ryux directions --project <name> [--tags finance,umkm,glance] [--lock layout=split-pane,type=grotesk] [--allow <default id>] [--redraw <n>] [--catalog <own entries.json>] [--json]");
+    console.error("Usage: ryux directions --project <name> --context \"<owner, city, audience>\" [--tags finance,umkm,glance] [--lock layout=split-pane,type=grotesk] [--allow <default id>] [--redraw <n>] [--catalog <own entries.json>] [--json]");
     process.exitCode = 2;
     return;
   }
@@ -424,7 +424,7 @@ function runDirections(args: string[]): void {
       return;
     }
   }
-  const r = drawDirections({ project, tags: list("tags"), lock, allow: list("allow"), redraw: Number(opt("redraw") || 0), extra });
+  const r = drawDirections({ project, context: opt("context") || "", tags: list("tags"), lock, allow: list("allow"), redraw: Number(opt("redraw") || 0), extra });
   if (args.includes("--json")) { console.log(JSON.stringify(r, null, 2)); return; }
   const line = (e: DirectionEntry): string => e.name;
   console.log(`Direction draws for "${r.project}" (seed ${r.seed}${r.redraw ? `, redraw ${r.redraw}` : ""}${r.tags.length ? `, tags ${r.tags.join(", ")}` : ""})`);
@@ -438,7 +438,18 @@ function runDirections(args: string[]): void {
     console.log(`   layout ${line(d.layout)} · weight carried by ${line(d.carrier)} · material ${line(d.material)} · idea from ${line(d.idea)}`);
     const t = d.ramp;
     console.log(`   type ramp ×${t.ratio}: caption ${t.caption} · body ${t.body} · heading ${t.heading} · title ${t.title} · display ${t.display} px; a label takes the body or caption size, one weight up`);
+    if (d.page) console.log(`   page skeleton ${line(d.page)} (for a landing or marketing page: the order and shape of its sections)`);
+    if (d.treatment) console.log(`   treatment ${line(d.treatment)}${d.treatment.check ? ` (check: ${d.treatment.check})` : ""}`);
+    if (d.why?.length) console.log(`   why ${d.why.join("; ")}`);
+    if (d.pros?.length) console.log(`   pros ${d.pros.join("; ")}`);
+    if (d.cons?.length) console.log(`   cons ${d.cons.join("; ")}`);
+    if (d.signature) console.log(`   signature ${d.signature}`);
+    const bt = d.buttons;
+    if (bt) console.log(`   buttons radius ${bt.radius === "pill" ? "pill" : `${bt.radius} px`} · height ${bt.height} px · primary ${bt.primary} · secondary ${bt.secondary}; every call to action uses these two, nothing else. ${bt.store}`);
+    const c = d.colours;
+    if (c) console.log(`   colours page ${c.page} · section ${c.section} · ink ${c.ink} · muted ${c.muted} · accent ${c.accent} on ${c.onAccent}${c.field ? ` · field ${c.field} (at least a third of the page) on ${c.onField}` : ""}`);
   }
+  console.log("\nThe page and section colours are the direction's base: do not swap them for cream, ivory, or another light default.");
   console.log(`\nNot as a default (only when the user asks or the brief gives a reason): ${r.notDefault.map((d) => d.note).join("; ")}.`);
   console.log("Build each direction on its draw with its own idea; use the first font in its list that the canvas or project has, and say which. Replace a draw only with a reason from this product, and say it; the user's own choice always wins (--lock, or their entry with --catalog). Ask for others with --redraw 1.");
 }

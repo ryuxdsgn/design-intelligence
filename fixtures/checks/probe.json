@@ -16345,6 +16345,1338 @@
      "level": "warn",
      "selector": "label > input",
      "message": "\"input\": target 13x13px, under 24x24 (spaced enough to pass WCAG 2.5.8); 44x44 is the preferred hit area"
+    },
+    {
+     "rule": "RX-DS-02",
+     "level": "warn",
+     "selector": "div.stores > a.badge",
+     "message": "buttons of one colour in two shapes (\"input\" with 0 px corners, \"App Store\" with 6 px corners): one button component, one corner radius, size variants only",
+     "once": "button-shapes"
+    }
+   ],
+   "ignored": []
+  }
+ },
+ {
+  "input": {
+   "vw": 390,
+   "vh": 844,
+   "scrollWidth": 390,
+   "scrollingElement": 0,
+   "top": 2,
+   "styles": [
+    {
+     "color": "rgb(0, 0, 0)",
+     "fontFamily": "Times"
+    },
+    {
+     "backgroundColor": "rgb(255, 247, 232)",
+     "color": "rgb(34, 34, 34)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "backgroundColor": "rgb(6, 152, 164)",
+     "color": "rgb(34, 34, 34)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "fontSize": 32,
+     "fontWeight": 700,
+     "color": "rgb(34, 34, 34)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "display": "flex",
+     "color": "rgb(34, 34, 34)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "display": "grid",
+     "backgroundColor": "rgb(255, 255, 255)",
+     "borderTopStyle": "solid",
+     "borderTopLeftRadius": 10,
+     "borderTopWidth": 2,
+     "color": "rgb(34, 34, 34)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "display": "grid",
+     "backgroundColor": "rgb(6, 152, 164)",
+     "borderTopStyle": "solid",
+     "borderTopLeftRadius": 10,
+     "borderTopWidth": 2,
+     "color": "rgb(255, 255, 255)",
+     "borderTopColor": "rgb(34, 34, 34)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "display": "inline-flex",
+     "backgroundColor": "rgb(0, 0, 0)",
+     "borderTopLeftRadius": 8,
+     "color": "rgb(255, 255, 255)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "overflow": "hidden",
+     "overflowY": "hidden",
+     "color": "rgb(255, 255, 255)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "display": "inline",
+     "color": "rgb(255, 255, 255)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "color": "rgb(255, 255, 255)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "color": "rgb(34, 34, 34)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "display": "inline-block",
+     "backgroundColor": "rgb(6, 152, 164)",
+     "fontSize": 13.3333,
+     "borderTopLeftRadius": 24,
+     "color": "rgb(255, 255, 255)",
+     "fontFamily": "Arial"
+    },
+    {
+     "display": "inline-block",
+     "backgroundColor": "rgb(6, 152, 164)",
+     "fontSize": 13.3333,
+     "borderTopLeftRadius": 8,
+     "color": "rgb(255, 255, 255)",
+     "fontFamily": "Arial"
+    }
+   ],
+   "els": [
+    {
+     "p": null,
+     "t": "HTML",
+     "s": 0,
+     "r": [
+      0,
+      0,
+      390,
+      319.875
+     ]
+    },
+    {
+     "p": 0,
+     "t": "BODY",
+     "s": 1,
+     "r": [
+      0,
+      0,
+      390,
+      303.875
+     ]
+    },
+    {
+     "p": 1,
+     "t": "DIV",
+     "s": 2,
+     "r": [
+      0,
+      0,
+      390,
+      127.875
+     ],
+     "c": "hero"
+    },
+    {
+     "p": 2,
+     "t": "H1",
+     "s": 3,
+     "r": [
+      24,
+      45.4375,
+      342,
+      37
+     ]
+    },
+    {
+     "p": 1,
+     "t": "UL",
+     "s": 4,
+     "r": [
+      0,
+      143.875,
+      390,
+      48
+     ],
+     "c": "days"
+    },
+    {
+     "p": 4,
+     "t": "LI",
+     "s": 5,
+     "r": [
+      0,
+      143.875,
+      48,
+      48
+     ]
+    },
+    {
+     "p": 4,
+     "t": "LI",
+     "s": 6,
+     "r": [
+      54,
+      143.875,
+      48,
+      48
+     ],
+     "c": "on"
+    },
+    {
+     "p": 4,
+     "t": "LI",
+     "s": 5,
+     "r": [
+      108,
+      143.875,
+      48,
+      48
+     ]
+    },
+    {
+     "p": 4,
+     "t": "LI",
+     "s": 5,
+     "r": [
+      162,
+      143.875,
+      48,
+      48
+     ]
+    },
+    {
+     "p": 1,
+     "t": "A",
+     "s": 7,
+     "r": [
+      0,
+      207.875,
+      207.65625,
+      36
+     ],
+     "c": "store",
+     "ctl": 1,
+     "nm": "Unduh di Google Play"
+    },
+    {
+     "p": 9,
+     "t": "svg",
+     "s": 8,
+     "r": [
+      12,
+      215.875,
+      20,
+      20
+     ]
+    },
+    {
+     "p": 10,
+     "t": "path",
+     "s": 9,
+     "r": [
+      14,
+      217.875,
+      16,
+      16
+     ]
+    },
+    {
+     "p": 9,
+     "t": "SPAN",
+     "s": 10,
+     "r": [
+      40,
+      216.875,
+      155.65625,
+      18
+     ]
+    },
+    {
+     "p": 1,
+     "t": "P",
+     "s": 11,
+     "r": [
+      0,
+      259.875,
+      390,
+      44
+     ]
+    },
+    {
+     "p": 13,
+     "t": "BUTTON",
+     "s": 12,
+     "r": [
+      0,
+      259.875,
+      160,
+      44
+     ],
+     "ctl": 1,
+     "nm": "Pesan sekarang"
+    },
+    {
+     "p": 13,
+     "t": "BUTTON",
+     "s": 13,
+     "r": [
+      164.453125,
+      259.875,
+      160,
+      44
+     ],
+     "ctl": 1,
+     "nm": "Lihat paket"
+    }
+   ],
+   "texts": [
+    {
+     "e": 3,
+     "x": "Sayur dari petani",
+     "r": [
+      24,
+      45.4375,
+      259.640625,
+      37
+     ],
+     "open": [
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3
+     ],
+     "end": {
+      "r": [
+       24,
+       45.4375,
+       259.640625,
+       37
+      ],
+      "h": [
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3
+      ]
+     }
+    },
+    {
+     "e": 5,
+     "x": "Sen",
+     "r": [
+      9.765625,
+      158.875,
+      28.46875,
+      18
+     ],
+     "open": [
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5
+     ],
+     "end": {
+      "r": [
+       9.765625,
+       158.875,
+       28.46875,
+       18
+      ],
+      "h": [
+       5,
+       5,
+       5,
+       5,
+       5,
+       5,
+       5,
+       5,
+       5,
+       5,
+       5,
+       5,
+       5,
+       5,
+       5
+      ]
+     }
+    },
+    {
+     "e": 6,
+     "x": "Sel",
+     "r": [
+      66.4375,
+      158.875,
+      23.125,
+      18
+     ],
+     "open": [
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6
+     ],
+     "end": {
+      "r": [
+       66.4375,
+       158.875,
+       23.125,
+       18
+      ],
+      "h": [
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6
+      ]
+     }
+    },
+    {
+     "e": 7,
+     "x": "Rab",
+     "r": [
+      117.3125,
+      158.875,
+      29.359375,
+      18
+     ],
+     "open": [
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7
+     ],
+     "end": {
+      "r": [
+       117.3125,
+       158.875,
+       29.359375,
+       18
+      ],
+      "h": [
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7
+      ]
+     }
+    },
+    {
+     "e": 8,
+     "x": "Kam",
+     "r": [
+      169.546875,
+      158.875,
+      32.90625,
+      18
+     ],
+     "open": [
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8
+     ],
+     "end": {
+      "r": [
+       169.546875,
+       158.875,
+       32.90625,
+       18
+      ],
+      "h": [
+       8,
+       8,
+       8,
+       8,
+       8,
+       8,
+       8,
+       8,
+       8,
+       8,
+       8,
+       8,
+       8,
+       8,
+       8
+      ]
+     }
+    },
+    {
+     "e": 12,
+     "x": "Unduh di Google Play",
+     "r": [
+      40,
+      216.875,
+      155.65625,
+      18
+     ],
+     "open": [
+      12,
+      12,
+      12,
+      12,
+      12,
+      12,
+      12,
+      12,
+      12,
+      12,
+      12,
+      12,
+      12,
+      12,
+      12
+     ],
+     "end": {
+      "r": [
+       40,
+       216.875,
+       155.65625,
+       18
+      ],
+      "h": [
+       12,
+       12,
+       12,
+       12,
+       12,
+       12,
+       12,
+       12,
+       12,
+       12,
+       12,
+       12,
+       12,
+       12,
+       12
+      ]
+     }
+    },
+    {
+     "e": 14,
+     "x": "Pesan sekarang",
+     "r": [
+      31.828125,
+      274.375,
+      96.34375,
+      15
+     ],
+     "open": [
+      14,
+      14,
+      14,
+      14,
+      14,
+      14,
+      14,
+      14,
+      14,
+      14,
+      14,
+      14,
+      14,
+      14,
+      14
+     ],
+     "end": {
+      "r": [
+       31.828125,
+       274.375,
+       96.34375,
+       15
+      ],
+      "h": [
+       14,
+       14,
+       14,
+       14,
+       14,
+       14,
+       14,
+       14,
+       14,
+       14,
+       14,
+       14,
+       14,
+       14,
+       14
+      ]
+     }
+    },
+    {
+     "e": 15,
+     "x": "Lihat paket",
+     "r": [
+      211.84375,
+      274.375,
+      65.21875,
+      15
+     ],
+     "open": [
+      15,
+      15,
+      15,
+      15,
+      15,
+      15,
+      15,
+      15,
+      15,
+      15,
+      15,
+      15,
+      15,
+      15,
+      15
+     ],
+     "end": {
+      "r": [
+       211.84375,
+       274.375,
+       65.21875,
+       15
+      ],
+      "h": [
+       15,
+       15,
+       15,
+       15,
+       15,
+       15,
+       15,
+       15,
+       15,
+       15,
+       15,
+       15,
+       15,
+       15,
+       15
+      ]
+     }
+    }
+   ],
+   "chains": {
+    "open": {},
+    "end": {}
+   },
+   "answers": {
+    "under": {
+     "2": 4,
+     "6": 13,
+     "7": 13
+    },
+    "grow": {},
+    "focus": {
+     "9": {
+      "a": 1,
+      "b": {
+       "o": [
+        "none",
+        3,
+        "rgb(255, 255, 255)",
+        0
+       ]
+      },
+      "f": {
+       "o": [
+        "auto",
+        1,
+        "rgb(0, 95, 204)",
+        1
+       ]
+      }
+     },
+     "14": {
+      "a": 1,
+      "b": {
+       "o": [
+        "none",
+        3,
+        "rgb(255, 255, 255)",
+        0
+       ]
+      },
+      "f": {
+       "o": [
+        "auto",
+        1,
+        "rgb(0, 95, 204)",
+        0
+       ]
+      }
+     },
+     "15": {
+      "a": 1,
+      "b": {
+       "o": [
+        "none",
+        3,
+        "rgb(255, 255, 255)",
+        0
+       ]
+      },
+      "f": {
+       "o": [
+        "auto",
+        1,
+        "rgb(0, 95, 204)",
+        0
+       ]
+      }
+     }
+    }
+   }
+  },
+  "output": {
+   "findings": [
+    {
+     "rule": "RX-A11Y-01",
+     "level": "fail",
+     "selector": "ul.days > li.on",
+     "message": "\"Sel\": contrast 3.48:1 (#ffffff on #0698a4), needs 4.5:1; 2 more with the same colors"
+    },
+    {
+     "rule": "RX-UI-26",
+     "level": "warn",
+     "selector": "page",
+     "message": "the page is cream (#fff7e8): the paper look generated pages fall back to; use the surface the direction drew, and keep cream only when the direction chose paper for a reason",
+     "once": "cream"
+    },
+    {
+     "rule": "RX-UI-36",
+     "level": "warn",
+     "selector": "ul.days > li",
+     "message": "a row that looks like a picker with one option chosen (\"Sen | Sel | Rab | Kam\") and no control in it: people tap it and nothing happens; make it a real choice (buttons or radios), or show it as plain text or a table",
+     "once": "fake-picker"
+    },
+    {
+     "rule": "RX-AS-11",
+     "level": "warn",
+     "selector": "a.store",
+     "message": "a store badge drawn with an icon of its own (\"Unduh di Google Play\"): Apple and Google allow only their own badge images; use the official badge, in one language for both stores, or a plain text link",
+     "once": "store-badge"
+    },
+    {
+     "rule": "RX-DS-02",
+     "level": "warn",
+     "selector": "p > button",
+     "message": "buttons of one colour in two shapes (\"Pesan sekarang\" with a pill, \"Lihat paket\" with 8 px corners): one button component, one corner radius, size variants only",
+     "once": "button-shapes"
+    }
+   ],
+   "ignored": []
+  }
+ },
+ {
+  "input": {
+   "vw": 390,
+   "vh": 844,
+   "scrollWidth": 390,
+   "scrollingElement": 0,
+   "top": 2,
+   "styles": [
+    {
+     "color": "rgb(0, 0, 0)",
+     "fontFamily": "Times"
+    },
+    {
+     "backgroundColor": "rgb(255, 255, 255)",
+     "color": "rgb(34, 34, 34)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "backgroundColor": "rgb(6, 152, 164)",
+     "color": "rgb(34, 34, 34)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "fontSize": 32,
+     "fontWeight": 700,
+     "color": "rgb(34, 34, 34)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "display": "flex",
+     "color": "rgb(34, 34, 34)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "backgroundColor": "rgb(239, 239, 239)",
+     "borderTopStyle": "outset",
+     "fontSize": 13.3333,
+     "borderTopWidth": 2,
+     "color": "rgb(0, 0, 0)",
+     "fontFamily": "Arial"
+    },
+    {
+     "display": "inline",
+     "color": "rgb(0, 0, 238)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "display": "inline",
+     "overflow": "clip",
+     "overflowY": "clip",
+     "color": "rgb(0, 0, 238)",
+     "fontFamily": "sans-serif"
+    }
+   ],
+   "els": [
+    {
+     "p": null,
+     "t": "HTML",
+     "s": 0,
+     "r": [
+      0,
+      0,
+      390,
+      196.875
+     ]
+    },
+    {
+     "p": 0,
+     "t": "BODY",
+     "s": 1,
+     "r": [
+      0,
+      0,
+      390,
+      196.875
+     ]
+    },
+    {
+     "p": 1,
+     "t": "DIV",
+     "s": 2,
+     "r": [
+      0,
+      0,
+      390,
+      127.875
+     ],
+     "c": "hero"
+    },
+    {
+     "p": 2,
+     "t": "H1",
+     "s": 3,
+     "r": [
+      24,
+      45.4375,
+      342,
+      37
+     ]
+    },
+    {
+     "p": 1,
+     "t": "DIV",
+     "s": 4,
+     "r": [
+      0,
+      127.875,
+      390,
+      21
+     ],
+     "c": "days",
+     "role": "radiogroup"
+    },
+    {
+     "p": 4,
+     "t": "BUTTON",
+     "s": 5,
+     "r": [
+      0,
+      127.875,
+      39.71875,
+      21
+     ],
+     "role": "radio",
+     "ctl": 1,
+     "nm": "Sen",
+     "rg": "g:4",
+     "gh": 82,
+     "gl": "Sayur dari petani"
+    },
+    {
+     "p": 4,
+     "t": "BUTTON",
+     "s": 5,
+     "r": [
+      45.71875,
+      127.875,
+      35.28125,
+      21
+     ],
+     "c": "on",
+     "role": "radio",
+     "ctl": 1,
+     "nm": "Sel",
+     "rg": "g:4",
+     "gh": 82,
+     "gl": "Sayur dari petani"
+    },
+    {
+     "p": 4,
+     "t": "BUTTON",
+     "s": 5,
+     "r": [
+      87,
+      127.875,
+      40.46875,
+      21
+     ],
+     "role": "radio",
+     "ctl": 1,
+     "nm": "Rab",
+     "rg": "g:4",
+     "gh": 82,
+     "gl": "Sayur dari petani"
+    },
+    {
+     "p": 1,
+     "t": "A",
+     "s": 6,
+     "r": [
+      0,
+      178.875,
+      150,
+      18
+     ],
+     "ctl": 1,
+     "nm": "Temukan di Google Play",
+     "sib": 1
+    },
+    {
+     "p": 8,
+     "t": "IMG",
+     "s": 7,
+     "r": [
+      0,
+      148.875,
+      150,
+      44
+     ]
+    }
+   ],
+   "texts": [
+    {
+     "e": 3,
+     "x": "Sayur dari petani",
+     "r": [
+      24,
+      45.4375,
+      259.640625,
+      37
+     ],
+     "open": [
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3
+     ],
+     "end": {
+      "r": [
+       24,
+       45.4375,
+       259.640625,
+       37
+      ],
+      "h": [
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3
+      ]
+     }
+    },
+    {
+     "e": 5,
+     "x": "Sen",
+     "r": [
+      8,
+      130.875,
+      23.71875,
+      15
+     ],
+     "open": [
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5
+     ],
+     "end": {
+      "r": [
+       8,
+       130.875,
+       23.71875,
+       15
+      ],
+      "h": [
+       5,
+       5,
+       5,
+       5,
+       5,
+       5,
+       5,
+       5,
+       5,
+       5,
+       5,
+       5,
+       5,
+       5,
+       5
+      ]
+     }
+    },
+    {
+     "e": 6,
+     "x": "Sel",
+     "r": [
+      53.71875,
+      130.875,
+      19.28125,
+      15
+     ],
+     "open": [
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6
+     ],
+     "end": {
+      "r": [
+       53.71875,
+       130.875,
+       19.28125,
+       15
+      ],
+      "h": [
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6,
+       6
+      ]
+     }
+    },
+    {
+     "e": 7,
+     "x": "Rab",
+     "r": [
+      95,
+      130.875,
+      24.46875,
+      15
+     ],
+     "open": [
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7
+     ],
+     "end": {
+      "r": [
+       95,
+       130.875,
+       24.46875,
+       15
+      ],
+      "h": [
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7,
+       7
+      ]
+     }
+    }
+   ],
+   "chains": {
+    "open": {},
+    "end": {}
+   },
+   "answers": {
+    "under": {},
+    "grow": {},
+    "focus": {
+     "5": {
+      "a": 1,
+      "b": {
+       "o": [
+        "none",
+        3,
+        "rgb(0, 0, 0)",
+        0
+       ]
+      },
+      "f": {
+       "o": [
+        "auto",
+        1,
+        "rgb(0, 95, 204)",
+        0
+       ]
+      }
+     },
+     "6": {
+      "a": 1,
+      "b": {
+       "o": [
+        "none",
+        3,
+        "rgb(0, 0, 0)",
+        0
+       ]
+      },
+      "f": {
+       "o": [
+        "auto",
+        1,
+        "rgb(0, 95, 204)",
+        0
+       ]
+      }
+     },
+     "7": {
+      "a": 1,
+      "b": {
+       "o": [
+        "none",
+        3,
+        "rgb(0, 0, 0)",
+        0
+       ]
+      },
+      "f": {
+       "o": [
+        "auto",
+        1,
+        "rgb(0, 95, 204)",
+        0
+       ]
+      }
+     },
+     "8": {
+      "a": 1,
+      "b": {
+       "o": [
+        "none",
+        3,
+        "rgb(0, 0, 238)",
+        0
+       ]
+      },
+      "f": {
+       "o": [
+        "auto",
+        1,
+        "rgb(0, 95, 204)",
+        1
+       ]
+      }
+     }
+    }
+   }
+  },
+  "output": {
+   "findings": [
+    {
+     "rule": "RX-A11Y-02",
+     "level": "warn",
+     "selector": "div.days > button",
+     "message": "\"Sen\": target 40x21px, under 24x24 (spaced enough to pass WCAG 2.5.8); 44x44 is the preferred hit area"
+    },
+    {
+     "rule": "RX-A11Y-02",
+     "level": "warn",
+     "selector": "div.days > button.on",
+     "message": "\"Sel\": target 35x21px, under 24x24 (spaced enough to pass WCAG 2.5.8); 44x44 is the preferred hit area"
+    },
+    {
+     "rule": "RX-A11Y-02",
+     "level": "warn",
+     "selector": "div.days > button",
+     "message": "\"Rab\": target 40x21px, under 24x24 (spaced enough to pass WCAG 2.5.8); 44x44 is the preferred hit area"
     }
    ],
    "ignored": []

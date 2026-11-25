@@ -159,9 +159,27 @@ test("the skill runs the RYUX CLI from the project, not as a download, and never
   // the installer copies the CLI into the skill folder; the skill runs it with node (2026-11-24)
   assert.match(flat, /node <this skill's folder>\/bin\/dist\/cli\/index\.js scan\|audit\|pick/);
   // directions are drawn in code; text rules alone left five diversity arms in one group (2026-11-21, 22)
-  assert.match(flat, /Draw them first, in one call:\*\* `node <this skill's folder>\/bin\/dist\/cli\/index\.js directions --project/);
+  assert.match(flat, /Draw them first, in one call:\*\* `node <this skill's folder>\/bin\/dist\/cli\/index\.js directions --project <name> --context "<owner, city, audience>"/);
   assert.match(flat, /A named reference\*\* \("a web like X", "an app like Y"\) locks what it fixes/);
   assert.match(flat, /never its logo, name, exact colours, illustrations, or copy/);
+  // arm H (2026-11-25): five code builds took the Build path, never drew, and skipped directions for "a one-file build"
+  assert.match(flat, /draw before any code, even for a one-file or quick build/);
+  assert.match(flat, /"a one-file build" or "budget" is not a reason to skip the draw/);
+  assert.match(flat, /draw seed <seed>, surface kept \| replaced: <reason> \| none: <reason>/);
+  assert.match(flat, /never swap them for cream, ivory, or another light default/);
+  // owner 2026-11-25: the choice of direction is part of the experience; each one says why, its pros, and its cons
+  assert.match(flat, /Kenapa, Kelebihan, Kekurangan/);
+  // owner H6 2026-11-25: three directions, three page skeletons; strong helper text for seniors, families, and health
+  assert.match(flat, /three directions, three skeletons, and none of them the default hero beside a card/);
+  assert.match(flat, /muted at 7:1 for seniors, families, and health/);
+  // owner H5 notes 2026-11-25: the price question gets an answer, each question once, one download action
+  const ux = renderBundle()["knowledge/ux.md"].replace(/\s+/g, " ");
+  assert.match(ux, /A product people pay for answers "how much\?" on the page/);
+  assert.match(ux, /Each question is answered once/);
+  assert.match(ux, /Contoh harga, belum final/);
+  assert.match(renderBundle()["knowledge/design-system.md"].replace(/\s+/g, " "), /The badges are the download action wherever it appears/);
+  assert.match(flat, /a con is never left out to make a direction look better/);
+  assert.match(flat, /provisional in Assumptions with why it fits and its pros and cons/);
   assert.match(flat, /The user's own choice always wins: a font, colour, or layout they\s+name is locked/);
   // three of four clipper runs opened stage 6 before building (2026-11-24)
   assert.match(flat, /capabilities\/design-deliver\.md is not one of them: open it at stage 6/);
