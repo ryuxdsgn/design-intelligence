@@ -1232,7 +1232,8 @@ Gate area UI. Covers the visual system of a product: hierarchy, type, layout, de
 - Why: A shape filled like the primary button signals an action; when a choice looks the same, people hesitate over which control commits and the screen seems to have two primary actions. (NNGroup signifiers; Nielsen heuristic 4 (consistency and standards); Gestalt similarity: what looks alike is read as alike; Material filter and choice chips (selected shown with a check and a tonal fill); RX-PR-03; written for RYUX; owner blind review 2026-11-18 of three Rak flows (secondhand books, Yogyakarta): a selected chip in a lavender the palette did not have)
 - Not when: a segmented control or tab bar, whose filled segment is the platform's own selected state
 - Trade-off: a tinted selection is quieter than a solid fill; the mark and the stroke must carry it
-- Check: render the option set with one selected next to the primary button, in greyscale: the selected option and the button do not share fill, text colour, and shape
+- Check: render the option set with one selected next to the primary button, in greyscale: the selected option and the button do not share fill, text colour, and shape; a row that looks like options with one chosen is a real control, or plain text: `ryux scan <url>` warns on one with no control in it (owner H3 notes, 2026-11-25: day rows on two of five pages read as pickers)
+- Measured: `ryux scan <url>` flags a row that looks like a picker and is not one: three or more boxes side by side, one filled as if chosen, and no control in any of them (warn)
 
 #### RX-UI-37 [Preferred] The step indicator stays quiet
 
@@ -2079,10 +2080,11 @@ Gate area ANTI-SLOP. Covers hard gates, purpose gates, quality locks, honest cla
 - Do: Use the brand's own file wherever the product's mark appears.
   - Look in the repo (public/, assets/, the app icon and favicon), DESIGN.md, the design file's components, and what the user attached, and name the file you used.
   - With no file, set the product name in plain text in the brand's type, or leave a visible [LOGO] placeholder, and list the mark as missing in the handoff.
+  - Another company's mark follows the same rule: an App Store or Google Play link uses the store's own badge image, one language for both stores, or a plain text link; never a badge drawn with an icon of its own.
 - Do not: Stand in for the mark with initials in a circle, an emoji, a generic shape, an invented SVG, a letter cut into a tile, or the name typeset to look like a logo; generate a favicon or app icon the user did not ask for; or redraw the brand's mark instead of using its file. Designing a mark is its own task, done only when the user asks for it (RX-UI-23).
 - Why: An invented mark looks finished and is the first thing a team has to throw away; it also passes for a decision nobody made. (pattern also in superdesign-skill (MIT), logo invariant; RX-UI-13 asset provenance; ryux owner review 2026-10-18 (the logo and favicon are the owner's to make); written for RYUX)
-- Check: list every mark slot and the file it uses, or the placeholder; fails on a slot filled by an invented mark
-- Measured: `ryux scan <url>` flags a letter in a tile as the logo, once per page: one or two letters in a filled or bordered box of 16 to 72 px inside an element whose class names a logo or brand (warn)
+- Check: list every mark slot and the file it uses, or the placeholder; fails on a slot filled by an invented mark; `ryux scan <url>` warns on a store badge drawn with an icon of its own (owner H3 notes, 2026-11-25: a phone icon and a triangle as store badges)
+- Measured: `ryux scan <url>` flags a letter in a tile as the logo, once per page: one or two letters in a filled or bordered box of 16 to 72 px inside an element whose class names a logo or brand; or an App Store or Google Play badge drawn with an icon of its own instead of the store's badge image (warn)
 <!-- rules:end -->
 
 ## Installation via CLI

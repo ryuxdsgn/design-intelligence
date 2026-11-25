@@ -208,7 +208,11 @@
      "property"
     ],
     "avoid": [],
-    "hue": 225
+    "hue": 225,
+    "weak": [
+     "food",
+     "family"
+    ]
    },
    {
     "id": "indigo",
@@ -220,7 +224,11 @@
      "pro"
     ],
     "avoid": [],
-    "hue": 245
+    "hue": 245,
+    "weak": [
+     "food",
+     "family"
+    ]
    },
    {
     "id": "violet",
@@ -230,7 +238,11 @@
     "avoid": [
      "ai"
     ],
-    "hue": 270
+    "hue": 270,
+    "weak": [
+     "food",
+     "family"
+    ]
    },
    {
     "id": "magenta",
@@ -517,10 +529,11 @@
     "fit": [
      "booking",
      "finance",
-     "public",
-     "senior",
+     "food",
      "home-service",
-     "kids"
+     "kids",
+     "public",
+     "senior"
     ],
     "avoid": []
    },
@@ -570,8 +583,9 @@
     "note": "waktu sebagai pintu masuk: slot, jadwal, tenggat",
     "fit": [
      "booking",
-     "health",
      "education",
+     "food",
+     "health",
      "home-service"
     ]
    }

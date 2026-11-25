@@ -225,10 +225,13 @@ pub fn directions(input: &Value) -> Value {
             let w = match (d, hit, fit.is_empty()) {
                 ("accent", true, _) => 2.5,
                 ("accent", false, _) => 1.5,
-                (_, true, _) => 4.0,
+                // fit helps without taking over: at 4.0 the one fitting type (rounded) was 36% of first directions for food (H3)
+                (_, true, _) => 2.5,
                 (_, false, true) => 1.5,
                 _ => 0.5,
             };
+            // a weak tag lowers an entry without dropping it (indigo for fresh food read as fintech, owner H3 note, one page)
+            let w = if strs(e.get("weak")).iter().any(|t| tags.contains(t)) { w * 0.4 } else { w };
             pool.push((e, w));
         }
         // fewer than three fitting patterns: the rest is the agent's call from the task, so five users do not share one layout
@@ -297,7 +300,11 @@ pub fn directions(input: &Value) -> Value {
             });
             let same_material = level == 0 && !locked(5) && pools[5].len() >= 3 && chosen.iter().any(|o| id(&o[5]) == id(&dir[5]))
                 || level == 0 && !locked(7) && pools[7].len() >= 3 && chosen.iter().any(|o| id(&o[7]) == id(&dir[7]));
-            if (clash && level < 2) || repeats || near || same_material || once(5, "flat-vector") || once(6, "mechanic") {
+            // a light page, a flat treatment, and space as the carrier is the generic template (H3, 2026-11-25: the three light,
+            // flat pages formed one group); a light flat direction carries its weight with colour, type, image, or shape
+            let plain = level < 2 && !locked(0) && !locked(4) && id(&dir[0]).starts_with("light")
+                && matches!(id(&dir[7]).as_str(), "flat" | "flat2" | "minimal") && id(&dir[4]) == "space";
+            if (clash && level < 2) || repeats || near || same_material || plain || once(5, "flat-vector") || once(6, "mechanic") {
                 continue;
             }
             best = Some(dir);
@@ -321,6 +328,9 @@ pub fn directions(input: &Value) -> Value {
         m.insert("n".into(), json!(i + 1));
         m.insert("ramp".into(), ramp(&id(&d[2]), session));
         m.insert("colours".into(), colours(&id(&d[0]), &d[1]));
+        if id(&d[0]).starts_with("light") && matches!(id(&d[7]).as_str(), "flat" | "flat2" | "minimal") {
+            m.insert("signature".into(), json!("a light, flat direction needs one large signature its carrier makes: a band of the accent across a section, a made image, or display type; small cards on a pale page are the generic template"));
+        }
         for (k, v) in DIMS.iter().zip(d) {
             let mut e = v.clone();
             if let Some(o) = e.as_object_mut() {
@@ -529,6 +539,19 @@ mod tests {
             }
         }
         assert!(seen.len() >= 2, "{seen:?}");
+    }
+
+    #[test]
+    fn a_light_flat_direction_never_rests_on_space_and_names_its_signature() {
+        for i in 0..200 {
+            for d in draw(json!({ "project": format!("q{i}"), "tags": ["food", "family", "glance"] }))["directions"].as_array().unwrap() {
+                let light_flat = d["surface"]["id"].as_str().unwrap().starts_with("light") && ["flat", "flat2", "minimal"].contains(&d["treatment"]["id"].as_str().unwrap());
+                if light_flat {
+                    assert_ne!(d["carrier"]["id"], "space", "q{i}");
+                    assert!(d["signature"].is_string(), "q{i}");
+                }
+            }
+        }
     }
 }
 

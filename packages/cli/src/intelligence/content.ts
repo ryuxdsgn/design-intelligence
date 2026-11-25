@@ -1200,7 +1200,7 @@ export const RULES: Rule[] = [
       basis: "NNGroup signifiers; Nielsen heuristic 4 (consistency and standards); Gestalt similarity: what looks alike is read as alike; Material filter and choice chips (selected shown with a check and a tonal fill); RX-PR-03; written for RYUX; owner blind review 2026-11-18 of three Rak flows (secondhand books, Yogyakarta): a selected chip in a lavender the palette did not have",
       notWhen: "a segmented control or tab bar, whose filled segment is the platform's own selected state",
       tradeoff: "a tinted selection is quieter than a solid fill; the mark and the stroke must carry it",
-      check: "render the option set with one selected next to the primary button, in greyscale: the selected option and the button do not share fill, text colour, and shape",
+      check: "render the option set with one selected next to the primary button, in greyscale: the selected option and the button do not share fill, text colour, and shape; a row that looks like options with one chosen is a real control, or plain text: `ryux scan <url>` warns on one with no control in it (owner H3 notes, 2026-11-25: day rows on two of five pages read as pickers)",
     },
     {
       num: 37,
@@ -2095,11 +2095,11 @@ export const RULES: Rule[] = [
       level: "required",
       gate: "hard",
       when: "the design has a logo, wordmark, app icon, or favicon",
-      do: "Use the brand's own file wherever the product's mark appears.\n  - Look in the repo (public/, assets/, the app icon and favicon), DESIGN.md, the design file's components, and what the user attached, and name the file you used.\n  - With no file, set the product name in plain text in the brand's type, or leave a visible [LOGO] placeholder, and list the mark as missing in the handoff.",
+      do: "Use the brand's own file wherever the product's mark appears.\n  - Look in the repo (public/, assets/, the app icon and favicon), DESIGN.md, the design file's components, and what the user attached, and name the file you used.\n  - With no file, set the product name in plain text in the brand's type, or leave a visible [LOGO] placeholder, and list the mark as missing in the handoff.\n  - Another company's mark follows the same rule: an App Store or Google Play link uses the store's own badge image, one language for both stores, or a plain text link; never a badge drawn with an icon of its own.",
       dont: "Stand in for the mark with initials in a circle, an emoji, a generic shape, an invented SVG, a letter cut into a tile, or the name typeset to look like a logo; generate a favicon or app icon the user did not ask for; or redraw the brand's mark instead of using its file. Designing a mark is its own task, done only when the user asks for it (RX-UI-23).",
       why: "An invented mark looks finished and is the first thing a team has to throw away; it also passes for a decision nobody made.",
       basis: `pattern also in superdesign-skill (MIT), logo invariant; RX-UI-13 asset provenance; ryux owner review 2026-10-18 (the logo and favicon are the owner's to make); written for RYUX`,
-      check: "list every mark slot and the file it uses, or the placeholder; fails on a slot filled by an invented mark",
+      check: "list every mark slot and the file it uses, or the placeholder; fails on a slot filled by an invented mark; `ryux scan <url>` warns on a store badge drawn with an icon of its own (owner H3 notes, 2026-11-25: a phone icon and a triangle as store badges)",
     },
   ]),
 ];

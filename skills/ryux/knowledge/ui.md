@@ -298,7 +298,8 @@ A design direction from comparable screens: `extract_design_direction` (patterns
 - Why: A shape filled like the primary button signals an action; when a choice looks the same, people hesitate over which control commits and the screen seems to have two primary actions. (NNGroup signifiers; Nielsen heuristic 4 (consistency and standards); Gestalt similarity: what looks alike is read as alike; Material filter and choice chips (selected shown with a check and a tonal fill); RX-PR-03; written for RYUX; owner blind review 2026-11-18 of three Rak flows (secondhand books, Yogyakarta): a selected chip in a lavender the palette did not have)
 - Not when: a segmented control or tab bar, whose filled segment is the platform's own selected state
 - Trade-off: a tinted selection is quieter than a solid fill; the mark and the stroke must carry it
-- Check: render the option set with one selected next to the primary button, in greyscale: the selected option and the button do not share fill, text colour, and shape
+- Check: render the option set with one selected next to the primary button, in greyscale: the selected option and the button do not share fill, text colour, and shape; a row that looks like options with one chosen is a real control, or plain text: `ryux scan <url>` warns on one with no control in it (owner H3 notes, 2026-11-25: day rows on two of five pages read as pickers)
+- Measured: `ryux scan <url>` flags a row that looks like a picker and is not one: three or more boxes side by side, one filled as if chosen, and no control in any of them (warn)
 
 ### RX-UI-37 [Preferred] The step indicator stays quiet
 

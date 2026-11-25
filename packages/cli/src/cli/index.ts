@@ -439,6 +439,7 @@ function runDirections(args: string[]): void {
     const t = d.ramp;
     console.log(`   type ramp ×${t.ratio}: caption ${t.caption} · body ${t.body} · heading ${t.heading} · title ${t.title} · display ${t.display} px; a label takes the body or caption size, one weight up`);
     if (d.treatment) console.log(`   treatment ${line(d.treatment)}${d.treatment.check ? ` (check: ${d.treatment.check})` : ""}`);
+    if (d.signature) console.log(`   signature ${d.signature}`);
     const c = d.colours;
     if (c) console.log(`   colours page ${c.page} · section ${c.section} · ink ${c.ink} · muted ${c.muted} · accent ${c.accent} on ${c.onAccent}${c.field ? ` · field ${c.field} (at least a third of the page) on ${c.onField}` : ""}`);
   }
