@@ -1427,6 +1427,39 @@
   "shift-workers": [
    "pro", "consumer"
   ],
+  "tutoring": [
+   "education"
+  ],
+  "tutor": [
+   "education"
+  ],
+  "tutors": [
+   "education"
+  ],
+  "private-tutoring": [
+   "education"
+  ],
+  "les": [
+   "education"
+  ],
+  "kursus": [
+   "education"
+  ],
+  "retirees": [
+   "senior"
+  ],
+  "pensioners": [
+   "senior"
+  ],
+  "pensiunan": [
+   "senior"
+  ],
+  "lansia": [
+   "senior"
+  ],
+  "seniors": [
+   "senior"
+  ],
   "families": [
    "family",
    "consumer"
