@@ -9,6 +9,8 @@ pub mod report;
 pub use audit::audit;
 pub use probe::probe;
 pub use report::report_check;
+pub mod synth;
+pub use synth::synth_check;
 
 pub use serde_json::Value as Json;
 

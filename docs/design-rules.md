@@ -41,6 +41,7 @@ framework (questions, decision trees, templates) followed by its rules.
 | --- | --- | --- |
 | `SKILL.md` | the router: entry points, how RYUX works, levels, Hard Gates, task table, Delivery Gate | |
 | `capabilities/analyze.md` | Analyze: inventory of an existing interface | |
+| `capabilities/analyze-research.md` | Analyze: raw research to themes, findings, and design implications | |
 | `capabilities/design.md` | Design: create or improve UI and UX without code | |
 | `capabilities/design-deliver.md` | Design, stage 6: verify and deliver, read when the screens are built | |
 | `capabilities/design-md.md` | Design: write or update DESIGN.md | |
@@ -210,13 +211,13 @@ line below for its exact source.
 <!-- provenance:start -->
 | Source cited | Rules citing it | Rules citing only this |
 | --- | --- | --- |
-| Public standard or research | 102 | 61 |
+| Public standard or research | 103 | 62 |
 | Industry practice | 28 | 6 |
 | Observed in a RYUX run | 18 | 7 |
 | Pattern also in another MIT ruleset (text written for RYUX) | 4 | 2 |
 | RYUX principle, taxonomy, or review | 75 | 22 |
 
-All 159 rules cite a source; 61 cite more than one kind, so the "Rules citing it" column adds up to more than 159.
+All 160 rules cite a source; 61 cite more than one kind, so the "Rules citing it" column adds up to more than 160.
 <!-- provenance:end -->
 
 ## Rules
@@ -224,7 +225,7 @@ All 159 rules cite a source; 61 cite more than one kind, so the "Rules citing it
 Generated from `packages/cli/src/content.ts` by `pnpm sync:skills`. Edit the rules there, not here.
 
 <!-- rules:start -->
-159 rules across 15 modules: 68 Required, 39 Preferred, 52 Contextual; 18 Hard Gates and 14 Quality Locks.
+160 rules across 15 modules: 69 Required, 39 Preferred, 52 Contextual; 19 Hard Gates and 14 Quality Locks.
 
 ### Product thinking (RX-PR) · `knowledge/product.md`
 
@@ -569,6 +570,20 @@ Gate area UX. Covers information architecture, navigation, flows, grouping, disc
 - Why: The three sizes promise different risks: users relearn nothing after a polish, the look after a revamp, and the task itself after a redesign; a wrong guess either breaks what people know or under-delivers. (owner definitions 2026-11-19; owner blind ratings 2026-11-19 of the UX flow benchmark B2 (order tracking revamp), rounds 2 to 5, and B3 with its reruns (Kantong top up revamp, 2026-11-19; a rule that said the revamp ends at "the screen that shows the result" made both variance runs add a result screen, flow 3 v 4); NNGroup Radical Redesign or Incremental Change? (Loranger, 2015): improve incrementally by default, overhaul only when evidence shows small fixes cannot solve it)
 - Trade-off: one question before work on an ambiguous request; it costs less than redoing the wrong size
 - Check: the reply names the size; an ambiguous request got one question before the first change; a revamp keeps the flow and handlers, and has before and after renders of every state in the matrix; a moved control has its reason in the reply, the error state fills its screen, a stepper names the current step, and a changed time shows the old time struck through with a text label
+
+#### RX-UX-21 [Required] [Hard Gate] A synthesis stands on its raw data
+
+- When: turning raw research into findings: interviews, usability tests, co-creation sessions, or user feedback
+- Do: Go from data to themes to findings to design implications in that order, each layer naming the one below it (capabilities/analyze-research.md).
+  - The Data table lists every participant (P1, P2, ...) with their kind of data and file; nobody is quoted or counted who is not in it.
+  - A theme says how many back it, as n of N with their IDs, keeps the voices against it, and quotes word for word, with who said it.
+  - Observation and interpretation stay apart: what someone said or did, then what it may mean, marked as such.
+  - An implication is a design decision with its trade-off (business, technical, other users), not the request a participant made: what people say they want is data about their need.
+  - Run `ryux synthesize check` before handing it over; a person decides which findings and recommendations stand.
+- Do not: Quote from memory or tidy a quote into what they should have said; count a theme by impression; turn one participant into users want X; drop the small cluster or the outlier because it does not fit; write findings or a designer's note the person did not review as if they were decided.
+- Why: Raw data describes problems and rarely says what to build; a synthesis that reaches past its data becomes a confident decision nobody can trace, and a design made from it carries the error. (NNGroup thematic analysis (Rosala 2022: gather, read all, code, theme, return, test the themes against the data); NNGroup affinity diagramming (Krause and Pernice 2024: write apart, cluster, prioritise into actions); NNGroup, Can AI Generate Good Designs from Raw User Data? (Chan and Banawa 2026: designs from synthesized findings scored 77.9% against 69.5% from raw comments, with a researcher deciding the findings); owner request 2026-11-25 (co-creation, feedback, in-depth interviews, usability tests); written for RYUX)
+- Trade-off: a checked synthesis takes longer than a summary; the check counts, it does not judge what a theme means
+- Check: `ryux synthesize check synthesis.md`: every quote word for word in that participant's file, every n of N counted right, no one outside the Data table, every theme with a support line
 
 ---
 

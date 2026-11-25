@@ -479,6 +479,19 @@ export const RULES: Rule[] = [
       tradeoff: "one question before work on an ambiguous request; it costs less than redoing the wrong size",
       check: "the reply names the size; an ambiguous request got one question before the first change; a revamp keeps the flow and handlers, and has before and after renders of every state in the matrix; a moved control has its reason in the reply, the error state fills its screen, a stepper names the current step, and a changed time shows the old time struck through with a text label",
     },
+    {
+      num: 21,
+      title: "A synthesis stands on its raw data",
+      level: "required",
+      gate: "hard",
+      when: "turning raw research into findings: interviews, usability tests, co-creation sessions, or user feedback",
+      do: "Go from data to themes to findings to design implications in that order, each layer naming the one below it (capabilities/analyze-research.md).\n  - The Data table lists every participant (P1, P2, ...) with their kind of data and file; nobody is quoted or counted who is not in it.\n  - A theme says how many back it, as n of N with their IDs, keeps the voices against it, and quotes word for word, with who said it.\n  - Observation and interpretation stay apart: what someone said or did, then what it may mean, marked as such.\n  - An implication is a design decision with its trade-off (business, technical, other users), not the request a participant made: what people say they want is data about their need.\n  - Run `ryux synthesize check` before handing it over; a person decides which findings and recommendations stand.",
+      dont: "Quote from memory or tidy a quote into what they should have said; count a theme by impression; turn one participant into users want X; drop the small cluster or the outlier because it does not fit; write findings or a designer's note the person did not review as if they were decided.",
+      why: "Raw data describes problems and rarely says what to build; a synthesis that reaches past its data becomes a confident decision nobody can trace, and a design made from it carries the error.",
+      basis: "NNGroup thematic analysis (Rosala 2022: gather, read all, code, theme, return, test the themes against the data); NNGroup affinity diagramming (Krause and Pernice 2024: write apart, cluster, prioritise into actions); NNGroup, Can AI Generate Good Designs from Raw User Data? (Chan and Banawa 2026: designs from synthesized findings scored 77.9% against 69.5% from raw comments, with a researcher deciding the findings); owner request 2026-11-25 (co-creation, feedback, in-depth interviews, usability tests); written for RYUX",
+      tradeoff: "a checked synthesis takes longer than a summary; the check counts, it does not judge what a theme means",
+      check: "`ryux synthesize check synthesis.md`: every quote word for word in that participant's file, every n of N counted right, no one outside the Data table, every theme with a support line",
+    },
   ]),
 
   ...skill("interaction", [

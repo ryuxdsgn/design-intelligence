@@ -14,6 +14,7 @@ interface Core {
   audit(input: string): string;
   probe(input: string): string;
   reportCheck(input: string): string;
+  synthCheck(input: string): string;
   directions(input: string): string;
 }
 
@@ -127,6 +128,14 @@ export interface ReportCheck {
   gate: GateCounts | null;
   detail: GateCounts | null;
   message: string | null;
+}
+
+export interface SynthFinding { level: "fail" | "warn"; rule: string; at: string; message: string }
+export interface SynthCheck { ok: boolean; participants: number; themes: number; findings: SynthFinding[] }
+
+/** Does a research synthesis stand on its raw data? `files` maps each path its Data table names to that file's text. */
+export function synthCheck(synthesis: string, files: Record<string, string>): SynthCheck {
+  return answer(rust().synthCheck(JSON.stringify({ synthesis, files })));
 }
 
 /** Does a RYUX report's one-line gate count the same areas as its detail block (report.md)? */

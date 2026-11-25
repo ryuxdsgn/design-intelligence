@@ -24,7 +24,7 @@ from DESIGN.md and the repo's screens). Pick the entry point, read its file, the
 
 | Entry point | When | Read |
 | --- | --- | --- |
-| **Analyze** | understand a screen, product, or flow that exists | `capabilities/analyze.md` |
+| **Analyze** | understand a screen, product, or flow that exists; synthesize raw research (interviews, usability tests, co-creation, feedback) | `capabilities/analyze.md`; research data: `capabilities/analyze-research.md` |
 | **Design** | create or improve UI and UX without code: Figma, pen.dev, mockups, copy, user flows, journey maps, service blueprints, site maps; a revamp or redesign; write or update DESIGN.md from a brief or references | `capabilities/design.md` (DESIGN.md itself: `capabilities/design-md.md`) |
 | **Build** | implement or change the interface in code; polish a screen that works (premium, easier to find); a change of unnamed size asks first: polish, revamp, or redesign (RX-UX-20) | `capabilities/build.md` |
 | **Critique** | find what should change first, and why; a heuristic evaluation | `capabilities/critique.md` |

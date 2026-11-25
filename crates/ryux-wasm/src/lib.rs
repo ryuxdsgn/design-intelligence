@@ -155,6 +155,16 @@ pub fn syntax_scan(input: &str) -> String {
     ryux_core::Json::Array(s::scan_syntax(&sources, opts)).to_string()
 }
 
+/// The synthesis check: does a research synthesis stand on its raw data (quotes word for word, counts, participants)?
+/// `{ synthesis, files }` in, `{ ok, participants, themes, findings }` out.
+#[wasm_bindgen(js_name = synthCheck)]
+pub fn synth_check(input: &str) -> String {
+    match serde_json_parse(input) {
+        Ok(v) => ryux_core::synth_check(&v).to_string(),
+        Err(e) => format!("{{\"error\":{}}}", ryux_core::js::quote(&format!("invalid input: {e}"))),
+    }
+}
+
 /// The report check: does a RYUX report's one-line gate count the same areas as its detail block?
 /// `{ text, areas }` in, `{ ok, gate, detail, message }` out (fixtures/checks/report.json).
 #[wasm_bindgen(js_name = reportCheck)]
