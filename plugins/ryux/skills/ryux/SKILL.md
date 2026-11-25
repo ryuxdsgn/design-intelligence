@@ -1,6 +1,6 @@
 ---
 name: ryux
-description: "RYUX - design intelligence for AI agents and designers. Tell it what you are doing and it routes to Analyze (understand an existing interface), Design (create or improve UI and UX in Figma, pen.dev, or mockups), Build (implement in code), Critique (find what to change first, with evidence, or run a heuristic evaluation), or QA (verify a build against the design), reads only the knowledge the task needs (product, UX, UI, interaction, forms, content, accessibility, responsive, design system, frontend, anti-slop), and closes with quality gates. Use for any UI, UX, copy, frontend, design review, or design analysis task, and for product visuals: illustration, 3D, imagery, icons, logos, and motion, even when the request does not name RYUX."
+description: "RYUX - design intelligence for AI agents and designers. Tell it what you are doing and it routes to Analyze (understand an existing interface), Design (create or improve UI and UX in Figma, pen.dev, or mockups), Build (implement in code), Critique (find what to change first, with evidence, or run a heuristic evaluation), or QA (verify a build against the design), reads only the knowledge the task needs (product, UX, UI, interaction, forms, content, accessibility, responsive, design system, frontend, unslop), and closes with quality gates. Use for any UI, UX, copy, frontend, design review, or design analysis task, and for product visuals: illustration, 3D, imagery, icons, logos, and motion, even when the request does not name RYUX."
 ---
 
 # RYUX
@@ -9,7 +9,7 @@ description: "RYUX - design intelligence for AI agents and designers. Tell it wh
 
 RYUX is a design intelligence layer for AI and designers. It helps understand, reason, design,
 build, critique, and verify interfaces using design knowledge and evidence. It is not a UI
-generator, an anti-slop framework, a design system, or a prompt library.
+generator, an unslop framework, a design system, or a prompt library.
 
 **Understand before you design. Don't design from imagination when evidence is available.**
 
@@ -31,8 +31,8 @@ from DESIGN.md and the repo's screens). Pick the entry point, read its file, the
 | **QA** | verify a build against the intended design | `capabilities/qa.md` |
 
 Knowledge modules (`knowledge/`): product, ux, interaction, forms, edge-cases, content, ui, imagery (images, motion, expressive surfaces),
-illustration, design-system, accessibility, responsive, frontend, and anti-slop. Evidence comes from the brief, the project, product data, standards, and the ryux MCP when connected; none is required. Every entry point ends at the quality gates: the Hard
-Gates below and the Delivery Gate, with anti-slop as the last check, never the starting point. Keep them apart:
+illustration, design-system, accessibility, responsive, frontend, and unslop. Evidence comes from the brief, the project, product data, standards, and the ryux MCP when connected; none is required. Every entry point ends at the quality gates: the Hard
+Gates below and the Delivery Gate, with unslop as the last check, never the starting point. Keep them apart:
 Analyze says what exists, Design what to do, Critique if it is right, QA if it matches.
 
 ## How RYUX works
@@ -119,19 +119,19 @@ Optional sources (the ryux MCP, Figma, a browser, screenshots, other reference l
 
 ## Task table: which knowledge to read
 
-A small change (a copy fix, one component, one state) reads only the module it touches, plus anti-slop for visual work; any other task reads its row, plus `knowledge/content.md` whenever it writes interface copy (a screen with words counts), `knowledge/imagery.md` when it has photos, illustration, 3D, motion, an expressive surface, or items that carry their own art (events, books, music, dishes, places), and `knowledge/illustration.md` when it draws illustration, a mascot, or custom icons:
+A small change (a copy fix, one component, one state) reads only the module it touches, plus unslop for visual work; any other task reads its row, plus `knowledge/content.md` whenever it writes interface copy (a screen with words counts), `knowledge/imagery.md` when it has photos, illustration, 3D, motion, an expressive surface, or items that carry their own art (events, books, music, dishes, places), and `knowledge/illustration.md` when it draws illustration, a mascot, or custom icons:
 
 | Task | Read |
 | --- | --- |
-| UI implementation | `knowledge/product.md`, `knowledge/ux.md`, `knowledge/ui.md`, `knowledge/design-system.md`, `knowledge/frontend.md`, `capabilities/qa.md`, `knowledge/anti-slop.md` |
-| Form implementation | `knowledge/product.md`, `knowledge/ux.md`, `knowledge/forms.md`, `knowledge/interaction.md`, `knowledge/accessibility.md`, `knowledge/edge-cases.md`, `knowledge/content.md`, `knowledge/ui.md`, `knowledge/anti-slop.md` |
-| Mobile UI | `knowledge/ux.md`, `knowledge/ui.md`, `knowledge/content.md`, `knowledge/responsive.md`, `knowledge/accessibility.md`, `knowledge/anti-slop.md` |
-| Checkout or payment | `knowledge/product.md`, `knowledge/interaction.md`, `knowledge/forms.md`, `knowledge/content.md`, `knowledge/edge-cases.md`, `knowledge/ui.md`, `knowledge/anti-slop.md` |
-| Data-heavy view (list, table, dashboard) | `knowledge/ux.md`, `knowledge/edge-cases.md`, `knowledge/responsive.md`, `knowledge/design-system.md`, `knowledge/frontend.md`, `knowledge/ui.md`, `knowledge/anti-slop.md` |
+| UI implementation | `knowledge/product.md`, `knowledge/ux.md`, `knowledge/ui.md`, `knowledge/design-system.md`, `knowledge/frontend.md`, `capabilities/qa.md`, `knowledge/unslop.md` |
+| Form implementation | `knowledge/product.md`, `knowledge/ux.md`, `knowledge/forms.md`, `knowledge/interaction.md`, `knowledge/accessibility.md`, `knowledge/edge-cases.md`, `knowledge/content.md`, `knowledge/ui.md`, `knowledge/unslop.md` |
+| Mobile UI | `knowledge/ux.md`, `knowledge/ui.md`, `knowledge/content.md`, `knowledge/responsive.md`, `knowledge/accessibility.md`, `knowledge/unslop.md` |
+| Checkout or payment | `knowledge/product.md`, `knowledge/interaction.md`, `knowledge/forms.md`, `knowledge/content.md`, `knowledge/edge-cases.md`, `knowledge/ui.md`, `knowledge/unslop.md` |
+| Data-heavy view (list, table, dashboard) | `knowledge/ux.md`, `knowledge/edge-cases.md`, `knowledge/responsive.md`, `knowledge/design-system.md`, `knowledge/frontend.md`, `knowledge/ui.md`, `knowledge/unslop.md` |
 | Frontend logic or utilities (formatting, state, data shown to users) | `knowledge/frontend.md`, `knowledge/content.md`, `knowledge/edge-cases.md` |
-| AI feature (generated answers, summaries, drafts) | `knowledge/product.md`, `knowledge/ux.md`, `knowledge/content.md`, `knowledge/edge-cases.md`, `knowledge/anti-slop.md` |
-| Copy only (UI text, chat, announcements) | `knowledge/content.md`, `knowledge/anti-slop.md` |
-| Visual refinement | `knowledge/ui.md`, `knowledge/design-system.md`, `capabilities/qa.md`, `knowledge/anti-slop.md` |
+| AI feature (generated answers, summaries, drafts) | `knowledge/product.md`, `knowledge/ux.md`, `knowledge/content.md`, `knowledge/edge-cases.md`, `knowledge/unslop.md` |
+| Copy only (UI text, chat, announcements) | `knowledge/content.md`, `knowledge/unslop.md` |
+| Visual refinement | `knowledge/ui.md`, `knowledge/design-system.md`, `capabilities/qa.md`, `knowledge/unslop.md` |
 | User flow, journey map, or another UX map | `knowledge/product.md`, `knowledge/ux.md`, `knowledge/edge-cases.md`, `knowledge/content.md` |
 | Review or critique | `capabilities/critique.md` (Design Read + heuristic_eval), plus `capabilities/qa.md` |
 
@@ -150,11 +150,11 @@ RESPONSIVE     PASS | FAIL | NOT VERIFIED | N/A  · one-line reason
 EDGE CASES     PASS | FAIL | NOT VERIFIED | N/A  · one-line reason · then the view × state matrix (RX-EC-01)
 CODE QUALITY   PASS | FAIL | NOT VERIFIED | N/A  · one-line reason
 VISUAL QA      PASS | FAIL | NOT VERIFIED | N/A  · one-line reason
-ANTI-SLOP      PASS | FAIL | NOT VERIFIED | N/A  · one-line reason
+UNSLOP         PASS | FAIL | NOT VERIFIED | N/A  · one-line reason
 FINAL          PASS | FAIL | NOT VERIFIED
 ```
 
-- Each area is PASS, FAIL, NOT VERIFIED (it applies, but the evidence was not available: name what is missing), or N/A (it does not apply: say why). A module the task table requires for the work and the run did not read leaves the areas it serves NOT VERIFIED, never PASS (imagery and illustration serve UI), named in PRODUCT's required-not-read list. Scale the gate to the task: a copy fix or a one-component change marks the areas it cannot affect N/A, one line each; a brief that names its scope (a happy flow, one width) marks the states or widths it leaves out N/A in the brief's words and lists them as not designed, and FAIL stays for what the brief asked for. Fill the gate from rules read in the current context: after a context summary, re-read knowledge/anti-slop.md and the modules an area cites before marking it.
+- Each area is PASS, FAIL, NOT VERIFIED (it applies, but the evidence was not available: name what is missing), or N/A (it does not apply: say why). A module the task table requires for the work and the run did not read leaves the areas it serves NOT VERIFIED, never PASS (imagery and illustration serve UI), named in PRODUCT's required-not-read list. Scale the gate to the task: a copy fix or a one-component change marks the areas it cannot affect N/A, one line each; a brief that names its scope (a happy flow, one width) marks the states or widths it leaves out N/A in the brief's words and lists them as not designed, and FAIL stays for what the brief asked for. Fill the gate from rules read in the current context: after a context summary, re-read knowledge/unslop.md and the modules an area cites before marking it.
 - An area FAILS when a [Required] rule in its skills fails without a written exception.
 - A Hard Gate failure cannot be excepted: fix it before declaring the work complete.
 - RYUX commands run from this skill's folder when it holds bin/dist/cli/index.js (the installer puts the same version there): `node <this skill's folder>/bin/dist/cli/index.js scan|audit|pick ...` in place of `npx --no-install @ryuxdsgn/design-intelligence ...`, nothing downloaded; only without it is there "no copy". VISUAL QA without a render is NOT VERIFIED; a PASS names the render tool, the widths, and the states inspected. For a build that runs, a PASS also carries the result of `ryux scan <url>` at 320, 390, and 1280 px with its fails fixed and each warn fixed or answered with a reason; when it cannot run (no Playwright, no copy in the project, a command that is not permitted), it is not run another way: say why, and VISUAL QA is NOT VERIFIED. On a Figma or FigCraft canvas a PASS also carries the audit's gate line (scripts/figma-audit.md, or ryux audit for FigCraft) with its fails fixed and each warn fixed or answered with a reason; without it VISUAL QA is NOT VERIFIED. In FigCraft without the audit, before writing that, read each screen with inspect_document and count the texts that reach past a clipping frame above them or past the screen, the texts under 12 px, and the texts under 4.5:1 against the fill behind them (3:1 from 24 px or 18.66 px bold); fix them, and write the counts found and fixed in VISUAL QA (a screenshot review is not this check).

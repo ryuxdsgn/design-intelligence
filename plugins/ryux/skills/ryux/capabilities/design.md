@@ -101,7 +101,7 @@ The six stages of the core workflow (SKILL.md), as Design runs them.
    problem (RX-UX-10).
    **Modules.** Read the modules the task needs from the task table before deciding anything, for example ux,
    interaction, forms, and content for a form, or ui and responsive for a layout; for any surface
-   with a visual direction, ui and anti-slop as well. The rules shape the first idea, not only the
+   with a visual direction, ui and unslop as well. The rules shape the first idea, not only the
    review of it. capabilities/design-deliver.md is not one of them: open it at stage 6, once the screens are
    built (read now, it rides along in every later call and is gone from mind by the gate).
 2. **Frame.** Name the primary task, the flow, the one thing that must be seen first, and the

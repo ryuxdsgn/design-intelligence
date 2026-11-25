@@ -303,7 +303,7 @@ Each step reads only the knowledge it needs: product thinking, UX (structure, fl
 UI (hierarchy, type, layout, color, and a point of view on expressive surfaces), interaction (what
 happens before, during, and after an action), motion (a purpose and a level for every motion, fitted
 to how often it is seen), forms, content, edge cases, accessibility (WCAG 2.2), responsive behavior,
-design systems, frontend, and anti-slop.
+design systems, frontend, and unslop.
 
 ### Evidence
 
@@ -321,7 +321,7 @@ Understand → Frame → Explore → Evaluate and select → Build and critique 
 
 - **Hard Gates** are never waived: no invented numbers or claims, no missing critical states, among
   others.
-- **Anti-Slop** runs last. It catches generic, invented, unnecessary, or unsupported output. It does
+- **Unslop** runs last. It catches generic, invented, unnecessary, or unsupported output. It does
   not decide what good design is.
 - **The Delivery Gate** reports each area as PASS, FAIL, NOT VERIFIED, or N/A, and claims only what
   was checked. An area that applies but was not checked is NOT VERIFIED, never PASS. PASS means the

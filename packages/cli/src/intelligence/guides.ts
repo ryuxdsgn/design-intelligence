@@ -7,7 +7,7 @@ import { UNTRUSTED_CONTENT } from "./capture.js";
 
 export const CORE_POSITIONING = `RYUX is a design intelligence layer for AI and designers. It helps understand, reason, design,
 build, critique, and verify interfaces using design knowledge and evidence. It is not a UI
-generator, an anti-slop framework, a design system, or a prompt library.
+generator, an unslop framework, a design system, or a prompt library.
 
 **Understand before you design. Don't design from imagination when evidence is available.**
 
@@ -27,8 +27,8 @@ from DESIGN.md and the repo's screens). Pick the entry point, read its file, the
 | **QA** | verify a build against the intended design | \`capabilities/qa.md\` |
 
 Knowledge modules (\`knowledge/\`): product, ux, interaction, forms, edge-cases, content, ui, imagery (images, motion, expressive surfaces),
-illustration, design-system, accessibility, responsive, frontend, and anti-slop. Evidence comes from the brief, the project, product data, standards, and the ryux MCP when connected; none is required. Every entry point ends at the quality gates: the Hard
-Gates below and the Delivery Gate, with anti-slop as the last check, never the starting point. Keep them apart:
+illustration, design-system, accessibility, responsive, frontend, and unslop. Evidence comes from the brief, the project, product data, standards, and the ryux MCP when connected; none is required. Every entry point ends at the quality gates: the Hard
+Gates below and the Delivery Gate, with unslop as the last check, never the starting point. Keep them apart:
 Analyze says what exists, Design what to do, Critique if it is right, QA if it matches.`;
 
 export const CORE_PRINCIPLE = `Novelty is not a goal; a recognisable brand layer is: familiar structure, distinct surface.
@@ -159,7 +159,7 @@ The six stages of the core workflow (SKILL.md), as Design runs them.
    problem (RX-UX-10).
    **Modules.** Read the modules the task needs from the task table before deciding anything, for example ux,
    interaction, forms, and content for a form, or ui and responsive for a layout; for any surface
-   with a visual direction, ui and anti-slop as well. The rules shape the first idea, not only the
+   with a visual direction, ui and unslop as well. The rules shape the first idea, not only the
    review of it. capabilities/design-deliver.md is not one of them: open it at stage 6, once the screens are
    built (read now, it rides along in every later call and is gone from mind by the gate).
 2. **Frame.** Name the primary task, the flow, the one thing that must be seen first, and the
@@ -963,7 +963,7 @@ export const CORE_DECISION_RECORD = `For consequential choices (RX-PR-09) and de
 **Trade-off**, **Choice**, and **Test** (the riskiest assumption behind the choice, the cheapest way to test it, the signal that it works, and the result that would change the choice). Evidence is Strong (2+ comparable screen_ids), Thin (one, or another context),
 or None (no screen_id: a judgment call). With None on a consequential choice, show options or ask (RX-PR-10).`;
 
-export const GATE_RULES = `- Each area is PASS, FAIL, NOT VERIFIED (it applies, but the evidence was not available: name what is missing), or N/A (it does not apply: say why). A module the task table requires for the work and the run did not read leaves the areas it serves NOT VERIFIED, never PASS (imagery and illustration serve UI), named in PRODUCT's required-not-read list. Scale the gate to the task: a copy fix or a one-component change marks the areas it cannot affect N/A, one line each; a brief that names its scope (a happy flow, one width) marks the states or widths it leaves out N/A in the brief's words and lists them as not designed, and FAIL stays for what the brief asked for. Fill the gate from rules read in the current context: after a context summary, re-read knowledge/anti-slop.md and the modules an area cites before marking it.
+export const GATE_RULES = `- Each area is PASS, FAIL, NOT VERIFIED (it applies, but the evidence was not available: name what is missing), or N/A (it does not apply: say why). A module the task table requires for the work and the run did not read leaves the areas it serves NOT VERIFIED, never PASS (imagery and illustration serve UI), named in PRODUCT's required-not-read list. Scale the gate to the task: a copy fix or a one-component change marks the areas it cannot affect N/A, one line each; a brief that names its scope (a happy flow, one width) marks the states or widths it leaves out N/A in the brief's words and lists them as not designed, and FAIL stays for what the brief asked for. Fill the gate from rules read in the current context: after a context summary, re-read knowledge/unslop.md and the modules an area cites before marking it.
 - An area FAILS when a [Required] rule in its skills fails without a written exception.
 - A Hard Gate failure cannot be excepted: fix it before declaring the work complete.
 - RYUX commands run from this skill's folder when it holds bin/dist/cli/index.js (the installer puts the same version there): \`node <this skill's folder>/bin/dist/cli/index.js scan|audit|pick ...\` in place of \`npx --no-install @ryuxdsgn/design-intelligence ...\`, nothing downloaded; only without it is there "no copy". VISUAL QA without a render is NOT VERIFIED; a PASS names the render tool, the widths, and the states inspected. For a build that runs, a PASS also carries the result of \`ryux scan <url>\` at 320, 390, and 1280 px with its fails fixed and each warn fixed or answered with a reason; when it cannot run (no Playwright, no copy in the project, a command that is not permitted), it is not run another way: say why, and VISUAL QA is NOT VERIFIED. On a Figma or FigCraft canvas a PASS also carries the audit's gate line (scripts/figma-audit.md, or ryux audit for FigCraft) with its fails fixed and each warn fixed or answered with a reason; without it VISUAL QA is NOT VERIFIED. In FigCraft without the audit, before writing that, read each screen with inspect_document and count the texts that reach past a clipping frame above them or past the screen, the texts under 12 px, and the texts under 4.5:1 against the fill behind them (3:1 from 24 px or 18.66 px bold); fix them, and write the counts found and fixed in VISUAL QA (a screenshot review is not this check).
@@ -1290,7 +1290,7 @@ Does not cover: layout of the text (see ryux-ui).`,
   ui: `**Visuals are not decoration. They are communication.** RYUX UI owns the visual expression of
 a product: what each visual decision communicates, why it exists, and how it behaves. Functional UI
 helps the user read, decide, or act. Anything decorative needs a stated reason (see the purpose
-gates in ryux-anti-slop). This module is the visual system; art direction, motion, and assets live in
+gates in ryux-unslop). This module is the visual system; art direction, motion, and assets live in
 knowledge/imagery.md, and illustration in knowledge/illustration.md, read when the work has them.
 
 **1. UI system.** Work in this order:
@@ -1774,10 +1774,10 @@ widths) or NOT VERIFIED (why); motion read only from code is NOT VERIFIED.
 **Rank issues by impact**: blocks the task, misleads (wrong numbers, unclear action), adds friction,
 polish.`,
 
-  "anti-slop": `Anti-slop runs in Verify and deliver, after design, build, critique, and QA; it is the final
+  "unslop": `Unslop runs in Verify and deliver, after design, build, critique, and QA; it is the final
 quality gate, never the
-starting point. Anti-slop is the floor, not the ceiling: a tidy, generic surface still fails on expressive
-surfaces (RX-AS-09), and the point of view comes from RX-UI-12. Anti-slop is not a list of banned
+starting point. Unslop is the floor, not the ceiling: a tidy, generic surface still fails on expressive
+surfaces (RX-AS-09), and the point of view comes from RX-UI-12. Unslop is not a list of banned
 styles. It has three parts.
 
 **Hard Gates**: reject or fix before delivery; no written exception. The list is generated below

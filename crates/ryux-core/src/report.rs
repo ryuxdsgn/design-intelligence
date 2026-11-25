@@ -32,7 +32,9 @@ fn as_json(c: &[u64; 4]) -> Value {
 }
 
 pub fn report_check(input: &Value) -> Value {
-    let text = input["text"].as_str().unwrap_or("");
+    // the area was named ANTI-SLOP until the Unslop rename (owner 2026-11-25); a report written before it still checks
+    let text = input["text"].as_str().unwrap_or("").replace("ANTI-SLOP", "UNSLOP");
+    let text = text.as_str();
     let areas: Vec<&str> = input["areas"].as_array().map(|a| a.iter().filter_map(|v| v.as_str()).collect()).unwrap_or_default();
 
     let mut gate: Option<[u64; 4]> = None;

@@ -1274,7 +1274,7 @@ impl<'a> Page<'a> {
             ));
         }
 
-        // Visual tells (knowledge/anti-slop.md, "Visual tells"): signals that a reason is missing, never banned styles,
+        // Visual tells (knowledge/unslop.md, "Visual tells"): signals that a reason is missing, never banned styles,
         // so every one is a warn that names the purpose gate to run. Reported once per page (the CLI keeps the first width).
         let visible: Vec<usize> = (2..n).filter(|&i| self.outside[i] && !self.in_svg[i] && self.shown[i]).collect();
         let tell = |out: &mut Vec<Value>, rule: &str, key: &str, el: Option<usize>, message: String| {

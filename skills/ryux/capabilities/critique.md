@@ -15,7 +15,7 @@ Critique
 Analyze                   what is actually there
      ↓
 knowledge modules         ux, ui, imagery, illustration, interaction, forms, content, accessibility,
-                          responsive, design-system, edge-cases, anti-slop
+                          responsive, design-system, edge-cases, unslop
      ↓
 RYUX Knowledge            real product screens (search_screens, heuristic_eval)
      ↓
@@ -151,7 +151,7 @@ Then run the measured Laws of UX checks (knowledge/ux.md) and report each fail w
 | Accessibility | `knowledge/accessibility.md` | contrast, targets, focus, names, color alone |
 | Responsive | `knowledge/responsive.md` | what changes, stays, disappears, or stacks across widths |
 | Edge cases | `knowledge/edge-cases.md` | empty, error, loading, long text, permissions |
-| Anti-slop | `knowledge/anti-slop.md` | invented numbers or people, fake urgency, unjustified decoration |
+| Unslop | `knowledge/unslop.md` | invented numbers or people, fake urgency, unjustified decoration |
 
 ### 6. Evidence from RYUX Knowledge
 
@@ -169,7 +169,7 @@ RYUX rule in `issue`:
 | Confirm or undo, forms | `H-05` error prevention |
 | Recognition | `H-06` recognition rather than recall |
 | Shortcuts | `H-07` flexibility and efficiency |
-| UI decoration, anti-slop | `H-08` aesthetic and minimalist design |
+| UI decoration, unslop | `H-08` aesthetic and minimalist design |
 | Error messages and recovery | `H-09` error recovery |
 | Help | `H-10` help and documentation |
 

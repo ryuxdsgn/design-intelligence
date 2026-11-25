@@ -7,7 +7,7 @@ Gives a product a visual system: hierarchy, type, layout, density, color, icons,
 **Visuals are not decoration. They are communication.** RYUX UI owns the visual expression of
 a product: what each visual decision communicates, why it exists, and how it behaves. Functional UI
 helps the user read, decide, or act. Anything decorative needs a stated reason (see the purpose
-gates in `knowledge/anti-slop.md`). This module is the visual system; art direction, motion, and assets live in
+gates in `knowledge/unslop.md`). This module is the visual system; art direction, motion, and assets live in
 knowledge/imagery.md, and illustration in knowledge/illustration.md, read when the work has them.
 
 **1. UI system.** Work in this order:
@@ -171,7 +171,7 @@ A design direction from comparable screens: `extract_design_direction` (patterns
 
 - Do: Choose the layout from the content, the task, and the reference screens. Set the balance on purpose: symmetric for calm, focused screens, asymmetric for dynamic ones. On the render, check that visual weight is distributed, counting element size and not only the number of elements, with no side left empty or heavy without a reason. A tall empty band between two blocks of one screen is weight left on one side: move the blocks together, give the space a job, or let the content fill it.
 - Do not: Default to hero, three feature cards, and a logo wall, or leave a tall empty band in the middle of a screen (a bag whose summary floats far below its items).
-- Why: Template layouts look interchangeable and hide what is specific to the product. (ryux anti-slop principle; NNGroup principles of visual design (balance); owner review 2026-11-16 (Figma, Rak New-6): empty gaps in several screens; owner review 2026-11-18 (Figma, Rak-8, "agak slop" after the audit said 0 fail): about 150 pt between the bag's delivery card and its summary, and the lower 40% of the confirmation empty)
+- Why: Template layouts look interchangeable and hide what is specific to the product. (ryux unslop principle; NNGroup principles of visual design (balance); owner review 2026-11-16 (Figma, Rak New-6): empty gaps in several screens; owner review 2026-11-18 (Figma, Rak-8, "agak slop" after the audit said 0 fail): about 150 pt between the bag's delivery card and its summary, and the lower 40% of the confirmation empty)
 - Not when: a standard pattern users expect fits the content (a settings list, a table); familiarity is the right choice
 - Trade-off: custom layouts cost design and build time
 - Check: review; in Figma, the audit flags an empty band of 96 pt or more between blocks

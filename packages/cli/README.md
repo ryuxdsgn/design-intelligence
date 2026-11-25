@@ -80,7 +80,7 @@ ryux/
   SKILL.md            the router: entry points, how RYUX works, levels, Hard Gates, task table, Delivery Gate
   capabilities/       analyze, design, build, critique, qa
   knowledge/          product, ux, interaction, forms, edge-cases, content, ui, design-system,
-                      accessibility, responsive, frontend, anti-slop
+                      accessibility, responsive, frontend, unslop
 ```
 
 The agent reads the router, then only the capability and knowledge files a task needs.
