@@ -162,6 +162,10 @@ test("the skill runs the RYUX CLI from the project, not as a download, and never
   assert.match(flat, /Draw them first, in one call:\*\* `node <this skill's folder>\/bin\/dist\/cli\/index\.js directions --project <name> --context "<owner, city, audience>"/);
   assert.match(flat, /A named reference\*\* \("a web like X", "an app like Y"\) locks what it fixes/);
   assert.match(flat, /never its logo, name, exact colours, illustrations, or copy/);
+  // arm H (2026-11-25): five code builds took the Build path, never drew, and skipped directions for "a one-file build"
+  assert.match(flat, /draw before any code, even for a one-file or quick build/);
+  assert.match(flat, /"a one-file build" or "budget" is not a reason to skip the draw/);
+  assert.match(flat, /draw seed <seed> \| none: <reason>/);
   assert.match(flat, /The user's own choice always wins: a font, colour, or layout they\s+name is locked/);
   // three of four clipper runs opened stage 6 before building (2026-11-24)
   assert.match(flat, /capabilities\/design-deliver\.md is not one of them: open it at stage 6/);

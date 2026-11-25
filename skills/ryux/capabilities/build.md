@@ -9,7 +9,13 @@ workflow (SKILL.md); Frame, Explore, and Evaluate happen in Design.
    used (where components, state, pure logic, and data access live), and the test runner
    (knowledge/frontend.md, knowledge/design-system.md). Reuse before creating.
 2. **Find the design source**: the Design Direction, a Figma or pen.dev design, a DESIGN.md, or an
-   approved mockup; it is the spec. If there is none, run Design's stages 1-4 first
+   approved mockup; it is the spec. **With no visual direction** (none of those, no product that exists, nothing in
+   the prompt) and a new product or a new look, draw before any code, even for a one-file or quick build:
+   `node <this skill's folder>/bin/dist/cli/index.js directions --project <name> --context "<owner, city, audience>" --tags <product>,<audience>,<glance|session>`
+   (capabilities/design.md, "Draw them first"). With the user there, offer the three as Design does; in a run with
+   no questions, build direction 1 on its draw (surface, accent hue range, type category and ramp, layout, material,
+   idea source), mark it provisional in Assumptions, and name the other two in a line each. The UI gate row writes
+   the draw seed; "a one-file build" or "budget" is not a reason to skip the draw. If there is none, run Design's stages 1-4 first
    (capabilities/design.md) instead of inventing one in code. Stage 1's questions come first even
    when the request is a quick build or a working prototype: ask the ones whose answers change what
    gets built (a product rule such as fees, refunds, or what happens on failure; the market, with

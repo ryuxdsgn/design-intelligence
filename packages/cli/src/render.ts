@@ -74,7 +74,7 @@ export function deliveryGateTemplate(): string {
     a === "FINAL"
       ? `${a.padEnd(width)}PASS | FAIL | NOT VERIFIED`
       : a === "UI"
-        ? `${a.padEnd(width)}PASS | FAIL | NOT VERIFIED | N/A  · one-line reason · point of view: <concept> | task UI, signature: <signature> · directions shown <n> | skipped: <reason> (RX-UI-26) · concept sections <n>/<total>, devices <n>, focal subjects <n>/<sections>, carrier <kind>, made assets <n>/<planned>, content art <n>/<items> generated | stand-in | none (anything not generated is stand-in: drawn, vector, typographic; stand-in fails UI when an image tool was available or never searched for), product proof photo | render | drawn (fails UI when the product makes images) | none · illustration style: <where written> | none`
+        ? `${a.padEnd(width)}PASS | FAIL | NOT VERIFIED | N/A  · one-line reason · point of view: <concept> | task UI, signature: <signature> · directions shown <n> | skipped: <reason> (RX-UI-26), draw seed <seed> | none: <reason> · concept sections <n>/<total>, devices <n>, focal subjects <n>/<sections>, carrier <kind>, made assets <n>/<planned>, content art <n>/<items> generated | stand-in | none (anything not generated is stand-in: drawn, vector, typographic; stand-in fails UI when an image tool was available or never searched for), product proof photo | render | drawn (fails UI when the product makes images) | none · illustration style: <where written> | none`
         : a === "PRODUCT"
         ? `${a.padEnd(width)}PASS | FAIL | NOT VERIFIED | N/A  · one-line reason · evidence Strong | Thin | None · rationale <n> lines, annotations <n> | none · modules read <list>, required not read <list> | none`
         : a === "CONTENT"
