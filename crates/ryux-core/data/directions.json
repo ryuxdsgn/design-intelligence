@@ -838,7 +838,118 @@
     "avoid": [],
     "pro": "terasa lokal dan berbeda",
     "con": "faktanya harus benar; nama tempat yang keliru merusak kepercayaan"
-   }
+   },
+   {
+    "id": "moment",
+    "name": "Waktu dan momen",
+    "note": "saat persis produk dipakai: jamnya, harinya, atau momennya (07.00 sebelum kantor, malam sebelum tryout); jadikan waktu itu pusat halaman",
+    "fit": [
+     "booking",
+     "health",
+     "logistics",
+     "food",
+     "education"
+    ],
+    "avoid": [],
+    "pro": "langsung terasa relevan bagi orang yang mengalami momen itu",
+    "con": "lemah kalau produknya dipakai kapan saja tanpa momen khas"
+    },
+    {
+    "id": "relation",
+    "name": "Hubungan antar-orang",
+    "note": "siapa memesankan atau mengurus untuk siapa (anak untuk orang tua, ibu untuk anak, pemilik untuk tamu); tampilkan kedua orangnya",
+    "fit": [
+     "family",
+     "senior",
+     "kids",
+     "social",
+     "home-service"
+    ],
+    "avoid": [],
+    "pro": "hangat dan menunjukkan siapa yang sebenarnya memutuskan",
+    "con": "bisa keliru menebak siapa pembelinya; ambil dari brief, jangan dikarang"
+    },
+    {
+    "id": "worry",
+    "name": "Kekhawatiran yang dijawab",
+    "note": "satu ragu atau takut yang menahan pengguna (malu, aman, mahal, sakit) dinamai jujur lalu dijawab dengan fakta produk",
+    "fit": [
+     "health",
+     "education",
+     "finance",
+     "senior",
+     "family"
+    ],
+    "avoid": [
+     "youth"
+    ],
+    "pro": "membangun kepercayaan karena mengakui yang dirasakan pengguna",
+    "con": "bisa terasa menakut-nakuti kalau kekhawatirannya dibesar-besarkan"
+    },
+    {
+    "id": "paper",
+    "name": "Dokumen dan kertas",
+    "note": "benda tertulis yang dihasilkan atau digantikan produk (nota, kartu kontrol, catatan sesi, kuitansi) dengan isi contoh yang nyata",
+    "fit": [
+     "finance",
+     "health",
+     "education",
+     "umkm",
+     "public",
+     "logistics"
+    ],
+    "avoid": [],
+    "pro": "menunjukkan hasil produk, bukan menjanjikannya",
+    "con": "isi contoh harus ditandai sebagai contoh; dokumen kosong terlihat belum jadi"
+    },
+    {
+    "id": "number",
+    "name": "Satu angka penting",
+    "note": "satu angka yang paling menentukan keputusan (2 hari, 07.00, 15 menit) menjadi elemen terbesar halaman",
+    "fit": [
+     "finance",
+     "logistics",
+     "booking",
+     "food",
+     "home-service"
+    ],
+    "avoid": [],
+    "pro": "cepat dibaca dan mudah diingat",
+    "con": "angkanya harus pasti dari brief; angka karangan menjadi janji palsu"
+    },
+    {
+    "id": "change",
+    "name": "Perubahan",
+    "note": "keadaan sebelum dan sesudah yang dialami pengguna (kusut ke rapi, progres behel, nilai yang naik), ditunjukkan sebagai urutan",
+    "fit": [
+     "beauty",
+     "home-service",
+     "education",
+     "health"
+    ],
+    "avoid": [
+     "finance"
+    ],
+    "pro": "manfaat terasa konkret",
+    "con": "mudah jadi klaim berlebihan; perubahan harus yang benar-benar dijanjikan produk"
+    },
+    {
+    "id": "voice",
+    "name": "Bahasa pengguna",
+    "note": "kata, logat, dan kalimat pengguna sendiri dari brief (cucian sikit pun, baru pulang shift) menjadi tipografi utama",
+    "fit": [
+     "youth",
+     "social",
+     "umkm",
+     "food",
+     "consumer"
+    ],
+    "avoid": [
+     "public"
+    ],
+    "pro": "terasa dekat dan tidak seperti iklan",
+    "con": "logat yang dikarang terasa palsu; pakai kata yang ada di brief atau riset"
+    }
   ],
   "treatment": [
    {

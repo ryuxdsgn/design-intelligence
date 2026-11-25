@@ -352,6 +352,9 @@ pub fn directions(input: &Value) -> Value {
             // surface, accent, type, and layout differ in every direction unless a reference locks them; an idea source twice at most
             // a dimension repeats only when its pool has fewer than three entries (a layout fitting few patterns)
             let repeats = level < 2 && [0, 1, 2, 3].iter().any(|&i| !locked(i) && (pools[i].len() >= 3 || (i == 3 && id(&dir[3]) != "from-task")) && chosen.iter().any(|o| id(&o[i]) == id(&dir[i])))
+                // three idea sources: with three in the catalog every draw took all three, and the owner kept marking
+                // pages "the same idea" (H5, H7); with ten, each direction takes its own
+                || level < 2 && !locked(6) && pools[6].len() >= 3 && chosen.iter().any(|o| id(&o[6]) == id(&dir[6]))
                 || chosen.iter().filter(|o| id(&o[6]) == id(&dir[6])).count() >= 2;
             // accents at least 60° apart (sky, blue, and indigo are three ids and one colour), and three materials
             let near = level == 0 && !locked(1) && chosen.iter().any(|o| {
@@ -543,6 +546,21 @@ mod tests {
         assert_eq!(r["tags"], json!(["education", "senior", "glance"]), "{r}");
         let r = draw(json!({ "project": "Lesin", "tags": ["tutoring", "adults-40plus"] }));
         assert_eq!(r["unknownTags"], json!(["adults-40plus"]));
+    }
+
+    #[test]
+    fn three_directions_take_three_idea_sources_and_the_draws_spread_over_the_catalog() {
+        let mut seen = std::collections::BTreeSet::new();
+        for p in ["Lesin", "Senyum", "Bilas", "Ladang", "a", "b", "c", "d", "e", "f", "g", "h"] {
+            for tags in [json!(["education", "family", "glance"]), json!(["health", "senior"]), json!(["food", "youth"]), json!(["finance", "pro", "session"])] {
+                let r = draw(json!({ "project": p, "tags": tags }));
+                let i = ids(&r, "idea");
+                assert!(i[0] != i[1] && i[1] != i[2] && i[0] != i[2], "{p} {tags}: {i:?}");
+                seen.extend(i);
+            }
+        }
+        // the seven added sources are drawn, not only the first three
+        assert!(seen.len() >= 8, "{seen:?}");
     }
 
     #[test]

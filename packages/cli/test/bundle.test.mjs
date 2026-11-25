@@ -169,6 +169,8 @@ test("the skill runs the RYUX CLI from the project, not as a download, and never
   assert.match(flat, /never swap them for cream, ivory, or another light default/);
   // owner 2026-11-25: the choice of direction is part of the experience; each one says why, its pros, and its cons
   assert.match(flat, /Kenapa, Kelebihan, Kekurangan/);
+  // owner 2026-11-25: ten idea sources, three apart per draw
+  assert.match(flat, /the worry it answers, the paper it makes, one number that decides/);
   // owner H6 2026-11-25: three directions, three page skeletons; strong helper text for seniors, families, and health
   assert.match(flat, /three directions, three skeletons, and none of them the default hero beside a card/);
   assert.match(flat, /muted at 7:1 on the section colour for every audience; a glance caption at 14 px or more/);
