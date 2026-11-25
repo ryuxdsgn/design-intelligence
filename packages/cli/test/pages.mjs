@@ -183,7 +183,9 @@ const storeStyle = `<style>body{margin:0;font:16px sans-serif;background:#FFF7E8
 .days li.on{background:#0698a4;color:#fff}.store{display:inline-flex;gap:8px;align-items:center;background:#000;color:#fff;border-radius:8px;padding:8px 12px;text-decoration:none}</style>`;
 export const STORE_SLOP = `${head}${storeStyle}<div class="hero"><h1>Sayur dari petani</h1></div>
 <ul class="days"><li>Sen</li><li class="on">Sel</li><li>Rab</li><li>Kam</li></ul>
-<a class="store" href="#"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M2 2l16 8-16 8z" fill="#fff"/></svg><span>Unduh di Google Play</span></a>`;
+<a class="store" href="#"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M2 2l16 8-16 8z" fill="#fff"/></svg><span>Unduh di Google Play</span></a>
+<p><button style="background:#0698a4;color:#fff;border:0;border-radius:24px;height:44px;width:160px">Pesan sekarang</button>
+<button style="background:#0698a4;color:#fff;border:0;border-radius:8px;height:44px;width:160px">Lihat paket</button></p>`;
 export const STORE_QUIET = `${head}${storeStyle}<style>body{background:#fff}</style><div class="hero"><h1>Sayur dari petani</h1></div>
 <div class="days" role="radiogroup"><button role="radio" aria-checked="false">Sen</button><button role="radio" aria-checked="true" class="on">Sel</button><button role="radio" aria-checked="false">Rab</button></div>
 <a href="#"><img alt="Temukan di Google Play" width="150" height="44" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='44'/%3E"></a>`;

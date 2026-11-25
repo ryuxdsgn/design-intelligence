@@ -94,32 +94,80 @@ fn oklch(l: f64, c: f64, h: f64) -> String {
 /// Concrete colours for a direction, so the page cannot fall back to the model's light default (cream on five of five
 /// H2 pages, 2026-11-25): the page, an alternate section, ink, muted text, the accent, text on the accent, and for a
 /// colour field the field that covers at least a third of the page. Neutrals lean to the accent hue (RX-UI-31).
+/// The catalog's hues are HSL degrees (yellow is 35–65°); OKLCH puts the same colour elsewhere (yellow near 95°).
+/// This takes an HSL hue to the OKLCH hue of the same pure colour, so a drawn yellow comes out yellow.
+fn oklch_hue(hsl: f64) -> f64 {
+    let f = |n: f64| { let k = (n + hsl / 30.0).rem_euclid(12.0); 0.5 - 0.5 * (k - 3.0).min(9.0 - k).clamp(-1.0, 1.0) };
+    let lin = |v: f64| if v <= 0.04045 { v / 12.92 } else { ((v + 0.055) / 1.055).powf(2.4) };
+    let (r, g, b) = (lin(f(0.0)), lin(f(8.0)), lin(f(4.0)));
+    let l = (0.4122214708 * r + 0.5363325363 * g + 0.0514459929 * b).cbrt();
+    let m = (0.2119034982 * r + 0.6806995451 * g + 0.1073969566 * b).cbrt();
+    let s = (0.0883024619 * r + 0.2817188376 * g + 0.6299787005 * b).cbrt();
+    let a = 1.9779984951 * l - 2.4285922050 * m + 0.4505937099 * s;
+    let bb = 0.0259040371 * l + 0.7827717662 * m - 0.8086757660 * s;
+    bb.atan2(a).to_degrees().rem_euclid(360.0)
+}
+
+fn luminance(h: &str) -> f64 {
+    let c: Vec<f64> = (0..3).map(|j| u8::from_str_radix(&h[1 + j * 2..3 + j * 2], 16).unwrap_or(0) as f64 / 255.0).collect();
+    let l = |v: f64| if v <= 0.04045 { v / 12.92 } else { ((v + 0.055) / 1.055).powf(2.4) };
+    0.2126 * l(c[0]) + 0.7152 * l(c[1]) + 0.0722 * l(c[2])
+}
+
+fn ratio(a: &str, b: &str) -> f64 {
+    let (x, y) = (luminance(a), luminance(b));
+    (x.max(y) + 0.05) / (x.min(y) + 0.05)
+}
+
+/// The OKLCH colour at lightness `l`, stepped darker (or lighter with `up`) until `against` reads on it at `min`.
+fn readable(l: f64, c: f64, h: f64, against: &str, min: f64, up: bool) -> String {
+    let mut l = l;
+    loop {
+        let x = oklch(l, c, h);
+        if ratio(&x, against) >= min || !(0.05..=0.97).contains(&l) {
+            return x;
+        }
+        l += if up { 0.01 } else { -0.01 };
+    }
+}
+
 pub fn colours(surface: &str, accent: &Value) -> Value {
-    let h = match (accent["hues"][0].as_f64(), accent["hues"][1].as_f64()) {
+    let hsl_h = match (accent["hues"][0].as_f64(), accent["hues"][1].as_f64()) {
         (Some(a), Some(b)) => { let w = if b < a { b + 360.0 } else { b }; ((a + w) / 2.0).rem_euclid(360.0) }
         _ => accent["hue"].as_f64().unwrap_or(250.0),
     };
+    let h = oklch_hue(hsl_h);
     let dark = surface.starts_with("dark");
     let (page, section, ink, muted) = match surface {
         "light-cool" => (oklch(0.985, 0.008, 250.0), oklch(0.955, 0.014, 250.0), oklch(0.24, 0.025, 250.0), oklch(0.50, 0.02, 250.0)),
         "warm-paper" => (oklch(0.972, 0.018, 85.0), oklch(0.94, 0.026, 80.0), oklch(0.26, 0.025, 60.0), oklch(0.50, 0.025, 60.0)),
-        "dark-neutral" => (oklch(0.19, 0.004, 260.0), oklch(0.24, 0.006, 260.0), oklch(0.95, 0.004, 260.0), oklch(0.74, 0.006, 260.0)),
-        "dark-tinted" => (oklch(0.21, 0.045, h), oklch(0.27, 0.055, h), oklch(0.96, 0.012, h), oklch(0.76, 0.03, h)),
+        // muted text on a dark page stays light: small grey on dark green read weak to the owner though it passed (H4)
+        "dark-neutral" => (oklch(0.19, 0.004, 260.0), oklch(0.24, 0.006, 260.0), oklch(0.95, 0.004, 260.0), oklch(0.82, 0.006, 260.0)),
+        "dark-tinted" => (oklch(0.21, 0.045, h), oklch(0.27, 0.055, h), oklch(0.96, 0.012, h), oklch(0.84, 0.025, h)),
         // a warm hue (orange to yellow) tinting a light page is cream: keep those neutrals grey and let the field carry it
-        "colour-field" if (20.0..=110.0).contains(&h) => (oklch(0.985, 0.0, 0.0), oklch(0.955, 0.0, 0.0), oklch(0.22, 0.02, h), oklch(0.48, 0.015, h)),
+        "colour-field" if (20.0..=110.0).contains(&hsl_h) => (oklch(0.985, 0.0, 0.0), oklch(0.955, 0.0, 0.0), oklch(0.22, 0.02, h), oklch(0.48, 0.015, h)),
         "colour-field" => (oklch(0.985, 0.01, h), oklch(0.95, 0.03, h), oklch(0.22, 0.03, h), oklch(0.48, 0.03, h)),
         _ => (oklch(0.992, 0.0, 0.0), oklch(0.965, 0.0, 0.0), oklch(0.22, 0.0, 0.0), oklch(0.50, 0.0, 0.0)),
     };
-    let (al, ac) = if dark { (0.76, 0.14) } else { (0.58, 0.16) };
+    // yellow and lime only read as themselves light, with dark text on them
+    let bright = (40.0..=100.0).contains(&hsl_h);
+    let (al, ac) = if dark || bright { (0.80, 0.15) } else { (0.58, 0.16) };
+    // every pair is made to pass, not hoped to: white on a light-page accent (darkened until 4.5:1), dark text on a
+    // light accent (lightened until it does)
+    let light_accent = al > 0.68;
+    let on_light = oklch(0.2, 0.02, h);
+    let accent_c = if light_accent { readable(al, ac, h, &on_light, 4.5, true) } else { readable(al, ac, h, "#ffffff", 4.5, false) };
     let mut out = json!({
         "page": page, "section": section, "ink": ink, "muted": muted,
-        "accent": oklch(al, ac, h),
-        "onAccent": if al > 0.68 { oklch(0.2, 0.02, h) } else { "#ffffff".to_string() },
+        "accent": accent_c,
+        "onAccent": if light_accent { on_light } else { "#ffffff".to_string() },
     });
     if surface == "colour-field" {
-        out["field"] = json!(oklch(0.62, 0.16, h));
-        out["onField"] = json!(oklch(0.18, 0.03, h));
-        out["accent"] = json!(oklch(0.30, 0.09, h));
+        let on_field = oklch(0.18, 0.03, h);
+        out["field"] = json!(readable(if bright { 0.82 } else { 0.62 }, 0.16, h, &on_field, 4.5, true));
+        out["onField"] = json!(on_field);
+        out["accent"] = json!(readable(0.30, 0.09, h, "#ffffff", 4.5, false));
+        out["onAccent"] = json!("#ffffff");
     }
     out
 }
@@ -328,6 +376,13 @@ pub fn directions(input: &Value) -> Value {
         m.insert("n".into(), json!(i + 1));
         m.insert("ramp".into(), ramp(&id(&d[2]), session));
         m.insert("colours".into(), colours(&id(&d[0]), &d[1]));
+        // one button spec per direction, from its treatment, so every call to action on the page shares one shape (RX-DS-02)
+        let mut b = d[7]["buttons"].clone();
+        if b.is_object() {
+            b["height"] = json!(if session { 40 } else { 48 });
+            b["store"] = json!("App Store and Google Play: both stores' own badge images, the same height, side by side; never one badge and one text button");
+            m.insert("buttons".into(), b);
+        }
         if id(&d[0]).starts_with("light") && matches!(id(&d[7]).as_str(), "flat" | "flat2" | "minimal") {
             m.insert("signature".into(), json!("a light, flat direction needs one large signature its carrier makes: a band of the accent across a section, a made image, or display type; small cards on a pale page are the generic template"));
         }
@@ -549,6 +604,34 @@ mod tests {
                 if light_flat {
                     assert_ne!(d["carrier"]["id"], "space", "q{i}");
                     assert!(d["signature"].is_string(), "q{i}");
+                }
+            }
+        }
+    }
+
+    fn contrast(a: &str, b: &str) -> f64 {
+        let lum = |h: &str| {
+            let c: Vec<f64> = (0..3).map(|j| u8::from_str_radix(&h[1 + j * 2..3 + j * 2], 16).unwrap() as f64 / 255.0).collect();
+            let l = |v: f64| if v <= 0.04045 { v / 12.92 } else { ((v + 0.055) / 1.055).powf(2.4) };
+            0.2126 * l(c[0]) + 0.7152 * l(c[1]) + 0.0722 * l(c[2])
+        };
+        let (x, y) = (lum(a), lum(b));
+        (x.max(y) + 0.05) / (x.min(y) + 0.05)
+    }
+
+    #[test]
+    fn every_drawn_colour_pair_passes_contrast() {
+        for i in 0..300 {
+            let tags = [["food", "family", "glance"], ["finance", "umkm", "glance"], ["media", "youth", "session"]][i % 3];
+            for d in draw(json!({ "project": format!("k{i}"), "tags": tags }))["directions"].as_array().unwrap() {
+                let c = &d["colours"];
+                let s = |k: &str| c[k].as_str().unwrap().to_string();
+                for (fg, bg, min) in [("ink", "page", 7.0), ("muted", "page", 4.5), ("muted", "section", 4.5), ("onAccent", "accent", 4.5)] {
+                    let r = contrast(&s(fg), &s(bg));
+                    assert!(r >= min, "k{i} {} {fg} {} on {bg} {}: {r:.2}", d["surface"]["id"], s(fg), s(bg));
+                }
+                if c["field"].is_string() {
+                    assert!(contrast(&s("onField"), &s("field")) >= 4.5, "k{i} field");
                 }
             }
         }

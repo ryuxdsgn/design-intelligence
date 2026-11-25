@@ -737,20 +737,20 @@ test("scan <url> warns each visual tell once per page, and stays quiet on one re
 
 // H3 diversity bench, owner blind 2026-11-25: cream under a coloured hero, a day row that is not a picker, and a
 // drawn store badge; the same page with a white body, real radios, and the store's image stays quiet.
-test("scan <url> warns a cream page, a row that looks like a picker, and a drawn store badge", (t) => {
+test("scan <url> warns a cream page, a row that looks like a picker, a drawn store badge, and one button colour in two shapes", (t) => {
   const dir = mkdtempSync(join(tmpdir(), "ryux-store-"));
   const page = (name, html) => {
     const path = join(dir, `${name}.html`);
     writeFileSync(path, html);
     return run(process.env.RYUX_PLAYWRIGHT_CWD ?? join(dirname(cli), "..", "..", ".."), ["scan", `file://${path}`, "--widths", "390", "--json"]);
   };
-  const tells = (r) => JSON.parse(r.out).findings.filter((f) => /^RX-(UI-26|UI-36|AS-11)$/.test(f.rule)).map((f) => `${f.rule} ${f.message.split(/[:(]/)[0].trim()}`);
+  const tells = (r) => JSON.parse(r.out).findings.filter((f) => /^RX-(UI-26|UI-36|AS-11|DS-02)$/.test(f.rule)).map((f) => `${f.rule} ${f.message.split(/[:(]/)[0].trim()}`);
   const slop = page("slop", STORE_SLOP);
   if (/needs Playwright|could not start Chromium/.test(slop.out)) {
     rmSync(dir, { recursive: true, force: true });
     return noBrowser(t);
   }
-  assert.deepEqual(tells(slop).sort(), ["RX-AS-11 a store badge drawn with an icon of its own", "RX-UI-26 the page is cream", "RX-UI-36 a row that looks like a picker with one option chosen"]);
+  assert.deepEqual(tells(slop).sort(), ["RX-AS-11 a store badge drawn with an icon of its own", "RX-DS-02 buttons of one colour in two shapes", "RX-UI-26 the page is cream", "RX-UI-36 a row that looks like a picker with one option chosen"]);
   assert.deepEqual(tells(page("quiet", STORE_QUIET)), []);
   rmSync(dir, { recursive: true, force: true });
 });

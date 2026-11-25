@@ -207,10 +207,11 @@
      "public",
      "property"
     ],
-    "avoid": [],
+    "avoid": [
+     "food"
+    ],
     "hue": 225,
     "weak": [
-     "food",
      "family"
     ]
    },
@@ -223,10 +224,11 @@
      "creative-tool",
      "pro"
     ],
-    "avoid": [],
+    "avoid": [
+     "food"
+    ],
     "hue": 245,
     "weak": [
-     "food",
      "family"
     ]
    },
@@ -236,11 +238,11 @@
     "note": "~270°; default AI; hanya dengan alasan dari brief",
     "fit": [],
     "avoid": [
-     "ai"
+     "ai",
+     "food"
     ],
     "hue": 270,
     "weak": [
-     "food",
      "family"
     ]
    },
@@ -729,13 +731,23 @@
     "id": "flat",
     "name": "Flat",
     "note": "tanpa bayangan dan tekstur; kontrol tetap jelas lewat bentuk dan label",
-    "check": "every control still looks tappable: shape, underline, or label"
+    "check": "every control still looks tappable: shape, underline, or label",
+    "buttons": {
+     "radius": 8,
+     "primary": "accent fill, on-accent text, no shadow",
+     "secondary": "1.5 px ink outline, transparent"
+    }
    },
    {
     "id": "flat2",
     "name": "Flat 2.0",
     "note": "flat dengan bayangan tipis hanya untuk lapisan dan yang bisa ditekan",
-    "check": "depth marks only what can be pressed or what floats"
+    "check": "depth marks only what can be pressed or what floats",
+    "buttons": {
+     "radius": 10,
+     "primary": "accent fill, one soft shadow (0 2 6, 15%)",
+     "secondary": "1 px muted outline on the page colour"
+    }
    },
    {
     "id": "neobrutal",
@@ -754,7 +766,12 @@
      "health",
      "public"
     ],
-    "check": "two or three bold colours at most; every bold pair passes contrast"
+    "check": "two or three bold colours at most; every bold pair passes contrast",
+    "buttons": {
+     "radius": 4,
+     "primary": "accent fill, 2 px ink border, hard 3 px ink offset shadow that collapses on press",
+     "secondary": "page fill, 2 px ink border, no shadow"
+    }
    },
    {
     "id": "glass",
@@ -771,7 +788,12 @@
      "public",
      "umkm"
     ],
-    "check": "text contrast over the busiest background each glass layer can sit on"
+    "check": "text contrast over the busiest background each glass layer can sit on",
+    "buttons": {
+     "radius": 12,
+     "primary": "solid accent fill, never glass",
+     "secondary": "frosted layer with a 1 px light border; text checked over its busiest background"
+    }
    },
    {
     "id": "clay",
@@ -788,7 +810,12 @@
      "finance",
      "public"
     ],
-    "check": "controls keep 3:1 contrast against the surface; depth never replaces a label"
+    "check": "controls keep 3:1 contrast against the surface; depth never replaces a label",
+    "buttons": {
+     "radius": "pill",
+     "primary": "accent fill with a soft outer and inner shadow",
+     "secondary": "section fill with the same soft shadow, ink text"
+    }
    },
    {
     "id": "tactile",
@@ -800,13 +827,23 @@
      "senior",
      "home-service"
     ],
-    "check": "the real-world cue teaches; no heavy texture behind text"
+    "check": "the real-world cue teaches; no heavy texture behind text",
+    "buttons": {
+     "radius": 10,
+     "primary": "accent fill, 1 px darker border, a 2 px bottom edge that presses down",
+     "secondary": "page fill, 1 px ink border, the same bottom edge"
+    }
    },
    {
     "id": "minimal",
     "name": "Minimal",
     "note": "hanya yang dibutuhkan tugas; tipografi dan ruang yang bekerja",
-    "check": "nothing the task needs is hidden behind a gesture or an icon alone"
+    "check": "nothing the task needs is hidden behind a gesture or an icon alone",
+    "buttons": {
+     "radius": 6,
+     "primary": "accent fill, no shadow",
+     "secondary": "an underlined text link in ink"
+    }
    }
   ]
  },

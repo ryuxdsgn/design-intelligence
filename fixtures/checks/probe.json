@@ -16345,6 +16345,13 @@
      "level": "warn",
      "selector": "label > input",
      "message": "\"input\": target 13x13px, under 24x24 (spaced enough to pass WCAG 2.5.8); 44x44 is the preferred hit area"
+    },
+    {
+     "rule": "RX-DS-02",
+     "level": "warn",
+     "selector": "div.stores > a.badge",
+     "message": "buttons of one colour in two shapes (\"input\" with 0 px corners, \"App Store\" with 6 px corners): one button component, one corner radius, size variants only",
+     "once": "button-shapes"
     }
    ],
    "ignored": []
@@ -16423,6 +16430,26 @@
     {
      "color": "rgb(255, 255, 255)",
      "fontFamily": "sans-serif"
+    },
+    {
+     "color": "rgb(34, 34, 34)",
+     "fontFamily": "sans-serif"
+    },
+    {
+     "display": "inline-block",
+     "backgroundColor": "rgb(6, 152, 164)",
+     "fontSize": 13.3333,
+     "borderTopLeftRadius": 24,
+     "color": "rgb(255, 255, 255)",
+     "fontFamily": "Arial"
+    },
+    {
+     "display": "inline-block",
+     "backgroundColor": "rgb(6, 152, 164)",
+     "fontSize": 13.3333,
+     "borderTopLeftRadius": 8,
+     "color": "rgb(255, 255, 255)",
+     "fontFamily": "Arial"
     }
    ],
    "els": [
@@ -16434,7 +16461,7 @@
       0,
       0,
       390,
-      243.875
+      319.875
      ]
     },
     {
@@ -16445,7 +16472,7 @@
       0,
       0,
       390,
-      243.875
+      303.875
      ]
     },
     {
@@ -16574,6 +16601,43 @@
       155.65625,
       18
      ]
+    },
+    {
+     "p": 1,
+     "t": "P",
+     "s": 11,
+     "r": [
+      0,
+      259.875,
+      390,
+      44
+     ]
+    },
+    {
+     "p": 13,
+     "t": "BUTTON",
+     "s": 12,
+     "r": [
+      0,
+      259.875,
+      160,
+      44
+     ],
+     "ctl": 1,
+     "nm": "Pesan sekarang"
+    },
+    {
+     "p": 13,
+     "t": "BUTTON",
+     "s": 13,
+     "r": [
+      164.453125,
+      259.875,
+      160,
+      44
+     ],
+     "ctl": 1,
+     "nm": "Lihat paket"
     }
    ],
    "texts": [
@@ -16888,6 +16952,110 @@
        12
       ]
      }
+    },
+    {
+     "e": 14,
+     "x": "Pesan sekarang",
+     "r": [
+      31.828125,
+      274.375,
+      96.34375,
+      15
+     ],
+     "open": [
+      14,
+      14,
+      14,
+      14,
+      14,
+      14,
+      14,
+      14,
+      14,
+      14,
+      14,
+      14,
+      14,
+      14,
+      14
+     ],
+     "end": {
+      "r": [
+       31.828125,
+       274.375,
+       96.34375,
+       15
+      ],
+      "h": [
+       14,
+       14,
+       14,
+       14,
+       14,
+       14,
+       14,
+       14,
+       14,
+       14,
+       14,
+       14,
+       14,
+       14,
+       14
+      ]
+     }
+    },
+    {
+     "e": 15,
+     "x": "Lihat paket",
+     "r": [
+      211.84375,
+      274.375,
+      65.21875,
+      15
+     ],
+     "open": [
+      15,
+      15,
+      15,
+      15,
+      15,
+      15,
+      15,
+      15,
+      15,
+      15,
+      15,
+      15,
+      15,
+      15,
+      15
+     ],
+     "end": {
+      "r": [
+       211.84375,
+       274.375,
+       65.21875,
+       15
+      ],
+      "h": [
+       15,
+       15,
+       15,
+       15,
+       15,
+       15,
+       15,
+       15,
+       15,
+       15,
+       15,
+       15,
+       15,
+       15,
+       15
+      ]
+     }
     }
    ],
    "chains": {
@@ -16896,7 +17064,9 @@
    },
    "answers": {
     "under": {
-     "2": 4
+     "2": 4,
+     "6": 13,
+     "7": 13
     },
     "grow": {},
     "focus": {
@@ -16918,6 +17088,44 @@
         1
        ]
       }
+     },
+     "14": {
+      "a": 1,
+      "b": {
+       "o": [
+        "none",
+        3,
+        "rgb(255, 255, 255)",
+        0
+       ]
+      },
+      "f": {
+       "o": [
+        "auto",
+        1,
+        "rgb(0, 95, 204)",
+        0
+       ]
+      }
+     },
+     "15": {
+      "a": 1,
+      "b": {
+       "o": [
+        "none",
+        3,
+        "rgb(255, 255, 255)",
+        0
+       ]
+      },
+      "f": {
+       "o": [
+        "auto",
+        1,
+        "rgb(0, 95, 204)",
+        0
+       ]
+      }
      }
     }
    }
@@ -16928,7 +17136,7 @@
      "rule": "RX-A11Y-01",
      "level": "fail",
      "selector": "ul.days > li.on",
-     "message": "\"Sel\": contrast 3.48:1 (#ffffff on #0698a4), needs 4.5:1"
+     "message": "\"Sel\": contrast 3.48:1 (#ffffff on #0698a4), needs 4.5:1; 2 more with the same colors"
     },
     {
      "rule": "RX-UI-26",
@@ -16950,6 +17158,13 @@
      "selector": "a.store",
      "message": "a store badge drawn with an icon of its own (\"Unduh di Google Play\"): Apple and Google allow only their own badge images; use the official badge, in one language for both stores, or a plain text link",
      "once": "store-badge"
+    },
+    {
+     "rule": "RX-DS-02",
+     "level": "warn",
+     "selector": "p > button",
+     "message": "buttons of one colour in two shapes (\"Pesan sekarang\" with a pill, \"Lihat paket\" with 8 px corners): one button component, one corner radius, size variants only",
+     "once": "button-shapes"
     }
    ],
    "ignored": []

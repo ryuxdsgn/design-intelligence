@@ -13,7 +13,7 @@ use std::collections::{HashMap, HashSet};
 
 /// What the rendered checks look for, one row per line of RENDER_CHECKS in packages/cli/src/checks.ts (which also
 /// lists RX-QA-08, script errors, reported by the CLI itself). `cargo test` and the CLI tests hold them equal.
-pub const CATALOGUE: [(&str, &str); 19] = [
+pub const CATALOGUE: [(&str, &str); 20] = [
     ("RX-RD-01", "fail"),
     ("RX-A11Y-01", "fail"),
     ("RX-A11Y-01", "warn"),
@@ -29,6 +29,7 @@ pub const CATALOGUE: [(&str, &str); 19] = [
     ("RX-AS-11", "warn"),
     ("RX-UI-26", "warn"),
     ("RX-UI-36", "warn"),
+    ("RX-DS-02", "warn"),
     ("RX-UI-01", "warn"),
     ("RX-UI-03", "warn"),
     ("RX-UX-15", "warn"),
@@ -1533,6 +1534,39 @@ impl<'a> Page<'a> {
         });
         if let Some(i) = store {
             tell(&mut out, "RX-AS-11", "store-badge", Some(i), format!("a store badge drawn with an icon of its own ({}): Apple and Google allow only their own badge images; use the official badge, in one language for both stores, or a plain text link", quote(self.text_of(i, "nm"))));
+        }
+
+        // Buttons in one shape (RX-DS-02). The button-shaped controls on screen: filled, 60 px wide or more, 30 to 72 tall,
+        // not a segment of a row of three or more (a segmented control squares its inner corners).
+        let segment = |i: usize| self.parent(i).is_some_and(|p| {
+            let row: Vec<usize> = kids.get(&p).map(|k| k.iter().copied().filter(|&k| self.flag(k, "ctl")).collect()).unwrap_or_default();
+            row.len() >= 3 && row.iter().all(|&k| (self.els[k].r.y - self.els[i].r.y).abs() < 4.0)
+        });
+        let buttons: Vec<usize> = (BODY + 1..self.els.len()).filter(|&i| {
+            let r = self.els[i].r;
+            self.shown[i] && self.flag(i, "ctl") && r.w >= 60.0 && (30.0..=72.0).contains(&r.h) && r.x + r.w > 0.0
+                && self.rgba(self.s(i, "backgroundColor")).is_some_and(|c| c[3] > 0.5) && !segment(i)
+        }).collect();
+        let corner = |i: usize| { let (r, h) = (self.n(i, "borderTopLeftRadius"), self.els[i].r.h); if r >= h / 2.0 - 1.0 { -1.0 } else { r.round() } };
+        let store_name = |i: usize| { let nm = self.text_of(i, "nm").to_lowercase(); nm.contains("app store") || nm.contains("google play") };
+        let has_img = |i: usize| (i + 1..self.els.len()).take_while(|&k| self.contains(i, k)).any(|k| self.els[k].tag == "IMG");
+        // the two store links in two forms: one store's badge image beside a text button for the other (owner H4 note, JO)
+        let stores: Vec<usize> = (BODY + 1..self.els.len()).filter(|&i| self.shown[i] && self.flag(i, "ctl") && store_name(i)).collect();
+        if stores.iter().any(|&i| has_img(i)) && stores.iter().any(|&i| !has_img(i)) {
+            let i = *stores.iter().find(|&&i| !has_img(i)).unwrap();
+            tell(&mut out, "RX-DS-02", "store-forms", Some(i), format!("the store links come in two forms, a badge image and {}: show both stores the same way, each store's own badge at one height", quote(self.text_of(i, "nm"))));
+        }
+        // one fill in two corner shapes: the same action colour on a pill and on a rounded box reads as two components
+        let mut by_fill: Vec<(&str, Vec<usize>)> = Vec::new();
+        for &i in buttons.iter().filter(|&&i| !has_img(i)) {
+            let f = self.s(i, "backgroundColor");
+            match by_fill.iter_mut().find(|x| x.0 == f) { Some(x) => x.1.push(i), None => by_fill.push((f, vec![i])) }
+        }
+        let mixed = by_fill.iter().find(|(_, is)| is.iter().any(|&i| corner(i) != corner(is[0])));
+        if let Some((_, is)) = mixed {
+            let other = *is.iter().find(|&&i| corner(i) != corner(is[0])).unwrap();
+            let shape = |i: usize| if corner(i) < 0.0 { "a pill".to_string() } else { format!("{} px corners", num_str(corner(i))) };
+            tell(&mut out, "RX-DS-02", "button-shapes", Some(other), format!("buttons of one colour in two shapes ({} with {}, {} with {}): one button component, one corner radius, size variants only", quote(self.text_of(is[0], "nm")), shape(is[0]), quote(self.text_of(other, "nm")), shape(other)));
         }
 
         // A letter in a tile as the logo (RX-AS-11): one or two letters in a filled or bordered box of 16 to 72 px,

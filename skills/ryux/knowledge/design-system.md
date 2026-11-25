@@ -44,9 +44,11 @@ How reference apps keep components consistent for this pattern: `search_screens`
 ### RX-DS-02 [Required] [Quality Lock] Consistency, conventions, and states
 
 - Do: Follow platform conventions and the project's own patterns; the same component looks and behaves the same everywhere, with its states (default, hover, focus, pressed, disabled, loading, error) defined once.
+  - Buttons: one component, one corner radius, one primary and one secondary style, size variants only; a drawn direction gives them (`ryux directions`, buttons line). Store links show both stores' own badge files, saved in the project and set at one height, never a badge for one and a text button for the other.
 - Do not: Style or wire similar components differently from screen to screen.
 - Why: Consistency lets users transfer what they learned. (Nielsen heuristic 4; Jakob's law (Nielsen 2000): people spend most of their time in other products and expect yours to work the same way; Apple HIG; Material Design)
-- Check: heuristic_eval H-04
+- Check: heuristic_eval H-04; `ryux scan <url>` warns on store links in two forms and on one button colour in two corner shapes (owner H3 and H4 notes, 2026-11-25)
+- Measured: `ryux scan <url>` flags buttons out of one component: the two store links in two forms (one badge image, one text button), or one button colour in two corner shapes (a pill and a rounded box) (warn)
 
 ### RX-DS-03 [Preferred] [Quality Lock] Tokens over one-off values
 
