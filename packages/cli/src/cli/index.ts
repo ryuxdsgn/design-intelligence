@@ -438,7 +438,11 @@ function runDirections(args: string[]): void {
     console.log(`   layout ${line(d.layout)} · weight carried by ${line(d.carrier)} · material ${line(d.material)} · idea from ${line(d.idea)}`);
     const t = d.ramp;
     console.log(`   type ramp ×${t.ratio}: caption ${t.caption} · body ${t.body} · heading ${t.heading} · title ${t.title} · display ${t.display} px; a label takes the body or caption size, one weight up`);
+    if (d.treatment) console.log(`   treatment ${line(d.treatment)}${d.treatment.check ? ` (check: ${d.treatment.check})` : ""}`);
+    const c = d.colours;
+    if (c) console.log(`   colours page ${c.page} · section ${c.section} · ink ${c.ink} · muted ${c.muted} · accent ${c.accent} on ${c.onAccent}${c.field ? ` · field ${c.field} (at least a third of the page) on ${c.onField}` : ""}`);
   }
+  console.log("\nThe page and section colours are the direction's base: do not swap them for cream, ivory, or another light default.");
   console.log(`\nNot as a default (only when the user asks or the brief gives a reason): ${r.notDefault.map((d) => d.note).join("; ")}.`);
   console.log("Build each direction on its draw with its own idea; use the first font in its list that the canvas or project has, and say which. Replace a draw only with a reason from this product, and say it; the user's own choice always wins (--lock, or their entry with --catalog). Ask for others with --redraw 1.");
 }

@@ -165,7 +165,8 @@ test("the skill runs the RYUX CLI from the project, not as a download, and never
   // arm H (2026-11-25): five code builds took the Build path, never drew, and skipped directions for "a one-file build"
   assert.match(flat, /draw before any code, even for a one-file or quick build/);
   assert.match(flat, /"a one-file build" or "budget" is not a reason to skip the draw/);
-  assert.match(flat, /draw seed <seed> \| none: <reason>/);
+  assert.match(flat, /draw seed <seed>, surface kept \| replaced: <reason> \| none: <reason>/);
+  assert.match(flat, /never swap them for cream, ivory, or another light default/);
   assert.match(flat, /The user's own choice always wins: a font, colour, or layout they\s+name is locked/);
   // three of four clipper runs opened stage 6 before building (2026-11-24)
   assert.match(flat, /capabilities\/design-deliver\.md is not one of them: open it at stage 6/);

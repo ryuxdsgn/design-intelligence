@@ -92,8 +92,10 @@ The six stages of the core workflow (SKILL.md), as Design runs them.
    exists sets the UI direction, the next message offers three directions as style tiles and waits; the motion direction
    rides with it. **Draw them first, in one call:** \`node <this skill's folder>/bin/dist/cli/index.js directions --project <name> --context "<owner, city, audience>" --tags <product>,<audience>,<glance|session>\`
    (nothing downloaded; it lists the tags it knows; the context is who this is for, in the brief's words, so two products of one name draw apart) gives each direction a surface, an accent hue range, a type category with fonts,
-   a layout, a weight carrier, a material, an idea source, and a type ramp, drawn for this project and apart from the category's and RYUX's own
-   defaults. Build each tile on its draw with an idea of your own; replace one draw only with a reason from this product, said in
+   a layout, a weight carrier, a material, an idea source, a surface treatment (flat, neobrutal, glass, clay, tactile, minimal) with its
+   check, a type ramp, and base colours (page, section, ink, muted, accent, and for a colour field the field), drawn for this project and apart from the category's and RYUX's own
+   defaults. The page and section colours are the base: never swap them for cream, ivory, or another light default (\`ryux scan\` and
+   \`ryux audit\` warn on a cream page). Tags in your own words are mapped to the catalog's, and it says which it ignored. Build each tile on its draw with an idea of your own; replace one draw only with a reason from this product, said in
    the tile; "None of these" draws again with \`--redraw 1\`. The user's own choice always wins: a font, colour, or layout they
    name is locked (\`--lock\`, or their own entry in a JSON file with \`--catalog\`), with their reason in DESIGN.md. **A named reference** ("a web like X", "an app like Y") locks what it
    fixes, \`--lock layout=…,type=…,surface=…\` from how X works, and the rest is drawn: take its structure, density, and
@@ -773,8 +775,8 @@ workflow (SKILL.md); Frame, Explore, and Evaluate happen in Design.
    \`node <this skill's folder>/bin/dist/cli/index.js directions --project <name> --context "<owner, city, audience>" --tags <product>,<audience>,<glance|session>\`
    (capabilities/design.md, "Draw them first"). With the user there, offer the three as Design does; in a run with
    no questions, build direction 1 on its draw (surface, accent hue range, type category and ramp, layout, material,
-   idea source), mark it provisional in Assumptions, and name the other two in a line each. The UI gate row writes
-   the draw seed; "a one-file build" or "budget" is not a reason to skip the draw. If there is none, run Design's stages 1-4 first
+   idea source, treatment, and base colours), mark it provisional in Assumptions, and name the other two in a line each. The UI gate row writes
+   the draw seed and whether the surface was kept; "a one-file build" or "budget" is not a reason to skip the draw. If there is none, run Design's stages 1-4 first
    (capabilities/design.md) instead of inventing one in code. Stage 1's questions come first even
    when the request is a quick build or a working prototype: ask the ones whose answers change what
    gets built (a product rule such as fees, refunds, or what happens on failure; the market, with

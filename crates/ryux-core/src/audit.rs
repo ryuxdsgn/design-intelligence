@@ -612,6 +612,29 @@ fn flow_checks(t: &Tree, screens: &[usize], r: &Res, o: &mut Out) {
 /// labelled as an error, a failure, or a destructive action is drawn in another colour of nearly the same hue, so the
 /// colour that says "go" also says "failed". Owner blind ratings 2026-11-24 and 2026-11-25 (Klipin R3 and R5): a
 /// red-orange accent on the CTA, the selected state, and the active step, beside a red for errors and cancel.
+/// Screens on cream (RX-UI-26): the paper look generated pages fall back to. Five of five H2 diversity runs
+/// (2026-11-25) put the page on cream, two against a draw that said a saturated colour field.
+fn cream_check(t: &Tree, screens: &[usize], o: &mut Out) {
+    let on: Vec<(usize, Rgb)> = screens.iter().filter_map(|&f| solid(t, f).filter(|&c| is_cream(c)).map(|c| (f, c))).collect();
+    if on.is_empty() || on.len() * 2 < screens.len() {
+        return;
+    }
+    let (f, c) = on[0];
+    let name = t.name(f);
+    o.add("RX-UI-26", "warn", &name, &name, format!("{} of {} screens sit on cream ({}): the paper look generated designs fall back to; use the surface the direction drew, and keep cream only when the direction chose paper for a reason", on.len(), screens.len(), hex(c)));
+}
+
+/// Light, warm (hue 25–70°), and only a little coloured (an RGB spread of 3% to 15%): cream, ivory, warm off-white.
+fn is_cream(c: Rgb) -> bool {
+    let (mx, mn) = (c.r.max(c.g).max(c.b), c.r.min(c.g).min(c.b));
+    let d = mx - mn;
+    if (mx + mn) / 2.0 < 0.88 || !(0.03..=0.15).contains(&d) {
+        return false;
+    }
+    let h = if mx == c.r { ((c.g - c.b) / d).rem_euclid(6.0) } else if mx == c.g { (c.b - c.r) / d + 2.0 } else { (c.r - c.g) / d + 4.0 } * 60.0;
+    (25.0..=70.0).contains(&h)
+}
+
 fn accent_error_check(t: &Tree, screens: &[usize], o: &mut Out) {
     let chroma = |c: Rgb| c.r.max(c.g).max(c.b) - c.r.min(c.g).min(c.b);
     let hue = |c: Rgb| {
@@ -1190,6 +1213,7 @@ pub fn audit(input: &Value) -> Value {
 
     flow_checks(&t, &screens, r, &mut o);
     accent_error_check(&t, &screens, &mut o);
+    cream_check(&t, &screens, &mut o);
 
     // Layers on the page outside the screens.
     for &n in &flat {

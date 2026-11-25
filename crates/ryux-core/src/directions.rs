@@ -12,7 +12,7 @@
 use serde_json::{json, Value};
 
 const CATALOG: &str = include_str!("../data/directions.json");
-const DIMS: [&str; 7] = ["surface", "accent", "type", "layout", "carrier", "material", "idea"];
+const DIMS: [&str; 8] = ["surface", "accent", "type", "layout", "carrier", "material", "idea", "treatment"];
 
 fn catalog() -> Value {
     serde_json::from_str(CATALOG).expect("directions catalog")
@@ -70,6 +70,60 @@ fn hue_range(centre: f64, cut: &[(f64, f64)]) -> Option<(f64, f64)> {
     (hi - lo >= 8.0).then_some((lo.rem_euclid(360.0), hi.rem_euclid(360.0)))
 }
 
+/// OKLCH to sRGB hex, with the chroma lowered until the colour fits the sRGB gamut.
+fn oklch(l: f64, c: f64, h: f64) -> String {
+    let mut c = c;
+    loop {
+        let (a, b) = (c * h.to_radians().cos(), c * h.to_radians().sin());
+        let l_ = (l + 0.3963377774 * a + 0.2158037573 * b).powi(3);
+        let m_ = (l - 0.1055613458 * a - 0.0638541728 * b).powi(3);
+        let s_ = (l - 0.0894841775 * a - 1.2914855480 * b).powi(3);
+        let lin = [
+            4.0767416621 * l_ - 3.3077115913 * m_ + 0.2309699292 * s_,
+            -1.2684380046 * l_ + 2.6097574011 * m_ - 0.3413193965 * s_,
+            -0.0041960863 * l_ - 0.7034186147 * m_ + 1.7076147010 * s_,
+        ];
+        if lin.iter().all(|v| (-0.0001..=1.0001).contains(v)) || c <= 0.0 {
+            let g = |v: f64| { let v = v.clamp(0.0, 1.0); if v <= 0.0031308 { 12.92 * v } else { 1.055 * v.powf(1.0 / 2.4) - 0.055 } };
+            return format!("#{:02x}{:02x}{:02x}", (g(lin[0]) * 255.0).round() as u8, (g(lin[1]) * 255.0).round() as u8, (g(lin[2]) * 255.0).round() as u8);
+        }
+        c = (c - 0.005).max(0.0);
+    }
+}
+
+/// Concrete colours for a direction, so the page cannot fall back to the model's light default (cream on five of five
+/// H2 pages, 2026-11-25): the page, an alternate section, ink, muted text, the accent, text on the accent, and for a
+/// colour field the field that covers at least a third of the page. Neutrals lean to the accent hue (RX-UI-31).
+pub fn colours(surface: &str, accent: &Value) -> Value {
+    let h = match (accent["hues"][0].as_f64(), accent["hues"][1].as_f64()) {
+        (Some(a), Some(b)) => { let w = if b < a { b + 360.0 } else { b }; ((a + w) / 2.0).rem_euclid(360.0) }
+        _ => accent["hue"].as_f64().unwrap_or(250.0),
+    };
+    let dark = surface.starts_with("dark");
+    let (page, section, ink, muted) = match surface {
+        "light-cool" => (oklch(0.985, 0.008, 250.0), oklch(0.955, 0.014, 250.0), oklch(0.24, 0.025, 250.0), oklch(0.50, 0.02, 250.0)),
+        "warm-paper" => (oklch(0.972, 0.018, 85.0), oklch(0.94, 0.026, 80.0), oklch(0.26, 0.025, 60.0), oklch(0.50, 0.025, 60.0)),
+        "dark-neutral" => (oklch(0.19, 0.004, 260.0), oklch(0.24, 0.006, 260.0), oklch(0.95, 0.004, 260.0), oklch(0.74, 0.006, 260.0)),
+        "dark-tinted" => (oklch(0.21, 0.045, h), oklch(0.27, 0.055, h), oklch(0.96, 0.012, h), oklch(0.76, 0.03, h)),
+        // a warm hue (orange to yellow) tinting a light page is cream: keep those neutrals grey and let the field carry it
+        "colour-field" if (20.0..=110.0).contains(&h) => (oklch(0.985, 0.0, 0.0), oklch(0.955, 0.0, 0.0), oklch(0.22, 0.02, h), oklch(0.48, 0.015, h)),
+        "colour-field" => (oklch(0.985, 0.01, h), oklch(0.95, 0.03, h), oklch(0.22, 0.03, h), oklch(0.48, 0.03, h)),
+        _ => (oklch(0.992, 0.0, 0.0), oklch(0.965, 0.0, 0.0), oklch(0.22, 0.0, 0.0), oklch(0.50, 0.0, 0.0)),
+    };
+    let (al, ac) = if dark { (0.76, 0.14) } else { (0.58, 0.16) };
+    let mut out = json!({
+        "page": page, "section": section, "ink": ink, "muted": muted,
+        "accent": oklch(al, ac, h),
+        "onAccent": if al > 0.68 { oklch(0.2, 0.02, h) } else { "#ffffff".to_string() },
+    });
+    if surface == "colour-field" {
+        out["field"] = json!(oklch(0.62, 0.16, h));
+        out["onField"] = json!(oklch(0.18, 0.03, h));
+        out["accent"] = json!(oklch(0.30, 0.09, h));
+    }
+    out
+}
+
 /// A type ramp for a direction (RX-UI-03): five sizes, one per role, each about one ratio above the one below, so no
 /// two read as one level. A dense working screen starts at 14 px, a glance screen at 16, both stepping by 1.25; a
 /// display face (serif display, expressive grotesk) by 1.333. A label takes the body or caption size with weight.
@@ -110,17 +164,25 @@ pub fn directions(input: &Value) -> Value {
         }
     }
     let project = input.get("project").and_then(Value::as_str).unwrap_or("").trim().to_lowercase();
-    let tags = strs(input.get("tags"));
+    let given = strs(input.get("tags"));
     let allow = strs(input.get("allow"));
     let redraw = input.get("redraw").and_then(Value::as_u64).unwrap_or(0);
     let lock = input.get("lock").and_then(Value::as_object).cloned().unwrap_or_default();
     let known: Vec<String> = ["product", "audience", "use"].iter().flat_map(|k| strs(cat["tags"].get(*k))).collect();
-    let unknown_tags: Vec<&String> = tags.iter().filter(|t| !known.contains(t)).collect();
+    // an agent writes tags in its own words ("grocery", "smallbusiness"): the catalog's synonyms map them to its tags
+    let syn = cat["synonyms"].clone();
+    let mut tags: Vec<String> = Vec::new();
+    let mut unknown_tags: Vec<String> = Vec::new();
+    for t in &given {
+        let mapped: Vec<String> = if known.contains(t) { vec![t.clone()] } else { strs(syn.get(t.as_str())) };
+        if mapped.is_empty() { unknown_tags.push(t.clone()) }
+        for m in mapped { if !tags.contains(&m) { tags.push(m) } }
+    }
     // the seed is who this is for, not only the name: two owners of a product called "Ladang" (another city, another
     // audience) draw apart, and one project draws the same every time. Words only, in order of appearance, lowercased.
     let words = |s: &str| s.to_lowercase().split(|c: char| !c.is_alphanumeric()).filter(|w| !w.is_empty()).collect::<Vec<_>>().join(" ");
     let context = words(input.get("context").and_then(Value::as_str).unwrap_or(""));
-    let mut sorted_tags = tags.clone();
+    let mut sorted_tags = given.clone();
     sorted_tags.sort();
     sorted_tags.dedup();
     let seed = fnv(&format!("{}#{}#{}#{redraw}", words(&project), sorted_tags.join(","), context));
@@ -155,7 +217,8 @@ pub fn directions(input: &Value) -> Value {
                 e["hues"] = json!([lo.round(), hi.round()]);
             }
             let hit = fit.iter().any(|t| tags.contains(t));
-            if d == "layout" && !hit {
+            // layout follows the task, and paper only comes with a reason from the context (H2, 2026-11-25: cream on 5 of 5 pages)
+            if (d == "layout" || e.get("only_fit").and_then(Value::as_bool) == Some(true)) && !hit {
                 continue;
             }
             // an accent leans on its fit lightly, so fitting hues do not become the new default
@@ -168,7 +231,8 @@ pub fn directions(input: &Value) -> Value {
             };
             pool.push((e, w));
         }
-        if d == "layout" && !layout_fits {
+        // fewer than three fitting patterns: the rest is the agent's call from the task, so five users do not share one layout
+        if d == "layout" && (!layout_fits || pool.len() < 3) {
             pool.push((json!({ "id": "from-task", "name": "Dari tugas pengguna", "note": "no layout pattern fits these tags: choose it from the user's main task" }), 1.0));
         }
         pools.push(pool);
@@ -213,16 +277,17 @@ pub fn directions(input: &Value) -> Value {
             }
             let locked = |i: usize| lock.contains_key(DIMS[i]);
             let clash = chosen.iter().any(|o| {
-                let same = (0..7).filter(|&i| id(&o[i]) == id(&dir[i])).count();
-                let free_same = (0..7).filter(|&i| !locked(i) && id(&o[i]) == id(&dir[i])).count();
-                let free = (0..7).filter(|&i| !locked(i)).count();
+                let n = DIMS.len();
+                let same = (0..n).filter(|&i| id(&o[i]) == id(&dir[i])).count();
+                let free_same = (0..n).filter(|&i| !locked(i) && id(&o[i]) == id(&dir[i])).count();
+                let free = (0..n).filter(|&i| !locked(i)).count();
                 // at least three free dimensions differ (or all of them when fewer are free), and never the same surface unless locked
-                (free - free_same) < 3.min(free) || (!locked(0) && pools[0].len() >= 3 && id(&o[0]) == id(&dir[0])) || same == 7
+                (free - free_same) < 3.min(free) || (!locked(0) && pools[0].len() >= 3 && id(&o[0]) == id(&dir[0])) || same == n
             });
             let once = |dim: usize, v: &str| id(&dir[dim]) == v && chosen.iter().any(|o| id(&o[dim]) == v);
             // surface, accent, type, and layout differ in every direction unless a reference locks them; an idea source twice at most
             // a dimension repeats only when its pool has fewer than three entries (a layout fitting few patterns)
-            let repeats = level < 2 && [0, 1, 2, 3].iter().any(|&i| !locked(i) && pools[i].len() >= 3 && chosen.iter().any(|o| id(&o[i]) == id(&dir[i])))
+            let repeats = level < 2 && [0, 1, 2, 3].iter().any(|&i| !locked(i) && (pools[i].len() >= 3 || (i == 3 && id(&dir[3]) != "from-task")) && chosen.iter().any(|o| id(&o[i]) == id(&dir[i])))
                 || chosen.iter().filter(|o| id(&o[6]) == id(&dir[6])).count() >= 2;
             // accents at least 60° apart (sky, blue, and indigo are three ids and one colour), and three materials
             let near = level == 0 && !locked(1) && chosen.iter().any(|o| {
@@ -230,7 +295,8 @@ pub fn directions(input: &Value) -> Value {
                 let d = (a - b).abs() % 360.0;
                 d.min(360.0 - d) < 60.0
             });
-            let same_material = level == 0 && !locked(5) && pools[5].len() >= 3 && chosen.iter().any(|o| id(&o[5]) == id(&dir[5]));
+            let same_material = level == 0 && !locked(5) && pools[5].len() >= 3 && chosen.iter().any(|o| id(&o[5]) == id(&dir[5]))
+                || level == 0 && !locked(7) && pools[7].len() >= 3 && chosen.iter().any(|o| id(&o[7]) == id(&dir[7]));
             if (clash && level < 2) || repeats || near || same_material || once(5, "flat-vector") || once(6, "mechanic") {
                 continue;
             }
@@ -254,6 +320,7 @@ pub fn directions(input: &Value) -> Value {
         let mut m = serde_json::Map::new();
         m.insert("n".into(), json!(i + 1));
         m.insert("ramp".into(), ramp(&id(&d[2]), session));
+        m.insert("colours".into(), colours(&id(&d[0]), &d[1]));
         for (k, v) in DIMS.iter().zip(d) {
             let mut e = v.clone();
             if let Some(o) = e.as_object_mut() {
@@ -270,6 +337,7 @@ pub fn directions(input: &Value) -> Value {
         "context": context,
         "redraw": redraw,
         "tags": tags,
+        "givenTags": given,
         "locked": lock,
         "unknownLocks": unknown_lock,
         "userEntries": added,
@@ -420,11 +488,47 @@ mod tests {
         assert_eq!(d.len(), 3);
         for i in 0..3 {
             for j in i + 1..3 {
-                let diff = ["accent", "carrier", "material", "idea"].iter().filter(|k| d[i][**k]["id"] != d[j][**k]["id"]).count();
+                let diff = ["accent", "carrier", "material", "idea", "treatment"].iter().filter(|k| d[i][**k]["id"] != d[j][**k]["id"]).count();
                 assert!(diff >= 3, "{i} {j}");
             }
         }
         let bad = draw(json!({ "project": "Kasir", "lock": { "layout": "nope" } }));
         assert_eq!(bad["unknownLocks"], json!(["layout=nope"]));
     }
+
+    #[test]
+    fn an_agents_own_tags_map_to_the_catalog() {
+        let r = draw(json!({ "project": "Ladang", "tags": ["grocery", "smallbusiness", "glance", "zzz"] }));
+        assert_eq!(r["tags"], json!(["food", "commerce", "umkm", "glance"]));
+        assert_eq!(r["unknownTags"], json!(["zzz"]));
+    }
+
+    #[test]
+    fn paper_comes_only_with_a_reason_and_no_other_surface_is_cream() {
+        for i in 0..200 {
+            let r = draw(json!({ "project": format!("p{i}"), "tags": ["food", "family", "glance"] }));
+            for d in r["directions"].as_array().unwrap() {
+                assert_ne!(d["surface"]["id"], "warm-paper", "p{i}");
+                for k in ["page", "section"] {
+                    let h = d["colours"][k].as_str().unwrap();
+                    let v: Vec<f64> = (0..3).map(|j| u8::from_str_radix(&h[1 + j * 2..3 + j * 2], 16).unwrap() as f64).collect();
+                    assert!(!crate::probe::cream([v[0], v[1], v[2], 1.0]), "p{i} {k} {h}");
+                }
+            }
+        }
+        let r = (0..50).map(|i| draw(json!({ "project": format!("b{i}"), "tags": ["education"] }))).any(|r| ids(&r, "surface").contains(&"warm-paper".to_string()));
+        assert!(r);
+    }
+
+    #[test]
+    fn layout_spreads_when_few_patterns_fit() {
+        let mut seen = std::collections::HashSet::new();
+        for i in 0..40 {
+            for l in ids(&draw(json!({ "project": format!("g{i}"), "tags": ["glance"] })), "layout") {
+                seen.insert(l);
+            }
+        }
+        assert!(seen.len() >= 2, "{seen:?}");
+    }
 }
+

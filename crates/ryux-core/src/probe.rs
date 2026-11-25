@@ -887,6 +887,19 @@ fn blend(top: Colour, bottom: Colour) -> Colour {
     let c = over(Rgb { r: top[0], g: top[1], b: top[2] }, top[3], Rgb { r: bottom[0], g: bottom[1], b: bottom[2] });
     [c.r, c.g, c.b, 1.0]
 }
+/// Cream, ivory, or warm off-white: light, warm (hue 25–70°), and only a little coloured (an RGB spread of 3% to 15%).
+/// Pure white and a light yellow are not cream.
+pub(crate) fn cream(c: Colour) -> bool {
+    let (r, g, b) = (c[0] / 255.0, c[1] / 255.0, c[2] / 255.0);
+    let (mx, mn) = (r.max(g).max(b), r.min(g).min(b));
+    let d = mx - mn;
+    if (mx + mn) / 2.0 < 0.88 || !(0.03..=0.15).contains(&d) {
+        return false;
+    }
+    let h = if mx == r { ((g - b) / d).rem_euclid(6.0) } else if mx == g { (b - r) / d + 2.0 } else { (r - g) / d + 4.0 } * 60.0;
+    (25.0..=70.0).contains(&h)
+}
+
 fn lum(c: Colour) -> f64 {
     luminance(Rgb { r: c[0] / 255.0, g: c[1] / 255.0, b: c[2] / 255.0 }, 0.04045)
 }
@@ -1329,6 +1342,19 @@ impl<'a> Page<'a> {
                     format!("a near-black page with a neon accent (rgb {}, {}, {}) and glow: the look an AI product gets by default; keep it only when the direction chose it over two others", num_str(c[0]), num_str(c[1]), num_str(c[2])),
                 );
             }
+        }
+
+        // A cream page: the paper default of generated pages. Five of five H2 diversity runs (2026-11-25) put the page
+        // on cream, two of them against a draw that said a saturated colour field; the owner noted it on every page.
+        // the body too: a coloured hero on top of a cream page still leaves the rest of the page on cream (H2-U1, U2)
+        if let Some(bg) = page_bg.filter(|c| cream(*c)).or_else(|| self.background(BODY).filter(|c| cream(*c))) {
+            tell(
+                &mut out,
+                "RX-UI-26",
+                "cream",
+                None,
+                format!("the page is cream ({}): the paper look generated pages fall back to; use the surface the direction drew, and keep cream only when the direction chose paper for a reason", hex(bg)),
+            );
         }
 
         // A pill above the main heading that does not carry status.
@@ -2108,5 +2134,16 @@ mod tests {
         assert_eq!(split_shadows("rgba(1, 2, 3, 0.5) 0px 0px 24px 0px, rgb(0, 0, 0) 0px 2px 4px 0px"), vec!["rgba(1, 2, 3, 0.5) 0px 0px 24px 0px", " rgb(0, 0, 0) 0px 2px 4px 0px"]);
         assert_eq!(hypot(3.0, 4.0), 5.0);
         assert_eq!(hex([187.0, 187.0, 187.0, 1.0]), "#bbbbbb");
+    }
+
+    #[test]
+    fn cream_is_warm_light_and_a_little_coloured() {
+        for c in ["fff7e8", "fff8ec", "f6eedf", "f7f1e6", "f6f0e6"] {
+            let v: Vec<f64> = (0..3).map(|i| u8::from_str_radix(&c[i * 2..i * 2 + 2], 16).unwrap() as f64).collect();
+            assert!(super::cream([v[0], v[1], v[2], 1.0]), "{c}");
+        }
+        for c in [[255.0, 255.0, 255.0, 1.0], [255.0, 249.0, 196.0, 1.0], [240.0, 244.0, 250.0, 1.0], [30.0, 30.0, 30.0, 1.0]] {
+            assert!(!super::cream(c), "{c:?}");
+        }
     }
 }

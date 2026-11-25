@@ -717,6 +717,29 @@ const figmaAudit = async function figmaAudit(figma, pageName) {
                 add("RX-UI-04", "warn", e.f, e.n, `the error colour ${e.h} is the hue of the action accent ${top.h}: give errors and destructive actions their own colour role, apart from the primary action`);
         }
     }
+    // Screens on cream (RX-UI-26): the paper look generated designs fall back to (H2 diversity runs, 2026-11-25).
+    {
+        const fill = (n) => {
+            const ps = visiblePaints(n.fills);
+            const p = ps.find((q) => q.type === "SOLID");
+            const op = (v) => (typeof v === "number" ? v : 1);
+            if (!p || op(p.opacity) * op(n.opacity) < 0.9 || ps.some((q) => q.type !== "SOLID"))
+                return null;
+            return { r: p.color.r, g: p.color.g, b: p.color.b };
+        };
+        const isCream = (c) => {
+            const mx = Math.max(c.r, c.g, c.b), mn = Math.min(c.r, c.g, c.b), d = mx - mn;
+            if ((mx + mn) / 2 < 0.88 || d < 0.03 || d > 0.15)
+                return false;
+            const h = (mx === c.r ? (((c.g - c.b) / d) % 6 + 6) % 6 : mx === c.g ? (c.b - c.r) / d + 2 : (c.r - c.g) / d + 4) * 60;
+            return h >= 25 && h <= 70;
+        };
+        const on = screens.map((f) => ({ f, c: fill(f) })).filter((x) => x.c && isCream(x.c));
+        if (on.length && on.length * 2 >= screens.length) {
+            const hx = (k) => "#" + [k.r, k.g, k.b].map((v) => Math.round(Math.min(1, Math.max(0, v)) * 255).toString(16).padStart(2, "0")).join("");
+            add("RX-UI-26", "warn", on[0].f, on[0].f, `${on.length} of ${screens.length} screens sit on cream (${hx(on[0].c)}): the paper look generated designs fall back to; use the surface the direction drew, and keep cream only when the direction chose paper for a reason`);
+        }
+    }
     // Nothing on the page outside the screens but components and the frames or sections that hold them.
     for (const n of opened(page.children)) {
         if (screens.includes(n) || n.type === "COMPONENT" || n.type === "COMPONENT_SET" || hasComponents(n) || n.visible === false)

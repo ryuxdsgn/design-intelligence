@@ -14,8 +14,8 @@ workflow (SKILL.md); Frame, Explore, and Evaluate happen in Design.
    `node <this skill's folder>/bin/dist/cli/index.js directions --project <name> --context "<owner, city, audience>" --tags <product>,<audience>,<glance|session>`
    (capabilities/design.md, "Draw them first"). With the user there, offer the three as Design does; in a run with
    no questions, build direction 1 on its draw (surface, accent hue range, type category and ramp, layout, material,
-   idea source), mark it provisional in Assumptions, and name the other two in a line each. The UI gate row writes
-   the draw seed; "a one-file build" or "budget" is not a reason to skip the draw. If there is none, run Design's stages 1-4 first
+   idea source, treatment, and base colours), mark it provisional in Assumptions, and name the other two in a line each. The UI gate row writes
+   the draw seed and whether the surface was kept; "a one-file build" or "budget" is not a reason to skip the draw. If there is none, run Design's stages 1-4 first
    (capabilities/design.md) instead of inventing one in code. Stage 1's questions come first even
    when the request is a quick build or a working prototype: ask the ones whose answers change what
    gets built (a product rule such as fees, refunds, or what happens on failure; the market, with

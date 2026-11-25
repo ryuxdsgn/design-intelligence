@@ -53,12 +53,17 @@
    {
     "id": "warm-paper",
     "name": "Hangat atau kertas",
-    "note": "krem, gading, kertas; paling sering jadi default, maksimal satu arah",
-    "fit": [],
+    "note": "krem, gading, kertas; hanya dengan alasan dari konteks (editorial, arsip, buku), tidak pernah default",
+    "fit": [
+     "education",
+     "public",
+     "media"
+    ],
     "avoid": [
      "creative-tool",
      "ai"
-    ]
+    ],
+    "only_fit": true
    },
    {
     "id": "dark-neutral",
@@ -87,7 +92,7 @@
    {
     "id": "colour-field",
     "name": "Bidang warna jenuh",
-    "note": "satu warna kuat sebagai latar bagian utama; identitas lewat warna",
+    "note": "satu warna kuat sebagai latar halaman, minimal sepertiga halaman, bukan hanya hero",
     "fit": [],
     "avoid": [
      "session",
@@ -238,7 +243,9 @@
     ],
     "avoid": [
      "public",
-     "senior"
+     "senior",
+     "food",
+     "finance"
     ],
     "hue": 320
    }
@@ -702,6 +709,91 @@
     "fit": [],
     "avoid": []
    }
+  ],
+  "treatment": [
+   {
+    "id": "flat",
+    "name": "Flat",
+    "note": "tanpa bayangan dan tekstur; kontrol tetap jelas lewat bentuk dan label",
+    "check": "every control still looks tappable: shape, underline, or label"
+   },
+   {
+    "id": "flat2",
+    "name": "Flat 2.0",
+    "note": "flat dengan bayangan tipis hanya untuk lapisan dan yang bisa ditekan",
+    "check": "depth marks only what can be pressed or what floats"
+   },
+   {
+    "id": "neobrutal",
+    "name": "Neobrutalism",
+    "note": "garis tebal, bayangan keras bergeser, warna jenuh",
+    "fit": [
+     "youth",
+     "media",
+     "social",
+     "creative-tool",
+     "food"
+    ],
+    "avoid": [
+     "senior",
+     "finance",
+     "health",
+     "public"
+    ],
+    "check": "two or three bold colours at most; every bold pair passes contrast"
+   },
+   {
+    "id": "glass",
+    "name": "Glassmorphism",
+    "note": "lapisan buram tembus pandang di atas latar berwarna atau foto",
+    "fit": [
+     "media",
+     "travel",
+     "ai"
+    ],
+    "avoid": [
+     "senior",
+     "glance",
+     "public",
+     "umkm"
+    ],
+    "check": "text contrast over the busiest background each glass layer can sit on"
+   },
+   {
+    "id": "clay",
+    "name": "Claymorphism",
+    "note": "bentuk membulat lembut seperti tanah liat, bayangan dalam dan luar",
+    "fit": [
+     "kids",
+     "family",
+     "education",
+     "food"
+    ],
+    "avoid": [
+     "pro",
+     "finance",
+     "public"
+    ],
+    "check": "controls keep 3:1 contrast against the surface; depth never replaces a label"
+   },
+   {
+    "id": "tactile",
+    "name": "Taktil (skeuomorf ringan)",
+    "note": "isyarat benda nyata sebagai alat bantu: kertas struk, kartu, tombol fisik",
+    "fit": [
+     "finance",
+     "umkm",
+     "senior",
+     "home-service"
+    ],
+    "check": "the real-world cue teaches; no heavy texture behind text"
+   },
+   {
+    "id": "minimal",
+    "name": "Minimal",
+    "note": "hanya yang dibutuhkan tugas; tipografi dan ruang yang bekerja",
+    "check": "nothing the task needs is hidden behind a gesture or an icon alone"
+   }
   ]
  },
  "defaults": [
@@ -757,5 +849,282 @@
    "note": "cerita rute asal-usul (5 dari 5 run bench diversity)",
    "idea": "place"
   }
- ]
+ ],
+ "synonyms": {
+  "grocery": [
+   "food",
+   "commerce"
+  ],
+  "groceries": [
+   "food",
+   "commerce"
+  ],
+  "fresh-food": [
+   "food"
+  ],
+  "restaurant": [
+   "food"
+  ],
+  "f&b": [
+   "food"
+  ],
+  "culinary": [
+   "food"
+  ],
+  "ecommerce": [
+   "commerce"
+  ],
+  "e-commerce": [
+   "commerce"
+  ],
+  "retail": [
+   "commerce"
+  ],
+  "marketplace": [
+   "commerce"
+  ],
+  "shop": [
+   "commerce"
+  ],
+  "shopping": [
+   "commerce"
+  ],
+  "fintech": [
+   "finance"
+  ],
+  "payment": [
+   "finance"
+  ],
+  "payments": [
+   "finance"
+  ],
+  "wallet": [
+   "finance"
+  ],
+  "bank": [
+   "finance"
+  ],
+  "banking": [
+   "finance"
+  ],
+  "healthcare": [
+   "health"
+  ],
+  "medical": [
+   "health"
+  ],
+  "clinic": [
+   "health"
+  ],
+  "wellness": [
+   "health"
+  ],
+  "massage": [
+   "health",
+   "booking"
+  ],
+  "reservation": [
+   "booking"
+  ],
+  "appointment": [
+   "booking"
+  ],
+  "scheduling": [
+   "booking"
+  ],
+  "video": [
+   "media",
+   "creative-tool"
+  ],
+  "editor": [
+   "creative-tool"
+  ],
+  "design-tool": [
+   "creative-tool"
+  ],
+  "music": [
+   "media"
+  ],
+  "news": [
+   "media"
+  ],
+  "entertainment": [
+   "media"
+  ],
+  "saas": [
+   "productivity",
+   "pro"
+  ],
+  "b2b": [
+   "productivity",
+   "pro"
+  ],
+  "dashboard": [
+   "productivity"
+  ],
+  "crm": [
+   "productivity",
+   "pro"
+  ],
+  "learning": [
+   "education"
+  ],
+  "edtech": [
+   "education"
+  ],
+  "school": [
+   "education"
+  ],
+  "course": [
+   "education"
+  ],
+  "laundry": [
+   "home-service"
+  ],
+  "cleaning": [
+   "home-service"
+  ],
+  "repair": [
+   "home-service"
+  ],
+  "delivery": [
+   "logistics"
+  ],
+  "courier": [
+   "logistics"
+  ],
+  "shipping": [
+   "logistics"
+  ],
+  "government": [
+   "public"
+  ],
+  "civic": [
+   "public"
+  ],
+  "travel-agency": [
+   "travel"
+  ],
+  "hotel": [
+   "travel",
+   "booking"
+  ],
+  "ride-hailing": [
+   "logistics",
+   "travel"
+  ],
+  "salon": [
+   "beauty"
+  ],
+  "cosmetics": [
+   "beauty"
+  ],
+  "skincare": [
+   "beauty"
+  ],
+  "real-estate": [
+   "property"
+  ],
+  "rental": [
+   "property"
+  ],
+  "smallbusiness": [
+   "umkm"
+  ],
+  "small-business": [
+   "umkm"
+  ],
+  "sme": [
+   "umkm"
+  ],
+  "msme": [
+   "umkm"
+  ],
+  "warung": [
+   "umkm"
+  ],
+  "merchant": [
+   "umkm"
+  ],
+  "seller": [
+   "umkm"
+  ],
+  "students": [
+   "youth"
+  ],
+  "student": [
+   "youth"
+  ],
+  "gen-z": [
+   "youth"
+  ],
+  "young": [
+   "youth"
+  ],
+  "teens": [
+   "youth"
+  ],
+  "families": [
+   "family",
+   "consumer"
+  ],
+  "parents": [
+   "family",
+   "consumer"
+  ],
+  "homemakers": [
+   "family",
+   "consumer"
+  ],
+  "housewives": [
+   "family",
+   "consumer"
+  ],
+  "elderly": [
+   "senior"
+  ],
+  "older-adults": [
+   "senior"
+  ],
+  "children": [
+   "kids"
+  ],
+  "child": [
+   "kids"
+  ],
+  "office-workers": [
+   "consumer"
+  ],
+  "workers": [
+   "consumer"
+  ],
+  "professionals": [
+   "pro"
+  ],
+  "developers": [
+   "pro"
+  ],
+  "creators": [
+   "pro",
+   "creative-tool"
+  ],
+  "daily": [
+   "glance"
+  ],
+  "quick": [
+   "glance"
+  ],
+  "mobile": [
+   "glance"
+  ],
+  "desktop": [
+   "session"
+  ],
+  "long-session": [
+   "session"
+  ],
+  "work": [
+   "session"
+  ]
+ }
 }
