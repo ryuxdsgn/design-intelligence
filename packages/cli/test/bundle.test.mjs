@@ -167,6 +167,10 @@ test("the skill runs the RYUX CLI from the project, not as a download, and never
   assert.match(flat, /"a one-file build" or "budget" is not a reason to skip the draw/);
   assert.match(flat, /draw seed <seed>, surface kept \| replaced: <reason> \| none: <reason>/);
   assert.match(flat, /never swap them for cream, ivory, or another light default/);
+  // owner 2026-11-25: the choice of direction is part of the experience; each one says why, its pros, and its cons
+  assert.match(flat, /Kenapa, Kelebihan, Kekurangan/);
+  assert.match(flat, /a con is never left out to make a direction look better/);
+  assert.match(flat, /provisional in Assumptions with why it fits and its pros and cons/);
   assert.match(flat, /The user's own choice always wins: a font, colour, or layout they\s+name is locked/);
   // three of four clipper runs opened stage 6 before building (2026-11-24)
   assert.match(flat, /capabilities\/design-deliver\.md is not one of them: open it at stage 6/);

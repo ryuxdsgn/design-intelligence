@@ -41,14 +41,18 @@
     "name": "Terang dingin",
     "note": "putih kebiruan atau abu dingin; tenang, teknis",
     "fit": [],
-    "avoid": []
+    "avoid": [],
+    "pro": "tenang dan bersih, mudah dibaca lama",
+    "con": "mudah terasa seperti template SaaS kalau tidak ada ciri yang besar"
    },
    {
     "id": "light-neutral",
     "name": "Terang netral",
     "note": "putih atau abu tanpa suhu; isi yang bicara",
     "fit": [],
-    "avoid": []
+    "avoid": [],
+    "pro": "isi, foto, dan produk yang menonjol",
+    "con": "paling mudah jatuh ke halaman generik; butuh satu ciri yang kuat"
    },
    {
     "id": "warm-paper",
@@ -63,7 +67,9 @@
      "creative-tool",
      "ai"
     ],
-    "only_fit": true
+    "only_fit": true,
+    "pro": "hangat, terasa seperti bacaan atau arsip",
+    "con": "default lama halaman buatan AI; terasa artisan dan premium, tidak selalu cocok"
    },
    {
     "id": "dark-neutral",
@@ -78,7 +84,9 @@
     "avoid": [
      "senior",
      "glance"
-    ]
+    ],
+    "pro": "media dan angka menonjol, nyaman untuk sesi lama",
+    "con": "terasa berat untuk produk sehari-hari; teks redup harus tetap terang"
    },
    {
     "id": "dark-tinted",
@@ -87,7 +95,9 @@
     "fit": [],
     "avoid": [
      "senior"
-    ]
+    ],
+    "pro": "suasana kuat dan mudah diingat",
+    "con": "foto produk dan makanan bisa terlihat kurang segar; kontras teks kecil harus dijaga"
    },
    {
     "id": "colour-field",
@@ -97,7 +107,9 @@
     "avoid": [
      "session",
      "pro"
-    ]
+    ],
+    "pro": "langsung dikenali, berani, membawa merek",
+    "con": "melelahkan kalau terlalu luas; teks di atas warna harus diuji kontrasnya"
    }
   ],
   "accent": [
@@ -112,7 +124,9 @@
      "booking",
      "kids"
     ],
-    "hue": 0
+    "hue": 0,
+    "pro": "menarik perhatian, energik",
+    "con": "bersaing dengan warna error dan peringatan"
    },
    {
     "id": "vermilion",
@@ -124,7 +138,9 @@
      "home-service"
     ],
     "avoid": [],
-    "hue": 30
+    "hue": 30,
+    "pro": "hangat dan ramah, dekat dengan makanan dan pasar",
+    "con": "mudah tertukar dengan warna error kalau error juga kemerahan"
    },
    {
     "id": "yellow",
@@ -138,7 +154,9 @@
     "avoid": [
      "senior"
     ],
-    "hue": 50
+    "hue": 50,
+    "pro": "ceria dan terlihat dari jauh",
+    "con": "teks di atasnya harus gelap; lemah sebagai warna teks"
    },
    {
     "id": "lime",
@@ -152,7 +170,9 @@
      "finance",
      "senior"
     ],
-    "hue": 80
+    "hue": 80,
+    "pro": "segar dan muda",
+    "con": "sulit dibaca sebagai teks; bisa terasa terlalu ramai untuk orang tua"
    },
    {
     "id": "green",
@@ -163,7 +183,9 @@
      "food"
     ],
     "avoid": [],
-    "hue": 130
+    "hue": 130,
+    "pro": "tumbuh, aman, segar",
+    "con": "sering dipakai kategori segar dan keuangan, jadi kurang membedakan"
    },
    {
     "id": "sea",
@@ -174,7 +196,9 @@
      "beauty"
     ],
     "avoid": [],
-    "hue": 160
+    "hue": 160,
+    "pro": "tenang, dekat dengan kesehatan dan alam",
+    "con": "bisa terasa klinis atau dingin"
    },
    {
     "id": "cyan",
@@ -185,7 +209,9 @@
      "logistics"
     ],
     "avoid": [],
-    "hue": 185
+    "hue": 185,
+    "pro": "bersih, teknis, terasa seperti air",
+    "con": "bisa terasa dingin dan teknis untuk produk keluarga"
    },
    {
     "id": "sky",
@@ -196,7 +222,9 @@
      "logistics"
     ],
     "avoid": [],
-    "hue": 205
+    "hue": 205,
+    "pro": "ringan, terbuka, ramah",
+    "con": "kontras rendah di atas putih; perlu versi gelap untuk teks"
    },
    {
     "id": "blue",
@@ -213,7 +241,9 @@
     "hue": 225,
     "weak": [
      "family"
-    ]
+    ],
+    "pro": "dipercaya, terasa resmi",
+    "con": "sangat umum di keuangan dan SaaS; terasa korporat untuk produk sehari-hari"
    },
    {
     "id": "indigo",
@@ -230,7 +260,9 @@
     "hue": 245,
     "weak": [
      "family"
-    ]
+    ],
+    "pro": "dalam, fokus, cocok untuk alat kerja",
+    "con": "terasa seperti fintech atau SaaS untuk produk konsumen"
    },
    {
     "id": "violet",
@@ -244,7 +276,9 @@
     "hue": 270,
     "weak": [
      "family"
-    ]
+    ],
+    "pro": "modern dan imajinatif",
+    "con": "default produk AI; hanya dengan alasan dari brief"
    },
    {
     "id": "magenta",
@@ -261,7 +295,9 @@
      "food",
      "finance"
     ],
-    "hue": 320
+    "hue": 320,
+    "pro": "ekspresif dan mencolok",
+    "con": "terasa seperti merek kecantikan atau hiburan; kurang cocok untuk produk segar"
    }
   ],
   "type": [
@@ -277,7 +313,9 @@
      "Archivo",
      "Public Sans",
      "Instrument Sans"
-    ]
+    ],
+    "pro": "tegas, netral, padat informasi",
+    "con": "minim karakter; ciri harus datang dari bagian lain"
    },
    {
     "id": "humanist",
@@ -295,7 +333,9 @@
      "Fira Sans",
      "Noto Sans",
      "Atkinson Hyperlegible"
-    ]
+    ],
+    "pro": "ramah dan nyaman dibaca lama, baik untuk orang tua",
+    "con": "kurang tegas untuk judul besar"
    },
    {
     "id": "geometric",
@@ -308,7 +348,9 @@
      "Outfit",
      "Urbanist",
      "Lexend"
-    ]
+    ],
+    "pro": "modern dan rapi",
+    "con": "sering dipakai startup, jadi mudah terasa umum"
    },
    {
     "id": "rounded",
@@ -333,7 +375,9 @@
      "Quicksand",
      "M PLUS Rounded 1c",
      "Varela Round"
-    ]
+    ],
+    "pro": "lembut, ramah keluarga dan anak",
+    "con": "bisa terasa kekanak-kanakan untuk produk profesional"
    },
    {
     "id": "serif-display",
@@ -348,7 +392,9 @@
      "Young Serif",
      "DM Serif Display",
      "Gloock"
-    ]
+    ],
+    "pro": "editorial dan berkesan premium",
+    "con": "bisa terasa mewah atau jauh untuk produk murah dan cepat"
    },
    {
     "id": "serif-text",
@@ -367,7 +413,9 @@
      "Source Serif 4",
      "Literata",
      "Newsreader"
-    ]
+    ],
+    "pro": "terpercaya, enak untuk bacaan panjang",
+    "con": "kurang cocok untuk layar sekilas dan tombol"
    },
    {
     "id": "slab",
@@ -379,7 +427,9 @@
      "Zilla Slab",
      "Roboto Slab",
      "Arvo"
-    ]
+    ],
+    "pro": "kokoh, seperti papan nama pasar",
+    "con": "berat kalau dipakai di badan teks"
    },
    {
     "id": "condensed",
@@ -401,7 +451,9 @@
      "Archivo Narrow",
      "Oswald",
      "Big Shoulders Display"
-    ]
+    ],
+    "pro": "angka dan judul besar muat di layar sempit",
+    "con": "kurang nyaman untuk paragraf panjang"
    },
    {
     "id": "expressive-grotesk",
@@ -421,7 +473,9 @@
      "Bricolage Grotesque",
      "Familjen Grotesk",
      "Darker Grotesque"
-    ]
+    ],
+    "pro": "judul berkarakter kuat",
+    "con": "bisa mengalahkan isi; badan teks harus tetap tenang"
    },
    {
     "id": "mono-accent",
@@ -441,7 +495,9 @@
      "JetBrains Mono",
      "IBM Plex Mono",
      "Space Mono"
-    ]
+    ],
+    "pro": "angka, kode, dan waktu terlihat presisi",
+    "con": "terasa teknis; hanya untuk aksen, bukan badan teks"
    }
   ],
   "layout": [
@@ -456,7 +512,9 @@
      "finance",
      "commerce"
     ],
-    "avoid": []
+    "avoid": [],
+    "pro": "cepat dipindai, aksi dekat dengan isinya",
+    "con": "mudah terasa seperti daftar biasa tanpa ciri"
    },
    {
     "id": "card-grid",
@@ -471,7 +529,9 @@
      "property",
      "beauty"
     ],
-    "avoid": []
+    "avoid": [],
+    "pro": "pilihan visual berdampingan, mudah dibandingkan",
+    "con": "pola paling umum; kartu kecil di halaman pucat terasa template"
    },
    {
     "id": "split-pane",
@@ -485,7 +545,9 @@
     ],
     "avoid": [
      "glance"
-    ]
+    ],
+    "pro": "daftar dan detail sekaligus di layar lebar",
+    "con": "perlu diubah total di ponsel"
    },
    {
     "id": "timeline",
@@ -498,7 +560,9 @@
      "logistics",
      "media"
     ],
-    "avoid": []
+    "avoid": [],
+    "pro": "urutan waktu dan riwayat jelas",
+    "con": "kurang cocok untuk memilih atau membandingkan"
    },
    {
     "id": "canvas",
@@ -511,7 +575,9 @@
     "avoid": [
      "senior",
      "glance"
-    ]
+    ],
+    "pro": "ruang kerja bebas",
+    "con": "sulit dipahami pengguna baru"
    },
    {
     "id": "tiles",
@@ -522,7 +588,9 @@
      "productivity",
      "umkm"
     ],
-    "avoid": []
+    "avoid": [],
+    "pro": "angka dan status terlihat sekilas",
+    "con": "bisa terasa seperti dasbor kantor"
    },
    {
     "id": "steps",
@@ -537,7 +605,9 @@
      "public",
      "senior"
     ],
-    "avoid": []
+    "avoid": [],
+    "pro": "satu keputusan per layar, mudah untuk pemula",
+    "con": "lebih banyak langkah untuk pengguna yang sudah mahir"
    },
    {
     "id": "map-first",
@@ -551,7 +621,9 @@
      "property",
      "home-service"
     ],
-    "avoid": []
+    "avoid": [],
+    "pro": "tempat dan jarak langsung terlihat",
+    "con": "tidak semua orang membaca peta dengan mudah; butuh data lokasi yang nyata"
    },
    {
     "id": "conversation",
@@ -561,7 +633,9 @@
      "ai",
      "social"
     ],
-    "avoid": []
+    "avoid": [],
+    "pro": "terasa seperti bicara dengan orang",
+    "con": "sulit untuk membandingkan pilihan"
    },
    {
     "id": "table-first",
@@ -577,7 +651,9 @@
      "senior",
      "kids",
      "glance"
-    ]
+    ],
+    "pro": "padat untuk membandingkan dan mengubah banyak data",
+    "con": "berat untuk pengguna awam dan layar sempit"
    },
    {
     "id": "calendar-first",
@@ -589,7 +665,9 @@
      "food",
      "health",
      "home-service"
-    ]
+    ],
+    "pro": "jadwal dan tenggat langsung terlihat",
+    "con": "berlebihan kalau waktunya tidak penting bagi pengguna"
    }
   ],
   "carrier": [
@@ -598,14 +676,18 @@
     "name": "Huruf",
     "note": "ukuran dan bobot membawa hierarki",
     "fit": [],
-    "avoid": []
+    "avoid": [],
+    "pro": "hierarki jelas tanpa gambar",
+    "con": "butuh skala huruf yang disiplin"
    },
    {
     "id": "colour",
     "name": "Warna",
     "note": "bidang warna membawa hierarki",
     "fit": [],
-    "avoid": []
+    "avoid": [],
+    "pro": "langsung dikenali dari jauh",
+    "con": "warna yang terlalu banyak membuat bingung"
    },
    {
     "id": "image",
@@ -614,21 +696,27 @@
     "fit": [],
     "avoid": [
      "session"
-    ]
+    ],
+    "pro": "suasana dan produk terasa nyata",
+    "con": "butuh gambar yang bagus dan bukan stok generik"
    },
    {
     "id": "shape",
     "name": "Bentuk",
     "note": "bentuk khas (sudut, potongan, kontainer) jadi tanda",
     "fit": [],
-    "avoid": []
+    "avoid": [],
+    "pro": "ciri khas yang mudah diingat",
+    "con": "bentuk yang dipaksakan terasa seperti hiasan"
    },
    {
     "id": "space",
     "name": "Ruang",
     "note": "ruang kosong dan ritme membawa fokus",
     "fit": [],
-    "avoid": []
+    "avoid": [],
+    "pro": "tenang dan fokus",
+    "con": "tanpa ciri lain mudah terasa kosong atau template"
    }
   ],
   "material": [
@@ -637,7 +725,9 @@
     "name": "Vektor datar",
     "note": "ilustrasi datar; maksimal satu arah",
     "fit": [],
-    "avoid": []
+    "avoid": [],
+    "pro": "cepat dibuat dan ringan",
+    "con": "gaya ilustrasi paling umum"
    },
    {
     "id": "photo",
@@ -649,14 +739,18 @@
      "commerce",
      "health"
     ],
-    "avoid": []
+    "avoid": [],
+    "pro": "nyata dan menggugah",
+    "con": "butuh foto asli; foto stok terasa palsu"
    },
    {
     "id": "render",
     "name": "Render 3D",
     "note": "objek produk atau benda sehari-hari dirender",
     "fit": [],
-    "avoid": []
+    "avoid": [],
+    "pro": "objek terlihat konkret dan berbobot",
+    "con": "berat dibuat, mudah terasa plastik"
    },
    {
     "id": "ui-composite",
@@ -668,14 +762,18 @@
      "finance",
      "ai"
     ],
-    "avoid": []
+    "avoid": [],
+    "pro": "menunjukkan produknya langsung",
+    "con": "tidak menarik kalau UI-nya sendiri biasa"
    },
    {
     "id": "motif",
     "name": "Motif atau tekstil",
     "note": "pola dari budaya atau tempat; sebut maknanya",
     "fit": [],
-    "avoid": []
+    "avoid": [],
+    "pro": "dekat dengan budaya dan tempat pengguna",
+    "con": "harus disebut maknanya; motif tanpa makna terasa tempelan"
    },
    {
     "id": "none",
@@ -685,7 +783,9 @@
      "pro",
      "session"
     ],
-    "avoid": []
+    "avoid": [],
+    "pro": "ringan dan cepat dimuat",
+    "con": "bergantung penuh pada huruf dan warna"
    },
    {
     "id": "hand-drawn",
@@ -700,7 +800,9 @@
     "avoid": [
      "finance",
      "public"
-    ]
+    ],
+    "pro": "hangat dan personal",
+    "con": "bisa terasa tidak rapi kalau tidak konsisten"
    }
   ],
   "idea": [
@@ -709,21 +811,27 @@
     "name": "Mekanik produk",
     "note": "apa yang diukur, dipindah, atau dicatat produk",
     "fit": [],
-    "avoid": []
+    "avoid": [],
+    "pro": "langsung menjelaskan cara produk bekerja",
+    "con": "bisa terasa seperti diagram, kurang emosional"
    },
    {
     "id": "ritual",
     "name": "Benda dan ritual",
     "note": "benda dan kebiasaan sehari-hari pengguna",
     "fit": [],
-    "avoid": []
+    "avoid": [],
+    "pro": "dekat dengan kebiasaan sehari-hari pengguna",
+    "con": "mudah jatuh ke klise kalau bendanya terlalu umum"
    },
    {
     "id": "place",
     "name": "Budaya dan tempat",
     "note": "kerajinan, arsitektur, bahasa jalanan; sebut motif dan maknanya",
     "fit": [],
-    "avoid": []
+    "avoid": [],
+    "pro": "terasa lokal dan berbeda",
+    "con": "faktanya harus benar; nama tempat yang keliru merusak kepercayaan"
    }
   ],
   "treatment": [
@@ -736,7 +844,9 @@
      "radius": 8,
      "primary": "accent fill, on-accent text, no shadow",
      "secondary": "1.5 px ink outline, transparent"
-    }
+    },
+    "pro": "bersih, cepat, mudah dibuat konsisten",
+    "con": "kontrol bisa kehilangan penanda kalau bentuknya lemah"
    },
    {
     "id": "flat2",
@@ -747,7 +857,9 @@
      "radius": 10,
      "primary": "accent fill, one soft shadow (0 2 6, 15%)",
      "secondary": "1 px muted outline on the page colour"
-    }
+    },
+    "pro": "lapisan dan tombol terlihat jelas",
+    "con": "mudah terasa generik"
    },
    {
     "id": "neobrutal",
@@ -771,7 +883,9 @@
      "radius": 4,
      "primary": "accent fill, 2 px ink border, hard 3 px ink offset shadow that collapses on press",
      "secondary": "page fill, 2 px ink border, no shadow"
-    }
+    },
+    "pro": "berani, berkarakter, mudah diingat",
+    "con": "melelahkan untuk orang tua atau layanan resmi"
    },
    {
     "id": "glass",
@@ -793,7 +907,9 @@
      "radius": 12,
      "primary": "solid accent fill, never glass",
      "secondary": "frosted layer with a 1 px light border; text checked over its busiest background"
-    }
+    },
+    "pro": "terasa modern dan berlapis",
+    "con": "kontras teks berubah mengikuti latar di belakangnya"
    },
    {
     "id": "clay",
@@ -815,7 +931,9 @@
      "radius": "pill",
      "primary": "accent fill with a soft outer and inner shadow",
      "secondary": "section fill with the same soft shadow, ink text"
-    }
+    },
+    "pro": "lembut, ramah, terasa bisa disentuh",
+    "con": "bisa terasa kekanak-kanakan; kedalaman tidak boleh menggantikan label"
    },
    {
     "id": "tactile",
@@ -832,7 +950,9 @@
      "radius": 10,
      "primary": "accent fill, 1 px darker border, a 2 px bottom edge that presses down",
      "secondary": "page fill, 1 px ink border, the same bottom edge"
-    }
+    },
+    "pro": "akrab seperti benda nyata, mudah dipahami",
+    "con": "tekstur berlebihan terasa kuno"
    },
    {
     "id": "minimal",
@@ -843,7 +963,9 @@
      "radius": 6,
      "primary": "accent fill, no shadow",
      "secondary": "an underlined text link in ink"
-    }
+    },
+    "pro": "fokus pada tugas",
+    "con": "bisa terasa kosong tanpa satu ciri yang kuat"
    }
   ]
  },

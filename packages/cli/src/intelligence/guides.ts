@@ -102,7 +102,9 @@ The six stages of the core workflow (SKILL.md), as Design runs them.
    interaction, never its logo, name, exact colours, illustrations, or copy, and say where you know X from (the user's screenshot,
    ryux MCP screens, or memory, marked unverified). Without the command, follow RX-UI-26 by hand. Show the tiles as one static HTML page (\`directions.html\` in the project folder; no server,
    and no scripts of its own, Google Fonts allowed): per direction its palette swatches, type pairing, one card, one primary
-   button, and its signature, numbered as in the message. Give each direction's choice control a \`data-ryux-pick="<n>"\` attribute (its
+   button, and its signature, numbered as in the message, and under it **Kenapa, Kelebihan, Kekurangan** (why it fits this
+   product, its pros, its cons) in the user's language: start from the draw's why, pros, and cons lines and say each for this
+   product and these users; a con is never left out to make a direction look better. Give each direction's choice control a \`data-ryux-pick="<n>"\` attribute (its
    number; the page shows its heading as the name, or \`data-ryux-pick-name\`), and add a regenerate control \`data-ryux-pick="regenerate"\` labelled "None of these — make three new". Render it once to check it.
    **Close the loop with \`ryux pick\`:** run \`npx --no-install @ryuxdsgn/design-intelligence pick directions.html\`, the copy of RYUX in the project (it waits for the click and times out by itself, so no \`timeout\` or other wrapper, which macOS does not have) and read its one line of
    output. A clean \`pick: <n>\` line is the user's choice, straight from a click, with no copy-paste; build that direction. A
@@ -775,7 +777,8 @@ workflow (SKILL.md); Frame, Explore, and Evaluate happen in Design.
    \`node <this skill's folder>/bin/dist/cli/index.js directions --project <name> --context "<owner, city, audience>" --tags <product>,<audience>,<glance|session>\`
    (capabilities/design.md, "Draw them first"). With the user there, offer the three as Design does; in a run with
    no questions, build direction 1 on its draw (surface, accent hue range, type category and ramp, layout, material,
-   idea source, treatment, and base colours), mark it provisional in Assumptions, and name the other two in a line each. The UI gate row writes
+   idea source, treatment, and base colours), mark it provisional in Assumptions with why it fits and its pros and cons for
+   this product (from the draw's why, pros, and cons lines), and name the other two in a line each with their main pro and con. The UI gate row writes
    the draw seed and whether the surface was kept; "a one-file build" or "budget" is not a reason to skip the draw. If there is none, run Design's stages 1-4 first
    (capabilities/design.md) instead of inventing one in code. Stage 1's questions come first even
    when the request is a quick build or a working prototype: ask the ones whose answers change what

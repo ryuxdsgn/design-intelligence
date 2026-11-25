@@ -439,6 +439,9 @@ function runDirections(args: string[]): void {
     const t = d.ramp;
     console.log(`   type ramp ×${t.ratio}: caption ${t.caption} · body ${t.body} · heading ${t.heading} · title ${t.title} · display ${t.display} px; a label takes the body or caption size, one weight up`);
     if (d.treatment) console.log(`   treatment ${line(d.treatment)}${d.treatment.check ? ` (check: ${d.treatment.check})` : ""}`);
+    if (d.why?.length) console.log(`   why ${d.why.join("; ")}`);
+    if (d.pros?.length) console.log(`   pros ${d.pros.join("; ")}`);
+    if (d.cons?.length) console.log(`   cons ${d.cons.join("; ")}`);
     if (d.signature) console.log(`   signature ${d.signature}`);
     const bt = d.buttons;
     if (bt) console.log(`   buttons radius ${bt.radius === "pill" ? "pill" : `${bt.radius} px`} · height ${bt.height} px · primary ${bt.primary} · secondary ${bt.secondary}; every call to action uses these two, nothing else. ${bt.store}`);

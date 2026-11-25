@@ -376,6 +376,27 @@ pub fn directions(input: &Value) -> Value {
         m.insert("n".into(), json!(i + 1));
         m.insert("ramp".into(), ramp(&id(&d[2]), session));
         m.insert("colours".into(), colours(&id(&d[0]), &d[1]));
+        // why this direction, and what it costs: the owner wants the choice explained, pros and cons (2026-11-25).
+        // "why" names the product tags an entry fits; an entry drawn with no fit says so, so it is never dressed up.
+        let mut why = Vec::new();
+        let mut pros = Vec::new();
+        let mut cons = Vec::new();
+        for k in [0usize, 1, 2, 3, 7, 5] {
+            let e = &d[k];
+            let name = e["name"].as_str().unwrap_or("");
+            let hit: Vec<String> = strs(e.get("fit")).into_iter().filter(|t| tags.contains(t)).collect();
+            if !hit.is_empty() {
+                why.push(format!("{name}: cocok untuk {}", hit.join(", ")));
+            }
+            if let Some(p) = e["pro"].as_str() { pros.push(format!("{name}: {p}")) }
+            if let Some(c) = e["con"].as_str() { cons.push(format!("{name}: {c}")) }
+        }
+        if why.is_empty() {
+            why.push("tidak ada entri yang khusus cocok dengan tag ini; diundi dari yang tidak dilarang untuk produk ini".into());
+        }
+        m.insert("why".into(), json!(why));
+        m.insert("pros".into(), json!(pros));
+        m.insert("cons".into(), json!(cons));
         // one button spec per direction, from its treatment, so every call to action on the page shares one shape (RX-DS-02)
         let mut b = d[7]["buttons"].clone();
         if b.is_object() {
@@ -634,6 +655,16 @@ mod tests {
                     assert!(contrast(&s("onField"), &s("field")) >= 4.5, "k{i} field");
                 }
             }
+        }
+    }
+
+    #[test]
+    fn each_direction_says_why_and_what_it_costs() {
+        let r = draw(json!({ "project": "Bilas", "tags": ["laundry", "students", "glance"] }));
+        for d in r["directions"].as_array().unwrap() {
+            assert!(!d["why"].as_array().unwrap().is_empty());
+            assert_eq!(d["pros"].as_array().unwrap().len(), 6);
+            assert_eq!(d["cons"].as_array().unwrap().len(), 6);
         }
     }
 }
