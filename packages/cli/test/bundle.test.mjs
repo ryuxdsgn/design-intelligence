@@ -200,6 +200,13 @@ test("Design can write or update a full DESIGN.md that answers five questions", 
   assert.match(flat("capabilities/design.md"), /keep every line the user wrote/);
   assert.match(flat("SKILL.md"), /write or update DESIGN\.md from a brief or references/);
   assert.match(flat("capabilities/analyze.md"), /capabilities\/design-md\.md \(RX-PR-12\)/);
+  // owner 2026-11-25: Analyze also synthesizes raw research, checked by ryux synthesize check (RX-UX-21)
+  const research = flat("capabilities/analyze-research.md");
+  assert.match(research, /in-depth interviews, usability tests, co-creation sessions, or user feedback/);
+  assert.match(research, /A person decides which findings and recommendations stand/);
+  assert.match(research, /synthesize check synthesis\.md/);
+  assert.match(research, /Support: 4 of 6 \(P1, P2, P4, P6\)/);
+  assert.match(renderBundle()["SKILL.md"], /research data: `capabilities\/analyze-research\.md`/);
   assert.match(flat("knowledge/product.md"), /RX-PR-12/);
   assert.match(flat("knowledge/product.md"), /A DESIGN\.md answers five questions or names what is unknown/);
   // illustration direction A, passed 2026-11-07 (Sejuk, one run): RYUX directs, an image model draws, RYUX reads

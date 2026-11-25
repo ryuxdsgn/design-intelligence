@@ -135,6 +135,11 @@
   "title": "Name the size of the change: polish, revamp, or redesign"
  },
  {
+  "id": "RX-UX-21",
+  "level": "required",
+  "title": "A synthesis stands on its raw data"
+ },
+ {
   "id": "RX-IX-01",
   "level": "required",
   "title": "Before, during, result, recovery"

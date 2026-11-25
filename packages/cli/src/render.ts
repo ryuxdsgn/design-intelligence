@@ -32,7 +32,7 @@ import {
   GUIDES,
 } from "./intelligence/guides.js";
 import { CRITIQUE_BODY, CRITIQUE_DESCRIPTION } from "./intelligence/critique.js";
-import { ANALYZE_BODY, ANALYZE_DESCRIPTION } from "./intelligence/analyze.js";
+import { ANALYZE_BODY, ANALYZE_DESCRIPTION, ANALYZE_RESEARCH_BODY } from "./intelligence/analyze.js";
 
 const skillById = (id: string): Skill | undefined => SKILLS.find((s) => s.id === id);
 const rulesOf = (id: string): Rule[] => RULES.filter((r) => r.skill === id);
@@ -228,6 +228,7 @@ export function renderBundle(): Record<string, string> {
   const files: Record<string, string> = {
     "SKILL.md": `---\nname: ${SKILL_NAME}\ndescription: ${JSON.stringify(RYUX_DESCRIPTION)}\n---\n\n${routerBody()}\n`,
     "capabilities/analyze.md": `${ANALYZE_BODY}\n`,
+    "capabilities/analyze-research.md": `${ANALYZE_RESEARCH_BODY}\n`,
     "capabilities/design.md": `${DESIGN_BODY}\n`,
     "capabilities/design-deliver.md": `${DESIGN_DELIVER_BODY}\n`,
     "capabilities/design-md.md": `${DESIGN_MD_BODY}\n`,
@@ -329,6 +330,7 @@ export function groupsTable(): string {
   const rows = [
     "| `SKILL.md` | the router: entry points, how RYUX works, levels, Hard Gates, task table, Delivery Gate | |",
     "| `capabilities/analyze.md` | Analyze: inventory of an existing interface | |",
+    "| `capabilities/analyze-research.md` | Analyze: raw research to themes, findings, and design implications | |",
     "| `capabilities/design.md` | Design: create or improve UI and UX without code | |",
     "| `capabilities/design-deliver.md` | Design, stage 6: verify and deliver, read when the screens are built | |",
     "| `capabilities/design-md.md` | Design: write or update DESIGN.md | |",

@@ -24,6 +24,7 @@ import { runScan } from "./scan.js";
 import { runPick } from "./pick.js";
 import { runAudit } from "./audit.js";
 import { runReportCheck } from "./report-check.js";
+import { runSynthesize } from "./synthesize.js";
 import { DEFAULT_CACHE, fetchLatestFromNpm, updateNotice } from "./update-notice.js";
 import { cp, readFile, readdir, writeFile } from "node:fs/promises";
 import { createRequire } from "node:module";
@@ -985,6 +986,9 @@ Commands:
               Figma's REST API with FIGMA_TOKEN (read-only; annotations are not in REST).
   report-check  Check that a RYUX report's one-line gate counts the same areas as its detail block.
               Reads a file or stdin; --hook is the Claude Code Stop hook that install --hook adds.
+  synthesize check [synthesis.md]
+              Check a research synthesis against its raw data: every quote word for word in that
+              participant's file, every "n of N" counted right, no one outside the Data table. Local only.
   pick        Open an HTML page (e.g. a directions page) in the browser and wait for a click;
               print the chosen number. Used by the Design step to pick a direction without copy-paste.
   update      Update an install to this version (also migrates RYUX 1.x folders).
@@ -1055,6 +1059,8 @@ async function main(): Promise<void> {
   switch (cmd) {
     case "report-check":
       return runReportCheck(argv.slice(1));
+    case "synthesize":
+      return runSynthesize(argv.slice(1));
     case "update":
       return runUpdate(flags);
     case "check":
