@@ -13,7 +13,7 @@
 
 RYUX is design intelligence for AI agents and designers, packaged as one skill, `ryux`. It has five
 entry points: Analyze, Design, Build, Critique, and QA. The router (`SKILL.md`) picks the
-knowledge modules each task needs. Anti-slop prevents bad, generic output; RYUX also guides good
+knowledge modules each task needs. Unslop prevents bad, generic output; RYUX also guides good
 design decisions. Three things make it distinctly RYUX: **evidence-based** decisions that say what
 was observed, inferred, or unknown; a **global core** that adapts to the product's own market; and
 **human judgment** for designer notes in the reference library (whose first screens come from
@@ -123,7 +123,7 @@ ryux's own agent runs say so ("ryux run 2026-10-02").
 
 ### Purpose Gates
 
-Anti-slop does not ban styles. These patterns are allowed when they have a purpose; for each one in
+Unslop does not ban styles. These patterns are allowed when they have a purpose; for each one in
 a result, ask **"Why does this exist?"** and remove it when there is no meaningful reason.
 
 <!-- purpose:start -->
