@@ -270,6 +270,11 @@
   "title": "Roles, access, and sessions"
  },
  {
+  "id": "RX-EC-09",
+  "level": "contextual",
+  "title": "Design for the person who would misuse it"
+ },
+ {
   "id": "RX-CD-01",
   "level": "contextual",
   "title": "Natural Bahasa Indonesia"

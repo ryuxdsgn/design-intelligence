@@ -84,6 +84,25 @@ A user flow is one task in one product: the steps and the system's answers, minu
 map is a goal across channels and days, with what the person thinks and feels (RX-UX-19). Use a flow to design
 screens, a journey map to decide which moments are worth designing; the flow is a deep dive into one phase.
 
+**Pick the artifact by the question it answers**, and name it in one line before making it. Asked for one by
+name, make that one; when it answers a different question than the user seems to have, say so once.
+
+| The question | The artifact | Not this |
+| --- | --- | --- |
+| What steps does one task take in this product? | user flow (as a wireflow when the screens matter) | a journey map |
+| Where does a goal across channels and days go well or badly? | journey map (RX-UX-19) | a user flow |
+| How do people do this in general, with no product in mind? | experience map | a journey map of one brand |
+| What does staff, a partner, or a system do behind each moment? | service blueprint: the journey on top, then frontstage actions, backstage actions, and support systems, with a line of visibility | a journey map with an extra row |
+| How does a process run, step by step, with its decisions? | process map or task analysis (tasks broken into subtasks) | a user flow |
+| Where does content live, and how does navigation reach it? | site map (information architecture) | a screen list |
+| Is the structure right, before any look? | wireframe: grey boxes, real labels | a mockup |
+| How will it look? | mockup (static, full visual design) | a prototype |
+| Can people do the task with it? | prototype, clickable, tested with a task | a mockup |
+| What does a developer need? | annotations on the design: states, spacing, behaviour (DESIGN.md handoff) | a separate document |
+
+A service blueprint, experience map, or process map keeps the journey map's rule: every row says where it
+comes from (research, data, or an assumption marked as one, RX-UX-19).
+
 **Before a flow or a journey map, ask** once, at most four questions, and only what the brief, DESIGN.md, and
 the repo do not already answer:
 1. Who is the actor, and what situation are they in?

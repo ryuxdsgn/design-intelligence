@@ -25,7 +25,7 @@ from DESIGN.md and the repo's screens). Pick the entry point, read its file, the
 | Entry point | When | Read |
 | --- | --- | --- |
 | **Analyze** | understand a screen, product, or flow that exists | `capabilities/analyze.md` |
-| **Design** | create or improve UI and UX without code: Figma, pen.dev, mockups, copy, user flows, journey maps; a revamp or redesign; write or update DESIGN.md from a brief or references | `capabilities/design.md` (DESIGN.md itself: `capabilities/design-md.md`) |
+| **Design** | create or improve UI and UX without code: Figma, pen.dev, mockups, copy, user flows, journey maps, service blueprints, site maps; a revamp or redesign; write or update DESIGN.md from a brief or references | `capabilities/design.md` (DESIGN.md itself: `capabilities/design-md.md`) |
 | **Build** | implement or change the interface in code; polish a screen that works (premium, easier to find); a change of unnamed size asks first: polish, revamp, or redesign (RX-UX-20) | `capabilities/build.md` |
 | **Critique** | find what should change first, and why; a heuristic evaluation | `capabilities/critique.md` |
 | **QA** | verify a build against the intended design | `capabilities/qa.md` |
@@ -132,7 +132,7 @@ A small change (a copy fix, one component, one state) reads only the module it t
 | AI feature (generated answers, summaries, drafts) | `knowledge/product.md`, `knowledge/ux.md`, `knowledge/content.md`, `knowledge/edge-cases.md`, `knowledge/anti-slop.md` |
 | Copy only (UI text, chat, announcements) | `knowledge/content.md`, `knowledge/anti-slop.md` |
 | Visual refinement | `knowledge/ui.md`, `knowledge/design-system.md`, `capabilities/qa.md`, `knowledge/anti-slop.md` |
-| User flow or journey map | `knowledge/product.md`, `knowledge/ux.md`, `knowledge/edge-cases.md`, `knowledge/content.md` |
+| User flow, journey map, or another UX map | `knowledge/product.md`, `knowledge/ux.md`, `knowledge/edge-cases.md`, `knowledge/content.md` |
 | Review or critique | `capabilities/critique.md` (Design Read + heuristic_eval), plus `capabilities/qa.md` |
 
 ## Delivery Gate

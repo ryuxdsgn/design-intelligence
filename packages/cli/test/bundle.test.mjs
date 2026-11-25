@@ -542,7 +542,11 @@ test("router: flows, journeys, and change size are reachable", () => {
   const b = renderBundle();
   assert.match(b["SKILL.md"], /journey map/i);
   assert.match(b["SKILL.md"], /RX-UX-20/);
-  assert.match(b["SKILL.md"], /\| User flow or journey map \|/);
+  assert.match(b["SKILL.md"], /\| User flow, journey map, or another UX map \|/);
+  // NN/g UX maps and deliverables glossaries (2026-11-25): pick the artifact by the question it answers
+  assert.match(b["knowledge/ux.md"], /Pick the artifact by the question it answers/);
+  assert.match(b["knowledge/ux.md"], /service blueprint: the journey on top, then frontstage actions, backstage actions, and support systems/);
+  assert.match(b["knowledge/edge-cases.md"], /RX-EC-09 \[Contextual\] Design for the person who would misuse it/);
   assert.ok(b["SKILL.md"].split("\n").length <= 180);
   assert.match(b["capabilities/build.md"], /Polish: refining what exists[\s\S]*Diagnose first[\s\S]*Fix by impact/);
   assert.match(b["capabilities/design.md"], /RX-UX-20/);
