@@ -211,13 +211,13 @@ line below for its exact source.
 <!-- provenance:start -->
 | Source cited | Rules citing it | Rules citing only this |
 | --- | --- | --- |
-| Public standard or research | 103 | 62 |
+| Public standard or research | 104 | 62 |
 | Industry practice | 28 | 6 |
 | Observed in a RYUX run | 18 | 7 |
 | Pattern also in another MIT ruleset (text written for RYUX) | 4 | 2 |
-| RYUX principle, taxonomy, or review | 75 | 22 |
+| RYUX principle, taxonomy, or review | 75 | 21 |
 
-All 160 rules cite a source; 61 cite more than one kind, so the "Rules citing it" column adds up to more than 160.
+All 160 rules cite a source; 62 cite more than one kind, so the "Rules citing it" column adds up to more than 160.
 <!-- provenance:end -->
 
 ## Rules
@@ -329,18 +329,22 @@ Gate area PRODUCT. Covers user, task, goal, primary action, constraints, assumpt
 #### RX-PR-13 [Preferred] Before a direction, learn what makes this product specific
 
 - When: a new product, a new look, or an expressive surface, and the prompt, DESIGN.md, and the product docs do not say who exactly it is for and why they would choose it, or what the product does and which numbers may be shown
-- Do: Before any visual direction, ask what the context does not answer, in one message of five questions at most, as choices with a recommended answer and room for the user's own:
-  - who exactly: the group, their moment, and what they use today
+- Do: Before any visual direction, read the PRD, the product docs, and the prompt, then ask only what they do not answer, in one message of five questions at most, in this order (business goal, then user and problem, then scope and constraints, then success metric, then what the page can say), as choices with a recommended answer and room for the user's own; say the user may skip any, and infer a skipped one:
+  - business goal: why the product exists, the business problem it solves, and what changes if it works
+  - user and problem: who exactly (the group and their moment), what they are trying to do, the pain, how often it happens, and what they do today when it happens
+  - scope and constraints: what this work covers and what it does not, and the limits (time, platform, brand, budget, regulation)
+  - success metric: the number that says it worked (downloads, bookings, repeat use); Critique and QA judge the result against it, and a design that cannot move it says so
   - why they would choose it over what they use now
   - its character in three words and what it must never feel like; recommend a personality (warm, bold, witty, proud) from the audience and the why, never a word for restraint (plain, clean, minimal): restraint is how a page behaves, not who the product is
   - one product or site whose look they like, and one they do not
   - the page's status and goal: live or not, and what the visitor should do
   - what the page can say: the three things people do in the product, the numbers that may be shown (a minimum, a fee, a limit), and whether real screenshots or photos exist; ask these even when who and why are known
   - the product facts (RX-PR-01), and for a fact with a mark (a store, a partner, a regulator) its official files (RX-UI-28)
-  - Record each answer in the DESIGN.md context (Audience, Why choose it, UI direction, Taste references, Design intent, What people do in it, Numbers that may be shown); a missing or blank field is unanswered, and Confirmed capabilities does not say what people do.
+  - The answers feed the draw: the user and the problem, in the user's words, are the `--context` of `ryux directions`, and the audience and how often they use it are its tags (glance or session).
+  - Record each answer in the DESIGN.md context (Business goal, Audience, Problem, Scope, Success metric, Why choose it, UI direction, Taste references, Design intent, What people do in it, Numbers that may be shown); a missing or blank field is unanswered, and Confirmed capabilities does not say what people do.
   - When the user hands a question back, infer that answer, label it inferred, and continue.
 - Do not: Build directions from the category alone (every gold app gets a gold shop), recommend plain, clean, or minimal as the character, ask open questions with no options, ask what the context already answers, or treat an inferred answer as the user's.
-- Why: Without the product's own audience and reason to exist, an agent fills the gap with the category's cliché, so every product of a kind gets the same look; the answers are what make the direction specific. (Brand strategy and design discovery practice (audience, positioning, personality, references before visual work); landing-gold rounds 3 and 4 and owner trials T1 to T9, 2026-10-31 (docs/benchmarks/landing-gold): with only the category to go on, every RYUX run proposed the same gold-shop direction, and without content questions the pages stayed thin; owner review)
+- Why: Without the product's own audience and reason to exist, an agent fills the gap with the category's cliché, so every product of a kind gets the same look; the answers are what make the direction specific. (Brand strategy and design discovery practice (audience, positioning, personality, references before visual work); NNGroup design thinking (empathize and define before ideate) and UX success metrics (a goal is defined before the design is judged); kept from PR #132 (2026-11-21, the question order and the success metric) when its direction gate was dropped, 2026-11-25; landing-gold rounds 3 and 4 and owner trials T1 to T9, 2026-10-31 (docs/benchmarks/landing-gold): with only the category to go on, every RYUX run proposed the same gold-shop direction, and without content questions the pages stayed thin; owner review)
 - Not when: the context already answers them, or a small change inside an existing product
 - Trade-off: one more round of questions before any design; the answers are kept, so it is asked once per product
 - Check: review: the questions asked or the answers cited from the context, each recorded in DESIGN.md or marked inferred
