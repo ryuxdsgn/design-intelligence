@@ -131,7 +131,7 @@ fn readable(l: f64, c: f64, h: f64, against: &str, min: f64, up: bool) -> String
     }
 }
 
-pub fn colours(surface: &str, accent: &Value, strong: bool) -> Value {
+pub fn colours(surface: &str, accent: &Value) -> Value {
     let hsl_h = match (accent["hues"][0].as_f64(), accent["hues"][1].as_f64()) {
         (Some(a), Some(b)) => { let w = if b < a { b + 360.0 } else { b }; ((a + w) / 2.0).rem_euclid(360.0) }
         _ => accent["hue"].as_f64().unwrap_or(250.0),
@@ -171,10 +171,10 @@ pub fn colours(surface: &str, accent: &Value, strong: bool) -> Value {
     }
     // seniors, families, and health: helper text reads at 7:1, not only 4.5 (owner H5 and H6: small grey read weak
     // on four of five pages that passed contrast)
-    if strong {
-        let page = out["page"].as_str().unwrap_or("#ffffff").to_string();
-        out["muted"] = json!(readable(if dark { 0.84 } else { 0.50 }, 0.02, h, &page, 7.0, dark));
-    }
+    // helper text reads at 7:1 on the section colour, the harder of the two backgrounds, for every audience: small grey
+    // that passed 4.5:1 read weak to the owner in H5, H6, and H7, for students and freelancers as well as seniors
+    let section = out["section"].as_str().unwrap_or("#ffffff").to_string();
+    out["muted"] = json!(readable(if dark { 0.84 } else { 0.50 }, 0.02, h, &section, 7.0, dark));
     out
 }
 
@@ -191,7 +191,8 @@ pub fn ramp(type_id: &str, session: bool, senior: bool) -> Value {
     let step = |k: i32| (base * ratio.powi(k)).round();
     json!({
         "ratio": ratio,
-        "caption": step(-1).max(12.0),
+        // a caption on a glance screen stays at 14: small grey steps read weak to the owner (H6, H7)
+        "caption": step(-1).max(if session { 12.0 } else { 14.0 }),
         "body": base,
         "heading": step(1),
         "title": step(2),
@@ -229,7 +230,12 @@ pub fn directions(input: &Value) -> Value {
     let mut tags: Vec<String> = Vec::new();
     let mut unknown_tags: Vec<String> = Vec::new();
     for t in &given {
-        let mapped: Vec<String> = if known.contains(t) { vec![t.clone()] } else { strs(syn.get(t.as_str())) };
+        let mut mapped: Vec<String> = if known.contains(t) { vec![t.clone()] } else { strs(syn.get(t.as_str())) };
+        // an age in the tag ("adults-60plus", "55+", "over-65"): 55 and over reads as senior; a younger age maps to nothing
+        if mapped.is_empty() {
+            let age: Option<u32> = t.split(|c: char| !c.is_ascii_digit()).filter_map(|n| n.parse().ok()).find(|n| (10..=110).contains(n));
+            if age.is_some_and(|a| a >= 55) { mapped.push("senior".into()) }
+        }
         if mapped.is_empty() { unknown_tags.push(t.clone()) }
         for m in mapped { if !tags.contains(&m) { tags.push(m) } }
     }
@@ -380,12 +386,11 @@ pub fn directions(input: &Value) -> Value {
     }
 
     let session = tags.iter().any(|t| t == "session" || t == "pro");
-    let strong = tags.iter().any(|t| matches!(t.as_str(), "senior" | "family" | "kids" | "health"));
     let out: Vec<Value> = chosen.iter().enumerate().map(|(i, d)| {
         let mut m = serde_json::Map::new();
         m.insert("n".into(), json!(i + 1));
         m.insert("ramp".into(), ramp(&id(&d[2]), session, tags.iter().any(|t| t == "senior")));
-        m.insert("colours".into(), colours(&id(&d[0]), &d[1], strong));
+        m.insert("colours".into(), colours(&id(&d[0]), &d[1]));
         // why this direction, and what it costs: the owner wants the choice explained, pros and cons (2026-11-25).
         // "why" names the product tags an entry fits; an entry drawn with no fit says so, so it is never dressed up.
         let mut why = Vec::new();
@@ -520,9 +525,8 @@ mod tests {
                 assert!(!ids(&r, "surface").iter().any(|s| s.starts_with("dark")) || tags[0] == "laundry", "{p} {tags}");
                 for d in r["directions"].as_array().unwrap() {
                     let c = &d["colours"];
-                    let strong = tags[1] != "students";
-                    let need = if strong { 7.0 } else { 4.5 };
-                    let got = ratio(c["muted"].as_str().unwrap(), c["page"].as_str().unwrap());
+                    let need = 7.0;
+                    let got = ratio(c["muted"].as_str().unwrap(), c["section"].as_str().unwrap());
                     assert!(got >= need, "{p} {tags}: muted {got}");
                     if tags[1] == "senior" {
                         assert_eq!(d["ramp"]["body"], json!(18.0));
@@ -530,6 +534,15 @@ mod tests {
                 }
             }
         }
+    }
+
+    #[test]
+    fn tutoring_and_an_age_over_55_map_to_the_catalog() {
+        // owner H7 2026-11-25: "tutoring" and "adults-40plus" were ignored; an age says senior only from 55
+        let r = draw(json!({ "project": "Lesin", "tags": ["tutoring", "adults-60plus", "glance"] }));
+        assert_eq!(r["tags"], json!(["education", "senior", "glance"]), "{r}");
+        let r = draw(json!({ "project": "Lesin", "tags": ["tutoring", "adults-40plus"] }));
+        assert_eq!(r["unknownTags"], json!(["adults-40plus"]));
     }
 
     #[test]
