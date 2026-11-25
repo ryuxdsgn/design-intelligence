@@ -402,13 +402,13 @@ async function runRemove(flags: Flags): Promise<void> {
   console.log(removed.length ? removed.map((r) => pc.red("− ") + r).join("\n") : "No files removed.");
 }
 
-/** `ryux directions --project <name> [--tags a,b] [--lock layout=split-pane,type=grotesk] [--allow id] [--redraw n] [--catalog file] [--json]` */
+/** `ryux directions --project <name> [--context "owner, city, audience"] [--tags a,b] [--lock layout=split-pane,type=grotesk] [--allow id] [--redraw n] [--catalog file] [--json]` */
 function runDirections(args: string[]): void {
   const opt = (k: string): string | undefined => { const i = args.indexOf(`--${k}`); return i >= 0 ? args[i + 1] : undefined; };
   const list = (k: string): string[] => (opt(k) || "").split(",").map((x) => x.trim()).filter(Boolean);
   const project = opt("project");
   if (!project) {
-    console.error("Usage: ryux directions --project <name> [--tags finance,umkm,glance] [--lock layout=split-pane,type=grotesk] [--allow <default id>] [--redraw <n>] [--catalog <own entries.json>] [--json]");
+    console.error("Usage: ryux directions --project <name> --context \"<owner, city, audience>\" [--tags finance,umkm,glance] [--lock layout=split-pane,type=grotesk] [--allow <default id>] [--redraw <n>] [--catalog <own entries.json>] [--json]");
     process.exitCode = 2;
     return;
   }
@@ -424,7 +424,7 @@ function runDirections(args: string[]): void {
       return;
     }
   }
-  const r = drawDirections({ project, tags: list("tags"), lock, allow: list("allow"), redraw: Number(opt("redraw") || 0), extra });
+  const r = drawDirections({ project, context: opt("context") || "", tags: list("tags"), lock, allow: list("allow"), redraw: Number(opt("redraw") || 0), extra });
   if (args.includes("--json")) { console.log(JSON.stringify(r, null, 2)); return; }
   const line = (e: DirectionEntry): string => e.name;
   console.log(`Direction draws for "${r.project}" (seed ${r.seed}${r.redraw ? `, redraw ${r.redraw}` : ""}${r.tags.length ? `, tags ${r.tags.join(", ")}` : ""})`);

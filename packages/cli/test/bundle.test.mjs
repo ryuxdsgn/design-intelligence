@@ -159,7 +159,7 @@ test("the skill runs the RYUX CLI from the project, not as a download, and never
   // the installer copies the CLI into the skill folder; the skill runs it with node (2026-11-24)
   assert.match(flat, /node <this skill's folder>\/bin\/dist\/cli\/index\.js scan\|audit\|pick/);
   // directions are drawn in code; text rules alone left five diversity arms in one group (2026-11-21, 22)
-  assert.match(flat, /Draw them first, in one call:\*\* `node <this skill's folder>\/bin\/dist\/cli\/index\.js directions --project/);
+  assert.match(flat, /Draw them first, in one call:\*\* `node <this skill's folder>\/bin\/dist\/cli\/index\.js directions --project <name> --context "<owner, city, audience>"/);
   assert.match(flat, /A named reference\*\* \("a web like X", "an app like Y"\) locks what it fixes/);
   assert.match(flat, /never its logo, name, exact colours, illustrations, or copy/);
   assert.match(flat, /The user's own choice always wins: a font, colour, or layout they\s+name is locked/);

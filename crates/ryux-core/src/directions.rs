@@ -116,7 +116,14 @@ pub fn directions(input: &Value) -> Value {
     let lock = input.get("lock").and_then(Value::as_object).cloned().unwrap_or_default();
     let known: Vec<String> = ["product", "audience", "use"].iter().flat_map(|k| strs(cat["tags"].get(*k))).collect();
     let unknown_tags: Vec<&String> = tags.iter().filter(|t| !known.contains(t)).collect();
-    let seed = fnv(&format!("{project}#{redraw}"));
+    // the seed is who this is for, not only the name: two owners of a product called "Ladang" (another city, another
+    // audience) draw apart, and one project draws the same every time. Words only, in order of appearance, lowercased.
+    let words = |s: &str| s.to_lowercase().split(|c: char| !c.is_alphanumeric()).filter(|w| !w.is_empty()).collect::<Vec<_>>().join(" ");
+    let context = words(input.get("context").and_then(Value::as_str).unwrap_or(""));
+    let mut sorted_tags = tags.clone();
+    sorted_tags.sort();
+    sorted_tags.dedup();
+    let seed = fnv(&format!("{}#{}#{}#{redraw}", words(&project), sorted_tags.join(","), context));
     let mut rng = Rng(seed);
 
     let defaults: Vec<&Value> = cat["defaults"].as_array().map(|a| a.iter().filter(|d| !allow.contains(&d["id"].as_str().unwrap_or("").to_string())).collect()).unwrap_or_default();
@@ -260,6 +267,7 @@ pub fn directions(input: &Value) -> Value {
     json!({
         "seed": format!("{seed:016x}"),
         "project": project,
+        "context": context,
         "redraw": redraw,
         "tags": tags,
         "locked": lock,
@@ -292,6 +300,23 @@ mod tests {
         assert_ne!(a["seed"], c["seed"]);
         let r = draw(json!({ "project": "Klipin", "tags": ["creative-tool"], "redraw": 1 }));
         assert_ne!(a["seed"], r["seed"]);
+    }
+
+    #[test]
+    fn the_same_name_for_other_people_draws_apart() {
+        let base = json!({ "project": "Ladang", "tags": ["food", "commerce"] });
+        let mut seen = std::collections::HashSet::new();
+        for c in ["Bu Ratna, Medan, ibu rumah tangga", "Dimas, Yogyakarta, anak kos", "Sari dan Andre, Bandung, keluarga muda", "Pak Rahman, Makassar, warung makan", "Mbak Wulan, Surabaya, pekerja kantoran"] {
+            let mut v = base.clone();
+            v["context"] = json!(c);
+            let r = draw(v);
+            seen.insert(r["directions"].to_string());
+        }
+        assert_eq!(seen.len(), 5);
+        // the same people, written another way, draw the same
+        let a = draw(json!({ "project": "Ladang", "tags": ["commerce", "food"], "context": "Bu Ratna, Medan" }));
+        let b = draw(json!({ "project": "ladang ", "tags": ["food", "commerce", "food"], "context": "bu ratna medan" }));
+        assert_eq!(a["directions"], b["directions"]);
     }
 
     #[test]

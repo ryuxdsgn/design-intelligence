@@ -350,6 +350,11 @@ test("directions draws three for a project, the same each time, and a reference 
   assert.equal(a.directions.length, 3);
   assert.deepEqual(a.directions, b.directions);
   assert.notEqual(draw("--project", "Klipin", "--tags", "creative-tool", "--redraw", "1").seed, a.seed);
+  // two owners of one product name draw apart; the context is part of the seed (2026-11-25)
+  const medan = draw("--project", "Ladang", "--context", "Bu Ratna, Medan, ibu rumah tangga", "--tags", "food");
+  const yogya = draw("--project", "Ladang", "--context", "Dimas, Yogyakarta, anak kos", "--tags", "food");
+  assert.notEqual(medan.seed, yogya.seed);
+  assert.equal(medan.context, "bu ratna medan ibu rumah tangga");
   const surfaces = new Set(a.directions.map((d) => d.surface.id));
   assert.equal(surfaces.size, 3);
   const l = draw("--project", "Kasir", "--lock", "layout=split-pane,type=grotesk", "--tags", "commerce,nope");

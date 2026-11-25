@@ -135,13 +135,14 @@ export function reportCheck(text: string): ReportCheck {
 }
 
 /** Three direction draws for a project from the curated catalog (RX-UI-26), seeded by the project name. */
-export function drawDirections(input: { project: string; tags?: string[]; lock?: Record<string, string>; allow?: string[]; redraw?: number; extra?: Record<string, unknown[]> }): DirectionDraw {
+export function drawDirections(input: { project: string; context?: string; tags?: string[]; lock?: Record<string, string>; allow?: string[]; redraw?: number; extra?: Record<string, unknown[]> }): DirectionDraw {
   return answer<DirectionDraw>(rust().directions(JSON.stringify(input)));
 }
 export interface DirectionEntry { id: string; name: string; note: string; hue?: number; hues?: [number, number]; fonts?: string[] }
 export interface DirectionDraw {
   seed: string;
   project: string;
+  context: string;
   redraw: number;
   tags: string[];
   locked: Record<string, string>;

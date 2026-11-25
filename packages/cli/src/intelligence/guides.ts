@@ -90,8 +90,8 @@ The six stages of the core workflow (SKILL.md), as Design runs them.
    \`--recommend\`), and its visual change stays inside the brand (RX-UX-20).
    **Direction is the user's call** (RX-UI-26): when neither the prompt, DESIGN.md, nor a product that
    exists sets the UI direction, the next message offers three directions as style tiles and waits; the motion direction
-   rides with it. **Draw them first, in one call:** \`node <this skill's folder>/bin/dist/cli/index.js directions --project <name> --tags <product>,<audience>,<glance|session>\`
-   (nothing downloaded; it lists the tags it knows) gives each direction a surface, an accent hue range, a type category with fonts,
+   rides with it. **Draw them first, in one call:** \`node <this skill's folder>/bin/dist/cli/index.js directions --project <name> --context "<owner, city, audience>" --tags <product>,<audience>,<glance|session>\`
+   (nothing downloaded; it lists the tags it knows; the context is who this is for, in the brief's words, so two products of one name draw apart) gives each direction a surface, an accent hue range, a type category with fonts,
    a layout, a weight carrier, a material, an idea source, and a type ramp, drawn for this project and apart from the category's and RYUX's own
    defaults. Build each tile on its draw with an idea of your own; replace one draw only with a reason from this product, said in
    the tile; "None of these" draws again with \`--redraw 1\`. The user's own choice always wins: a font, colour, or layout they
