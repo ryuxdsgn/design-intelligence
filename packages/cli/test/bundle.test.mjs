@@ -919,3 +919,11 @@ test("a capability links the module of each rule it cites, or the citation is a 
   }
   assert.deepEqual(found, CROSS_REFERENCES);
 });
+
+test("an unread required module is read before the gate, and FAILS if it stays unread (routing eval run 1, 2026-11-26)", () => {
+  const router = renderFiles()["SKILL.md"];
+  assert.match(router, /Before filling the gate, read each module the task's row requires that this run has not read/);
+  assert.match(router, /a required module still unread FAILS the areas it serves/);
+  assert.doesNotMatch(router, /did not read leaves the areas it serves NOT VERIFIED/);
+  assert.match(router, /A small change \(a copy fix, one component, one state\) reads its entry point's file/);
+});

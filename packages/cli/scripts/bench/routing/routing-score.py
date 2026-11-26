@@ -116,7 +116,8 @@ for case in CASES:
         "modules": list(dict.fromkeys(mods)), "skimmed_only": skimmed,
         "gate": claims is not None, "declared_not_read": gate_list(final, "required not read") or [], "false_claims": [m for m in (claims or []) if m not in mods and m != "qa"],
         "full": bool(case.get("full")), "stop": result.get("subtype"),
-        "turns": len(turns), "cost": round(sum(r.get("total_cost_usd", 0) for r in results), 2),
+        # a resumed session reports its running total, so a run's cost is the last turn's total, never the sum
+        "turns": len(turns), "cost": round(results[-1].get("total_cost_usd", 0) if results else 0, 2),
         "minutes": round(sum(r.get("duration_ms", 0) for r in results) / 60000, 1),
     })
 
