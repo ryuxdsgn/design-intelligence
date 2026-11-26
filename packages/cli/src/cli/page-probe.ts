@@ -147,6 +147,12 @@ export async function probeExtract() {
     // demo" section is product.
     const named = () => [e.id, e.getAttribute("class"), e.getAttribute("aria-label"), ...(e.getAttribute("aria-labelledby")?.split(/\s+/) ?? []).map((id) => document.getElementById(id)?.textContent ?? ""), ...e.getAttributeNames().filter((a) => a.startsWith("data-"))];
     if (i > 1 && !o.ctl && named().some((v) => v && PROTO.test(v))) o.pr = 1;
+    // An image that finished loading with no pixels: a broken image, and the host it came from (a hotlinked store badge
+    // generator failed on 6 of 6 uses in H10 and H11, 2026-11-26). A lazy image not yet loaded is not complete and is left out.
+    if (e.tagName === "IMG" && e.complete && e.naturalWidth === 0 && e.currentSrc) {
+      o.bi = 1;
+      try { o.sh = new URL(e.currentSrc).host; } catch { o.sh = ""; }
+    }
     // A control with no text that shows an SVG: an icon-only button or link, whose icon carries its meaning.
     if (o.ctl && !e.textContent.trim() && e.querySelector("svg")) o.ico = 1;
     // A radio button: its group (the name, or the group element around it) and the group's label.

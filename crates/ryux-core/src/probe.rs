@@ -1554,17 +1554,35 @@ impl<'a> Page<'a> {
             self.shown[i] && self.flag(i, "ctl") && {
                 let nm = self.text_of(i, "nm").to_lowercase();
                 nm.contains("app store") || nm.contains("google play")
-            } && !(i + 1..self.els.len()).take_while(|&k| self.contains(i, k)).any(|k| self.els[k].tag == "IMG") && {
+            } && !(i + 1..self.els.len()).take_while(|&k| self.contains(i, k)).any(|k| self.els[k].tag == "IMG" && !self.flag(k, "bi")) && {
                 let icon = (i + 1..self.els.len()).take_while(|&k| self.contains(i, k)).any(|k| self.els[k].tag.eq_ignore_ascii_case("svg"));
+                // or one line of text set as a button, filled or bordered, with no badge image: the owner read these as
+                // weak, unofficial store buttons on HI and WI (H11) and GO and SE (H9). A plain link with no box stays fine.
+                // the box may sit on the link or on an element inside it (a text fallback for a badge that failed, WI in H11)
+                let boxed = std::iter::once(i).chain((i + 1..self.els.len()).take_while(|&k| self.contains(i, k))).any(|k| self.shown[k] && (
+                    self.rgba(self.s(k, "backgroundColor")).is_some_and(|c| c[3] > 0.0) || self.n(k, "borderTopWidth") >= 1.0
+                    || self.s(k, "backgroundImage").contains("gradient(")));
                 // or the badge's two stacked lines in text, "Unduh di" over "App Store" (owner H9, GO and SE, 2026-11-26):
                 // the store's name as a line of its own under another (by the other line's middle: a text box is taller than its CSS
                 // line, H9 GO overlapped by 3 px); one line of text is a plain link and stays fine
                 let lines: Vec<&Text> = self.texts.iter().filter(|t| self.shown[t.e] && self.contains(i, t.e)).collect();
                 let name_line = lines.iter().find(|t| matches!(t.x.trim().to_lowercase().as_str(), "app store" | "google play"));
                 let stacked = name_line.is_some_and(|n| lines.iter().any(|t| t.r.y + t.r.h / 2.0 < n.r.y && !t.x.trim().is_empty()));
-                icon || stacked
+                icon || stacked || boxed
             }
         });
+        // A store badge image that did not load: the page shows a broken image or its text fallback where the download
+        // action should be (TI in H10, HI and WI in H11: a hotlinked badge generator that did not answer)
+        let broken = (BODY + 1..self.els.len()).find(|&k| {
+            self.els[k].tag == "IMG" && self.flag(k, "bi") && self.ancestors(k).into_iter().take(3).any(|a| {
+                let nm = self.text_of(a, "nm").to_lowercase();
+                self.flag(a, "ctl") && (nm.contains("app store") || nm.contains("google play"))
+            })
+        });
+        if let Some(k) = broken {
+            let host = self.text_of(k, "sh");
+            tell(&mut out, "RX-AS-11", "store-badge-broken", Some(k), format!("a store badge image did not load (from {}): the download action shows a broken image or its fallback; use the badge files Apple and Google publish (developer.apple.com/assets/elements/badges/, play.google.com/intl/<lang>/badges/), or a copy served with the page", if host.is_empty() { "an unknown host" } else { host }));
+        }
         if let Some(i) = store {
             tell(&mut out, "RX-AS-11", "store-badge", Some(i), format!("a store badge drawn by hand ({}): Apple and Google allow only their own badge images; use the official badge, in one language for both stores, or a plain text link", quote(self.text_of(i, "nm"))));
         }
