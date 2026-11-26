@@ -53,10 +53,11 @@ The repo itself is the main evidence (stack, components, tokens); reference scre
 
 ### RX-FE-05 [Required] Actionable errors
 
-- Do: Handle errors with messages that say what to fix, in the user's language when users see them.
-- Do not: Swallow errors silently or show raw developer messages to users.
-- Why: Silent failures hide bugs; raw messages leave users stuck. (Clean-code practice; Nielsen heuristic 9)
-- Check: review
+- Do: Handle errors with messages that say what to fix, in the user's language when users see them. A catch handles the error, shows it, or rethrows it; when ignoring it is right, a comment in the block says why.
+- Do not: Swallow errors silently (an empty catch, or a fallback such as ?? 0 or || [] that hides data that should be there), or show raw developer messages to users.
+- Why: Silent failures hide bugs: an empty catch leaves no sign the call failed. Raw messages leave users stuck. (Clean-code practice; Nielsen heuristic 9; ESLint no-empty (in eslint:recommended))
+- Check: scan: an empty catch with no comment; review for fallbacks that hide missing data
+- Machine check: `ryux scan` flags in scripts and components: an empty catch block with no comment saying why the error can be ignored (warn)
 
 ### RX-FE-06 [Preferred] Comments say why
 
@@ -68,9 +69,15 @@ The repo itself is the main evidence (stack, components, tokens); reference scre
 ### RX-FE-07 [Preferred] Fit the codebase
 
 - Do: Follow the formatting, naming, and patterns of the surrounding files; name things by what they hold or do; remove unused code, imports, and commented-out blocks.
-- Do not: Introduce a new style, use data, temp, or helper without context, or leave dead code and empty TODOs behind.
-- Why: Code that reads like its neighbors is easier to review, and dead code misleads the next reader. (Clean-code practice)
-- Check: review
+  - change what the task needs: no reformatting, renaming, or tidying in files the task does not touch, so the diff reads as one change
+  - keep a function shallow: return early instead of nesting conditions three levels deep, and split a function that does several jobs
+  - type values: describe the shape, or take unknown and narrow it; any only with a comment saying why
+  - remove console.log and other debugging output from UI code before handing off
+  - an eslint-disable or @ts-expect-error says why after it (-- the library's types miss the size prop)
+- Do not: Introduce a new style, use data, temp, or helper without context, leave dead code and empty TODOs behind, silence the type checker with any, leave console.log in a component, or disable a lint rule with no reason.
+- Why: Code that reads like its neighbors is easier to review, and dead code misleads the next reader. A small diff is reviewed well; deep nesting is what makes a function hard to follow; any and an unexplained disable hide the problem the tool found. (Clean-code practice; Google engineering practices, Small CLs; SonarSource, Cognitive Complexity (nesting weighs most); typescript-eslint no-explicit-any; ESLint no-console and descriptions on directive comments)
+- Check: scan: any in TypeScript, console.log in a component, a lint or type directive with no reason; review for the rest
+- Machine check: `ryux scan` flags in scripts and components: any in TypeScript (once per file, with the count), console.log, debug, info, dir, or table left in a .jsx or .tsx component, and an eslint-disable with no reason after -- or a @ts-ignore, @ts-expect-error, or @ts-nocheck with no reason (warn)
 
 ### RX-FE-12 [Contextual] Rupiah formatting in code
 
@@ -84,9 +91,12 @@ The repo itself is the main evidence (stack, components, tokens); reference scre
 ### RX-FE-13 [Required] One home for each piece of logic
 
 - Do: Put logic in the layer the repo already uses: components render, hooks or stores hold state, pure modules hold calculations, formatting, and validation, and one data-access layer talks to the API. Before writing a function, search for an existing one and reuse or extend it.
-- Do not: Copy logic between components, add a near-duplicate helper, mix API calls or business logic into render code, or add a layer, abstraction, or pattern the repo does not use.
-- Why: Logic with one home is changed once and tested once; copies drift apart and ship different behavior. (Clean-code practice; owner review 2026-10-06)
-- Check: review
+  - a value that can be computed from props or state is computed while rendering, not copied into state by an effect; state that resets when a prop changes gets a key on the component
+  - make an abstraction when the same logic is needed a second or third time, not for one use; when a shared helper grows a flag or a branch for each caller, inline it back and extract again
+- Do not: Copy logic between components, add a near-duplicate helper, mix API calls or business logic into render code, copy a value into state with an effect, or add a layer, abstraction, or pattern the repo does not use.
+- Why: Logic with one home is changed once and tested once; copies drift apart and ship different behavior. A value copied into state by an effect renders twice and is stale for one frame; an abstraction made for one caller bends with flags for the next. (Clean-code practice; owner review 2026-10-06; react.dev, You Might Not Need an Effect; Sandi Metz, The Wrong Abstraction (2016); GitClear 2025 (a vendor study): blocks of five or more duplicated lines rose eightfold in 2024 as AI assistants spread)
+- Check: scan: an effect whose only work is setting state from a value; review for the rest
+- Machine check: `ryux scan` flags in scripts and components: a useEffect with dependencies whose only work is calling a state setter with a value (setTotal(a + b)), with no fetch, timer, storage, window, document, await, or function in it (warn)
 
 ### RX-FE-14 [Required] Test logic and critical flows
 

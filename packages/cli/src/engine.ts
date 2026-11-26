@@ -60,9 +60,9 @@ export function scanShared(sources: RawSource[], opts: ScanOpts): ScanFinding[] 
   return answer<ScanFinding[]>(rust().scan(input(sources, opts))).sort(byPlace);
 }
 
-/** The JSX and TSX syntax checks (SYNTAX_CHECKS). */
+/** The syntax checks (SYNTAX_CHECKS): JSX and TSX, and the code checks over scripts too. */
 export function scanSyntax(sources: RawSource[], opts: ScanOpts): ScanFinding[] {
-  const jsx = sources.filter((s) => /\.(?:jsx|tsx)$/i.test(s.path));
+  const jsx = sources.filter((s) => /\.(?:jsx|tsx|js|mjs|cjs|ts|mts|cts)$/i.test(s.path) && !/\.d\.ts$/i.test(s.path));
   if (!jsx.length) return [];
   return answer<ScanFinding[]>(rust().syntaxScan(input(jsx, opts)));
 }
@@ -108,14 +108,14 @@ export function unused(sources: RawSource[], design: Direction): { colours: stri
 }
 
 /** The canvas audit over a Figma-like canvas (figcraftCanvas). */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// eslint-disable-next-line @typescript-eslint/no-explicit-any -- a Figma-like canvas in, ryux-core's JSON report out
 export async function audit(figma: any, page: string): Promise<any> {
   return answer(rust().audit(JSON.stringify(await neutralCanvas(figma, page))));
 }
 
 /** The rendered checks over what probeExtract read in the page (cli/page-probe.ts): the findings and the ignored
  *  regions, or what the page must do first (`ask`), when the extract has no `answers` yet. */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// eslint-disable-next-line @typescript-eslint/no-explicit-any -- the JSON ryux-core answers with, shaped in Rust
 export function probe(extract: Record<string, unknown>): any {
   // A lone surrogate in page text cannot cross as JSON; it becomes U+FFFD, as String.prototype.toWellFormed does.
   const lone = /[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?<![\uD800-\uDBFF])[\uDC00-\uDFFF]/g;

@@ -354,6 +354,34 @@ test("copy rules read a block's text whole: inline tags and values join it, butt
   assert.deepEqual(scan("a.tsx", `const D = () => { const [owner, setOwner] = useState(""); const x = a > b && c < d ? one(two, three, four, five, six, seven, eight, nine, ten, eleven, twelve, thirteen, fourteen, fifteen, sixteen, seventeen, eighteen, nineteen, twenty, more) : 0; return <p>Hai</p>; };`), []);
 });
 
+// Clean code, 2026-11-27: AI-written code tends to hide errors in an empty catch, reach for any, leave console.log,
+// disable lint rules without a word, and copy values into state with an effect. Each check follows a public rule:
+// ESLint no-empty and no-console, typescript-eslint no-explicit-any, ESLint directive descriptions, and react.dev's
+// You Might Not Need an Effect.
+test("code checks: empty catch, any, console.log in a component, a directive with no reason, an effect that copies state", () => {
+  // the syntax checks run apart from the source detectors (scanShared); the engine's scan runs both
+  const code = (path, raw) => scanEngine([{ path, raw }], { folder: false });
+  assert.deepEqual(rules(code("a.ts", "try { go(); } catch {}")), ["warn RX-FE-05"]);
+  assert.deepEqual(code("a.ts", "try { go(); } catch { /* the cache is optional: a miss just refetches */ }"), []);
+  assert.deepEqual(code("a.ts", "try { go(); } catch (e) { report(e); }"), []);
+  assert.deepEqual(rules(code("a.ts", "const a: any = 1; const b = c as any;")), ["warn RX-FE-07"]);
+  assert.match(code("a.ts", "const a: any = 1; const b = c as any;")[0].message, /^2 uses of any/);
+  assert.deepEqual(code("a.js", "const a = 1; // any value"), []);
+  assert.deepEqual(code("a.ts", "// eslint-disable-next-line @typescript-eslint/no-explicit-any -- Figma's node JSON\ntype Raw = any;"), []);
+  assert.deepEqual(rules(code("a.ts", "// eslint-disable-next-line @typescript-eslint/no-explicit-any\ntype Raw = any;")), ["warn RX-FE-07"]);
+  assert.deepEqual(rules(code("a.tsx", "export const A = () => { console.log('x'); return <p>Hai</p>; };")), ["warn RX-FE-07"]);
+  assert.deepEqual(code("a.ts", "console.log('done');"), []);
+  assert.deepEqual(code("a.tsx", "export const A = () => { console.error('x'); return <p>Hai</p>; };"), []);
+  assert.deepEqual(rules(code("a.ts", "// @ts-ignore\nfoo();")), ["warn RX-FE-07"]);
+  assert.deepEqual(code("a.ts", "// @ts-expect-error the library's types miss the size prop\nfoo();"), []);
+  const effect = (body) => `import { useEffect, useState } from "react";\nexport function A({ first, last }) { const [full, setFull] = useState(""); useEffect(${body}, [first, last]); return <p>{full}</p>; }`;
+  assert.deepEqual(rules(code("a.jsx", effect("() => { setFull(first + ' ' + last); }"))), ["warn RX-FE-13"]);
+  assert.deepEqual(rules(code("a.jsx", effect("() => setFull(first + ' ' + last)"))), ["warn RX-FE-13"]);
+  assert.deepEqual(code("a.jsx", effect("() => { fetch('/n').then((r) => r.text()).then(setFull); }")), []);
+  assert.deepEqual(code("a.jsx", effect("() => { const t = setTimeout(() => setFull(first), 300); return () => clearTimeout(t); }")), []);
+  assert.deepEqual(code("a.jsx", effect("() => { setFull(ref.current.value); }")), []);
+});
+
 test("RX-CD-18: filler phrases in visible text warn; plain copy and code do not", () => {
   assert.deepEqual(rules(scan("a.tsx", "<p>Fitur ini memungkinkan Anda membayar dengan QRIS.</p>")), ["warn RX-CD-18"]);
   assert.deepEqual(rules(scan("a.html", "<span>We understand that waiting is hard</span>")), ["warn RX-CD-18"]);

@@ -1223,10 +1223,32 @@ fn jsx(e: &str) -> bool {
     e == "jsx" || e == "tsx"
 }
 
+fn script_or_jsx(e: &str) -> bool {
+    matches!(e, "js" | "mjs" | "cjs" | "ts" | "mts" | "cts" | "jsx" | "tsx")
+}
+
+fn smells(s: &Source, rule: &str) -> Vec<Hit> {
+    crate::jsx::code_smells(&s.raw, &s.ext).into_iter().filter(|m| m.rule == rule).map(|m| hit(m.index, m.message)).collect()
+}
+fn rule_fe05_catch(s: &Source, _: &Ctx) -> Vec<Hit> {
+    smells(s, "RX-FE-05")
+}
+fn rule_fe07_code(s: &Source, _: &Ctx) -> Vec<Hit> {
+    smells(s, "RX-FE-07")
+}
+fn rule_fe13_effect(s: &Source, _: &Ctx) -> Vec<Hit> {
+    smells(s, "RX-FE-13")
+}
+
 /// The checks that read JSX and TSX as a syntax tree, run apart from `scan_sources` (whose output
 /// fixtures/checks/scan.json records) with the same options and ignores.
 fn syntax_detectors() -> &'static [Detector] {
-    const D: &[Detector] = &[Detector { rule: "RX-A11Y-03", level: "warn", exts: jsx, folder: false, find: rule_a11y03_drag }];
+    const D: &[Detector] = &[
+        Detector { rule: "RX-A11Y-03", level: "warn", exts: jsx, folder: false, find: rule_a11y03_drag },
+        Detector { rule: "RX-FE-05", level: "warn", exts: script_or_jsx, folder: false, find: rule_fe05_catch },
+        Detector { rule: "RX-FE-07", level: "warn", exts: script_or_jsx, folder: false, find: rule_fe07_code },
+        Detector { rule: "RX-FE-13", level: "warn", exts: script_or_jsx, folder: false, find: rule_fe13_effect },
+    ];
     D
 }
 

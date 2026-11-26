@@ -124,4 +124,7 @@ export const RENDER_CHECKS: Check[] = [
  *  rule text. engine.ts runs them through syntaxScan. */
 export const SYNTAX_CHECKS: Check[] = [
   { rule: "RX-A11Y-03", level: "warn", looksFor: "in .jsx and .tsx: an element that starts a drag (onPointerDown, onMouseDown, onTouchStart, onDragStart) with no keyboard way (no onKeyDown, onKeyUp, tabIndex, or role), not a native control and with no spread props" },
+  { rule: "RX-FE-05", level: "warn", looksFor: "in scripts and components: an empty catch block with no comment saying why the error can be ignored" },
+  { rule: "RX-FE-07", level: "warn", looksFor: "in scripts and components: any in TypeScript (once per file, with the count), console.log, debug, info, dir, or table left in a .jsx or .tsx component, and an eslint-disable with no reason after -- or a @ts-ignore, @ts-expect-error, or @ts-nocheck with no reason" },
+  { rule: "RX-FE-13", level: "warn", looksFor: "in scripts and components: a useEffect with dependencies whose only work is calling a state setter with a value (setTotal(a + b)), with no fetch, timer, storage, window, document, await, or function in it" },
 ];
