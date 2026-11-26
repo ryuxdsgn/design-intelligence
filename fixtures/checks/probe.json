@@ -17134,6 +17134,13 @@
    "findings": [
     {
      "rule": "RX-A11Y-01",
+     "level": "warn",
+     "selector": "div.hero > h1",
+     "message": "\"Sayur dari petani\": passes WCAG 2 but reads weak at 32 px, APCA Lc 39 (#222222 on #0698a4), needs Lc 45: darken the text, lighten its background, or set it larger or bolder",
+     "once": "apca-#222222|#0698a4|45"
+    },
+    {
+     "rule": "RX-A11Y-01",
      "level": "fail",
      "selector": "ul.days > li.on",
      "message": "\"Sel\": contrast 3.48:1 (#ffffff on #0698a4), needs 4.5:1; 2 more with the same colors"
@@ -17660,6 +17667,13 @@
   },
   "output": {
    "findings": [
+    {
+     "rule": "RX-A11Y-01",
+     "level": "warn",
+     "selector": "div.hero > h1",
+     "message": "\"Sayur dari petani\": passes WCAG 2 but reads weak at 32 px, APCA Lc 39 (#222222 on #0698a4), needs Lc 45: darken the text, lighten its background, or set it larger or bolder",
+     "once": "apca-#222222|#0698a4|45"
+    },
     {
      "rule": "RX-A11Y-02",
      "level": "warn",

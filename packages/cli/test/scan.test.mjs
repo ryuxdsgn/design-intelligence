@@ -735,6 +735,25 @@ test("scan <url> warns each visual tell once per page, and stays quiet on one re
   rmSync(dir, { recursive: true, force: true });
 });
 
+// owner notes H5 to H10 (2026-11-26): small text that passes WCAG 2 and reads weak; APCA catches it, ordinary dark text passes
+test("scan <url> warns on small text that passes 4.5:1 and reads weak by APCA, and leaves dark body text alone", (t) => {
+  const dir = mkdtempSync(join(tmpdir(), "ryux-apca-"));
+  const page = (name, body) => {
+    const path = join(dir, `${name}.html`);
+    writeFileSync(path, `<!doctype html><html lang="id"><body style="margin:0;background:#fff;font:16px sans-serif"><main>${body}</main></body></html>`);
+    return run(process.env.RYUX_PLAYWRIGHT_CWD ?? join(dirname(cli), "..", "..", ".."), ["scan", `file://${path}`, "--widths", "390", "--json"]);
+  };
+  const weak = (r) => JSON.parse(r.out).findings.filter((f) => f.rule === "RX-A11Y-01" && /reads weak/.test(f.message)).map((f) => f.message.match(/APCA Lc (\d+)/)[1]);
+  const field = page("field", `<h1 style="color:#111">Lesin</h1><div style="background:#9ebdff;padding:16px"><p style="color:#12161f;font-size:14px">Unduh di App Store</p></div>`);
+  if (/needs Playwright|could not start Chromium/.test(field.out)) {
+    rmSync(dir, { recursive: true, force: true });
+    return noBrowser(t);
+  }
+  assert.deepEqual(weak(field), ["67"]);
+  assert.deepEqual(weak(page("plain", `<h1 style="color:#111">Lesin</h1><p style="color:#222;font-size:14px">Pilih guru dan jadwal.</p><p style="color:#555;font-size:16px">Gratis diunduh.</p>`)), []);
+  rmSync(dir, { recursive: true, force: true });
+});
+
 // owner H6 and H9 2026-11-26: the proof in a small card beside the hero heading made three of five pages one idea; a centred
 // hero and a split whose visual takes half the width or more are fine
 test("scan <url> warns on the proof in a small card beside the hero heading, and leaves a centred hero and a wide visual alone", (t) => {

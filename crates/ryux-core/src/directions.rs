@@ -87,7 +87,8 @@ fn oklch(l: f64, c: f64, h: f64) -> String {
             let g = |v: f64| { let v = v.clamp(0.0, 1.0); if v <= 0.0031308 { 12.92 * v } else { 1.055 * v.powf(1.0 / 2.4) - 0.055 } };
             return format!("#{:02x}{:02x}{:02x}", (g(lin[0]) * 255.0).round() as u8, (g(lin[1]) * 255.0).round() as u8, (g(lin[2]) * 255.0).round() as u8);
         }
-        c = (c - 0.005).max(0.0);
+        // a fine step keeps the most chroma the gamut allows (a 0.005 step lost up to that much at each hue)
+        c = (c - 0.001).max(0.0);
     }
 }
 
@@ -120,11 +121,24 @@ fn ratio(a: &str, b: &str) -> f64 {
 }
 
 /// The OKLCH colour at lightness `l`, stepped darker (or lighter with `up`) until `against` reads on it at `min`.
-fn readable(l: f64, c: f64, h: f64, against: &str, min: f64, up: bool) -> String {
+/// APCA Lc of text `fg` on `bg`, both hex, as a magnitude.
+fn lc(fg: &str, bg: &str) -> f64 {
+    let rgb = |h: &str| {
+        let c: Vec<f64> = (0..3).map(|j| u8::from_str_radix(&h[1 + j * 2..3 + j * 2], 16).unwrap_or(0) as f64 / 255.0).collect();
+        crate::audit::Rgb { r: c[0], g: c[1], b: c[2] }
+    };
+    crate::audit::apca(rgb(fg), rgb(bg)).abs()
+}
+
+/// The OKLCH colour at lightness `l`, stepped darker (or lighter with `up`) until `against` reads on it at `min` (WCAG 2)
+/// and at APCA `need`. `text` says which of the two is the text: the new colour (muted text) or `against` (a label on
+/// an accent). Lc 75 is APCA's floor for text under 16 px: small text that passed 4.5:1 read weak to the owner (H5 to H10).
+fn readable(l: f64, c: f64, h: f64, against: &str, min: f64, need: f64, text: bool, up: bool) -> String {
     let mut l = l;
     loop {
         let x = oklch(l, c, h);
-        if ratio(&x, against) >= min || !(0.05..=0.97).contains(&l) {
+        let apca = if text { lc(&x, against) } else { lc(against, &x) };
+        if (ratio(&x, against) >= min && apca >= need) || !(0.05..=0.97).contains(&l) {
             return x;
         }
         l += if up { 0.01 } else { -0.01 };
@@ -156,7 +170,7 @@ pub fn colours(surface: &str, accent: &Value) -> Value {
     // light accent (lightened until it does)
     let light_accent = al > 0.68;
     let on_light = oklch(0.2, 0.02, h);
-    let accent_c = if light_accent { readable(al, ac, h, &on_light, 4.5, true) } else { readable(al, ac, h, "#ffffff", 4.5, false) };
+    let accent_c = if light_accent { readable(al, ac, h, &on_light, 4.5, 75.0, false, true) } else { readable(al, ac, h, "#ffffff", 4.5, 75.0, false, false) };
     let mut out = json!({
         "page": page, "section": section, "ink": ink, "muted": muted,
         "accent": accent_c,
@@ -164,9 +178,9 @@ pub fn colours(surface: &str, accent: &Value) -> Value {
     });
     if surface == "colour-field" {
         let on_field = oklch(0.18, 0.03, h);
-        out["field"] = json!(readable(if bright { 0.82 } else { 0.62 }, 0.16, h, &on_field, 4.5, true));
+        out["field"] = json!(readable(if bright { 0.82 } else { 0.62 }, 0.16, h, &on_field, 4.5, 75.0, false, true));
         out["onField"] = json!(on_field);
-        out["accent"] = json!(readable(0.30, 0.09, h, "#ffffff", 4.5, false));
+        out["accent"] = json!(readable(0.30, 0.09, h, "#ffffff", 4.5, 75.0, false, false));
         out["onAccent"] = json!("#ffffff");
     }
     // seniors, families, and health: helper text reads at 7:1, not only 4.5 (owner H5 and H6: small grey read weak
@@ -174,7 +188,7 @@ pub fn colours(surface: &str, accent: &Value) -> Value {
     // helper text reads at 7:1 on the section colour, the harder of the two backgrounds, for every audience: small grey
     // that passed 4.5:1 read weak to the owner in H5, H6, and H7, for students and freelancers as well as seniors
     let section = out["section"].as_str().unwrap_or("#ffffff").to_string();
-    out["muted"] = json!(readable(if dark { 0.84 } else { 0.50 }, 0.02, h, &section, 7.0, dark));
+    out["muted"] = json!(readable(if dark { 0.84 } else { 0.50 }, 0.02, h, &section, 7.0, 75.0, true, dark));
     out
 }
 
@@ -724,5 +738,28 @@ mod tests {
             assert_eq!(d["cons"].as_array().unwrap().len(), 7);
         }
     }
-}
 
+    #[test]
+    fn apca_matches_the_reference_values_and_every_text_pair_reads_at_lc_75() {
+        // APCA 0.0.98G-4g reference pairs (apca-w3 test vectors)
+        for (fg, bg, want) in [("#888888", "#ffffff", 63.056), ("#ffffff", "#888888", 68.541), ("#000000", "#aaaaaa", 58.146), ("#aaaaaa", "#000000", 56.241), ("#112233", "#ddeeff", 91.668), ("#ddeeff", "#112233", 93.068)] {
+            assert!((lc(fg, bg) - want).abs() < 0.01, "{fg} on {bg}: {} not {want}", lc(fg, bg));
+        }
+        // every direction for these products: labels on the accent and the field, muted text, and ink, at APCA's small-text floor
+        for p in ["a", "b", "c", "d", "e", "f", "g", "h"] {
+            for tags in [json!(["education", "family", "glance"]), json!(["finance", "pro", "session"]), json!(["food", "youth", "glance"])] {
+                let r = draw(json!({ "project": p, "tags": tags }));
+                for d in r["directions"].as_array().unwrap() {
+                    let c = &d["colours"];
+                    let s = |k: &str| c[k].as_str().unwrap().to_string();
+                    assert!(lc(&s("onAccent"), &s("accent")) >= 75.0, "{p} {tags} onAccent {} on {}", s("onAccent"), s("accent"));
+                    assert!(lc(&s("muted"), &s("section")) >= 75.0, "{p} {tags} muted {} on {}", s("muted"), s("section"));
+                    assert!(lc(&s("ink"), &s("page")) >= 90.0, "{p} {tags} ink {} on {}", s("ink"), s("page"));
+                    if c.get("field").is_some() {
+                        assert!(lc(&s("onField"), &s("field")) >= 75.0, "{p} {tags} onField {} on {}", s("onField"), s("field"));
+                    }
+                }
+            }
+        }
+    }
+}

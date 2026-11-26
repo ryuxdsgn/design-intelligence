@@ -201,6 +201,35 @@ pub(crate) fn luminance(k: Rgb, knee: f64) -> f64 {
     let lin = |v: f64| if v <= knee { v / 12.92 } else { ((v + 0.055) / 1.055).powf(2.4) };
     0.2126 * lin(k.r) + 0.7152 * lin(k.g) + 0.0722 * lin(k.b)
 }
+/// APCA lightness contrast (Lc, 0.0.98G-4g constants) of text `fg` on `bg`, channels 0 to 1: positive for dark text on
+/// a light background, negative for light on dark. WCAG 2 passes small text that reads weak: white on an accent made
+/// to 4.5:1 is about Lc 76, dark ink on yellow at 9.3:1 is Lc 67 to 69 (owner notes H5 to H10, "lolos tapi lemah").
+/// Not a standard (out of the WCAG 3 draft since 2023): RYUX uses it as a quality floor next to WCAG 2, never instead.
+pub(crate) fn apca(fg: Rgb, bg: Rgb) -> f64 {
+    let y = |k: Rgb| {
+        let y = 0.2126729 * k.r.clamp(0.0, 1.0).powf(2.4) + 0.7151522 * k.g.clamp(0.0, 1.0).powf(2.4) + 0.0721750 * k.b.clamp(0.0, 1.0).powf(2.4);
+        if y < 0.022 { y + (0.022 - y).powf(1.414) } else { y }
+    };
+    let (t, b) = (y(fg), y(bg));
+    if (b - t).abs() < 0.0005 {
+        return 0.0;
+    }
+    let out = if b > t {
+        let s = (b.powf(0.56) - t.powf(0.57)) * 1.14;
+        if s < 0.1 { 0.0 } else { s - 0.027 }
+    } else {
+        let s = (b.powf(0.65) - t.powf(0.62)) * 1.14;
+        if s > -0.1 { 0.0 } else { s + 0.027 }
+    };
+    out * 100.0
+}
+/// The APCA floor for text of this size and weight, kept at APCA's minimums rather than its preferred levels so it
+/// warns on weak text, not on ordinary grey: under 16 px (14 px bold) Lc 75, body sizes Lc 60, 24 px and up (or 18 px
+/// bold) Lc 45. Source: APCA in a Nutshell (git.apcacontrast.com/documentation/APCA_in_a_Nutshell.html).
+pub(crate) fn apca_need(px: f64, weight: f64) -> f64 {
+    let bold = weight >= 700.0;
+    if px >= 24.0 || (bold && px >= 18.0) { 45.0 } else if px >= 16.0 || (bold && px >= 14.0) { 60.0 } else { 75.0 }
+}
 /// The contrast ratio of two luminances, the lighter one on top.
 pub(crate) fn contrast(p: f64, q: f64) -> f64 {
     // [p, q].sort((p, q) => q - p): a NaN comparison leaves the order as it is.

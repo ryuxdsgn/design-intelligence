@@ -13,7 +13,7 @@ use std::collections::{HashMap, HashSet};
 
 /// What the rendered checks look for, one row per line of RENDER_CHECKS in packages/cli/src/checks.ts (which also
 /// lists RX-QA-08, script errors, reported by the CLI itself). `cargo test` and the CLI tests hold them equal.
-pub const CATALOGUE: [(&str, &str); 21] = [
+pub const CATALOGUE: [(&str, &str); 22] = [
     ("RX-RD-01", "fail"),
     ("RX-A11Y-01", "fail"),
     ("RX-A11Y-01", "warn"),
@@ -35,6 +35,7 @@ pub const CATALOGUE: [(&str, &str); 21] = [
     ("RX-UX-15", "warn"),
     ("RX-FM-05", "warn"),
     ("RX-UI-29", "warn"),
+    ("RX-A11Y-01", "warn"),
 ];
 
 /// The catalogue as JSON: `[{rule, level}]`.
@@ -1029,6 +1030,8 @@ impl<'a> Page<'a> {
         // texts over an image or a gradient, judged on the pixels the page sends back, and texts not measured
         let mut behind: Vec<(usize, Colour, f64, (&'static str, usize))> = Vec::new();
         let mut unmeasured: Vec<usize> = Vec::new();
+        // texts that pass WCAG 2 and still read weak by APCA for their size: (key, first text, count, Lc, need)
+        let mut weak: Vec<(String, usize, usize, f64, f64)> = Vec::new();
         for (k, t) in texts.iter().enumerate() {
             let size = self.n(t.e, "fontSize");
             if size < 12.0 {
@@ -1052,9 +1055,30 @@ impl<'a> Page<'a> {
             };
             let ratio = contrast(lum(fg), lum(bg));
             if ratio >= need {
+                let rgb = |c: Colour| Rgb { r: c[0] / 255.0, g: c[1] / 255.0, b: c[2] / 255.0 };
+                let lc = crate::audit::apca(rgb(fg), rgb(bg)).abs();
+                let want = crate::audit::apca_need(size, self.n(t.e, "fontWeight"));
+                if lc < want {
+                    let key = format!("{}|{}|{}", hex(fg), hex(bg), want);
+                    match weak.iter_mut().find(|w| w.0 == key) {
+                        Some(w) => w.2 += 1,
+                        None => weak.push((key, k, 1, lc, want)),
+                    }
+                }
                 continue;
             }
             failing.push(Fail { k, ratio, fg, bg, need, over: None });
+        }
+        // Passes 4.5:1, reads weak (RX-A11Y-01, warn): APCA Lc under the floor for its size, the weakest few styles. The owner
+        // marked small grey and small text on a coloured field weak on pages that passed WCAG 2, in H5, H6, H7, H9, and H10.
+        weak.sort_by(|a, b| (a.3 - a.4).partial_cmp(&(b.3 - b.4)).unwrap_or(std::cmp::Ordering::Equal));
+        for (key, k, count, lc, want) in weak.iter().take(3) {
+            let t = texts[*k];
+            let more = if *count > 1 { format!("; {} more with the same colours", count - 1) } else { String::new() };
+            let pair = key.split('|').take(2).collect::<Vec<_>>().join(" on ");
+            let mut f = finding("RX-A11Y-01", "warn", self.selector(t.e), format!("{}: passes WCAG 2 but reads weak at {} px, APCA Lc {} ({pair}), needs Lc {}{more}: darken the text, lighten its background, or set it larger or bolder", quote(t.x), num_str(self.n(t.e, "fontSize")), lc.round(), want.round()));
+            f["once"] = Value::from(format!("apca-{key}"));
+            out.push(f);
         }
         let textareas: Vec<usize> = (2..n).filter(|&i| self.els[i].tag == "TEXTAREA" && self.outside[i] && self.shown[i] && !self.disabled[i] && !self.flag(i, "ro")).collect();
         let focus = self.focus_list();

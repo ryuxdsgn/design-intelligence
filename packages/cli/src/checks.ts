@@ -115,6 +115,7 @@ export const RENDER_CHECKS: Check[] = [
   { rule: "RX-UX-15", level: "warn", looksFor: "at 1024px and wider, the page's only choice (one radio group) starts below the first screen while a button that carries an amount (\"Bayar Rp1.424.000\") is on it" },
   { rule: "RX-FM-05", level: "warn", looksFor: "a shown textarea that, filled with 8 lines for a moment, keeps its height and hides the text past its edge" },
   { rule: "RX-UI-29", level: "warn", looksFor: "at 1024 px or wider, the product's proof in a small card beside the hero heading: one filled or bordered box right of the main heading, narrower than half the page, with text and no large image; a centred hero, a split with a visual at half the width or more, or the proof as the hero are left alone" },
+  { rule: "RX-A11Y-01", level: "warn", looksFor: "text that passes WCAG 2 contrast and still reads weak by APCA for its size, the three weakest colour pairs: under Lc 75 below 16 px (14 px bold), Lc 60 at body sizes, Lc 45 at 24 px and up (APCA's minimums; a quality floor, not a standard)" },
   { rule: "RX-QA-08", level: "warn", looksFor: "script errors thrown while the page loads" },
 ];
 
