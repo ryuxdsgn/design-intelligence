@@ -64,6 +64,7 @@ Real labels, errors, and how money, dates, and times are written in the product'
 - Do not: Use vague labels ("Submit", "Learn more", "Get started" when a specific action exists), hype words ("unlock", "elevate", "seamlessly", "revolutionary", "next-generation"), emoji bullets, ALL CAPS, or stacked exclamation marks.
 - Why: Specific, plain copy tells users what happens next; decoration on every line buries it and reads as generated. (NNGroup 3 C's of informational microcopy (clarity, concision, character); NNGroup button and link-label guidance; NNGroup Product-Specific GenAI Needs to Write for the Web (Dykes 2025): generated answers run long, bury the answer, and ignore what was asked; NNGroup Legibility, Readability, and Comprehension (Nielsen 2015): short words, short sentences, mostly active voice, readability formulas measure only English word and sentence length; NNGroup Plain Language Is for Everyone, Even Experts (Loranger 2017): sentences no more than 15 to 20 words, one idea per paragraph, 6th to 8th grade for general audiences and 10th to 12th for experts; ryux run 2026-10-02: unconstrained WhatsApp copy; owner review of a benchmark video 2026-10-28: "8 vs 0, why does 0 look better?")
 - Check: audit_copy
+- Machine check: `ryux scan` flags a sentence in visible text longer than 20 words (NN/g ceiling 15 to 20) (warn)
 
 ### RX-CD-04 [Required] Errors: what, why, how to recover
 

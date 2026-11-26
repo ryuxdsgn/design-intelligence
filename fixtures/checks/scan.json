@@ -2727,6 +2727,71 @@
    "sources": [
     {
      "path": "a.tsx",
+     "raw": "<p>Pesanan yang sudah kamu bayar akan kami proses setelah penjual mengonfirmasi stok barang yang tersedia di gudang mereka sehingga kamu perlu menunggu sebentar.</p>"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": [
+   {
+    "level": "warn",
+    "rule": "RX-CD-03",
+    "file": "a.tsx",
+    "line": 1,
+    "column": 3,
+    "message": "\"Pesanan yang sudah kamu bayar akan ...\": a sentence of 23 words; NN/g's ceiling is 15 to 20 words, so split it into one idea per sentence"
+   }
+  ]
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.html",
+     "raw": "<p>Pesanan dikirim besok. Total Rp1.250.000, tiba 14.30 WIB. Lacak paketmu di halaman Pesanan.</p>"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": []
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.tsx",
+     "raw": "<p>{items.map((item) => item.name + ' ' + item.price + ' ' + item.unit + ' ' + item.note + ' ' + item.tag + ' ' + item.city + ' ' + item.store + ' ' + item.seller + ' ' + item.status + ' ' + item.date + ' x')}</p>"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": []
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.html",
+     "raw": "<script>const steps = ['Masukkan nomor virtual account dan nominal yang ingin kamu bayarkan lalu tekan tombol bayar untuk melanjutkan transaksi ini sekarang juga'];</script>"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": []
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.tsx",
      "raw": "<p>Fitur ini memungkinkan Anda membayar dengan QRIS.</p>"
     }
    ],
