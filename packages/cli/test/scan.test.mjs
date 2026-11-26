@@ -800,7 +800,12 @@ test("scan <url> warns a cream page, a row that looks like a picker, a drawn sto
   const pair = `<!doctype html><html lang="id"><body style="background:#fff"><main><h1>Bilas</h1><p style="display:flex;gap:12px">
 <a href="#" style="display:inline-flex;height:48px;background:#000;color:#fff;padding:0 16px;align-items:center">Unduh di App Store</a>
 <a href="#" style="display:inline-flex;height:48px;overflow:hidden"><img alt="Dapatkan di Google Play" src="${svg(71)}" style="height:71px"></a></p></main></body></html>`;
-  assert.deepEqual(tells(page("pair", pair)).sort(), ["RX-DS-02 the store badges stand at two heights", "RX-DS-02 the store links come in two forms, a badge image and \"Unduh di App Store\""]);
+  assert.deepEqual(tells(page("pair", pair)).sort(), ["RX-AS-11 a store badge drawn by hand", "RX-DS-02 the store badges stand at two heights", "RX-DS-02 the store links come in two forms, a badge image and \"Unduh di App Store\""]);
+  // owner H11 2026-11-26 (HI, WI): the store's name in a bordered button with no badge image, and a badge image that did not load
+  const boxed = `<!doctype html><html lang="id"><body style="background:#fff"><main><h1>Lesin</h1><p><a href="#" style="display:inline-block;border:2px solid #111;border-radius:999px;padding:10px 18px;color:#111;text-decoration:none">Download di App Store</a></p></main></body></html>`;
+  assert.deepEqual(tells(page("boxed", boxed)), ["RX-AS-11 a store badge drawn by hand"]);
+  const gone = `<!doctype html><html lang="id"><body style="background:#fff"><main><h1>Lesin</h1><p><a href="#"><img alt="Download di App Store" width="150" height="50" src="file:///nowhere/badge-that-is-not-there.png"></a></p></main></body></html>`;
+  assert.deepEqual(tells(page("gone", gone)), ["RX-AS-11 a store badge image did not load"]);
   // owner H9 2026-11-26 (GO, SE): the badge's two lines set in text, "Unduh di" over "App Store", with no icon and no image
   const stacked = `<!doctype html><html lang="id"><body style="background:#fff"><main><h1>Lesin</h1><p style="display:flex;gap:12px">
 <a href="#" style="display:inline-flex;flex-direction:column;background:#000;color:#fff;padding:6px 14px;border-radius:8px;text-decoration:none"><small style="font-size:11px">Unduh di</small><b>App Store</b></a>

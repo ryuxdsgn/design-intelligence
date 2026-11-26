@@ -167,7 +167,9 @@
       102,
       320,
       80
-     ]
+     ],
+     "bi": 1,
+     "sh": ""
     },
     {
      "p": 5,
@@ -16345,6 +16347,13 @@
      "level": "warn",
      "selector": "label > input",
      "message": "\"input\": target 13x13px, under 24x24 (spaced enough to pass WCAG 2.5.8); 44x44 is the preferred hit area"
+    },
+    {
+     "rule": "RX-AS-11",
+     "level": "warn",
+     "selector": "div.stores > a.badge",
+     "message": "a store badge drawn by hand (\"App Store\"): Apple and Google allow only their own badge images; use the official badge, in one language for both stores, or a plain text link",
+     "once": "store-badge"
     },
     {
      "rule": "RX-DS-02",
