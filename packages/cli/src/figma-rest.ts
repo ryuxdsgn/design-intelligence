@@ -4,7 +4,7 @@
 // The token comes from FIGMA_TOKEN and is sent only to api.figma.com. REST carries no annotations, so the gate says
 // "annotations unreadable"; count them by eye or with the in-Figma script.
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// eslint-disable-next-line @typescript-eslint/no-explicit-any -- the REST API's node JSON, mapped field by field below
 type Raw = any;
 
 const MIXED = Symbol("mixed");

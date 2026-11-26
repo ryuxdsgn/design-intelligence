@@ -21,7 +21,7 @@ function save(check, input, output) {
   const file = join(FIXTURES, `${check}.json`);
   if (!cases.has(check)) {
     let old = [];
-    try { old = JSON.parse(readFileSync(file, "utf8")); } catch {}
+    try { old = JSON.parse(readFileSync(file, "utf8")); } catch { /* nothing recorded yet: start empty */ }
     cases.set(check, new Map(old.map((c) => [JSON.stringify(c.input), c])));
   }
   const all = cases.get(check);
@@ -100,7 +100,9 @@ export async function chromium() {
       const mod = await import(pathToFileURL(from.resolve(name)).href);
       const c = mod.chromium ?? mod.default?.chromium;
       if (c) return c;
-    } catch {}
+    } catch {
+      // not installed under this name; try the next
+    }
   }
   return null;
 }

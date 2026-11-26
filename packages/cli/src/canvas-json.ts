@@ -22,7 +22,7 @@ async function neutral(n: Node): Promise<Record<string, unknown>> {
   return out;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// eslint-disable-next-line @typescript-eslint/no-explicit-any -- a Figma node tree from the plugin, REST, or FigCraft; read field by field
 type Canvas = any;
 
 /** The canvas as { pages, current, page, annotationCategories }. */

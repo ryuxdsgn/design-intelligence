@@ -14,6 +14,7 @@ const TYPES: Record<string, string> = {
 };
 const EFFECTS: Record<string, string> = { dropShadow: "DROP_SHADOW", innerShadow: "INNER_SHADOW", layerBlur: "LAYER_BLUR", backgroundBlur: "BACKGROUND_BLUR" };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any -- FigCraft's document JSON, mapped field by field below
 type Raw = Record<string, any>;
 type Matrix = [number, number, number, number, number, number];
 

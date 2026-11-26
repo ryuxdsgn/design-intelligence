@@ -23,7 +23,7 @@ interface Page {
 /** The rendered checks over the page as it is now: the shipped extract, judged by ryux-core. When ryux-core asks,
  *  the page answers (hit tests, a filled textarea), and for each text over an image or a gradient the text is hidden
  *  and what is behind it photographed, so ryux-core can judge the pixels; then it judges again. */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// eslint-disable-next-line @typescript-eslint/no-explicit-any -- the JSON ryux-core answers with, shaped in Rust
 export async function judgePage(page: Page): Promise<{ extract: Record<string, unknown>; out: any }> {
   const extract: Record<string, unknown> = await page.evaluate(probeExtract);
   let out = probe(extract);
