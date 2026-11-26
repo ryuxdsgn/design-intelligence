@@ -440,6 +440,11 @@
   "title": "The step indicator stays quiet"
  },
  {
+  "id": "RX-UI-38",
+  "level": "preferred",
+  "title": "The first screen shows there is more"
+ },
+ {
   "id": "RX-UI-07",
   "level": "contextual",
   "title": "Imagery has a job and is what it claims"
