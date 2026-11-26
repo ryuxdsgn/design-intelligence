@@ -118,6 +118,7 @@ function report(findings: ScanFinding[], files: number, pages = 0): string {
   const warns = findings.length - fails;
   const what = [files || !pages ? `${files} file${files === 1 ? "" : "s"}` : "", pages ? `${pages} page${pages === 1 ? "" : "s"}` : ""].filter(Boolean).join(" and ");
   lines.push(`${lines.length ? "\n" : ""}${what} scanned: ${fails} fail, ${warns} warn.`);
+  if (findings.length) lines.push("Fix them all in one pass, then run this scan once more to confirm; a scan after each small fix only repeats this list.");
   return lines.join("\n");
 }
 
@@ -128,6 +129,7 @@ export async function runScan(argv: string[]): Promise<void> {
   let hookFormat = "claude";
   let designFile: string | null = null;
   let widths = DEFAULT_WIDTHS;
+  let sheet: string | undefined;
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
     if (a === "--json") opts.json = true;
@@ -136,6 +138,7 @@ export async function runScan(argv: string[]): Promise<void> {
       if (["claude", "codex", "cursor", "opencode"].includes(argv[i + 1] ?? "")) hookFormat = argv[++i];
     }
     else if (a === "--list-rules") opts.list = true;
+    else if (a === "--sheet") sheet = argv[i + 1]?.endsWith(".png") ? argv[++i] : "ryux-scan-sheet.png";
     else if (a === "--design") designFile = argv[i + 1]?.endsWith(".md") ? argv[++i] : "DESIGN.md";
     else if (a === "--widths") {
       widths = (argv[++i] ?? "").split(",").map(Number);
@@ -204,7 +207,7 @@ export async function runScan(argv: string[]): Promise<void> {
   let ignored: { url: string; regions: string[] }[] = [];
   if (urls.length) {
     try {
-      const pages = await scanPages(urls, widths);
+      const pages = await scanPages(urls, widths, sheet);
       findings.push(...pages.findings.filter((f) => !skip.has(f.rule)));
       ignored = pages.ignored;
     } catch (err) {
@@ -216,10 +219,12 @@ export async function runScan(argv: string[]): Promise<void> {
   const ok = !findings.some((f) => f.level === "fail");
   if (!ok) process.exitCode = 1;
   if (opts.json) {
-    console.log(JSON.stringify({ ok, cli: VERSION, files, pages: urls.length, widths: urls.length ? widths : [], ...(drift ? { design: drift } : {}), ...(ignored.length ? { ignored } : {}), findings, motion }, null, 2));
+    console.log(JSON.stringify({ ok, cli: VERSION, files, pages: urls.length, widths: urls.length ? widths : [], ...(sheet && urls.length ? { sheet } : {}), ...(drift ? { design: drift } : {}), ...(ignored.length ? { ignored } : {}), findings, motion }, null, 2));
     return;
   }
   console.log(report(findings, files, urls.length));
+  if (sheet && urls.length) console.log(`Contact sheet: ${sheet} (every width in one image, default state). Inspect it instead of one screenshot per width.`);
+  else if (urls.length) console.log("Add --sheet to get every width in one image to inspect.");
   const moves = motionReport(motion);
   if (moves) console.log(moves);
   for (const i of ignored) {

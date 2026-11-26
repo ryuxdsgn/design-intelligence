@@ -592,6 +592,30 @@ test("scan <url> fails text a bar cuts on the first screen or still covers at th
   rmSync(dir, { recursive: true, force: true });
 });
 
+// Routing eval, 2026-11-26: long runs read 7 to 11 screenshots and ran scan up to 8 times, each kept in context for
+// every later turn. --sheet gives every width in one image, and the report asks for one fix pass.
+test("scan <url> --sheet writes every width as one PNG, and the report asks for one fix pass", (t) => {
+  const dir = mkdtempSync(join(tmpdir(), "ryux-sheet-"));
+  const path = join(dir, "page.html");
+  writeFileSync(path, bar(0));
+  const sheet = join(dir, "sheet.png");
+  const cwd = process.env.RYUX_PLAYWRIGHT_CWD ?? join(dirname(cli), "..", "..", "..");
+  const r = run(cwd, ["scan", `file://${path}`, "--widths", "320,1280", "--sheet", sheet, "--json"]);
+  if (/needs Playwright|could not start Chromium/.test(r.out)) {
+    rmSync(dir, { recursive: true, force: true });
+    return noBrowser(t);
+  }
+  assert.equal(JSON.parse(r.out).sheet, sheet);
+  const png = readFileSync(sheet);
+  assert.equal(png.subarray(1, 4).toString(), "PNG");
+  const width = png.readUInt32BE(16);
+  assert.ok(width >= 320 + 640 && width < 1400, `sheet is ${width} px wide: 320 kept, 1280 scaled to 640`);
+  const text = run(cwd, ["scan", `file://${path}`, "--widths", "390"]);
+  assert.match(text.out, /Fix them all in one pass, then run this scan once more/);
+  assert.match(text.out, /Add --sheet to get every width in one image/);
+  rmSync(dir, { recursive: true, force: true });
+});
+
 // Front-end bench, 2026-11-20: on 5 of 6 rated checkout pages the payment methods sat below the first screen at
 // 1280 px while "Bayar Rp…" stood in the sticky side column; the owner flagged all 5, and not the one with the
 // methods in view. Same Playwright requirement as above.
