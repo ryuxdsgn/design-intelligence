@@ -150,6 +150,9 @@ pub fn colours(surface: &str, accent: &Value) -> Value {
         (Some(a), Some(b)) => { let w = if b < a { b + 360.0 } else { b }; ((a + w) / 2.0).rem_euclid(360.0) }
         _ => accent["hue"].as_f64().unwrap_or(250.0),
     };
+    // a warm field takes brick to turmeric: the accent's hue when it is warm, else one of four warm hues
+    // (brick 8, terracotta 18, orange 30, turmeric 45), picked from the accent's hue so each project draws its own
+    let hsl_h = if surface == "warm-field" && !(0.0..=55.0).contains(&hsl_h) { [8.0, 18.0, 30.0, 45.0][((hsl_h / 45.0) as usize) % 4] } else { hsl_h };
     let h = oklch_hue(hsl_h);
     let dark = surface.starts_with("dark");
     let (page, section, ink, muted) = match surface {
@@ -158,6 +161,12 @@ pub fn colours(surface: &str, accent: &Value) -> Value {
         // muted text on a dark page stays light: small grey on dark green read weak to the owner though it passed (H4)
         "dark-neutral" => (oklch(0.19, 0.004, 260.0), oklch(0.24, 0.006, 260.0), oklch(0.95, 0.004, 260.0), oklch(0.82, 0.006, 260.0)),
         "dark-tinted" => (oklch(0.21, 0.045, h), oklch(0.27, 0.055, h), oklch(0.96, 0.012, h), oklch(0.84, 0.025, h)),
+        // warm without cream: coffee and dark brick, whatever the accent (owner 2026-11-26: warm need not be cream)
+        "dark-warm" => (oklch(0.22, 0.035, 50.0), oklch(0.28, 0.045, 45.0), oklch(0.96, 0.012, 75.0), oklch(0.84, 0.025, 70.0)),
+        // a faint tint of the accent's hue; a warm hue would make it cream, so those stay grey
+        "light-tinted" if (20.0..=110.0).contains(&hsl_h) => (oklch(0.99, 0.0, 0.0), oklch(0.962, 0.0, 0.0), oklch(0.22, 0.02, h), oklch(0.48, 0.015, h)),
+        "light-tinted" => (oklch(0.982, 0.012, h), oklch(0.955, 0.024, h), oklch(0.22, 0.025, h), oklch(0.48, 0.025, h)),
+        "warm-field" => (oklch(0.99, 0.0, 0.0), oklch(0.96, 0.0, 0.0), oklch(0.22, 0.02, h), oklch(0.48, 0.015, h)),
         // a warm hue (orange to yellow) tinting a light page is cream: keep those neutrals grey and let the field carry it
         "colour-field" if (20.0..=110.0).contains(&hsl_h) => (oklch(0.985, 0.0, 0.0), oklch(0.955, 0.0, 0.0), oklch(0.22, 0.02, h), oklch(0.48, 0.015, h)),
         "colour-field" => (oklch(0.985, 0.01, h), oklch(0.95, 0.03, h), oklch(0.22, 0.03, h), oklch(0.48, 0.03, h)),
@@ -176,7 +185,7 @@ pub fn colours(surface: &str, accent: &Value) -> Value {
         "accent": accent_c,
         "onAccent": if light_accent { on_light } else { "#ffffff".to_string() },
     });
-    if surface == "colour-field" {
+    if surface == "colour-field" || surface == "warm-field" {
         let on_field = oklch(0.18, 0.03, h);
         out["field"] = json!(readable(if bright { 0.82 } else { 0.62 }, 0.16, h, &on_field, 4.5, 75.0, false, true));
         out["onField"] = json!(on_field);
@@ -673,8 +682,34 @@ mod tests {
                 }
             }
         }
-        let r = (0..50).map(|i| draw(json!({ "project": format!("b{i}"), "tags": ["education"] }))).any(|r| ids(&r, "surface").contains(&"warm-paper".to_string()));
+        // paper comes for reading and archive products, not as warmth for education (40 of 40 tutoring draws before)
+        let r = (0..50).map(|i| draw(json!({ "project": format!("b{i}"), "tags": ["media"] }))).any(|r| ids(&r, "surface").contains(&"warm-paper".to_string()));
         assert!(r);
+    }
+
+    #[test]
+    fn warm_is_not_only_cream_for_tutoring() {
+        // owner 2026-11-26: warm need not be cream. Paper was in 40 of 40 tutoring draws through the education tag, and
+        // cream on 4 of 5 H10 pages; with these surfaces H11 built no cream page of 5. Warmth comes as a warm field
+        // (brick to turmeric), a warm dark, or a warm accent on a white page
+        let n = 40;
+        let (mut paper, mut warm_other) = (0, 0);
+        for i in 0..n {
+            let r = draw(json!({ "project": format!("Les{i}"), "context": format!("les privat {i}"), "tags": ["education", "family", "session"] }));
+            if ids(&r, "surface").contains(&"warm-paper".to_string()) { paper += 1 }
+            for d in r["directions"].as_array().unwrap() {
+                let hue = d["accent"]["hue"].as_f64().unwrap_or(-1.0);
+                let s = d["surface"]["id"].as_str().unwrap();
+                if s == "warm-field" || s == "dark-warm" || (s.starts_with("light") && (0.0..=50.0).contains(&hue)) { warm_other += 1 }
+                for k in ["page", "section"] {
+                    let h = d["colours"][k].as_str().unwrap();
+                    let v: Vec<f64> = (0..3).map(|j| u8::from_str_radix(&h[1 + j * 2..3 + j * 2], 16).unwrap() as f64).collect();
+                    assert!(!crate::probe::cream([v[0], v[1], v[2], 1.0]), "{i} {k} {h}");
+                }
+            }
+        }
+        assert_eq!(paper, 0, "paper in {paper} of {n} tutoring draws");
+        assert!(warm_other * 4 >= n, "warm without cream in {warm_other} directions of {}", n * 3);
     }
 
     #[test]
