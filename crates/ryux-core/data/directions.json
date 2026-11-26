@@ -55,11 +55,19 @@
     "con": "paling mudah jatuh ke halaman generik; butuh satu ciri yang kuat"
    },
    {
+    "id": "light-tinted",
+    "name": "Terang berwarna",
+    "note": "putih dengan rona aksen yang sangat tipis (mint, lila, langit); rona hangat tidak dipakai karena menjadi krem",
+    "fit": [],
+    "avoid": [],
+    "pro": "terang dan mudah dibaca, tetapi punya warna sendiri sejak latar",
+    "con": "rona yang terlalu kuat terasa seperti tema bawaan; harus tetap hampir putih"
+   },
+   {
     "id": "warm-paper",
-    "name": "Hangat atau kertas",
-    "note": "krem, gading, kertas; hanya dengan alasan dari konteks (editorial, arsip, buku), tidak pernah default",
+    "name": "Kertas",
+    "note": "krem, gading, kertas; hanya untuk konsep yang berbentuk kertas (rapor, catatan, arsip, majalah), bukan sebagai rasa hangat",
     "fit": [
-     "education",
      "public",
      "media"
     ],
@@ -69,7 +77,10 @@
     ],
     "only_fit": true,
     "pro": "hangat, terasa seperti bacaan atau arsip",
-    "con": "default lama halaman buatan AI; terasa artisan dan premium, tidak selalu cocok"
+    "con": "default lama halaman buatan AI; terasa artisan dan premium, tidak selalu cocok",
+    "with_model": [
+     "report"
+    ]
    },
    {
     "id": "dark-neutral",
@@ -106,6 +117,25 @@
     "con": "foto produk dan makanan bisa terlihat kurang segar; terasa malam dan teknis untuk keluarga, anak, dan kesehatan; kontras teks kecil harus dijaga"
    },
    {
+    "id": "dark-warm",
+    "name": "Gelap hangat",
+    "note": "cokelat kopi, merah bata tua, zaitun gelap; hangat seperti ruangan berlampu sore, bukan krem",
+    "fit": [
+     "food",
+     "beauty",
+     "travel",
+     "media"
+    ],
+    "avoid": [
+     "senior",
+     "family",
+     "kids",
+     "health"
+    ],
+    "pro": "hangat dan berkarakter tanpa jatuh ke krem; foto dengan cahaya hangat menyatu",
+    "con": "terasa malam; teks kecil dan foto gelap perlu dicek di atasnya"
+   },
+   {
     "id": "colour-field",
     "name": "Bidang warna jenuh",
     "note": "satu warna kuat sebagai latar halaman, minimal sepertiga halaman, bukan hanya hero",
@@ -116,6 +146,17 @@
     ],
     "pro": "langsung dikenali, berani, membawa merek",
     "con": "melelahkan kalau terlalu luas; teks di atas warna harus diuji kontrasnya"
+   },
+   {
+    "id": "warm-field",
+    "name": "Bidang warna hangat",
+    "note": "terakota, kunyit, atau bata sebagai bidang warna minimal sepertiga halaman, dengan latar lain putih netral; hangat dari warna, bukan dari kertas",
+    "fit": [],
+    "avoid": [
+     "pro"
+    ],
+    "pro": "hangat, ramah, dan langsung dikenali",
+    "con": "oranye dan kuning mudah terasa murah kalau terlalu banyak; teks di atasnya harus gelap"
    }
   ],
   "accent": [

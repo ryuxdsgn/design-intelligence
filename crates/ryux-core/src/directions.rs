@@ -136,6 +136,9 @@ pub fn colours(surface: &str, accent: &Value) -> Value {
         (Some(a), Some(b)) => { let w = if b < a { b + 360.0 } else { b }; ((a + w) / 2.0).rem_euclid(360.0) }
         _ => accent["hue"].as_f64().unwrap_or(250.0),
     };
+    // a warm field takes brick to turmeric: the accent's hue when it is warm, else one of four warm hues
+    // (brick 8, terracotta 18, orange 30, turmeric 45), picked from the accent's hue so each project draws its own
+    let hsl_h = if surface == "warm-field" && !(0.0..=55.0).contains(&hsl_h) { [8.0, 18.0, 30.0, 45.0][((hsl_h / 45.0) as usize) % 4] } else { hsl_h };
     let h = oklch_hue(hsl_h);
     let dark = surface.starts_with("dark");
     let (page, section, ink, muted) = match surface {
@@ -144,6 +147,12 @@ pub fn colours(surface: &str, accent: &Value) -> Value {
         // muted text on a dark page stays light: small grey on dark green read weak to the owner though it passed (H4)
         "dark-neutral" => (oklch(0.19, 0.004, 260.0), oklch(0.24, 0.006, 260.0), oklch(0.95, 0.004, 260.0), oklch(0.82, 0.006, 260.0)),
         "dark-tinted" => (oklch(0.21, 0.045, h), oklch(0.27, 0.055, h), oklch(0.96, 0.012, h), oklch(0.84, 0.025, h)),
+        // warm without cream: coffee and dark brick, whatever the accent (owner 2026-11-26: warm need not be cream)
+        "dark-warm" => (oklch(0.22, 0.035, 50.0), oklch(0.28, 0.045, 45.0), oklch(0.96, 0.012, 75.0), oklch(0.84, 0.025, 70.0)),
+        // a faint tint of the accent's hue; a warm hue would make it cream, so those stay grey
+        "light-tinted" if (20.0..=110.0).contains(&hsl_h) => (oklch(0.99, 0.0, 0.0), oklch(0.962, 0.0, 0.0), oklch(0.22, 0.02, h), oklch(0.48, 0.015, h)),
+        "light-tinted" => (oklch(0.982, 0.012, h), oklch(0.955, 0.024, h), oklch(0.22, 0.025, h), oklch(0.48, 0.025, h)),
+        "warm-field" => (oklch(0.99, 0.0, 0.0), oklch(0.96, 0.0, 0.0), oklch(0.22, 0.02, h), oklch(0.48, 0.015, h)),
         // a warm hue (orange to yellow) tinting a light page is cream: keep those neutrals grey and let the field carry it
         "colour-field" if (20.0..=110.0).contains(&hsl_h) => (oklch(0.985, 0.0, 0.0), oklch(0.955, 0.0, 0.0), oklch(0.22, 0.02, h), oklch(0.48, 0.015, h)),
         "colour-field" => (oklch(0.985, 0.01, h), oklch(0.95, 0.03, h), oklch(0.22, 0.03, h), oklch(0.48, 0.03, h)),
@@ -162,7 +171,7 @@ pub fn colours(surface: &str, accent: &Value) -> Value {
         "accent": accent_c,
         "onAccent": if light_accent { on_light } else { "#ffffff".to_string() },
     });
-    if surface == "colour-field" {
+    if surface == "colour-field" || surface == "warm-field" {
         let on_field = oklch(0.18, 0.03, h);
         out["field"] = json!(readable(if bright { 0.82 } else { 0.62 }, 0.16, h, &on_field, 4.5, true));
         out["onField"] = json!(on_field);
@@ -279,7 +288,12 @@ pub fn directions(input: &Value) -> Value {
             }
             let hit = fit.iter().any(|t| tags.contains(t));
             // layout follows the task, and paper only comes with a reason from the context (H2, 2026-11-25: cream on 5 of 5 pages)
-            if (d == "layout" || e.get("only_fit").and_then(Value::as_bool) == Some(true)) && !hit {
+            // paper comes with a paper-shaped model (a report) even when no tag fits it; the draw keeps the pair together
+            // only when that model itself fits this product: no paper for food through a report nobody asked for
+            let with_model = strs(e.get("with_model")).iter().any(|m| {
+                cat["dimensions"]["model"].as_array().into_iter().flatten().any(|x| x["id"] == m.as_str() && strs(x.get("fit")).iter().any(|t| tags.contains(t)))
+            });
+            if (d == "layout" || e.get("only_fit").and_then(Value::as_bool) == Some(true)) && !hit && !with_model {
                 continue;
             }
             // an accent leans on its fit lightly, so fitting hues do not become the new default
@@ -296,6 +310,8 @@ pub fn directions(input: &Value) -> Value {
             };
             // a weak tag lowers an entry without dropping it (indigo for fresh food read as fintech, owner H3 note, one page)
             let w = if strs(e.get("weak")).iter().any(|t| tags.contains(t)) { w * 0.4 } else { w };
+            // a light weight: paper was in 40 of 40 tutoring draws at the fit weight
+            let w = if with_model && !hit { 0.2 } else { w };
             pool.push((e, w));
         }
         // fewer than three fitting patterns: the rest is the agent's call from the task, so five users do not share one layout
@@ -338,7 +354,14 @@ pub fn directions(input: &Value) -> Value {
         // strict first; when the tags leave too few entries, the accent spacing and material rule give way, then repeats
         for attempt in 0..1200 {
             let level = attempt / 400;
-            let dir: Vec<Value> = pools.iter().map(|p| pick(&mut rng, p)).collect();
+            let mut dir: Vec<Value> = pools.iter().map(|p| pick(&mut rng, p)).collect();
+            // a surface tied to a model (paper to a report) brings that model into its direction, unless the model is locked
+            let need = strs(dir[0].get("with_model"));
+            if !need.is_empty() && !strs(dir[0].get("fit")).iter().any(|t| tags.contains(t)) && !need.contains(&id(&dir[8])) && !lock.contains_key("model") {
+                if let Some(m) = pools[8].iter().find(|p| need.contains(&id(&p.0))) {
+                    dir[8] = m.0.clone();
+                }
+            }
             if dir.iter().any(Value::is_null) || combo_default(&dir) {
                 continue;
             }
@@ -371,7 +394,14 @@ pub fn directions(input: &Value) -> Value {
             // flat pages formed one group); a light flat direction carries its weight with colour, type, image, or shape
             let plain = level < 2 && !locked(0) && !locked(4) && id(&dir[0]).starts_with("light")
                 && matches!(id(&dir[7]).as_str(), "flat" | "flat2" | "minimal") && id(&dir[4]) == "space";
-            if (clash && level < 2) || repeats || near || same_material || plain || once(5, "flat-vector") || once(6, "mechanic") {
+            // a surface tied to a model (paper to a report) comes only with it, unless a tag of this product fits it: warm
+            // paper was in 40 of 40 tutoring draws through the education tag, and built on 4 of 5 H10 pages (2026-11-26)
+            let unpaired = {
+                let s = &dir[0];
+                let need = strs(s.get("with_model"));
+                !need.is_empty() && !strs(s.get("fit")).iter().any(|t| tags.contains(t)) && !need.contains(&id(&dir[8]))
+            };
+            if (clash && level < 2) || repeats || near || same_material || plain || unpaired || once(5, "flat-vector") || once(6, "mechanic") {
                 continue;
             }
             best = Some(dir);
@@ -438,6 +468,7 @@ pub fn directions(input: &Value) -> Value {
             if let Some(o) = e.as_object_mut() {
                 o.remove("fit");
                 o.remove("avoid");
+                o.remove("with_model");
             }
             m.insert((*k).into(), e);
         }
@@ -670,8 +701,44 @@ mod tests {
                 }
             }
         }
-        let r = (0..50).map(|i| draw(json!({ "project": format!("b{i}"), "tags": ["education"] }))).any(|r| ids(&r, "surface").contains(&"warm-paper".to_string()));
-        assert!(r);
+        // paper for education comes with the report model, in the same direction
+        let mut paper = 0;
+        for i in 0..50 {
+            let r = draw(json!({ "project": format!("b{i}"), "tags": ["education"] }));
+            for d in r["directions"].as_array().unwrap() {
+                if d["surface"]["id"] == "warm-paper" {
+                    paper += 1;
+                    assert_eq!(d["model"]["id"], "report", "b{i}");
+                }
+            }
+        }
+        assert!(paper > 0);
+    }
+
+    #[test]
+    fn warm_is_not_only_cream_for_tutoring() {
+        // owner 2026-11-26: warm need not be cream. Paper was in 40 of 40 tutoring draws; now at most a third, and warmth
+        // also comes as a warm field (terracotta to turmeric) or a warm accent on a white page
+        let n = 40;
+        let (mut paper, mut warm_other) = (0, 0);
+        for i in 0..n {
+            let r = draw(json!({ "project": format!("Les{i}"), "context": format!("les privat {i}"), "tags": ["education", "family", "session"] }));
+            let s = ids(&r, "surface");
+            if s.contains(&"warm-paper".to_string()) { paper += 1 }
+            for d in r["directions"].as_array().unwrap() {
+                let hue = d["accent"]["hue"].as_f64().unwrap_or(-1.0);
+                if d["surface"]["id"] == "warm-field" || d["surface"]["id"] == "dark-warm" || (d["surface"]["id"].as_str().unwrap().starts_with("light") && (0.0..=50.0).contains(&hue)) {
+                    warm_other += 1;
+                }
+                for k in ["page", "section"] {
+                    let h = d["colours"][k].as_str().unwrap();
+                    let v: Vec<f64> = (0..3).map(|j| u8::from_str_radix(&h[1 + j * 2..3 + j * 2], 16).unwrap() as f64).collect();
+                    assert!(d["surface"]["id"] == "warm-paper" || !crate::probe::cream([v[0], v[1], v[2], 1.0]), "{i} {k} {h}");
+                }
+            }
+        }
+        assert!(paper * 3 <= n, "paper in {paper} of {n} draws");
+        assert!(warm_other * 4 >= n, "warm without cream in {warm_other} directions of {}", n * 3);
     }
 
     #[test]
