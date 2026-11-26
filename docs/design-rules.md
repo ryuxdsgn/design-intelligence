@@ -211,13 +211,13 @@ line below for its exact source.
 <!-- provenance:start -->
 | Source cited | Rules citing it | Rules citing only this |
 | --- | --- | --- |
-| Public standard or research | 106 | 64 |
+| Public standard or research | 107 | 65 |
 | Industry practice | 28 | 6 |
 | Observed in a RYUX run | 18 | 7 |
 | Pattern also in another MIT ruleset (text written for RYUX) | 4 | 2 |
 | RYUX principle, taxonomy, or review | 75 | 21 |
 
-All 162 rules cite a source; 62 cite more than one kind, so the "Rules citing it" column adds up to more than 162.
+All 163 rules cite a source; 62 cite more than one kind, so the "Rules citing it" column adds up to more than 163.
 <!-- provenance:end -->
 
 ## Rules
@@ -225,7 +225,7 @@ All 162 rules cite a source; 62 cite more than one kind, so the "Rules citing it
 Generated from `packages/cli/src/content.ts` by `pnpm sync:skills`. Edit the rules there, not here.
 
 <!-- rules:start -->
-162 rules across 15 modules: 69 Required, 40 Preferred, 53 Contextual; 19 Hard Gates and 14 Quality Locks.
+163 rules across 15 modules: 69 Required, 41 Preferred, 53 Contextual; 19 Hard Gates and 14 Quality Locks.
 
 ### Product thinking (RX-PR) · `knowledge/product.md`
 
@@ -937,11 +937,13 @@ Gate area CONTENT. Covers specific copy, action labels, error messages, terminol
 
 - Do: Say what happened, why when it helps the user act, and how to recover, next to where it happened, without blaming the user.
   - Keep what the user entered, even when it is wrong, and point to it; never clear the field or the form.
+  - Say what is needed, not that the user was wrong: "Nomor HP diawali 08 atau +62", not "Nomor HP tidak valid"; words that judge the input (tidak valid, salah, ilegal, invalid, incorrect) name no fix.
+  - Size the message to the problem: beside the field for one field, a banner at the top for the page or the form, a dialog only when the work stops or data would be lost; never a dialog for one field.
   - Show a field's error after the user has finished with it (on leaving the field or on submit), not while they are still typing; check as they type only an input they are likely to get wrong, and then with guidance, not an error.
   - Name the real cause: when the fault is the service (it is down, out of quota or credit, or its key was refused), say so and do not point at the user's input or file; offer a retry only when one can succeed (a timeout, a rate limit), otherwise the manual path or who can fix it.
   - When the product does not know the cause (why an order is late, why a transfer is held), say what is known and what happens next; never supply a cause it cannot see (a busy restaurant, traffic, the bank), which is an invented fact (RX-PR-02).
-- Do not: Show codes like TXN_0x8004 or "Something went wrong" on their own, clear the user's input after an error, mark a field wrong before the user has finished typing, blame the user's input for a failure of the service, give a cause the product does not know ("the restaurant is busier than usual"), or offer "try again" when a retry cannot succeed.
-- Why: Users can only recover from what they understand. (NNGroup error-message guidelines; NNGroup An Error Messages Scoring Rubric (Neusesser and Sunwall 2023): preserve user input, avoid showing errors too early; ryux editor, research upload, 2026-11-13: with the AI account out of credit, the message said the PDF could not be read, and four other AI actions said to try again; ryux decision eval D17, 2026-11-14: a late-order message invented "the restaurant is busier than usual")
+- Do not: Show codes like TXN_0x8004 or "Something went wrong" on their own, write an error that only judges the input ("Format tidak valid"), open a dialog for one field's error, clear the user's input after an error, mark a field wrong before the user has finished typing, blame the user's input for a failure of the service, give a cause the product does not know ("the restaurant is busier than usual"), or offer "try again" when a retry cannot succeed.
+- Why: Users can only recover from what they understand. (NNGroup error-message guidelines (Neusesser and Sunwall 2023: say what went wrong and how to fix it, avoid words that blame such as invalid, illegal, incorrect, and match the message to the error's severity, a modal only for severe errors); NNGroup An Error Messages Scoring Rubric (Neusesser and Sunwall 2023): preserve user input, avoid showing errors too early; ryux editor, research upload, 2026-11-13: with the AI account out of credit, the message said the PDF could not be read, and four other AI actions said to try again; ryux decision eval D17, 2026-11-14: a late-order message invented "the restaurant is busier than usual")
 - Check: audit_copy C-04; for each error state: the input is still there, and the error appears only after the field was left or the form sent; for each failure that is not the user's (service down, quota or credit, a refused key): the message names it, and a retry is offered only when one can succeed; every stated cause comes from data the product has
 
 #### RX-CD-05 [Required] [Quality Lock] One name per thing
@@ -957,8 +959,9 @@ Gate area CONTENT. Covers specific copy, action labels, error messages, terminol
 
 - When: the product serves Indonesian users, in Bahasa Indonesia or in English copy written for them; other markets follow their own locale
 - Do: Write dates as 2 Okt 2026 or Jumat, 2 Oktober 2026; times as 14.30 in 24-hour form, with WIB, WITA, or WIT when the time zone matters; decimals with a comma (1,5) and thousands with a dot (12.500); phone numbers as +62 812-3456-7890. English copy for Indonesian users keeps these number forms (Rp67.000, 1,2 km), so the same value never reads two ways in one product.
-- Do not: Write 10/02/2026, 2:30 PM, or 1.5 in copy for Indonesian users, in either language.
-- Why: Slash dates are ambiguous and English number formats read as foreign or as the wrong value. (PUEBI number and time notation; id-ID locale conventions; owner blind review 2026-11-18 of three Rak flows (secondhand books, Yogyakarta): "1.2 km" in English copy for a Yogyakarta app)
+  - In interface copy (buttons, headings, lists, cards, prices, counts, steps), a specific number is a digit, also at the start of a line: "3 langkah", "2 hari kerja", not "tiga langkah". A number that is not exact stays in words ("ribuan penjual", "puluhan kota"). Long editorial text (an article, a blog post) may follow PUEBI and spell out a number of one or two words.
+- Do not: Write 10/02/2026, 2:30 PM, or 1.5 in copy for Indonesian users, in either language, or spell out a specific number in interface copy ("tiga langkah").
+- Why: Slash dates are ambiguous and English number formats read as foreign or as the wrong value. (NNGroup Show Numbers as Numerals When Writing for Online Readers (Nielsen 2007): digits for specific facts, even at the start of a line, words for vague amounts; owner decision 2026-11-26: digits in interface copy, PUEBI for long editorial text; PUEBI number and time notation; id-ID locale conventions; owner blind review 2026-11-18 of three Rak flows (secondhand books, Yogyakarta): "1.2 km" in English copy for a Yogyakarta app)
 - Check: audit_copy C-08
 - Machine check: `ryux scan` flags dates as 10/02/2026 and times as 2:30 PM in Indonesian copy (lang id, id-ID, Rupiah, or Indonesian words in the folder); test files are skipped (warn)
 
@@ -1084,6 +1087,21 @@ Gate area CONTENT. Covers specific copy, action labels, error messages, terminol
 - Not when: an expert tool whose users count in the unit (a trading desk, a lab), or a ledger or receipt where the exact value is the point
 - Trade-off: a second number beside the first; keep it quieter than the unit
 - Check: each unfamiliar unit on screen has its money value beside it; headline precision; one hero number per screen
+
+#### RX-CD-21 [Preferred] The point first, in sentences people read at a glance
+
+- When: copy longer than a label: a description, helper text, an explanation, an onboarding or landing section, a help article, a generated answer
+- Do: Put the point first and keep each sentence easy to read on the first pass.
+  - Inverted pyramid: the first sentence of a block, and of each paragraph, carries its point; detail and background come after, most useful first.
+  - One idea per sentence, in everyday words the audience uses, mostly active ("Kami kirim kode ke nomor Anda"); passive is fine when the thing acted on is what the reader looks for, as in a heading ("Pesanan dikirim hari ini").
+  - A heading names its topic and still makes sense read alone (in a list of results, a notification, a table of contents): no empty heading ("Overview", "Info lainnya"), no idiom, pun, or slogan in place of the topic.
+  - Text longer than a few sentences is chunked: meaningful subheadings people can scan down, and a real list for items, steps, or options, not a list written as a paragraph.
+  - Reading level: English copy for a general audience aims at about grade 8, and for an expert or business audience at about grade 12, measured with a readability formula as a rough guide. Bahasa Indonesia has no validated grade formula: judge it by sentence length, everyday words, and terms the audience knows, never by an invented score.
+- Do not: Open with background, a courtesy sentence, or the history before the point; pack two ideas into one sentence with several clauses; write a clever heading that does not say what the section is; or report a reading score for Indonesian copy.
+- Why: People scan and read little: they take the first sentence and the subheadings, and stop when those do not answer them. Clear text is understood and remembered better, by experts as much as by everyone else. (NNGroup Inverted Pyramid (Schade 2018); NNGroup Legibility, Readability, and Comprehension (Nielsen 2015: grade 8 for a broad audience, about grade 12 for an educated or B2B one; formulas measure word and sentence length, not comprehension; a B2B rewrite raised recall from 33% to 65%); NNGroup Text Scanning Patterns (Pernice 2019: layer-cake scanning follows meaningful subheadings; walls of text are barely read); NNGroup Headings Are Pick-Up Lines (Loranger 2015: headings work out of context, no cute words or idioms); NNGroup Passive Voice Is Redeemed for Web Headings; NNGroup UX Writing Study Guide (Kaley 2024))
+- Not when: a legal text whose wording is fixed; an expert tool whose users share the domain's terms (keep their terms, still the point first)
+- Trade-off: the point first can feel abrupt in a brand story; keep the story after the point, not before it
+- Check: review: read the first sentence of each block and each heading alone: each says the point or the topic; flag sentences with more than one idea; flag lists written as paragraphs; for English copy, a readability formula as a rough guide, not a pass or fail
 
 ---
 
