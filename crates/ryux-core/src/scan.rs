@@ -293,10 +293,32 @@ fn rule_cd09(s: &Source, c: &Ctx) -> Vec<Hit> {
     ])
 }
 
+const VAGUE_LABEL: &str = r"(?:baca |lihat )?selengkapnya|klik di ?sini|learn more|read more|click here|submit";
+fn vague_label(label: &str) -> String {
+    format!("\"{label}\": a label that does not say where it leads or what it does; name the destination or the result (\"Lihat syarat promo\", \"Kirim laporan\")")
+}
+
+/// Each piece of copy, read from the parsed file when it parses (inline tags joined, an expression as one word), or
+/// the text between ">" and "<" otherwise; with where it starts.
+fn copy_pieces(s: &Source) -> Vec<(usize, String)> {
+    if let Some(m) = structure(s) {
+        return m.copy.clone();
+    }
+    re(r">([^<>{}]+)<", "gu").match_all(&without_code_blocks(&s.text)).iter().map(|m| (m.index, m.g(1).to_string())).collect()
+}
+
+/// A rule's phrase found in the copy: each piece that holds it, with the phrase as written.
+fn in_copy(s: &Source, phrase: &str) -> Vec<(usize, String)> {
+    let p = re(phrase, "iu");
+    copy_pieces(s).into_iter().filter_map(|(at, text)| p.exec(&text).map(|m| (at, m.g(1).to_string()))).collect()
+}
+
 fn rule_cd12_label(s: &Source, _: &Ctx) -> Vec<Hit> {
-    matches(&s.text, &[(r">\s*((?:baca |lihat )?selengkapnya|klik di ?sini|learn more|read more|click here|submit)\s*<\/(?:a|button|Link|NavLink|Button)\s*>", "i", |m| {
-        Some(format!("\"{}\": a label that does not say where it leads or what it does; name the destination or the result (\"Lihat syarat promo\", \"Kirim laporan\")", m.g(1)))
-    })])
+    if let Some(m) = structure(s) {
+        let vague = re(&format!("^({VAGUE_LABEL})$"), "i");
+        return m.labels.iter().filter(|(_, l)| vague.test(l)).map(|(at, l)| hit(*at, vague_label(l))).collect();
+    }
+    matches(&s.text, &[(&format!(r">\s*({VAGUE_LABEL})\s*<\/(?:a|button|Link|NavLink|Button)\s*>"), "i", |m| Some(vague_label(m.g(1))))])
 }
 
 fn rule_cd12_heading(s: &Source, _: &Ctx) -> Vec<Hit> {
@@ -347,22 +369,22 @@ fn without_code_blocks(text: &str) -> String {
 }
 
 fn rule_cd21_sentence(s: &Source, _: &Ctx) -> Vec<Hit> {
-    matches(&without_code_blocks(&s.text), &[(r">([^<>{}]+)<", "u", |m| {
-        let (words, opening) = longest_sentence(&m.g(1));
-        (words > 20).then(|| format!("\"{opening} ...\": a sentence of {words} words; NN/g's ceiling is 15 to 20 words, so split it into one idea per sentence"))
-    })])
+    copy_pieces(s).into_iter().filter_map(|(at, text)| {
+        let (words, opening) = longest_sentence(&text);
+        (words > 20).then(|| hit(at, format!("\"{opening} ...\": a sentence of {words} words; NN/g's ceiling is 15 to 20 words, so split it into one idea per sentence")))
+    }).collect()
 }
 
 fn rule_cd18(s: &Source, _: &Ctx) -> Vec<Hit> {
-    matches(&s.text, &[(r">[^<>{}]*?(memungkinkan (?:anda|kamu)|kami memahami bahwa|perlu diketahui bahwa|allows you to|enables you to|we understand that)(?![\p{L}\d])[^<>{}]*<", "iu", |m| {
-        Some(format!("\"{}\": filler that adds words, not meaning; say what the user can do (\"Bayar dengan QRIS\", not \"memungkinkan Anda membayar dengan QRIS\")", m.g(1)))
-    })])
+    in_copy(s, r"(memungkinkan (?:anda|kamu)|kami memahami bahwa|perlu diketahui bahwa|allows you to|enables you to|we understand that)(?![\p{L}\d])").into_iter()
+        .map(|(at, p)| hit(at, format!("\"{p}\": filler that adds words, not meaning; say what the user can do (\"Bayar dengan QRIS\", not \"memungkinkan Anda membayar dengan QRIS\")")))
+        .collect()
 }
 
 fn rule_cd19(s: &Source, _: &Ctx) -> Vec<Hit> {
-    matches(&s.text, &[(r">[^<>{}]*?(?<![\p{L}\d#-])(terbaik|tercepat|termurah|nomor 1|#1|the best|fastest|cheapest|world[- ]class|best[- ]in[- ]class)(?![\p{L}\d])[^<>{}]*<", "iu", |m| {
-        Some(format!("\"{}\": a superlative needs a source from the brief; otherwise write the fact that would earn it", m.g(1)))
-    })])
+    in_copy(s, r"(?<![\p{L}\d#-])(terbaik|tercepat|termurah|nomor 1|#1|the best|fastest|cheapest|world[- ]class|best[- ]in[- ]class)(?![\p{L}\d])").into_iter()
+        .map(|(at, p)| hit(at, format!("\"{p}\": a superlative needs a source from the brief; otherwise write the fact that would earn it")))
+        .collect()
 }
 
 fn rule_as03_lorem(s: &Source, _: &Ctx) -> Vec<Hit> {

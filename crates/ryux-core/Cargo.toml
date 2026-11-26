@@ -21,3 +21,5 @@ oxc_span = "=0.159.0"
 # markup.rs implements html5ever's TreeSink, which changes between minor versions, and scraper must match it.
 html5ever = "=0.40.1"
 scraper = { version = "=0.29.0", default-features = false }
+# scraper's own tree crate, named so the copy reader can walk it (already in the lockfile, no new code)
+ego-tree = "=0.11.1"

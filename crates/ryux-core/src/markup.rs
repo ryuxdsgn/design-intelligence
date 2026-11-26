@@ -70,6 +70,43 @@ pub struct Markup {
     /// The first field for the person's own data (email, phone, name, address, by its name, id, or type) with
     /// autocomplete="off".
     pub autofill_off: Option<usize>,
+    /// Visible copy: per block (p, li, h1, td, a component with children...), its text with inline children (b, a,
+    /// span, br) joined, as a reader sees it; a block inside it starts a new piece. An expression stands in as one
+    /// word ({total}). Offset of the block's "<".
+    pub copy: Vec<(usize, String)>,
+    /// Each link's and button's label (a, button, Link, NavLink, Button): all the text inside it.
+    pub labels: Vec<(usize, String)>,
+}
+
+/// Elements whose text runs on inside the sentence around them.
+/// A button is not here: buttons in a row are controls, not one sentence.
+const INLINE: [&str; 26] = ["a", "abbr", "b", "bdi", "bdo", "br", "cite", "code", "data", "dfn", "em", "i", "kbd", "label", "mark", "q", "s", "samp", "small", "span", "strong", "sub", "sup", "time", "u", "wbr"];
+/// Elements whose content is not copy a person reads as text.
+const NOT_COPY: [&str; 9] = ["script", "style", "template", "svg", "select", "option", "textarea", "noscript", "math"];
+/// Elements whose text is a label (RX-CD-12).
+const LABELLED: [&str; 5] = ["a", "button", "Link", "NavLink", "Button"];
+
+/// Two inline elements, or an inline element and text, with nothing between them (<span>1</span><span>Bayar</span>)
+/// are laid out apart by their CSS more often than they run on as one sentence, so the piece ends there; prose that
+/// runs on has a space (<b>Rp50.000</b> sudah termasuk pajak).
+fn touching(cur: &str) -> bool {
+    cur.chars().last().is_some_and(|c| !c.is_whitespace())
+}
+
+/// After an inline element that opened its piece: a lead label (<span>What went wrong</span> It asked…) when the
+/// text after it starts a new sentence, which ends the piece; otherwise the text runs on.
+fn lead_label(cur: &str, next: &str) -> bool {
+    cur.ends_with('\u{2}') && next.trim_start().starts_with(|c: char| c.is_uppercase()) && !cur.trim_end_matches('\u{2}').trim_end().ends_with(|c: char| matches!(c, '.' | '!' | '?' | ':' | ','))
+}
+
+fn inline(name: &str) -> bool {
+    INLINE.contains(&name) || name == "Link" || name == "NavLink"
+}
+
+/// Copy as a reader sees it: entities decoded, runs of white space as one space, trimmed.
+fn clean(s: &str) -> String {
+    let s = s.replace("&nbsp;", " ").replace("&amp;", "&").replace("&quot;", "\"").replace("&#39;", "'").replace('\u{a0}', " ").replace(['\u{1}', '\u{2}'], "");
+    s.split_whitespace().collect::<Vec<_>>().join(" ")
 }
 
 /// A re-export: the path, and the names as (imported, exported), or None for `export *`.
@@ -316,6 +353,8 @@ mod jsx {
         /// How many JSX expressions ({…}) the visit is inside, and the radio names met inside one (opts.map(…)).
         exprs: usize,
         repeated: std::collections::HashSet<String>,
+        /// The starts of inline elements a block's copy already holds.
+        covered: std::collections::HashSet<u32>,
     }
 
     #[derive(Default)]
@@ -380,6 +419,72 @@ mod jsx {
 
     fn text(src: &str, span: Span) -> &str {
         &src[span.start as usize..span.end as usize]
+    }
+
+    /// An expression inside copy as one word: a literal string as itself, a short name as {name}, anything else
+    /// as {…}; None when it holds JSX, which is read as elements of its own.
+    fn word(src: &str, e: &JSXExpression) -> Option<String> {
+        match e {
+            JSXExpression::EmptyExpression(_) => Some(String::new()),
+            JSXExpression::StringLiteral(s) => Some(s.value.as_str().unwrap_or_default().to_string()),
+            JSXExpression::TemplateLiteral(t) if t.expressions.is_empty() => Some(t.quasis.iter().map(|q| text(src, q.span)).collect()),
+            _ => {
+                let code = text(src, e.span());
+                if code.contains('<') {
+                    return None;
+                }
+                Some(if code.len() <= 24 && !code.contains(char::is_whitespace) { format!(" {{{code}}} ") } else { " {expr} ".to_string() })
+            }
+        }
+    }
+
+    /// The copy of a block's children: inline elements joined in, a block or JSX in an expression ending the piece.
+    /// `all` joins every descendant (a label). The starts of the inline elements read are kept in `covered`.
+    fn pieces(src: &str, children: &[JSXChild], all: bool, cur: &mut String, out: &mut Vec<String>, covered: &mut std::collections::HashSet<u32>) {
+        let cut = |cur: &mut String, out: &mut Vec<String>| {
+            out.push(std::mem::take(cur));
+        };
+        for c in children {
+            match c {
+                JSXChild::Text(t) => {
+                    let t = text(src, t.span);
+                    if (cur.ends_with(['\u{1}', '\u{2}']) && t.starts_with(|c: char| !c.is_whitespace())) || lead_label(cur, t) {
+                        cut(cur, out);
+                    }
+                    cur.push_str(t);
+                }
+                JSXChild::Spread(_) => cur.push_str(" {expr} "),
+                JSXChild::ExpressionContainer(e) => match word(src, &e.expression) {
+                    Some(w) => cur.push_str(&w),
+                    None => cut(cur, out),
+                },
+                JSXChild::Fragment(f) => pieces(src, &f.children, all, cur, out, covered),
+                JSXChild::Element(e) => {
+                    let name = text(src, e.opening_element.name.span());
+                    if NOT_COPY.contains(&name) {
+                        continue;
+                    }
+                    if name == "br" {
+                        cur.push(' ');
+                    } else if all || inline(name) {
+                        covered.insert(e.span.start);
+                        if !all && touching(cur) {
+                            cut(cur, out);
+                        }
+                        let lead = cur.trim().is_empty();
+                        pieces(src, &e.children, all, cur, out, covered);
+                        if !all {
+                            cur.push(if lead { '\u{2}' } else { '\u{1}' });
+                        }
+                    } else if e.closing_element.is_none() && name.starts_with(|c: char| c.is_ascii_uppercase()) {
+                        // <Price value={total} />: a value in the sentence
+                        cur.push_str(&format!(" {{{name}}} "));
+                    } else {
+                        cut(cur, out);
+                    }
+                }
+            }
+        }
     }
 
     /// An attribute value, as far as the checks need it: a literal, or some other expression.
@@ -558,6 +663,7 @@ mod jsx {
             }
             self.markup_checks(el, name, at, &a, parent || before);
             self.field_checks(el, name, at, &a);
+            self.copy_checks(el, name, at);
             self.around.push((named_scrim || CLICK.iter().any(|c| a.has(c)), false));
             // a label's htmlFor, or a wrapper component's (<Field htmlFor="owner">) that renders the label
             match a.get("htmlFor").or(if name == "label" { a.get("for") } else { None }) {
@@ -658,6 +764,30 @@ mod jsx {
     }
 
     impl Reader<'_> {
+        /// A block's copy, and an inline element's only when no block read it (the root a component returns, or
+        /// one inside an expression).
+        fn copy_checks(&mut self, el: &JSXElement, name: &str, at: usize) {
+            if NOT_COPY.contains(&name) {
+                return;
+            }
+            if LABELLED.contains(&name) {
+                let (mut cur, mut out) = (String::new(), Vec::new());
+                pieces(self.src, &el.children, true, &mut cur, &mut out, &mut Default::default());
+                out.push(cur);
+                let label = clean(&out.join(" "));
+                if !label.is_empty() {
+                    self.out.labels.push((at, label));
+                }
+            }
+            if inline(name) && self.covered.contains(&el.span.start) {
+                return;
+            }
+            let (mut cur, mut out) = (String::new(), Vec::new());
+            pieces(self.src, &el.children, false, &mut cur, &mut out, &mut self.covered);
+            out.push(cur);
+            self.out.copy.extend(out.iter().map(|p| clean(p)).filter(|p| !p.is_empty()).map(|p| (at, p)));
+        }
+
         /// The field and link checks' reading of one element.
         fn field_checks(&mut self, el: &JSXElement, name: &str, at: usize, a: &Attrs) {
             let s = |n: &str| match a.get(n) {
@@ -835,7 +965,7 @@ mod jsx {
         if ret.fatal_error {
             return None;
         }
-        let mut r = Reader { src: raw, out: Markup::default(), forms: Vec::new(), loaders: Vec::new(), imports: HashMap::new(), around: Vec::new(), labels: 0, fors: Vec::new(), fields: Vec::new(), groups: 0, radios: Vec::new(), checks: Vec::new(), exprs: 0, repeated: Default::default() };
+        let mut r = Reader { src: raw, out: Markup::default(), forms: Vec::new(), loaders: Vec::new(), imports: HashMap::new(), around: Vec::new(), labels: 0, fors: Vec::new(), fields: Vec::new(), groups: 0, radios: Vec::new(), checks: Vec::new(), exprs: 0, repeated: Default::default(), covered: Default::default() };
         r.visit_program(&ret.program);
         r.out.unlabeled = r.fields.iter().filter(|(_, id)| match id {
             None => true,
@@ -1244,6 +1374,68 @@ mod html {
                 }
                 _ => {}
             }
+        }
+
+        // Copy: per block, its text with inline children joined; each link's and button's whole label.
+        fn pieces(node: ego_tree::NodeRef<Node>, all: bool, cur: &mut String, out: &mut Vec<String>, covered: &mut std::collections::HashSet<ego_tree::NodeId>) {
+            for c in node.children() {
+                match c.value() {
+                    Node::Text(s) => {
+                        if (cur.ends_with(['\u{1}', '\u{2}']) && s.starts_with(|c: char| !c.is_whitespace())) || lead_label(cur, &s[..]) {
+                            out.push(std::mem::take(cur));
+                        }
+                        cur.push_str(&s[..]);
+                    }
+                    Node::Element(e) => {
+                        let name = e.name();
+                        if NOT_COPY.contains(&name) {
+                            continue;
+                        }
+                        if name == "br" {
+                            cur.push(' ');
+                        } else if all || inline(name) {
+                            covered.insert(c.id());
+                            if !all && touching(cur) {
+                                out.push(std::mem::take(cur));
+                            }
+                            let lead = cur.trim().is_empty();
+                            pieces(c, all, cur, out, covered);
+                            if !all {
+                                cur.push(if lead { '\u{2}' } else { '\u{1}' });
+                            }
+                        } else {
+                            out.push(std::mem::take(cur));
+                        }
+                    }
+                    _ => {}
+                }
+            }
+        }
+        let mut covered = std::collections::HashSet::new();
+        for node in doc.tree.root().descendants() {
+            let Node::Element(el) = node.value() else { continue };
+            let name = el.name();
+            if NOT_COPY.contains(&name) || node.ancestors().any(|a| a.value().as_element().is_some_and(|e| NOT_COPY.contains(&e.name()))) {
+                continue;
+            }
+            // placed at its own tag, or at the nearest one written (a <body> or <p> the parser added has none)
+            let Some(at) = std::iter::once(node).chain(node.ancestors()).find_map(|n| made.get(&n.id())).map(|&k| at(&tags[k])) else { continue };
+            if LABELLED.contains(&name) {
+                let (mut cur, mut parts) = (String::new(), Vec::new());
+                pieces(node, true, &mut cur, &mut parts, &mut Default::default());
+                parts.push(cur);
+                let label = clean(&parts.join(" "));
+                if !label.is_empty() {
+                    out.labels.push((at, label));
+                }
+            }
+            if inline(name) && covered.contains(&node.id()) {
+                continue;
+            }
+            let (mut cur, mut parts) = (String::new(), Vec::new());
+            pieces(node, false, &mut cur, &mut parts, &mut covered);
+            parts.push(cur);
+            out.copy.extend(parts.iter().map(|p| clean(p)).filter(|p| !p.is_empty()).map(|p| (at, p)));
         }
 
         let fors: std::collections::HashSet<String> = doc.tree.root().descendants().filter_map(|n| n.value().as_element().filter(|e| e.name() == "label").and_then(|e| e.attr("for")).map(|f| f.to_string())).collect();

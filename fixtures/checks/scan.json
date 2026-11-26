@@ -2541,7 +2541,7 @@
     "rule": "RX-CD-12",
     "file": "a.tsx",
     "line": 1,
-    "column": 17,
+    "column": 1,
     "message": "\"Selengkapnya\": a label that does not say where it leads or what it does; name the destination or the result (\"Lihat syarat promo\", \"Kirim laporan\")"
    }
   ]
@@ -2564,7 +2564,7 @@
     "rule": "RX-CD-12",
     "file": "a.tsx",
     "line": 1,
-    "column": 29,
+    "column": 1,
     "message": "\"Learn more\": a label that does not say where it leads or what it does; name the destination or the result (\"Lihat syarat promo\", \"Kirim laporan\")"
    }
   ]
@@ -2587,7 +2587,7 @@
     "rule": "RX-CD-12",
     "file": "a.html",
     "line": 1,
-    "column": 8,
+    "column": 1,
     "message": "\"Klik di sini\": a label that does not say where it leads or what it does; name the destination or the result (\"Lihat syarat promo\", \"Kirim laporan\")"
    }
   ]
@@ -2740,7 +2740,7 @@
     "rule": "RX-CD-21",
     "file": "a.tsx",
     "line": 1,
-    "column": 3,
+    "column": 1,
     "message": "\"Pesanan yang sudah kamu bayar akan ...\": a sentence of 23 words; NN/g's ceiling is 15 to 20 words, so split it into one idea per sentence"
    }
   ]
@@ -2805,7 +2805,7 @@
     "rule": "RX-CD-18",
     "file": "a.tsx",
     "line": 1,
-    "column": 3,
+    "column": 1,
     "message": "\"memungkinkan Anda\": filler that adds words, not meaning; say what the user can do (\"Bayar dengan QRIS\", not \"memungkinkan Anda membayar dengan QRIS\")"
    }
   ]
@@ -2828,7 +2828,7 @@
     "rule": "RX-CD-18",
     "file": "a.html",
     "line": 1,
-    "column": 6,
+    "column": 1,
     "message": "\"We understand that\": filler that adds words, not meaning; say what the user can do (\"Bayar dengan QRIS\", not \"memungkinkan Anda membayar dengan QRIS\")"
    }
   ]
@@ -2879,7 +2879,7 @@
     "rule": "RX-CD-19",
     "file": "a.tsx",
     "line": 1,
-    "column": 3,
+    "column": 1,
     "message": "\"terbaik\": a superlative needs a source from the brief; otherwise write the fact that would earn it"
    }
   ]
@@ -2902,7 +2902,7 @@
     "rule": "RX-CD-19",
     "file": "a.html",
     "line": 1,
-    "column": 4,
+    "column": 1,
     "message": "\"fastest\": a superlative needs a source from the brief; otherwise write the fact that would earn it"
    }
   ]
@@ -2925,7 +2925,7 @@
     "rule": "RX-CD-19",
     "file": "a.tsx",
     "line": 1,
-    "column": 6,
+    "column": 1,
     "message": "\"#1\": a superlative needs a source from the brief; otherwise write the fact that would earn it"
    }
   ]

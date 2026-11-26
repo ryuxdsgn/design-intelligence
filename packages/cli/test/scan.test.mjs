@@ -332,6 +332,28 @@ test("RX-CD-21: a visible sentence over 20 words warns; short sentences, prices,
   assert.deepEqual(rules(scan("a.html", "<script>const steps = ['Masukkan nomor virtual account dan nominal yang ingin kamu bayarkan lalu tekan tombol bayar untuk melanjutkan transaksi ini sekarang juga'];</script>")), []);
 });
 
+// Copy read from the parsed file, 2026-11-27: the patterns read only the text between ">" and "<", so a sentence
+// with a bold phrase or a {value} in it, or a label wrapped in a <span>, was never judged, and JavaScript between a
+// ">" and a "<" was. On six real folders (162 files) the parser dropped two such code findings and added none.
+test("copy rules read a block's text whole: inline tags and values join it, buttons and code do not", () => {
+  const long = "Dana akan kembali ke saldo Anda dalam tiga sampai lima hari kerja setelah permintaan pengembalian disetujui oleh tim kami dan bank penerbit kartu Anda.";
+  const bold = long.replace("tiga sampai lima hari kerja", "<b>tiga sampai lima hari kerja</b>");
+  assert.deepEqual(rules(scan("a.html", `<p>${bold}</p>`)), ["warn RX-CD-21"]);
+  assert.deepEqual(rules(scan("a.tsx", `const A = ({ n }) => <p>${long.replace("tiga sampai lima", "{n}")}</p>;`)), ["warn RX-CD-21"]);
+  assert.deepEqual(rules(scan("a.html", `<a href="/promo"><span>Klik di sini</span></a>`)), ["warn RX-CD-12"]);
+  assert.deepEqual(rules(scan("a.tsx", `const B = () => <Link href="/promo"><span>Baca selengkapnya</span></Link>;`)), ["warn RX-CD-12"]);
+  assert.deepEqual(rules(scan("a.html", `<p>Layanan <strong>terbaik</strong> untuk AC Anda.</p>`)), ["warn RX-CD-19"]);
+  // buttons in a row are controls, not one sentence
+  const buttons = Array.from({ length: 12 }, (_, i) => `<button type="button">Langkah ${i + 1} bayar</button>`).join("\n");
+  assert.deepEqual(scan("a.html", `<div>${buttons}</div>`), []);
+  // a label set in front of a sentence is not part of it
+  assert.deepEqual(scan("a.tsx", `const C = () => <li><span>What went wrong</span> It asked nothing, so the fact sheet never came; it kept the example data, wallet balance and dollars.</li>;`), []);
+  // spans laid out apart by CSS, with nothing between them
+  assert.deepEqual(scan("a.html", `<div>${Array.from({ length: 12 }, (_, i) => `<span>${i + 1}</span><span>Progres terlihat</span>`).join("")}</div>`), []);
+  // code between a ">" and a "<" is not copy
+  assert.deepEqual(scan("a.tsx", `const D = () => { const [owner, setOwner] = useState(""); const x = a > b && c < d ? one(two, three, four, five, six, seven, eight, nine, ten, eleven, twelve, thirteen, fourteen, fifteen, sixteen, seventeen, eighteen, nineteen, twenty, more) : 0; return <p>Hai</p>; };`), []);
+});
+
 test("RX-CD-18: filler phrases in visible text warn; plain copy and code do not", () => {
   assert.deepEqual(rules(scan("a.tsx", "<p>Fitur ini memungkinkan Anda membayar dengan QRIS.</p>")), ["warn RX-CD-18"]);
   assert.deepEqual(rules(scan("a.html", "<span>We understand that waiting is hard</span>")), ["warn RX-CD-18"]);
