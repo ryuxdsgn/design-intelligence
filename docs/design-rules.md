@@ -211,13 +211,13 @@ line below for its exact source.
 <!-- provenance:start -->
 | Source cited | Rules citing it | Rules citing only this |
 | --- | --- | --- |
-| Public standard or research | 104 | 62 |
+| Public standard or research | 105 | 63 |
 | Industry practice | 28 | 6 |
 | Observed in a RYUX run | 18 | 7 |
 | Pattern also in another MIT ruleset (text written for RYUX) | 4 | 2 |
 | RYUX principle, taxonomy, or review | 75 | 21 |
 
-All 160 rules cite a source; 62 cite more than one kind, so the "Rules citing it" column adds up to more than 160.
+All 161 rules cite a source; 62 cite more than one kind, so the "Rules citing it" column adds up to more than 161.
 <!-- provenance:end -->
 
 ## Rules
@@ -225,7 +225,7 @@ All 160 rules cite a source; 62 cite more than one kind, so the "Rules citing it
 Generated from `packages/cli/src/content.ts` by `pnpm sync:skills`. Edit the rules there, not here.
 
 <!-- rules:start -->
-160 rules across 15 modules: 69 Required, 39 Preferred, 52 Contextual; 19 Hard Gates and 14 Quality Locks.
+161 rules across 15 modules: 69 Required, 39 Preferred, 53 Contextual; 19 Hard Gates and 14 Quality Locks.
 
 ### Product thinking (RX-PR) · `knowledge/product.md`
 
@@ -362,6 +362,20 @@ Gate area PRODUCT. Covers user, task, goal, primary action, constraints, assumpt
 - Not when: a small change inside an existing product, where one line on what changed and why is enough
 - Trade-off: a longer final message; five to seven lines, not a receipt for every choice
 - Check: review: five to seven rationale lines, each with a user, brief, or evidence reason and its strength, a UX principle named and applied to this screen, a cost, and what would change it; the losing alternative named; no taste word as a reason; on a design-tool canvas, the annotations beside the frames, each naming its principle in plain words, and the final message saying how many, where, and how to see them
+
+#### RX-PR-15 [Contextual] The first screen looks worth what it costs
+
+- When: a landing page, a pricing page, onboarding, or any first screen a visitor judges before they act
+- Do: Make what the first screen signals match the product's value proposition, and make the first step look light.
+  - Name the positioning from the brief: price (budget, mid, premium), service, or exclusivity. When the brief does not say, it is an open question for the user (RX-PR-02), not a guess.
+  - Match the visual signals to it: density, colour, imagery, and trust cues (a guarantee, a licence, reviews that exist). A budget offer can look dense and bright with its deals up front; a premium or service offer looks calm, with room and fewer, better images. A mismatch (a budget look at a premium price, or luxury signals on a discount) is a finding.
+  - Lower the perceived cost before the value is seen: the first action and what it takes are clear on the first screen (how many steps, what is needed, whether it is free to start); no long form, account wall, or wall of text before the visitor sees what they get.
+  - Keep the first screen uncluttered for a product that depends on trust (money, health, a child, a home): count the competing elements above the fold, and cut what does not serve the visitor's first question (RX-UX-13).
+- Do not: Dress a discount offer in luxury signals or a premium one in a crowded deals layout; put a sign-up wall or a long form before the value; crowd the first screen of a trust-dependent product; or decide the positioning yourself when the brief does not give it.
+- Why: People weigh what a page seems to offer against what it seems to cost them, and they make that call on the first screen: when it looks hard, cheap, or not for them, they leave before the value is seen. A cluttered page reads as careless, and that impression spreads to the whole business. (NNGroup perceived value in user interfaces (Harley 2016): expected utility as perceived value against perceived cost, from information foraging; perceived cost drives the first assessment; a site's look must match the business's value proposition (a budget airline's dense deals page against a premium airline's calm one); clutter signals low attention to detail, and the halo effect spreads it to the organisation)
+- Not when: task UI the user already chose and returns to; a brand system that already sets the look and the positioning
+- Trade-off: matching a budget positioning can look less polished to a designer's eye, and a calm premium page can hide the price a bargain hunter wants first
+- Check: review; Critique and Design: the positioning named from the brief, or listed as an open question; the first screen's density, colour, imagery, and trust cues read against it (match or mismatch, with the element); the first action and its cost visible on the first screen; competing elements above the fold counted for a trust-dependent product
 
 ---
 
@@ -1411,11 +1425,14 @@ Gate area UI. Covers art direction, composition, expressive surfaces, motion, as
   - visceral: the first impression comes from the brand layer (RX-UI-12), not from decoration without a job
   - reflective: the product speaks to the user's values and aims, not only the task ("membangun kebiasaan membaca", not only "target 8 halaman")
   - Read the user's state before adding joy: none in a payment failure, an error, a loss, or a long wait; there the delight is a fast, calm way out.
-- Do not: Add confetti, mascots, or jokes to a flow that is still hard to use, or celebrate in a moment of failure or worry.
-- Why: Delight on one leg is superficial and people remember the bad more than the good; forced joy at the wrong moment annoys. (NNGroup three pillars of user delight (visceral, behavioral, reflective; Norman, Emotional Design); NNGroup delightful UX video)
+  - Count delight only above the needs it rests on, in order: it works (the screen serves a clear need), it is reliable (no flaky or failing action), it is usable (labelled, findable, every link says where it leads); then pleasure. A lower need that fails is fixed first, and the delight on top is not counted.
+  - Tell surface delight from deep delight. Surface: an animation, playful microcopy, a beautiful image, a sound; it pleases once and turns gimmicky on a flawed product. Deep: the information the user needs appears at the moment they need it, advanced options come on demand, and the features are few and tied to the main task. A design that claims delight names at least one deep source, not only surface ones.
+  - Anything that looks clickable works: a tab, a chip, a card with a hover, or a picture wall that does nothing on a click is a false affordance and fails the usable need, however pleasing it looks.
+- Do not: Add confetti, mascots, or jokes to a flow that is still hard to use, or celebrate in a moment of failure or worry; claim delight from surface touches alone; or style an element as interactive when it does nothing.
+- Why: Delight on one leg is superficial and people remember the bad more than the good; forced joy at the wrong moment annoys. Delight rests on a product that works, is reliable, and is usable: surface touches on a flawed product read as gimmicks, while deep delight comes from the product doing the right thing at the right moment. (NNGroup three pillars of user delight (visceral, behavioral, reflective; Norman, Emotional Design; Fessenden 2022); NNGroup a theory of user delight (Fessenden 2017: functional, reliable, usable, pleasurable, after Walter's hierarchy of user needs; surface vs deep delight); NNGroup delightful UX video; owner blind note on an H11 landing page (2026-11-26): goal tabs that looked interactive on a static page, a false affordance)
 - Not when: a utility or internal tool whose brief asks for none; ease of use is its delight
-- Trade-off: the reflective layer needs knowledge of what users value, which may need research
-- Check: review; Critique Design Read
+- Trade-off: the reflective layer needs knowledge of what users value, which may need research; deep delight takes more product work than a surface touch
+- Check: review; Critique Design Read: each need (works, reliable, usable) passes before any delight is counted; delight sources listed as surface or deep, at least one deep; no element styled as interactive that does nothing. Delight itself is not measured from a screen: call it a hypothesis, tested with contextual inquiry or a diary study
 
 #### RX-UI-23 [Contextual] A mark designed on request
 
