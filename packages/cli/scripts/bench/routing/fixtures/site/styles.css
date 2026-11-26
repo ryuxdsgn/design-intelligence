@@ -1,0 +1,8 @@
+:root{--ink:#1d1b16;--paper:#fbf7ef;--accent:#b4462b;--muted:#5e574b;--radius:10px;--space:16px}
+*{box-sizing:border-box}body{margin:0;font-family:Georgia,serif;color:var(--ink);background:var(--paper)}
+.top{display:flex;justify-content:space-between;align-items:center;padding:var(--space)}
+.top nav a{margin-left:var(--space);color:var(--ink)}.brand{font-weight:700;color:var(--accent);text-decoration:none}
+.wrap{max-width:960px;margin:auto;padding:var(--space)}
+.grid{list-style:none;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:var(--space)}
+.book{background:#fff;border-radius:var(--radius);padding:var(--space)}.book p{color:var(--muted)}.price{color:var(--ink);font-weight:700}
+button{background:var(--accent);color:#fff;border:0;border-radius:var(--radius);padding:10px 14px;font:inherit}
