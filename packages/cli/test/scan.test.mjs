@@ -750,7 +750,7 @@ test("scan <url> warns a cream page, a row that looks like a picker, a drawn sto
     rmSync(dir, { recursive: true, force: true });
     return noBrowser(t);
   }
-  assert.deepEqual(tells(slop).sort(), ["RX-AS-11 a store badge drawn with an icon of its own", "RX-DS-02 buttons of one colour in two shapes", "RX-UI-26 the page is cream", "RX-UI-36 a row that looks like a picker with one option chosen"]);
+  assert.deepEqual(tells(slop).sort(), ["RX-AS-11 a store badge drawn by hand", "RX-DS-02 buttons of one colour in two shapes", "RX-UI-26 the page is cream", "RX-UI-36 a row that looks like a picker with one option chosen"]);
   assert.deepEqual(tells(page("quiet", STORE_QUIET)), []);
   // owner H5 notes 2026-11-25: one store as text, the other a badge image cropped to a taller height
   const svg = (h) => `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='${h}'/%3E`;
@@ -758,6 +758,14 @@ test("scan <url> warns a cream page, a row that looks like a picker, a drawn sto
 <a href="#" style="display:inline-flex;height:48px;background:#000;color:#fff;padding:0 16px;align-items:center">Unduh di App Store</a>
 <a href="#" style="display:inline-flex;height:48px;overflow:hidden"><img alt="Dapatkan di Google Play" src="${svg(71)}" style="height:71px"></a></p></main></body></html>`;
   assert.deepEqual(tells(page("pair", pair)).sort(), ["RX-DS-02 the store badges stand at two heights", "RX-DS-02 the store links come in two forms, a badge image and \"Unduh di App Store\""]);
+  // owner H9 2026-11-26 (GO, SE): the badge's two lines set in text, "Unduh di" over "App Store", with no icon and no image
+  const stacked = `<!doctype html><html lang="id"><body style="background:#fff"><main><h1>Lesin</h1><p style="display:flex;gap:12px">
+<a href="#" style="display:inline-flex;flex-direction:column;background:#000;color:#fff;padding:6px 14px;border-radius:8px;text-decoration:none"><small style="font-size:11px">Unduh di</small><b>App Store</b></a>
+<a href="#" style="display:inline-flex;flex-direction:column;background:#000;color:#fff;padding:6px 14px;border-radius:8px;text-decoration:none"><small style="font-size:11px">Dapatkan di</small><b>Google Play</b></a></p></main></body></html>`;
+  assert.deepEqual(tells(page("stacked", stacked)).filter((x) => x.startsWith("RX-AS-11")), ["RX-AS-11 a store badge drawn by hand"]);
+  // one line of text is a plain link, and stays fine
+  const plain = `<!doctype html><html lang="id"><body style="background:#fff"><main><h1>Lesin</h1><p><a href="#">Unduh di App Store</a> · <a href="#">Dapatkan di Google Play</a></p></main></body></html>`;
+  assert.deepEqual(tells(page("plain", plain)), []);
   rmSync(dir, { recursive: true, force: true });
 });
 

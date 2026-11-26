@@ -176,6 +176,8 @@ test("the skill runs the RYUX CLI from the project, not as a download, and never
   assert.match(product, /are the `--context` of `ryux directions`/);
   // owner H6 2026-11-25: three directions, three page skeletons; strong helper text for seniors, families, and health
   assert.match(flat, /three directions, three skeletons, and none of them the default hero beside a card/);
+  // owner H6 and H9 (2026-11-26): one hero template, a heading with a small card on the right, made three of five pages one idea
+  assert.match(flat, /never a heading and buttons with a small card or phone on the right, which `ryux scan` warns on, RX-UI-29/);
   assert.match(flat, /muted at 7:1 on the section colour for every audience; a glance caption at 14 px or more/);
   // owner H5 notes 2026-11-25: the price question gets an answer, each question once, one download action
   const ux = renderBundle()["knowledge/ux.md"].replace(/\s+/g, " ");

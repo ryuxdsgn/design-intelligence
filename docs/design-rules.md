@@ -1358,6 +1358,7 @@ Gate area UI. Covers art direction, composition, expressive surfaces, motion, as
 - Not when: task UI; a brand system that already sets the page's look
 - Trade-off: making the carrier's asset takes time and tool calls before the page, and a strong carrier can crowd the message if its focal point fights the headline
 - Check: the primary action on the first screen at 1440 and 390 by 844; no decoration between a message and its action; sample-data labels next to their figures; no image used twice; the carrier named and present in the hero; full-bleed non-neutral bands or a mode switch (count); depth system named; text-only sections (at most one); report the carrier in the Delivery Gate UI line
+- Measured: `ryux scan <url>` flags at 1024 px or wider, a hero of a heading and buttons with a small card beside it: one filled or bordered box right of the main heading, narrower than half the page, with text and no large image (warn)
 
 #### RX-UI-32 [Required] One page, one world
 
@@ -2107,7 +2108,7 @@ Gate area UNSLOP. Covers hard gates, purpose gates, quality locks, honest claims
 - Do not: Stand in for the mark with initials in a circle, an emoji, a generic shape, an invented SVG, a letter cut into a tile, or the name typeset to look like a logo; generate a favicon or app icon the user did not ask for; or redraw the brand's mark instead of using its file. Designing a mark is its own task, done only when the user asks for it (RX-UI-23).
 - Why: An invented mark looks finished and is the first thing a team has to throw away; it also passes for a decision nobody made. (pattern also in superdesign-skill (MIT), logo invariant; RX-UI-13 asset provenance; ryux owner review 2026-10-18 (the logo and favicon are the owner's to make); written for RYUX)
 - Check: list every mark slot and the file it uses, or the placeholder; fails on a slot filled by an invented mark; `ryux scan <url>` warns on a store badge drawn with an icon of its own (owner H3 notes, 2026-11-25: a phone icon and a triangle as store badges)
-- Measured: `ryux scan <url>` flags a letter in a tile as the logo, once per page: one or two letters in a filled or bordered box of 16 to 72 px inside an element whose class names a logo or brand; or an App Store or Google Play badge drawn with an icon of its own instead of the store's badge image (warn)
+- Measured: `ryux scan <url>` flags a letter in a tile as the logo, once per page: one or two letters in a filled or bordered box of 16 to 72 px inside an element whose class names a logo or brand; or an App Store or Google Play badge drawn by hand (an icon of its own, or the badge's two lines stacked in text, "Unduh di" over "App Store") instead of the store's badge image; one line of text is a plain link and is left alone (warn)
 <!-- rules:end -->
 
 ## Installation via CLI

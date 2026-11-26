@@ -17156,7 +17156,7 @@
      "rule": "RX-AS-11",
      "level": "warn",
      "selector": "a.store",
-     "message": "a store badge drawn with an icon of its own (\"Unduh di Google Play\"): Apple and Google allow only their own badge images; use the official badge, in one language for both stores, or a plain text link",
+     "message": "a store badge drawn by hand (\"Unduh di Google Play\"): Apple and Google allow only their own badge images; use the official badge, in one language for both stores, or a plain text link",
      "once": "store-badge"
     },
     {

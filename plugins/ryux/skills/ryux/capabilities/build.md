@@ -14,7 +14,7 @@ workflow (SKILL.md); Frame, Explore, and Evaluate happen in Design.
    `node <this skill's folder>/bin/dist/cli/index.js directions --project <name> --context "<owner, city, audience>" --tags <product>,<audience>,<glance|session>`
    (capabilities/design.md, "Draw them first"). With the user there, offer the three as Design does; in a run with
    no questions, build direction 1 on its draw (surface, accent hue range, type category and ramp, layout, material,
-   idea source, treatment, page skeleton for a landing page, and base colours), mark it provisional in Assumptions with why it fits and its pros and cons for
+   idea source, treatment, page skeleton for a landing page, and base colours; the hero takes the form its skeleton gives the product's proof, never a heading and buttons with a small card or phone on the right, which `ryux scan` warns on, RX-UI-29), mark it provisional in Assumptions with why it fits and its pros and cons for
    this product (from the draw's why, pros, and cons lines), and name the other two in a line each with their main pro and con. The UI gate row writes
    the draw seed and whether the surface was kept; "a one-file build" or "budget" is not a reason to skip the draw. If there is none, run Design's stages 1-4 first
    (capabilities/design.md) instead of inventing one in code. Stage 1's questions come first even
