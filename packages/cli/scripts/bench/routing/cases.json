@@ -1,0 +1,18 @@
+{
+  "locked": "2026-11-26, reviewed by the project owner before the first run",
+  "budget_cap_usd": 1.5,
+  "cases": [
+    { "id": "R01", "fixture": "checkout", "prompt": "Analisis halaman checkout ini (checkout.html) sebelum kami ubah. Jangan ubah apa pun dulu.", "capability": ["analyze"], "must_read": [], "must_not_read": ["capabilities/build.md", "capabilities/design.md"] },
+    { "id": "R02", "fixture": null, "full": true, "prompt": "Desain layar riwayat transaksi untuk aplikasi dompet digital, sebagai mockup HTML statis.", "capability": ["design"], "must_read": ["ui", "content", "edge-cases", "unslop"], "must_not_read": [] },
+    { "id": "R03", "fixture": "site", "full": true, "prompt": "Tambahkan halaman profil pengguna ke situs ini.", "capability": ["build"], "must_read": ["frontend", "ui", "accessibility", "unslop"], "must_not_read": [] },
+    { "id": "R04", "fixture": "landing", "prompt": "Review halaman ini (landing.html), apa yang harus diperbaiki duluan?", "capability": ["critique"], "must_read": [], "must_not_read": ["capabilities/build.md"] },
+    { "id": "R05", "fixture": "qa", "prompt": "Cek apakah halaman ini (page.html) sudah sesuai DESIGN.md.", "capability": ["qa"], "must_read": [], "must_not_read": ["capabilities/design.md"] },
+    { "id": "R06", "fixture": "site", "prompt": "Buat form alamat pengiriman untuk checkout di situs ini.", "capability": ["build"], "must_read": ["forms", "accessibility", "content", "edge-cases"], "must_not_read": [] },
+    { "id": "R07", "fixture": null, "prompt": "Tulis ulang pesan error ini supaya jelas: 'Transaksi gagal. Kode TXN_0x8004'", "capability": ["any"], "must_read": ["content"], "must_not_read": ["knowledge/ui.md", "knowledge/imagery.md"] },
+    { "id": "R08", "fixture": null, "full": true, "prompt": "Rancang alur bayar pakai QRIS di checkout, sebagai mockup HTML.", "capability": ["design"], "must_read": ["interaction", "forms", "content", "edge-cases", "accessibility"], "must_not_read": [] },
+    { "id": "R09", "fixture": null, "prompt": "Buat ilustrasi empty state untuk daftar favorit yang masih kosong (SVG).", "capability": ["design", "build"], "must_read": ["illustration"], "must_not_read": [] },
+    { "id": "R10", "fixture": null, "prompt": "Buat token warna dan komponen tombol untuk design system kami (CSS).", "capability": ["build"], "must_read": ["design-system"], "must_not_read": [] },
+    { "id": "R11", "fixture": "mobile", "prompt": "Halaman ini (page.html) berantakan di layar HP, perbaiki.", "capability": ["build"], "must_read": ["responsive", "accessibility"], "must_not_read": [] },
+    { "id": "R12", "fixture": "shop", "prompt": "Tambahkan animasi saat barang masuk keranjang di shop.html.", "capability": ["build"], "must_read": ["imagery", "interaction"], "must_not_read": [] }
+  ]
+}

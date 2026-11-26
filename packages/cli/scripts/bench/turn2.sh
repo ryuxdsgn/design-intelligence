@@ -23,4 +23,5 @@ FLAGS=(--model ${BENCH_MODEL:-claude-opus-5-5} --permission-mode auto
 # under test in BENCH_SETTINGS. Default: no MCP servers at all.
 [[ -n $BENCH_CONNECTORS ]] || FLAGS+=(--strict-mcp-config)
 [[ -d .claude/skills ]] || FLAGS+=(--disable-slash-commands)
+[[ -n $BENCH_MAX_BUDGET ]] && FLAGS+=(--max-budget-usd $BENCH_MAX_BUDGET)
 claude -p --resume "$SID" "$(cat $FACTS)" $FLAGS < /dev/null > $NAME.jsonl 2> $NAME.err

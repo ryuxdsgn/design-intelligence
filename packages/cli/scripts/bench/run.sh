@@ -39,4 +39,6 @@ FLAGS=(--model ${BENCH_MODEL:-claude-opus-5-5} --permission-mode auto
 # under test in BENCH_SETTINGS. Default: no MCP servers at all.
 [[ -n $BENCH_CONNECTORS ]] || FLAGS+=(--strict-mcp-config)
 [[ $COND == A ]] && FLAGS+=(--disable-slash-commands)
+# BENCH_MAX_BUDGET=<usd>: stop the run at that spend (the routing eval reads only the start of most cases).
+[[ -n $BENCH_MAX_BUDGET ]] && FLAGS+=(--max-budget-usd $BENCH_MAX_BUDGET)
 claude -p "$(cat $PROMPT_FILE)" $FLAGS < /dev/null > turn1.jsonl 2> turn1.err

@@ -1,0 +1,12 @@
+<!doctype html>
+<html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Toko Sayur Bu Ani</title>
+<style>body{font-family:system-ui;margin:0}header{display:flex;justify-content:space-between;padding:16px;border-bottom:1px solid #eee}.cart{position:relative}.badge{background:#16a34a;color:#fff;border-radius:999px;padding:0 6px;font-size:12px}ul{list-style:none;padding:16px;display:grid;gap:12px}li{display:flex;justify-content:space-between;align-items:center}button{background:#16a34a;color:#fff;border:0;border-radius:8px;padding:8px 12px}</style></head>
+<body>
+<header><strong>Sayur Bu Ani</strong><span class="cart">Keranjang <span class="badge" id="count">0</span></span></header>
+<ul>
+<li>Bayam 1 ikat — Rp5.000 <button onclick="add()">Tambah</button></li>
+<li>Tomat 500 g — Rp9.000 <button onclick="add()">Tambah</button></li>
+<li>Tempe 1 papan — Rp7.000 <button onclick="add()">Tambah</button></li>
+</ul>
+<script>let n=0;function add(){n++;document.getElementById('count').textContent=n}</script>
+</body></html>
