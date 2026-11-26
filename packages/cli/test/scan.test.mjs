@@ -324,9 +324,9 @@ test("RX-CD-12: a heading that opens with a stock phrase warns; a front-loaded h
   assert.deepEqual(scan("a.tsx", "<p>Selamat datang di Sejuk</p>"), []);
 });
 
-test("RX-CD-03: a visible sentence over 20 words warns; short sentences, prices, and times do not", () => {
+test("RX-CD-21: a visible sentence over 20 words warns; short sentences, prices, and times do not", () => {
   const long = "Pesanan yang sudah kamu bayar akan kami proses setelah penjual mengonfirmasi stok barang yang tersedia di gudang mereka sehingga kamu perlu menunggu sebentar.";
-  assert.deepEqual(rules(scan("a.tsx", `<p>${long}</p>`)), ["warn RX-CD-03"]);
+  assert.deepEqual(rules(scan("a.tsx", `<p>${long}</p>`)), ["warn RX-CD-21"]);
   assert.deepEqual(rules(scan("a.html", "<p>Pesanan dikirim besok. Total Rp1.250.000, tiba 14.30 WIB. Lacak paketmu di halaman Pesanan.</p>")), []);
   assert.deepEqual(rules(scan("a.tsx", "<p>{items.map((item) => item.name + ' ' + item.price + ' ' + item.unit + ' ' + item.note + ' ' + item.tag + ' ' + item.city + ' ' + item.store + ' ' + item.seller + ' ' + item.status + ' ' + item.date + ' x')}</p>")), []);
   assert.deepEqual(rules(scan("a.html", "<script>const steps = ['Masukkan nomor virtual account dan nominal yang ingin kamu bayarkan lalu tekan tombol bayar untuk melanjutkan transaksi ini sekarang juga'];</script>")), []);

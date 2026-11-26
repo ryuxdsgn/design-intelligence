@@ -2737,7 +2737,7 @@
   "output": [
    {
     "level": "warn",
-    "rule": "RX-CD-03",
+    "rule": "RX-CD-21",
     "file": "a.tsx",
     "line": 1,
     "column": 3,

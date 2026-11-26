@@ -346,7 +346,7 @@ fn without_code_blocks(text: &str) -> String {
     out
 }
 
-fn rule_cd03_sentence(s: &Source, _: &Ctx) -> Vec<Hit> {
+fn rule_cd21_sentence(s: &Source, _: &Ctx) -> Vec<Hit> {
     matches(&without_code_blocks(&s.text), &[(r">([^<>{}]+)<", "u", |m| {
         let (words, opening) = longest_sentence(&m.g(1));
         (words > 20).then(|| format!("\"{opening} ...\": a sentence of {words} words; NN/g's ceiling is 15 to 20 words, so split it into one idea per sentence"))
@@ -987,7 +987,7 @@ fn detectors() -> &'static [Detector] {
         Detector { rule: "RX-CD-09", level: "warn", exts: code, folder: false, find: rule_cd09 },
         Detector { rule: "RX-CD-12", level: "warn", exts: markup, folder: false, find: rule_cd12_label },
         Detector { rule: "RX-CD-12", level: "warn", exts: markup, folder: false, find: rule_cd12_heading },
-        Detector { rule: "RX-CD-03", level: "warn", exts: markup, folder: false, find: rule_cd03_sentence },
+        Detector { rule: "RX-CD-21", level: "warn", exts: markup, folder: false, find: rule_cd21_sentence },
         Detector { rule: "RX-CD-18", level: "warn", exts: markup, folder: false, find: rule_cd18 },
         Detector { rule: "RX-CD-19", level: "warn", exts: markup, folder: false, find: rule_cd19 },
         Detector { rule: "RX-AS-03", level: "fail", exts: code, folder: false, find: rule_as03_lorem },
