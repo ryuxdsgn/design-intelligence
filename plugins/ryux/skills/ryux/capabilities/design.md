@@ -179,7 +179,8 @@ The six stages of the core workflow (SKILL.md), as Design runs them.
    components, a library added to the file) and build from it. In a shared design file, read only the pages the task names; another
    page's components and variables are this product's library only when DESIGN.md or the user says so, but a library added to the file always counts. Create only what is missing: variables for color
    roles, spacing, radius, and type sizes and families before the first frame, and components for
-   repeated elements (RX-DS-03).
+   repeated elements (RX-DS-03). When the file or the repo has a design system, or the task makes components or
+   variables, read knowledge/design-system.md before the first frame.
    **Scale to the task.** A small job (about three screens, no design system or component library asked for, nothing
    handed to a team) spends its effort on what the screens show: variables for the colours, sizes, and families the
    screens use, then the screens themselves, built in auto layout; only an element that repeats on two or more screens

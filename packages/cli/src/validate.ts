@@ -44,11 +44,14 @@ export function validateBundle(files: Record<string, string>): BundleReport {
   if (routerLines > 180) warnings.push(`SKILL.md is ${routerLines} lines; the router is read on every task`);
 
   for (const [path, text] of Object.entries(files)) {
-    for (const m of text.matchAll(/`((?:knowledge|capabilities)\/[a-z-]+\.md)`/g)) {
-      if (!(m[1] in files)) errors.push(`${path}: reference to ${m[1]}, which does not exist`);
+    // Every module path, in backticks or in prose: an agent follows both.
+    for (const ref of new Set([...text.matchAll(/(?:knowledge|capabilities)\/[a-z-]+\.md/g)].map((m) => m[0]))) {
+      if (!(ref in files)) errors.push(`${path}: reference to ${ref}, which does not exist`);
     }
-    for (const m of text.matchAll(/RX-[A-Z0-9]+-\d{2}/g)) {
-      if (!ruleIds.has(m[0]) && !(m[0] in RETIRED)) errors.push(`${path}: unknown rule ${m[0]}`);
+    for (const id of new Set([...text.matchAll(/RX-[A-Z0-9]+-\d{2}/g)].map((m) => m[0]))) {
+      if (ruleIds.has(id)) continue;
+      if (id in RETIRED) warnings.push(`${path}: ${id} is retired; cite ${RETIRED[id].to}, where it lives now`);
+      else errors.push(`${path}: unknown rule ${id}`);
     }
     const old = [...new Set([...text.matchAll(OLD_NAMES)].map((m) => m[0]))];
     if (old.length) errors.push(`${path}: RYUX 1.x skill names left in the text (${old.join(", ")})`);

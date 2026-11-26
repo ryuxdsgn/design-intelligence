@@ -123,15 +123,15 @@ A small change (a copy fix, one component, one state) reads only the module it t
 
 | Task | Read |
 | --- | --- |
-| UI implementation | `knowledge/product.md`, `knowledge/ux.md`, `knowledge/ui.md`, `knowledge/design-system.md`, `knowledge/frontend.md`, `capabilities/qa.md`, `knowledge/unslop.md` |
+| UI implementation | `knowledge/product.md`, `knowledge/ux.md`, `knowledge/ui.md`, `knowledge/design-system.md`, `knowledge/frontend.md`, `capabilities/qa.md`, `knowledge/accessibility.md`, `knowledge/unslop.md` |
 | Form implementation | `knowledge/product.md`, `knowledge/ux.md`, `knowledge/forms.md`, `knowledge/interaction.md`, `knowledge/accessibility.md`, `knowledge/edge-cases.md`, `knowledge/content.md`, `knowledge/ui.md`, `knowledge/unslop.md` |
 | Mobile UI | `knowledge/ux.md`, `knowledge/ui.md`, `knowledge/content.md`, `knowledge/responsive.md`, `knowledge/accessibility.md`, `knowledge/unslop.md` |
-| Checkout or payment | `knowledge/product.md`, `knowledge/interaction.md`, `knowledge/forms.md`, `knowledge/content.md`, `knowledge/edge-cases.md`, `knowledge/ui.md`, `knowledge/unslop.md` |
-| Data-heavy view (list, table, dashboard) | `knowledge/ux.md`, `knowledge/edge-cases.md`, `knowledge/responsive.md`, `knowledge/design-system.md`, `knowledge/frontend.md`, `knowledge/ui.md`, `knowledge/unslop.md` |
+| Checkout or payment | `knowledge/product.md`, `knowledge/interaction.md`, `knowledge/forms.md`, `knowledge/content.md`, `knowledge/edge-cases.md`, `knowledge/ui.md`, `knowledge/accessibility.md`, `knowledge/unslop.md` |
+| Data-heavy view (list, table, dashboard) | `knowledge/ux.md`, `knowledge/edge-cases.md`, `knowledge/responsive.md`, `knowledge/design-system.md`, `knowledge/frontend.md`, `knowledge/ui.md`, `knowledge/accessibility.md`, `knowledge/unslop.md` |
 | Frontend logic or utilities (formatting, state, data shown to users) | `knowledge/frontend.md`, `knowledge/content.md`, `knowledge/edge-cases.md` |
 | AI feature (generated answers, summaries, drafts) | `knowledge/product.md`, `knowledge/ux.md`, `knowledge/content.md`, `knowledge/edge-cases.md`, `knowledge/unslop.md` |
 | Copy only (UI text, chat, announcements) | `knowledge/content.md`, `knowledge/unslop.md` |
-| Visual refinement | `knowledge/ui.md`, `knowledge/design-system.md`, `capabilities/qa.md`, `knowledge/unslop.md` |
+| Visual refinement | `knowledge/ui.md`, `knowledge/design-system.md`, `capabilities/qa.md`, `knowledge/accessibility.md`, `knowledge/unslop.md` |
 | User flow, journey map, or another UX map | `knowledge/product.md`, `knowledge/ux.md`, `knowledge/edge-cases.md`, `knowledge/content.md` |
 | Review or critique | `capabilities/critique.md` (Design Read + heuristic_eval), plus `capabilities/qa.md` |
 

@@ -68,6 +68,19 @@ test("check fails on a missing module and on no install", () => {
   rmSync(dir, { recursive: true, force: true });
 });
 
+test("check warns when an installed file differs from the release, and update clears it", () => {
+  const dir = project();
+  run(dir, "install", "--agent", "claude");
+  const forms = join(dir, ".claude/skills/ryux/knowledge/forms.md");
+  writeFileSync(forms, readFileSync(forms, "utf8") + "\nA line nobody shipped.\n");
+  const c = run(dir, "check");
+  assert.equal(c.code, 0, "an edit is a warning, not a failure");
+  assert.match(c.out, /1 file differ[s]? from RYUX \d+\.\d+\.\d+ as released \(knowledge\/forms\.md\)/);
+  run(dir, "update");
+  assert.doesNotMatch(run(dir, "check").out, /as released/);
+  rmSync(dir, { recursive: true, force: true });
+});
+
 test("update migrates a RYUX 1.x install", () => {
   const dir = project();
   for (const name of ["ryux-core", "ryux-forms", "ryux-critique"]) {

@@ -4,7 +4,8 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { renderBundle as renderFiles, toModuleRefs, modulePath } from "../dist/render.js";
+import { renderBundle as renderFiles, toModuleRefs, modulePath, deliveryGateTemplate } from "../dist/render.js";
+import { ACTIVATION, GATE_AREAS, SKILLS, RETIRED } from "../dist/intelligence/content.js";
 
 // The Design capability is three files read at different times (design.md, then design-deliver.md when the screens are
 // built, design-md.md when DESIGN.md is the deliverable); the content tests read them as one.
@@ -840,4 +841,81 @@ test("the gate line keeps one form in every language, so ryux report-check can c
   const r = renderBundle()["report.md"].replace(/\s+/g, " ");
   assert.match(r, /In every language the line starts with `Gate:` and gives a number before each status word \(PASS, FAIL, NOT VERIFIED, N\/A\)/);
   assert.match(r, /ryux report-check/);
+});
+
+// ── Routing consistency: the tables an agent routes by agree with each other ────────────────────────────
+
+test("Delivery Gate: all areas in order, FINAL last, and the extra fields the report reads", () => {
+  const lines = deliveryGateTemplate().split("\n").filter((l) => /^[A-Z]/.test(l));
+  assert.deepEqual(lines.map((l) => l.split(/\s{2,}/)[0]), [...GATE_AREAS, "FINAL"]);
+  const field = (area, re) => assert.match(lines.find((l) => l.startsWith(area + " ")), re, `${area} lost a field`);
+  field("PRODUCT", /modules read <list>, required not read <list>/);
+  field("UX", /pricing: plans <n>/);
+  field("CONTENT", /open rules on screen/);
+  field("UI", /directions shown <n>/);
+  field("DESIGN SYSTEM", /library instances <n>/);
+  field("EDGE CASES", /view × state matrix \(RX-EC-01\)/);
+  assert.ok(renderFiles()["SKILL.md"].includes(deliveryGateTemplate()), "the router carries the template as rendered");
+});
+
+test("every gate area can be graded: some task row loads a module of that area", () => {
+  for (const area of GATE_AREAS) {
+    const modules = SKILLS.filter((s) => s.gateArea === area).map((s) => s.id);
+    assert.ok(ACTIVATION.some((row) => row.skills.some((m) => modules.includes(m))), `${area}: no task row loads ${modules.join(" or ")}`);
+  }
+});
+
+test("every knowledge module is reachable from the router: a task row, or the sentence above the task table", () => {
+  const router = renderFiles()["SKILL.md"];
+  const table = router.slice(router.indexOf("## Task table"), router.indexOf("## Delivery Gate"));
+  const inRow = new Set(ACTIVATION.flatMap((r) => r.skills));
+  for (const s of SKILLS) {
+    if (inRow.has(s.id)) continue;
+    assert.ok(table.includes(`\`${modulePath(s.id)}\``), `${s.id} is in no task row and the router never names it`);
+  }
+});
+
+test("the router names a file for each of the five capabilities", () => {
+  const router = renderFiles()["SKILL.md"];
+  for (const c of ["analyze", "design", "build", "critique", "qa"]) assert.ok(router.includes(`capabilities/${c}.md`), `no route to capabilities/${c}.md`);
+});
+
+test("validation: a module path in prose must exist, and a retired rule ID warns with its new home", () => {
+  const files = renderFiles();
+  const broken = { ...files, "capabilities/build.md": files["capabilities/build.md"] + "\nThen read knowledge/motion.md.\n" };
+  assert.ok(validateBundle(broken).errors.some((e) => /reference to knowledge\/motion\.md/.test(e)));
+  const [old, { to }] = Object.entries(RETIRED)[0];
+  const retired = { ...files, "capabilities/build.md": files["capabilities/build.md"] + `\nSee ${old}.\n` };
+  const r = validateBundle(retired);
+  assert.equal(r.errors.length, 0);
+  assert.ok(r.warnings.some((w) => w.includes(`${old} is retired; cite ${to}`)));
+});
+
+// A capability that cites a rule either links the module the rule lives in, or the citation is a cross-reference
+// whose gist the capability already says (owner decision 2026-11-26). The list is exact both ways: a new citation
+// without its module fails, and so does an entry that is no longer needed.
+const CROSS_REFERENCES = {
+  "capabilities/analyze.md": ["RX-CD-11", "RX-PR-12"],
+  "capabilities/analyze-research.md": ["RX-UX-12", "RX-UX-21"],
+  "capabilities/design.md": ["RX-AS-03", "RX-AS-05", "RX-AS-09", "RX-AS-10", "RX-UI-10", "RX-UI-26", "RX-UI-31"],
+  "capabilities/design-deliver.md": ["RX-AS-03", "RX-UI-15"],
+  "capabilities/design-md.md": ["RX-AS-03", "RX-DS-13", "RX-DS-14", "RX-IX-05", "RX-PR-02", "RX-PR-12", "RX-PR-14", "RX-UI-17"],
+  "capabilities/build.md": ["RX-A11Y-08", "RX-AS-10", "RX-AS-11", "RX-PR-02", "RX-PR-14", "RX-UX-12", "RX-UX-20"],
+  "capabilities/qa.md": ["RX-A11Y-08", "RX-IX-15", "RX-PR-02", "RX-RD-01", "RX-UI-11"],
+};
+
+test("a capability links the module of each rule it cites, or the citation is a listed cross-reference", async () => {
+  const { RULES } = await import("../dist/intelligence/content.js");
+  const files = renderFiles();
+  const home = Object.fromEntries(RULES.map((r) => [r.id, modulePath(r.skill)]));
+  // design.md and design-deliver.md are one capability read in two stages.
+  const family = { "capabilities/design.md": ["capabilities/design-deliver.md"], "capabilities/design-deliver.md": ["capabilities/design.md"] };
+  const links = (f) => new Set([f, ...(family[f] ?? [])].flatMap((x) => [...files[x].matchAll(/(?:knowledge|capabilities)\/[a-z-]+\.md/g)].map((m) => m[0])));
+  const found = {};
+  for (const f of Object.keys(files).filter((k) => k.startsWith("capabilities/"))) {
+    const linked = links(f);
+    const ids = [...new Set(files[f].match(/RX-[A-Z0-9]+-\d{2}/g) ?? [])].filter((id) => home[id] && home[id] !== f && !linked.has(home[id]));
+    if (ids.length) found[f] = ids.sort();
+  }
+  assert.deepEqual(found, CROSS_REFERENCES);
 });

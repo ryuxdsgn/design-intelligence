@@ -2261,15 +2261,15 @@ export const QUALITY_LOCKS: { item: string; rules: string[] }[] = [
 
 // Contextual activation: load only what the task needs (core is always loaded).
 export const ACTIVATION: { task: string; skills: SkillId[] }[] = [
-  { task: "UI implementation", skills: ["product", "ux", "ui", "design-system", "frontend", "visual-qa", "unslop"] },
+  { task: "UI implementation", skills: ["product", "ux", "ui", "design-system", "frontend", "visual-qa", "accessibility", "unslop"] },
   { task: "Form implementation", skills: ["product", "ux", "forms", "interaction", "accessibility", "edge-cases", "content", "ui", "unslop"] },
   { task: "Mobile UI", skills: ["ux", "ui", "content", "responsive", "accessibility", "unslop"] },
-  { task: "Checkout or payment", skills: ["product", "interaction", "forms", "content", "edge-cases", "ui", "unslop"] },
-  { task: "Data-heavy view (list, table, dashboard)", skills: ["ux", "edge-cases", "responsive", "design-system", "frontend", "ui", "unslop"] },
+  { task: "Checkout or payment", skills: ["product", "interaction", "forms", "content", "edge-cases", "ui", "accessibility", "unslop"] },
+  { task: "Data-heavy view (list, table, dashboard)", skills: ["ux", "edge-cases", "responsive", "design-system", "frontend", "ui", "accessibility", "unslop"] },
   { task: "Frontend logic or utilities (formatting, state, data shown to users)", skills: ["frontend", "content", "edge-cases"] },
   { task: "AI feature (generated answers, summaries, drafts)", skills: ["product", "ux", "content", "edge-cases", "unslop"] },
   { task: "Copy only (UI text, chat, announcements)", skills: ["content", "unslop"] },
-  { task: "Visual refinement", skills: ["ui", "design-system", "visual-qa", "unslop"] },
+  { task: "Visual refinement", skills: ["ui", "design-system", "visual-qa", "accessibility", "unslop"] },
   { task: "User flow, journey map, or another UX map", skills: ["product", "ux", "edge-cases", "content"] },
 ];
 
