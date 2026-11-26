@@ -1022,6 +1022,7 @@ Options:
   --design [file]      scan: compare colours, fonts, radius, and durations with DESIGN.md's direction
   --ignore <ids>       scan: skip rules, e.g. RX-DS-03 (or a ryux-ignore RX-.. comment in the file)
   --widths <list>      scan <url>: viewport widths in CSS px (default 320,390,1280)
+  --sheet [file.png]   scan <url>: also write every width as one image (default ryux-scan-sheet.png)
                        (a prototype's own controls marked data-ryux-ignore are not measured)
   --timeout <seconds>  pick: how long to wait for a click before falling back (default 240)
   --recommend <n>      pick: mark option n on the page as the recommendation (never chosen for you)

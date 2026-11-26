@@ -3,6 +3,7 @@
 // Playwright is optional: it is loaded from the user's project (or a global install) and never
 // bundled, so installing RYUX stays light.
 import { createRequire } from "node:module";
+import { writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { pathToFileURL } from "node:url";
 import type { ScanFinding } from "../checks.js";
@@ -15,7 +16,8 @@ interface Page {
   waitForTimeout(ms: number): Promise<void>;
   evaluate<T>(fn: () => T): Promise<T>;
   evaluate<T, A>(fn: (arg: A) => T, arg: A): Promise<T>;
-  screenshot(opts: { clip: { x: number; y: number; width: number; height: number }; animations: "disabled"; caret: "hide" }): Promise<Buffer>;
+  screenshot(opts: { clip?: { x: number; y: number; width: number; height: number }; fullPage?: boolean; animations: "disabled"; caret: "hide" }): Promise<Buffer>;
+  setContent(html: string, opts: { waitUntil: string }): Promise<void>;
 }
 
 /** The rendered checks over the page as it is now: the shipped extract, judged by ryux-core. When ryux-core asks,
@@ -81,7 +83,36 @@ export interface PageScan {
   ignored: { url: string; regions: string[] }[];
 }
 
-export async function scanPages(urls: string[], widths: number[]): Promise<PageScan> {
+/** One shot per URL and width for the contact sheet, cut at SHEET_MAX_HEIGHT so a long page stays readable. */
+interface Shot { url: string; width: number; height: number; cut: boolean; png: string }
+const SHEET_MAX_HEIGHT = 2400;
+
+/** Tile the shots into one image, a row per URL and a column per width, each labelled. Mobile widths keep their
+ *  size; wider ones are scaled to 640 px so the sheet stays about 1,600 px wide. Rendered by the same Chromium. */
+async function writeSheet(browser: Browser, shots: Shot[], file: string): Promise<void> {
+  const esc = (s: string) => s.replace(/[&<>"]/g, (c) => `&#${c.charCodeAt(0)};`);
+  const rows = [...new Set(shots.map((s) => s.url))].map((url) => {
+    const cells = shots.filter((s) => s.url === url).map((s) => {
+      const shown = s.width <= 480 ? s.width : 640;
+      return `<figure><figcaption>${s.width} px${s.cut ? `, first ${SHEET_MAX_HEIGHT} px` : ""}</figcaption><img width="${shown}" src="data:image/png;base64,${s.png}"></figure>`;
+    });
+    return `<section><h2>${esc(url)}</h2><div class="row">${cells.join("")}</div></section>`;
+  });
+  const html = `<!doctype html><style>body{margin:16px;font:14px/1.4 sans-serif;background:#e9e9e9;color:#111}h2{font-size:14px;margin:0 0 8px;word-break:break-all}
+.row{display:flex;gap:16px;align-items:flex-start}figure{margin:0}figcaption{font-weight:600;margin-bottom:4px}img{display:block;height:auto;background:#fff;outline:1px solid #999}
+section{margin-bottom:24px}p{margin:0;color:#444}</style>${rows.join("")}<p>Default state only; other states are not rendered here.</p>`;
+  const width = Math.max(...[...new Set(shots.map((s) => s.url))].map((url) => shots.filter((s) => s.url === url).reduce((sum, s) => sum + (s.width <= 480 ? s.width : 640) + 16, 16)), 400);
+  const ctx = await browser.newContext({ viewport: { width, height: 900 }, reducedMotion: "reduce" });
+  try {
+    const page = await ctx.newPage();
+    await page.setContent(html, { waitUntil: "load" });
+    writeFileSync(file, await page.screenshot({ fullPage: true, animations: "disabled", caret: "hide" }));
+  } finally {
+    await ctx.close();
+  }
+}
+
+export async function scanPages(urls: string[], widths: number[], sheet?: string): Promise<PageScan> {
   const chromium = await loadChromium();
   if (!chromium) throw new Error(PLAYWRIGHT_MISSING);
   let browser: Browser;
@@ -93,6 +124,7 @@ export async function scanPages(urls: string[], widths: number[]): Promise<PageS
   const findings: ScanFinding[] = [];
   const seen = new Set<string>();
   const ignored = new Map<string, Set<string>>();
+  const shots: Shot[] = [];
   try {
     for (const url of urls) {
       for (const width of widths) {
@@ -123,12 +155,19 @@ export async function scanPages(urls: string[], widths: number[]): Promise<PageS
           result.ignored.forEach((r) => set.add(r));
           ignored.set(url, set);
         }
+        if (sheet) {
+          const full = await page.evaluate(() => (globalThis as unknown as { document: { documentElement: { scrollHeight: number } } }).document.documentElement.scrollHeight);
+          const height = Math.min(full, SHEET_MAX_HEIGHT);
+          const png = await page.screenshot({ fullPage: true, clip: { x: 0, y: 0, width, height }, animations: "disabled", caret: "hide" });
+          shots.push({ url, width, height, cut: full > SHEET_MAX_HEIGHT, png: png.toString("base64") });
+        }
         for (const message of [...new Set(errors)]) {
           add({ rule: "RX-QA-08", level: "warn", selector: "page", message: `the page threw "${message}" while loading; check that the primary task still completes` });
         }
         await ctx.close();
       }
     }
+    if (sheet && shots.length) await writeSheet(browser, shots, sheet);
   } finally {
     await browser.close();
   }

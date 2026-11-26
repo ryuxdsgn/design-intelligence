@@ -102,7 +102,7 @@ The intended design (Figma, pen.dev, DESIGN.md) is the reference; RYUX screens a
 - Do: Render the result at the target viewport (browser, screenshot, or design-tool export).
   - Inspect the main state, one empty or error state, and the smallest supported width (RX-RD-01), plus the largest text size on native.
   - Look for the defects source code hides: misaligned edges, type or spacing off the scale, density wrong for the task, overflow and clipping, a component that looks different from its siblings, a control that does nothing.
-  - Look at the states of one width together: tile their screenshots into one contact sheet and inspect that, open a single screenshot only to check a defect up close, and after a fix render again only what it touched.
+  - Look at the states of one width together: tile their screenshots into one contact sheet and inspect that (`ryux scan <url> --sheet` makes it for the default state at every width), open a single screenshot only to check a defect up close, and after a fix render again only what it touched.
   - Rank issues by impact, fix from the top, and render again. Name the widths and states you inspected; if no render tool is available, say so in the report.
   - Whether the design itself is right or intentional is Critique's call; QA reports what it can verify.
 - Do not: Claim visual quality for a layout you have only seen as code, or fix by guesswork without checking the result.
