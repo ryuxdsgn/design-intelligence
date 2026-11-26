@@ -34,7 +34,7 @@ screen is the unit, every amount is placed as an open rule, a fact, or sample da
 labelled only when a label beside it contains the rule's word. Placeholders carry a "Placeholder"
 annotation (capabilities/design-deliver.md).
 
-**Illustration** (when the build has any): with its label covered, each asset says its concept
+**Illustration** (when the build has any; read knowledge/illustration.md first): with its label covered, each asset says its concept
 line (RX-UI-24); it matches the written style (RX-UI-17), a set reads as one family side by side (RX-UI-18), it reads at its real displayed size including the smallest width, it
 works in every theme, and nothing the user needs exists only in the image (RX-UI-19). Without a
 render, report these as NOT VERIFIED.

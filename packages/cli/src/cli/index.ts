@@ -494,11 +494,19 @@ async function runCheck(flags: Flags): Promise<void> {
       add("fail", where, `no ${SKILL_NAME}/ skill`, "update");
       continue;
     }
-    const report = validateBundle(await readBundle(skillDir));
+    const installed = await readBundle(skillDir);
+    const report = validateBundle(installed);
     installs.push({ dir: `${where}/${SKILL_NAME}`, version: report.version ?? null });
     for (const e of report.errors) add("fail", `${where}/${SKILL_NAME}`, e, "update");
     for (const w of report.warnings) add("warn", `${where}/${SKILL_NAME}`, w);
     if (report.version && report.version !== VERSION) add("warn", where, `installed RYUX ${report.version}, this CLI is ${VERSION}`, "update");
+    if (report.version === VERSION) {
+      // Same version as this CLI: the files should be exactly what it renders. A difference is a hand edit, or an
+      // install from an unreleased build, and the agent would read text RYUX never shipped.
+      const rendered = renderBundle();
+      const edited = Object.keys(rendered).filter((f) => f in installed && installed[f] !== rendered[f]);
+      if (edited.length) add("warn", `${where}/${SKILL_NAME}`, `${edited.length} file${edited.length === 1 ? "" : "s"} differ from RYUX ${VERSION} as released (${edited.slice(0, 3).join(", ")}${edited.length > 3 ? ", …" : ""})`, "update");
+    }
     if (!report.errors.length) add("ok", `${where}/${SKILL_NAME}`, `complete, RYUX ${report.version}`);
   }
 
