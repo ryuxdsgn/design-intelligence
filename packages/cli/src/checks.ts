@@ -114,7 +114,7 @@ export const RENDER_CHECKS: Check[] = [
   { rule: "RX-UI-03", level: "warn", looksFor: "text in sizes 1 px apart (three or more sizes with a neighbour 1 px above, 11 to 40 px): no type scale" },
   { rule: "RX-UX-15", level: "warn", looksFor: "at 1024px and wider, the page's only choice (one radio group) starts below the first screen while a button that carries an amount (\"Bayar Rp1.424.000\") is on it" },
   { rule: "RX-FM-05", level: "warn", looksFor: "a shown textarea that, filled with 8 lines for a moment, keeps its height and hides the text past its edge" },
-  { rule: "RX-UI-29", level: "warn", looksFor: "at 1024 px or wider, a hero of a heading and buttons with a small card beside it: one filled or bordered box right of the main heading, narrower than half the page, with text and no large image" },
+  { rule: "RX-UI-29", level: "warn", looksFor: "at 1024 px or wider, the product's proof in a small card beside the hero heading: one filled or bordered box right of the main heading, narrower than half the page, with text and no large image; a centred hero, a split with a visual at half the width or more, or the proof as the hero are left alone" },
   { rule: "RX-QA-08", level: "warn", looksFor: "script errors thrown while the page loads" },
 ];
 

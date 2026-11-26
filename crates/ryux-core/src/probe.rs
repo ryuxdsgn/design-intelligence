@@ -1610,7 +1610,7 @@ impl<'a> Page<'a> {
                         && self.texts.iter().filter(|t| self.shown[t.e] && self.contains(i, t.e)).count() >= 2
                 });
                 if let Some(i) = side {
-                    tell(&mut out, "RX-UI-29", "hero-card", Some(i), format!("the hero is a heading and buttons with a small card beside it ({} px of {}): the template generated pages share; give the product's proof the form its direction calls for (the hero itself, a full-width band, the carrier at half the hero or more), not a card on the right", self.els[i].r.w.round(), num_str(self.vw)));
+                    tell(&mut out, "RX-UI-29", "hero-card", Some(i), format!("the product's proof sits in a small card beside the heading ({} px of {}): too weak to carry the hero, and the template most generated pages share; a centred hero with a wide visual below, a split with the visual at half the width or more, or the proof itself as the hero all work; answer with a reason from the product if the small card is right here", self.els[i].r.w.round(), num_str(self.vw)));
                 }
             }
         }
