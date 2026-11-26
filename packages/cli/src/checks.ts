@@ -49,6 +49,7 @@ export const SOURCE_CHECKS: Check[] = [
   { rule: "RX-CD-09", level: "warn", looksFor: "dates as 10/02/2026 and times as 2:30 PM in Indonesian copy (lang id, id-ID, Rupiah, or Indonesian words in the folder); test files are skipped" },
   { rule: "RX-CD-12", level: "warn", looksFor: "a link or button whose whole text is generic (Selengkapnya, Klik di sini, Learn more, Read more, Click here, Submit), with no information scent" },
   { rule: "RX-CD-12", level: "warn", looksFor: "a heading that opens with a stock phrase (Selamat datang di, Yuk, Ayo, Welcome to, Introducing), so its first two words carry no meaning" },
+  { rule: "RX-CD-03", level: "warn", looksFor: "a sentence in visible text longer than 20 words (NN/g ceiling 15 to 20)" },
   { rule: "RX-CD-18", level: "warn", looksFor: "filler phrases in visible text (memungkinkan Anda, kami memahami bahwa, perlu diketahui bahwa, allows you to, enables you to, we understand that)" },
   { rule: "RX-CD-19", level: "warn", looksFor: "superlative claims in visible text (terbaik, tercepat, termurah, nomor 1, #1, the best, fastest, cheapest, world-class)" },
   { rule: "RX-AS-03", level: "fail", looksFor: "lorem ipsum filler" },

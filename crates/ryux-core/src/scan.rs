@@ -305,6 +305,54 @@ fn rule_cd12_heading(s: &Source, _: &Ctx) -> Vec<Hit> {
     })])
 }
 
+/// The longest sentence in a text node, in words (tokens with a letter or digit); a sentence ends at
+/// . ! ? or … followed by a space or the end, so Rp1.250.000 and 14.30 stay inside one sentence.
+fn longest_sentence(text: &str) -> (usize, String) {
+    let mut best = (0, String::new());
+    let chars: Vec<char> = text.chars().collect();
+    let mut start = 0;
+    for i in 0..=chars.len() {
+        let end = i == chars.len() || (matches!(chars[i], '.' | '!' | '?' | '…') && chars.get(i + 1).map_or(true, |c| c.is_whitespace()));
+        if !end {
+            continue;
+        }
+        let sentence: String = chars[start..i].iter().collect();
+        let words: Vec<&str> = sentence.split_whitespace().filter(|w| w.chars().any(|c| c.is_alphanumeric())).collect();
+        if words.len() > best.0 {
+            best = (words.len(), words.iter().take(6).cloned().collect::<Vec<_>>().join(" "));
+        }
+        start = (i + 1).min(chars.len());
+    }
+    best
+}
+
+/// The text with every `<script>` and `<style>` block blanked (same UTF-16 offsets), so code is not read as copy.
+fn without_code_blocks(text: &str) -> String {
+    let mut ranges = Vec::new();
+    for m in re(r"<(script|style)\b[^>]*>[\s\S]*?<\/(?:script|style)\s*>", "gi").match_all(text) {
+        ranges.push((m.index, m.index + len16(m.g(0))));
+    }
+    let mut out = String::with_capacity(text.len());
+    let mut at = 0;
+    for c in text.chars() {
+        let inside = ranges.iter().any(|&(a, b)| at >= a && at < b);
+        if inside && c != '\n' {
+            out.push_str(&" ".repeat(c.len_utf16()));
+        } else {
+            out.push(c);
+        }
+        at += c.len_utf16();
+    }
+    out
+}
+
+fn rule_cd03_sentence(s: &Source, _: &Ctx) -> Vec<Hit> {
+    matches(&without_code_blocks(&s.text), &[(r">([^<>{}]+)<", "u", |m| {
+        let (words, opening) = longest_sentence(&m.g(1));
+        (words > 20).then(|| format!("\"{opening} ...\": a sentence of {words} words; NN/g's ceiling is 15 to 20 words, so split it into one idea per sentence"))
+    })])
+}
+
 fn rule_cd18(s: &Source, _: &Ctx) -> Vec<Hit> {
     matches(&s.text, &[(r">[^<>{}]*?(memungkinkan (?:anda|kamu)|kami memahami bahwa|perlu diketahui bahwa|allows you to|enables you to|we understand that)(?![\p{L}\d])[^<>{}]*<", "iu", |m| {
         Some(format!("\"{}\": filler that adds words, not meaning; say what the user can do (\"Bayar dengan QRIS\", not \"memungkinkan Anda membayar dengan QRIS\")", m.g(1)))
@@ -939,6 +987,7 @@ fn detectors() -> &'static [Detector] {
         Detector { rule: "RX-CD-09", level: "warn", exts: code, folder: false, find: rule_cd09 },
         Detector { rule: "RX-CD-12", level: "warn", exts: markup, folder: false, find: rule_cd12_label },
         Detector { rule: "RX-CD-12", level: "warn", exts: markup, folder: false, find: rule_cd12_heading },
+        Detector { rule: "RX-CD-03", level: "warn", exts: markup, folder: false, find: rule_cd03_sentence },
         Detector { rule: "RX-CD-18", level: "warn", exts: markup, folder: false, find: rule_cd18 },
         Detector { rule: "RX-CD-19", level: "warn", exts: markup, folder: false, find: rule_cd19 },
         Detector { rule: "RX-AS-03", level: "fail", exts: code, folder: false, find: rule_as03_lorem },
