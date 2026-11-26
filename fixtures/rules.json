@@ -370,6 +370,11 @@
   "title": "An unfamiliar unit comes with its everyday value"
  },
  {
+  "id": "RX-CD-21",
+  "level": "preferred",
+  "title": "The point first, in sentences people read at a glance"
+ },
+ {
   "id": "RX-UI-01",
   "level": "required",
   "title": "Hierarchy follows priority"
