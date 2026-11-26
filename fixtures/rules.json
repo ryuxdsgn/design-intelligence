@@ -55,6 +55,11 @@
   "title": "Every shaping decision carries its reason"
  },
  {
+  "id": "RX-PR-15",
+  "level": "contextual",
+  "title": "The first screen looks worth what it costs"
+ },
+ {
   "id": "RX-UX-01",
   "level": "required",
   "title": "Structure from the user's goal"

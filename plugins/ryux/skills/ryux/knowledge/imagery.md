@@ -328,11 +328,14 @@ How comparable products use imagery and motion: `search_screens` by pattern, `ex
   - visceral: the first impression comes from the brand layer (RX-UI-12), not from decoration without a job
   - reflective: the product speaks to the user's values and aims, not only the task ("membangun kebiasaan membaca", not only "target 8 halaman")
   - Read the user's state before adding joy: none in a payment failure, an error, a loss, or a long wait; there the delight is a fast, calm way out.
-- Do not: Add confetti, mascots, or jokes to a flow that is still hard to use, or celebrate in a moment of failure or worry.
-- Why: Delight on one leg is superficial and people remember the bad more than the good; forced joy at the wrong moment annoys. (NNGroup three pillars of user delight (visceral, behavioral, reflective; Norman, Emotional Design); NNGroup delightful UX video)
+  - Count delight only above the needs it rests on, in order: it works (the screen serves a clear need), it is reliable (no flaky or failing action), it is usable (labelled, findable, every link says where it leads); then pleasure. A lower need that fails is fixed first, and the delight on top is not counted.
+  - Tell surface delight from deep delight. Surface: an animation, playful microcopy, a beautiful image, a sound; it pleases once and turns gimmicky on a flawed product. Deep: the information the user needs appears at the moment they need it, advanced options come on demand, and the features are few and tied to the main task. A design that claims delight names at least one deep source, not only surface ones.
+  - Anything that looks clickable works: a tab, a chip, a card with a hover, or a picture wall that does nothing on a click is a false affordance and fails the usable need, however pleasing it looks.
+- Do not: Add confetti, mascots, or jokes to a flow that is still hard to use, or celebrate in a moment of failure or worry; claim delight from surface touches alone; or style an element as interactive when it does nothing.
+- Why: Delight on one leg is superficial and people remember the bad more than the good; forced joy at the wrong moment annoys. Delight rests on a product that works, is reliable, and is usable: surface touches on a flawed product read as gimmicks, while deep delight comes from the product doing the right thing at the right moment. (NNGroup three pillars of user delight (visceral, behavioral, reflective; Norman, Emotional Design; Fessenden 2022); NNGroup a theory of user delight (Fessenden 2017: functional, reliable, usable, pleasurable, after Walter's hierarchy of user needs; surface vs deep delight); NNGroup delightful UX video; owner blind note on an H11 landing page (2026-11-26): goal tabs that looked interactive on a static page, a false affordance)
 - Not when: a utility or internal tool whose brief asks for none; ease of use is its delight
-- Trade-off: the reflective layer needs knowledge of what users value, which may need research
-- Check: review; Critique Design Read
+- Trade-off: the reflective layer needs knowledge of what users value, which may need research; deep delight takes more product work than a surface touch
+- Check: review; Critique Design Read: each need (works, reliable, usable) passes before any delight is counted; delight sources listed as surface or deep, at least one deep; no element styled as interactive that does nothing. Delight itself is not measured from a screen: call it a hypothesis, tested with contextual inquiry or a diary study
 
 ### RX-UI-23 [Contextual] A mark designed on request
 
