@@ -106,7 +106,7 @@ export const RENDER_CHECKS: Check[] = [
   { rule: "RX-UI-10", level: "warn", looksFor: "visual tells, once per page: a blue-to-purple gradient behind a large area, prose set in monospace, or an italic serif word inside a display heading" },
   { rule: "RX-AS-10", level: "warn", looksFor: "the counts before handoff, once per page: emoji in a control, a tab, a menu, or navigation; gradients with colour that is not among the page's colour tokens (CSS custom properties), leaving out gradients that draw a thing (an illustration, a device mock, a small shape with no text)" },
   { rule: "RX-AS-03", level: "warn", looksFor: "a stand-in box, once per page: a dashed or dotted box whose words name what belongs in it (\"Logo Kelasku\", \"QR\", \"Foto\"); a logo slot with the brand name in plain text beside it is left alone" },
-  { rule: "RX-AS-11", level: "warn", looksFor: "a letter in a tile as the logo, once per page: one or two letters in a filled or bordered box of 16 to 72 px inside an element whose class names a logo or brand; or an App Store or Google Play badge drawn with an icon of its own instead of the store's badge image" },
+  { rule: "RX-AS-11", level: "warn", looksFor: "a letter in a tile as the logo, once per page: one or two letters in a filled or bordered box of 16 to 72 px inside an element whose class names a logo or brand; or an App Store or Google Play badge drawn by hand (an icon of its own, or the badge's two lines stacked in text, \"Unduh di\" over \"App Store\") instead of the store's badge image; one line of text is a plain link and is left alone" },
   { rule: "RX-UI-26", level: "warn", looksFor: "a near-black page whose action colour is a saturated neon, with glow: the default look of an AI product; or a cream page (light, warm, a little coloured), the paper look generated pages fall back to" },
   { rule: "RX-UI-36", level: "warn", looksFor: "a row that looks like a picker and is not one: three or more boxes side by side, one filled as if chosen, and no control in any of them" },
   { rule: "RX-DS-02", level: "warn", looksFor: "buttons out of one component: the two store links in two forms (one badge image, one text button), or one button colour in two corner shapes (a pill and a rounded box), or the two store badges at two heights" },
@@ -114,6 +114,7 @@ export const RENDER_CHECKS: Check[] = [
   { rule: "RX-UI-03", level: "warn", looksFor: "text in sizes 1 px apart (three or more sizes with a neighbour 1 px above, 11 to 40 px): no type scale" },
   { rule: "RX-UX-15", level: "warn", looksFor: "at 1024px and wider, the page's only choice (one radio group) starts below the first screen while a button that carries an amount (\"Bayar Rp1.424.000\") is on it" },
   { rule: "RX-FM-05", level: "warn", looksFor: "a shown textarea that, filled with 8 lines for a moment, keeps its height and hides the text past its edge" },
+  { rule: "RX-UI-29", level: "warn", looksFor: "at 1024 px or wider, the product's proof in a small card beside the hero heading: one filled or bordered box right of the main heading, narrower than half the page, with text and no large image; a centred hero, a split with a visual at half the width or more, or the proof as the hero are left alone" },
   { rule: "RX-QA-08", level: "warn", looksFor: "script errors thrown while the page loads" },
 ];
 

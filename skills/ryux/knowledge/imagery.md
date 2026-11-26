@@ -275,6 +275,7 @@ How comparable products use imagery and motion: `search_screens` by pattern, `ex
 - Not when: task UI; a brand system that already sets the page's look
 - Trade-off: making the carrier's asset takes time and tool calls before the page, and a strong carrier can crowd the message if its focal point fights the headline
 - Check: the primary action on the first screen at 1440 and 390 by 844; no decoration between a message and its action; sample-data labels next to their figures; no image used twice; the carrier named and present in the hero; full-bleed non-neutral bands or a mode switch (count); depth system named; text-only sections (at most one); report the carrier in the Delivery Gate UI line
+- Measured: `ryux scan <url>` flags at 1024 px or wider, the product's proof in a small card beside the hero heading: one filled or bordered box right of the main heading, narrower than half the page, with text and no large image; a centred hero, a split with a visual at half the width or more, or the proof as the hero are left alone (warn)
 
 ### RX-UI-32 [Required] One page, one world
 

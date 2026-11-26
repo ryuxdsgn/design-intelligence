@@ -735,6 +735,30 @@ test("scan <url> warns each visual tell once per page, and stays quiet on one re
   rmSync(dir, { recursive: true, force: true });
 });
 
+// owner H6 and H9 2026-11-26: the proof in a small card beside the hero heading made three of five pages one idea; a centred
+// hero and a split whose visual takes half the width or more are fine
+test("scan <url> warns on the proof in a small card beside the hero heading, and leaves a centred hero and a wide visual alone", (t) => {
+  const dir = mkdtempSync(join(tmpdir(), "ryux-hero-"));
+  const page = (name, hero) => {
+    const path = join(dir, `${name}.html`);
+    writeFileSync(path, `<!doctype html><html lang="id"><body style="margin:0;background:#fff;font:16px sans-serif"><main>${hero}</main></body></html>`);
+    return run(process.env.RYUX_PLAYWRIGHT_CWD ?? join(dirname(cli), "..", "..", ".."), ["scan", `file://${path}`, "--widths", "1280", "--json"]);
+  };
+  const hero = (r) => JSON.parse(r.out).findings.filter((f) => f.rule === "RX-UI-29").length;
+  const left = `<div><h1 style="font-size:56px;margin:0">Les privat yang datang ke rumah</h1><p><a href="#" style="background:#123;color:#fff;padding:12px 20px">Unduh</a></p></div>`;
+  const card = page("card", `<section style="display:grid;grid-template-columns:1fr 420px;gap:48px;padding:80px">${left}
+<div style="border:1px solid #ccc;border-radius:12px;padding:20px;background:#f7f7f7"><p>Catatan sesi</p><p>Sudah bisa: perkalian 6 sampai 9</p><p>Masih sulit: pembagian</p></div></section>`);
+  if (/needs Playwright|could not start Chromium/.test(card.out)) {
+    rmSync(dir, { recursive: true, force: true });
+    return noBrowser(t);
+  }
+  assert.equal(hero(card), 1);
+  assert.equal(hero(page("centred", `<section style="text-align:center;padding:80px">${left}<div style="margin:40px auto 0;width:900px;height:360px;border:1px solid #ccc;border-radius:12px;background:#f7f7f7"><p>Catatan sesi</p><p>Sudah bisa: perkalian</p></div></section>`)), 0);
+  const img = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='420'/%3E";
+  assert.equal(hero(page("wide", `<section style="display:grid;grid-template-columns:1fr 1fr;gap:48px;padding:80px">${left}<div style="background:#f7f7f7;border-radius:12px"><img alt="Guru mengajar di rumah" src="${img}" style="width:100%;display:block"><p>Foto contoh</p></div></section>`)), 0);
+  rmSync(dir, { recursive: true, force: true });
+});
+
 // H3 diversity bench, owner blind 2026-11-25: cream under a coloured hero, a day row that is not a picker, and a
 // drawn store badge; the same page with a white body, real radios, and the store's image stays quiet.
 test("scan <url> warns a cream page, a row that looks like a picker, a drawn store badge, and one button colour in two shapes", (t) => {
@@ -750,7 +774,7 @@ test("scan <url> warns a cream page, a row that looks like a picker, a drawn sto
     rmSync(dir, { recursive: true, force: true });
     return noBrowser(t);
   }
-  assert.deepEqual(tells(slop).sort(), ["RX-AS-11 a store badge drawn with an icon of its own", "RX-DS-02 buttons of one colour in two shapes", "RX-UI-26 the page is cream", "RX-UI-36 a row that looks like a picker with one option chosen"]);
+  assert.deepEqual(tells(slop).sort(), ["RX-AS-11 a store badge drawn by hand", "RX-DS-02 buttons of one colour in two shapes", "RX-UI-26 the page is cream", "RX-UI-36 a row that looks like a picker with one option chosen"]);
   assert.deepEqual(tells(page("quiet", STORE_QUIET)), []);
   // owner H5 notes 2026-11-25: one store as text, the other a badge image cropped to a taller height
   const svg = (h) => `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='${h}'/%3E`;
@@ -758,6 +782,14 @@ test("scan <url> warns a cream page, a row that looks like a picker, a drawn sto
 <a href="#" style="display:inline-flex;height:48px;background:#000;color:#fff;padding:0 16px;align-items:center">Unduh di App Store</a>
 <a href="#" style="display:inline-flex;height:48px;overflow:hidden"><img alt="Dapatkan di Google Play" src="${svg(71)}" style="height:71px"></a></p></main></body></html>`;
   assert.deepEqual(tells(page("pair", pair)).sort(), ["RX-DS-02 the store badges stand at two heights", "RX-DS-02 the store links come in two forms, a badge image and \"Unduh di App Store\""]);
+  // owner H9 2026-11-26 (GO, SE): the badge's two lines set in text, "Unduh di" over "App Store", with no icon and no image
+  const stacked = `<!doctype html><html lang="id"><body style="background:#fff"><main><h1>Lesin</h1><p style="display:flex;gap:12px">
+<a href="#" style="display:inline-flex;flex-direction:column;background:#000;color:#fff;padding:6px 14px;border-radius:8px;text-decoration:none"><small style="font-size:11px">Unduh di</small><b>App Store</b></a>
+<a href="#" style="display:inline-flex;flex-direction:column;background:#000;color:#fff;padding:6px 14px;border-radius:8px;text-decoration:none"><small style="font-size:11px">Dapatkan di</small><b>Google Play</b></a></p></main></body></html>`;
+  assert.deepEqual(tells(page("stacked", stacked)).filter((x) => x.startsWith("RX-AS-11")), ["RX-AS-11 a store badge drawn by hand"]);
+  // one line of text is a plain link, and stays fine
+  const plain = `<!doctype html><html lang="id"><body style="background:#fff"><main><h1>Lesin</h1><p><a href="#">Unduh di App Store</a> · <a href="#">Dapatkan di Google Play</a></p></main></body></html>`;
+  assert.deepEqual(tells(page("plain", plain)), []);
   rmSync(dir, { recursive: true, force: true });
 });
 

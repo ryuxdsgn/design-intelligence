@@ -13,7 +13,7 @@ use std::collections::{HashMap, HashSet};
 
 /// What the rendered checks look for, one row per line of RENDER_CHECKS in packages/cli/src/checks.ts (which also
 /// lists RX-QA-08, script errors, reported by the CLI itself). `cargo test` and the CLI tests hold them equal.
-pub const CATALOGUE: [(&str, &str); 20] = [
+pub const CATALOGUE: [(&str, &str); 21] = [
     ("RX-RD-01", "fail"),
     ("RX-A11Y-01", "fail"),
     ("RX-A11Y-01", "warn"),
@@ -34,6 +34,7 @@ pub const CATALOGUE: [(&str, &str); 20] = [
     ("RX-UI-03", "warn"),
     ("RX-UX-15", "warn"),
     ("RX-FM-05", "warn"),
+    ("RX-UI-29", "warn"),
 ];
 
 /// The catalogue as JSON: `[{rule, level}]`.
@@ -1522,18 +1523,26 @@ impl<'a> Page<'a> {
             tell(&mut out, "RX-UI-36", "fake-picker", Some(i), format!("a row that looks like a picker with one option chosen ({}) and no control in it: people tap it and nothing happens; make it a real choice (buttons or radios), or show it as plain text or a table", quote(&row)));
         }
 
-        // A store badge drawn by hand (RX-AS-11): a control that names App Store or Google Play with an inline SVG icon and
-        // no image. The stores' own badge images are the only allowed badges (Apple and Google badge guidelines); the owner
+        // A store badge drawn by hand (RX-AS-11): a control that names App Store or Google Play with an inline SVG icon, or
+        // with the badge's two stacked lines, and no image. The stores' own badge images are the only allowed badges (Apple and Google badge guidelines); the owner
         // flagged the drawn ones on two of five H3 pages (a phone icon, a triangle), 2026-11-25. A plain text link is fine.
         let store = (BODY + 1..self.els.len()).find(|&i| {
             self.shown[i] && self.flag(i, "ctl") && {
                 let nm = self.text_of(i, "nm").to_lowercase();
                 nm.contains("app store") || nm.contains("google play")
-            } && (i + 1..self.els.len()).take_while(|&k| self.contains(i, k)).any(|k| self.els[k].tag.eq_ignore_ascii_case("svg"))
-                && !(i + 1..self.els.len()).take_while(|&k| self.contains(i, k)).any(|k| self.els[k].tag == "IMG")
+            } && !(i + 1..self.els.len()).take_while(|&k| self.contains(i, k)).any(|k| self.els[k].tag == "IMG") && {
+                let icon = (i + 1..self.els.len()).take_while(|&k| self.contains(i, k)).any(|k| self.els[k].tag.eq_ignore_ascii_case("svg"));
+                // or the badge's two stacked lines in text, "Unduh di" over "App Store" (owner H9, GO and SE, 2026-11-26):
+                // the store's name as a line of its own under another (by the other line's middle: a text box is taller than its CSS
+                // line, H9 GO overlapped by 3 px); one line of text is a plain link and stays fine
+                let lines: Vec<&Text> = self.texts.iter().filter(|t| self.shown[t.e] && self.contains(i, t.e)).collect();
+                let name_line = lines.iter().find(|t| matches!(t.x.trim().to_lowercase().as_str(), "app store" | "google play"));
+                let stacked = name_line.is_some_and(|n| lines.iter().any(|t| t.r.y + t.r.h / 2.0 < n.r.y && !t.x.trim().is_empty()));
+                icon || stacked
+            }
         });
         if let Some(i) = store {
-            tell(&mut out, "RX-AS-11", "store-badge", Some(i), format!("a store badge drawn with an icon of its own ({}): Apple and Google allow only their own badge images; use the official badge, in one language for both stores, or a plain text link", quote(self.text_of(i, "nm"))));
+            tell(&mut out, "RX-AS-11", "store-badge", Some(i), format!("a store badge drawn by hand ({}): Apple and Google allow only their own badge images; use the official badge, in one language for both stores, or a plain text link", quote(self.text_of(i, "nm"))));
         }
 
         // Buttons in one shape (RX-DS-02). The button-shaped controls on screen: filled, 60 px wide or more, 30 to 72 tall,
@@ -1578,6 +1587,32 @@ impl<'a> Page<'a> {
             let other = *is.iter().find(|&&i| corner(i) != corner(is[0])).unwrap();
             let shape = |i: usize| if corner(i) < 0.0 { "a pill".to_string() } else { format!("{} px corners", num_str(corner(i))) };
             tell(&mut out, "RX-DS-02", "button-shapes", Some(other), format!("buttons of one colour in two shapes ({} with {}, {} with {}): one button component, one corner radius, size variants only", quote(self.text_of(is[0], "nm")), shape(is[0]), quote(self.text_of(other, "nm")), shape(other)));
+        }
+
+        // A hero of text and buttons with a small card beside it (RX-UI-29), on desktop: the heading's column, and beside it one
+        // filled or bordered box narrower than half the page with text and no large image. The owner marked three of five H9
+        // pages one idea for this hero alone (eyebrow, a coloured word, a note card on the right), and H6 before it (2026-11-26).
+        if self.vw >= 1024.0 {
+            let h1 = (BODY + 1..self.els.len()).find(|&i| self.shown[i] && self.els[i].tag == "H1" && self.els[i].r.y < self.vh);
+            if let Some(h) = h1 {
+                let hr = self.els[h].r;
+                let media = |i: usize| (i + 1..self.els.len()).take_while(|&k| self.contains(i, k)).filter(|&k| self.shown[k] && matches!(self.els[k].tag.to_ascii_lowercase().as_str(), "img" | "video" | "canvas" | "svg" | "picture"))
+                    .map(|k| self.els[k].r.w * self.els[k].r.h).fold(0.0, f64::max);
+                let side = (BODY + 1..self.els.len()).find(|&i| {
+                    let r = self.els[i].r;
+                    let filled = self.rgba(self.s(i, "backgroundColor")).is_some_and(|c| c[3] > 0.0) || self.n(i, "borderTopWidth") >= 1.0
+                        || { let sh = self.s(i, "boxShadow"); !sh.is_empty() && sh != "none" };
+                    self.shown[i] && filled && !self.contains(i, h) && !self.contains(h, i)
+                        && !matches!(self.els[i].tag.to_ascii_lowercase().as_str(), "a" | "button" | "input" | "img" | "svg" | "li")
+                        && r.x >= hr.right() - 4.0 && r.w >= 200.0 && r.w < self.vw * 0.5 && r.h >= 120.0
+                        && r.y < hr.bottom() + 240.0 && r.bottom() > hr.y && r.y < self.vh
+                        && media(i) < r.w * r.h * 0.3
+                        && self.texts.iter().filter(|t| self.shown[t.e] && self.contains(i, t.e)).count() >= 2
+                });
+                if let Some(i) = side {
+                    tell(&mut out, "RX-UI-29", "hero-card", Some(i), format!("the product's proof sits in a small card beside the heading ({} px of {}): too weak to carry the hero, and the template most generated pages share; a centred hero with a wide visual below, a split with the visual at half the width or more, or the proof itself as the hero all work; answer with a reason from the product if the small card is right here", self.els[i].r.w.round(), num_str(self.vw)));
+                }
+            }
         }
 
         // A letter in a tile as the logo (RX-AS-11): one or two letters in a filled or bordered box of 16 to 72 px,
