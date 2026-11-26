@@ -16,9 +16,11 @@ CAPABILITY = {"analyze": "analyze", "analyze-research": "analyze", "design": "de
 MODULES = {p.stem for p in (HERE.parents[4] / "skills/ryux/knowledge").glob("*.md")}
 
 TOKEN = re.compile(r"(?:knowledge|capabilities)/[a-z-]+\.md|SKILL\.md|report\.md")
-READERS = {"cat", "sed", "head", "tail", "less", "more", "grep", "rg", "awk", "bat", "nl"}
+READERS = {"cat", "sed", "head", "tail", "less", "more", "awk", "bat", "nl"}
+# grep shows only the matching lines (often just the rule headings): the module was skimmed, not read.
+SKIMMERS = {"grep", "rg", "egrep"}
 
-def opened(events):
+def opened(events, skim=False):
     """Skill files whose content the agent took in: the Read tool, a Grep on a skill path, or a Bash segment that
     prints a file (cat, sed, grep, ...). ls and wc only list or count, so they are not reads. The Bash tool keeps its
     working directory between calls, so the last cd is tracked across calls; inside the installed skill, a relative
@@ -39,10 +41,10 @@ def opened(events):
             if c.get("type") != "tool_use":
                 continue
             name, inp = c.get("name"), c.get("input", {})
-            if name == "Read":
+            if name == "Read" and not skim:
                 for m in PATH.finditer(inp.get("file_path", "")):
                     files.append(m.group(1))
-            elif name == "Grep":
+            elif name == "Grep" and skim:
                 for m in PATH.finditer(inp.get("path", "")):
                     files.append(m.group(1))
                 for m in re.finditer(r"\.claude/skills/ryux/((?:knowledge|capabilities))/?$", inp.get("path", "")):
@@ -63,7 +65,7 @@ def opened(events):
                             sub = ""
                         else:
                             sub = None
-                    elif words[0] in READERS:
+                    elif words[0] in (SKIMMERS if skim else READERS):
                         add(seg)
     return [f for f in dict.fromkeys(files) if "*" not in f]
 
@@ -95,6 +97,7 @@ for case in CASES:
     results = [d for d in events if d.get("type") == "result"]
     result = results[-1] if results else {}
     files = opened(events)
+    skimmed = [p[10:-3] for p in opened(events, skim=True) if p.startswith("knowledge/") and p not in files]
     caps = [CAPABILITY[p[13:-3]] for p in files if p.startswith("capabilities/") and p[13:-3] in CAPABILITY]
     mods = [p[10:-3] for p in files if p.startswith("knowledge/")]
     if "capabilities/qa.md" in files:
@@ -110,7 +113,7 @@ for case in CASES:
         "must_read": [m for m in case["must_read"] if m in mods], "must_total": len(case["must_read"]),
         "missed": [m for m in case["must_read"] if m not in mods],
         "forbidden": [p for p in case["must_not_read"] if p in files],
-        "modules": list(dict.fromkeys(mods)),
+        "modules": list(dict.fromkeys(mods)), "skimmed_only": skimmed,
         "gate": claims is not None, "declared_not_read": gate_list(final, "required not read") or [], "false_claims": [m for m in (claims or []) if m not in mods and m != "qa"],
         "full": bool(case.get("full")), "stop": result.get("subtype"),
         "turns": len(turns), "cost": round(sum(r.get("total_cost_usd", 0) for r in results), 2),
@@ -119,16 +122,16 @@ for case in CASES:
 
 ran = [r for r in rows if r["ran"]]
 yes = lambda b: "yes" if b else "**no**"
-lines = ["| Case | Activated | Capability | Must read | Missed | Must-not read | Gate | False gate claims | Declared not read | Cost | Min |",
-         "|---|---|---|---|---|---|---|---|---|---|---|"]
+lines = ["| Case | Activated | Capability | Must read | Missed | Must-not read | Skimmed only | Gate | False gate claims | Declared not read | Cost | Min |",
+         "|---|---|---|---|---|---|---|---|---|---|---|---|"]
 for r in rows:
     if not r["ran"]:
-        lines.append(f"| {r['id']} | not run | | | | | | | | | |")
+        lines.append(f"| {r['id']} | not run | | | | | | | | | | |")
         continue
     gate = ("yes" if r["gate"] else ("**missing**" if r["full"] else "capped")) if r["full"] or r["gate"] else "capped"
     lines.append(f"| {r['id']} | {yes(r['activated'])} | {yes(r['capability_ok'])} ({', '.join(r['capabilities']) or 'none'}) | "
                  f"{len(r['must_read'])}/{r['must_total']} | {', '.join(r['missed']) or '—'} | {', '.join(r['forbidden']) or '—'} | "
-                 f"{gate} | {', '.join(r['false_claims']) or ('0' if r['gate'] else '—')} | {', '.join(r['declared_not_read']) or '—'} | ${r['cost']} | {r['minutes']} |")
+                 f"{', '.join(r['skimmed_only']) or '—'} | {gate} | {', '.join(r['false_claims']) or ('0' if r['gate'] else '—')} | {', '.join(r['declared_not_read']) or '—'} | ${r['cost']} | {r['minutes']} |")
 total = lambda k: sum(1 for r in ran if r[k])
 must = sum(len(r["must_read"]) for r in ran), sum(r["must_total"] for r in ran)
 summary = (f"Activated {total('activated')}/{len(ran)} · capability {total('capability_ok')}/{len(ran)} · must-read {must[0]}/{must[1]} · "
