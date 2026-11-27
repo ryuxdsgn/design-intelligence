@@ -167,6 +167,7 @@ A design direction from comparable screens: `extract_design_direction` (patterns
 - Not when: data visualization, which needs its own categorical or sequential palette; content art (an event poster, a book or album cover, a dish or product photo), which keeps its own colours inside its frame while the roles govern the chrome around it (RX-UI-21)
 - Trade-off: fewer colors means relying on type and space for emphasis
 - Check: count accent hues and grey families (RX-AS-10); on a canvas, ryux audit warns when an error or destructive colour shares the action accent's hue; review
+- Measured: `ryux scan <url>` flags the action colour off the actions, once per page: the colour that fills the largest area of labelled buttons (skipped when it reads as ink or paper: HSL lightness under 0.25 or over 0.85, saturation under 0.35, or the main text colour of the page), also on eight or more things that cannot be pressed (a price, a section title, an eyebrow, a badge or tag with words), or on five when one of them is a filled pill, badge, or chip; not counting a selected state, an icon, the hero heading, a logo, an avatar, a device mockup, an illustration, or a bar that holds its own action (warn)
 
 ### RX-UI-05 [Preferred] Layout from content, not a template
 
