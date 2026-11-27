@@ -53,6 +53,98 @@ pub struct Ctx<'a> {
     pub design: Option<Direction>,
     /// Every file the scan was given, scanned or context only, by its normalized path.
     files: HashMap<String, &'a Source>,
+    /// The styled controls and Button fills across the folder (RX-DS-01), read once.
+    copies: std::cell::OnceCell<Copies>,
+}
+
+/// Styled native controls by file, the groups written the same way in several files, and each Button
+/// component's fill, across the folder.
+#[derive(Default)]
+struct Copies {
+    /// Per file: (offset, tag, classes key, group size, files in the group, the other files).
+    repeated: HashMap<String, Vec<(usize, String, usize, usize, Vec<String>)>>,
+    /// Per file: its styled <button>s, (offset, classes).
+    buttons: HashMap<String, Vec<(usize, Vec<String>)>>,
+    /// (component file, fill) for each file that defines Button.
+    fills: Vec<(String, String)>,
+}
+
+/// A file directly in a component library folder (components/ui/button.tsx, primitives/x.tsx), or a test or story: where a control is the component
+/// itself or an example of it, not a copy.
+fn library_file(path: &str) -> bool {
+    re(r"(?:^|/)(?:ui|primitives)/[^/]+$|\.(?:test|spec|stories)\.[jt]sx?$|(?:^|/)(?:__tests__|stories)/", "i").test(path)
+}
+
+/// The app or package a file belongs to in a monorepo (apps/web, packages/admin), else "".
+fn package_of(path: &str) -> String {
+    re(r"(?:^|/)((?:apps|packages)/[^/]+)/", "").exec(path).map(|m| m.g(1).to_string()).unwrap_or_default()
+}
+
+fn copies<'c>(c: &'c Ctx) -> &'c Copies {
+    c.copies.get_or_init(|| {
+        let mut out = Copies::default();
+        let mut groups: HashMap<(String, String, String), Vec<(String, usize)>> = HashMap::new();
+        let mut paths: Vec<&String> = c.files.keys().collect();
+        paths.sort();
+        for path in paths {
+            let s = c.files[path];
+            if !jsx(&s.ext) {
+                continue;
+            }
+            if let Some(fill) = crate::jsx::button_fill(path, &s.raw) {
+                out.fills.push((path.clone(), fill));
+            }
+            if library_file(path) {
+                continue;
+            }
+            for ctl in crate::jsx::styled_controls(&s.raw, &s.ext) {
+                if ctl.tag == "button" {
+                    out.buttons.entry(path.clone()).or_default().push((ctl.index, ctl.classes.clone()));
+                }
+                groups.entry((package_of(path), ctl.tag.clone(), ctl.classes.join(" "))).or_default().push((path.clone(), ctl.index));
+            }
+        }
+        for ((_, tag, _), at) in groups {
+            let mut files: Vec<String> = at.iter().map(|(p, _)| p.clone()).collect();
+            files.dedup();
+            if at.len() < 3 || files.len() < 2 {
+                continue;
+            }
+            for f in &files {
+                // once per file, at its first copy
+                let first = at.iter().filter(|(p, _)| p == f).map(|(_, i)| *i).min().unwrap();
+                let others: Vec<String> = files.iter().filter(|o| *o != f).cloned().collect();
+                out.repeated.entry(f.clone()).or_default().push((first, tag.clone(), at.len(), files.len(), others));
+            }
+        }
+        out
+    })
+}
+
+fn file_name(p: &str) -> &str {
+    p.rsplit('/').next().unwrap_or(p)
+}
+
+/// The same styled control written out again in several files instead of one component.
+fn rule_ds01_copies(s: &Source, c: &Ctx) -> Vec<Hit> {
+    let Some(list) = copies(c).repeated.get(&norm(&s.path)) else { return Vec::new() };
+    list.iter().map(|(at, tag, n, files, others)| {
+        let shown: Vec<&str> = others.iter().take(3).map(|o| file_name(o)).collect();
+        let more = if others.len() > 3 { format!(" and {} more", others.len() - 3) } else { String::new() };
+        hit(*at, format!("this <{tag}> is written {n} times with the same classes in {files} files (also {}{more}): make it one component and use it in each place, so a change to its look or states happens once", shown.join(", ")))
+    }).collect()
+}
+
+/// A <button> styled by hand with the fill of the project's Button component.
+fn rule_ds01_bypass(s: &Source, c: &Ctx) -> Vec<Hit> {
+    let cp = copies(c);
+    let path = norm(&s.path);
+    let Some(buttons) = cp.buttons.get(&path) else { return Vec::new() };
+    let fills: Vec<&(String, String)> = cp.fills.iter().filter(|(f, fill)| *f != path && fill != "bg-transparent" && package_of(f) == package_of(&path)).collect();
+    buttons.iter().filter_map(|(at, classes)| {
+        let (comp, fill) = fills.iter().find(|(_, fill)| classes.iter().any(|c| c == fill))?;
+        Some(hit(*at, format!("a <button> styled by hand with the Button component's fill ({fill}): use Button from {} so its states, sizes, and focus ring stay the same everywhere", file_name(comp))))
+    }).collect()
 }
 
 /// A path with forward slashes, and "." and ".." resolved where they can be.
@@ -1391,6 +1483,8 @@ fn syntax_detectors() -> &'static [Detector] {
         Detector { rule: "RX-FE-05", level: "warn", exts: script_or_jsx, folder: false, find: rule_fe05_catch },
         Detector { rule: "RX-FE-07", level: "warn", exts: script_or_jsx, folder: false, find: rule_fe07_code },
         Detector { rule: "RX-FE-13", level: "warn", exts: script_or_jsx, folder: false, find: rule_fe13_effect },
+        Detector { rule: "RX-DS-01", level: "warn", exts: jsx, folder: true, find: rule_ds01_copies },
+        Detector { rule: "RX-DS-01", level: "warn", exts: jsx, folder: true, find: rule_ds01_bypass },
     ];
     D
 }
@@ -1409,6 +1503,7 @@ fn run(sources: &[Source], opts: ScanOptions, detectors: &[Detector]) -> Vec<Val
             growing_textarea: Some(sources.iter().any(|s| re(GROWS, "").test(&s.text))),
             design: None,
             files: HashMap::new(),
+            copies: Default::default(),
         }
     } else {
         Ctx::default()
@@ -2227,5 +2322,48 @@ mod tests {
             markup::words("LoadingSkeleton Loader2 KEY_ESCAPE onEscapeKeyDown HTMLDialog"),
             vec!["loading", "skeleton", "loader", "key", "escape", "on", "escape", "key", "down", "html", "dialog"]
         );
+    }
+
+    /// RX-DS-01 findings over a folder, as "file:line message-start".
+    fn ds01(files: &[(&str, &str)]) -> Vec<String> {
+        let sources: Vec<Source> = files.iter().map(|(p, r)| to_source(p, r)).collect();
+        let opts = ScanOptions { folder: true, skip: HashSet::new(), design: None, context: Vec::new() };
+        scan_syntax(&sources, opts).into_iter().filter(|f| f["rule"] == "RX-DS-01").map(|f| format!("{}:{} {}", f["file"].as_str().unwrap(), f["line"], &f["message"].as_str().unwrap()[..24])).collect()
+    }
+
+    #[test]
+    fn ds01_same_control_written_again_in_several_files() {
+        let btn = r#"<button className="rounded-lg bg-lime-300 px-4 py-2 text-slate-900">Save</button>"#;
+        let a = format!("export const A = () => <div>{btn}{btn}</div>;");
+        let b = format!("export const B = () => <form>{btn}</form>;");
+        // once per file, at the first copy
+        assert_eq!(ds01(&[("src/a.tsx", &a), ("src/b.tsx", &b)]), vec!["src/a.tsx:1 this <button> is written", "src/b.tsx:1 this <button> is written"]);
+        // class order does not matter; cn("..") and template text are read
+        let b2 = r#"export const B = () => <button className={cn("px-4 py-2 rounded-lg", "text-slate-900 bg-lime-300", on && "ring")}>Go</button>;"#;
+        assert_eq!(ds01(&[("src/a.tsx", &a), ("src/b.tsx", b2)]).len(), 2);
+        // two copies, or all copies in one file: not flagged
+        assert!(ds01(&[("src/a.tsx", &format!("const A = () => <>{btn}</>;")), ("src/b.tsx", &b)]).is_empty());
+        assert!(ds01(&[("src/a.tsx", &format!("const A = () => <>{btn}{btn}{btn}</>;"))]).is_empty());
+        // the component itself, a story, separate apps in a monorepo, and semantic classes: not copies
+        assert!(ds01(&[("components/ui/a.tsx", &a), ("components/ui/b.tsx", &b)]).is_empty());
+        assert!(ds01(&[("apps/web/a.tsx", &a), ("apps/admin/b.tsx", &b)]).is_empty());
+        let sem = r#"<button className="btn btn-primary">Save</button>"#;
+        assert!(ds01(&[("a.tsx", &format!("const A = () => <>{sem}{sem}</>;")), ("b.tsx", &format!("const B = () => {sem};"))]).is_empty());
+        // a list rendered with map is written once
+        assert!(ds01(&[("a.tsx", &format!("const A = () => items.map((i) => {btn});")), ("b.tsx", &b)]).is_empty());
+    }
+
+    #[test]
+    fn ds01_button_fill_written_by_hand() {
+        let comp = r#"const buttonVariants = cva("inline-flex rounded-md", { variants: { variant: { default: "bg-primary text-primary-foreground hover:bg-primary/90", outline: "border" } } });
+export function Button(props) { return <button className={cn(buttonVariants())} {...props} />; }"#;
+        let page = r#"export const P = () => <div><button className="bg-primary text-primary-foreground rounded-md px-3 py-1.5">Run</button><button className="hover:bg-muted rounded-md px-3 py-1.5 text-muted-foreground">Chip</button><Button>Ok</Button></div>;"#;
+        assert_eq!(ds01(&[("components/ui/button.tsx", comp), ("app/page.tsx", page)]), vec!["app/page.tsx:1 a <button> styled by han"]);
+        // a Button with a plain fill on its own <button>
+        let own = r#"export function Button({ children }) { return <button className="rounded-lg bg-blue-600 px-4 py-2 text-white">{children}</button>; }"#;
+        let page2 = r#"export const P = () => <button className="rounded-lg bg-blue-600 px-4 py-2 text-white">Buy</button>;"#;
+        assert_eq!(ds01(&[("src/Button.jsx", own), ("src/Page.jsx", page2)]), vec!["src/Page.jsx:1 a <button> styled by han"]);
+        // no Button component: nothing to bypass
+        assert!(ds01(&[("app/page.tsx", page)]).is_empty());
     }
 }

@@ -113,7 +113,7 @@ Optional sources (the ryux MCP, Figma, a browser, screenshots, other reference l
 - **Accessibility failures.** Do not: Put light grey text on white or white text on a pale accent. (RX-A11Y-01, RX-A11Y-02, RX-A11Y-03, RX-A11Y-04)
 - **Competing primary actions.** Do not: Put two equal-weight calls to action side by side. (RX-PR-03)
 - **Unexplained interaction behavior.** Do not: Ship an action whose in-progress, result, or failure behavior is undefined. (RX-IX-01)
-- **Duplicate components.** Do not: Create a near-duplicate component or pattern for one screen. (RX-DS-01)
+- **Duplicate components.** Do not: Create a near-duplicate component or pattern for one screen, write the same styled control out again in each file instead of making it one component, or style a <button> by hand when the project has a Button. (RX-DS-01)
 - **Build or typecheck fails.** Do not: Hand off code that does not build or typecheck, silence an error to make it pass (a type cast, a disabled rule, a skipped test), or call it done without running the checks. (RX-FE-16)
 - **Primary task cannot be completed.** Do not: Hand off a primary flow with a dead end: a button that does nothing, a submit that never resolves, a step that cannot be reached, or an error with no way back. (RX-QA-08)
 

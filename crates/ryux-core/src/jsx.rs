@@ -77,6 +77,117 @@ pub fn drag_without_keyboard(raw: &str, ext: &str) -> Vec<Drag> {
     f.found
 }
 
+/// A native control styled in place: its UTF-16 offset, tag, and its static classes, sorted and without repeats.
+pub struct Control {
+    pub index: usize,
+    pub tag: String,
+    pub classes: Vec<String>,
+}
+
+struct Controls<'s> {
+    src: &'s str,
+    found: Vec<Control>,
+}
+
+/// The static class text of a className: "a b", {`a ${x} b`} (the fixed parts), or {cn("a", x && "b")} (the string
+/// arguments); None for a value the scan cannot read (a variable, buttonVariants()).
+fn class_text(v: &oxc_ast::ast::JSXAttributeValue) -> Option<String> {
+    use oxc_ast::ast::{Expression, JSXAttributeValue};
+    fn of(e: &Expression) -> Option<String> {
+        match e {
+            Expression::StringLiteral(s) => s.value.as_str().map(str::to_string),
+            Expression::TemplateLiteral(t) => Some(t.quasis.iter().map(|q| q.value.raw.as_str()).collect::<Vec<_>>().join(" ")),
+            Expression::CallExpression(c) => {
+                let parts: Vec<String> = c.arguments.iter().filter_map(|a| a.as_expression()).filter_map(|e| match e {
+                    Expression::StringLiteral(_) | Expression::TemplateLiteral(_) => of(e),
+                    _ => None,
+                }).collect();
+                (!parts.is_empty()).then(|| parts.join(" "))
+            }
+            _ => None,
+        }
+    }
+    match v {
+        JSXAttributeValue::StringLiteral(s) => s.value.as_str().map(str::to_string),
+        JSXAttributeValue::ExpressionContainer(c) => c.expression.as_expression().and_then(of),
+        _ => None,
+    }
+}
+
+impl<'a> Visit<'a> for Controls<'_> {
+    fn visit_jsx_opening_element(&mut self, el: &JSXOpeningElement<'a>) {
+        if let JSXElementName::Identifier(id) = &el.name {
+            let tag = id.name.as_str();
+            if NATIVE.contains(&tag) {
+                let class = el.attributes.iter().find_map(|a| match a {
+                    JSXAttributeItem::Attribute(at) => match &at.name {
+                        JSXAttributeName::Identifier(n) if matches!(n.name.as_str(), "className" | "class") => at.value.as_ref().and_then(class_text),
+                        _ => None,
+                    },
+                    _ => None,
+                });
+                if let Some(text) = class {
+                    let mut classes: Vec<String> = text.split_whitespace().map(str::to_string).collect();
+                    classes.sort();
+                    classes.dedup();
+                    if styled(&classes) {
+                        self.found.push(Control { index: u16_at(self.src, el.span().start as usize), tag: tag.to_string(), classes });
+                    }
+                }
+            }
+        }
+        walk::walk_jsx_opening_element(self, el);
+    }
+}
+
+/// A class with its variant prefixes (hover:, md:, dark:) taken off.
+pub fn bare(c: &str) -> &str {
+    c.rsplit(':').next().unwrap_or(c)
+}
+
+/// Utility classes that make a control look like one on their own: a colour (background, text, or border), a
+/// corner radius, and padding. A semantic class (btn-primary) is already reuse, and is not counted.
+fn styled(classes: &[String]) -> bool {
+    thread_local! {
+        static COLOUR: regex::Regex = regex::Regex::new(r"^(?:bg|text|border)-(?:\[#[0-9a-fA-F]{3,8}\]|(?:primary|secondary|accent|destructive|muted|foreground|background|white|black|[a-z]+-\d{2,3})(?:-foreground)?(?:/\d+)?)$").unwrap();
+        static PAD: regex::Regex = regex::Regex::new(r"^p[xytblrse]?-").unwrap();
+    }
+    let has = |f: &dyn Fn(&str) -> bool| classes.iter().any(|c| f(bare(c)));
+    has(&|c| COLOUR.with(|r| r.is_match(c))) && has(&|c| c == "rounded" || c.starts_with("rounded-")) && has(&|c| PAD.with(|r| r.is_match(c)))
+}
+
+/// The native controls (button, a, input, select, textarea) in a .jsx or .tsx file styled in place with utility
+/// classes: a colour, a radius, and padding. A file that does not parse gives what the parser could still read.
+pub fn styled_controls(raw: &str, ext: &str) -> Vec<Control> {
+    let alloc = Allocator::default();
+    let kind = if ext == "tsx" { SourceType::tsx() } else { SourceType::jsx() };
+    let ret = Parser::new(&alloc, raw, kind).parse();
+    let mut f = Controls { src: raw, found: Vec::new() };
+    f.visit_program(&ret.program);
+    f.found
+}
+
+/// The fill of a file's Button component when the file defines one (export function Button, export const Button,
+/// or a button.tsx): the default variant's background in a cva() or variants table, else the first background
+/// class on its <button>. Hover and other variant states are not the fill.
+pub fn button_fill(path: &str, raw: &str) -> Option<String> {
+    thread_local! {
+        static DEFINES: regex::Regex = regex::Regex::new(r"\bexport\s+(?:default\s+)?(?:const|function)\s+Button\b|\bconst\s+Button\s*=\s*(?:React\.)?forwardRef").unwrap();
+        static DEFAULT: regex::Regex = regex::Regex::new(r#"\bdefault\s*:\s*["'`]([^"'`]*)["'`]"#).unwrap();
+        static BG: regex::Regex = regex::Regex::new(r"^bg-[a-z\[#]").unwrap();
+    }
+    let file = path.rsplit('/').next().unwrap_or(path).to_lowercase();
+    if !(file.starts_with("button.") || DEFINES.with(|r| r.is_match(raw))) {
+        return None;
+    }
+    let first_bg = |text: &str| text.split_whitespace().find(|c| !c.contains(':') && BG.with(|r| r.is_match(c))).map(str::to_string);
+    if let Some(fill) = DEFAULT.with(|r| r.captures_iter(raw).find_map(|m| first_bg(&m[1]))) {
+        return Some(fill);
+    }
+    let ext = if file.ends_with(".tsx") { "tsx" } else { "jsx" };
+    styled_controls(raw, ext).into_iter().filter(|c| c.tag == "button").find_map(|c| first_bg(&c.classes.join(" ")))
+}
+
 /// A finding from the code checks: offset, rule, message.
 pub struct Smell {
     pub index: usize,
