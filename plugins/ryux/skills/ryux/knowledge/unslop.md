@@ -2,7 +2,7 @@
 
 Stops generic AI output before it ships: no invented numbers or people, decoration with a purpose, and honest claims.
 
-> Group Quality · Delivery Gate area UNSLOP · RYUX 2.24.6. Levels are defined in `SKILL.md`.
+> Group Quality · Delivery Gate area UNSLOP · RYUX 2.24.7. Levels are defined in `SKILL.md`.
 
 Unslop runs in Verify and deliver, after design, build, critique, and QA; it is the final
 quality gate, never the
