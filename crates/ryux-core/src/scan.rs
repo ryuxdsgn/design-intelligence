@@ -464,6 +464,15 @@ fn after(text: &str, at: usize, n: usize) -> &str {
     &text[at..end]
 }
 
+/// Up to `n` bytes of `text` before byte `at`, cut on a character boundary.
+fn before(text: &str, at: usize, n: usize) -> &str {
+    let mut start = at.saturating_sub(n);
+    while !text.is_char_boundary(start) {
+        start += 1;
+    }
+    &text[start..at]
+}
+
 /// A section whose quotes or logos are all stand-ins: the page asks for real proof instead of inventing it (corpus
 /// 2026-11-27: 5 of 8 no-skill pages asked for testimonials answered with bracketed slots), so there is nothing to flag.
 fn only_stand_ins(section: &str) -> bool {
@@ -472,6 +481,80 @@ fn only_stand_ins(section: &str) -> bool {
 
 /// A quote set as text that is not a bracketed stand-in: “Dulu saya harus tutup toko…”.
 const REAL_QUOTE: &str = r#">\s*[“"«‘]\s*[^\[\s<"”»’][^<"”»\[]{25,}"#;
+
+/// Up to three quotes and how many more, for a finding that names what it found once per file.
+fn quoted(found: &[String]) -> String {
+    let head: Vec<String> = found.iter().take(3).map(|q| format!("\"{}\"", short(q))).collect();
+    match found.len() {
+        n if n > 3 => format!("{}, and {} more", head.join(", "), n - 3),
+        _ => head.join(", "),
+    }
+}
+
+/// RX-AS-01 as a "needs evidence" flag: a count of users or customers, a star rating, or a growth or percentage claim
+/// set in the page. The scan cannot know whether the brief gave the number, so it only asks for the source; once per
+/// file, at the first one. Not in a test file or a file that labels its data as sample.
+fn rule_as01(s: &Source, _: &Ctx) -> Vec<Hit> {
+    if re(TEST_FILE, "").test(&s.path) || re(SAMPLE_LABEL, "i").test(&s.text) {
+        return Vec::new();
+    }
+    let nouns = r"pengguna|pelanggan|pengusaha|pemilik (?:warung|toko|usaha|bisnis)|pelaku (?:usaha|UMKM)|warung|toko|UMKM|mitra|merchant|pasien|siswa|murid|alumni|peserta|member|anggota|investor|keluarga|perusahaan|bisnis|klinik|sekolah|kantor|restoran|kafe|unduhan|ulasan|users?|customers?|teams?|companies|businesses|clinics?|schools?|restaurants?|downloads?|installs?|merchants?|clients?|freelancers?|designers?|writers?|creators?|sellers?|penjual|kreator|developers?|engineers?|managers?|members?|students?|learners?|patients?|sleepers?|subscribers?|reviews?|ratings?|people|orang";
+    let count = format!(r"(?<![\w.,])(\d{{1,3}}(?:[.,]\d{{3}})+|\d+(?:[.,]\d+)?)\s?(rb|ribu|jt|juta|k|K|M|million|thousand)?(\+)?(?:\s|<[^>]{{0,60}}>)+(?:(?:active|happy|satisfied|paying|daily|monthly|verified|loyal|registered)\s+)?(?:{nouns})(?![\p{{L}}\d])");
+    let mut found: Vec<(usize, String)> = Vec::new();
+    // owner review 2026-11-27, sheet 13: numbers in a control (a "Rating 4.5+" filter chip) and a simulation's speed
+    // ("runs 12× faster than real time") are not claims
+    let in_control = |at: usize| {
+        let open = s.text[..at].rfind('<').map_or("", |i| &s.text[i..at]);
+        !open.starts_with("</") && re(r#"^<(?:button|option|select|label)\b|\b(?:chip|filter|toggle|segment)|aria-pressed|role\s*=\s*["']?(?:checkbox|radio|switch|option|tab)"#, "i").test(open)
+    };
+    let keep = |m: &crate::jsre::Hit| !in_control(m.start) && !re(r"simulat|simulasi|real time|waktu nyata|playback|kecepatan|speed\b|\bclock\b", "i").test(&format!("{} {}", before(&s.text, m.start, 80), after(&s.text, m.end, 80)));
+    for m in re(&count, "giu").match_all(&s.text).iter().filter(|m| keep(m)) {
+        let digits = re(r"[.,]", "g").replace(m.g(1), "");
+        // a year beside a name ("© 2026 Klinik Gigi") is not a count
+        if !m.has(2) && !m.has(3) && re(r"^(?:19|20)\d\d$", "").test(m.g(1)) {
+            continue;
+        }
+        let big = m.has(2) || m.has(3) || (!m.g(1).contains(['.', ',']) || re(r"^\d{1,3}(?:[.,]\d{3})+$", "").test(m.g(1))) && digits.parse::<u64>().map_or(false, |v| v >= 100);
+        if big {
+            // the quote as the reader sees it, without the markup between the number and the noun
+            found.push((m.index, re(r"\s+", "g").replace(&re(r"<[^>]*>", "g").replace(m.g(0), " "), " ")));
+        }
+    }
+    for p in [
+        // a star rating: "4,9/5", "★ 4.8", "4.8 stars", "rating 4,9"
+        r"(?<![\d.,])[1-5][.,]\d\s*(?:\/\s*5(?![\d.,])|dari 5\b|★|⭐|bintang\b|stars?\b|rating\b)|[★⭐]\s*[1-5][.,]\d(?![\d])|\b(?:rating|nilai)\s*:?\s*[1-5][.,]\d(?![\d])",
+        // a growth or comparison in percent or times: "+38%", "naik 30%", "up to 2x faster", "98% pelanggan puas"
+        r"(?<![\w)\]])[+↑]\s?\d+(?:[.,]\d+)?\s?%|\b(?:naik|meningkat|tumbuh|lebih|increase[sd]?|grow(?:s|th)?|boost(?:s|ed)?|up)\s+(?:hingga\s+|sampai\s+|to\s+|by\s+)?\d+(?:[.,]\d+)?\s?%(?!\s*(?:off|diskon|discount|potongan|cashback|lebih murah))|(?<![\w.,])\d+(?:[.,]\d+)?\s?%\s+(?:lebih (?:cepat|banyak|hemat|tinggi)|faster|more|fewer|less time|growth|increase|pertumbuhan|kenaikan)\b|(?<![\w.,])\d+(?:[.,]\d+)?\s?[x×]\s+(?:lebih|faster|more|quicker|better)\b|(?<![\w.,])\d{2,3}(?:[.,]\d+)?\s?%\s+(?:pengguna|pelanggan|pasien|alumni|peserta|users|customers|teams|patients|students)\b",
+    ] {
+        for m in re(p, "giu").match_all(&s.text).iter().filter(|m| keep(m)) {
+            // a bare star beside a name ("Marco · ★ 4.9", "★ 4.9 · 1,240 orders") is the product's own data about a
+            // driver or shopper; a rating is a claim when it says so ("Rating 4,9", "4,8/5") or sits by its reviews
+            let bare = !re(r"\/\s*5|dari 5|rating|nilai|stars?|bintang", "i").test(m.g(0)) && re(r"^[★⭐\d]", "").test(m.g(0)) && !m.g(0).contains('%') && !re(r"[x×]\s", "").test(m.g(0));
+            if bare && !re(r"ulasan|reviews?|rating|penilaian|app store|play store|google play|trustpilot|capterra|\bg2\b|pengguna|pelanggan|customers|users", "i").test(&format!("{} {}", before(&s.text, m.start, 160), after(&s.text, m.end, 160))) {
+                continue;
+            }
+            found.push((m.index, m.g(0).to_string()));
+        }
+    }
+    // a counter a script counts up to: data-target="85000" data-suffix="+", the number set where the reader sees 0
+    for m in re(r#"\bdata-(?:target|count|countup|end)\s*=\s*["'{]?\s*(\d[\d.,]*)["'}]?([^>]{0,160})"#, "gi").match_all(&s.text) {
+        let suffix = re(r#"\bdata-suffix\s*=\s*["']\s*([^"']{1,4})["']"#, "i").exec(m.g(2)).map(|x| x.g(1).trim().to_string()).unwrap_or_default();
+        let value = re(r"[.,]", "g").replace(m.g(1), "").parse::<u64>().unwrap_or(0);
+        if value >= 100 || ["+", "%", "/5", "★"].contains(&suffix.as_str()) {
+            found.push((m.index, format!("a counter to {}{}", m.g(1), suffix)));
+        }
+    }
+    found.sort_by_key(|f| f.0);
+    found.dedup_by_key(|f| f.0);
+    let Some(first) = found.first() else { return Vec::new() };
+    let mut quotes: Vec<String> = Vec::new();
+    for f in &found {
+        if !quotes.contains(&f.1) {
+            quotes.push(f.1.clone());
+        }
+    }
+    vec![hit(first.0, format!("{}: {} with no source the scan can see (a count of users, a rating, a growth claim); keep a number only when the brief or real data gives it, otherwise leave it out or label it as sample", quoted(&quotes), if quotes.len() == 1 { "a number" } else { "numbers" }))]
+}
 
 /// RX-AS-02 as a "needs evidence" flag: a testimonial or review section, a row of customers ("Dipercaya oleh"), or a
 /// face from a generator. Once per file for each; not in a test file or a file that labels its data as sample.
@@ -1073,6 +1156,7 @@ fn detectors() -> &'static [Detector] {
         Detector { rule: "RX-AS-03", level: "fail", exts: code, folder: false, find: rule_as03_lorem },
         Detector { rule: "RX-AS-03", level: "warn", exts: code, folder: false, find: rule_as03_placeholder },
         Detector { rule: "RX-AS-04", level: "warn", exts: code, folder: false, find: rule_as04 },
+        Detector { rule: "RX-AS-01", level: "warn", exts: code, folder: false, find: rule_as01 },
         Detector { rule: "RX-AS-02", level: "warn", exts: code, folder: false, find: rule_as02 },
         Detector { rule: "RX-A11Y-02", level: "fail", exts: code, folder: false, find: rule_a11y02_zoom },
         Detector { rule: "RX-A11Y-02", level: "warn", exts: visual, folder: false, find: rule_a11y02_small },
@@ -1436,6 +1520,44 @@ mod tests {
         let opts = ScanOptions { folder: false, skip: HashSet::new(), design: None, context: Vec::new() };
         let all = scan_sources(&[to_source("a.tsx", "export function A() { return <div>{open && <ul/>}</div> }")], opts);
         assert!(all.iter().filter(|f| f["rule"] == "RX-UI-11").all(|f| f["level"] == "note"));
+    }
+
+    #[test]
+    fn a_count_a_rating_or_a_growth_claim_needs_evidence() {
+        let claims = |raw: &str| found("a.html", raw, "RX-AS-01", "");
+        for hit in [
+            "<p>Dipakai 10.000+ pengguna</p>", "<p>4,000+ teams</p>", "<p>12rb warung</p>", "<p>2 juta unduhan</p>", "<p>1,200 patients</p>",
+            "<b>4,9/5</b>", "<span>★ 4.8 dari 2.000 ulasan</span>", "<p>4.9 stars</p>", "<p>Rating 4,8</p>",
+            "<p>+38% penjualan</p>", "<p>naik 30%</p>", "<p>up to 2x faster</p>", "<p>98% pelanggan puas</p>", "<p>40% faster reviews</p>",
+        ] {
+            assert_eq!(claims(hit).len(), 1, "{hit}");
+        }
+        for quiet in [
+            "<p>Free for up to 3 clients</p>", "<p>2 pengguna</p>", "<p>Rp49.000 per bulan</p>", "<p>40% off</p>", "<p>Diskon 40%</p>", "<p>Up to 40% off</p>",
+            "<p>Mulai dari Rp10.000</p>", "<p>Paket 4 orang</p>", "<div style=\"width:calc(100% + 12px)\"></div>", "<p>Versi 2.5 rilis</p>",
+        ] {
+            assert!(claims(quiet).is_empty(), "{quiet}");
+        }
+        // once per file, naming the first three
+        assert_eq!(found("a.html", "<p>10.000+ pengguna</p><p>★ 4,9</p><p>+38%</p><p>naik 30%</p>", "RX-AS-01", "\"10.000+ pengguna\", \"★ 4,9\", \"+38%\", and 1 more: numbers"), vec!["1:4"]);
+        assert!(claims("<span class=\"tag\">Contoh</span><p>10.000+ pengguna</p>").is_empty());
+        assert!(claims("<p>⚠ Data contoh — ganti dengan angka asli sebelum terbit</p><p>10.000+ pengguna</p>").is_empty());
+        // a count with markup between the number and the noun, and a counter a script counts up to
+        assert_eq!(claims("<p><strong>1.200+</strong> ulasan</p>").len(), 1);
+        assert_eq!(found("a.html", "<b data-target=\"85000\" data-suffix=\"+\">0</b> paket", "RX-AS-01", "\"a counter to 85000+\""), vec!["1:4"]);
+        assert_eq!(claims("<b data-target=\"4.8\" data-decimals=\"1\" data-suffix=\"/5\">0</b>").len(), 1);
+        assert!(claims("<b data-count=\"3\">0</b> langkah").is_empty());
+        assert!(claims("<p>© <span>2026</span> Klinik Gigi Senyum</p>").is_empty());
+        // sheet 13: a driver's or shopper's own rating, an order count, a filter chip, a simulation's speed are not claims
+        assert!(claims("<div class=\"meta\"><strong>Marco</strong>Silver Toyota Corolla · ★ 4.9</div>").is_empty());
+        assert!(claims("<p>Maya · ★ 4.9 · 1,240 orders</p>").is_empty());
+        assert!(claims("<button class=\"chip\" data-f=\"rating\" aria-pressed=\"false\">⭐ Rating 4.5+</button>").is_empty());
+        assert!(claims("<p class=\"panel-note\">Not part of the app. Simulated time runs 12× faster than real time (1×).</p>").is_empty());
+        // an adjective before the noun, across markup (held-out page 2026-11-27)
+        assert_eq!(found("a.html", "<div class=\"num\">48.000+</div><div class=\"label\">Active users today</div>", "RX-AS-01", "\"48.000+ Active users\": a number").len(), 1);
+        // a bare star by its reviews is still a claim
+        assert_eq!(claims("<div><strong>4,8</strong> ★★★★★ <span>dari 1.200 ulasan pasien</span></div>").len(), 1);
+        assert!(claims("<p>Contoh: Tebet, Jakarta Selatan</p><p>10.000+ pengguna</p>").len() == 1);
     }
 
     #[test]

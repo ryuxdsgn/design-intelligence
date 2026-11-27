@@ -2078,6 +2078,7 @@ Gate area UNSLOP. Covers hard gates, purpose gates, quality locks, honest claims
 - Do not: Invent "48.000+ users", "4,8★", or "+12%".
 - Why: Invented numbers are false claims, however polished the page. (ryux run 2026-10-02: pen.dev landing without ryux; owner blind rating 2026-11-23 (FigCraft home-physio booking bench): the RYUX screens left out the invented rating and showed no trust signal in its place)
 - Check: list every number on the screen with its source (brief, docs, data, or a sample label); fails on any number without one
+- Machine check: `ryux scan` flags a number that needs a source: a count of users or customers (10.000+ pengguna, 48.000+ active users; 100 or more, or with rb, k, juta, or +), a rating that says so or sits by its reviews (Rating 4,9, 4,8/5, 4,8 ★ dari 1.200 ulasan), a growth claim (+38%, naik 30%, 2x faster, 98% pelanggan puas), or a counter a script counts up to (data-target='85000' data-suffix='+'); not a driver's or shopper's own star, an order count, a number in a filter chip or button, or a simulation's speed; once per file, not in a test file or a file that labels its data as sample where the visitor sees it (warn)
 
 #### RX-AS-02 [Required] [Hard Gate] No invented people
 
