@@ -115,6 +115,8 @@ export async function probeExtract() {
     if (e.hasAttribute("data-ryux-ignore")) o.ig = 1;
     // a selected state (the current tab or page, a checked option): the action colour may mark it (RX-UI-04)
     if (i > 1 && e.matches("[aria-current]:not([aria-current=false]),[aria-selected=true],[aria-checked=true],[aria-pressed=true],:checked,label:has(:checked)")) o.sel = 1;
+    // hidden from assistive tech: decoration drawn with text (an illustration's handwriting), not page copy
+    if (i > 1 && e.getAttribute("aria-hidden") === "true") o.ah = 1;
     if (e.matches("[disabled],[aria-disabled='true'],[inert]")) o.dis = 1;
     if (/code/.test(e.getAttribute("class") || "")) o.cc = 1;
     if (e.scrollHeight > e.clientHeight) Object.assign(o, { sh: e.scrollHeight, ch: e.clientHeight });

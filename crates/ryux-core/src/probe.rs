@@ -13,7 +13,7 @@ use std::collections::{HashMap, HashSet};
 
 /// What the rendered checks look for, one row per line of RENDER_CHECKS in packages/cli/src/checks.ts (which also
 /// lists RX-QA-08, script errors, reported by the CLI itself). `cargo test` and the CLI tests hold them equal.
-pub const CATALOGUE: [(&str, &str); 23] = [
+pub const CATALOGUE: [(&str, &str); 24] = [
     ("RX-RD-01", "fail"),
     ("RX-RD-02", "warn"),
     ("RX-A11Y-01", "fail"),
@@ -36,6 +36,7 @@ pub const CATALOGUE: [(&str, &str); 23] = [
     ("RX-UX-15", "warn"),
     ("RX-FM-05", "warn"),
     ("RX-UI-29", "warn"),
+    ("RX-UI-04", "warn"),
     ("RX-A11Y-01", "warn"),
 ];
 
@@ -1678,6 +1679,98 @@ impl<'a> Page<'a> {
             tell(&mut out, "RX-DS-02", "button-shapes", Some(other), format!("buttons of one colour in two shapes ({} with {}, {} with {}): one button component, one corner radius, size variants only", quote(self.text_of(is[0], "nm")), shape(is[0]), quote(self.text_of(other, "nm")), shape(other)));
         }
 
+        // The action colour off the actions (RX-UI-04): the colour most buttons with a label are filled with, also on
+        // several things that cannot be pressed: text (a price, a word in a heading, an eyebrow) or a filled box
+        // (a badge, a tag). Not inside a control, not a selected state (the current tab, a checked option), not an icon.
+        {
+            let same = |a: Colour, b: Colour| (0..3).all(|k| (a[k] - b[k]).abs() <= 10.0) && a[3] > 0.8;
+            // the action colour: the fill that covers the most area across labelled buttons on screen (not a skip link
+            // above the page, not a selected chip); when that fill is ink or paper (near-black, near-white, grey, or the
+            // page's text colour), the page's actions have no colour of their own and there is nothing to check
+            // (sheet 14 draft: C8, C9 took a skip link's colour; C10, C11 a single plan button's beside black ones)
+            let mut fills: Vec<(Colour, f64)> = Vec::new();
+            for i in 2..n {
+                let r = self.els[i].r;
+                if !self.flag(i, "ctl") || self.flag(i, "sel") || !self.shown[i] || !self.outside[i] || self.in_proto[i] || self.text_of(i, "nm").is_empty() || r.h < 28.0 || r.bottom() <= 0.0 || r.right() <= 0.0 {
+                    continue;
+                }
+                let Some(c) = self.rgba(self.s(i, "backgroundColor")).filter(|c| c[3] > 0.8 && !(lum(*c) > 0.85 && self.hsl(*c)[1] < 0.35)) else { continue };
+                match fills.iter_mut().find(|f| same(f.0, c)) { Some(f) => f.1 += r.w * r.h, None => fills.push((c, r.w * r.h)) }
+            }
+            fills.sort_by(|a, b| b.1.partial_cmp(&a.1).unwrap_or(std::cmp::Ordering::Equal));
+            let mut inks: Vec<(Colour, usize)> = Vec::new();
+            for t in &self.texts {
+                if let Some(c) = self.rgba(self.s(t.e, "color")) {
+                    match inks.iter_mut().find(|f| same(f.0, c)) { Some(f) => f.1 += 1, None => inks.push((c, 1)) }
+                }
+            }
+            inks.sort_by(|a, b| b.1.cmp(&a.1));
+            // a dark green or navy reads as ink, not as "press here" (owner sheet 15: C2 #1e4a2c, lightness 0.20)
+            let coloured = |c: Colour| { let [_, sat, l] = self.hsl(c); sat >= 0.35 && l >= 0.25 && l <= 0.85 && !inks.first().is_some_and(|k| same(k.0, c)) };
+            let fills: Vec<(Colour, f64)> = fills.into_iter().take(1).filter(|f| coloured(f.0)).collect();
+            if let Some(&(action, _)) = fills.first() {
+                let shown_content = regex::Regex::new(r"(?i)phone|device|mock|handset|screenshot|app-?(?:ui|screen|preview)|avatar").unwrap();
+                let mut off: Vec<(usize, String)> = Vec::new();
+                let mut boxes: Vec<usize> = Vec::new();
+                for i in 2..n {
+                    if !self.shown[i] || !self.outside[i] || self.in_proto[i] || self.in_svg[i] || self.flag(i, "ctl") || self.flag(i, "sel") {
+                        continue;
+                    }
+                    // not inside a control or a selected state; not content the page shows (a device mockup or a drawn product
+                    // screen, a logo or wordmark, an avatar); not the hero heading, where one coloured word is ordinary
+                    // emphasis (owner sheet 14b: C5, C6, C8 false; the hero accent "wajar", section titles and eyebrows not)
+                    let up = self.ancestors(i);
+                    let named = |x: usize, r: &regex::Regex| r.is_match(self.text_of(x, "c")) || r.is_match(self.text_of(x, "id"));
+                    // and not words drawn in an illustration (a handwritten shopping list in a figure, owner sheet 15 C2)
+                    let content = |x: usize| named(x, &shown_content) || named(x, &self.re.logo) || matches!(self.els[x].tag, "H1" | "FIGURE") || self.flag(x, "ah");
+                    if up.iter().any(|&a| self.flag(a, "ctl") || self.flag(a, "sel") || content(a)) || content(i) {
+                        continue;
+                    }
+                    let own: String = self.texts.iter().filter(|t| t.e == i).map(|t| t.x).collect::<Vec<_>>().join(" ");
+                    let ink = self.rgba(self.s(i, "textFill")).or_else(|| self.rgba(self.s(i, "color")));
+                    let fill = self.rgba(self.s(i, "backgroundColor"));
+                    // words, not a glyph: "🧭", "●", "☁" are icons set as text
+                    let wordy = own.chars().filter(|c| c.is_alphanumeric()).count() >= 2 && !self.re.initial.is_match(own.trim());
+                    if wordy && ink.is_some_and(|c| same(c, action)) {
+                        off.push((i, quote(own.trim())));
+                    } else if fill.is_some_and(|c| same(c, action)) && self.els[i].r.w * self.els[i].r.h >= 64.0 && !(i + 1..n).take_while(|&k| self.contains(i, k)).any(|k| self.flag(k, "ctl")) {
+                        // a filled box that holds an action (a promo bar with its "Claim" link) is that action's surface
+                        // a badge or tag says something; a filled shape with no words is decoration nobody reads as an action
+                        // (owner sheet 14b: C7's empty boxes were unclear)
+                        // all the words in the box ("MG 8", not just "Mg")
+                        let all: Vec<&str> = self.texts.iter().filter(|t| t.e == i || self.contains(i, t.e)).map(|t| t.x.trim()).filter(|x| !x.is_empty()).collect();
+                        let all = all.join(" ");
+                        if all.chars().filter(|c| c.is_alphanumeric()).count() >= 2 {
+                            off.push((i, quote(&all)));
+                            boxes.push(i);
+                        }
+                    }
+                }
+                // a box and the text inside it count once
+                let mut seen: Vec<usize> = Vec::new();
+                off.retain(|(i, _)| {
+                    let inside = seen.iter().any(|&s| self.contains(s, *i) || self.contains(*i, s));
+                    seen.push(*i);
+                    !inside
+                });
+                // An eyebrow or a section title in the brand colour is an accent; across the page it is the colour losing
+                // its job (owner 2026-11-27: "masalah bila banyak"): eight or more, or five or more when one of them is a
+                // filled pill, badge, or chip, the shape most often taken for a button (owner sheet 14b C4)
+                let pill = off.iter().any(|(i, _)| boxes.contains(i));
+                if off.len() >= 8 || (off.len() >= 5 && pill) {
+                    // strongest evidence first (owner sheet 16: T2 and T4 opened with eyebrows and were easy to wave away):
+                    // a filled pill or badge, then a price or number, then other text, then a heading
+                    let rank = |i: usize, x: &str| if boxes.contains(&i) { 0 } else if x.chars().any(|c| c.is_ascii_digit()) { 1 } else if matches!(self.els[i].tag, "H2" | "H3" | "H4" | "H5" | "H6") { 3 } else { 2 };
+                    off.sort_by_key(|(i, x)| rank(*i, x));
+                    for o in off.iter_mut().filter(|(i, _)| boxes.contains(i)) {
+                        o.1 = format!("{} (a filled badge)", o.1);
+                    }
+                    let names: Vec<String> = off.iter().take(3).map(|x| x.1.clone()).collect();
+                    tell(&mut out, "RX-UI-04", "action-off", Some(off[0].0), format!("the action colour ({}) also marks {} things that cannot be pressed: {}{}; when it marks prices, words, and badges too, people stop reading it as \"press here\", so keep it for actions and give emphasis weight, size, or another role colour", hex(action), off.len(), names.join(", "), if off.len() > 3 { format!(", and {} more", off.len() - 3) } else { String::new() }));
+                }
+            }
+        }
+
         // A hero of text and buttons with a small card beside it (RX-UI-29), on desktop: the heading's column, and beside it one
         // filled or bordered box narrower than half the page with text and no large image. The owner marked three of five H9
         // pages one idea for this hero alone (eyebrow, a coloured word, a note card on the right), and H6 before it (2026-11-26).
@@ -2332,6 +2425,77 @@ mod tests {
             {"t": "A", "p": 1, "s": 2, "ctl": 1, "nm": "Promo mulai 12.12", "ln": 2, "r": [0, 200, 100, 40]}
         ]));
         assert!(same[0].starts_with("1 short control label wraps at 320px: \"Promo mulai 12.12\" (2 lines);"), "{same:?}");
+    }
+
+    #[test]
+    fn the_action_colour_on_five_things_that_cannot_be_pressed() {
+        let green = serde_json::json!({"backgroundColor": "rgb(22, 128, 61)", "color": "rgb(255, 255, 255)"});
+        let ink = serde_json::json!({"color": "rgb(22, 128, 61)"});
+        let off = |extra: Value| {
+            let mut els = vec![
+                serde_json::json!({"t": "BUTTON", "p": 1, "s": 2, "ctl": 1, "nm": "Daftar", "r": [16, 100, 120, 44]}),
+                serde_json::json!({"t": "BUTTON", "p": 1, "s": 2, "ctl": 1, "nm": "Coba gratis", "r": [16, 600, 120, 44]}),
+            ];
+            // body copy in black, so green is the buttons' colour and not the page's ink
+            for k in 0..4 {
+                els.push(serde_json::json!({"t": "P", "p": 1, "s": 0, "r": [16, 400 + k * 30, 200, 20]}));
+            }
+            els.extend(extra.as_array().unwrap().iter().cloned());
+            let texts: Vec<Value> = (4..2 + els.len()).map(|e| serde_json::json!({"e": e, "x": format!("teks {e}"), "r": [16, 200, 100, 20]})).collect();
+            rules_of(&page(serde_json::json!({}), serde_json::json!([green, ink]), Value::from(els), Value::from(texts)), "RX-UI-04")
+        };
+        let five = serde_json::json!([
+            {"t": "SPAN", "p": 1, "s": 3, "r": [16, 200, 100, 20]},
+            {"t": "P", "p": 1, "s": 3, "r": [16, 240, 100, 20]},
+            {"t": "H2", "p": 1, "s": 3, "r": [16, 320, 100, 20]},
+            {"t": "H2", "p": 1, "s": 3, "r": [16, 360, 100, 20]},
+            {"t": "DIV", "p": 1, "s": 2, "r": [16, 280, 80, 24]}
+        ]);
+        let found = off(five);
+        assert_eq!(found.len(), 1);
+        assert!(found[0].contains("the action colour (#16803d) also marks 5 things"), "{found:?}");
+        // the filled badge is named first, before the words and headings
+        assert!(found[0].split("pressed: ").nth(1).unwrap().split(", ").next().unwrap().ends_with("(a filled badge)"), "{found:?}");
+        // five words with no filled pill are an accent, not yet the colour losing its job; eight are
+        // (with more black body copy, so green stays the buttons' colour and not the page's ink)
+        let words = |k: usize| Value::from((0..k).map(|j| serde_json::json!({"t": "P", "p": 1, "s": 3, "r": [16, 200 + j * 40, 100, 20]})).chain((0..12).map(|j| serde_json::json!({"t": "P", "p": 1, "s": 0, "r": [16, 900 + j * 30, 200, 20]}))).collect::<Vec<_>>());
+        assert!(off(words(7)).is_empty());
+        assert!(off(words(8))[0].contains("also marks 8 things"));
+        // four are not enough; the hero heading, an avatar, a logo, and a mockup are not counted (owner sheet 14b)
+        assert!(off(serde_json::json!([{"t": "SPAN", "p": 1, "s": 3, "r": [16, 200, 100, 20]}, {"t": "P", "p": 1, "s": 3, "r": [16, 240, 100, 20]}, {"t": "H2", "p": 1, "s": 3, "r": [16, 320, 100, 20]}, {"t": "H2", "p": 1, "s": 3, "r": [16, 360, 100, 20]}])).is_empty());
+        assert!(off(serde_json::json!([
+            {"t": "H1", "p": 1, "s": 3, "r": [16, 200, 100, 20]}, {"t": "SPAN", "p": 1, "s": 3, "c": "avatar", "r": [16, 240, 100, 20]},
+            {"t": "SPAN", "p": 1, "s": 3, "c": "logo", "r": [16, 280, 100, 20]}, {"t": "DIV", "p": 1, "s": 3, "c": "mock", "r": [16, 320, 100, 20]},
+            {"t": "P", "p": 1, "s": 3, "ah": 1, "r": [16, 360, 100, 20]}
+        ])).is_empty());
+        // four page words plus a fifth drawn in an illustration (aria-hidden, or inside a figure) stay quiet
+        let four = || vec![
+            serde_json::json!({"t": "SPAN", "p": 1, "s": 3, "r": [16, 200, 100, 20]}), serde_json::json!({"t": "P", "p": 1, "s": 3, "r": [16, 240, 100, 20]}),
+            serde_json::json!({"t": "H2", "p": 1, "s": 3, "r": [16, 320, 100, 20]}), serde_json::json!({"t": "H2", "p": 1, "s": 3, "r": [16, 360, 100, 20]}),
+        ];
+        let mut hidden = four();
+        hidden.push(serde_json::json!({"t": "P", "p": 1, "s": 3, "ah": 1, "r": [16, 400, 100, 20]}));
+        assert!(off(Value::from(hidden)).is_empty());
+        let mut drawn = four();
+        drawn.push(serde_json::json!({"t": "FIGURE", "p": 1, "s": 0, "r": [16, 440, 200, 80]}));
+        drawn.push(serde_json::json!({"t": "P", "p": 12, "s": 3, "r": [16, 450, 100, 20]}));
+        assert!(off(Value::from(drawn)).is_empty());
+        // a black page of buttons with one green plan button has no action colour; a skip link above the page sets none
+        let black = serde_json::json!({"backgroundColor": "rgb(22, 21, 15)", "color": "rgb(255, 255, 255)"});
+        let mixed = page(serde_json::json!({}), serde_json::json!([green, ink, black]), serde_json::json!([
+            {"t": "BUTTON", "p": 1, "s": 4, "ctl": 1, "nm": "Start free", "r": [16, 100, 280, 48]},
+            {"t": "BUTTON", "p": 1, "s": 4, "ctl": 1, "nm": "Get started", "r": [16, 900, 280, 48]},
+            {"t": "BUTTON", "p": 1, "s": 2, "ctl": 1, "nm": "Start trial", "r": [16, 700, 120, 44]},
+            {"t": "SPAN", "p": 1, "s": 3, "r": [16, 200, 100, 20]}, {"t": "P", "p": 1, "s": 3, "r": [16, 240, 100, 20]}, {"t": "P", "p": 1, "s": 3, "r": [16, 280, 100, 20]}
+        ]), serde_json::json!([{"e": 5, "x": "satu dua"}, {"e": 6, "x": "tiga empat"}, {"e": 7, "x": "lima enam"}]));
+        assert!(rules_of(&mixed, "RX-UI-04").is_empty());
+        // a selected tab and a link are not counted
+        assert!(off(serde_json::json!([{"t": "SPAN", "p": 1, "s": 3, "r": [16, 200, 100, 20]}, {"t": "P", "p": 1, "s": 3, "r": [16, 240, 100, 20]}])).is_empty());
+        assert!(off(serde_json::json!([
+            {"t": "SPAN", "p": 1, "s": 3, "r": [16, 200, 100, 20]},
+            {"t": "BUTTON", "p": 1, "s": 3, "ctl": 1, "sel": 1, "role": "tab", "nm": "Semua", "r": [16, 240, 100, 20]},
+            {"t": "A", "p": 1, "s": 3, "ctl": 1, "nm": "Lihat semua", "r": [16, 280, 80, 24]}
+        ])).is_empty());
     }
 
     #[test]
