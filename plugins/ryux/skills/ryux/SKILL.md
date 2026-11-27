@@ -132,6 +132,7 @@ A small change (a copy fix, one component, one state) reads its entry point's fi
 | AI feature (generated answers, summaries, drafts) | `knowledge/product.md`, `knowledge/ux.md`, `knowledge/content.md`, `knowledge/edge-cases.md`, `knowledge/unslop.md` |
 | Copy only (UI text, chat, announcements) | `knowledge/content.md`, `knowledge/unslop.md` |
 | Visual refinement | `knowledge/ui.md`, `knowledge/design-system.md`, `capabilities/qa.md`, `knowledge/accessibility.md`, `knowledge/unslop.md` |
+| Design system or component library (variables, tokens, components) | `knowledge/design-system.md`, `knowledge/ui.md`, `knowledge/accessibility.md`, `knowledge/content.md`, `knowledge/unslop.md` |
 | User flow, journey map, or another UX map | `knowledge/product.md`, `knowledge/ux.md`, `knowledge/edge-cases.md`, `knowledge/content.md` |
 | Review or critique | `capabilities/critique.md` (Design Read + heuristic_eval), plus `capabilities/qa.md` |
 
@@ -164,8 +165,7 @@ FINAL          PASS | FAIL | NOT VERIFIED
 ## Honest claims
 
 Report what was checked, how, and what was not available; list every change to DESIGN.md as old → new (a business rule moves to Decided only on the user's own words).
-Do not claim "pixel perfect", "fully accessible", "production ready", "senior-level", or "UX optimized" without evidence. Say
-"Keyboard and focus checked by hand; no automated accessibility test was available" instead.
+Do not claim "pixel perfect", "fully accessible", "production ready", "senior-level", or "UX optimized" without evidence. Say "Keyboard and focus checked by hand; no automated accessibility test was available" instead.
 Rule IDs and gate results belong in your report, never on the design itself.
 
 ## Design Decision Record

@@ -48,6 +48,29 @@ test("contrast: pale text on white fails, ink passes, text over an image is not 
   assert.equal(over.counts.contrastUnknown, 1);
 });
 
+test("contrast: text on a disabled variant is exempt (WCAG 1.4.3), an enabled one is measured", async () => {
+  const pale1 = (n) => text("Label", "Masuk", [16, 100, 200, 20], { fills: [pale], ...n });
+  // a frame of variants with a title, so it is measured as a screen and not skipped as a component sheet
+  const variant = (name) => node("FRAME", name, [0, 90, 240, 40], {}, [pale1()]);
+  const title = () => text("Title", "Tombol", [16, 40, 200, 20]);
+  assert.deepEqual(rules(await audit([screen("01", [title(), variant("Variant=Primary, State=Disabled")])])), []);
+  assert.deepEqual(rules(await audit([screen("01", [title(), variant("Variant=Primary, Disabled=true")])])), []);
+  assert.deepEqual(rules(await audit([screen("01", [title(), variant("Variant=Primary, Disabled=false")])])), ["fail RX-A11Y-01"]);
+  assert.deepEqual(rules(await audit([screen("01", [title(), variant("Variant=Primary, State=Default")])])), ["fail RX-A11Y-01"]);
+  const inst = node("INSTANCE", "Button/Daftar", [0, 90, 240, 40], { mainComponent: { name: "Variant=Tertiary, State=Disabled", parent: { type: "COMPONENT_SET", name: "Button" } } }, [pale1()]);
+  assert.deepEqual(rules(await audit([screen("01", [inst])])).filter((x) => x.endsWith("RX-A11Y-01")), []);
+});
+
+test("an alert laid out in the flow is an inline message, not an overlay; a floating one still warns", async () => {
+  const alert = (props = {}) => node("FRAME", "Alert/Error", [16, 100, 358, 60], { fills: [pale], ...props }, [text("T", "Email atau kata sandi salah.", [28, 110, 300, 20])]);
+  const form = (kids) => node("FRAME", "Form", [0, 80, 390, 400], { layoutMode: "VERTICAL" }, kids);
+  assert.deepEqual(rules(await audit([screen("01", [form([alert()])])])).filter((x) => x.endsWith("RX-UI-15")), []);
+  assert.deepEqual(rules(await audit([screen("01", [form([alert({ layoutPositioning: "ABSOLUTE" })])])])).filter((x) => x.endsWith("RX-UI-15")), ["warn RX-UI-15"]);
+  assert.deepEqual(rules(await audit([screen("01", [alert()])])).filter((x) => x.endsWith("RX-UI-15")), ["warn RX-UI-15"]);
+  const sheet = node("FRAME", "Bottom sheet", [0, 500, 390, 344], { fills: [white] }, [text("T", "Pilih kursi", [16, 520, 200, 20])]);
+  assert.deepEqual(rules(await audit([screen("01", [form([sheet])])])).filter((x) => x.endsWith("RX-UI-15")), ["warn RX-UI-15"]);
+});
+
 test("images: fills, distinct images, and reuse across screens", async () => {
   const card = (h, y) => node("RECTANGLE", "Art", [16, y, 60, 60], { fills: [img(h)] });
   const r = await audit([screen("01-list", [card("aaa", 100), card("bbb", 200)]), screen("02-event", [card("aaa", 100)]), screen("09-ticket", [card("aaa", 100)])]);

@@ -875,6 +875,14 @@ test("every knowledge module is reachable from the router: a task row, or the se
   }
 });
 
+test("building a design system has its own task row, so the run reads design-system.md (stage 3 Figma trial, 2026-11-27)", () => {
+  const row = ACTIVATION.find((r) => /design system or component library/i.test(r.task));
+  assert.ok(row, "no task row for a design system or component library");
+  for (const m of ["design-system", "ui", "accessibility", "content", "unslop"]) assert.ok(row.skills.includes(m), m);
+  const router = renderFiles()["SKILL.md"];
+  assert.match(router, /\| Design system or component library[^\n]*`knowledge\/design-system\.md`/);
+});
+
 test("the router names a file for each of the five capabilities", () => {
   const router = renderFiles()["SKILL.md"];
   for (const c of ["analyze", "design", "build", "critique", "qa"]) assert.ok(router.includes(`capabilities/${c}.md`), `no route to capabilities/${c}.md`);
