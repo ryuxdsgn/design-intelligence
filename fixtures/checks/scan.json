@@ -431,6 +431,29 @@
   "input": {
    "sources": [
     {
+     "path": "a.tsx",
+     "raw": "<p>Dipakai 10.000+ pengguna, ★ 4,9, naik 30%</p>"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": [
+   {
+    "level": "warn",
+    "rule": "RX-AS-01",
+    "file": "a.tsx",
+    "line": 1,
+    "column": 12,
+    "message": "\"10.000+ pengguna\", \"★ 4,9\", \"naik 30%\": numbers with no source the scan can see (a count of users, a rating, a growth claim); keep a number only when the brief or real data gives it, otherwise leave it out or label it as sample"
+   }
+  ]
+ },
+ {
+  "input": {
+   "sources": [
+    {
      "path": "a.html",
      "raw": "<h2>Apa kata mereka</h2><p>Dipercaya oleh 500 klinik</p><img src=\"https://i.pravatar.cc/80\" alt=\"Rina\">"
     }
@@ -455,6 +478,14 @@
     "line": 1,
     "column": 27,
     "message": "\"Dipercaya oleh 500 klinik\": a row of customers; name only customers the brief gives, with their own logos, otherwise leave it out"
+   },
+   {
+    "level": "warn",
+    "rule": "RX-AS-01",
+    "file": "a.html",
+    "line": 1,
+    "column": 43,
+    "message": "\"500 klinik\": a number with no source the scan can see (a count of users, a rating, a growth claim); keep a number only when the brief or real data gives it, otherwise leave it out or label it as sample"
    },
    {
     "level": "warn",
