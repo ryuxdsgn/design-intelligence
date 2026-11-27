@@ -13,8 +13,9 @@ use std::collections::{HashMap, HashSet};
 
 /// What the rendered checks look for, one row per line of RENDER_CHECKS in packages/cli/src/checks.ts (which also
 /// lists RX-QA-08, script errors, reported by the CLI itself). `cargo test` and the CLI tests hold them equal.
-pub const CATALOGUE: [(&str, &str); 22] = [
+pub const CATALOGUE: [(&str, &str); 23] = [
     ("RX-RD-01", "fail"),
+    ("RX-RD-02", "warn"),
     ("RX-A11Y-01", "fail"),
     ("RX-A11Y-01", "warn"),
     ("RX-A11Y-01", "fail"),
@@ -958,6 +959,52 @@ impl<'a> Page<'a> {
                 culprits.first().map_or("html".to_string(), |&i| self.selector(i)),
                 format!("the page scrolls sideways: {}px of content in {}px{}", num_str(sw), num_str(vw), if names.is_empty() { String::new() } else { format!("; widest: {}", names.join(", ")) }),
             ));
+        }
+
+        // A control's label that does not fit (RX-RD-02): part of it hidden (an ellipsis, or a box that hides its
+        // overflow), or a short name (four words or fewer: a tab, a chip, a button) that wraps to a second line. A
+        // control inside another control is judged once, at the outer one.
+        let label = |i: usize| if self.text_of(i, "vt").is_empty() { self.text_of(i, "nm") } else { self.text_of(i, "vt") };
+        let lines = |i: usize| self.els[i].v.get("ln").and_then(Value::as_f64).unwrap_or(1.0);
+        let (mut cut, mut wrapped) = (Vec::new(), Vec::new());
+        for i in 2..n {
+            if !self.flag(i, "ctl") || !self.shown[i] || !self.outside[i] || self.in_proto[i] || self.ancestors(i).iter().any(|&a| self.flag(a, "ctl")) {
+                continue;
+            }
+            // a link inside a sentence wraps with the sentence; a question that opens an answer (an FAQ) is a line of
+            // text, not a name
+            let seen = self.text_of(i, "vt");
+            let name = if seen.is_empty() { self.text_of(i, "nm") } else { seen };
+            if self.flag(i, "bare") {
+                continue;
+            }
+            if self.els[i].v.get("sib").and_then(Value::as_f64) == Some(1.0) || self.els[i].tag == "SUMMARY" || name.trim_end().ends_with('?') {
+                continue;
+            }
+            if self.flag(i, "cut") {
+                cut.push(i);
+            } else if lines(i) > 1.0 && name.split_whitespace().count() <= 4 {
+                wrapped.push(i);
+            }
+        }
+        // one entry per name: the same label repeated on cards is one thing to fix
+        let unique = |v: Vec<usize>| {
+            let mut names: Vec<&str> = Vec::new();
+            v.into_iter().filter(|&i| { let k = label(i); let new = !names.contains(&k); names.push(k); new }).collect::<Vec<usize>>()
+        };
+        let (cut, wrapped) = (unique(cut), unique(wrapped));
+        let list = |v: &[usize], with_lines: bool| {
+            let mut q: Vec<String> = v.iter().take(3).map(|&i| if with_lines { format!("{} ({} lines)", quote(label(i)), num_str(lines(i))) } else { quote(label(i)) }).collect();
+            if v.len() > 3 {
+                q.push(format!("and {} more", v.len() - 3));
+            }
+            q.join(", ")
+        };
+        if let Some(&first) = cut.first() {
+            out.push(finding("RX-RD-02", "warn", self.selector(first), format!("{} control label{} cut off at {}px: {}; people cannot read the whole name, so let it wrap, shorten it, or give the control room", cut.len(), if cut.len() == 1 { "" } else { "s" }, num_str(vw), list(&cut, false))));
+        }
+        if let Some(&first) = wrapped.first() {
+            out.push(finding("RX-RD-02", "warn", self.selector(first), format!("{} short control {} at {}px: {}; a name of a few words reads as one, so give it the room, shorten it, or show fewer side by side", wrapped.len(), if wrapped.len() == 1 { "label wraps" } else { "labels wrap" }, num_str(vw), list(&wrapped, true))));
         }
 
         // A choice out of view of its action (RX-UX-15): on a wide screen, the page's only radio group starts below the
@@ -2254,6 +2301,37 @@ mod tests {
         let m = rules_of(&out, "RX-RD-01");
         assert_eq!(m.len(), 1);
         assert!(m[0].contains("wide") && !m[0].contains("slide"), "{m:?}");
+    }
+
+    #[test]
+    fn a_control_label_cut_off_or_a_short_name_that_wraps_does_not_fit() {
+        let fit = |els: Value| rules_of(&page(serde_json::json!({}), serde_json::json!([{}]), els, serde_json::json!([])), "RX-RD-02");
+        let cut = fit(serde_json::json!([{"t": "BUTTON", "p": 1, "s": 2, "ctl": 1, "nm": "Lanjutkan ke pembayaran", "cut": 1, "r": [16, 700, 140, 48]}]));
+        assert_eq!(cut.len(), 1);
+        assert!(cut[0].contains("1 control label cut off at 320px: \"Lanjutkan ke pembayaran\""), "{cut:?}");
+        let tabs = fit(serde_json::json!([
+            {"t": "BUTTON", "p": 1, "s": 2, "ctl": 1, "role": "tab", "nm": "Riwayat transaksi", "ln": 2, "r": [0, 100, 100, 56]},
+            {"t": "BUTTON", "p": 1, "s": 2, "ctl": 1, "role": "tab", "nm": "Semua", "r": [100, 100, 100, 40]}
+        ]));
+        assert_eq!(tabs.len(), 1);
+        assert!(tabs[0].contains("\"Riwayat transaksi\" (2 lines)"), "{tabs:?}");
+        // a long label may wrap; one control inside another is judged at the outer one; a hidden one is not judged
+        assert!(fit(serde_json::json!([{"t": "BUTTON", "p": 1, "s": 2, "ctl": 1, "nm": "Saya setuju dengan syarat dan ketentuan layanan", "ln": 2, "r": [0, 100, 288, 64]}])).is_empty());
+        assert!(fit(serde_json::json!([
+            {"t": "A", "p": 1, "s": 2, "ctl": 1, "nm": "Kartu", "r": [0, 100, 288, 120]},
+            {"t": "BUTTON", "p": 2, "s": 2, "ctl": 1, "nm": "Beli sekarang", "ln": 2, "r": [0, 160, 60, 40]}
+        ])).is_empty());
+        assert!(fit(serde_json::json!([{"t": "BUTTON", "p": 1, "s": 2, "ctl": 1, "nm": "Bayar", "cut": 1, "r": [0, 100, 0, 0]}])).is_empty());
+        assert!(fit(serde_json::json!([{"t": "A", "p": 1, "s": 2, "ctl": 1, "sib": 1, "nm": "Lihat semua ulasan", "ln": 2, "r": [0, 100, 200, 40]}])).is_empty());
+        assert!(fit(serde_json::json!([{"t": "BUTTON", "p": 1, "s": 2, "ctl": 1, "nm": "Bagaimana cara pesannya?", "ln": 2, "r": [0, 100, 200, 40]}])).is_empty());
+        // owner sheet 14b: a card link is judged by the words it shows, not its aria-label (L13); a bare text link in a list wraps like text (L16)
+        assert!(fit(serde_json::json!([{"t": "A", "p": 1, "s": 2, "ctl": 1, "nm": "Rating on review site", "vt": "4.8 out of 5 from 1,240 reviews on the store", "ln": 3, "r": [0, 100, 200, 90]}])).is_empty());
+        assert!(fit(serde_json::json!([{"t": "A", "p": 1, "s": 2, "ctl": 1, "bare": 1, "nm": "Freelancer tax guide", "vt": "Freelancer tax guide", "ln": 2, "r": [0, 100, 120, 40]}])).is_empty());
+        let same = fit(serde_json::json!([
+            {"t": "A", "p": 1, "s": 2, "ctl": 1, "nm": "Promo mulai 12.12", "ln": 2, "r": [0, 100, 100, 40]},
+            {"t": "A", "p": 1, "s": 2, "ctl": 1, "nm": "Promo mulai 12.12", "ln": 2, "r": [0, 200, 100, 40]}
+        ]));
+        assert!(same[0].starts_with("1 short control label wraps at 320px: \"Promo mulai 12.12\" (2 lines);"), "{same:?}");
     }
 
     #[test]
