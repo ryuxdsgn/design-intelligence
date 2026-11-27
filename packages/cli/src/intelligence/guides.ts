@@ -16,7 +16,7 @@ Understand → Frame → Explore → Evaluate and select → Build and critique 
 \`\`\``;
 
 export const CORE_CAPABILITIES = `Tell RYUX what you are doing; RYUX decides what it needs to know (no task named: offer three concrete tasks for this project as choices,
-from DESIGN.md and the repo's screens). Pick the entry point, read its file, then only the knowledge modules the task needs (task table below); paths are relative to this skill's folder.
+from DESIGN.md and the repo's screens). Pick the entry point, read its file, then only the knowledge modules the task needs (task table below), each read whole (a search of its headings is not reading it); paths are relative to this skill's folder.
 
 | Entry point | When | Read |
 | --- | --- | --- |
@@ -465,7 +465,8 @@ return { libraryInstances: lib, localInstances: local, newLocal: [...created], r
      combinations with no variant. Fix, then run
      it again before the gate: resize icons, never scale them (or draw a master per size); give icons
      colours from variables only; make the variants of one set the same size; draw each missing
-     combination or write why it is not needed. Elsewhere, measure the same from the code or the render.
+     combination or write why it is not needed in the set's description, under "Not drawn:"; put an instance of
+     each set beside it at its smallest width, with the longest label (RX-DS-12). Elsewhere, measure the same from the code or the render.
 
 \`\`\`js
 const PAGE = "Page name", ICON = /^icons?[\\/ ]/i, STATE = /state|status|selected|checked|active|pressed|disabled/i;
@@ -497,7 +498,7 @@ for (const n of page.findAll((x) => x.type === "INSTANCE")) {
   }
 }
 const mixed = [...byPlace].filter(([, s]) => s.size > 1).map(([k, s]) => k + ": " + [...s].join(" / "));
-const uneven = [], missing = [];
+const uneven = [], missing = [], notWrittenOff = [], noExample = [];
 for (const set of page.findAll((x) => x.type === "COMPONENT_SET")) {
   const props = Object.entries(set.variantGroupProperties || {});
   const val = (v) => Object.fromEntries(v.name.split(", ").map((kv) => kv.split("=")));
@@ -509,13 +510,22 @@ for (const set of page.findAll((x) => x.type === "COMPONENT_SET")) {
   }
   const have = new Set(set.children.map((v) => v.name.split(", ").sort().join(", ")));
   const combos = props.reduce((acc, [k, { values }]) => acc.flatMap((c) => values.map((v) => [...c, k + "=" + v])), [[]]);
-  for (const c of combos) if (!have.has([...c].sort().join(", "))) missing.push(set.name + ": " + c.join(", "));
+  const gaps = combos.filter((c) => !have.has([...c].sort().join(", ")));
+  for (const c of gaps) missing.push(set.name + ": " + c.join(", "));
+  // Left-out combinations are written off in the set's description, under "Not drawn:".
+  if (gaps.length && !/not drawn|tidak digambar/i.test(set.description || "")) notWrittenOff.push(set.name + " (" + gaps.length + ")");
+  // The smallest-width example: an instance of the set on the sheet, outside any component (RX-DS-12).
+  const inComponent = (n) => { for (let p = n.parent; p && p.type !== "PAGE"; p = p.parent) if (p.type === "COMPONENT" || p.type === "COMPONENT_SET" || p.type === "INSTANCE") return true; return false; };
+  const examples = [];
+  for (const i of page.findAll((x) => x.type === "INSTANCE")) if ((await i.getMainComponentAsync())?.parent === set && !inComponent(i)) examples.push(i);
+  if (!examples.length) noExample.push(set.name);
 }
-return { iconStrokes: strokes, iconColours: colours, unbound: [...unbound], mixedInOnePlace: mixed, offCenterIcons: [...offCenter], unevenSets: uneven, missingVariants: missing };
+return { iconStrokes: strokes, iconColours: colours, unbound: [...unbound], mixedInOnePlace: mixed, offCenterIcons: [...offCenter], unevenSets: uneven, missingVariants: missing, notWrittenOff, noSmallestWidthExample: noExample };
 \`\`\`
    - Passes when: one icon stroke (or one per drawn master size, written down), every icon colour on a
      variable and one colour per role (no two greys doing one job), one colour for the icons in one
-     place unless the state changes it, no icon whose glyph is off the center of its box, no uneven set, and every missing variant drawn or written off. Report it in the DESIGN SYSTEM line.
+     place unless the state changes it, no icon whose glyph is off the center of its box, no uneven set, every missing variant drawn or written off in its set's description under "Not drawn:" (notWrittenOff 0),
+     and every set shown at its smallest width with its longest label (noSmallestWidthExample 0). Report it in the DESIGN SYSTEM line.
    - Canvas copy is for the team, not for RYUX: annotations, state captions, and labels use plain
      language ("Shown while prices load; button disabled"). Rule IDs, gate results, and Decision
      Receipts go in the Design Direction or the final message, never in frames meant for review or

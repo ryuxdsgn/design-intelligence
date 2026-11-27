@@ -80,7 +80,7 @@ export function deliveryGateTemplate(): string {
         : a === "CONTENT"
         ? `${a.padEnd(width)}PASS | FAIL | NOT VERIFIED | N/A  · one-line reason · open rules on screen <tagged>/<shown> | none`
         : a === "DESIGN SYSTEM"
-        ? `${a.padEnd(width)}PASS | FAIL | NOT VERIFIED | N/A  · one-line reason · icon strokes <n>, icon colours <n> (<unbound> unbound), uneven sets <n>, missing variants <n> · library instances <n>, new local <n> (marked <n>), redrawn <n> | not drawn`
+        ? `${a.padEnd(width)}PASS | FAIL | NOT VERIFIED | N/A  · one-line reason · icon strokes <n>, icon colours <n> (<unbound> unbound), uneven sets <n>, missing variants <n> (<n> not written off), sets without a smallest-width example <n> · library instances <n>, new local <n> (marked <n>), redrawn <n> | not drawn`
         : a === "UX"
         ? `${a.padEnd(width)}PASS | FAIL | NOT VERIFIED | N/A  · one-line reason · pricing: plans <n>, with their own action <n>, free start in the row yes | no | none | no pricing`
         : a === "EDGE CASES"
