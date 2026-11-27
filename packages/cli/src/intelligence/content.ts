@@ -2260,6 +2260,19 @@ export const QUALITY_LOCKS: { item: string; rules: string[] }[] = [
 ];
 
 // Contextual activation: load only what the task needs (core is always loaded).
+// The read gate (ryux read-gate --hook, Claude Code PreToolUse): the files a RYUX run reads whole before it
+// writes to a design canvas (Figma use_figma, pen.dev, FigCraft). Design-system trial 2026-11-27: two of four runs
+// with the same prompt read no knowledge module and drew property names, states, and sheets the rules forbid.
+export const CANVAS_READS: string[] = [
+  "capabilities/design.md",
+  "capabilities/design-deliver.md",
+  "knowledge/ui.md",
+  "knowledge/design-system.md",
+  "knowledge/accessibility.md",
+  "knowledge/content.md",
+  "knowledge/unslop.md",
+];
+
 // `also`: a capability file the row needs beyond its entry point (the DS row: the listing lives in design-deliver.md).
 export const ACTIVATION: { task: string; skills: SkillId[]; also?: string[] }[] = [
   { task: "UI implementation", skills: ["product", "ux", "ui", "design-system", "frontend", "visual-qa", "accessibility", "unslop"] },

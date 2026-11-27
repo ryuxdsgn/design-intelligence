@@ -14,6 +14,7 @@ interface Core {
   audit(input: string): string;
   probe(input: string): string;
   reportCheck(input: string): string;
+  readGate(input: string): string;
   synthCheck(input: string): string;
   directions(input: string): string;
 }
@@ -141,6 +142,23 @@ export function synthCheck(synthesis: string, files: Record<string, string>): Sy
 /** Does a RYUX report's one-line gate count the same areas as its detail block (report.md)? */
 export function reportCheck(text: string): ReportCheck {
   return answer(rust().reportCheck(JSON.stringify({ text, areas: GATE_AREAS })));
+}
+
+export interface ReadGateInput {
+  skillLoaded: boolean;
+  write: boolean;
+  required: string[];
+  reads: { path: string; lines: number; ranges: [number, number][] }[];
+}
+export interface ReadGate {
+  ok: boolean;
+  missing: string[];
+  message: string | null;
+}
+
+/** Has a RYUX run read each required file whole before it writes to a design canvas? (fixtures/checks/readgate.json) */
+export function readGate(input: ReadGateInput): ReadGate {
+  return answer<ReadGate>(rust().readGate(JSON.stringify(input)));
 }
 
 /** Three direction draws for a project from the curated catalog (RX-UI-26), seeded by the project name. */

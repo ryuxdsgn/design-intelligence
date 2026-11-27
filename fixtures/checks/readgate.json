@@ -1,0 +1,431 @@
+[
+ {
+  "name": "a session that never loaded RYUX passes",
+  "input": {
+   "skillLoaded": false,
+   "write": true,
+   "required": [
+    "capabilities/design.md",
+    "capabilities/design-deliver.md",
+    "knowledge/ui.md",
+    "knowledge/design-system.md",
+    "knowledge/accessibility.md",
+    "knowledge/content.md",
+    "knowledge/unslop.md"
+   ],
+   "reads": []
+  },
+  "output": {
+   "ok": true,
+   "missing": [],
+   "message": null
+  }
+ },
+ {
+  "name": "a read-only canvas call passes",
+  "input": {
+   "skillLoaded": true,
+   "write": false,
+   "required": [
+    "capabilities/design.md",
+    "capabilities/design-deliver.md",
+    "knowledge/ui.md",
+    "knowledge/design-system.md",
+    "knowledge/accessibility.md",
+    "knowledge/content.md",
+    "knowledge/unslop.md"
+   ],
+   "reads": [
+    {
+     "path": "capabilities/design.md",
+     "lines": 304,
+     "ranges": []
+    },
+    {
+     "path": "capabilities/design-deliver.md",
+     "lines": 245,
+     "ranges": []
+    },
+    {
+     "path": "knowledge/ui.md",
+     "lines": 329,
+     "ranges": []
+    },
+    {
+     "path": "knowledge/design-system.md",
+     "lines": 151,
+     "ranges": []
+    },
+    {
+     "path": "knowledge/accessibility.md",
+     "lines": 92,
+     "ranges": []
+    },
+    {
+     "path": "knowledge/content.md",
+     "lines": 240,
+     "ranges": []
+    },
+    {
+     "path": "knowledge/unslop.md",
+     "lines": 237,
+     "ranges": []
+    }
+   ]
+  },
+  "output": {
+   "ok": true,
+   "missing": [],
+   "message": null
+  }
+ },
+ {
+  "name": "real run shape (ds-figma run 4): only design.md read, the canvas write is held",
+  "input": {
+   "skillLoaded": true,
+   "write": true,
+   "required": [
+    "capabilities/design.md",
+    "capabilities/design-deliver.md",
+    "knowledge/ui.md",
+    "knowledge/design-system.md",
+    "knowledge/accessibility.md",
+    "knowledge/content.md",
+    "knowledge/unslop.md"
+   ],
+   "reads": [
+    {
+     "path": "capabilities/design.md",
+     "lines": 304,
+     "ranges": [
+      [
+       1,
+       2000
+      ]
+     ]
+    },
+    {
+     "path": "capabilities/design-deliver.md",
+     "lines": 245,
+     "ranges": []
+    },
+    {
+     "path": "knowledge/ui.md",
+     "lines": 329,
+     "ranges": []
+    },
+    {
+     "path": "knowledge/design-system.md",
+     "lines": 151,
+     "ranges": []
+    },
+    {
+     "path": "knowledge/accessibility.md",
+     "lines": 92,
+     "ranges": []
+    },
+    {
+     "path": "knowledge/content.md",
+     "lines": 240,
+     "ranges": []
+    },
+    {
+     "path": "knowledge/unslop.md",
+     "lines": 237,
+     "ranges": []
+    }
+   ]
+  },
+  "output": {
+   "ok": false,
+   "missing": [
+    "capabilities/design-deliver.md",
+    "knowledge/ui.md",
+    "knowledge/design-system.md",
+    "knowledge/accessibility.md",
+    "knowledge/content.md",
+    "knowledge/unslop.md"
+   ],
+   "message": "RYUX: read these files whole before changing the canvas, then try again: capabilities/design-deliver.md, knowledge/ui.md, knowledge/design-system.md, knowledge/accessibility.md, knowledge/content.md, knowledge/unslop.md. They hold the rules this canvas work is checked against (property names, states as properties, bindings, the component sheet, contrast, copy). Read each one in full with the Read tool; a search of its headings or a slice of it does not count."
+  }
+ },
+ {
+  "name": "real run shape (ds-figma run 3): slices of content, accessibility, unslop do not count",
+  "input": {
+   "skillLoaded": true,
+   "write": true,
+   "required": [
+    "capabilities/design.md",
+    "capabilities/design-deliver.md",
+    "knowledge/ui.md",
+    "knowledge/design-system.md",
+    "knowledge/accessibility.md",
+    "knowledge/content.md",
+    "knowledge/unslop.md"
+   ],
+   "reads": [
+    {
+     "path": "capabilities/design.md",
+     "lines": 304,
+     "ranges": [
+      [
+       1,
+       2000
+      ]
+     ]
+    },
+    {
+     "path": "capabilities/design-deliver.md",
+     "lines": 245,
+     "ranges": []
+    },
+    {
+     "path": "knowledge/ui.md",
+     "lines": 329,
+     "ranges": []
+    },
+    {
+     "path": "knowledge/design-system.md",
+     "lines": 151,
+     "ranges": [
+      [
+       1,
+       2000
+      ]
+     ]
+    },
+    {
+     "path": "knowledge/accessibility.md",
+     "lines": 92,
+     "ranges": [
+      [
+       30,
+       2029
+      ]
+     ]
+    },
+    {
+     "path": "knowledge/content.md",
+     "lines": 240,
+     "ranges": [
+      [
+       1,
+       120
+      ]
+     ]
+    },
+    {
+     "path": "knowledge/unslop.md",
+     "lines": 237,
+     "ranges": [
+      [
+       209,
+       2208
+      ]
+     ]
+    }
+   ]
+  },
+  "output": {
+   "ok": false,
+   "missing": [
+    "capabilities/design-deliver.md",
+    "knowledge/ui.md",
+    "knowledge/accessibility.md (63 of 92 lines read)",
+    "knowledge/content.md (120 of 240 lines read)",
+    "knowledge/unslop.md (29 of 237 lines read)"
+   ],
+   "message": "RYUX: read these files whole before changing the canvas, then try again: capabilities/design-deliver.md, knowledge/ui.md, knowledge/accessibility.md (63 of 92 lines read), knowledge/content.md (120 of 240 lines read), knowledge/unslop.md (29 of 237 lines read). They hold the rules this canvas work is checked against (property names, states as properties, bindings, the component sheet, contrast, copy). Read each one in full with the Read tool; a search of its headings or a slice of it does not count."
+  }
+ },
+ {
+  "name": "every file read whole passes",
+  "input": {
+   "skillLoaded": true,
+   "write": true,
+   "required": [
+    "capabilities/design.md",
+    "capabilities/design-deliver.md",
+    "knowledge/ui.md",
+    "knowledge/design-system.md",
+    "knowledge/accessibility.md",
+    "knowledge/content.md",
+    "knowledge/unslop.md"
+   ],
+   "reads": [
+    {
+     "path": "capabilities/design.md",
+     "lines": 304,
+     "ranges": [
+      [
+       1,
+       2000
+      ]
+     ]
+    },
+    {
+     "path": "capabilities/design-deliver.md",
+     "lines": 245,
+     "ranges": [
+      [
+       1,
+       2000
+      ]
+     ]
+    },
+    {
+     "path": "knowledge/ui.md",
+     "lines": 329,
+     "ranges": [
+      [
+       1,
+       2000
+      ]
+     ]
+    },
+    {
+     "path": "knowledge/design-system.md",
+     "lines": 151,
+     "ranges": [
+      [
+       1,
+       2000
+      ]
+     ]
+    },
+    {
+     "path": "knowledge/accessibility.md",
+     "lines": 92,
+     "ranges": [
+      [
+       1,
+       2000
+      ]
+     ]
+    },
+    {
+     "path": "knowledge/content.md",
+     "lines": 240,
+     "ranges": [
+      [
+       1,
+       2000
+      ]
+     ]
+    },
+    {
+     "path": "knowledge/unslop.md",
+     "lines": 237,
+     "ranges": [
+      [
+       1,
+       2000
+      ]
+     ]
+    }
+   ]
+  },
+  "output": {
+   "ok": true,
+   "missing": [],
+   "message": null
+  }
+ },
+ {
+  "name": "two reads that together cover a file count as whole",
+  "input": {
+   "skillLoaded": true,
+   "write": true,
+   "required": [
+    "capabilities/design.md",
+    "capabilities/design-deliver.md",
+    "knowledge/ui.md",
+    "knowledge/design-system.md",
+    "knowledge/accessibility.md",
+    "knowledge/content.md",
+    "knowledge/unslop.md"
+   ],
+   "reads": [
+    {
+     "path": "capabilities/design.md",
+     "lines": 304,
+     "ranges": [
+      [
+       1,
+       2000
+      ]
+     ]
+    },
+    {
+     "path": "capabilities/design-deliver.md",
+     "lines": 245,
+     "ranges": [
+      [
+       1,
+       2000
+      ]
+     ]
+    },
+    {
+     "path": "knowledge/ui.md",
+     "lines": 329,
+     "ranges": [
+      [
+       1,
+       200
+      ],
+      [
+       150,
+       349
+      ]
+     ]
+    },
+    {
+     "path": "knowledge/design-system.md",
+     "lines": 151,
+     "ranges": [
+      [
+       1,
+       2000
+      ]
+     ]
+    },
+    {
+     "path": "knowledge/accessibility.md",
+     "lines": 92,
+     "ranges": [
+      [
+       1,
+       2000
+      ]
+     ]
+    },
+    {
+     "path": "knowledge/content.md",
+     "lines": 240,
+     "ranges": [
+      [
+       1,
+       2000
+      ]
+     ]
+    },
+    {
+     "path": "knowledge/unslop.md",
+     "lines": 237,
+     "ranges": [
+      [
+       1,
+       2000
+      ]
+     ]
+    }
+   ]
+  },
+  "output": {
+   "ok": true,
+   "missing": [],
+   "message": null
+  }
+ }
+]

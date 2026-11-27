@@ -143,7 +143,10 @@ export async function installHook(root: string, agent: HookAgent, global = false
   if (!s) throw new Error(`${spec.file} is not valid JSON; fix it, then run this again`);
   const existing = ours(s, agent);
   const before = JSON.stringify(s);
-  if (agent === "claude") addReportHook(s);
+  if (agent === "claude") {
+    addReportHook(s);
+    addGateHook(s);
+  }
   if (existing.some((e) => commands(e).includes(command(agent)))) {
     if (JSON.stringify(s) !== before) await writeFileEnsured(join(root, spec.file), `${JSON.stringify(s, null, 2)}\n`);
     return `${spec.file} (scan hook already present)`;
@@ -168,6 +171,29 @@ function addReportHook(s: Settings): void {
   s.hooks = { ...s.hooks, Stop: [...kept, { hooks: [{ type: "command", command: reportCommand() }] }] };
 }
 
+// Claude Code only: a PreToolUse hook that holds a canvas write until the run has read the design rules (read-gate).
+export const READ_GATE_MATCHER = "mcp__.*__use_figma|mcp__pencil__execute|mcp__figcraft__.*";
+const gateCommand = (): string => `${CLI_CMD.replace("npx ", "npx -y ")}@${VERSION} read-gate --hook`;
+const isGate = (c: unknown): boolean => typeof c === "string" && c.includes("@ryuxdsgn/design-intelligence") && c.includes("read-gate --hook");
+const gateEntries = (s: Settings): HookEntry[] => (s.hooks?.PreToolUse ?? []).filter((e) => commands(e).some(isGate));
+
+function addGateHook(s: Settings): void {
+  const existing = gateEntries(s);
+  if (existing.some((e) => commands(e).includes(gateCommand()) && e.matcher === READ_GATE_MATCHER)) return;
+  const kept = (s.hooks?.PreToolUse ?? []).filter((e) => !existing.includes(e));
+  s.hooks = { ...s.hooks, PreToolUse: [...kept, { matcher: READ_GATE_MATCHER, hooks: [{ type: "command", command: gateCommand() }] }] };
+}
+
+function dropGateHook(s: Settings): boolean {
+  const mine = gateEntries(s);
+  if (!mine.length) return false;
+  const kept = s.hooks!.PreToolUse!.filter((e) => !mine.includes(e));
+  if (kept.length) s.hooks!.PreToolUse = kept;
+  else delete s.hooks!.PreToolUse;
+  if (!Object.keys(s.hooks!).length) delete s.hooks;
+  return true;
+}
+
 function dropReportHook(s: Settings): boolean {
   const mine = reportEntries(s);
   if (!mine.length) return false;
@@ -184,7 +210,8 @@ export async function removeHook(root: string, agent: HookAgent, global = false)
   if (agent === "opencode") return (await hasHook(root, agent, global)) && removePath(join(root, hookFile(agent, global)));
   const s = await read(root, agent);
   if (!s) return false;
-  const report = agent === "claude" && dropReportHook(s);
+  const gate = agent === "claude" && dropGateHook(s);
+  const report = (agent === "claude" && dropReportHook(s)) || gate;
   if (!ours(s, agent).length) {
     if (report) await writeFileEnsured(join(root, spec.file), `${JSON.stringify(s, null, 2)}\n`);
     return report;
