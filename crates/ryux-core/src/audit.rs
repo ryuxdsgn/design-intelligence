@@ -17,6 +17,7 @@ struct Res {
     busy: Regex,
     quiet: Regex,
     overlay: Regex,
+    floating: Regex,
     bar: Regex,
     target: Regex,
     pinned: Regex,
@@ -39,6 +40,8 @@ impl Res {
             busy: re(r"\b(processing|paying|confirming|loading|sending|saving|booking|submitting|verifying|memproses|membayar|memuat|menyimpan|mengirim|memverifikasi)\b"),
             quiet: re(r"^(cancel|batal|back|kembali|close|tutup|done|selesai)$"),
             overlay: re(r"\b(sheet|dialog|modal|toast|snackbar|popover|alert|popup|pop-up|tooltip|menu)\b"),
+            // the names that float by nature; an "alert" may also be an inline message in the flow
+            floating: re(r"\b(sheet|dialog|modal|toast|snackbar|popover|popup|pop-up|tooltip|menu)\b"),
             bar: re(r"\b(bar|footer|toolbar|tabbar|header|sticky)\b"),
             target: re(r"\b(button|btn|cta|chip|tab|toggle|switch|checkbox|radio|seat|link|stepper|icon ?button|back|close)\b"),
             pinned: re(r"\b(bar|footer|toolbar|tabbar|header|sticky|sheet|dialog|modal|toast|snackbar|popover|scrim|backdrop|dim|keyboard|status ?bar|home ?indicator|background|bg)\b"),
@@ -875,10 +878,27 @@ pub fn audit(input: &Value) -> Value {
             }
         }
 
-        // Contrast (RX-A11Y-01).
+        // Contrast (RX-A11Y-01). WCAG 1.4.3 exempts an inactive control: text on a variant set to disabled
+        // ("State=Disabled", "Disabled=true"), on its own layer or one around it, is not measured.
+        let inactive = |n: usize| -> bool {
+            let mut labels = vec![t.name(n)];
+            if let Some(mc) = t.get(n, "mainComponent").filter(|m| truthy(Some(m))) {
+                labels.push(string(mc.get("name")));
+            }
+            labels.iter().any(|s| s.split(',').any(|kv| match kv.split_once('=') {
+                Some((k, v)) => {
+                    let (k, v) = (k.trim().to_lowercase(), v.trim().to_lowercase());
+                    v == "disabled" || v == "inactive" || (matches!(k.as_str(), "disabled" | "isdisabled" | "inactive") && v == "true")
+                }
+                None => false,
+            }))
+        };
         for e in &nodes {
             let n = e.n;
             if t.ty(n) != "TEXT" || trim(&t.chars(n)).is_empty() || mixed(t.get(n, "fills")) || mixed(t.get(n, "fontSize")) {
+                continue;
+            }
+            if std::iter::once(n).chain(e.anc.iter().copied()).any(|a| inactive(a)) {
                 continue;
             }
             let ps = visible_paints(t.get(n, "fills"));
@@ -996,6 +1016,12 @@ pub fn audit(input: &Value) -> Value {
             let n = nodes[i].n;
             let b = t.bx(n);
             if b.w >= fbox.w * 0.98 && b.h >= fbox.h * 0.95 {
+                continue;
+            }
+            // An inline message laid out in the flow (a child of auto layout, not absolute) is not an overlay,
+            // unless its own name says it floats.
+            let in_flow = nodes[i].anc.last().map_or(false, |&p| !layout_none(p)) && t.get(n, "layoutPositioning").and_then(Value::as_str) != Some("ABSOLUTE");
+            if in_flow && !r.floating.is_match(&t.name(n)) {
                 continue;
             }
             let first = t.kids[n].as_ref().and_then(|k| k.first().copied());

@@ -49,6 +49,7 @@ export async function figmaAudit(figma, pageName) {
   const BUSY = /\b(processing|paying|confirming|loading|sending|saving|booking|submitting|verifying|memproses|membayar|memuat|menyimpan|mengirim|memverifikasi)\b/i;
   const QUIET = /^(cancel|batal|back|kembali|close|tutup|done|selesai)$/i;
   const OVERLAY = /\b(sheet|dialog|modal|toast|snackbar|popover|alert|popup|pop-up|tooltip|menu)\b/i;
+  const FLOATING = /\b(sheet|dialog|modal|toast|snackbar|popover|popup|pop-up|tooltip|menu)\b/i;
   const BAR = /\b(bar|footer|toolbar|tabbar|header|sticky)\b/i;
   const TARGET = /\b(button|btn|cta|chip|tab|toggle|switch|checkbox|radio|seat|link|stepper|icon ?button|back|close)\b/i;
 
@@ -65,10 +66,11 @@ export async function figmaAudit(figma, pageName) {
     const order = new Map(nodes.map((e, i) => [e.n, i]));
     // An instance is also known by its component: seats named "A1" are instances of "Local/Seat".
     const names = new Map();
+    const variants = new Map(); // an instance's own variant, "State=Disabled", for the contrast exemption
     for (const e of nodes) {
       if (e.n.type !== "INSTANCE" || typeof e.n.getMainComponentAsync !== "function") continue;
       const mc = await e.n.getMainComponentAsync().catch(() => null);
-      if (mc) names.set(e.n, `${e.n.name} ${mc.parent && mc.parent.type === "COMPONENT_SET" ? mc.parent.name : mc.name}`);
+      if (mc) { names.set(e.n, `${e.n.name} ${mc.parent && mc.parent.type === "COMPONENT_SET" ? mc.parent.name : mc.name}`); variants.set(e.n, mc.name); }
     }
     const nm = (n) => names.get(n) || n.name;
 
@@ -113,9 +115,18 @@ export async function figmaAudit(figma, pageName) {
     }
 
     // Contrast: composite every solid fill under the text's centre, bottom to top, starting from white.
+    // WCAG 1.4.3 exempts an inactive control: text on a variant set to disabled ("State=Disabled", "Disabled=true"),
+    // on its own layer or one around it, is not measured.
+    const inactive = (n) => [n.name, variants.get(n)].filter(Boolean).some((s) => String(s).split(",").some((kv) => {
+      const i = kv.indexOf("=");
+      if (i < 0) return false;
+      const k = kv.slice(0, i).trim().toLowerCase(), v = kv.slice(i + 1).trim().toLowerCase();
+      return v === "disabled" || v === "inactive" || (["disabled", "isdisabled", "inactive"].includes(k) && v === "true");
+    }));
     for (const e of nodes) {
       const t = e.n;
       if (t.type !== "TEXT" || !t.characters.trim() || MIXED(t.fills) || MIXED(t.fontSize)) continue;
+      if ([t, ...e.ancestors].some(inactive)) continue;
       const solid = visiblePaints(t.fills).filter((p) => p.type === "SOLID");
       if (!solid.length) continue;
       const b = box(t), cx = b.x + b.width / 2, cy = b.y + b.height / 2;
@@ -172,6 +183,11 @@ export async function figmaAudit(figma, pageName) {
     for (const e of overlays) {
       const n = e.n, b = box(n);
       if (b.width >= box(frame).width * 0.98 && b.height >= box(frame).height * 0.95) continue;
+      // An inline message laid out in the flow (a child of auto layout, not absolute) is not an overlay,
+      // unless its own name says it floats.
+      const parent = e.ancestors[e.ancestors.length - 1];
+      const inFlow = parent && parent.layoutMode && parent.layoutMode !== "NONE" && n.layoutPositioning !== "ABSOLUTE";
+      if (inFlow && !FLOATING.test(n.name)) continue;
       const lifted = (m) => (Array.isArray(m.effects) && m.effects.some((x) => x.type === "DROP_SHADOW" && x.visible !== false)) || visiblePaints(m.strokes).length > 0;
       const first = "children" in n ? n.children[0] : null;
       if (!lifted(n) && !(first && first.type === "RECTANGLE" && lifted(first))) { c.flatOverlays++; add("RX-UI-15", "warn", frame, n, `overlay "${n.name}" has no shadow or border to lift it from what is under it`); }

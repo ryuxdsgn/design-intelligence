@@ -2270,6 +2270,7 @@ export const ACTIVATION: { task: string; skills: SkillId[] }[] = [
   { task: "AI feature (generated answers, summaries, drafts)", skills: ["product", "ux", "content", "edge-cases", "unslop"] },
   { task: "Copy only (UI text, chat, announcements)", skills: ["content", "unslop"] },
   { task: "Visual refinement", skills: ["ui", "design-system", "visual-qa", "accessibility", "unslop"] },
+  { task: "Design system or component library (variables, tokens, components)", skills: ["design-system", "ui", "accessibility", "content", "unslop"] },
   { task: "User flow, journey map, or another UX map", skills: ["product", "ux", "edge-cases", "content"] },
 ];
 
