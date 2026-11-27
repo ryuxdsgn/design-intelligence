@@ -881,6 +881,8 @@ test("building a design system has its own task row, so the run reads design-sys
   for (const m of ["design-system", "ui", "accessibility", "content", "unslop"]) assert.ok(row.skills.includes(m), m);
   const router = renderFiles()["SKILL.md"];
   assert.match(router, /\| Design system or component library[^\n]*`knowledge\/design-system\.md`/);
+  // Run 3 skipped design-deliver.md, so the design system listing never ran (2026-11-27).
+  assert.match(router, /\| Design system or component library[^\n]*`capabilities\/design-deliver\.md`/);
 });
 
 test("the router names a file for each of the five capabilities", () => {

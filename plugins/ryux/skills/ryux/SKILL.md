@@ -132,7 +132,7 @@ A small change (a copy fix, one component, one state) reads its entry point's fi
 | AI feature (generated answers, summaries, drafts) | `knowledge/product.md`, `knowledge/ux.md`, `knowledge/content.md`, `knowledge/edge-cases.md`, `knowledge/unslop.md` |
 | Copy only (UI text, chat, announcements) | `knowledge/content.md`, `knowledge/unslop.md` |
 | Visual refinement | `knowledge/ui.md`, `knowledge/design-system.md`, `capabilities/qa.md`, `knowledge/accessibility.md`, `knowledge/unslop.md` |
-| Design system or component library (variables, tokens, components) | `knowledge/design-system.md`, `knowledge/ui.md`, `knowledge/accessibility.md`, `knowledge/content.md`, `knowledge/unslop.md` |
+| Design system or component library (variables, tokens, components) | `knowledge/design-system.md`, `knowledge/ui.md`, `knowledge/accessibility.md`, `knowledge/content.md`, `knowledge/unslop.md`, `capabilities/design-deliver.md` |
 | User flow, journey map, or another UX map | `knowledge/product.md`, `knowledge/ux.md`, `knowledge/edge-cases.md`, `knowledge/content.md` |
 | Review or critique | `capabilities/critique.md` (Design Read + heuristic_eval), plus `capabilities/qa.md` |
 

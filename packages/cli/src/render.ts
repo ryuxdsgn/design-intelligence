@@ -64,7 +64,7 @@ const LEVELS = `- **[Required]**: applies within its stated scope; an exception 
 - **[Quality Lock]**: consistency that must hold across the product.`;
 
 export function activationTable(): string {
-  const rows = ACTIVATION.map((a) => `| ${a.task} | ${a.skills.map((s) => `\`${modulePath(s)}\``).join(", ")} |`);
+  const rows = ACTIVATION.map((a) => `| ${a.task} | ${[...a.skills.map((s) => modulePath(s)), ...(a.also ?? [])].map((p) => `\`${p}\``).join(", ")} |`);
   return `| Task | Read |\n| --- | --- |\n${rows.join("\n")}\n| Review or critique | \`capabilities/critique.md\` (Design Read + heuristic_eval), plus \`capabilities/qa.md\` |`;
 }
 
