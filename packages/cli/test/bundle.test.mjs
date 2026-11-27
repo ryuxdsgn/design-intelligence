@@ -238,7 +238,7 @@ test("Design can write or update a full DESIGN.md that answers five questions", 
   // owner review 2026-11-06 (Sejuk rerun in Figma): scaled icon strokes, icon colours, uneven variants went unmeasured
   assert.match(flat("capabilities/design.md"), /Design system listing \(RX-UI-15, RX-DS-06\)/);
   assert.match(flat("capabilities/design.md"), /resize icons, never scale them/);
-  assert.match(flat("capabilities/design.md"), /return \{ iconStrokes: strokes, iconColours: colours, unbound: \[\.\.\.unbound\], mixedInOnePlace: mixed, offCenterIcons: \[\.\.\.offCenter\], unevenSets: uneven, missingVariants: missing \};/);
+  assert.match(flat("capabilities/design.md"), /return \{ iconStrokes: strokes, iconColours: colours, unbound: \[\.\.\.unbound\], mixedInOnePlace: mixed, offCenterIcons: \[\.\.\.offCenter\], unevenSets: uneven, missingVariants: missing, notWrittenOff, noSmallestWidthExample: noExample \};/);
   assert.match(flat("SKILL.md"), /DESIGN SYSTEM +PASS \| FAIL \| NOT VERIFIED \| N\/A +· one-line reason · icon strokes <n>, icon colours <n>/);
   assert.match(flat("knowledge/ui.md"), /the same stroke at every icon size \(resize an icon, never scale it, or draw a master per size\)/);
   assert.match(flat("capabilities/design.md"), /A RYUX rule ID, name, or title \("one-way door", "full cost before commitment"\) is not a principle/);
@@ -492,7 +492,7 @@ test("Design in Figma reads the libraries added to the file before the first fra
   // the gate measures it: a read-only listing, numbers in the DESIGN SYSTEM line
   assert.match(design, /Library listing \(RX-DS-01\): in Figma, count from the canvas, not from memory/);
   assert.match(design, /return \{ libraryInstances: lib, localInstances: local, newLocal: \[\.\.\.created\], redrawn \}/);
-  assert.match(f("SKILL.md"), /missing variants <n> · library instances <n>, new local <n> \(marked <n>\), redrawn <n> \| not drawn/);
+  assert.match(f("SKILL.md"), /missing variants <n> \(<n> not written off\), sets without a smallest-width example <n> · library instances <n>, new local <n> \(marked <n>\), redrawn <n> \| not drawn/);
 });
 
 test("Figma→DESIGN.md generation serves frontend handoff and onboarding, with a resolved token matrix and system do's and don'ts", () => {

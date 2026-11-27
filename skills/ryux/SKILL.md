@@ -20,7 +20,7 @@ Understand → Frame → Explore → Evaluate and select → Build and critique 
 ## Start with what you are doing
 
 Tell RYUX what you are doing; RYUX decides what it needs to know (no task named: offer three concrete tasks for this project as choices,
-from DESIGN.md and the repo's screens). Pick the entry point, read its file, then only the knowledge modules the task needs (task table below); paths are relative to this skill's folder.
+from DESIGN.md and the repo's screens). Pick the entry point, read its file, then only the knowledge modules the task needs (task table below), each read whole (a search of its headings is not reading it); paths are relative to this skill's folder.
 
 | Entry point | When | Read |
 | --- | --- | --- |
@@ -145,7 +145,7 @@ PRODUCT        PASS | FAIL | NOT VERIFIED | N/A  · one-line reason · evidence 
 UX             PASS | FAIL | NOT VERIFIED | N/A  · one-line reason · pricing: plans <n>, with their own action <n>, free start in the row yes | no | none | no pricing
 CONTENT        PASS | FAIL | NOT VERIFIED | N/A  · one-line reason · open rules on screen <tagged>/<shown> | none
 UI             PASS | FAIL | NOT VERIFIED | N/A  · one-line reason · point of view: <concept> | task UI, signature: <signature> · directions shown <n> | skipped: <reason> (RX-UI-26), draw seed <seed>, surface kept | replaced: <reason> | none: <reason> · concept sections <n>/<total>, devices <n>, focal subjects <n>/<sections>, carrier <kind>, made assets <n>/<planned>, content art <n>/<items> generated | stand-in | none (anything not generated is stand-in: drawn, vector, typographic; stand-in fails UI when an image tool was available or never searched for), product proof photo | render | drawn (fails UI when the product makes images) | none · illustration style: <where written> | none
-DESIGN SYSTEM  PASS | FAIL | NOT VERIFIED | N/A  · one-line reason · icon strokes <n>, icon colours <n> (<unbound> unbound), uneven sets <n>, missing variants <n> · library instances <n>, new local <n> (marked <n>), redrawn <n> | not drawn
+DESIGN SYSTEM  PASS | FAIL | NOT VERIFIED | N/A  · one-line reason · icon strokes <n>, icon colours <n> (<unbound> unbound), uneven sets <n>, missing variants <n> (<n> not written off), sets without a smallest-width example <n> · library instances <n>, new local <n> (marked <n>), redrawn <n> | not drawn
 ACCESSIBILITY  PASS | FAIL | NOT VERIFIED | N/A  · one-line reason
 RESPONSIVE     PASS | FAIL | NOT VERIFIED | N/A  · one-line reason
 EDGE CASES     PASS | FAIL | NOT VERIFIED | N/A  · one-line reason · then the view × state matrix (RX-EC-01)
