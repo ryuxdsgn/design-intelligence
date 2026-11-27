@@ -24,6 +24,7 @@ import { runScan } from "./scan.js";
 import { runPick } from "./pick.js";
 import { runAudit } from "./audit.js";
 import { runReportCheck } from "./report-check.js";
+import { runReadGate } from "./read-gate.js";
 import { runSynthesize } from "./synthesize.js";
 import { DEFAULT_CACHE, fetchLatestFromNpm, updateNotice } from "./update-notice.js";
 import { cp, readFile, readdir, writeFile } from "node:fs/promises";
@@ -994,6 +995,9 @@ Commands:
               Figma's REST API with FIGMA_TOKEN (read-only; annotations are not in REST).
   report-check  Check that a RYUX report's one-line gate counts the same areas as its detail block.
               Reads a file or stdin; --hook is the Claude Code Stop hook that install --hook adds.
+  read-gate --hook
+              Claude Code PreToolUse hook (install --hook adds it): before a RYUX run writes to a design
+              canvas (Figma, pen.dev, FigCraft), hold the call until it has read the design rules whole.
   synthesize check [synthesis.md]
               Check a research synthesis against its raw data: every quote word for word in that
               participant's file, every "n of N" counted right, no one outside the Data table. Local only.
@@ -1016,7 +1020,7 @@ Options:
   --json               print check's, scan's, or audit's findings as JSON (for agents and CI)
   --page <name>        audit: the page to measure (default the file's current page)
   --hook               install: run ryux scan after each edit, for Claude Code, Codex, Cursor, and OpenCode (opt-in)
-                       (Claude Code also gets a Stop hook: ryux report-check, see below)
+                       (Claude Code also gets a Stop hook, ryux report-check, and a PreToolUse hook, ryux read-gate, see below)
   --save-dev           install: add the RYUX CLI to the project's devDependencies, so agents run it with npx --no-install (opt-in)
   --list-rules         scan: list what each check looks for
   --design [file]      scan: compare colours, fonts, radius, and durations with DESIGN.md's direction
@@ -1068,6 +1072,8 @@ async function main(): Promise<void> {
   switch (cmd) {
     case "report-check":
       return runReportCheck(argv.slice(1));
+    case "read-gate":
+      return runReadGate(argv.slice(1));
     case "synthesize":
       return runSynthesize(argv.slice(1));
     case "update":

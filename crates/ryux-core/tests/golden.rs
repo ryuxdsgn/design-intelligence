@@ -146,3 +146,17 @@ fn golden_report() {
     }
     assert!(failed.is_empty(), "{} of {} cases differ:\n{}", failed.len(), cases.len(), failed.join("\n"));
 }
+
+#[test]
+fn golden_readgate() {
+    let cases = load("readgate");
+    assert!(!cases.is_empty());
+    let mut failed = Vec::new();
+    for (i, case) in cases.iter().enumerate() {
+        let got = ryux_core::read_gate(&case["input"]);
+        if got != case["output"] {
+            failed.push(format!("case {i} ({}):\n  want {}\n  got  {}", case["name"], case["output"], got));
+        }
+    }
+    assert!(failed.is_empty(), "{} of {} cases differ:\n{}", failed.len(), cases.len(), failed.join("\n"));
+}

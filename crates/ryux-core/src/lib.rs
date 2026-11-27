@@ -4,10 +4,12 @@
 pub mod audit;
 pub mod js;
 pub mod probe;
+pub mod readgate;
 pub mod report;
 
 pub use audit::audit;
 pub use probe::probe;
+pub use readgate::read_gate;
 pub use report::report_check;
 pub mod synth;
 pub use synth::synth_check;
