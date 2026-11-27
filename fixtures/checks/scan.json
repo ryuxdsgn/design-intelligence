@@ -432,6 +432,59 @@
    "sources": [
     {
      "path": "a.html",
+     "raw": "<h2>Apa kata mereka</h2><p>Dipercaya oleh 500 klinik</p><img src=\"https://i.pravatar.cc/80\" alt=\"Rina\">"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": [
+   {
+    "level": "warn",
+    "rule": "RX-AS-02",
+    "file": "a.html",
+    "line": 1,
+    "column": 4,
+    "message": "\"Apa kata mereka\": a testimonial section; show only real quotes from real, consenting people, with their source, otherwise leave it out or label it as sample"
+   },
+   {
+    "level": "warn",
+    "rule": "RX-AS-02",
+    "file": "a.html",
+    "line": 1,
+    "column": 27,
+    "message": "\"Dipercaya oleh 500 klinik\": a row of customers; name only customers the brief gives, with their own logos, otherwise leave it out"
+   },
+   {
+    "level": "warn",
+    "rule": "RX-AS-02",
+    "file": "a.html",
+    "line": 1,
+    "column": 75,
+    "message": "\"i.pravatar.cc\": a face from a generator stands in for a real person; use a real, consenting person's photo, or none"
+   }
+  ]
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.tsx",
+     "raw": "<p>Gratis untuk 3 klien, Rp49.000 per bulan, diskon 40%</p>"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": []
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.html",
      "raw": "<button id=\"pay\"><svg aria-hidden=\"true\"></svg> <span id=\"payLabel\"></span></button>"
     }
    ],
@@ -2779,6 +2832,177 @@
     {
      "path": "a.html",
      "raw": "<script>const steps = ['Masukkan nomor virtual account dan nominal yang ingin kamu bayarkan lalu tekan tombol bayar untuk melanjutkan transaksi ini sekarang juga'];</script>"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": []
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.html",
+     "raw": "<p>Dana akan kembali ke saldo Anda dalam <b>tiga sampai lima hari kerja</b> setelah permintaan pengembalian disetujui oleh tim kami dan bank penerbit kartu Anda.</p>"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": [
+   {
+    "level": "warn",
+    "rule": "RX-CD-21",
+    "file": "a.html",
+    "line": 1,
+    "column": 1,
+    "message": "\"Dana akan kembali ke saldo Anda ...\": a sentence of 24 words; NN/g's ceiling is 15 to 20 words, so split it into one idea per sentence"
+   }
+  ]
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.tsx",
+     "raw": "const A = ({ n }) => <p>Dana akan kembali ke saldo Anda dalam {n} hari kerja setelah permintaan pengembalian disetujui oleh tim kami dan bank penerbit kartu Anda.</p>;"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": [
+   {
+    "level": "warn",
+    "rule": "RX-CD-21",
+    "file": "a.tsx",
+    "line": 1,
+    "column": 22,
+    "message": "\"Dana akan kembali ke saldo Anda ...\": a sentence of 22 words; NN/g's ceiling is 15 to 20 words, so split it into one idea per sentence"
+   }
+  ]
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.html",
+     "raw": "<a href=\"/promo\"><span>Klik di sini</span></a>"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": [
+   {
+    "level": "warn",
+    "rule": "RX-CD-12",
+    "file": "a.html",
+    "line": 1,
+    "column": 1,
+    "message": "\"Klik di sini\": a label that does not say where it leads or what it does; name the destination or the result (\"Lihat syarat promo\", \"Kirim laporan\")"
+   }
+  ]
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.tsx",
+     "raw": "const B = () => <Link href=\"/promo\"><span>Baca selengkapnya</span></Link>;"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": [
+   {
+    "level": "warn",
+    "rule": "RX-CD-12",
+    "file": "a.tsx",
+    "line": 1,
+    "column": 17,
+    "message": "\"Baca selengkapnya\": a label that does not say where it leads or what it does; name the destination or the result (\"Lihat syarat promo\", \"Kirim laporan\")"
+   }
+  ]
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.html",
+     "raw": "<p>Layanan <strong>terbaik</strong> untuk AC Anda.</p>"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": [
+   {
+    "level": "warn",
+    "rule": "RX-CD-19",
+    "file": "a.html",
+    "line": 1,
+    "column": 1,
+    "message": "\"terbaik\": a superlative needs a source from the brief; otherwise write the fact that would earn it"
+   }
+  ]
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.html",
+     "raw": "<div><button type=\"button\">Langkah 1 bayar</button>\n<button type=\"button\">Langkah 2 bayar</button>\n<button type=\"button\">Langkah 3 bayar</button>\n<button type=\"button\">Langkah 4 bayar</button>\n<button type=\"button\">Langkah 5 bayar</button>\n<button type=\"button\">Langkah 6 bayar</button>\n<button type=\"button\">Langkah 7 bayar</button>\n<button type=\"button\">Langkah 8 bayar</button>\n<button type=\"button\">Langkah 9 bayar</button>\n<button type=\"button\">Langkah 10 bayar</button>\n<button type=\"button\">Langkah 11 bayar</button>\n<button type=\"button\">Langkah 12 bayar</button></div>"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": []
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.tsx",
+     "raw": "const C = () => <li><span>What went wrong</span> It asked nothing, so the fact sheet never came; it kept the example data, wallet balance and dollars.</li>;"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": []
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.html",
+     "raw": "<div><span>1</span><span>Progres terlihat</span><span>2</span><span>Progres terlihat</span><span>3</span><span>Progres terlihat</span><span>4</span><span>Progres terlihat</span><span>5</span><span>Progres terlihat</span><span>6</span><span>Progres terlihat</span><span>7</span><span>Progres terlihat</span><span>8</span><span>Progres terlihat</span><span>9</span><span>Progres terlihat</span><span>10</span><span>Progres terlihat</span><span>11</span><span>Progres terlihat</span><span>12</span><span>Progres terlihat</span></div>"
+    }
+   ],
+   "folder": false,
+   "skip": [],
+   "design": null
+  },
+  "output": []
+ },
+ {
+  "input": {
+   "sources": [
+    {
+     "path": "a.tsx",
+     "raw": "const D = () => { const [owner, setOwner] = useState(\"\"); const x = a > b && c < d ? one(two, three, four, five, six, seven, eight, nine, ten, eleven, twelve, thirteen, fourteen, fifteen, sixteen, seventeen, eighteen, nineteen, twenty, more) : 0; return <p>Hai</p>; };"
     }
    ],
    "folder": false,

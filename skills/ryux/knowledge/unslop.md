@@ -143,6 +143,7 @@ Real screens show what real products do instead of invented numbers and urgency:
 - Do not: Make up testimonials, reviewers, or customer photos.
 - Why: Fake people are fake endorsements. (ryux unslop principle)
 - Check: list every person, quote, review, and customer logo on the screen with its source or its sample label; fails on any shown as real without a source
+- Machine check: `ryux scan` flags people who need a source: a testimonial section (Testimoni, Apa kata mereka, What our customers say, a testimonial class), a row of customers (Dipercaya oleh, Trusted by), or a face from a generator (pravatar, randomuser, dicebear); once per file for each, not when every quote or logo is left as a stand-in ([Kutipan asli], CUSTOMER LOGO), in a test file, or in a file that labels its data as sample where the visitor sees it (warn)
 
 ### RX-AS-03 [Required] [Hard Gate] Sample data is realistic and labeled; placeholders only for what is missing
 
