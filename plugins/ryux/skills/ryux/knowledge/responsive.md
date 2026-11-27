@@ -60,6 +60,7 @@ How reference flows adapt across widths when captured: `get_flow`, `search_scree
 - Not when: the content is already simple enough to stack as is
 - Trade-off: mobile users may need a tap to reach secondary content
 - Check: render at 390: option names on one line; visual QA
+- Measured: `ryux scan <url>` flags a control label that does not fit at a scanned width: part of it hidden (an ellipsis, or overflow hidden or clipped), or a short name (four words or fewer, as shown) that wraps to a second line; not a link in a sentence, a bare text link, an FAQ question, or a hidden screen-reader label (warn)
 
 ### RX-RD-03 [Required] Safe areas and thumb reach
 

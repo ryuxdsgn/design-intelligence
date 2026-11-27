@@ -8134,7 +8134,9 @@
       76
      ],
      "ctl": 1,
-     "nm": "Bayar Rp1.424.000"
+     "nm": "Bayar Rp1.424.000",
+     "ln": 2,
+     "vt": "Bayar Rp1.424.000"
     }
    ],
    "texts": [
@@ -8526,6 +8528,12 @@
   },
   "output": {
    "findings": [
+    {
+     "rule": "RX-RD-02",
+     "level": "warn",
+     "selector": "div.wrap > aside > button",
+     "message": "1 short control label wraps at 390px: \"Bayar Rp1.424.000\" (2 lines); a name of a few words reads as one, so give it the room, shorten it, or show fewer side by side"
+    },
     {
      "rule": "RX-A11Y-02",
      "level": "warn",
@@ -10275,7 +10283,8 @@
       982.28125,
       848,
       40
-     ]
+     ],
+     "sel": 1
     },
     {
      "p": 12,
@@ -10287,6 +10296,7 @@
       13,
       13
      ],
+     "sel": 1,
      "ctl": 1,
      "nm": "input",
      "fl": "QRIS",
@@ -11127,7 +11137,8 @@
       1282.28125,
       848,
       40
-     ]
+     ],
+     "sel": 1
     },
     {
      "p": 12,
@@ -11139,6 +11150,7 @@
       13,
       13
      ],
+     "sel": 1,
      "ctl": 1,
      "nm": "input",
      "fl": "QRIS",
@@ -14990,6 +15002,7 @@
       36
      ],
      "role": "tab",
+     "sel": 1,
      "ctl": 1,
      "nm": "Pulsa"
     },
@@ -17328,6 +17341,7 @@
      ],
      "c": "on",
      "role": "radio",
+     "sel": 1,
      "ctl": 1,
      "nm": "Sel",
      "rg": "g:4",

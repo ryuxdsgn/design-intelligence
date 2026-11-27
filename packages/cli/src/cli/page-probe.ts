@@ -113,6 +113,8 @@ export async function probeExtract() {
     const role = e.getAttribute("role");
     if (role !== null) o.role = role;
     if (e.hasAttribute("data-ryux-ignore")) o.ig = 1;
+    // a selected state (the current tab or page, a checked option): the action colour may mark it (RX-UI-04)
+    if (i > 1 && e.matches("[aria-current]:not([aria-current=false]),[aria-selected=true],[aria-checked=true],[aria-pressed=true],:checked,label:has(:checked)")) o.sel = 1;
     if (e.matches("[disabled],[aria-disabled='true'],[inert]")) o.dis = 1;
     if (/code/.test(e.getAttribute("class") || "")) o.cc = 1;
     if (e.scrollHeight > e.clientHeight) Object.assign(o, { sh: e.scrollHeight, ch: e.clientHeight });
@@ -123,6 +125,52 @@ export async function probeExtract() {
       const pushes = e.tagName === "INPUT" && (e.type === "submit" || e.type === "button");
       if (pushes) o.ty = e.type;
       o.nm = cap((e.getAttribute("aria-label") || (pushes ? e.value : "") || e.textContent.trim() || e.querySelector("img[alt]")?.getAttribute("alt") || e.tagName.toLowerCase()).trim().replace(/\s+/g, " "));
+      // Whether its label fits (RX-RD-02): the most lines one of its text runs takes (a run that wraps, not two blocks
+      // stacked), and whether a box inside it hides part of the text (an ellipsis, or overflow hidden or clipped).
+      if (!e.matches(FIELD) && e.textContent.trim()) {
+        let most = 1;
+        const walker = document.createTreeWalker(e, NodeFilter.SHOW_TEXT);
+        for (let t = walker.nextNode(); t; t = walker.nextNode()) {
+          if (!t.textContent.trim()) continue;
+          const r = document.createRange();
+          r.selectNodeContents(t);
+          const rows = [];
+          for (const b of [...r.getClientRects()].filter((b) => b.width > 0 && b.height > 0).sort((a, b) => a.top - b.top)) {
+            if (!rows.length || b.top >= rows.at(-1) - 2) rows.push(b.bottom);
+          }
+          most = Math.max(most, rows.length);
+        }
+        if (most > 1) {
+          o.ln = most;
+          // the words people see (not an aria-label: a card link named "Rating on review site" holds a whole card, sheet 14b
+          // L13), and whether it is a bare text link with no fill, border, or padding (a link in a footer list wraps like
+          // text, L16)
+          o.vt = cap(e.innerText.trim().replace(/\s+/g, " "));
+          const cs = getComputedStyle(e);
+          const pad = ["Top", "Right", "Bottom", "Left"].map((k) => Number.parseFloat(cs[`padding${k}`]));
+          const border = ["Top", "Right", "Bottom", "Left"].some((k) => cs[`border${k}Style`] !== "none" && Number.parseFloat(cs[`border${k}Width`]) > 0);
+          if (e.tagName === "A" && /rgba\(0, 0, 0, 0\)|transparent/.test(cs.backgroundColor) && cs.backgroundImage === "none" && !border && cs.boxShadow === "none" && pad.every((v) => v < 4)) o.bare = 1;
+        }
+        for (const x of [e, ...e.querySelectorAll("*")]) {
+          const cs = getComputedStyle(x);
+          // a box of a few pixels is text hidden for screen readers (the sr-only pattern), not a label cut off
+          if (!(cs.textOverflow === "ellipsis" || /hidden|clip/.test(cs.overflowX)) || x.clientWidth <= 4 || x.clientHeight <= 4 || x.scrollWidth <= x.clientWidth + 1) continue;
+          // a shown text run inside it that reaches past its edge (hidden fallback text does not count)
+          const edge = x.getBoundingClientRect();
+          const runs = document.createTreeWalker(x, NodeFilter.SHOW_TEXT);
+          let past = false;
+          for (let t = runs.nextNode(); t && !past; t = runs.nextNode()) {
+            if (!t.textContent.trim() || !t.parentElement?.checkVisibility?.({ opacityProperty: true, visibilityProperty: true })) continue;
+            const r = document.createRange();
+            r.selectNodeContents(t);
+            past = [...r.getClientRects()].some((b) => b.width > 0 && (b.right > edge.right + 1 || b.left < edge.left - 1));
+          }
+          if (past) {
+            o.cut = 1;
+            break;
+          }
+        }
+      }
     }
     // A link set inline: whether its block has text besides the link (a link in a sentence).
     if (e.tagName === "A" && e.parentElement && getComputedStyle(e).display === "inline") o.sib = e.parentElement.textContent.replace(e.textContent, "").trim().length > 0 ? 1 : 0;

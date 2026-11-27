@@ -98,6 +98,7 @@ export const SOURCE_CHECKS: Check[] = [
  *  RX-QA-08 itself. test/golden.test.mjs holds the other rows equal to ryux-core's. */
 export const RENDER_CHECKS: Check[] = [
   { rule: "RX-RD-01", level: "fail", looksFor: "a page that scrolls sideways at a scanned width, naming the widest elements" },
+  { rule: "RX-RD-02", level: "warn", looksFor: "a control label that does not fit at a scanned width: part of it hidden (an ellipsis, or overflow hidden or clipped), or a short name (four words or fewer, as shown) that wraps to a second line; not a link in a sentence, a bare text link, an FAQ question, or a hidden screen-reader label" },
   { rule: "RX-A11Y-01", level: "fail", looksFor: "text under 4.5:1 contrast (3:1 when large); over an image or a gradient, measured on the pixels behind it (its weakest tenth), up to 40 texts per width; a text greyed by a filter is told how to leave out a logotype (data-ryux-ignore)" },
   { rule: "RX-A11Y-01", level: "warn", looksFor: "texts whose contrast was not measured, once per page: under a blend mode or a filter other than a colour one (blur, url), over a picture the page could not photograph (out of view, or redrawn by the page), or past the 40 measured" },
   { rule: "RX-A11Y-01", level: "fail", looksFor: "parts that are not text under 3:1 (WCAG 1.4.11): a field's edge (its border, ring, or fill) against what is around it, judged by the box around a field with no edge of its own, and the icon of an icon-only control against the control; a native checkbox or radio, and what sits on a picture, are left out" },
