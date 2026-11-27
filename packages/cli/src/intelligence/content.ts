@@ -2260,7 +2260,8 @@ export const QUALITY_LOCKS: { item: string; rules: string[] }[] = [
 ];
 
 // Contextual activation: load only what the task needs (core is always loaded).
-export const ACTIVATION: { task: string; skills: SkillId[] }[] = [
+// `also`: a capability file the row needs beyond its entry point (the DS row: the listing lives in design-deliver.md).
+export const ACTIVATION: { task: string; skills: SkillId[]; also?: string[] }[] = [
   { task: "UI implementation", skills: ["product", "ux", "ui", "design-system", "frontend", "visual-qa", "accessibility", "unslop"] },
   { task: "Form implementation", skills: ["product", "ux", "forms", "interaction", "accessibility", "edge-cases", "content", "ui", "unslop"] },
   { task: "Mobile UI", skills: ["ux", "ui", "content", "responsive", "accessibility", "unslop"] },
@@ -2270,7 +2271,7 @@ export const ACTIVATION: { task: string; skills: SkillId[] }[] = [
   { task: "AI feature (generated answers, summaries, drafts)", skills: ["product", "ux", "content", "edge-cases", "unslop"] },
   { task: "Copy only (UI text, chat, announcements)", skills: ["content", "unslop"] },
   { task: "Visual refinement", skills: ["ui", "design-system", "visual-qa", "accessibility", "unslop"] },
-  { task: "Design system or component library (variables, tokens, components)", skills: ["design-system", "ui", "accessibility", "content", "unslop"] },
+  { task: "Design system or component library (variables, tokens, components)", skills: ["design-system", "ui", "accessibility", "content", "unslop"], also: ["capabilities/design-deliver.md"] },
   { task: "User flow, journey map, or another UX map", skills: ["product", "ux", "edge-cases", "content"] },
 ];
 

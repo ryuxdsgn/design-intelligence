@@ -1,6 +1,8 @@
 //! The report check: does the one-line gate in a RYUX report count the same areas as the detail block?
 //! Input `{ text, areas }` (the reply and the gate area names); output `{ ok, gate, detail, message }`.
 //! A reply without a gate line, or without area lines, has nothing to compare and passes.
+//! Also: FINAL cannot be PASS while PRODUCT names a required module the run did not read (an unread required
+//! module fails the areas it serves; ds-figma trial run 3, 2026-11-27, wrote FINAL PASS with five unread).
 
 use regex::Regex;
 use serde_json::{json, Value};
@@ -21,6 +23,16 @@ fn count() -> &'static Regex {
 fn area_line() -> &'static Regex {
     static R: OnceLock<Regex> = OnceLock::new();
     R.get_or_init(|| Regex::new(r"^\s*([A-Z][A-Z /&-]*[A-Z])\s*(?::\s*|\s+)(NOT VERIFIED|PASS|FAIL|N/A)\b").unwrap())
+}
+
+fn unread() -> &'static Regex {
+    static R: OnceLock<Regex> = OnceLock::new();
+    R.get_or_init(|| Regex::new(r"(?i)required(?: modules?)? not read(?: in full)?\s*:?\s*([^·\n]*)").unwrap())
+}
+
+fn final_line() -> &'static Regex {
+    static R: OnceLock<Regex> = OnceLock::new();
+    R.get_or_init(|| Regex::new(r"^\s*(?:\*\*)?FINAL(?:\*\*)?\s*(?::\s*|\s+)(NOT VERIFIED|PASS|FAIL)\b").unwrap())
 }
 
 fn index(status: &str) -> usize {
@@ -61,6 +73,14 @@ pub fn report_check(input: &Value) -> Value {
     }
     let detail = if seen.is_empty() { None } else { Some(detail) };
 
+    // A FINAL PASS beside a non-empty required-not-read list.
+    let final_pass = text.lines().any(|l| final_line().captures(l).map_or(false, |m| &m[1] == "PASS"));
+    let unread_list: Option<String> = text.lines().filter(|l| l.contains("PRODUCT")).find_map(|l| {
+        unread().captures(l).map(|m| m[1].trim().trim_end_matches(|c: char| c == ',' || c == ';' || c == '.').trim().to_string())
+    });
+    let unread_named = unread_list
+        .filter(|u| !u.is_empty() && !matches!(u.to_lowercase().as_str(), "none" | "-" | "—" | "0" | "tidak ada"));
+
     let mut message = Value::Null;
     if let (Some(g), Some(d)) = (gate, detail) {
         let diffs: Vec<String> = (0..4)
@@ -79,6 +99,16 @@ pub fn report_check(input: &Value) -> Value {
                 diffs.join("; ")
             ));
         }
+    }
+    if let (true, Some(u)) = (final_pass, unread_named.as_ref()) {
+        let m = format!(
+            "FINAL is PASS while PRODUCT lists required modules not read ({}). Read them, then fill the areas they serve again; an unread required module fails those areas, so FINAL cannot pass.",
+            u
+        );
+        message = match message {
+            Value::String(prev) => Value::String(format!("{} {}", prev, m)),
+            _ => Value::String(m),
+        };
     }
     json!({
         "ok": message.is_null(),
