@@ -69,6 +69,9 @@ test("copy: dates, times, filler, placeholders, and urgency", () => {
   assert.deepEqual(rules(scan("a.tsx", "<p>John Doe, 0812-XXXX</p>")), ["warn RX-AS-03", "warn RX-AS-03"]);
   assert.deepEqual(rules(scan("a.tsx", "<p>Hanya tersisa 2 kursi, buruan!</p>")), ["warn RX-AS-04", "warn RX-AS-04"]);
   assert.deepEqual(scan("a.tsx", "<p>Kuota 40 kursi per kelas</p>"), []);
+  // needs evidence: a testimonial, a customer row, a generated face
+  assert.deepEqual(rules(scan("a.html", '<h2>Apa kata mereka</h2><p>Dipercaya oleh 500 klinik</p><img src="https://i.pravatar.cc/80" alt="Rina">')), ["warn RX-AS-02", "warn RX-AS-02", "warn RX-AS-02"]);
+  assert.deepEqual(scan("a.tsx", "<p>Gratis untuk 3 klien, Rp49.000 per bulan, diskon 40%</p>"), []);
 });
 
 test("markup detectors: a label a script fills, a scrim around a dialog, one heading skip per file", () => {

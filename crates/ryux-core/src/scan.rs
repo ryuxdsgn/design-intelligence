@@ -434,7 +434,7 @@ fn rule_as04(s: &Source, _: &Ctx) -> Vec<Hit> {
     // A promotion counting down: "Flash sale berakhir dalam", "Sale ends in". Not in a file that labels its data as
     // sample ("Sample data"): a countdown the brief asked for, with its end time marked as a stand-in (owner review
     // 2026-11-23, sheet 8: U3, U4 false).
-    if !re(r">\s*(?:sample(?: data)?|data contoh|contoh(?: data)?)\s*<", "i").test(&s.text) {
+    if !re(SAMPLE_LABEL, "i").test(&s.text) {
         hits.extend(matches(&s.text, &[(
             r#"(?:promo|flash\s*sale|diskon|sale|deal|offer|penawaran)[^\n<"'`]{0,40}(?:berakhir|habis|ends?)\s*(?:dalam|in)\b"#,
             "i",
@@ -442,6 +442,64 @@ fn rule_as04(s: &Source, _: &Ctx) -> Vec<Hit> {
         )]));
     }
     hits.sort_by_key(|h| h.index);
+    hits
+}
+
+/// An element labelled as sample data ("Sample", "Sample data", "Contoh", "Data contoh", or a label that goes on to say
+/// what to replace: "⚠ Data contoh — ganti dengan angka asli", "Testimoni contoh: ganti…"): the page says its numbers,
+/// people, and deadlines are stand-ins (owner review 2026-11-23, sheet 8). A label only in a comment does not count:
+/// the visitor never sees it.
+const SAMPLE_LABEL: &str = r">[\s⚠*•·(\[]*(?:sample(?: data)?|example data|data contoh|(?:testimoni|ulasan|angka|nama|foto) contoh|contoh(?: data)?)(?:\s*<|\s*[—–:(-]\s*(?:ganti|replace|bukan|not\b|belum))";
+
+/// A stand-in the page leaves for proof it does not have: a bracketed slot ("[Kutipan asli alumni]", "[Nama]"), a
+/// placeholder class, a slot a script fills from empty data, or a logo slot set as text.
+const STAND_IN: &str = r#"\[[^\]<\n]{2,80}\]|\b(?:class|className)\s*=\s*["'][^"']*\b(?:ph|placeholder|logo-slot|skeleton)\b|\bdata-fill\b|>\s*(?:customer logo|logo(?: pelanggan| klien| mitra)?|nama pelanggan)\s*<"#;
+
+/// Up to `n` bytes of `text` from byte `at`, cut on a character boundary.
+fn after(text: &str, at: usize, n: usize) -> &str {
+    let mut end = (at + n).min(text.len());
+    while !text.is_char_boundary(end) {
+        end -= 1;
+    }
+    &text[at..end]
+}
+
+/// A section whose quotes or logos are all stand-ins: the page asks for real proof instead of inventing it (corpus
+/// 2026-11-27: 5 of 8 no-skill pages asked for testimonials answered with bracketed slots), so there is nothing to flag.
+fn only_stand_ins(section: &str) -> bool {
+    re(STAND_IN, "i").test(section) && !re(REAL_QUOTE, "u").test(section)
+}
+
+/// A quote set as text that is not a bracketed stand-in: “Dulu saya harus tutup toko…”.
+const REAL_QUOTE: &str = r#">\s*[“"«‘]\s*[^\[\s<"”»’][^<"”»\[]{25,}"#;
+
+/// RX-AS-02 as a "needs evidence" flag: a testimonial or review section, a row of customers ("Dipercaya oleh"), or a
+/// face from a generator. Once per file for each; not in a test file or a file that labels its data as sample.
+fn rule_as02(s: &Source, _: &Ctx) -> Vec<Hit> {
+    if re(TEST_FILE, "").test(&s.path) || re(SAMPLE_LABEL, "i").test(&s.text) {
+        return Vec::new();
+    }
+    let mut hits = Vec::new();
+    let said = r#">\s*(testimoni(?:al)?s?|apa kata (?:mereka|pelanggan|pengguna|alumni|pasien|peserta|mitra|klien)|kata (?:mereka|pelanggan|pengguna|alumni|pasien)|cerita (?:pelanggan|pengguna|alumni|mereka|pasien)|ulasan (?:pelanggan|pengguna|pasien)|what (?:our )?(?:customers|users|clients|people|teams|members|students|patients) (?:say|are saying|think)|loved by\b[^<]{0,40}|hear from\b[^<]{0,30})"#;
+    let marked = r#"\b(?:class|className|id)\s*=\s*["'{`][^"'`}]*?\b(testimonials?|testimoni|quote-card|customer-reviews?|user-reviews?|ulasan)\b"#;
+    // a quote signed with a person: a <blockquote> with a <figcaption>, a <cite>, or an author line right after it
+    let signed = r#"<blockquote\b[^>]*>(?:\s|<[^>]*>|["“”'‘’«»])*([^<]{1,60})[\s\S]{0,800}?<\/blockquote>[\s\S]{0,300}?(?:<figcaption|<cite|\bclass(?:Name)?\s*=\s*["'{`][^"'`}]*?\b(?:who|author|name|sign|cite|person|byline|attribution)\b)"#;
+    // every heading, class, and signed quote in order, so a nav link to "Testimoni" does not stand for the section
+    let mut sections: Vec<_> = [re(said, "giu"), re(marked, "gi"), re(signed, "giu")].iter().flat_map(|r| r.match_all(&s.text)).collect();
+    sections.sort_by_key(|m| m.start);
+    // the first with a real quote after it; with no quote anywhere (a script renders them), the first, unless the page
+    // left stand-ins for them
+    let quote = |m: &&crate::jsre::Hit| !m.g(1).trim_start().starts_with('[') && (re(r"^\s*[^\[\s]", "").test(m.g(1)) && m.g(0).starts_with("<blockquote") || re(REAL_QUOTE, "u").test(after(&s.text, m.end, 2400)));
+    let flagged = sections.iter().find(quote).or_else(|| sections.first().filter(|_| !sections.iter().any(|m| m.g(1).trim_start().starts_with('[') || only_stand_ins(after(&s.text, m.end, 2400)))));
+    if let Some(m) = flagged {
+        hits.push(hit(m.index, format!("\"{}\": a testimonial section; show only real quotes from real, consenting people, with their source, otherwise leave it out or label it as sample", short(m.g(1)))));
+    }
+    if let Some(m) = re(r#">\s*(dipercaya (?:oleh|lebih dari)[^<]{0,40}|trusted by\b[^<]{0,40}|used by\b[^<]{0,40}|digunakan oleh[^<]{0,40})"#, "iu").exec(&s.text).filter(|m| !only_stand_ins(after(&s.text, m.end, 900))) {
+        hits.push(hit(m.index, format!("\"{}\": a row of customers; name only customers the brief gives, with their own logos, otherwise leave it out", short(m.g(1)))));
+    }
+    if let Some(m) = re(r"\b(?:i\.)?pravatar\.cc|randomuser\.me\/api\/portraits|thispersondoesnotexist\.com|generated\.photos|xsgames\.co\/randomusers|avatars\.dicebear\.com|api\.dicebear\.com", "i").exec(&s.text) {
+        hits.push(hit(m.index, format!("\"{}\": a face from a generator stands in for a real person; use a real, consenting person's photo, or none", m.g(0))));
+    }
     hits
 }
 
@@ -1015,6 +1073,7 @@ fn detectors() -> &'static [Detector] {
         Detector { rule: "RX-AS-03", level: "fail", exts: code, folder: false, find: rule_as03_lorem },
         Detector { rule: "RX-AS-03", level: "warn", exts: code, folder: false, find: rule_as03_placeholder },
         Detector { rule: "RX-AS-04", level: "warn", exts: code, folder: false, find: rule_as04 },
+        Detector { rule: "RX-AS-02", level: "warn", exts: code, folder: false, find: rule_as02 },
         Detector { rule: "RX-A11Y-02", level: "fail", exts: code, folder: false, find: rule_a11y02_zoom },
         Detector { rule: "RX-A11Y-02", level: "warn", exts: visual, folder: false, find: rule_a11y02_small },
         Detector { rule: "RX-A11Y-03", level: "fail", exts: markup, folder: false, find: rule_a11y03_tabindex },
@@ -1377,6 +1436,35 @@ mod tests {
         let opts = ScanOptions { folder: false, skip: HashSet::new(), design: None, context: Vec::new() };
         let all = scan_sources(&[to_source("a.tsx", "export function A() { return <div>{open && <ul/>}</div> }")], opts);
         assert!(all.iter().filter(|f| f["rule"] == "RX-UI-11").all(|f| f["level"] == "note"));
+    }
+
+    #[test]
+    fn a_testimonial_a_customer_row_or_a_generated_face_needs_evidence() {
+        let people = |raw: &str| found("a.html", raw, "RX-AS-02", "");
+        assert_eq!(people("<h2>Apa kata mereka</h2><blockquote>Mantap</blockquote>").len(), 1);
+        assert_eq!(people("<section class=\"testimonials\"><p>Great</p></section>").len(), 1);
+        assert_eq!(people("<h2>What our customers say</h2>").len(), 1);
+        assert_eq!(people("<figure><blockquote>\"It just works.\"</blockquote><figcaption><b>Maya</b> Designer</figcaption></figure>").len(), 1);
+        assert!(people("<blockquote>A quote with no one named.</blockquote><p>Next section</p>").is_empty());
+        assert_eq!(people("<p>Dipercaya oleh 500 klinik</p>").len(), 1);
+        assert_eq!(people("<img src=\"https://i.pravatar.cc/80?img=3\">").len(), 1);
+        assert_eq!(people("<h2>Testimoni</h2><img src=\"https://randomuser.me/api/portraits/women/4.jpg\">").len(), 2);
+        for quiet in ["<div class=\"preview\">x</div>", "<p class=\"review-time\">Review wait time</p>", "<h2>Cara kerja</h2>"] {
+            assert!(people(quiet).is_empty(), "{quiet}");
+        }
+        assert!(people("<span>Sample data</span><h2>Testimoni</h2>").is_empty());
+        // a label that says what to replace counts; one only in a comment does not (corpus 2026-11-27, claims2 P1, P4)
+        assert!(people("<p>⚠ Testimoni contoh — ganti dengan testimoni asli</p><h2>Testimoni</h2>").is_empty());
+        assert_eq!(people("<!-- isi di bawah adalah CONTOH --><h2>Testimoni</h2><p>“Pelayanannya cepat sekali dan dokternya ramah.”</p>").len(), 1);
+        // quotes and logos left as stand-ins ask for real proof instead of inventing it
+        assert!(people("<h2>Cerita Alumni</h2><p>\"[Kutipan asli alumni: tantangan dan hasil.]\"</p><p>[Nama Alumni]</p>").is_empty());
+        assert!(people("<p>Trusted by small businesses like yours</p><div class=\"logo-slot ph\">CUSTOMER LOGO</div>").is_empty());
+        assert!(people("<div>Used by <strong data-fill=\"users\"></strong> people</div>").is_empty());
+        assert!(people("<figure><blockquote>“[Real customer quote.]”</blockquote><figcaption>[Name]</figcaption></figure>").is_empty());
+        // a nav link to the section is not the section (claims2 P8)
+        assert!(people("<nav><a href=\"#t\">Testimoni</a></nav><p>[Foto produk]</p><h2 id=\"t\">Kata pelanggan</h2><p>[Kutipan testimoni asli #1]</p>").is_empty());
+        // a real-looking quote beside a stand-in is still a quote
+        assert_eq!(people("<h2>Testimoni</h2><p>“Dulu saya harus tutup toko sebentar buat ke agen ekspedisi.”</p><p>[Nama]</p>").len(), 1);
     }
 
     #[test]
