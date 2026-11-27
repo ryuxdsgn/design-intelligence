@@ -66,12 +66,15 @@ const figmaAudit = async function figmaAudit(figma, pageName) {
         const order = new Map(nodes.map((e, i) => [e.n, i]));
         // An instance is also known by its component: seats named "A1" are instances of "Local/Seat".
         const names = new Map();
+        const variants = new Map(); // an instance's own variant, "State=Disabled", for the contrast exemption
         for (const e of nodes) {
             if (e.n.type !== "INSTANCE" || typeof e.n.getMainComponentAsync !== "function")
                 continue;
             const mc = await e.n.getMainComponentAsync().catch(() => null);
-            if (mc)
+            if (mc) {
                 names.set(e.n, `${e.n.name} ${mc.parent && mc.parent.type === "COMPONENT_SET" ? mc.parent.name : mc.name}`);
+                variants.set(e.n, mc.name);
+            }
         }
         const nm = (n) => names.get(n) || n.name;
         // Construction: a screen is built from auto layout (RX-DS-12). A layer placed by x and y in a frame or group
@@ -127,7 +130,7 @@ const figmaAudit = async function figmaAudit(figma, pageName) {
         // Contrast: composite every solid fill under the text's centre, bottom to top, starting from white.
         // WCAG 1.4.3 exempts an inactive control: text on a variant set to disabled ("State=Disabled", "Disabled=true"),
         // on its own layer or one around it, is not measured.
-        const inactive = (n) => [n.name, n.mainComponent && n.mainComponent.name].filter(Boolean).some((s) => String(s).split(",").some((kv) => {
+        const inactive = (n) => [n.name, variants.get(n)].filter(Boolean).some((s) => String(s).split(",").some((kv) => {
             const i = kv.indexOf("=");
             if (i < 0)
                 return false;
