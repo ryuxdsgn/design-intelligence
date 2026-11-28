@@ -24,6 +24,27 @@ the smallest token set the screen needs and use it consistently: color roles, a 
 radius scale, and a type scale, not color alone. After rendering, count the literal values left and
 convert them (RX-DS-03). Do not introduce a component library the project does not use.
 
+## Component catalog
+
+Before making, merging, or checking one of these components, read its file (about 1 KB each): its job, anatomy,
+variants, states, behaviour, accessibility, and the mistakes copies usually carry. Read only the ones the task
+touches. `ryux components --inventory` names the file for each group of copies it finds. A file says what the
+component must do, not how it looks: colour, radius, size, and style come from DESIGN.md and the project's own system,
+and the "usually looks like" column only helps recognise a hand-written copy in code.
+
+| Component | How a hand-written copy usually looks | Read |
+| --- | --- | --- |
+| Button | a <button> (or a link styled as one) with a fill or border, a radius, and padding | `knowledge/design-system/button.md` |
+| Field (Input, Select, Textarea) | an <input>, <select>, or <textarea> with a border, a radius, and padding, usually with a label above | `knowledge/design-system/field.md` |
+| Card or panel | a box with a background or border, a radius, padding, and several children (title, text, actions) | `knowledge/design-system/card.md` |
+| Alert (inline message) | a tinted box with a border, often an icon and one or two lines (bg-red-50, bg-amber-50, bg-green-50) | `knowledge/design-system/alert.md` |
+| Badge (tag, status chip) | a small <span> with text-xs, small horizontal padding, a tint, and a full or small radius | `knowledge/design-system/badge.md` |
+| Tabs (and segmented control) | a row of buttons or links in a strip (flex, gap-1, p-1, a tinted track) with one marked as current | `knowledge/design-system/tabs.md` |
+| Dialog (modal) | a fixed inset-0 overlay (bg-black/50) holding a centred panel; on mobile often a bottom sheet | `knowledge/design-system/dialog.md` |
+| Empty state | a centred block (text-center, large vertical padding) with an icon or picture, a line, and a button | `knowledge/design-system/empty-state.md` |
+| Icon tile | one icon inside a tinted square or circle (p-2 or p-3, bg-blue-100, rounded-lg or rounded-full) | `knowledge/design-system/icon-tile.md` |
+| Code block | a dark box with font-mono and padding, holding a <pre> or <code> | `knowledge/design-system/code-block.md` |
+
 ## Evidence from RYUX Knowledge
 
 How reference apps keep components consistent for this pattern: `search_screens` by component, `extract_design_direction`. Without the ryux MCP, say the evidence comes from the design and standards alone.
@@ -39,8 +60,8 @@ How reference apps keep components consistent for this pattern: `search_screens`
 - Do: Before adding a component, search existing components, tokens, and patterns; reuse, then extend with a variant, and create new only for a real semantic or behavioral difference. When the same control is written again across files and DESIGN.md has no Components choice, ask the user first, with the pros and cons of each: one component in code, a component with Storybook, or later; record the answer (ryux components --set) and build neither a component library nor Storybook without it. Once the user chose, build each component from ryux components --inventory (every prop its copies pass, a variant for each change, the states they miss), saved with --json before the refactor, and check the refactor with ryux components --verify.
 - Do not: Create a near-duplicate component or pattern for one screen, write the same styled control out again in each file instead of making it one component, or style a <button> or <input> by hand when the project has a Button or Input.
 - Why: Duplicates drift apart, multiply maintenance, and break consistency. (Design-system practice)
-- Check: for each new component or token, name the existing ones searched and why none fits; fails on a new one that duplicates an existing one; ryux scan (a folder, or each edited file in the hook) warns on a styled control written with the same classes 3+ times across 2+ files (asking for the user's choice until DESIGN.md's Components field holds it; later keeps it quiet), and on a hand-styled <button>, <input>, <select>, or <textarea> that copies the project's Button, Input, Select, or Textarea
-- Machine check: `ryux scan` flags in .jsx and .tsx, across the files scanned (in the edit hook, the edited file against the other .jsx and .tsx files of its app): a native control (button, a, input, select, textarea) styled in place with a colour, a radius, and padding, written with the same classes 3 or more times across 2 or more files of one app (class order ignored; files directly in a ui or primitives folder, tests, and stories skipped; each app of a monorepo counted apart); once per file. Until DESIGN.md's Components field holds the user's choice the warning asks the agent to put the choice to the user (one component, a component with Storybook, or later); extract and storybook say what to build, later keeps it quiet (warn); in .jsx and .tsx, across the files scanned (in the edit hook, the edited file against the other .jsx and .tsx files of its app): a <button>, <input>, <select>, or <textarea> styled by hand beside the project's own component for it: a <button> with Button's default fill (raw chips and toolbar buttons are left alone), or any <input>, <select>, or <textarea> with a colour, a radius, and padding when Input, Select, or Textarea exists in the same app; not in the component's own file (warn)
+- Check: for each new component or token, name the existing ones searched and why none fits; fails on a new one that duplicates an existing one; ryux scan (a folder, or each edited file in the hook) warns on a styled control, or a styled box (a hand-built card, alert, or badge), written with the same classes 3+ times across 2+ files (asking for the user's choice until DESIGN.md's Components field holds it; later keeps it quiet), and on a hand-styled <button>, <input>, <select>, or <textarea> that copies the project's Button, Input, Select, or Textarea
+- Machine check: `ryux scan` flags in .jsx and .tsx, across the files scanned (in the edit hook, the edited file against the other .jsx and .tsx files of its app): a native control (button, a, input, select, textarea) styled in place with a colour, a radius, and padding, or a box (div, span, li, section, article, aside, header, nav) with a background or border colour, a radius, and padding, named by the component it looks like (a card, an alert, a badge), written with the same classes 3 or more times across 2 or more files of one app (class order ignored; files directly in a ui or primitives folder, tests, and stories skipped; each app of a monorepo counted apart); once per file. Until DESIGN.md's Components field holds the user's choice the warning asks the agent to put the choice to the user (one component, a component with Storybook, or later); extract and storybook say what to build, later keeps it quiet (warn); in .jsx and .tsx, across the files scanned (in the edit hook, the edited file against the other .jsx and .tsx files of its app): a <button>, <input>, <select>, or <textarea> styled by hand beside the project's own component for it: a <button> with Button's default fill (raw chips and toolbar buttons are left alone), or any <input>, <select>, or <textarea> with a colour, a radius, and padding when Input, Select, or Textarea exists in the same app; not in the component's own file (warn)
 
 ### RX-DS-02 [Required] [Quality Lock] Consistency, conventions, and states
 

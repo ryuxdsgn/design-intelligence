@@ -15,6 +15,7 @@ import { RULES } from "../dist/intelligence/content.js";
 import { VERSION } from "../dist/product.js";
 
 const cli = join(dirname(fileURLToPath(import.meta.url)), "..", "dist", "cli", "index.js");
+const root = join(dirname(fileURLToPath(import.meta.url)), "..", "..", "..");
 const run = (cwd, args, input) => {
   const r = spawnSync("node", [cli, ...args], { cwd, input, encoding: "utf8", env: { ...process.env, NO_COLOR: "1", RYUX_NO_UPDATE_CHECK: "1" } });
   return { code: r.status, out: `${r.stdout}${r.stderr}` };
@@ -1118,6 +1119,10 @@ test("ryux components --inventory lists what each component must carry, and --ve
   assert.match(shown.out, /1\. <button> × 3 in 2 files/);
   assert.match(shown.out, /props: onClick \(2 of 3\) · type "submit" \(1 of 3\)/);
   assert.match(shown.out, /missing focus-visible/);
+  // the catalog file it names ships in the skill
+  const named = shown.out.match(/read first: (knowledge\/design-system\/[a-z-]+\.md)/);
+  assert.ok(named, shown.out);
+  assert.ok(existsSync(join(root, "skills", "ryux", named[1])), `${named[1]} is not in the skill`);
   const inv = run(dir, ["components", "--inventory", "--json"]);
   writeFileSync(join(dir, "before.json"), inv.out);
   assert.equal(run(dir, ["components", "--verify", "before.json"]).code, 1, "nothing refactored yet");

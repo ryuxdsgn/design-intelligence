@@ -64,7 +64,7 @@ pub struct Ctx<'a> {
 #[derive(Default)]
 struct Copies {
     /// Per file: (offset, tag, classes key, group size, files in the group, the other files).
-    repeated: HashMap<String, Vec<(usize, String, usize, usize, Vec<String>)>>,
+    repeated: HashMap<String, Vec<(usize, String, Option<&'static str>, usize, usize, Vec<String>)>>,
     /// Per file: its styled form controls (button, input, select, textarea), (offset, tag, classes).
     natives: HashMap<String, Vec<(usize, String, Vec<String>)>>,
     /// (component file, signature) for each form component a file defines.
@@ -86,6 +86,7 @@ fn copies<'c>(c: &'c Ctx) -> &'c Copies {
     c.copies.get_or_init(|| {
         let mut out = Copies::default();
         let mut groups: HashMap<(String, String, String), Vec<(String, usize)>> = HashMap::new();
+        let mut kinds: HashMap<(String, String, String), Option<&'static str>> = HashMap::new();
         let mut paths: Vec<&String> = c.files.keys().collect();
         paths.sort();
         for path in paths {
@@ -103,10 +104,14 @@ fn copies<'c>(c: &'c Ctx) -> &'c Copies {
                 if matches!(ctl.tag.as_str(), "button" | "input" | "select" | "textarea") {
                     out.natives.entry(path.clone()).or_default().push((ctl.index, ctl.tag.clone(), ctl.classes.clone()));
                 }
-                groups.entry((package_of(path), ctl.tag.clone(), ctl.classes.join(" "))).or_default().push((path.clone(), ctl.index));
+                let key = (package_of(path), ctl.tag.clone(), ctl.classes.join(" "));
+                kinds.entry(key.clone()).or_insert(ctl.kind);
+                groups.entry(key).or_default().push((path.clone(), ctl.index));
             }
         }
-        for ((_, tag, _), at) in groups {
+        for (key, at) in groups {
+            let kind = kinds.get(&key).copied().flatten();
+            let tag = key.1;
             let mut files: Vec<String> = at.iter().map(|(p, _)| p.clone()).collect();
             files.dedup();
             if at.len() < 3 || files.len() < 2 {
@@ -116,12 +121,15 @@ fn copies<'c>(c: &'c Ctx) -> &'c Copies {
                 // once per file, at its first copy
                 let first = at.iter().filter(|(p, _)| p == f).map(|(_, i)| *i).min().unwrap();
                 let others: Vec<String> = files.iter().filter(|o| *o != f).cloned().collect();
-                out.repeated.entry(f.clone()).or_default().push((first, tag.clone(), at.len(), files.len(), others));
+                out.repeated.entry(f.clone()).or_default().push((first, tag.clone(), kind, at.len(), files.len(), others));
             }
         }
         out
     })
 }
+
+/// Boxes (div, span, li...) the copy check reads besides the native controls; nothing presses them unless onClick.
+const BOX_TAGS: [&str; 8] = ["div", "section", "article", "li", "span", "aside", "header", "nav"];
 
 fn file_name(p: &str) -> &str {
     p.rsplit('/').next().unwrap_or(p)
@@ -147,13 +155,18 @@ fn rule_ds01_copies(s: &Source, c: &Ctx) -> Vec<Hit> {
     if c.components == Some("later") {
         return Vec::new();
     }
-    list.iter().map(|(at, tag, n, files, others)| {
+    list.iter().map(|(at, tag, kind, n, files, others)| {
         // a file name, or the path when another file in the list has the same name (two Dashboard.tsx)
         let here = norm(&s.path);
         let names: Vec<&str> = others.iter().map(|o| file_name(o)).chain([file_name(&here)]).collect();
         let shown: Vec<&str> = others.iter().take(3).map(|o| if names.iter().filter(|n| **n == file_name(o)).count() > 1 { o.as_str() } else { file_name(o) }).collect();
         let more = if others.len() > 3 { format!(" and {} more", others.len() - 3) } else { String::new() };
-        let found = format!("this <{tag}> is written {n} times with the same classes in {files} files (also {}{more})", shown.join(", "));
+        // a box says which component it looks like; a native control's tag already does
+        let what = match kind.filter(|_| BOX_TAGS.contains(&tag.as_str())) {
+            Some(k) => format!("<{tag}> ({} {}, by its classes)", if matches!(k, "alert" | "icon-tile" | "empty-state") { "an" } else { "a" }, k.replace('-', " ")),
+            None => format!("<{tag}>"),
+        };
+        let found = format!("this {what} is written {n} times with the same classes in {files} files (also {}{more})", shown.join(", "));
         match c.components {
             Some("extract") => hit(*at, format!("{found}: make it one component and use it in each place, so a change to its look or states happens once (DESIGN.md: Components: extract). Build it from `ryux components --inventory` (every prop, variant, and missing state); save it with --json first and check the refactor with --verify")),
             Some("storybook") => hit(*at, format!("{found}: make it one component with a story for each state, and use it in each place (DESIGN.md: Components: storybook). Build it from `ryux components --inventory` (every prop, variant, and missing state); save it with --json first and check the refactor with --verify")),
@@ -230,6 +243,23 @@ fn styled_everywhere(sources: &[Source]) -> Vec<(String, usize, String, crate::j
         }
     }
     out
+}
+
+/// The catalog file (knowledge/design-system/) that says what a component made from these copies must do.
+pub fn catalog_file(kind: &str) -> Option<&'static str> {
+    Some(match kind {
+        "button" => "knowledge/design-system/button.md",
+        "field" => "knowledge/design-system/field.md",
+        "card" => "knowledge/design-system/card.md",
+        "alert" => "knowledge/design-system/alert.md",
+        "badge" => "knowledge/design-system/badge.md",
+        "tabs" => "knowledge/design-system/tabs.md",
+        "dialog" => "knowledge/design-system/dialog.md",
+        "empty-state" => "knowledge/design-system/empty-state.md",
+        "icon-tile" => "knowledge/design-system/icon-tile.md",
+        "code-block" => "knowledge/design-system/code-block.md",
+        _ => return None,
+    })
 }
 
 /// What a component made from copies has to carry (RX-DS-01), for `ryux components --inventory`: each group of a
@@ -319,8 +349,11 @@ pub fn inventory(sources: &[Source]) -> Value {
         let classes: Vec<&String> = ks.iter().flat_map(|k| keys[*k].2.iter()).collect();
         let styles = |state: &str| classes.iter().any(|c| c.split(':').rev().skip(1).any(|p| p == state));
         let states: Vec<&str> = ["hover", "focus", "focus-visible", "active", "disabled"].into_iter().filter(|s| styles(s)).collect();
+        let kind = all[members[base][0]].3.kind;
+        // a box that nothing presses (a card, an alert) is not asked for keyboard focus
+        let pressed = !BOX_TAGS.contains(&tag.as_str()) || uses.iter().any(|i| all[*i].3.attrs.iter().any(|(k, _)| k == "onClick"));
         let mut missing = Vec::new();
-        if !styles("focus") && !styles("focus-visible") {
+        if pressed && !styles("focus") && !styles("focus-visible") {
             missing.push("focus-visible: no copy shows keyboard focus".to_string());
         }
         let disabled_used = uses.iter().any(|i| all[*i].3.attrs.iter().any(|(k, _)| k == "disabled"));
@@ -347,7 +380,7 @@ pub fn inventory(sources: &[Source]) -> Value {
             "app": keys[base].0, "tag": tag, "classes": keys[base].2.join(" "), "count": uses.len(), "files": files,
             "at": members[base].iter().map(place).collect::<Vec<_>>(), "variants": variants, "props": props,
             "content": content, "states": states, "missing": missing, "keys": ks.iter().map(|k| keys[*k].2.join(" ")).collect::<Vec<_>>(),
-            "props_in_files": per_file,
+            "props_in_files": per_file, "kind": kind, "catalog": kind.and_then(catalog_file),
         }));
     }
     groups.sort_by_key(|g| std::cmp::Reverse(g["count"].as_u64().unwrap_or(0)));
@@ -2609,6 +2642,20 @@ mod tests {
     }
 
     #[test]
+    fn ds01_boxes_written_again_name_their_kind_and_catalog_file() {
+        let alert = r#"<div className="rounded-lg border border-red-200 bg-red-50 p-4"><AlertCircle /><p>{error}</p></div>"#;
+        let a = format!("export const A = () => <form>{alert}{alert}</form>;");
+        let b = format!("export const B = () => <form>{alert}</form>;");
+        assert_eq!(ds01(&[("src/a.tsx", &a), ("src/b.tsx", &b)]), vec!["src/a.tsx:1 this <div> (an alert, by", "src/b.tsx:1 this <div> (an alert, by"]);
+        let inv = inventory(&[to_source("src/a.tsx", &a), to_source("src/b.tsx", &b)]);
+        let g = &inv["groups"][0];
+        assert_eq!(g["kind"], "alert");
+        assert_eq!(g["catalog"], "knowledge/design-system/alert.md");
+        // not a control: no keyboard focus asked of it
+        assert!(g["missing"].as_array().unwrap().is_empty(), "{}", g["missing"]);
+    }
+
+    #[test]
     fn ds01_same_control_written_again_in_several_files() {
         let btn = r#"<button className="rounded-lg bg-lime-300 px-4 py-2 text-slate-900">Save</button>"#;
         let a = format!("export const A = () => <div>{btn}{btn}</div>;");
@@ -2747,6 +2794,9 @@ export { Input };"#;
         assert_eq!(g["files"], json!(["src/a.tsx", "src/b.tsx"]));
         assert_eq!(g["variants"][0]["changes"], json!(["px-4 → px-3", "py-2 → py-1.5"]));
         assert_eq!(g["variants"][0]["kind"], "size");
+        assert_eq!(g["catalog"], "knowledge/design-system/button.md");
+        assert_eq!(catalog_file("field"), Some("knowledge/design-system/field.md"));
+        assert_eq!(catalog_file("panel"), None);
         // a variant three changes from the base, one from the small variant, is described against that one
         let c = r#"export const C = () => <div><button onClick={z} className="rounded bg-blue-600 px-3 py-1.5 text-white">Tiny</button></div>;"#;
         let chained = inventory(&[to_source("src/a.tsx", a), to_source("src/b.tsx", b), to_source("src/c.tsx", c)]);

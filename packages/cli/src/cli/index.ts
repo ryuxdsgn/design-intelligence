@@ -854,6 +854,7 @@ async function componentsInventory(json: boolean): Promise<void> {
     if (props.length) console.log(`   props: ${props.join(" · ")}`);
     console.log(`   holds: ${g.content.join(", ")} · styles: ${g.states.length ? g.states.join(", ") : "no states"}`);
     for (const m of g.missing) console.log(pc.yellow(`   missing ${m}`));
+    if (g.catalog) console.log(`   read first: ${g.catalog} in the RYUX skill (what the component must do; its look stays the project's)`);
   });
   console.log(`\nBuild each component from its entry: every prop a copy passes, a variant for each change (drift becomes one value), and the missing states.
 Before the refactor: ${CLI_CMD} components --inventory --json > before.json; after it: ${CLI_CMD} components --verify before.json`);

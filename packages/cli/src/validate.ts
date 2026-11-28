@@ -1,6 +1,7 @@
 // Deterministic validation of a RYUX skill bundle. Pure: takes the files, returns findings. Used by
 // `ryux check`, by `sync-skills --check`, and by the tests, so all three agree on what "valid" means.
 import { RETIRED, RULES, SKILLS } from "./intelligence/content.js";
+import { COMPONENT_CATALOG } from "./intelligence/components.js";
 
 export interface BundleReport {
   errors: string[];
@@ -15,6 +16,7 @@ export function expectedFiles(): string[] {
     "SKILL.md",
     ...["analyze", "analyze-research", "design", "design-deliver", "design-md", "build", "critique", "qa"].map((c) => `capabilities/${c}.md`),
     ...SKILLS.filter((s) => s.id !== "visual-qa").map((s) => `knowledge/${s.id}.md`),
+    ...COMPONENT_CATALOG.map((c) => `knowledge/design-system/${c.id}.md`),
     "report.md",
     "scripts/figma-audit.md",
   ];
