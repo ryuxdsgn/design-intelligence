@@ -1636,7 +1636,7 @@ Gate area DESIGN SYSTEM. Covers search before create, tokens, component states, 
 
 #### RX-DS-01 [Required] [Hard Gate] Search before you create
 
-- Do: Before adding a component, search existing components, tokens, and patterns; reuse, then extend with a variant, and create new only for a real semantic or behavioral difference. When the same control is written again across files and DESIGN.md has no Components choice, ask the user first, with the pros and cons of each: one component in code, a component with Storybook, or later; record the answer (ryux components --set) and build neither a component library nor Storybook without it.
+- Do: Before adding a component, search existing components, tokens, and patterns; reuse, then extend with a variant, and create new only for a real semantic or behavioral difference. When the same control is written again across files and DESIGN.md has no Components choice, ask the user first, with the pros and cons of each: one component in code, a component with Storybook, or later; record the answer (ryux components --set) and build neither a component library nor Storybook without it. Once the user chose, build each component from ryux components --inventory (every prop its copies pass, a variant for each change, the states they miss), saved with --json before the refactor, and check the refactor with ryux components --verify.
 - Do not: Create a near-duplicate component or pattern for one screen, write the same styled control out again in each file instead of making it one component, or style a <button> or <input> by hand when the project has a Button or Input.
 - Why: Duplicates drift apart, multiply maintenance, and break consistency. (Design-system practice)
 - Check: for each new component or token, name the existing ones searched and why none fits; fails on a new one that duplicates an existing one; ryux scan (a folder, or each edited file in the hook) warns on a styled control written with the same classes 3+ times across 2+ files (asking for the user's choice until DESIGN.md's Components field holds it; later keeps it quiet), and on a hand-styled <button>, <input>, <select>, or <textarea> that copies the project's Button, Input, Select, or Textarea
@@ -2066,7 +2066,8 @@ Gate area VISUAL QA. Covers did the build match the intended design: compare, li
 - Do not: Hand off a primary flow with a dead end: a button that does nothing, a submit that never resolves, a step that cannot be reached, or an error with no way back.
 - Why: A broken primary action fails the one thing the screen exists for, whatever else is right. (Usability testing practice (task completion); owner review 2026-10-25: a broken main interaction belongs with the checks that cannot be argued)
 - Not when: static mockups with no interaction; then say the flow was not run and VISUAL QA is NOT VERIFIED
-- Check: run the primary task and one failure path in the render; fails on any dead end
+- Check: run the primary task and one failure path in the render; fails on any dead end; ryux scan warns on a <button> with no handler, no submit, and nothing around it that acts
+- Machine check: `ryux scan` flags in .jsx and .tsx: a <button> that does nothing when pressed: no onClick or other press or key handler, no type="submit" or "reset", no spread props, id, or ref a script could wire, not disabled, and no form, link, label, asChild trigger, or click handler around it; tests and stories skipped (warn)
 - Measured: `ryux scan <url>` flags script errors thrown while the page loads (warn)
 
 ---

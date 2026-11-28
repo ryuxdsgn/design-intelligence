@@ -290,7 +290,7 @@ test("motion: endless loops, transition properties and length, and translucency"
 
 test("motion notes: listed apart from faults, never fail the scan, and kept out of the edit hook; hover alone is not a note", () => {
   const dir = mkdtempSync(join(tmpdir(), "ryux-motion-"));
-  writeFileSync(join(dir, "Order.tsx"), 'export function Order({ open }) { return <div>{open && <ul><li>Item</li></ul>}<button className="px-4 hover:bg-zinc-50">Pesan</button></div> }\n');
+  writeFileSync(join(dir, "Order.tsx"), 'export function Order({ open }) { return <div>{open && <ul><li>Item</li></ul>}<button type="submit" className="px-4 hover:bg-zinc-50">Pesan</button></div> }\n');
   const text = run(dir, ["scan"]);
   assert.equal(text.code, 0);
   assert.match(text.out, /0 fail, 0 warn\./);
@@ -1105,5 +1105,31 @@ test("ryux components asks before a component library is built, and the scan fol
   run(dir, ["components", "--set", "storybook"]);
   assert.match(copies()[0].message, /a story for each state.*Components: storybook/);
   assert.equal((readFileSync(join(dir, "DESIGN.md"), "utf8").match(/\*\*Components\*\*/g) ?? []).length, 1, "the field is replaced, not added again");
+  rmSync(dir, { recursive: true, force: true });
+});
+
+test("ryux components --inventory lists what each component must carry, and --verify checks the refactor (RX-DS-01)", () => {
+  const dir = mkdtempSync(join(tmpdir(), "ryux-inv-"));
+  mkdirSync(join(dir, "src"));
+  const cls = `className="rounded-lg bg-blue-600 px-4 py-2 text-white"`;
+  writeFileSync(join(dir, "src", "a.tsx"), `export const A = () => <form><button type="submit" ${cls}>Save</button><button onClick={go} ${cls}>Go</button></form>;\n`);
+  writeFileSync(join(dir, "src", "b.tsx"), `export const B = () => <div><button onClick={x} ${cls}>Send</button></div>;\n`);
+  const shown = run(dir, ["components", "--inventory"]);
+  assert.match(shown.out, /1\. <button> × 3 in 2 files/);
+  assert.match(shown.out, /props: onClick \(2 of 3\) · type "submit" \(1 of 3\)/);
+  assert.match(shown.out, /missing focus-visible/);
+  const inv = run(dir, ["components", "--inventory", "--json"]);
+  writeFileSync(join(dir, "before.json"), inv.out);
+  assert.equal(run(dir, ["components", "--verify", "before.json"]).code, 1, "nothing refactored yet");
+  writeFileSync(join(dir, "src", "a.tsx"), `export const A = () => <form><Button>Save</Button><Button onClick={go}>Go</Button></form>;\n`);
+  writeFileSync(join(dir, "src", "b.tsx"), `export const B = () => <div><Button onClick={x}>Send</Button></div>;\n`);
+  const dropped = run(dir, ["components", "--verify", "before.json"]);
+  assert.equal(dropped.code, 1);
+  assert.match(dropped.out, /src\/a\.tsx: type="submit" written 1 times before, 0 now/);
+  writeFileSync(join(dir, "src", "a.tsx"), `export const A = () => <form><Button type="submit">Save</Button><Button onClick={go}>Go</Button></form>;\n`);
+  const kept = run(dir, ["components", "--verify", "before.json"]);
+  assert.equal(kept.code, 0, kept.out);
+  assert.match(kept.out, /ok {3}<button> .*: one component, every prop still passed/);
+  assert.equal(run(dir, ["components", "--verify"]).code, 2);
   rmSync(dir, { recursive: true, force: true });
 });

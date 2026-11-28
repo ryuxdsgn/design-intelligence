@@ -808,6 +808,9 @@ async function runComponents(argv: string[]): Promise<void> {
     console.log(`${CONTEXT_FILE}: ${await writeComponents(root, choice)}`);
     return;
   }
+  if (argv.includes("--inventory")) return componentsInventory(argv.includes("--json"));
+  const verifyAt = argv.indexOf("--verify");
+  if (verifyAt !== -1) return componentsVerify(argv[verifyAt + 1]);
   const { componentCopies, componentsChoice } = await import("./scan.js");
   const { files, copies } = await componentCopies(".");
   const current = componentsChoice();
@@ -826,6 +829,57 @@ async function runComponents(argv: string[]): Promise<void> {
   const v = await p.select({ message: "What should happen to them?", options: COMPONENT_CHOICES.map((c) => ({ value: c.value, label: c.label, hint: c.hint })) });
   if (p.isCancel(v)) return;
   console.log(`${CONTEXT_FILE}: ${await writeComponents(root, String(v))}`);
+}
+
+/** `ryux components --inventory`: for each group of copies, what the one component has to carry. */
+async function componentsInventory(json: boolean): Promise<void> {
+  const { readTree } = await import("./scan.js");
+  const { componentInventory } = await import("../engine.js");
+  const inv = componentInventory(await readTree("."));
+  if (json) {
+    console.log(JSON.stringify(inv, null, 2));
+    return;
+  }
+  if (!inv.groups.length) {
+    console.log("No control is written again across files here: nothing to make into a component.");
+    return;
+  }
+  console.log(`${inv.groups.length} control${inv.groups.length === 1 ? " is" : "s are"} written again across files. What each component has to carry:\n`);
+  inv.groups.forEach((g, i) => {
+    console.log(`${i + 1}. <${g.tag}> × ${g.count} in ${g.files.length} files${g.app ? ` (${g.app})` : ""}`);
+    console.log(pc.dim(`   classes: ${g.classes}`));
+    console.log(`   at: ${g.at.slice(0, 4).join(", ")}${g.at.length > 4 ? `, and ${g.at.length - 4} more` : ""}`);
+    for (const v of g.variants) console.log(`   ${v.kind === "drift" ? "drift (make it one)" : `variant (${v.kind})`}: ${v.changes.join(", ")}${v.from ? ` (from ${v.from.slice(0, 40)}…)` : ""} × ${v.count} at ${v.at.slice(0, 2).join(", ")}`);
+    const props = g.props.map((p: { name: string; copies: number; of: number; values: string[] }) => `${p.name}${p.values.length ? ` ${p.values.slice(0, 4).join(" ")}` : ""}${p.copies < p.of ? ` (${p.copies} of ${p.of})` : ""}`);
+    if (props.length) console.log(`   props: ${props.join(" · ")}`);
+    console.log(`   holds: ${g.content.join(", ")} · styles: ${g.states.length ? g.states.join(", ") : "no states"}`);
+    for (const m of g.missing) console.log(pc.yellow(`   missing ${m}`));
+  });
+  console.log(`\nBuild each component from its entry: every prop a copy passes, a variant for each change (drift becomes one value), and the missing states.
+Before the refactor: ${CLI_CMD} components --inventory --json > before.json; after it: ${CLI_CMD} components --verify before.json`);
+}
+
+/** `ryux components --verify <before.json>`: the copies left, and the props a file no longer passes. Exit 1 when either. */
+async function componentsVerify(file: string | undefined): Promise<void> {
+  if (!file || !existsSync(file)) {
+    console.error(`--verify takes the inventory saved before the refactor: ${CLI_CMD} components --inventory --json > before.json`);
+    process.exitCode = 2;
+    return;
+  }
+  const { readTree } = await import("./scan.js");
+  const { componentVerify } = await import("../engine.js");
+  const res = componentVerify(JSON.parse(await readFile(file, "utf8")), await readTree("."));
+  for (const g of res.groups) {
+    const head = `<${g.tag}> ${String(g.classes).slice(0, 60)}`;
+    if (!g.copies_left.length && !g.lost.length) {
+      console.log(`${pc.green("ok")}   ${head}: one component, every prop still passed`);
+      continue;
+    }
+    console.log(`${pc.red("fail")} ${head}`);
+    if (g.copies_left.length) console.log(`     still written out at ${g.copies_left.slice(0, 4).join(", ")}`);
+    for (const l of g.lost) console.log(l.gone ? `     ${l.file} is gone` : `     ${l.file}: ${l.prop} written ${l.before} times before, ${l.after} now`);
+  }
+  if (!res.ok) process.exitCode = 1;
 }
 
 /** The text box hint: an example answer, and that an empty Enter skips. */
@@ -1060,6 +1114,8 @@ Commands:
               participant's file, every "n of N" counted right, no one outside the Data table. Local only.
   components  Show controls written again across files, and ask what to do: one component, a component
               with Storybook, or later; the choice goes to DESIGN.md. --set records the user's answer.
+              --inventory lists what each component has to carry (places, variants, props, missing
+              states); --verify <before.json> checks the refactor kept every prop and left no copy.
   pick        Open an HTML page (e.g. a directions page) in the browser and wait for a click;
               print the chosen number. Used by the Design step to pick a direction without copy-paste.
   update      Update an install to this version (also migrates RYUX 1.x folders).

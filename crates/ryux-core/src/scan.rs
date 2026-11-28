@@ -155,11 +155,247 @@ fn rule_ds01_copies(s: &Source, c: &Ctx) -> Vec<Hit> {
         let more = if others.len() > 3 { format!(" and {} more", others.len() - 3) } else { String::new() };
         let found = format!("this <{tag}> is written {n} times with the same classes in {files} files (also {}{more})", shown.join(", "));
         match c.components {
-            Some("extract") => hit(*at, format!("{found}: make it one component and use it in each place, so a change to its look or states happens once (DESIGN.md: Components: extract)")),
-            Some("storybook") => hit(*at, format!("{found}: make it one component with a story for each state, and use it in each place (DESIGN.md: Components: storybook)")),
+            Some("extract") => hit(*at, format!("{found}: make it one component and use it in each place, so a change to its look or states happens once (DESIGN.md: Components: extract). Build it from `ryux components --inventory` (every prop, variant, and missing state); save it with --json first and check the refactor with --verify")),
+            Some("storybook") => hit(*at, format!("{found}: make it one component with a story for each state, and use it in each place (DESIGN.md: Components: storybook). Build it from `ryux components --inventory` (every prop, variant, and missing state); save it with --json first and check the refactor with --verify")),
             _ => hit(*at, format!("{found}. Before changing it, ask the user to choose, with the pros and cons of each: one component in code (one change reaches every place; the refactor touches these files), a component with Storybook (every state visible for review; Storybook to set up and keep), or later (nothing changes now; the copies keep growing). Record the answer with `ryux components --set extract|storybook|later`, or let the user run `ryux components`")),
         }
     }).collect()
+}
+
+/// The family a utility class belongs to, so px-4 → px-5 is one change of padding; None for a class outside the
+/// families a variant changes. Width and margin are placement (a className from outside), not a variant.
+fn family(c: &str) -> Option<String> {
+    let b = crate::jsx::bare(c);
+    let pre = &c[..c.len() - b.len()];
+    if re(r"^text-(?:xs|sm|base|lg|xl|\d?xl)$", "").test(b) {
+        return Some(format!("{pre}text-size"));
+    }
+    if b.starts_with("text-") {
+        return Some(format!("{pre}text-colour"));
+    }
+    let m = re(r"^(px|py|pt|pb|pl|pr|p|h|bg|border|rounded|gap|font|shadow|ring|leading|tracking)(?:-|$)", "").exec(b)?;
+    Some(format!("{pre}{}", m.g(1)))
+}
+
+/// What a change of one family does to a control: size, colour, shape, or weight.
+fn variant_kind(fam: &str) -> &'static str {
+    match crate::jsx::bare(fam) {
+        "p" | "px" | "py" | "pt" | "pb" | "pl" | "pr" | "h" | "text-size" | "gap" | "leading" => "size",
+        "bg" | "text-colour" | "border" | "ring" | "shadow" => "colour",
+        "rounded" => "shape",
+        _ => "weight",
+    }
+}
+
+/// One palette step within the same hue (gray-600 → gray-700): drift to make one, not a variant to keep.
+fn drift_change(a: &str, b: &str) -> bool {
+    let hue = |c: &str| re(r"^(?:bg|text|border|ring)-([a-z]+)-(\d{2,3})", "").exec(crate::jsx::bare(c)).map(|m| m.g(1).to_string());
+    matches!((hue(a), hue(b)), (Some(x), Some(y)) if x == y)
+}
+
+/// How two class sets differ when they are one control in two variants: at most two classes changed, each within one
+/// family; the changes as "old → new", or None.
+fn near(a: &[String], b: &[String]) -> Option<Vec<(String, String)>> {
+    let only_a: Vec<&String> = a.iter().filter(|c| !b.contains(c)).collect();
+    let only_b: Vec<&String> = b.iter().filter(|c| !a.contains(c)).collect();
+    if only_a.is_empty() || only_a.len() > 2 || only_a.len() != only_b.len() {
+        return None;
+    }
+    let mut out = Vec::new();
+    for x in &only_a {
+        let f = family(x)?;
+        let y = only_b.iter().find(|y| family(y).as_deref() == Some(f.as_str()))?;
+        out.push(((*x).clone(), (*y).clone()));
+    }
+    let mut fb: Vec<String> = only_b.iter().filter_map(|y| family(y)).collect();
+    let mut fa: Vec<String> = only_a.iter().filter_map(|x| family(x)).collect();
+    fa.sort();
+    fb.sort();
+    (fa == fb).then_some(out)
+}
+
+/// Every styled control the copies checks read, with where it is: (file, line, package, control).
+fn styled_everywhere(sources: &[Source]) -> Vec<(String, usize, String, crate::jsx::Control)> {
+    let mut out = Vec::new();
+    let mut list: Vec<&Source> = sources.iter().filter(|s| jsx(&s.ext)).collect();
+    list.sort_by(|a, b| a.path.cmp(&b.path));
+    for s in list {
+        let path = norm(&s.path);
+        if library_file(&path) {
+            continue;
+        }
+        for c in crate::jsx::styled_controls(&s.raw, &s.ext) {
+            let line = line_col(&s.raw, c.index).0;
+            out.push((path.clone(), line, package_of(&path), c));
+        }
+    }
+    out
+}
+
+/// What a component made from copies has to carry (RX-DS-01), for `ryux components --inventory`: each group of a
+/// control written again across files (the same classes, or one control in variants that change at most two classes
+/// within one family), with every place it is written, its variants, the props its copies pass (how many copies, and
+/// the values), what it holds, the states its classes style, the states missing, and the props each file passes on
+/// those copies, which `verify` checks after the refactor.
+pub fn inventory(sources: &[Source]) -> Value {
+    let all = styled_everywhere(sources);
+    // one key per (package, tag, classes)
+    let mut keys: Vec<(String, String, Vec<String>)> = Vec::new();
+    let mut members: Vec<Vec<usize>> = Vec::new();
+    for (i, (_, _, pkg, c)) in all.iter().enumerate() {
+        match keys.iter().position(|(p, t, cl)| p == pkg && *t == c.tag && *cl == c.classes) {
+            Some(k) => members[k].push(i),
+            None => {
+                keys.push((pkg.clone(), c.tag.clone(), c.classes.clone()));
+                members.push(vec![i]);
+            }
+        }
+    }
+    let mut parent: Vec<usize> = (0..keys.len()).collect();
+    fn root(p: &mut Vec<usize>, mut k: usize) -> usize {
+        while p[k] != k {
+            k = p[k];
+        }
+        k
+    }
+    for a in 0..keys.len() {
+        for b in a + 1..keys.len() {
+            if keys[a].0 == keys[b].0 && keys[a].1 == keys[b].1 && near(&keys[a].2, &keys[b].2).is_some() {
+                let (ra, rb) = (root(&mut parent, a), root(&mut parent, b));
+                parent[ra] = rb;
+            }
+        }
+    }
+    let mut clusters: Vec<Vec<usize>> = Vec::new();
+    let mut seen: HashMap<usize, usize> = HashMap::new();
+    for k in 0..keys.len() {
+        let r = root(&mut parent, k);
+        let at = *seen.entry(r).or_insert_with(|| {
+            clusters.push(Vec::new());
+            clusters.len() - 1
+        });
+        clusters[at].push(k);
+    }
+    let mut groups = Vec::new();
+    for mut ks in clusters {
+        let uses: Vec<usize> = ks.iter().flat_map(|k| members[*k].clone()).collect();
+        let mut files: Vec<String> = uses.iter().map(|i| all[*i].0.clone()).collect();
+        files.sort();
+        files.dedup();
+        if uses.len() < 3 || files.len() < 2 {
+            continue;
+        }
+        ks.sort_by_key(|k| std::cmp::Reverse(members[*k].len()));
+        let base = ks[0];
+        let tag = keys[base].1.clone();
+        let place = |i: &usize| format!("{}:{}", all[*i].0, all[*i].1);
+        let variants: Vec<Value> = ks[1..].iter().map(|k| {
+            // against the base when one step from it, else against the member it was linked through
+            let (from, changes) = std::iter::once(base).chain(ks.iter().copied().filter(|m| m != k && *m != base))
+                .find_map(|m| near(&keys[m].2, &keys[*k].2).map(|c| (m, c)))
+                .unwrap_or((base, Vec::new()));
+            let kind = if changes.iter().all(|(a, b)| drift_change(a, b)) { "drift".to_string() } else {
+                let mut kinds: Vec<&str> = changes.iter().filter_map(|(a, _)| family(a)).map(|f| variant_kind(&f)).collect();
+                kinds.sort();
+                kinds.dedup();
+                kinds.join(", ")
+            };
+            json!({ "changes": changes.iter().map(|(a, b)| format!("{a} → {b}")).collect::<Vec<_>>(), "from": if from == base { Value::Null } else { json!(keys[from].2.join(" ")) }, "kind": kind, "count": members[*k].len(), "at": members[*k].iter().map(place).collect::<Vec<_>>() })
+        }).collect();
+        // props across the copies
+        let mut names: Vec<String> = uses.iter().flat_map(|i| all[*i].3.attrs.iter().map(|(k, _)| k.clone())).collect();
+        names.sort();
+        names.dedup();
+        let props: Vec<Value> = names.iter().map(|n| {
+            let with: Vec<&String> = uses.iter().filter_map(|i| all[*i].3.attrs.iter().find(|(k, _)| k == n).map(|(_, v)| v)).collect();
+            let mut values: Vec<String> = with.iter().filter(|v| v.starts_with('"')).map(|v| v.to_string()).collect();
+            values.sort();
+            values.dedup();
+            json!({ "name": n, "copies": with.len(), "of": uses.len(), "values": values })
+        }).collect();
+        let mut content: Vec<&str> = uses.iter().map(|i| all[*i].3.content).collect();
+        content.sort();
+        content.dedup();
+        let classes: Vec<&String> = ks.iter().flat_map(|k| keys[*k].2.iter()).collect();
+        let styles = |state: &str| classes.iter().any(|c| c.split(':').rev().skip(1).any(|p| p == state));
+        let states: Vec<&str> = ["hover", "focus", "focus-visible", "active", "disabled"].into_iter().filter(|s| styles(s)).collect();
+        let mut missing = Vec::new();
+        if !styles("focus") && !styles("focus-visible") {
+            missing.push("focus-visible: no copy shows keyboard focus".to_string());
+        }
+        let disabled_used = uses.iter().any(|i| all[*i].3.attrs.iter().any(|(k, _)| k == "disabled"));
+        if disabled_used && !styles("disabled") {
+            missing.push("disabled: copies take disabled, and none styles it".to_string());
+        }
+        // the props each file passes on its copies, as that file writes them in all (what verify compares)
+        let mut per_file = serde_json::Map::new();
+        for f in &files {
+            let Some(src) = sources.iter().find(|s| norm(&s.path) == *f) else { continue };
+            let counts = crate::jsx::prop_counts(&src.raw, &src.ext);
+            let mut on_copies: Vec<String> = uses.iter().filter(|i| all[**i].0 == *f).flat_map(|i| all[*i].3.attrs.iter().flat_map(|(k, v)| {
+                let mut x = vec![k.clone()];
+                if v.starts_with('"') {
+                    x.push(format!("{k}={v}"));
+                }
+                x
+            })).collect();
+            on_copies.sort();
+            on_copies.dedup();
+            per_file.insert(f.clone(), Value::Object(on_copies.into_iter().map(|k| { let n = counts.get(&k).copied().unwrap_or(0); (k, json!(n)) }).collect()));
+        }
+        groups.push(json!({
+            "app": keys[base].0, "tag": tag, "classes": keys[base].2.join(" "), "count": uses.len(), "files": files,
+            "at": members[base].iter().map(place).collect::<Vec<_>>(), "variants": variants, "props": props,
+            "content": content, "states": states, "missing": missing, "keys": ks.iter().map(|k| keys[*k].2.join(" ")).collect::<Vec<_>>(),
+            "props_in_files": per_file,
+        }));
+    }
+    groups.sort_by_key(|g| std::cmp::Reverse(g["count"].as_u64().unwrap_or(0)));
+    json!({ "groups": groups })
+}
+
+/// After a refactor, against the inventory taken before it: the copies left (a control with the classes of a group
+/// still written in 2+ files), and each prop a file passed on its copies that the file now writes fewer times
+/// (type="password" gone from Signup.tsx), or a file that is gone.
+pub fn verify(before: &Value, sources: &[Source]) -> Value {
+    let all = styled_everywhere(sources);
+    let mut out = Vec::new();
+    let mut ok = true;
+    for g in before["groups"].as_array().into_iter().flatten() {
+        let tag = g["tag"].as_str().unwrap_or("");
+        let app = g["app"].as_str().unwrap_or("");
+        let keys: Vec<&str> = g["keys"].as_array().into_iter().flatten().filter_map(|k| k.as_str()).collect();
+        let left: Vec<String> = all.iter().filter(|(_, _, pkg, c)| pkg == app && c.tag == tag && keys.contains(&c.classes.join(" ").as_str())).map(|(f, l, _, _)| format!("{f}:{l}")).collect();
+        let left_files: HashSet<&str> = left.iter().map(|x| x.rsplit_once(':').map_or(x.as_str(), |p| p.0)).collect();
+        let copies_left = if left_files.len() >= 2 { left.clone() } else { Vec::new() };
+        let mut lost = Vec::new();
+        for (file, props) in g["props_in_files"].as_object().into_iter().flatten() {
+            let Some(src) = sources.iter().find(|s| norm(&s.path) == *file) else {
+                lost.push(json!({ "file": file, "gone": true }));
+                continue;
+            };
+            let now = crate::jsx::prop_counts(&src.raw, &src.ext);
+            for (k, n) in props.as_object().into_iter().flatten() {
+                let (was, is) = (n.as_u64().unwrap_or(0) as usize, now.get(k).copied().unwrap_or(0));
+                if is < was {
+                    lost.push(json!({ "file": file, "prop": k, "before": was, "after": is }));
+                }
+            }
+        }
+        if !copies_left.is_empty() || !lost.is_empty() {
+            ok = false;
+        }
+        out.push(json!({ "tag": tag, "classes": g["classes"], "copies_left": copies_left, "lost": lost }));
+    }
+    json!({ "ok": ok, "groups": out })
+}
+
+/// A <button> that does nothing when pressed: no handler, no submit, nothing around it that acts (RX-QA-08).
+fn rule_qa08_dead(s: &Source, _: &Ctx) -> Vec<Hit> {
+    if library_file(&norm(&s.path)) {
+        return Vec::new();
+    }
+    crate::jsx::dead_buttons(&s.raw, &s.ext).into_iter().map(|at| hit(at, "a <button> with no onClick, no type=\"submit\", and no form, link, or trigger around it: pressing it does nothing; give it its action, or, if it is not a control, make it text")).collect()
 }
 
 /// A native form control styled by hand with the class that marks the project's own component for it: a <button>
@@ -1523,6 +1759,7 @@ fn syntax_detectors() -> &'static [Detector] {
         Detector { rule: "RX-FE-13", level: "warn", exts: script_or_jsx, folder: false, find: rule_fe13_effect },
         Detector { rule: "RX-DS-01", level: "warn", exts: jsx, folder: false, find: rule_ds01_copies },
         Detector { rule: "RX-DS-01", level: "warn", exts: jsx, folder: false, find: rule_ds01_bypass },
+        Detector { rule: "RX-QA-08", level: "warn", exts: jsx, folder: false, find: rule_qa08_dead },
     ];
     D
 }
@@ -2458,11 +2695,82 @@ export { Input };"#;
         let (level, msg) = &with(None)[0];
         assert_eq!(level, "warn");
         assert!(msg.contains("ask the user to choose") && msg.contains("Storybook") && msg.contains("ryux components --set"), "{msg}");
-        assert!(with(Some("extract"))[0].1.ends_with("(DESIGN.md: Components: extract)"));
+        assert!(with(Some("extract"))[0].1.contains("(DESIGN.md: Components: extract). Build it from `ryux components --inventory`"));
         assert!(with(Some("Storybook (the user's choice, 2026-11-28)"))[0].1.contains("a story for each state"));
         // later: the scan stays quiet
         assert!(with(Some("later")).is_empty());
         // a field still holding its hint is undecided
         assert!(with(Some("(extract, storybook, or later)"))[0].1.contains("ask the user"));
+    }
+
+    #[test]
+    fn qa08_button_that_does_nothing() {
+        let dead = |raw: &str| crate::jsx::dead_buttons(raw, "tsx").len();
+        assert_eq!(dead(r#"const A = () => <div><button className="px-3">Share</button></div>;"#), 1);
+        // wired, or acted for
+        for ok in [
+            r#"const A = () => <button onClick={go}>Go</button>;"#,
+            r#"const A = () => <button type="submit">Go</button>;"#,
+            r#"const A = () => <form action={save}><button>Save</button></form>;"#,
+            r#"const A = () => <DialogTrigger asChild><button>Open</button></DialogTrigger>;"#,
+            r#"const A = () => <SignInButton mode="modal"><button>Sign in</button></SignInButton>;"#,
+            r#"const A = () => <Link href="/x"><button>Next</button></Link>;"#,
+            r#"const A = () => <button disabled>Soon</button>;"#,
+            r#"const A = (p) => <button {...p}>Go</button>;"#,
+            r#"const A = () => <button id="menu">Menu</button>;"#,
+            r#"const A = () => <button ref={r}>Menu</button>;"#,
+            r#"const A = () => <button type="button" onFocus={hot} onPointerEnter={hot}>Pin</button>;"#,
+            r#"const A = () => <li onClick={pick}><button>Pick</button></li>;"#,
+        ] {
+            assert_eq!(dead(ok), 0, "{ok}");
+        }
+        // reported through the scan, not in a story
+        let src = r#"export const A = () => <button className="rounded px-3 py-1">Export</button>;"#;
+        let opts = || ScanOptions { folder: false, skip: HashSet::new(), design: None, components: None, context: Vec::new() };
+        assert_eq!(scan_syntax(&[to_source("src/a.tsx", src)], opts()).iter().filter(|f| f["rule"] == "RX-QA-08").count(), 1);
+        assert_eq!(scan_syntax(&[to_source("src/a.stories.tsx", src)], opts()).iter().filter(|f| f["rule"] == "RX-QA-08").count(), 0);
+    }
+
+    #[test]
+    fn inventory_lists_what_the_component_must_carry_and_verify_checks_it() {
+        let a = r#"export const A = () => <form>
+<button type="submit" className="rounded-lg bg-blue-600 px-4 py-2 text-white">Save</button>
+<button onClick={go} className="rounded-lg bg-blue-600 px-4 py-2 text-white">Go</button>
+</form>;"#;
+        let b = r#"export const B = () => <div>
+<button onClick={x} disabled={busy} className="rounded-lg bg-blue-600 px-4 py-2 text-white">Send</button>
+<button onClick={y} className="rounded-lg bg-blue-600 px-3 py-1.5 text-white">Small</button>
+</div>;"#;
+        let before = inventory(&[to_source("src/a.tsx", a), to_source("src/b.tsx", b)]);
+        let g = &before["groups"][0];
+        assert_eq!(g["count"], 4);
+        assert_eq!(g["files"], json!(["src/a.tsx", "src/b.tsx"]));
+        assert_eq!(g["variants"][0]["changes"], json!(["px-4 → px-3", "py-2 → py-1.5"]));
+        assert_eq!(g["variants"][0]["kind"], "size");
+        // a variant three changes from the base, one from the small variant, is described against that one
+        let c = r#"export const C = () => <div><button onClick={z} className="rounded bg-blue-600 px-3 py-1.5 text-white">Tiny</button></div>;"#;
+        let chained = inventory(&[to_source("src/a.tsx", a), to_source("src/b.tsx", b), to_source("src/c.tsx", c)]);
+        let tiny = chained["groups"][0]["variants"].as_array().unwrap().iter().find(|v| v["at"][0] == "src/c.tsx:1").cloned().unwrap();
+        assert_eq!(tiny["changes"], json!(["rounded-lg → rounded"]));
+        assert_eq!(tiny["from"], "bg-blue-600 px-3 py-1.5 rounded-lg text-white");
+        let prop = |n: &str| g["props"].as_array().unwrap().iter().find(|p| p["name"] == n).cloned().unwrap();
+        assert_eq!(prop("type")["values"], json!(["\"submit\""]));
+        assert_eq!(prop("onClick")["copies"], 3);
+        let missing: Vec<&str> = g["missing"].as_array().unwrap().iter().map(|m| m.as_str().unwrap()).collect();
+        assert!(missing.iter().any(|m| m.starts_with("focus-visible")) && missing.iter().any(|m| m.starts_with("disabled")), "{missing:?}");
+        // nothing changed: every copy is still there
+        let same = verify(&before, &[to_source("src/a.tsx", a), to_source("src/b.tsx", b)]);
+        assert_eq!(same["ok"], false);
+        assert_eq!(same["groups"][0]["copies_left"].as_array().unwrap().len(), 4, "the variant too");
+        // a refactor that keeps every prop
+        let a2 = r#"export const A = () => <form><Button type="submit">Save</Button><Button onClick={go}>Go</Button></form>;"#;
+        let b2 = r#"export const B = () => <div><Button onClick={x} disabled={busy}>Send</Button><Button size="sm" onClick={y}>Small</Button></div>;"#;
+        assert_eq!(verify(&before, &[to_source("src/a.tsx", a2), to_source("src/b.tsx", b2)])["ok"], true);
+        // one that drops type="submit"
+        let a3 = r#"export const A = () => <form><Button>Save</Button><Button onClick={go}>Go</Button></form>;"#;
+        let lost = verify(&before, &[to_source("src/a.tsx", a3), to_source("src/b.tsx", b2)]);
+        assert_eq!(lost["ok"], false);
+        let props: Vec<&str> = lost["groups"][0]["lost"].as_array().unwrap().iter().map(|l| l["prop"].as_str().unwrap()).collect();
+        assert_eq!(props, vec!["type", "type=\"submit\""]);
     }
 }
