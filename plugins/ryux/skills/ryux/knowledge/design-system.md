@@ -24,6 +24,25 @@ the smallest token set the screen needs and use it consistently: color roles, a 
 radius scale, and a type scale, not color alone. After rendering, count the literal values left and
 convert them (RX-DS-03). Do not introduce a component library the project does not use.
 
+## Component catalog
+
+Before making, merging, or checking one of these components, read its file (about 1 KB each): its job, anatomy,
+variants, states, behaviour, accessibility, and the mistakes copies usually carry. Read only the ones the task
+touches. `ryux components --inventory` names the file for each group of copies it finds.
+
+| Component | How a hand-written copy usually looks | Read |
+| --- | --- | --- |
+| Button | a <button> (or a link styled as one) with a fill or border, a radius, and padding | `knowledge/design-system/button.md` |
+| Field (Input, Select, Textarea) | an <input>, <select>, or <textarea> with a border, a radius, and padding, usually with a label above | `knowledge/design-system/field.md` |
+| Card or panel | a box with a background or border, a radius, padding, and several children (title, text, actions) | `knowledge/design-system/card.md` |
+| Alert (inline message) | a tinted box with a border, often an icon and one or two lines (bg-red-50, bg-amber-50, bg-green-50) | `knowledge/design-system/alert.md` |
+| Badge (tag, status chip) | a small <span> with text-xs, small horizontal padding, a tint, and a full or small radius | `knowledge/design-system/badge.md` |
+| Tabs (and segmented control) | a row of buttons or links in a strip (flex, gap-1, p-1, a tinted track) with one marked as current | `knowledge/design-system/tabs.md` |
+| Dialog (modal) | a fixed inset-0 overlay (bg-black/50) holding a centred panel; on mobile often a bottom sheet | `knowledge/design-system/dialog.md` |
+| Empty state | a centred block (text-center, large vertical padding) with an icon or picture, a line, and a button | `knowledge/design-system/empty-state.md` |
+| Icon tile | one icon inside a tinted square or circle (p-2 or p-3, bg-blue-100, rounded-lg or rounded-full) | `knowledge/design-system/icon-tile.md` |
+| Code block | a dark box with font-mono and padding, holding a <pre> or <code> | `knowledge/design-system/code-block.md` |
+
 ## Evidence from RYUX Knowledge
 
 How reference apps keep components consistent for this pattern: `search_screens` by component, `extract_design_direction`. Without the ryux MCP, say the evidence comes from the design and standards alone.

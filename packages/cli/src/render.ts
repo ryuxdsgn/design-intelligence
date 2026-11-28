@@ -1,4 +1,5 @@
 import { figmaAuditMarkdown } from "./figma-audit.js";
+import { COMPONENT_CATALOG, catalogFile, catalogIndex } from "./intelligence/components.js";
 import {
   ACTIVATION,
   GATE_AREAS,
@@ -175,7 +176,9 @@ function skillBody(id: string): string {
   const extra =
     s.id === "unslop"
       ? `\n\n## Hard Gates\n\n${hardGatesTable()}\n\n## Purpose Gates\n\n${purposeGatesTable()}\n\n## Quality Locks\n\n${qualityLocksTable()}`
-      : "";
+      : s.id === "design-system"
+        ? `\n\n${catalogIndex()}`
+        : "";
   return `# ryux-${s.id}: ${s.label}
 
 > Group ${groupLabel(s.group)} · Delivery Gate area ${s.gateArea} · RYUX ${VERSION}. Levels are defined in \`ryux-core\`.
@@ -238,6 +241,7 @@ export function renderBundle(): Record<string, string> {
     "report.md": `${CORE_REPORT}\n`,
   };
   for (const s of SKILLS) if (s.id !== "visual-qa") files[`knowledge/${s.id}.md`] = `${knowledgeModule(s.id)}\n`;
+  for (const c of COMPONENT_CATALOG) files[`knowledge/design-system/${c.id}.md`] = catalogFile(c);
   for (const k of Object.keys(files)) files[k] = toModuleRefs(files[k]);
   files["scripts/figma-audit.md"] = figmaAuditMarkdown();
   return files;

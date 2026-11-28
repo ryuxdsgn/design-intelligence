@@ -937,3 +937,15 @@ test("an unread required module is read before the gate, and FAILS if it stays u
   assert.doesNotMatch(router, /did not read leaves the areas it serves NOT VERIFIED/);
   assert.match(router, /A small change \(a copy fix, one component, one state\) reads its entry point's file/);
 });
+
+test("component catalog: one short file per component, each listed in design-system.md and holding every section", () => {
+  const b = renderFiles();
+  const files = Object.keys(b).filter((k) => k.startsWith("knowledge/design-system/"));
+  assert.ok(files.length >= 10, `catalog files: ${files.length}`);
+  for (const f of files) {
+    assert.ok(b["knowledge/design-system.md"].includes(`\`${f}\``), `${f} is not in the catalog index`);
+    for (const h of ["**Job**", "**Anatomy**", "**Variants**", "**States**", "**Behaviour**", "**Accessibility**", "**Common mistakes**"])
+      assert.ok(b[f].includes(h), `${f} lacks ${h}`);
+    assert.ok(Buffer.byteLength(b[f]) <= 2048, `${f} is ${Buffer.byteLength(b[f])} bytes; keep each under 2 KB`);
+  }
+});
