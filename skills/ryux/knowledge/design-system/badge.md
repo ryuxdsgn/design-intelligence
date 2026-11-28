@@ -1,6 +1,8 @@
 # Badge (tag, status chip)
 
-Part of `knowledge/design-system.md` (component catalog). Usually looks like: a small <span> with text-xs, small horizontal padding, a tint, and a full or small radius.
+Part of `knowledge/design-system.md` (component catalog). This file says what the component must do, not how it
+looks: its appearance comes from DESIGN.md and the project's system. In code, a hand-written copy usually looks like:
+a small <span> with text-xs, small horizontal padding, a tint, and a full or small radius.
 
 **Job**: label a thing with a short status or category (Lunas, Menunggu pembayaran, Baru). Not for an
 action: a chip that filters is a toggle button. Not an eyebrow above a heading unless it has a real job.

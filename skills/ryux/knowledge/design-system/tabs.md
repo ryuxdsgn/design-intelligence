@@ -1,6 +1,8 @@
 # Tabs (and segmented control)
 
-Part of `knowledge/design-system.md` (component catalog). Usually looks like: a row of buttons or links in a strip (flex, gap-1, p-1, a tinted track) with one marked as current.
+Part of `knowledge/design-system.md` (component catalog). This file says what the component must do, not how it
+looks: its appearance comes from DESIGN.md and the project's system. In code, a hand-written copy usually looks like:
+a row of buttons or links in a strip (flex, gap-1, p-1, a tinted track) with one marked as current.
 
 **Job**: switch between views of the same thing on one page. Going to another page is navigation (links), and
 filtering a list is a segmented control or filter chips.

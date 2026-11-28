@@ -1,6 +1,8 @@
 # Field (Input, Select, Textarea)
 
-Part of `knowledge/design-system.md` (component catalog). Usually looks like: an <input>, <select>, or <textarea> with a border, a radius, and padding, usually with a label above.
+Part of `knowledge/design-system.md` (component catalog). This file says what the component must do, not how it
+looks: its appearance comes from DESIGN.md and the project's system. In code, a hand-written copy usually looks like:
+an <input>, <select>, or <textarea> with a border, a radius, and padding, usually with a label above.
 
 **Job**: take one value from the person. The component is the field, not the bare control: label, control,
 hint, and error travel together.

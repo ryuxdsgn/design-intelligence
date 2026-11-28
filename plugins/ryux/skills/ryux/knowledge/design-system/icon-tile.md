@@ -1,6 +1,8 @@
 # Icon tile
 
-Part of `knowledge/design-system.md` (component catalog). Usually looks like: one icon inside a tinted square or circle (p-2 or p-3, bg-blue-100, rounded-lg or rounded-full).
+Part of `knowledge/design-system.md` (component catalog). This file says what the component must do, not how it
+looks: its appearance comes from DESIGN.md and the project's system. In code, a hand-written copy usually looks like:
+one icon inside a tinted square or circle (p-2 or p-3, bg-blue-100, rounded-lg or rounded-full).
 
 **Job**: give a stat, a feature, or a list item a small visual anchor. It is decoration that helps scanning; the
 words beside it carry the meaning.

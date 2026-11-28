@@ -1,6 +1,8 @@
 # Button
 
-Part of `knowledge/design-system.md` (component catalog). Usually looks like: a <button> (or a link styled as one) with a fill or border, a radius, and padding.
+Part of `knowledge/design-system.md` (component catalog). This file says what the component must do, not how it
+looks: its appearance comes from DESIGN.md and the project's system. In code, a hand-written copy usually looks like:
+a <button> (or a link styled as one) with a fill or border, a radius, and padding.
 
 **Job**: start an action on this page. Going to another page is a link, even when it looks like a button.
 Not for: a choice between options (a segmented control or radio), or a tag (Badge).

@@ -1,6 +1,8 @@
 # Code block
 
-Part of `knowledge/design-system.md` (component catalog). Usually looks like: a dark box with font-mono and padding, holding a <pre> or <code>.
+Part of `knowledge/design-system.md` (component catalog). This file says what the component must do, not how it
+looks: its appearance comes from DESIGN.md and the project's system. In code, a hand-written copy usually looks like:
+a dark box with font-mono and padding, holding a <pre> or <code>.
 
 **Job**: show code, a command, or a key the person will copy. Inline code in a sentence is a different, smaller
 component.

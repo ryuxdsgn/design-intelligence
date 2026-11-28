@@ -248,7 +248,9 @@ export function catalogIndex(): string {
 
 Before making, merging, or checking one of these components, read its file (about 1 KB each): its job, anatomy,
 variants, states, behaviour, accessibility, and the mistakes copies usually carry. Read only the ones the task
-touches. \`ryux components --inventory\` names the file for each group of copies it finds.
+touches. \`ryux components --inventory\` names the file for each group of copies it finds. A file says what the
+component must do, not how it looks: colour, radius, size, and style come from DESIGN.md and the project's own system,
+and the "usually looks like" column only helps recognise a hand-written copy in code.
 
 | Component | How a hand-written copy usually looks | Read |
 | --- | --- | --- |
@@ -258,7 +260,9 @@ ${rows.join("\n")}`;
 export function catalogFile(c: CatalogEntry): string {
   return `# ${c.name}
 
-Part of \`knowledge/design-system.md\` (component catalog). Usually looks like: ${c.looksLike}.
+Part of \`knowledge/design-system.md\` (component catalog). This file says what the component must do, not how it
+looks: its appearance comes from DESIGN.md and the project's system. In code, a hand-written copy usually looks like:
+${c.looksLike}.
 
 ${c.body}
 `;

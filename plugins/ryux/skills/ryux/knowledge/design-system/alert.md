@@ -1,6 +1,8 @@
 # Alert (inline message)
 
-Part of `knowledge/design-system.md` (component catalog). Usually looks like: a tinted box with a border, often an icon and one or two lines (bg-red-50, bg-amber-50, bg-green-50).
+Part of `knowledge/design-system.md` (component catalog). This file says what the component must do, not how it
+looks: its appearance comes from DESIGN.md and the project's system. In code, a hand-written copy usually looks like:
+a tinted box with a border, often an icon and one or two lines (bg-red-50, bg-amber-50, bg-green-50).
 
 **Job**: tell the person about a state that affects what they are doing on this page: an error, a warning, a
 success, or information. A message that comes and goes after an action is a Toast; one that blocks is a Dialog.

@@ -28,7 +28,9 @@ convert them (RX-DS-03). Do not introduce a component library the project does n
 
 Before making, merging, or checking one of these components, read its file (about 1 KB each): its job, anatomy,
 variants, states, behaviour, accessibility, and the mistakes copies usually carry. Read only the ones the task
-touches. `ryux components --inventory` names the file for each group of copies it finds.
+touches. `ryux components --inventory` names the file for each group of copies it finds. A file says what the
+component must do, not how it looks: colour, radius, size, and style come from DESIGN.md and the project's own system,
+and the "usually looks like" column only helps recognise a hand-written copy in code.
 
 | Component | How a hand-written copy usually looks | Read |
 | --- | --- | --- |

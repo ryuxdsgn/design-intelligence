@@ -1,6 +1,8 @@
 # Empty state
 
-Part of `knowledge/design-system.md` (component catalog). Usually looks like: a centred block (text-center, large vertical padding) with an icon or picture, a line, and a button.
+Part of `knowledge/design-system.md` (component catalog). This file says what the component must do, not how it
+looks: its appearance comes from DESIGN.md and the project's system. In code, a hand-written copy usually looks like:
+a centred block (text-center, large vertical padding) with an icon or picture, a line, and a button.
 
 **Job**: show what belongs here when there is nothing yet, and lead to the action that fills it (RX-CD-13).
 It is a state of a list, table, or page, not a page of its own.

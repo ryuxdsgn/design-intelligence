@@ -1,6 +1,8 @@
 # Card or panel
 
-Part of `knowledge/design-system.md` (component catalog). Usually looks like: a box with a background or border, a radius, padding, and several children (title, text, actions).
+Part of `knowledge/design-system.md` (component catalog). This file says what the component must do, not how it
+looks: its appearance comes from DESIGN.md and the project's system. In code, a hand-written copy usually looks like:
+a box with a background or border, a radius, padding, and several children (title, text, actions).
 
 **Job**: group the content of one thing (an order, a product, a stat) so it reads as one unit. A panel groups a
 section of a page. Not every box is a card: a box with no shared content shape is layout, not a component.
