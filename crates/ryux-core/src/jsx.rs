@@ -87,6 +87,67 @@ pub struct Control {
     pub attrs: Vec<(String, String)>,
     /// What it holds: text, icon+text, icon, expression, or none.
     pub content: &'static str,
+    /// The catalog component it most likely is (button, field, card, alert, badge, tabs, dialog, empty-state,
+    /// icon-tile, code-block), from its tag, classes, role, and children; None when nothing tells.
+    pub kind: Option<&'static str>,
+}
+
+/// Elements a hand-built component is usually made of (a card, an alert, a badge), besides the native controls.
+const BOXES: [&str; 8] = ["div", "section", "article", "li", "span", "aside", "header", "nav"];
+
+/// A guess at which catalog component an element is. Only signals that held on the corpus (2026-11-28, 77
+/// projects) decide; a padded box with children that matches nothing sharper is a card or panel.
+fn kind_of(tag: &str, classes: &[String], attrs: &[(String, String)], kids: &[String], text: usize) -> Option<&'static str> {
+    use std::sync::OnceLock;
+    static RES: OnceLock<Vec<regex::Regex>> = OnceLock::new();
+    let res = RES.get_or_init(|| {
+        [
+            r"^bg-(?:red|rose|yellow|amber|green|emerald|blue|sky|orange|teal|destructive|success|warning|info|danger|error)(?:-(?:50|100|500|900))?(?:/(?:\d+|\[[\d.]+\]))?$",
+            r"^border(?:-\d)?$|^border-[a-z]+-\d{3}(?:/\d+)?$|^border-(?:destructive|success|warning|info)",
+            r"^p-(?:1|1\.5|2|2\.5|3|4)$",
+            r"^px-(?:1|1\.5|2|2\.5|3|4)$",
+            r"^text-(?:xs|\[1\d(?:\.\d)?px\])$",
+            r"^py-(?:8|10|12|16|20)$",
+            r"^p-(?:3|4|5|6|8)$|^px-(?:4|5|6)$",
+        ]
+        .iter()
+        .map(|r| regex::Regex::new(r).unwrap())
+        .collect()
+    });
+    let has = |i: usize| classes.iter().any(|c| res[i].is_match(bare(c)));
+    let is = |n: &str| classes.iter().any(|c| bare(c) == n);
+    let role = attrs.iter().find(|(k, _)| k == "role").map(|(_, v)| v.trim_matches('"')).unwrap_or("");
+    let icon = |k: &str| k.starts_with(|c: char| c.is_ascii_uppercase()) || k == "svg" || k == "img";
+    match tag {
+        "button" | "a" => return Some("button"),
+        "input" | "select" | "textarea" => return Some("field"),
+        _ => {}
+    }
+    if role == "dialog" || role == "alertdialog" || attrs.iter().any(|(k, _)| k == "aria-modal") || (is("fixed") && is("inset-0")) {
+        return Some("dialog");
+    }
+    if role == "tablist" || (is("flex") && is("p-1") && is("gap-1")) {
+        return Some("tabs");
+    }
+    if is("font-mono") || matches!(kids.first().map(String::as_str), Some("pre" | "code")) {
+        return Some("code-block");
+    }
+    if role == "alert" || role == "status" || (has(0) && has(1) && (kids.first().is_some_and(|k| icon(k)) || kids.len() <= 1 || kids.iter().any(|k| k == "button"))) {
+        return Some("alert");
+    }
+    if kids.len() == 1 && icon(&kids[0]) && text == 0 && has(2) {
+        return Some("icon-tile");
+    }
+    if (tag == "span" || (tag == "div" && kids.is_empty())) && classes.iter().any(|c| bare(c).starts_with("rounded")) && has(3) && (has(4) || is("rounded-full")) && kids.len() <= 1 && text <= 30 {
+        return Some("badge");
+    }
+    if is("text-center") && has(5) {
+        return Some("empty-state");
+    }
+    if matches!(tag, "div" | "article" | "section" | "li") && has(6) && !kids.is_empty() {
+        return Some("card");
+    }
+    None
 }
 
 struct Controls<'s> {
@@ -186,7 +247,8 @@ impl<'a> Visit<'a> for Controls<'_> {
                 self.dead.push(u16_at(self.src, el.span().start as usize));
             }
         }
-        if NATIVE.contains(&tag.as_str()) {
+        let is_box = !self.all && BOXES.contains(&tag.as_str());
+        if NATIVE.contains(&tag.as_str()) || is_box {
             let class = el.attributes.iter().find_map(|a| match a {
                 JSXAttributeItem::Attribute(at) => match &at.name {
                     JSXAttributeName::Identifier(n) if matches!(n.name.as_str(), "className" | "class") => at.value.as_ref().and_then(class_text),
@@ -198,8 +260,17 @@ impl<'a> Visit<'a> for Controls<'_> {
                 let mut classes: Vec<String> = text.split_whitespace().map(str::to_string).collect();
                 classes.sort();
                 classes.dedup();
-                if self.all || styled(&classes) {
-                    self.found.push(Control { index: u16_at(self.src, el.span().start as usize), tag: tag.clone(), classes, attrs: attrs.clone(), content: content_of(it) });
+                if self.all || if is_box { box_styled(&classes) } else { styled(&classes) } {
+                    let kids: Vec<String> = it.children.iter().filter_map(|c| match c {
+                        JSXChild::Element(e) => Some(element_name(&e.opening_element.name)),
+                        _ => None,
+                    }).collect();
+                    let text: usize = it.children.iter().map(|c| match c {
+                        JSXChild::Text(t) => t.value.trim().chars().count(),
+                        _ => 0,
+                    }).sum();
+                    let kind = kind_of(&tag, &classes, &attrs, &kids, text);
+                    self.found.push(Control { index: u16_at(self.src, el.span().start as usize), tag: tag.clone(), classes, attrs: attrs.clone(), content: content_of(it), kind });
                 }
             }
         }
@@ -248,6 +319,15 @@ const COLOUR_VALUE: &str = r"(?:\[#[0-9a-fA-F]{3,8}\]|(?:primary|secondary|accen
 
 /// Utility classes that make a control look like one on their own: a colour (background, text, or border), a
 /// corner radius, and padding. A semantic class (btn-primary) is already reuse, and is not counted.
+/// A box (div, span, li...) styled as a component: a background or border colour, a corner radius, and padding. A
+/// text colour alone does not make a box look like one.
+fn box_styled(classes: &[String]) -> bool {
+    thread_local! {
+        static FILL: regex::Regex = regex::Regex::new(&format!(r"^(?:bg|border)-{COLOUR_VALUE}$")).unwrap();
+    }
+    styled(classes) && classes.iter().any(|c| FILL.with(|r| r.is_match(bare(c))))
+}
+
 fn styled(classes: &[String]) -> bool {
     thread_local! {
         static COLOUR: regex::Regex = regex::Regex::new(&format!(r"^(?:bg|text|border)-{COLOUR_VALUE}$")).unwrap();
@@ -499,6 +579,22 @@ pub fn code_smells(raw: &str, ext: &str) -> Vec<Smell> {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn boxes_get_a_kind_from_their_classes_and_children() {
+        let kind = |src: &str| styled_controls(src, "tsx").into_iter().map(|c| format!("{}:{}", c.tag, c.kind.unwrap_or("-"))).collect::<Vec<_>>();
+        assert_eq!(kind(r#"const A = () => <div className="rounded-lg border border-red-200 bg-red-50 p-4"><AlertCircle /><p>Gagal</p></div>;"#), vec!["div:alert"]);
+        assert_eq!(kind(r#"const A = () => <span className="rounded-full bg-green-100 px-2 py-0.5 text-xs text-green-700">Lunas</span>;"#), vec!["span:badge"]);
+        assert_eq!(kind(r#"const A = () => <div className="rounded-lg bg-blue-100 p-3"><Target /></div>;"#), vec!["div:icon-tile"]);
+        assert_eq!(kind(r#"const A = () => <div className="rounded-lg bg-gray-900 p-4 font-mono"><code>npm i</code></div>;"#), vec!["div:code-block"]);
+        assert_eq!(kind(r#"const A = () => <div className="fixed inset-0 rounded-none bg-black/50 p-4"><div>x</div></div>;"#), vec!["div:dialog"]);
+        assert_eq!(kind(r#"const A = () => <div className="rounded-xl bg-white p-6 shadow-sm"><h3>Saldo</h3><p>Rp1.250.000</p></div>;"#), vec!["div:card"]);
+        assert_eq!(kind(r#"const A = () => <button className="rounded-lg bg-blue-600 px-4 py-2 text-white">Simpan</button>;"#), vec!["button:button"]);
+        assert_eq!(kind(r#"const A = () => <input className="rounded-md border border-gray-300 px-3 py-2" />;"#), vec!["input:field"]);
+        // a box with only a text colour, or no radius, or no padding: layout, not a component copy
+        assert!(kind(r#"const A = () => <div className="rounded-lg p-4 text-gray-600"><p>x</p></div>;"#).is_empty());
+        assert!(kind(r#"const A = () => <div className="flex gap-4 bg-white p-4"><p>x</p></div>;"#).is_empty());
+    }
 
     fn tags(src: &str) -> Vec<String> {
         drag_without_keyboard(src, "tsx").into_iter().map(|d| format!("{}:{}", d.tag, d.via)).collect()
