@@ -1530,11 +1530,11 @@ export const RULES: Rule[] = [
       title: "Search before you create",
       level: "required",
       gate: "hard",
-      do: "Before adding a component, search existing components, tokens, and patterns; reuse, then extend with a variant, and create new only for a real semantic or behavioral difference.",
+      do: "Before adding a component, search existing components, tokens, and patterns; reuse, then extend with a variant, and create new only for a real semantic or behavioral difference. When the same control is written again across files and DESIGN.md has no Components choice, ask the user first, with the pros and cons of each: one component in code, a component with Storybook, or later; record the answer (ryux components --set) and build neither a component library nor Storybook without it.",
       dont: "Create a near-duplicate component or pattern for one screen, write the same styled control out again in each file instead of making it one component, or style a <button> or <input> by hand when the project has a Button or Input.",
       why: "Duplicates drift apart, multiply maintenance, and break consistency.",
       basis: "Design-system practice",
-      check: "for each new component or token, name the existing ones searched and why none fits; fails on a new one that duplicates an existing one; ryux scan (a folder, or each edited file in the hook) warns on a styled control written with the same classes 3+ times across 2+ files, and on a hand-styled <button>, <input>, <select>, or <textarea> that copies the project's Button, Input, Select, or Textarea",
+      check: "for each new component or token, name the existing ones searched and why none fits; fails on a new one that duplicates an existing one; ryux scan (a folder, or each edited file in the hook) warns on a styled control written with the same classes 3+ times across 2+ files (asking for the user's choice until DESIGN.md's Components field holds it; later keeps it quiet), and on a hand-styled <button>, <input>, <select>, or <textarea> that copies the project's Button, Input, Select, or Textarea",
     },
     {
       num: 2,

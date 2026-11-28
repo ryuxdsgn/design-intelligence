@@ -70,7 +70,20 @@ async function peersOf(edited: string[]): Promise<RawSource[]> {
   return out;
 }
 
-async function scanPaths(paths: string[], skip: Set<string>, design?: Direction, peers?: RawSource[]): Promise<{ files: number; findings: ScanFinding[]; sources: RawSource[] }> {
+/** The Components field of the project context in DESIGN.md (the app's own, else the working directory's): what the
+ *  user chose for controls written again. Undefined when no DESIGN.md has the field. */
+export function componentsChoice(near?: string): string | undefined {
+  const dirs = [...new Set([near ? appRoot(near) : process.cwd(), process.cwd()])];
+  for (const dir of dirs) {
+    const path = join(dir, "DESIGN.md");
+    if (!existsSync(path)) continue;
+    const line = readFileSync(path, "utf8").match(/^- \*\*Components\*\*:(.*)$/m);
+    if (line) return line[1].trim();
+  }
+  return undefined;
+}
+
+async function scanPaths(paths: string[], skip: Set<string>, design?: Direction, peers?: RawSource[], components = componentsChoice(paths[0])): Promise<{ files: number; findings: ScanFinding[]; sources: RawSource[] }> {
   const files: string[] = [];
   let folder = false;
   for (const p of paths) {
@@ -84,7 +97,14 @@ async function scanPaths(paths: string[], skip: Set<string>, design?: Direction,
     if (statSync(f).size > MAX_BYTES) continue;
     sources.push({ path: relative(process.cwd(), f) || f, raw: await readFile(f, "utf8") });
   }
-  return { files: sources.length, findings: scanReading(sources, { folder, skip, design, peers }, readOne), sources };
+  return { files: sources.length, findings: scanReading(sources, { folder, skip, design, peers, components }, readOne), sources };
+}
+
+/** The RX-DS-01 copy findings in a folder: each file's first copy of a control written again elsewhere. */
+export async function componentCopies(dir: string): Promise<{ files: number; copies: ScanFinding[] }> {
+  // read as undecided, so a project that chose "later" still sees what it put off
+  const { findings } = await scanPaths([dir], new Set(), undefined, undefined, "");
+  return { files: new Set(findings.filter((f) => f.rule === "RX-DS-01").map((f) => f.file)).size, copies: findings.filter((f) => f.rule === "RX-DS-01" && / is written \d+ times /.test(f.message)) };
 }
 
 const title = (id: string): string => RULES.find((r) => r.id === id)?.title ?? "";

@@ -633,6 +633,7 @@ const CONTEXT_FIELDS: ContextField[] = [
   { label: "What people do in it", hint: "(the three main things people do in the product)" },
   { label: "Numbers that may be shown", hint: "(a minimum, a fee, a limit; or none yet)" },
   { label: "Brand and design system", hint: "" },
+  { label: "Components", hint: "(extract, storybook, or later: what to do with a control written again in several files; the user chooses, ryux components asks)" },
   { label: "Product docs", hint: "paths RYUX reads for product facts, for example docs/prd.md:" },
   { label: "Evidence sources", hint: "RYUX MCP (early access, by key), Figma files, reference URLs:" },
   {
@@ -769,6 +770,62 @@ async function writeContext(root: string, answers: Record<string, string>): Prom
   }
   await upsertBlock(path, body, CONTEXT_MARKS);
   return body;
+}
+
+const COMPONENT_CHOICES = [
+  { value: "extract", label: "Make one component in code", hint: "one change reaches every place; the refactor touches each file with a copy, so check them after" },
+  { value: "storybook", label: "A component with Storybook", hint: "every variant and state on one page for review; Storybook to set up and keep up to date" },
+  { value: "later", label: "Later", hint: "nothing changes now; copies keep growing, and the scan stops warning (ryux components still lists them)" },
+] as const;
+
+/** Write the user's choice to the Components field of DESIGN.md's project context, with the date. */
+async function writeComponents(root: string, choice: string): Promise<string> {
+  const path = join(root, CONTEXT_FILE);
+  let body = contextBody(await readIfExists(path)) ?? contextBlock(root);
+  const line = fieldLine("Components", `${choice} (the user's choice, ${new Date().toISOString().slice(0, 10)})`);
+  if (fieldRe("Components").test(body)) body = body.replace(fieldRe("Components"), () => line);
+  else {
+    const anchor = body.match(fieldRe("Brand and design system"));
+    body = anchor ? body.replace(fieldRe("Brand and design system"), (m) => `${m}\n${line}`) : `${body}\n${line}`;
+  }
+  await upsertBlock(path, body, CONTEXT_MARKS);
+  return line;
+}
+
+/** `ryux components`: what to do with controls written again (RX-DS-01) is the user's call. Shows the copies the
+ *  scan found and asks: one component, a component with Storybook, or later; --set records an answer the user gave
+ *  the agent. Either way the choice goes to DESIGN.md, where the scan and the next agent read it. */
+async function runComponents(argv: string[]): Promise<void> {
+  const root = process.cwd();
+  const at = argv.indexOf("--set");
+  if (at !== -1) {
+    const choice = argv[at + 1];
+    if (!COMPONENT_CHOICES.some((c) => c.value === choice)) {
+      console.error(`--set takes ${COMPONENT_CHOICES.map((c) => c.value).join(", ")}: the answer the user gave, not your own pick.`);
+      process.exitCode = 2;
+      return;
+    }
+    console.log(`${CONTEXT_FILE}: ${await writeComponents(root, choice)}`);
+    return;
+  }
+  const { componentCopies, componentsChoice } = await import("./scan.js");
+  const { files, copies } = await componentCopies(".");
+  const current = componentsChoice();
+  if (current && !current.startsWith("(")) console.log(`Current choice in ${CONTEXT_FILE}: ${current}`);
+  if (!copies.length) {
+    console.log("No control is written again across files here: nothing to decide yet.");
+    return;
+  }
+  console.log(`${copies.length} place${copies.length === 1 ? "" : "s"} in ${files} file${files === 1 ? "" : "s"} write a control again instead of using one component:`);
+  for (const f of copies.slice(0, 5)) console.log(pc.dim(`  ${f.file}:${f.line}  ${f.message.slice(0, f.message.indexOf(")") + 1)}`));
+  if (copies.length > 5) console.log(pc.dim(`  and ${copies.length - 5} more (ryux scan . lists them all)`));
+  if (!process.stdin.isTTY) {
+    console.log(`\nAsk the user to choose, then record it: ${CLI_CMD} components --set ${COMPONENT_CHOICES.map((c) => c.value).join("|")}`);
+    return;
+  }
+  const v = await p.select({ message: "What should happen to them?", options: COMPONENT_CHOICES.map((c) => ({ value: c.value, label: c.label, hint: c.hint })) });
+  if (p.isCancel(v)) return;
+  console.log(`${CONTEXT_FILE}: ${await writeComponents(root, String(v))}`);
 }
 
 /** The text box hint: an example answer, and that an empty Enter skips. */
@@ -1001,6 +1058,8 @@ Commands:
   synthesize check [synthesis.md]
               Check a research synthesis against its raw data: every quote word for word in that
               participant's file, every "n of N" counted right, no one outside the Data table. Local only.
+  components  Show controls written again across files, and ask what to do: one component, a component
+              with Storybook, or later; the choice goes to DESIGN.md. --set records the user's answer.
   pick        Open an HTML page (e.g. a directions page) in the browser and wait for a click;
               print the chosen number. Used by the Design step to pick a direction without copy-paste.
   update      Update an install to this version (also migrates RYUX 1.x folders).
@@ -1085,6 +1144,8 @@ async function main(): Promise<void> {
       return runScan(argv.slice(1));
     case "pick":
       return runPick(argv.slice(1));
+    case "components":
+      return runComponents(argv.slice(1));
     case "audit":
       return runAudit(argv.slice(1));
     case "directions":

@@ -51,6 +51,8 @@ pub struct Ctx<'a> {
     pub reduced_transparency: Option<bool>,
     pub growing_textarea: Option<bool>,
     pub design: Option<Direction>,
+    /// What the user chose for controls written again: Some("extract" | "storybook" | "later"), None when undecided.
+    components: Option<&'static str>,
     /// Every file the scan was given, scanned or context only, by its normalized path.
     files: HashMap<String, &'a Source>,
     /// The styled controls and Button fills across the folder (RX-DS-01), read once.
@@ -125,16 +127,38 @@ fn file_name(p: &str) -> &str {
     p.rsplit('/').next().unwrap_or(p)
 }
 
-/// The same styled control written out again in several files instead of one component.
+/// The user's choice in DESIGN.md's Components field, by its first word: extract (one component in code),
+/// storybook (a component with its stories), or later; anything else is undecided.
+fn decision(value: &str) -> Option<&'static str> {
+    let first = value.trim().trim_start_matches(['`', '*', '_']).split(|c: char| !c.is_ascii_alphabetic()).next()?.to_ascii_lowercase();
+    match first.as_str() {
+        "extract" => Some("extract"),
+        "storybook" => Some("storybook"),
+        "later" => Some("later"),
+        _ => None,
+    }
+}
+
+/// The same styled control written out again in several files instead of one component. What to do about it is
+/// the user's call (a refactor, perhaps Storybook): until DESIGN.md records it, the finding asks for that choice;
+/// "later" keeps the scan quiet (`ryux components` still lists the copies).
 fn rule_ds01_copies(s: &Source, c: &Ctx) -> Vec<Hit> {
     let Some(list) = copies(c).repeated.get(&norm(&s.path)) else { return Vec::new() };
+    if c.components == Some("later") {
+        return Vec::new();
+    }
     list.iter().map(|(at, tag, n, files, others)| {
         // a file name, or the path when another file in the list has the same name (two Dashboard.tsx)
         let here = norm(&s.path);
         let names: Vec<&str> = others.iter().map(|o| file_name(o)).chain([file_name(&here)]).collect();
         let shown: Vec<&str> = others.iter().take(3).map(|o| if names.iter().filter(|n| **n == file_name(o)).count() > 1 { o.as_str() } else { file_name(o) }).collect();
         let more = if others.len() > 3 { format!(" and {} more", others.len() - 3) } else { String::new() };
-        hit(*at, format!("this <{tag}> is written {n} times with the same classes in {files} files (also {}{more}): make it one component and use it in each place, so a change to its look or states happens once", shown.join(", ")))
+        let found = format!("this <{tag}> is written {n} times with the same classes in {files} files (also {}{more})", shown.join(", "));
+        match c.components {
+            Some("extract") => hit(*at, format!("{found}: make it one component and use it in each place, so a change to its look or states happens once (DESIGN.md: Components: extract)")),
+            Some("storybook") => hit(*at, format!("{found}: make it one component with a story for each state, and use it in each place (DESIGN.md: Components: storybook)")),
+            _ => hit(*at, format!("{found}. Before changing it, ask the user to choose, with the pros and cons of each: one component in code (one change reaches every place; the refactor touches these files), a component with Storybook (every state visible for review; Storybook to set up and keep), or later (nothing changes now; the copies keep growing). Record the answer with `ryux components --set extract|storybook|later`, or let the user run `ryux components`")),
+        }
     }).collect()
 }
 
@@ -1448,6 +1472,9 @@ pub struct ScanOptions {
     pub folder: bool,
     pub skip: HashSet<String>,
     pub design: Option<Direction>,
+    /// The Components field of DESIGN.md's project context, as written: what the user chose to do with controls
+    /// written again (RX-DS-01): extract, storybook, or later.
+    pub components: Option<String>,
     /// Files the checks may consult but do not report on: the scripts a page loads, the modules a component
     /// comes from (see `references`).
     pub context: Vec<Source>,
@@ -1513,6 +1540,7 @@ fn run(sources: &[Source], opts: ScanOptions, detectors: &[Detector]) -> Vec<Val
             reduced_transparency: Some(sources.iter().any(|s| re(r"prefers-reduced-transparency|prefers-contrast|contrast-more:|useReducedTransparency", "").test(&s.text))),
             growing_textarea: Some(sources.iter().any(|s| re(GROWS, "").test(&s.text))),
             design: None,
+            components: None,
             files: HashMap::new(),
             copies: Default::default(),
         }
@@ -1520,6 +1548,7 @@ fn run(sources: &[Source], opts: ScanOptions, detectors: &[Detector]) -> Vec<Val
         Ctx::default()
     };
     ctx.design = opts.design;
+    ctx.components = opts.components.as_deref().and_then(decision);
     ctx.files = files;
     let mut out: Vec<(usize, usize, usize, Value)> = Vec::new();
     for (si, src) in sources.iter().enumerate() {
@@ -1561,7 +1590,7 @@ mod tests {
 
     /// The findings of one rule in one file whose message says `says`, as "line:column".
     fn found(path: &str, raw: &str, rule: &str, says: &str) -> Vec<String> {
-        let opts = ScanOptions { folder: false, skip: HashSet::new(), design: None, context: Vec::new() };
+        let opts = ScanOptions { folder: false, skip: HashSet::new(), design: None, components: None, context: Vec::new() };
         scan_sources(&[to_source(path, raw)], opts)
             .into_iter()
             .filter(|f| f["rule"] == rule && f["message"].as_str().unwrap().contains(says))
@@ -1623,7 +1652,7 @@ mod tests {
         assert!(found("a.tsx", r#"<button className="hover:bg-zinc-50">A</button>"#, "RX-UI-11", "motion").is_empty());
         assert!(found("a.html", "<script>panel.hidden = !panel.hidden</script>", "RX-UI-11", "motion").is_empty());
         // notes carry level note, never warn or fail
-        let opts = ScanOptions { folder: false, skip: HashSet::new(), design: None, context: Vec::new() };
+        let opts = ScanOptions { folder: false, skip: HashSet::new(), design: None, components: None, context: Vec::new() };
         let all = scan_sources(&[to_source("a.tsx", "export function A() { return <div>{open && <ul/>}</div> }")], opts);
         assert!(all.iter().filter(|f| f["rule"] == "RX-UI-11").all(|f| f["level"] == "note"));
     }
@@ -1794,7 +1823,7 @@ mod tests {
 
     /// The findings of one rule in one file, with other files the scan may consult but does not report.
     fn found_with(path: &str, raw: &str, context: &[(&str, &str)], rule: &str, says: &str) -> Vec<String> {
-        let opts = ScanOptions { folder: false, skip: HashSet::new(), design: None, context: context.iter().map(|(p, r)| to_source(p, r)).collect() };
+        let opts = ScanOptions { folder: false, skip: HashSet::new(), design: None, components: None, context: context.iter().map(|(p, r)| to_source(p, r)).collect() };
         scan_sources(&[to_source(path, raw)], opts)
             .into_iter()
             .filter(|f| f["rule"] == rule && f["message"].as_str().unwrap().contains(says))
@@ -1807,7 +1836,7 @@ mod tests {
     }
 
     fn dialog_says(path: &str, raw: &str, context: &[(&str, &str)]) -> Vec<String> {
-        let opts = ScanOptions { folder: false, skip: HashSet::new(), design: None, context: context.iter().map(|(p, r)| to_source(p, r)).collect() };
+        let opts = ScanOptions { folder: false, skip: HashSet::new(), design: None, components: None, context: context.iter().map(|(p, r)| to_source(p, r)).collect() };
         scan_sources(&[to_source(path, raw)], opts)
             .into_iter()
             .filter(|f| f["rule"] == "RX-A11Y-03" && f["message"].as_str().unwrap().contains("modal dialog"))
@@ -1976,7 +2005,7 @@ mod tests {
         assert_eq!(says("a.tsx", "<section aria-label=\"Checkout\"><input aria-label=\"Nama\" /><label><input type=\"radio\" name=\"pay\" /> QRIS</label><label><input type=\"radio\" name=\"pay\" /> VA</label></section>"), vec!["1:66"]);
         assert_eq!(says("a.html", "<main aria-label=\"Checkout\"><input aria-label=\"Nama\"><label><input type=radio name=pay> QRIS</label><label><input type=radio name=pay> VA</label></main>"), vec!["1:61"]);
         // one line per file, saying how many groups it has
-        let opts = ScanOptions { folder: false, skip: HashSet::new(), design: None, context: Vec::new() };
+        let opts = ScanOptions { folder: false, skip: HashSet::new(), design: None, components: None, context: Vec::new() };
         let two = "<><label><input type=\"radio\" name=\"a\" />1</label><label><input type=\"radio\" name=\"a\" />2</label><label><input type=\"radio\" name=\"b\" />1</label><label><input type=\"radio\" name=\"b\" />2</label></>";
         let m: Vec<String> = scan_sources(&[to_source("a.tsx", two)], opts).into_iter().filter(|f| f["rule"] == "RX-A11Y-04").map(|f| f["message"].as_str().unwrap().to_string()).collect();
         assert_eq!(m.len(), 1);
@@ -2120,7 +2149,7 @@ mod tests {
         assert!(says("a.html", "<div id=c role=alertdialog>x</div><script>c.querySelector('button').focus()</script>").is_empty());
         // a script the scan cannot read may move it
         assert!(says("a.html", "<div role=alertdialog>x</div><script src=\"https://cdn.example.com/a.js\"></script>").is_empty());
-        let opts = ScanOptions { folder: false, skip: HashSet::new(), design: None, context: Vec::new() };
+        let opts = ScanOptions { folder: false, skip: HashSet::new(), design: None, components: None, context: Vec::new() };
         let messages: Vec<String> = scan_sources(&[to_source("a.tsx", "<div role=\"alertdialog\">x</div>")], opts)
             .into_iter()
             .filter(|f| f["rule"] == "RX-A11Y-03")
@@ -2283,7 +2312,7 @@ mod tests {
     fn ryux_ignore_skips_only_the_rules_it_names() {
         let price = "<p>Rp 10.000,00 <img src=\"a.png\" /></p>";
         let rules = |raw: &str| -> Vec<String> {
-            let opts = ScanOptions { folder: false, skip: HashSet::new(), design: None, context: Vec::new() };
+            let opts = ScanOptions { folder: false, skip: HashSet::new(), design: None, components: None, context: Vec::new() };
             let mut r: Vec<String> = scan_sources(&[to_source("a.tsx", raw)], opts).into_iter().map(|f| f["rule"].as_str().unwrap().to_string()).collect();
             r.dedup();
             r
@@ -2338,7 +2367,7 @@ mod tests {
     /// RX-DS-01 findings over a folder, as "file:line message-start".
     fn ds01(files: &[(&str, &str)]) -> Vec<String> {
         let sources: Vec<Source> = files.iter().map(|(p, r)| to_source(p, r)).collect();
-        let opts = ScanOptions { folder: true, skip: HashSet::new(), design: None, context: Vec::new() };
+        let opts = ScanOptions { folder: true, skip: HashSet::new(), design: None, components: None, context: Vec::new() };
         scan_syntax(&sources, opts).into_iter().filter(|f| f["rule"] == "RX-DS-01").map(|f| format!("{}:{} {}", f["file"].as_str().unwrap(), f["line"], &f["message"].as_str().unwrap()[..24])).collect()
     }
 
@@ -2381,7 +2410,7 @@ export function Button(props) { return <button className={cn(buttonVariants())} 
     /// RX-DS-01 findings for files scanned on their own, with the rest of the project as context (the edit hook).
     fn ds01_edited(edited: &[(&str, &str)], project: &[(&str, &str)]) -> Vec<String> {
         let sources: Vec<Source> = edited.iter().map(|(p, r)| to_source(p, r)).collect();
-        let opts = ScanOptions { folder: false, skip: HashSet::new(), design: None, context: project.iter().map(|(p, r)| to_source(p, r)).collect() };
+        let opts = ScanOptions { folder: false, skip: HashSet::new(), design: None, components: None, context: project.iter().map(|(p, r)| to_source(p, r)).collect() };
         scan_syntax(&sources, opts).into_iter().filter(|f| f["rule"] == "RX-DS-01").map(|f| format!("{}:{} {}", f["file"].as_str().unwrap(), f["line"], &f["message"].as_str().unwrap()[..24])).collect()
     }
 
@@ -2413,5 +2442,27 @@ export { Input };"#;
         assert_eq!(ds01_edited(&[("src/Page.jsx", page)], &[("src/Button.jsx", comp)]), vec!["src/Page.jsx:1 a <button> styled by han"]);
         // with nothing else to compare against, a lone file is quiet
         assert!(ds01_edited(&[("src/b.tsx", &a)], &[]).is_empty());
+    }
+
+    #[test]
+    fn ds01_copies_follow_the_users_choice() {
+        let btn = r#"<button className="rounded-lg bg-lime-300 px-4 py-2 text-slate-900">Save</button>"#;
+        let a = format!("export const A = () => <div>{btn}{btn}</div>;");
+        let b = format!("export const B = () => <form>{btn}</form>;");
+        let with = |components: Option<&str>| {
+            let sources = vec![to_source("src/a.tsx", &a), to_source("src/b.tsx", &b)];
+            let opts = ScanOptions { folder: true, skip: HashSet::new(), design: None, components: components.map(String::from), context: Vec::new() };
+            scan_syntax(&sources, opts).into_iter().filter(|f| f["rule"] == "RX-DS-01").map(|f| (f["level"].as_str().unwrap().to_string(), f["message"].as_str().unwrap().to_string())).collect::<Vec<_>>()
+        };
+        // undecided: ask the user, with the three options
+        let (level, msg) = &with(None)[0];
+        assert_eq!(level, "warn");
+        assert!(msg.contains("ask the user to choose") && msg.contains("Storybook") && msg.contains("ryux components --set"), "{msg}");
+        assert!(with(Some("extract"))[0].1.ends_with("(DESIGN.md: Components: extract)"));
+        assert!(with(Some("Storybook (the user's choice, 2026-11-28)"))[0].1.contains("a story for each state"));
+        // later: the scan stays quiet
+        assert!(with(Some("later")).is_empty());
+        // a field still holding its hint is undecided
+        assert!(with(Some("(extract, storybook, or later)"))[0].1.contains("ask the user"));
     }
 }

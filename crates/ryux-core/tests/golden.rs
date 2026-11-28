@@ -112,7 +112,7 @@ pub fn run_scan(input: &Value) -> Value {
     use ryux_core::scan::{scan_sources, to_source, ScanOptions};
     let sources: Vec<_> = input["sources"].as_array().unwrap().iter().map(|s| to_source(s["path"].as_str().unwrap(), s["raw"].as_str().unwrap())).collect();
     let skip = input["skip"].as_array().map(|a| a.iter().filter_map(|x| x.as_str().map(String::from)).collect()).unwrap_or_default();
-    let opts = ScanOptions { folder: input["folder"].as_bool().unwrap_or(false), skip, design: Direction::from_json(&input["design"]), context: input["context"].as_array().map_or(Vec::new(), |a| a.iter().map(|x| to_source(x["path"].as_str().unwrap_or(""), x["raw"].as_str().unwrap_or(""))).collect()) };
+    let opts = ScanOptions { folder: input["folder"].as_bool().unwrap_or(false), skip, design: Direction::from_json(&input["design"]), components: input["components"].as_str().map(String::from), context: input["context"].as_array().map_or(Vec::new(), |a| a.iter().map(|x| to_source(x["path"].as_str().unwrap_or(""), x["raw"].as_str().unwrap_or(""))).collect()) };
     Value::Array(scan_sources(&sources, opts))
 }
 
