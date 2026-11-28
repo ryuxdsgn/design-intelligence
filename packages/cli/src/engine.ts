@@ -48,6 +48,9 @@ export interface ScanOpts {
   design?: Direction;
   /** Files the checks may consult but do not report on: what `references` names, read from disk. */
   context?: RawSource[];
+  /** The project's other .jsx and .tsx files, for the syntax checks that compare across files (RX-DS-01 copies and
+   *  bypassed components) when one edited file is scanned. Read, never reported. */
+  peers?: RawSource[];
 }
 
 const input = (sources: RawSource[], opts: ScanOpts, wants = false): string =>
@@ -65,7 +68,7 @@ export function scanShared(sources: RawSource[], opts: ScanOpts): ScanFinding[] 
 export function scanSyntax(sources: RawSource[], opts: ScanOpts): ScanFinding[] {
   const jsx = sources.filter((s) => /\.(?:jsx|tsx|js|mjs|cjs|ts|mts|cts)$/i.test(s.path) && !/\.d\.ts$/i.test(s.path));
   if (!jsx.length) return [];
-  return answer<ScanFinding[]>(rust().syntaxScan(input(jsx, opts)));
+  return answer<ScanFinding[]>(rust().syntaxScan(input(jsx, { ...opts, context: [...(opts.context ?? []), ...(opts.peers ?? [])] })));
 }
 
 /** Every source check: the source detectors and the syntax checks, ordered by file, then line and column. */

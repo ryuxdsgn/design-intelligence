@@ -63,10 +63,10 @@ pub struct Ctx<'a> {
 struct Copies {
     /// Per file: (offset, tag, classes key, group size, files in the group, the other files).
     repeated: HashMap<String, Vec<(usize, String, usize, usize, Vec<String>)>>,
-    /// Per file: its styled <button>s, (offset, classes).
-    buttons: HashMap<String, Vec<(usize, Vec<String>)>>,
-    /// (component file, fill) for each file that defines Button.
-    fills: Vec<(String, String)>,
+    /// Per file: its styled form controls (button, input, select, textarea), (offset, tag, classes).
+    natives: HashMap<String, Vec<(usize, String, Vec<String>)>>,
+    /// (component file, signature) for each form component a file defines.
+    signatures: Vec<(String, crate::jsx::Signature)>,
 }
 
 /// A file directly in a component library folder (components/ui/button.tsx, primitives/x.tsx), or a test or story: where a control is the component
@@ -91,15 +91,15 @@ fn copies<'c>(c: &'c Ctx) -> &'c Copies {
             if !jsx(&s.ext) {
                 continue;
             }
-            if let Some(fill) = crate::jsx::button_fill(path, &s.raw) {
-                out.fills.push((path.clone(), fill));
+            for sig in crate::jsx::signatures(path, &s.raw) {
+                out.signatures.push((path.clone(), sig));
             }
             if library_file(path) {
                 continue;
             }
             for ctl in crate::jsx::styled_controls(&s.raw, &s.ext) {
-                if ctl.tag == "button" {
-                    out.buttons.entry(path.clone()).or_default().push((ctl.index, ctl.classes.clone()));
+                if matches!(ctl.tag.as_str(), "button" | "input" | "select" | "textarea") {
+                    out.natives.entry(path.clone()).or_default().push((ctl.index, ctl.tag.clone(), ctl.classes.clone()));
                 }
                 groups.entry((package_of(path), ctl.tag.clone(), ctl.classes.join(" "))).or_default().push((path.clone(), ctl.index));
             }
@@ -129,21 +129,32 @@ fn file_name(p: &str) -> &str {
 fn rule_ds01_copies(s: &Source, c: &Ctx) -> Vec<Hit> {
     let Some(list) = copies(c).repeated.get(&norm(&s.path)) else { return Vec::new() };
     list.iter().map(|(at, tag, n, files, others)| {
-        let shown: Vec<&str> = others.iter().take(3).map(|o| file_name(o)).collect();
+        // a file name, or the path when another file in the list has the same name (two Dashboard.tsx)
+        let here = norm(&s.path);
+        let names: Vec<&str> = others.iter().map(|o| file_name(o)).chain([file_name(&here)]).collect();
+        let shown: Vec<&str> = others.iter().take(3).map(|o| if names.iter().filter(|n| **n == file_name(o)).count() > 1 { o.as_str() } else { file_name(o) }).collect();
         let more = if others.len() > 3 { format!(" and {} more", others.len() - 3) } else { String::new() };
         hit(*at, format!("this <{tag}> is written {n} times with the same classes in {files} files (also {}{more}): make it one component and use it in each place, so a change to its look or states happens once", shown.join(", ")))
     }).collect()
 }
 
-/// A <button> styled by hand with the fill of the project's Button component.
+/// A native form control styled by hand with the class that marks the project's own component for it: a <button>
+/// with Button's fill, an <input> with Input's border.
 fn rule_ds01_bypass(s: &Source, c: &Ctx) -> Vec<Hit> {
     let cp = copies(c);
     let path = norm(&s.path);
-    let Some(buttons) = cp.buttons.get(&path) else { return Vec::new() };
-    let fills: Vec<&(String, String)> = cp.fills.iter().filter(|(f, fill)| *f != path && fill != "bg-transparent" && package_of(f) == package_of(&path)).collect();
-    buttons.iter().filter_map(|(at, classes)| {
-        let (comp, fill) = fills.iter().find(|(_, fill)| classes.iter().any(|c| c == fill))?;
-        Some(hit(*at, format!("a <button> styled by hand with the Button component's fill ({fill}): use Button from {} so its states, sizes, and focus ring stay the same everywhere", file_name(comp))))
+    let Some(natives) = cp.natives.get(&path) else { return Vec::new() };
+    let mine: Vec<&(String, crate::jsx::Signature)> = cp.signatures.iter().filter(|(f, _)| *f != path && package_of(f) == package_of(&path)).collect();
+    natives.iter().filter_map(|(at, tag, classes)| {
+        let button = tag == "button";
+        let (comp, sig) = mine.iter().find(|(_, sig)| sig.tag == tag && (!button || classes.iter().any(|c| *c == sig.class)))?;
+        let article = if tag == "input" { "an" } else { "a" };
+        let (name, from) = (sig.component, file_name(comp));
+        Some(hit(*at, if button {
+            format!("a <button> styled by hand with the Button component's fill ({}): use Button from {from} so its states, sizes, and focus ring stay the same everywhere", sig.class)
+        } else {
+            format!("{article} <{tag}> styled by hand while the project has {name} ({from}): use {name}, with a className for what differs, so its border, focus ring, and error state stay the same everywhere")
+        }))
     }).collect()
 }
 
@@ -1483,8 +1494,8 @@ fn syntax_detectors() -> &'static [Detector] {
         Detector { rule: "RX-FE-05", level: "warn", exts: script_or_jsx, folder: false, find: rule_fe05_catch },
         Detector { rule: "RX-FE-07", level: "warn", exts: script_or_jsx, folder: false, find: rule_fe07_code },
         Detector { rule: "RX-FE-13", level: "warn", exts: script_or_jsx, folder: false, find: rule_fe13_effect },
-        Detector { rule: "RX-DS-01", level: "warn", exts: jsx, folder: true, find: rule_ds01_copies },
-        Detector { rule: "RX-DS-01", level: "warn", exts: jsx, folder: true, find: rule_ds01_bypass },
+        Detector { rule: "RX-DS-01", level: "warn", exts: jsx, folder: false, find: rule_ds01_copies },
+        Detector { rule: "RX-DS-01", level: "warn", exts: jsx, folder: false, find: rule_ds01_bypass },
     ];
     D
 }
@@ -2365,5 +2376,42 @@ export function Button(props) { return <button className={cn(buttonVariants())} 
         assert_eq!(ds01(&[("src/Button.jsx", own), ("src/Page.jsx", page2)]), vec!["src/Page.jsx:1 a <button> styled by han"]);
         // no Button component: nothing to bypass
         assert!(ds01(&[("app/page.tsx", page)]).is_empty());
+    }
+
+    /// RX-DS-01 findings for files scanned on their own, with the rest of the project as context (the edit hook).
+    fn ds01_edited(edited: &[(&str, &str)], project: &[(&str, &str)]) -> Vec<String> {
+        let sources: Vec<Source> = edited.iter().map(|(p, r)| to_source(p, r)).collect();
+        let opts = ScanOptions { folder: false, skip: HashSet::new(), design: None, context: project.iter().map(|(p, r)| to_source(p, r)).collect() };
+        scan_syntax(&sources, opts).into_iter().filter(|f| f["rule"] == "RX-DS-01").map(|f| format!("{}:{} {}", f["file"].as_str().unwrap(), f["line"], &f["message"].as_str().unwrap()[..24])).collect()
+    }
+
+    #[test]
+    fn ds01_input_border_written_by_hand() {
+        let comp = r#"const Input = React.forwardRef(({ className, ...props }, ref) => <input className={cn("flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1", className)} ref={ref} {...props} />);
+export { Input };"#;
+        let page = r#"export const P = () => <form><input className="w-full rounded-md border border-input px-3 py-2" /><Input /></form>;"#;
+        assert_eq!(ds01(&[("components/ui/input.tsx", comp), ("app/page.tsx", page)]), vec!["app/page.tsx:1 an <input> styled by han"]);
+        // its own colours do not make it a different control
+        let own = r#"export const P = () => <input className="rounded-full border border-slate-300 px-4 py-2" />;"#;
+        assert_eq!(ds01(&[("components/ui/input.tsx", comp), ("app/search.tsx", own)]), vec!["app/search.tsx:1 an <input> styled by han"]);
+        // unstyled or hidden inputs (a file picker, a checkbox) are not copies
+        let hidden = r#"export const P = () => <><input type="file" className="hidden" /><input type="checkbox" className="size-4" /></>;"#;
+        assert!(ds01(&[("components/ui/input.tsx", comp), ("app/upload.tsx", hidden)]).is_empty());
+        // no Input in the project: a styled input is not bypassing anything
+        assert!(ds01(&[("app/search.tsx", own)]).is_empty());
+    }
+
+    #[test]
+    fn ds01_edited_file_against_the_project() {
+        let btn = r#"<button className="rounded-lg bg-lime-300 px-4 py-2 text-slate-900">Save</button>"#;
+        let a = format!("export const A = () => <div>{btn}{btn}</div>;");
+        let b = format!("export const B = () => <form>{btn}</form>;");
+        // only the edited file is reported; the project files are read, not reported
+        assert_eq!(ds01_edited(&[("src/b.tsx", &b)], &[("src/a.tsx", &a)]), vec!["src/b.tsx:1 this <button> is written"]);
+        let comp = r#"export function Button({ children }) { return <button className="rounded-lg bg-blue-600 px-4 py-2 text-white">{children}</button>; }"#;
+        let page = r#"export const P = () => <button className="rounded-lg bg-blue-600 px-4 py-2 text-white">Buy</button>;"#;
+        assert_eq!(ds01_edited(&[("src/Page.jsx", page)], &[("src/Button.jsx", comp)]), vec!["src/Page.jsx:1 a <button> styled by han"]);
+        // with nothing else to compare against, a lone file is quiet
+        assert!(ds01_edited(&[("src/b.tsx", &a)], &[]).is_empty());
     }
 }

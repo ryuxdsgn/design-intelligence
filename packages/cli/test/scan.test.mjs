@@ -1060,3 +1060,24 @@ test("drift: scan --design reports what it read and what it could not check", ()
     rmSync(dir, { recursive: true, force: true });
   }
 });
+
+test("the edit hook checks the edited file against the other .jsx and .tsx files of its app (RX-DS-01)", () => {
+  const root = mkdtempSync(join(tmpdir(), "ryux-dup-"));
+  const app = join(root, "apps", "web");
+  mkdirSync(join(app, "src"), { recursive: true });
+  writeFileSync(join(app, "package.json"), "{}");
+  const btn = `<button className="rounded-lg bg-lime-300 px-4 py-2 text-slate-900">Save</button>`;
+  writeFileSync(join(app, "src", "a.tsx"), `export const A = () => <div>${btn}${btn}</div>;\n`);
+  writeFileSync(join(app, "src", "b.tsx"), `export const B = () => <form>${btn}</form>;\n`);
+  // another app with the same button is a different app: not counted
+  mkdirSync(join(root, "apps", "admin"), { recursive: true });
+  writeFileSync(join(root, "apps", "admin", "package.json"), "{}");
+  writeFileSync(join(root, "apps", "admin", "c.tsx"), `export const C = () => <>${btn}${btn}${btn}</>;\n`);
+  const edited = (file) => run(root, ["scan", "--hook"], JSON.stringify({ tool_input: { file_path: file } }));
+  const b = edited(join(app, "src", "b.tsx"));
+  assert.equal(b.code, 2);
+  assert.match(b.out, /apps\/web\/src\/b\.tsx:1:\d+ RX-DS-01 this <button> is written 3 times with the same classes in 2 files \(also a\.tsx\)/);
+  assert.doesNotMatch(b.out, /a\.tsx:1:\d+ RX-DS-01/, "only the edited file is reported");
+  assert.doesNotMatch(edited(join(root, "apps", "admin", "c.tsx")).out, /RX-DS-01/, "one file in its app has nothing to copy from");
+  rmSync(root, { recursive: true, force: true });
+});

@@ -87,6 +87,8 @@ pub struct Control {
 struct Controls<'s> {
     src: &'s str,
     found: Vec<Control>,
+    /// Keep controls with any class text, not only the styled ones (a component's own element).
+    all: bool,
 }
 
 /// The static class text of a className: "a b", {`a ${x} b`} (the fixed parts), or {cn("a", x && "b")} (the string
@@ -130,7 +132,7 @@ impl<'a> Visit<'a> for Controls<'_> {
                     let mut classes: Vec<String> = text.split_whitespace().map(str::to_string).collect();
                     classes.sort();
                     classes.dedup();
-                    if styled(&classes) {
+                    if self.all || styled(&classes) {
                         self.found.push(Control { index: u16_at(self.src, el.span().start as usize), tag: tag.to_string(), classes });
                     }
                 }
@@ -145,11 +147,14 @@ pub fn bare(c: &str) -> &str {
     c.rsplit(':').next().unwrap_or(c)
 }
 
+/// A colour value in a utility class: a hex, a palette step (slate-900), or a theme token (primary, input, ring).
+const COLOUR_VALUE: &str = r"(?:\[#[0-9a-fA-F]{3,8}\]|(?:primary|secondary|accent|destructive|muted|foreground|background|input|ring|card|popover|border|white|black|[a-z]+-\d{2,3})(?:-foreground)?(?:/\d+)?)";
+
 /// Utility classes that make a control look like one on their own: a colour (background, text, or border), a
 /// corner radius, and padding. A semantic class (btn-primary) is already reuse, and is not counted.
 fn styled(classes: &[String]) -> bool {
     thread_local! {
-        static COLOUR: regex::Regex = regex::Regex::new(r"^(?:bg|text|border)-(?:\[#[0-9a-fA-F]{3,8}\]|(?:primary|secondary|accent|destructive|muted|foreground|background|white|black|[a-z]+-\d{2,3})(?:-foreground)?(?:/\d+)?)$").unwrap();
+        static COLOUR: regex::Regex = regex::Regex::new(&format!(r"^(?:bg|text|border)-{COLOUR_VALUE}$")).unwrap();
         static PAD: regex::Regex = regex::Regex::new(r"^p[xytblrse]?-").unwrap();
     }
     let has = |f: &dyn Fn(&str) -> bool| classes.iter().any(|c| f(bare(c)));
@@ -159,33 +164,67 @@ fn styled(classes: &[String]) -> bool {
 /// The native controls (button, a, input, select, textarea) in a .jsx or .tsx file styled in place with utility
 /// classes: a colour, a radius, and padding. A file that does not parse gives what the parser could still read.
 pub fn styled_controls(raw: &str, ext: &str) -> Vec<Control> {
+    controls(raw, ext, false)
+}
+
+fn controls(raw: &str, ext: &str, all: bool) -> Vec<Control> {
     let alloc = Allocator::default();
     let kind = if ext == "tsx" { SourceType::tsx() } else { SourceType::jsx() };
     let ret = Parser::new(&alloc, raw, kind).parse();
-    let mut f = Controls { src: raw, found: Vec::new() };
+    let mut f = Controls { src: raw, found: Vec::new(), all };
     f.visit_program(&ret.program);
     f.found
 }
 
-/// The fill of a file's Button component when the file defines one (export function Button, export const Button,
-/// or a button.tsx): the default variant's background in a cva() or variants table, else the first background
-/// class on its <button>. Hover and other variant states are not the fill.
-pub fn button_fill(path: &str, raw: &str) -> Option<String> {
+/// A form component a project defines, and the class that marks its look: Button's fill, Input's border.
+pub struct Signature {
+    /// The component's name (Button, Input, Select, Textarea).
+    pub component: &'static str,
+    /// The native element it renders.
+    pub tag: &'static str,
+    /// The class that marks its look; empty when its element has none (an Input styled by a variable).
+    pub class: String,
+}
+
+/// The form components a file defines (export function Input, export const Button, const Textarea = forwardRef,
+/// or a file named button.tsx, input.tsx), each with the class that marks its look: the default variant's
+/// background in a cva() or variants table for Button, else the first background or border colour on its own
+/// element. Hover and other states are not the look; white, black, and transparent are too common to mark one.
+pub fn signatures(path: &str, raw: &str) -> Vec<Signature> {
+    const KINDS: [(&str, &str); 4] = [("Button", "button"), ("Input", "input"), ("Select", "select"), ("Textarea", "textarea")];
     thread_local! {
-        static DEFINES: regex::Regex = regex::Regex::new(r"\bexport\s+(?:default\s+)?(?:const|function)\s+Button\b|\bconst\s+Button\s*=\s*(?:React\.)?forwardRef").unwrap();
         static DEFAULT: regex::Regex = regex::Regex::new(r#"\bdefault\s*:\s*["'`]([^"'`]*)["'`]"#).unwrap();
-        static BG: regex::Regex = regex::Regex::new(r"^bg-[a-z\[#]").unwrap();
+        static MARK: regex::Regex = regex::Regex::new(&format!(r"^(?:bg|border)-{COLOUR_VALUE}$")).unwrap();
     }
     let file = path.rsplit('/').next().unwrap_or(path).to_lowercase();
-    if !(file.starts_with("button.") || DEFINES.with(|r| r.is_match(raw))) {
-        return None;
-    }
-    let first_bg = |text: &str| text.split_whitespace().find(|c| !c.contains(':') && BG.with(|r| r.is_match(c))).map(str::to_string);
-    if let Some(fill) = DEFAULT.with(|r| r.captures_iter(raw).find_map(|m| first_bg(&m[1]))) {
-        return Some(fill);
-    }
     let ext = if file.ends_with(".tsx") { "tsx" } else { "jsx" };
-    styled_controls(raw, ext).into_iter().filter(|c| c.tag == "button").find_map(|c| first_bg(&c.classes.join(" ")))
+    let mut own: Option<Vec<Control>> = None;
+    let mut out = Vec::new();
+    for (component, tag) in KINDS {
+        let defines = regex::Regex::new(&format!(r"\bexport\s+(?:default\s+)?(?:const|function)\s+{component}\b|\bconst\s+{component}\s*=\s*(?:React\.)?forwardRef")).unwrap();
+        if !(file.starts_with(&format!("{}.", tag)) || defines.is_match(raw)) {
+            continue;
+        }
+        let bg_only = tag == "button";
+        let mark = |text: &str| {
+            text.split_whitespace()
+                .filter(|c| !c.contains(':') && MARK.with(|r| r.is_match(c)) && (!bg_only || c.starts_with("bg-")))
+                .find(|c| !matches!(c.split_once('-').map(|x| x.1).unwrap_or(""), "white" | "black" | "background" | "transparent"))
+                .map(str::to_string)
+        };
+        let from_default = if bg_only { DEFAULT.with(|r| r.captures_iter(raw).find_map(|m| mark(&m[1]))) } else { None };
+        let class = from_default.or_else(|| {
+            own.get_or_insert_with(|| controls(raw, ext, true)).iter().filter(|c| c.tag == tag).find_map(|c| mark(&c.classes.join(" ")))
+        });
+        // a Button is known by its fill (raw chips and toolbar buttons are fine); any styled input, select, or
+        // textarea beside an Input, Select, or Textarea is one written again, whatever its colours
+        match class {
+            Some(class) => out.push(Signature { component, tag, class }),
+            None if !bg_only => out.push(Signature { component, tag, class: String::new() }),
+            None => {}
+        }
+    }
+    out
 }
 
 /// A finding from the code checks: offset, rule, message.
