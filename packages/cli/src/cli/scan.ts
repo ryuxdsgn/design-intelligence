@@ -1,7 +1,7 @@
 // `ryux scan`: run the deterministic detectors (ryux-core, through ../engine.ts) over files and folders, measure rendered
 // pages given as URLs (./page-scan.ts), or check the file an agent just edited (--hook, fed by a
 // Claude Code PostToolUse hook on stdin).
-import { existsSync, readFileSync, statSync } from "node:fs";
+import { existsSync, readFileSync, realpathSync, statSync } from "node:fs";
 import { readFile, readdir } from "node:fs/promises";
 import { join, relative, resolve } from "node:path";
 import pc from "picocolors";
@@ -36,7 +36,41 @@ async function walk(dir: string, out: string[]): Promise<void> {
   }
 }
 
-async function scanPaths(paths: string[], skip: Set<string>, design?: Direction): Promise<{ files: number; findings: ScanFinding[]; sources: RawSource[] }> {
+const MAX_PEERS = 2000;
+
+/** The app an edited file belongs to: the nearest folder above it with a package.json, or the working directory. */
+function appRoot(file: string): string {
+  const cwd = process.cwd();
+  let dir = resolve(file, "..");
+  while (dir.startsWith(cwd)) {
+    if (existsSync(join(dir, "package.json"))) return dir;
+    const up = resolve(dir, "..");
+    if (up === dir) break;
+    dir = up;
+  }
+  return cwd;
+}
+
+/** The other .jsx and .tsx files in the apps the edited files belong to, so a hook scan of one file can see a
+ *  control copied from another file or a component it bypasses. At most MAX_PEERS files. */
+async function peersOf(edited: string[]): Promise<RawSource[]> {
+  const jsx = edited.filter((f) => /\.(?:jsx|tsx)$/i.test(f));
+  if (!jsx.length) return [];
+  const mine = new Set(edited.map((f) => resolve(f)));
+  const out: RawSource[] = [];
+  for (const root of new Set(jsx.map(appRoot))) {
+    const files: string[] = [];
+    await walk(root, files);
+    for (const f of files) {
+      if (out.length >= MAX_PEERS) return out;
+      if (!/\.(?:jsx|tsx)$/i.test(f) || mine.has(resolve(f)) || statSync(f).size > MAX_BYTES) continue;
+      out.push({ path: relative(process.cwd(), f) || f, raw: await readFile(f, "utf8") });
+    }
+  }
+  return out;
+}
+
+async function scanPaths(paths: string[], skip: Set<string>, design?: Direction, peers?: RawSource[]): Promise<{ files: number; findings: ScanFinding[]; sources: RawSource[] }> {
   const files: string[] = [];
   let folder = false;
   for (const p of paths) {
@@ -50,7 +84,7 @@ async function scanPaths(paths: string[], skip: Set<string>, design?: Direction)
     if (statSync(f).size > MAX_BYTES) continue;
     sources.push({ path: relative(process.cwd(), f) || f, raw: await readFile(f, "utf8") });
   }
-  return { files: sources.length, findings: scanReading(sources, { folder, skip, design }, readOne), sources };
+  return { files: sources.length, findings: scanReading(sources, { folder, skip, design, peers }, readOne), sources };
 }
 
 const title = (id: string): string => RULES.find((r) => r.id === id)?.title ?? "";
@@ -172,9 +206,10 @@ export async function runScan(argv: string[]): Promise<void> {
 
   if (opts.hook) {
     // A hook must never block an edit by crashing: anything unexpected ends quietly with exit 0.
-    const files = (await hookFiles()).filter((f) => existsSync(f) && scannable(f));
+    // the real path, so a file named through a symlink (/var for /private/var) is the same file its app holds
+    const files = (await hookFiles()).filter((f) => existsSync(f) && scannable(f)).map((f) => realpathSync(f));
     if (!files.length) return;
-    const findings = (await scanPaths(files, skip, design)).findings.filter((f) => f.level !== "note");
+    const findings = (await scanPaths(files, skip, design, await peersOf(files))).findings.filter((f) => f.level !== "note");
     if (!findings.length) return;
     const message = `RYUX scan found ${findings.length} issue${findings.length === 1 ? "" : "s"} in the file${files.length === 1 ? "" : "s"} you just edited. Fix each fail; for each warn, fix it or add a ryux-ignore comment with the reason.\n${report(findings, files.length)}`;
     // Claude Code shows stderr to the agent on exit 2. Codex and Cursor read context from JSON on stdout

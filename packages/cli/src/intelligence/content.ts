@@ -1531,10 +1531,10 @@ export const RULES: Rule[] = [
       level: "required",
       gate: "hard",
       do: "Before adding a component, search existing components, tokens, and patterns; reuse, then extend with a variant, and create new only for a real semantic or behavioral difference.",
-      dont: "Create a near-duplicate component or pattern for one screen, write the same styled control out again in each file instead of making it one component, or style a <button> by hand when the project has a Button.",
+      dont: "Create a near-duplicate component or pattern for one screen, write the same styled control out again in each file instead of making it one component, or style a <button> or <input> by hand when the project has a Button or Input.",
       why: "Duplicates drift apart, multiply maintenance, and break consistency.",
       basis: "Design-system practice",
-      check: "for each new component or token, name the existing ones searched and why none fits; fails on a new one that duplicates an existing one; ryux scan on the folder warns on a styled control written with the same classes 3+ times across 2+ files, and on a hand-styled <button> with the Button component's fill",
+      check: "for each new component or token, name the existing ones searched and why none fits; fails on a new one that duplicates an existing one; ryux scan (a folder, or each edited file in the hook) warns on a styled control written with the same classes 3+ times across 2+ files, and on a hand-styled <button>, <input>, <select>, or <textarea> that copies the project's Button, Input, Select, or Textarea",
     },
     {
       num: 2,
