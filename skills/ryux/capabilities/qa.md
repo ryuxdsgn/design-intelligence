@@ -142,5 +142,6 @@ The intended design (Figma, pen.dev, DESIGN.md) is the reference; RYUX screens a
 - Do not: Hand off a primary flow with a dead end: a button that does nothing, a submit that never resolves, a step that cannot be reached, or an error with no way back.
 - Why: A broken primary action fails the one thing the screen exists for, whatever else is right. (Usability testing practice (task completion); owner review 2026-10-25: a broken main interaction belongs with the checks that cannot be argued)
 - Not when: static mockups with no interaction; then say the flow was not run and VISUAL QA is NOT VERIFIED
-- Check: run the primary task and one failure path in the render; fails on any dead end
+- Check: run the primary task and one failure path in the render; fails on any dead end; ryux scan warns on a <button> with no handler, no submit, and nothing around it that acts
+- Machine check: `ryux scan` flags in .jsx and .tsx: a <button> that does nothing when pressed: no onClick or other press or key handler, no type="submit" or "reset", no spread props, id, or ref a script could wire, not disabled, and no form, link, label, asChild trigger, or click handler around it; tests and stories skipped (warn)
 - Measured: `ryux scan <url>` flags script errors thrown while the page loads (warn)

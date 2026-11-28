@@ -3,7 +3,7 @@
 
 use crate::jsre::u16_at;
 use oxc_allocator::Allocator;
-use oxc_ast::ast::{JSXAttributeItem, JSXAttributeName, JSXElementName, JSXOpeningElement};
+use oxc_ast::ast::{JSXAttributeItem, JSXAttributeName, JSXAttributeValue, JSXChild, JSXElement, JSXElementName, JSXOpeningElement};
 use oxc_ast_visit::{walk, Visit};
 use oxc_parser::Parser;
 use oxc_span::{GetSpan, SourceType};
@@ -82,6 +82,11 @@ pub struct Control {
     pub index: usize,
     pub tag: String,
     pub classes: Vec<String>,
+    /// Its props other than className, key, ref, and style, as (name, value): `true` for a bare prop, `"text"` for a
+    /// string, `{…}` for an expression, and `{...spread}` for spread props.
+    pub attrs: Vec<(String, String)>,
+    /// What it holds: text, icon+text, icon, expression, or none.
+    pub content: &'static str,
 }
 
 struct Controls<'s> {
@@ -89,6 +94,123 @@ struct Controls<'s> {
     found: Vec<Control>,
     /// Keep controls with any class text, not only the styled ones (a component's own element).
     all: bool,
+    /// What the elements around the current one give a button: a form (it submits), a link or an asChild trigger
+    /// (the wrapper acts), or a click handler (the click reaches it).
+    around: Vec<bool>,
+    /// The <button>s that do nothing when pressed, by offset.
+    dead: Vec<usize>,
+}
+
+/// The name an element is written with: button, Link, Dialog.Trigger.
+fn element_name(n: &JSXElementName) -> String {
+    match n {
+        JSXElementName::Identifier(id) => id.name.to_string(),
+        JSXElementName::IdentifierReference(id) => id.name.to_string(),
+        JSXElementName::NamespacedName(x) => format!("{}:{}", x.namespace.name, x.name.name),
+        JSXElementName::MemberExpression(m) => format!("{}.{}", element_name_member(&m.object), m.property.name),
+        JSXElementName::ThisExpression(_) => "this".into(),
+    }
+}
+
+fn element_name_member(o: &oxc_ast::ast::JSXMemberExpressionObject) -> String {
+    use oxc_ast::ast::JSXMemberExpressionObject as O;
+    match o {
+        O::IdentifierReference(id) => id.name.to_string(),
+        O::MemberExpression(m) => format!("{}.{}", element_name_member(&m.object), m.property.name),
+        O::ThisExpression(_) => "this".into(),
+    }
+}
+
+/// An element's props as (name, value), className, key, ref, and style left out.
+fn attributes(el: &JSXOpeningElement) -> Vec<(String, String)> {
+    el.attributes.iter().filter_map(|a| match a {
+        JSXAttributeItem::SpreadAttribute(_) => Some(("{...spread}".to_string(), "{...spread}".to_string())),
+        JSXAttributeItem::Attribute(at) => {
+            let name = match &at.name {
+                JSXAttributeName::Identifier(n) => n.name.to_string(),
+                JSXAttributeName::NamespacedName(n) => format!("{}:{}", n.namespace.name, n.name.name),
+            };
+            if matches!(name.as_str(), "className" | "class" | "key" | "ref" | "style") {
+                return None;
+            }
+            let value = match &at.value {
+                None => "true".to_string(),
+                Some(JSXAttributeValue::StringLiteral(s)) => format!("\"{}\"", s.value.as_str().unwrap_or("")),
+                Some(_) => "{…}".to_string(),
+            };
+            Some((name, value))
+        }
+    }).collect()
+}
+
+/// What an element holds: an icon (a component, svg, or img) with text, an icon alone, text, an expression, or none.
+fn content_of(el: &JSXElement) -> &'static str {
+    let (mut text, mut icon, mut expr) = (false, false, false);
+    for c in &el.children {
+        match c {
+            JSXChild::Text(t) if !t.value.trim().is_empty() => text = true,
+            JSXChild::Element(e) => {
+                let n = element_name(&e.opening_element.name);
+                if n.starts_with(|c: char| c.is_ascii_uppercase()) || matches!(n.as_str(), "svg" | "img") { icon = true } else { text = true }
+            }
+            JSXChild::Fragment(_) => text = true,
+            JSXChild::ExpressionContainer(x) if !matches!(x.expression, oxc_ast::ast::JSXExpression::EmptyExpression(_)) => expr = true,
+            _ => {}
+        }
+    }
+    match (icon, text || expr) {
+        (true, true) => "icon+text",
+        (true, false) => "icon",
+        _ if text => "text",
+        _ if expr => "expression",
+        _ => "none",
+    }
+}
+
+/// Props that make a button do something itself, or hand its press to the page.
+/// A button that answers hover or focus (lights a pin, opens a preview) is wired too, even with nothing on press.
+const ACTS: [&str; 17] = ["onClick", "onMouseDown", "onMouseUp", "onPointerDown", "onPointerUp", "onTouchStart", "onTouchEnd", "onKeyDown", "onFocus", "onPointerEnter", "onMouseEnter", "onContextMenu", "onDoubleClick", "formAction", "form", "popoverTarget", "commandfor"];
+
+impl<'a> Visit<'a> for Controls<'_> {
+    fn visit_jsx_element(&mut self, it: &JSXElement<'a>) {
+        let el = &it.opening_element;
+        let tag = element_name(&el.name);
+        let attrs = attributes(el);
+        let has = |n: &str| attrs.iter().any(|(k, _)| k == n);
+        if tag == "button" {
+            let typed = attrs.iter().any(|(k, v)| k == "type" && (v == "\"submit\"" || v == "\"reset\"" || v == "{…}"));
+            // an id or a ref can get a listener from a script; a disabled button is not pressed
+            let wired = ACTS.iter().any(|a| has(a)) || has("{...spread}") || has("id") || has("disabled") || typed;
+            let ref_given = el.attributes.iter().any(|a| matches!(a, JSXAttributeItem::Attribute(at) if matches!(&at.name, JSXAttributeName::Identifier(n) if n.name == "ref")));
+            if !wired && !ref_given && !self.around.iter().any(|x| *x) {
+                self.dead.push(u16_at(self.src, el.span().start as usize));
+            }
+        }
+        if NATIVE.contains(&tag.as_str()) {
+            let class = el.attributes.iter().find_map(|a| match a {
+                JSXAttributeItem::Attribute(at) => match &at.name {
+                    JSXAttributeName::Identifier(n) if matches!(n.name.as_str(), "className" | "class") => at.value.as_ref().and_then(class_text),
+                    _ => None,
+                },
+                _ => None,
+            });
+            if let Some(text) = class {
+                let mut classes: Vec<String> = text.split_whitespace().map(str::to_string).collect();
+                classes.sort();
+                classes.dedup();
+                if self.all || styled(&classes) {
+                    self.found.push(Control { index: u16_at(self.src, el.span().start as usize), tag: tag.clone(), classes, attrs: attrs.clone(), content: content_of(it) });
+                }
+            }
+        }
+        // a form submits a button in it; a link, an asChild trigger, a label, or a click handler around it acts for it
+        // SignInButton, Dialog.Close, AlertDialogAction wrap a plain <button> and give it their own handler
+        let wrapper = tag.starts_with(|c: char| c.is_ascii_uppercase()) && ["Button", "Trigger", "Close", "Action", "Link"].iter().any(|w| tag.ends_with(w));
+        let gives = tag == "form" || tag == "a" || tag == "label" || wrapper || has("asChild") || has("onClick");
+        self.around.push(gives);
+        walk::walk_jsx_element(self, it);
+        self.around.pop();
+    }
 }
 
 /// The static class text of a className: "a b", {`a ${x} b`} (the fixed parts), or {cn("a", x && "b")} (the string
@@ -113,32 +235,6 @@ fn class_text(v: &oxc_ast::ast::JSXAttributeValue) -> Option<String> {
         JSXAttributeValue::StringLiteral(s) => s.value.as_str().map(str::to_string),
         JSXAttributeValue::ExpressionContainer(c) => c.expression.as_expression().and_then(of),
         _ => None,
-    }
-}
-
-impl<'a> Visit<'a> for Controls<'_> {
-    fn visit_jsx_opening_element(&mut self, el: &JSXOpeningElement<'a>) {
-        if let JSXElementName::Identifier(id) = &el.name {
-            let tag = id.name.as_str();
-            if NATIVE.contains(&tag) {
-                let class = el.attributes.iter().find_map(|a| match a {
-                    JSXAttributeItem::Attribute(at) => match &at.name {
-                        JSXAttributeName::Identifier(n) if matches!(n.name.as_str(), "className" | "class") => at.value.as_ref().and_then(class_text),
-                        _ => None,
-                    },
-                    _ => None,
-                });
-                if let Some(text) = class {
-                    let mut classes: Vec<String> = text.split_whitespace().map(str::to_string).collect();
-                    classes.sort();
-                    classes.dedup();
-                    if self.all || styled(&classes) {
-                        self.found.push(Control { index: u16_at(self.src, el.span().start as usize), tag: tag.to_string(), classes });
-                    }
-                }
-            }
-        }
-        walk::walk_jsx_opening_element(self, el);
     }
 }
 
@@ -171,9 +267,44 @@ fn controls(raw: &str, ext: &str, all: bool) -> Vec<Control> {
     let alloc = Allocator::default();
     let kind = if ext == "tsx" { SourceType::tsx() } else { SourceType::jsx() };
     let ret = Parser::new(&alloc, raw, kind).parse();
-    let mut f = Controls { src: raw, found: Vec::new(), all };
+    let mut f = Controls { src: raw, found: Vec::new(), all, around: Vec::new(), dead: Vec::new() };
     f.visit_program(&ret.program);
     f.found
+}
+
+/// The <button>s in a .jsx or .tsx file that do nothing when pressed (RX-QA-08): no click or key handler, no
+/// type="submit" or "reset", no spread props, id, or ref a script could wire, not disabled, and no form, link,
+/// label, asChild trigger, or click handler around it.
+pub fn dead_buttons(raw: &str, ext: &str) -> Vec<usize> {
+    let alloc = Allocator::default();
+    let kind = if ext == "tsx" { SourceType::tsx() } else { SourceType::jsx() };
+    let ret = Parser::new(&alloc, raw, kind).parse();
+    let mut f = Controls { src: raw, found: Vec::new(), all: false, around: Vec::new(), dead: Vec::new() };
+    f.visit_program(&ret.program);
+    f.dead
+}
+
+/// How often each prop is written in a file, by name and by name with its string value (type and type="email"), on
+/// any element: what a refactor that replaces copies with a component must keep passing.
+pub fn prop_counts(raw: &str, ext: &str) -> std::collections::HashMap<String, usize> {
+    struct Props(std::collections::HashMap<String, usize>);
+    impl<'a> Visit<'a> for Props {
+        fn visit_jsx_opening_element(&mut self, el: &JSXOpeningElement<'a>) {
+            for (k, v) in attributes(el) {
+                *self.0.entry(k.clone()).or_default() += 1;
+                if v.starts_with('"') {
+                    *self.0.entry(format!("{k}={v}")).or_default() += 1;
+                }
+            }
+            walk::walk_jsx_opening_element(self, el);
+        }
+    }
+    let alloc = Allocator::default();
+    let kind = if ext == "tsx" { SourceType::tsx() } else { SourceType::jsx() };
+    let ret = Parser::new(&alloc, raw, kind).parse();
+    let mut p = Props(Default::default());
+    p.visit_program(&ret.program);
+    p.0
 }
 
 /// A form component a project defines, and the class that marks its look: Button's fill, Input's border.

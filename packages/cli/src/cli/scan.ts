@@ -100,6 +100,15 @@ async function scanPaths(paths: string[], skip: Set<string>, design?: Direction,
   return { files: sources.length, findings: scanReading(sources, { folder, skip, design, peers, components }, readOne), sources };
 }
 
+/** Every file a folder scan reads, as sources (the inventory and its verify read the same tree). */
+export async function readTree(dir: string): Promise<RawSource[]> {
+  const files: string[] = [];
+  await walk(dir, files);
+  const out: RawSource[] = [];
+  for (const f of files) if (statSync(f).size <= MAX_BYTES) out.push({ path: relative(process.cwd(), f) || f, raw: await readFile(f, "utf8") });
+  return out;
+}
+
 /** The RX-DS-01 copy findings in a folder: each file's first copy of a control written again elsewhere. */
 export async function componentCopies(dir: string): Promise<{ files: number; copies: ScanFinding[] }> {
   // read as undecided, so a project that chose "later" still sees what it put off

@@ -9,6 +9,8 @@ import { GATE_AREAS } from "./intelligence/content.js";
 interface Core {
   scan(input: string): string;
   syntaxScan(input: string): string;
+  componentInventory(input: string): string;
+  componentVerify(input: string): string;
   unused(input: string): string;
   readDirection(md: string): string;
   audit(input: string): string;
@@ -72,6 +74,19 @@ export function scanSyntax(sources: RawSource[], opts: ScanOpts): ScanFinding[] 
   const jsx = sources.filter((s) => /\.(?:jsx|tsx|js|mjs|cjs|ts|mts|cts)$/i.test(s.path) && !/\.d\.ts$/i.test(s.path));
   if (!jsx.length) return [];
   return answer<ScanFinding[]>(rust().syntaxScan(input(jsx, { ...opts, context: [...(opts.context ?? []), ...(opts.peers ?? [])] })));
+}
+
+/** What a component made from copies has to carry (RX-DS-01): each group of a control written again, with its places,
+ *  variants, props, content, states, and the states missing. */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any -- the JSON ryux-core answers with, shaped in Rust
+export function componentInventory(sources: RawSource[]): { groups: any[] } {
+  return answer(rust().componentInventory(JSON.stringify({ sources: sources.filter((s) => /\.(?:jsx|tsx)$/i.test(s.path)) })));
+}
+
+/** The refactor checked against the inventory taken before it: copies left, and props a file no longer passes. */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any -- the JSON ryux-core answers with, shaped in Rust
+export function componentVerify(before: unknown, sources: RawSource[]): { ok: boolean; groups: any[] } {
+  return answer(rust().componentVerify(JSON.stringify({ before, sources: sources.filter((s) => /\.(?:jsx|tsx)$/i.test(s.path)) })));
 }
 
 /** Every source check: the source detectors and the syntax checks, ordered by file, then line and column. */

@@ -156,6 +156,30 @@ pub fn syntax_scan(input: &str) -> String {
     ryux_core::Json::Array(s::scan_syntax(&sources, opts)).to_string()
 }
 
+/// What a component made from copies has to carry (RX-DS-01): `{ sources: [{ path, raw }] }` → `{ groups }`.
+#[wasm_bindgen(js_name = componentInventory)]
+pub fn component_inventory(input: &str) -> String {
+    use ryux_core::scan as s;
+    let v = match ryux_core::parse(input) {
+        Ok(v) => v,
+        Err(e) => return format!("{{\"error\":{}}}", ryux_core::js::quote(&format!("invalid input: {e}"))),
+    };
+    let sources: Vec<s::Source> = v["sources"].as_array().map_or(Vec::new(), |a| a.iter().map(|x| s::to_source(x["path"].as_str().unwrap_or(""), x["raw"].as_str().unwrap_or(""))).collect());
+    s::inventory(&sources).to_string()
+}
+
+/// The refactor against the inventory taken before it: `{ before, sources }` → `{ ok, groups }`.
+#[wasm_bindgen(js_name = componentVerify)]
+pub fn component_verify(input: &str) -> String {
+    use ryux_core::scan as s;
+    let v = match ryux_core::parse(input) {
+        Ok(v) => v,
+        Err(e) => return format!("{{\"error\":{}}}", ryux_core::js::quote(&format!("invalid input: {e}"))),
+    };
+    let sources: Vec<s::Source> = v["sources"].as_array().map_or(Vec::new(), |a| a.iter().map(|x| s::to_source(x["path"].as_str().unwrap_or(""), x["raw"].as_str().unwrap_or(""))).collect());
+    s::verify(&v["before"], &sources).to_string()
+}
+
 /// The synthesis check: does a research synthesis stand on its raw data (quotes word for word, counts, participants)?
 /// `{ synthesis, files }` in, `{ ok, participants, themes, findings }` out.
 #[wasm_bindgen(js_name = synthCheck)]

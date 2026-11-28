@@ -1530,7 +1530,7 @@ export const RULES: Rule[] = [
       title: "Search before you create",
       level: "required",
       gate: "hard",
-      do: "Before adding a component, search existing components, tokens, and patterns; reuse, then extend with a variant, and create new only for a real semantic or behavioral difference. When the same control is written again across files and DESIGN.md has no Components choice, ask the user first, with the pros and cons of each: one component in code, a component with Storybook, or later; record the answer (ryux components --set) and build neither a component library nor Storybook without it.",
+      do: "Before adding a component, search existing components, tokens, and patterns; reuse, then extend with a variant, and create new only for a real semantic or behavioral difference. When the same control is written again across files and DESIGN.md has no Components choice, ask the user first, with the pros and cons of each: one component in code, a component with Storybook, or later; record the answer (ryux components --set) and build neither a component library nor Storybook without it. Once the user chose, build each component from ryux components --inventory (every prop its copies pass, a variant for each change, the states they miss), saved with --json before the refactor, and check the refactor with ryux components --verify.",
       dont: "Create a near-duplicate component or pattern for one screen, write the same styled control out again in each file instead of making it one component, or style a <button> or <input> by hand when the project has a Button or Input.",
       why: "Duplicates drift apart, multiply maintenance, and break consistency.",
       basis: "Design-system practice",
@@ -2023,7 +2023,7 @@ export const RULES: Rule[] = [
       notWhen: "static mockups with no interaction; then say the flow was not run and VISUAL QA is NOT VERIFIED",
       why: "A broken primary action fails the one thing the screen exists for, whatever else is right.",
       basis: "Usability testing practice (task completion); owner review 2026-10-25: a broken main interaction belongs with the checks that cannot be argued",
-      check: "run the primary task and one failure path in the render; fails on any dead end",
+      check: "run the primary task and one failure path in the render; fails on any dead end; ryux scan warns on a <button> with no handler, no submit, and nothing around it that acts",
     },
   ]),
 
