@@ -385,7 +385,16 @@ pub fn inventory(sources: &[Source]) -> Value {
         }));
     }
     groups.sort_by_key(|g| std::cmp::Reverse(g["count"].as_u64().unwrap_or(0)));
-    json!({ "groups": groups })
+    // an agent reads this JSON, not the printed list: say first which catalog files to read
+    let mut read_first: Vec<&str> = groups.iter().filter_map(|g| g["catalog"].as_str()).collect();
+    read_first.sort();
+    read_first.dedup();
+    let read_first: Vec<String> = read_first.into_iter().map(str::to_string).collect();
+    json!({
+        "note": "Before building a component from a group, read its catalog file (the group's catalog field, in the RYUX skill folder): what the component must do, its states, behaviour, and accessibility; its look stays the project's.",
+        "read_first": read_first,
+        "groups": groups,
+    })
 }
 
 /// After a refactor, against the inventory taken before it: the copies left (a control with the classes of a group
@@ -2796,6 +2805,9 @@ export { Input };"#;
         assert_eq!(g["variants"][0]["changes"], json!(["px-4 → px-3", "py-2 → py-1.5"]));
         assert_eq!(g["variants"][0]["kind"], "size");
         assert_eq!(g["catalog"], "knowledge/design-system/button.md");
+        // the JSON an agent reads says, before the groups, which catalog files to read first
+        assert_eq!(before["read_first"], json!(["knowledge/design-system/button.md"]));
+        assert!(before["note"].as_str().unwrap().starts_with("Before building a component"), "{}", before["note"]);
         assert_eq!(catalog_file("field"), Some("knowledge/design-system/field.md"));
         assert_eq!(catalog_file("dropdown-menu"), Some("knowledge/design-system/dropdown-menu.md"));
         assert_eq!(catalog_file("panel"), None);
