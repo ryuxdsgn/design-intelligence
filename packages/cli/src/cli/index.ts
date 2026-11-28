@@ -872,13 +872,12 @@ async function componentsVerify(file: string | undefined): Promise<void> {
   const res = componentVerify(JSON.parse(await readFile(file, "utf8")), await readTree("."));
   for (const g of res.groups) {
     const head = `<${g.tag}> ${String(g.classes).slice(0, 60)}`;
-    if (!g.copies_left.length && !g.lost.length) {
-      console.log(`${pc.green("ok")}   ${head}: one component, every prop still passed`);
-      continue;
-    }
-    console.log(`${pc.red("fail")} ${head}`);
+    if (!g.copies_left.length && !g.lost.length) console.log(`${pc.green("ok")}   ${head}: one component, every prop still passed`);
+    else console.log(`${pc.red("fail")} ${head}`);
     if (g.copies_left.length) console.log(`     still written out at ${g.copies_left.slice(0, 4).join(", ")}`);
     for (const l of g.lost) console.log(l.gone ? `     ${l.file} is gone` : `     ${l.file}: ${l.prop} written ${l.before} times before, ${l.after} now`);
+    for (const c of g.check ?? []) console.log(pc.yellow(`     check ${c.file}: ${c.prop} ${c.before} → ${c.after} while ${c.became} ${c.became_before} → ${c.became_after}; renamed on a component? confirm it still does the same`));
+    if (g.in_unused_files?.length) console.log(pc.dim(`     left in files nothing imports: ${g.in_unused_files.slice(0, 4).join(", ")}${g.in_unused_files.length > 4 ? `, and ${g.in_unused_files.length - 4} more` : ""}`));
   }
   if (!res.ok) process.exitCode = 1;
 }

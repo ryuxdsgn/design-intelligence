@@ -363,6 +363,7 @@ pub fn inventory(sources: &[Source]) -> Value {
         }
         // the props each file passes on its copies, as that file writes them in all (what verify compares)
         let mut per_file = serde_json::Map::new();
+        let mut handlers = serde_json::Map::new();
         for f in &files {
             let Some(src) = sources.iter().find(|s| norm(&s.path) == *f) else { continue };
             let counts = crate::jsx::prop_counts(&src.raw, &src.ext);
@@ -376,12 +377,14 @@ pub fn inventory(sources: &[Source]) -> Value {
             on_copies.sort();
             on_copies.dedup();
             per_file.insert(f.clone(), Value::Object(on_copies.into_iter().map(|k| { let n = counts.get(&k).copied().unwrap_or(0); (k, json!(n)) }).collect()));
+            // every handler the file passes, on any element: verify tells a handler renamed into a component from one dropped
+            handlers.insert(f.clone(), Value::Object(counts.iter().filter(|(k, _)| is_handler(k)).map(|(k, n)| (k.clone(), json!(n))).collect()));
         }
         groups.push(json!({
             "app": keys[base].0, "tag": tag, "classes": keys[base].2.join(" "), "count": uses.len(), "files": files,
             "at": members[base].iter().map(place).collect::<Vec<_>>(), "variants": variants, "props": props,
             "content": content, "states": states, "missing": missing, "keys": ks.iter().map(|k| keys[*k].2.join(" ")).collect::<Vec<_>>(),
-            "props_in_files": per_file, "kind": kind, "catalog": kind.and_then(catalog_file),
+            "props_in_files": per_file, "handlers_in_files": handlers, "kind": kind, "catalog": kind.and_then(catalog_file),
         }));
     }
     groups.sort_by_key(|g| std::cmp::Reverse(g["count"].as_u64().unwrap_or(0)));
@@ -402,35 +405,112 @@ pub fn inventory(sources: &[Source]) -> Value {
 /// (type="password" gone from Signup.tsx), or a file that is gone.
 pub fn verify(before: &Value, sources: &[Source]) -> Value {
     let all = styled_everywhere(sources);
+    let unused = unused_files(sources);
     let mut out = Vec::new();
     let mut ok = true;
     for g in before["groups"].as_array().into_iter().flatten() {
         let tag = g["tag"].as_str().unwrap_or("");
         let app = g["app"].as_str().unwrap_or("");
         let keys: Vec<&str> = g["keys"].as_array().into_iter().flatten().filter_map(|k| k.as_str()).collect();
-        let left: Vec<String> = all.iter().filter(|(_, _, pkg, c)| pkg == app && c.tag == tag && keys.contains(&c.classes.join(" ").as_str())).map(|(f, l, _, _)| format!("{f}:{l}")).collect();
+        let place = |(f, l): (&String, &usize)| format!("{f}:{l}");
+        let found: Vec<(&String, &usize)> = all.iter().filter(|(_, _, pkg, c)| pkg == app && c.tag == tag && keys.contains(&c.classes.join(" ").as_str())).map(|(f, l, _, _)| (f, l)).collect();
+        // copies in a file that nothing imports are not part of the running app: listed apart, never a failure
+        let in_unused: Vec<String> = found.iter().filter(|(f, _)| unused.contains(f.as_str())).map(|x| place(*x)).collect();
+        let left: Vec<String> = found.iter().filter(|(f, _)| !unused.contains(f.as_str())).map(|x| place(*x)).collect();
         let left_files: HashSet<&str> = left.iter().map(|x| x.rsplit_once(':').map_or(x.as_str(), |p| p.0)).collect();
         let copies_left = if left_files.len() >= 2 { left.clone() } else { Vec::new() };
-        let mut lost = Vec::new();
+        let (mut lost, mut check) = (Vec::new(), Vec::new());
         for (file, props) in g["props_in_files"].as_object().into_iter().flatten() {
+            if unused.contains(file.as_str()) {
+                continue;
+            }
             let Some(src) = sources.iter().find(|s| norm(&s.path) == *file) else {
                 lost.push(json!({ "file": file, "gone": true }));
                 continue;
             };
             let now = crate::jsx::prop_counts(&src.raw, &src.ext);
+            let had = &g["handlers_in_files"][file.as_str()];
             for (k, n) in props.as_object().into_iter().flatten() {
                 let (was, is) = (n.as_u64().unwrap_or(0) as usize, now.get(k).copied().unwrap_or(0));
-                if is < was {
-                    lost.push(json!({ "file": file, "prop": k, "before": was, "after": is }));
+                if is >= was {
+                    continue;
+                }
+                // a handler that fell while another rose as much: probably renamed on a component (onClick → onChange)
+                let rose = is_handler(k).then(|| now.iter().filter(|(h, _)| is_handler(h) && *h != k).find(|(h, m)| {
+                    **m >= had[h.as_str()].as_u64().unwrap_or(0) as usize + (was - is)
+                })).flatten();
+                match rose {
+                    Some((h, m)) => check.push(json!({ "file": file, "prop": k, "before": was, "after": is, "became": h, "became_before": had[h.as_str()].as_u64().unwrap_or(0), "became_after": m })),
+                    None => lost.push(json!({ "file": file, "prop": k, "before": was, "after": is })),
                 }
             }
         }
         if !copies_left.is_empty() || !lost.is_empty() {
             ok = false;
         }
-        out.push(json!({ "tag": tag, "classes": g["classes"], "copies_left": copies_left, "lost": lost }));
+        out.push(json!({ "tag": tag, "classes": g["classes"], "copies_left": copies_left, "lost": lost, "check": check, "in_unused_files": in_unused }));
     }
-    json!({ "ok": ok, "groups": out })
+    let mut unused: Vec<String> = unused.into_iter().collect();
+    unused.sort();
+    json!({ "ok": ok, "unused_files": unused, "groups": out })
+}
+
+fn is_handler(k: &str) -> bool {
+    k.len() > 2 && k.starts_with("on") && k[2..].starts_with(|c: char| c.is_ascii_uppercase())
+}
+
+/// The .jsx/.tsx/.js/.ts files no entry reaches by imports: copies left in them are not in the running app. Entries
+/// are main, index, and App files, and with a next.config the route files (page, layout, route, and files in pages/).
+/// With no entry found, every file counts as used.
+pub fn unused_files(sources: &[Source]) -> HashSet<String> {
+    let code: Vec<String> = sources.iter().map(|s| norm(&s.path)).filter(|p| re(r"\.(?:[jt]sx?|mjs)$", "").test(p)).collect();
+    let set: HashSet<&str> = code.iter().map(String::as_str).collect();
+    let next = sources.iter().any(|s| re(r"(?:^|/)next\.config\.", "").test(&norm(&s.path)));
+    let stem = |p: &str| p.rsplit('/').next().unwrap_or(p).split('.').next().unwrap_or("").to_string();
+    let entry = |p: &str| {
+        let st = stem(p);
+        matches!(st.as_str(), "main" | "index" | "App" | "app" | "_app" | "_document" | "middleware")
+            || re(r"\.(?:test|spec|stories|config)\.", "").test(p)
+            || (next && (matches!(st.as_str(), "page" | "layout" | "route" | "template" | "loading" | "error" | "not-found" | "default") || p.contains("pages/")))
+    };
+    let roots: Vec<&str> = code.iter().map(String::as_str).filter(|p| entry(p)).collect();
+    if roots.is_empty() {
+        return HashSet::new();
+    }
+    let resolve = |from: &str, spec: &str| -> Option<&str> {
+        let base = if spec.starts_with('.') {
+            let dir = from.rsplit_once('/').map_or("", |d| d.0);
+            let mut parts: Vec<&str> = if dir.is_empty() { Vec::new() } else { dir.split('/').collect() };
+            for seg in spec.split('/') {
+                match seg {
+                    "." | "" => {}
+                    ".." => { parts.pop(); }
+                    s => parts.push(s),
+                }
+            }
+            parts.join("/")
+        } else if let Some(rest) = spec.strip_prefix("@/").or_else(|| spec.strip_prefix("~/")) {
+            format!("src/{rest}")
+        } else {
+            return None;
+        };
+        let tries = ["", ".tsx", ".ts", ".jsx", ".js", "/index.tsx", "/index.ts", "/index.jsx", "/index.js"];
+        tries.iter().map(|t| format!("{base}{t}")).find_map(|c| set.get(c.as_str()).copied())
+    };
+    let imports = re(r#"(?:from|import|require\(|import\()\s*['"]([^'"]+)['"]"#, "g");
+    let mut seen: HashSet<&str> = roots.iter().copied().collect();
+    let mut stack: Vec<&str> = roots;
+    while let Some(f) = stack.pop() {
+        let Some(src) = sources.iter().find(|s| norm(&s.path) == f) else { continue };
+        for m in imports.match_all(&src.raw) {
+            if let Some(to) = resolve(f, m.g(1)) {
+                if seen.insert(to) {
+                    stack.push(to);
+                }
+            }
+        }
+    }
+    code.iter().filter(|p| !seen.contains(p.as_str())).cloned().collect()
 }
 
 /// A <button> that does nothing when pressed: no handler, no submit, nothing around it that acts (RX-QA-08).
@@ -2649,6 +2729,37 @@ mod tests {
         let sources: Vec<Source> = files.iter().map(|(p, r)| to_source(p, r)).collect();
         let opts = ScanOptions { folder: true, skip: HashSet::new(), design: None, components: None, context: Vec::new() };
         scan_syntax(&sources, opts).into_iter().filter(|f| f["rule"] == "RX-DS-01").map(|f| format!("{}:{} {}", f["file"].as_str().unwrap(), f["line"], &f["message"].as_str().unwrap()[..24])).collect()
+    }
+
+    #[test]
+    fn verify_skips_files_nothing_imports_and_asks_about_a_renamed_handler() {
+        let btn = r#"<button onClick={go} className="rounded-lg bg-blue-600 px-4 py-2 text-white">Go</button>"#;
+        let main = "import App from './App';\nrender(<App />);";
+        let app = "import { A } from './a';\nimport { B } from './b';\nexport default () => <><A /><B /></>;";
+        let a = format!("export const A = () => <div>{btn}{btn}</div>;");
+        let b = format!("export const B = () => <div>{btn}</div>;");
+        // old/b.tsx is a copy of b.tsx that nothing imports; old/page.tsx imports it, and nothing imports that either
+        let old_page = "import { B } from './b';\nexport default () => <B />;";
+        let files = |a: &str, b: &str, ob: &str| vec![
+            to_source("src/main.tsx", main), to_source("src/App.tsx", app), to_source("src/a.tsx", a), to_source("src/b.tsx", b),
+            to_source("src/old/b.tsx", ob), to_source("src/old/page.tsx", old_page),
+        ];
+        let before = inventory(&files(&a, &b, &b));
+        // the live files refactored, the unused copy left alone: ok, and the unused copy listed apart
+        let a2 = "export const A = () => <div><Button onClick={go}>Go</Button><Button onClick={go}>Go</Button></div>;";
+        let b2 = "export const B = () => <div><Button onClick={go}>Go</Button></div>;";
+        let after = verify(&before, &files(a2, b2, &b));
+        assert_eq!(after["ok"], true, "{after}");
+        assert_eq!(after["groups"][0]["in_unused_files"], json!(["src/old/b.tsx:1"]));
+        // a handler that becomes another one on a component (onClick → onChange on a Switch): asked about, not lost
+        let a3 = "export const A = () => <div><Switch onChange={go} /><Switch onChange={go} /></div>;";
+        let renamed = verify(&before, &files(a3, b2, &b));
+        assert_eq!(renamed["ok"], true, "{renamed}");
+        assert_eq!(renamed["groups"][0]["check"][0]["prop"], "onClick");
+        assert_eq!(renamed["groups"][0]["check"][0]["became"], "onChange");
+        // a handler simply dropped still fails
+        let a4 = "export const A = () => <div><Button>Go</Button><Button>Go</Button></div>;";
+        assert_eq!(verify(&before, &files(a4, b2, &b))["ok"], false);
     }
 
     #[test]
