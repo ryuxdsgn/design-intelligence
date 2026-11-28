@@ -232,6 +232,15 @@ fn styled_everywhere(sources: &[Source]) -> Vec<(String, usize, String, crate::j
     out
 }
 
+/// The catalog file (knowledge/design-system/) that says what a component made from these copies must do.
+pub fn catalog_file(tag: &str) -> Option<&'static str> {
+    match tag {
+        "button" | "a" => Some("knowledge/design-system/button.md"),
+        "input" | "select" | "textarea" => Some("knowledge/design-system/field.md"),
+        _ => None,
+    }
+}
+
 /// What a component made from copies has to carry (RX-DS-01), for `ryux components --inventory`: each group of a
 /// control written again across files (the same classes, or one control in variants that change at most two classes
 /// within one family), with every place it is written, its variants, the props its copies pass (how many copies, and
@@ -347,7 +356,7 @@ pub fn inventory(sources: &[Source]) -> Value {
             "app": keys[base].0, "tag": tag, "classes": keys[base].2.join(" "), "count": uses.len(), "files": files,
             "at": members[base].iter().map(place).collect::<Vec<_>>(), "variants": variants, "props": props,
             "content": content, "states": states, "missing": missing, "keys": ks.iter().map(|k| keys[*k].2.join(" ")).collect::<Vec<_>>(),
-            "props_in_files": per_file,
+            "props_in_files": per_file, "catalog": catalog_file(&tag),
         }));
     }
     groups.sort_by_key(|g| std::cmp::Reverse(g["count"].as_u64().unwrap_or(0)));
@@ -2747,6 +2756,9 @@ export { Input };"#;
         assert_eq!(g["files"], json!(["src/a.tsx", "src/b.tsx"]));
         assert_eq!(g["variants"][0]["changes"], json!(["px-4 → px-3", "py-2 → py-1.5"]));
         assert_eq!(g["variants"][0]["kind"], "size");
+        assert_eq!(g["catalog"], "knowledge/design-system/button.md");
+        assert_eq!(catalog_file("select"), Some("knowledge/design-system/field.md"));
+        assert_eq!(catalog_file("div"), None);
         // a variant three changes from the base, one from the small variant, is described against that one
         let c = r#"export const C = () => <div><button onClick={z} className="rounded bg-blue-600 px-3 py-1.5 text-white">Tiny</button></div>;"#;
         let chained = inventory(&[to_source("src/a.tsx", a), to_source("src/b.tsx", b), to_source("src/c.tsx", c)]);
