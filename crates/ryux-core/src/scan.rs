@@ -255,6 +255,7 @@ pub fn catalog_file(kind: &str) -> Option<&'static str> {
         "badge" => "knowledge/design-system/badge.md",
         "tabs" => "knowledge/design-system/tabs.md",
         "dialog" => "knowledge/design-system/dialog.md",
+        "dropdown-menu" => "knowledge/design-system/dropdown-menu.md",
         "empty-state" => "knowledge/design-system/empty-state.md",
         "icon-tile" => "knowledge/design-system/icon-tile.md",
         "code-block" => "knowledge/design-system/code-block.md",
@@ -2796,6 +2797,7 @@ export { Input };"#;
         assert_eq!(g["variants"][0]["kind"], "size");
         assert_eq!(g["catalog"], "knowledge/design-system/button.md");
         assert_eq!(catalog_file("field"), Some("knowledge/design-system/field.md"));
+        assert_eq!(catalog_file("dropdown-menu"), Some("knowledge/design-system/dropdown-menu.md"));
         assert_eq!(catalog_file("panel"), None);
         // a variant three changes from the base, one from the small variant, is described against that one
         let c = r#"export const C = () => <div><button onClick={z} className="rounded bg-blue-600 px-3 py-1.5 text-white">Tiny</button></div>;"#;

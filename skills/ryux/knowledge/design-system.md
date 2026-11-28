@@ -41,6 +41,7 @@ and the "usually looks like" column only helps recognise a hand-written copy in 
 | Badge (tag, status chip) | a small <span> with text-xs, small horizontal padding, a tint, and a full or small radius | `knowledge/design-system/badge.md` |
 | Tabs (and segmented control) | a row of buttons or links in a strip (flex, gap-1, p-1, a tinted track) with one marked as current | `knowledge/design-system/tabs.md` |
 | Dialog (modal) | a fixed inset-0 overlay (bg-black/50) holding a centred panel; on mobile often a bottom sheet | `knowledge/design-system/dialog.md` |
+| Dropdown menu (and picker list) | a small floating panel (absolute, shadow, right-0 or mt-2) or a tight column (flex-col, gap-1, p-1) of rows lit on hover and focus | `knowledge/design-system/dropdown-menu.md` |
 | Empty state | a centred block (text-center, large vertical padding) with an icon or picture, a line, and a button | `knowledge/design-system/empty-state.md` |
 | Icon tile | one icon inside a tinted square or circle (p-2 or p-3, bg-blue-100, rounded-lg or rounded-full) | `knowledge/design-system/icon-tile.md` |
 | Code block | a dark box with font-mono and padding, holding a <pre> or <code> | `knowledge/design-system/code-block.md` |

@@ -87,8 +87,8 @@ pub struct Control {
     pub attrs: Vec<(String, String)>,
     /// What it holds: text, icon+text, icon, expression, or none.
     pub content: &'static str,
-    /// The catalog component it most likely is (button, field, card, alert, badge, tabs, dialog, empty-state,
-    /// icon-tile, code-block), from its tag, classes, role, and children; None when nothing tells.
+    /// The catalog component it most likely is (button, field, card, alert, badge, tabs, dialog, dropdown-menu,
+    /// empty-state, icon-tile, code-block), from its tag, classes, role, and children; None when nothing tells.
     pub kind: Option<&'static str>,
 }
 
@@ -125,6 +125,15 @@ fn kind_of(tag: &str, classes: &[String], attrs: &[(String, String)], kids: &[St
     }
     if role == "dialog" || role == "alertdialog" || attrs.iter().any(|(k, _)| k == "aria-modal") || (is("fixed") && is("inset-0")) {
         return Some("dialog");
+    }
+    // a menu: a role, a floating list anchored to its trigger, a tight column panel, or an item lit on hover and focus
+    let state_bg = |state: &str| classes.iter().any(|c| c.strip_prefix(state).is_some_and(|b| b.starts_with("bg-")));
+    if matches!(role, "menu" | "listbox" | "menuitem" | "option")
+        || (is("absolute") && classes.iter().any(|c| bare(c).starts_with("shadow")) && (is("top-full") || is("right-0") || is("left-0") || classes.iter().any(|c| { let b = bare(c); b.starts_with("mt-") && b[3..].chars().all(|x| x.is_ascii_digit()) })))
+        || (is("flex-col") && (is("space-y-1") || is("space-y-0.5") || is("gap-1") || is("gap-0.5")) && (is("p-1") || is("p-1.5") || is("p-2")))
+        || (is("cursor-pointer") && state_bg("hover:") && (state_bg("focus:") || state_bg("focus-visible:")))
+    {
+        return Some("dropdown-menu");
     }
     if role == "tablist" || (is("flex") && is("p-1") && is("gap-1")) {
         return Some("tabs");
@@ -590,6 +599,12 @@ mod tests {
         assert_eq!(kind(r#"const A = () => <div className="fixed inset-0 rounded-none bg-black/50 p-4"><div>x</div></div>;"#), vec!["div:dialog"]);
         assert_eq!(kind(r#"const A = () => <div className="rounded-xl bg-white p-6 shadow-sm"><h3>Saldo</h3><p>Rp1.250.000</p></div>;"#), vec!["div:card"]);
         assert_eq!(kind(r#"const A = () => <button className="rounded-lg bg-blue-600 px-4 py-2 text-white">Simpan</button>;"#), vec!["button:button"]);
+        // a menu: its panel and its items (chatbot-ui's pickers), a role, or an anchored floating list
+        assert_eq!(kind(r#"const A = () => <div className="bg-background flex flex-col space-y-1 rounded-xl border-2 p-2 text-sm">{list}</div>;"#), vec!["div:dropdown-menu"]);
+        assert_eq!(kind(r#"const A = () => <div tabIndex={0} onClick={pick} className="hover:bg-accent focus:bg-accent flex cursor-pointer items-center rounded p-2 focus:outline-none"><div>{name}</div></div>;"#), vec!["div:dropdown-menu"]);
+        assert_eq!(kind(r#"const A = () => <ul role="menu" className="rounded-md bg-white p-1"><li>Ubah</li></ul>;"#).first().map(String::as_str), None, "ul is not a box");
+        assert_eq!(kind(r#"const A = () => <div role="menu" className="rounded-md bg-white p-1"><button>Ubah</button></div>;"#), vec!["div:dropdown-menu", "button:button"].into_iter().take(1).collect::<Vec<_>>());
+        assert_eq!(kind(r#"const A = () => <div className="absolute right-0 mt-2 w-48 rounded-md bg-white p-1 shadow-lg"><a>Profil</a></div>;"#), vec!["div:dropdown-menu"]);
         assert_eq!(kind(r#"const A = () => <input className="rounded-md border border-gray-300 px-3 py-2" />;"#), vec!["input:field"]);
         // a box with only a text colour, or no radius, or no padding: layout, not a component copy
         assert!(kind(r#"const A = () => <div className="rounded-lg p-4 text-gray-600"><p>x</p></div>;"#).is_empty());
