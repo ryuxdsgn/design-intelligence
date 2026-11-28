@@ -1081,3 +1081,29 @@ test("the edit hook checks the edited file against the other .jsx and .tsx files
   assert.doesNotMatch(edited(join(root, "apps", "admin", "c.tsx")).out, /RX-DS-01/, "one file in its app has nothing to copy from");
   rmSync(root, { recursive: true, force: true });
 });
+
+test("ryux components asks before a component library is built, and the scan follows the choice in DESIGN.md (RX-DS-01)", () => {
+  const dir = mkdtempSync(join(tmpdir(), "ryux-choice-"));
+  mkdirSync(join(dir, "src"));
+  const btn = `<button className="rounded-lg bg-lime-300 px-4 py-2 text-slate-900">Save</button>`;
+  writeFileSync(join(dir, "src", "a.tsx"), `export const A = () => <div>${btn}${btn}</div>;\n`);
+  writeFileSync(join(dir, "src", "b.tsx"), `export const B = () => <form>${btn}</form>;\n`);
+  const copies = () => JSON.parse(run(dir, ["scan", ".", "--json"]).out).findings.filter((f) => f.rule === "RX-DS-01");
+  // undecided: the warning asks for the user's choice
+  assert.match(copies()[0].message, /ask the user to choose.*Storybook.*ryux components --set/);
+  // without a terminal, components lists the copies and says how to record the answer
+  const listed = run(dir, ["components"], "");
+  assert.match(listed.out, /2 places in 2 files write a control again/);
+  assert.match(listed.out, /components --set extract\|storybook\|later/);
+  // --set takes only the three answers
+  assert.equal(run(dir, ["components", "--set", "maybe"]).code, 2);
+  assert.equal(run(dir, ["components", "--set", "later"]).code, 0);
+  assert.match(readFileSync(join(dir, "DESIGN.md"), "utf8"), /^- \*\*Components\*\*: later \(the user's choice, \d{4}-\d{2}-\d{2}\)$/m);
+  assert.deepEqual(copies(), [], "later keeps the scan quiet");
+  assert.match(run(dir, ["components"], "").out, /Current choice in DESIGN\.md: later[\s\S]*2 places in 2 files/, "and components still lists them");
+  assert.doesNotMatch(run(dir, ["scan", "--hook"], JSON.stringify({ tool_input: { file_path: join(dir, "src", "b.tsx") } })).out, /RX-DS-01/);
+  run(dir, ["components", "--set", "storybook"]);
+  assert.match(copies()[0].message, /a story for each state.*Components: storybook/);
+  assert.equal((readFileSync(join(dir, "DESIGN.md"), "utf8").match(/\*\*Components\*\*/g) ?? []).length, 1, "the field is replaced, not added again");
+  rmSync(dir, { recursive: true, force: true });
+});

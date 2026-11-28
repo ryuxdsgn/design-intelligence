@@ -51,10 +51,13 @@ export interface ScanOpts {
   /** The project's other .jsx and .tsx files, for the syntax checks that compare across files (RX-DS-01 copies and
    *  bypassed components) when one edited file is scanned. Read, never reported. */
   peers?: RawSource[];
+  /** DESIGN.md's Components field as written (extract, storybook, later): what the user chose for controls written
+   *  again (RX-DS-01). Undefined when DESIGN.md has none. */
+  components?: string;
 }
 
 const input = (sources: RawSource[], opts: ScanOpts, wants = false): string =>
-  JSON.stringify({ sources, folder: opts.folder, skip: [...(opts.skip ?? [])], design: opts.design ?? null, context: opts.context ?? [], ...(wants ? { wants } : {}) });
+  JSON.stringify({ sources, folder: opts.folder, skip: [...(opts.skip ?? [])], design: opts.design ?? null, components: opts.components ?? null, context: opts.context ?? [], ...(wants ? { wants } : {}) });
 const byPlace = (a: ScanFinding, b: ScanFinding): number => a.file.localeCompare(b.file) || a.line - b.line || a.column - b.column;
 
 /** The source detectors (SOURCE_CHECKS) over files, ordered by file, then line and column: the output
